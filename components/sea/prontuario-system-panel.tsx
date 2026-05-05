@@ -2081,7 +2081,8 @@ export function ProntuarioSystemPanel() {
     Promise.race([fetch, timeout]).then(result => {
       if (!result || !('data' in result)) return
       const { data } = result
-      if (data?.records) {
+      // Only restore from Supabase if localStorage is empty — never overwrite existing local data
+      if (data?.records && localRecords.length === 0) {
         const remoteRecords = (data.records as Array<Partial<ICURecord>>).map(r => normalizeRecord(r))
         const remoteArchive = ((data.archive ?? []) as Array<Partial<ICURecord>>).map(r => normalizeRecord(r))
         localStorage.setItem(STORAGE_KEYS.records, JSON.stringify(remoteRecords))
