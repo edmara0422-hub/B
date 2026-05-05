@@ -2095,41 +2095,32 @@ export function ProntuarioSystemPanel() {
 
   useEffect(() => {
     if (!hydrated) return
+    // localStorage salva instantâneo — status verde imediato
     localStorage.setItem(STORAGE_KEYS.records, JSON.stringify(records))
     localStorage.setItem(STORAGE_KEYS.archive, JSON.stringify(archive))
-  }, [archive, hydrated, records])
-
-  // Supabase sync — debounced 2 s after any record change (skip initial hydration)
-  useEffect(() => {
-    if (!hydrated) return
     if (isFirstSync.current) {
       isFirstSync.current = false
       setSyncStatus(supabase ? 'saved' : 'offline')
       return
     }
-    if (!supabase) {
-      setSyncStatus('offline')
-      return
-    }
-    setSyncStatus('syncing')
+    setSyncStatus(supabase ? 'saved' : 'offline')
+
+    // Supabase em background — debounced 3s, não bloqueia o status
+    if (!supabase) return
     const timer = setTimeout(async () => {
       try {
         const sessionId = getOrCreateSessionId()
-        const upsertPromise = supabase!.from('icu_sessions').upsert({
+        const { error } = await supabase!.from('icu_sessions').upsert({
           session_id: sessionId,
           records: records,
           archive: archive,
           updated_at: new Date().toISOString(),
         }, { onConflict: 'session_id' })
-        const timeoutPromise = new Promise<{ error: Error }>(res =>
-          setTimeout(() => res({ error: new Error('timeout') }), 8000)
-        )
-        const { error } = await Promise.race([upsertPromise, timeoutPromise])
-        setSyncStatus(error ? 'offline' : 'saved')
+        if (error) setSyncStatus('offline')
       } catch {
         setSyncStatus('offline')
       }
-    }, 2000)
+    }, 3000)
     return () => clearTimeout(timer)
   }, [archive, hydrated, records])
 
