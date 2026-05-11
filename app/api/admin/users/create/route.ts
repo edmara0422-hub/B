@@ -24,11 +24,11 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Senha deve ter no mínimo 6 caracteres.' }, { status: 400 })
   }
 
-  // Lista exclusiva de admins server-side — espelha o client e blinda a API
-  // contra qualquer tentativa de uso por outros usuários, mesmo com role='admin'.
-  const ADMIN_EMAILS = new Set<string>(['edmararbusiness1@gmail.com'])
+  // Fallback de segurança: garante que a Edmara sempre passa, mesmo se a role
+  // dela no banco for zerada por erro. Outros admins precisam ter role='admin'.
+  const ALWAYS_ADMIN_EMAILS = new Set<string>(['edmararbusiness1@gmail.com'])
 
-  // 1. Verify the caller is the authorized admin
+  // 1. Verify the caller is an admin (role='admin' no banco OU Edmara por fallback)
   let callerId: string
   try {
     const supa = await getSupabaseServerClient()
@@ -37,7 +37,9 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Não autenticado.' }, { status: 401 })
     }
     const callerEmail = (user.email ?? '').toLowerCase()
-    if (!ADMIN_EMAILS.has(callerEmail)) {
+    const { data: profile } = await supa.from('profiles').select('role').eq('id', user.id).single()
+    const isAllowed = profile?.role === 'admin' || ALWAYS_ADMIN_EMAILS.has(callerEmail)
+    if (!isAllowed) {
       return NextResponse.json({ error: 'Permissão negada.' }, { status: 403 })
     }
     callerId = user.id

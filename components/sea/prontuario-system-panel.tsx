@@ -28,6 +28,7 @@ import {
 } from 'lucide-react'
 import { ICUSystemPanel } from '@/components/sea/icu-system-panel'
 import { supabase } from '@/lib/supabase'
+import { useAuthStore } from '@/lib/stores/authStore'
 import {
   analisarGaso,
   calcCdyn,
@@ -81,14 +82,18 @@ type Workspace = {
   archive: ICURecord[]
 }
 
-const STORAGE_KEYS = {
-  // Legacy keys: kept for backward-compat / migration only. Active data
-  // lives in the workspaces key below.
-  records: 'sea-icu-records',
-  archive: 'sea-icu-archive',
-  workspaces: 'sea-icu-workspaces',
-  activeWorkspace: 'sea-icu-active-workspace',
+// Constrói chaves de localStorage namespaced por usuário. Sem usuário
+// (não autenticado) cai nas chaves legacy — usado só para migração.
+function keysFor(userId: string | null) {
+  const suffix = userId ? `:${userId}` : ''
+  return {
+    records: `sea-icu-records${suffix}`,
+    archive: `sea-icu-archive${suffix}`,
+    workspaces: `sea-icu-workspaces${suffix}`,
+    activeWorkspace: `sea-icu-active-workspace${suffix}`,
+  }
 }
+const LEGACY_KEYS = keysFor(null)
 
 const MAX_WORKSPACES = 6
 
@@ -2071,8 +2076,29 @@ export function ProntuarioSystemPanel() {
   useEffect(() => { workspacesRef.current = workspaces }, [workspaces])
   useEffect(() => { activeWsIdRef.current = activeWorkspaceId }, [activeWorkspaceId])
 
-  // Returns current session_id, creating one if needed
+  // Usuário autenticado — cada user tem seu próprio prontuário isolado.
+  const authUserId = useAuthStore((s) => s.user?.id ?? null)
+  const userIdRef = useRef<string | null>(null)
+  useEffect(() => { userIdRef.current = authUserId }, [authUserId])
+  const sk = keysFor(authUserId)
+
+  // session_id do Supabase = user.id (isolamento por usuário). Sem usuário
+  // autenticado, mantém o ID antigo (somente para edge-cases de migração).
   function getOrCreateSessionId(): string {
+    const uid = userIdRef.current
+    if (uid) {
+      // Antes de sobrescrever, preserva o session_id legacy (gerado quando o
+      // app não tinha isolamento por usuário) para que a migração one-shot
+      // possa achar e copiar o row Supabase do uuid antigo para o user.id.
+      try {
+        const existing = localStorage.getItem('sea-session-id')
+        if (existing && existing !== uid && !localStorage.getItem('sea-session-id-legacy')) {
+          localStorage.setItem('sea-session-id-legacy', existing)
+        }
+        localStorage.setItem('sea-session-id', uid)
+      } catch { /* ignore */ }
+      return uid
+    }
     let id = localStorage.getItem('sea-session-id')
     if (!id) { id = generateId(); localStorage.setItem('sea-session-id', id) }
     return id
@@ -2093,8 +2119,8 @@ export function ProntuarioSystemPanel() {
     setArchive(target.archive)
     setSelectedId(null)
     try {
-      localStorage.setItem(STORAGE_KEYS.workspaces, JSON.stringify(saved))
-      localStorage.setItem(STORAGE_KEYS.activeWorkspace, id)
+      localStorage.setItem(sk.workspaces, JSON.stringify(saved))
+      localStorage.setItem(sk.activeWorkspace, id)
     } catch { /* quota / private mode */ }
   }
 
@@ -2118,8 +2144,8 @@ export function ProntuarioSystemPanel() {
     setWsNameInput('')
     setEditingWsId(null)
     try {
-      localStorage.setItem(STORAGE_KEYS.workspaces, JSON.stringify(updated))
-      localStorage.setItem(STORAGE_KEYS.activeWorkspace, newWs.id)
+      localStorage.setItem(sk.workspaces, JSON.stringify(updated))
+      localStorage.setItem(sk.activeWorkspace, newWs.id)
     } catch { /* ignore */ }
   }
 
@@ -2132,7 +2158,7 @@ export function ProntuarioSystemPanel() {
     setShowWsModal(false)
     setWsNameInput('')
     setEditingWsId(null)
-    try { localStorage.setItem(STORAGE_KEYS.workspaces, JSON.stringify(updated)) } catch { /* ignore */ }
+    try { localStorage.setItem(sk.workspaces, JSON.stringify(updated)) } catch { /* ignore */ }
   }
 
   function deleteWorkspace(id: string) {
@@ -2150,21 +2176,42 @@ export function ProntuarioSystemPanel() {
       setRecords(next.records)
       setArchive(next.archive)
       setSelectedId(null)
-      try { localStorage.setItem(STORAGE_KEYS.activeWorkspace, next.id) } catch { /* ignore */ }
+      try { localStorage.setItem(sk.activeWorkspace, next.id) } catch { /* ignore */ }
     }
-    try { localStorage.setItem(STORAGE_KEYS.workspaces, JSON.stringify(updated)) } catch { /* ignore */ }
+    try { localStorage.setItem(sk.workspaces, JSON.stringify(updated)) } catch { /* ignore */ }
   }
 
   useEffect(() => {
-    // 1. Load localStorage instantly — UI appears without waiting for network.
-    //    Prefer the new workspaces key; fall back to legacy records/archive and
-    //    migrate them into a single "UTI" workspace (your existing patient list
-    //    becomes the first setor, no data lost).
+    // Aguarda autenticação antes de carregar — cada usuário tem prontuário isolado.
+    if (!authUserId) return
+
+    // Pausa o auto-save até terminar o load, senão a state do usuário anterior
+    // pode sobrescrever as chaves localStorage do novo usuário durante a transição.
+    setHydrated(false)
+    setSelectedId(null)
+
+    // 1. Carrega localStorage do USUÁRIO atual. Se vazio, tenta migrar
+    //    do formato legacy (sem suffix de user.id) que existia antes desse
+    //    isolamento — usado uma vez para preservar dados da Edmara.
     let localWs: Workspace[] = []
     let localActiveId = ''
     try {
-      const storedWs = localStorage.getItem(STORAGE_KEYS.workspaces)
-      const storedActiveId = localStorage.getItem(STORAGE_KEYS.activeWorkspace)
+      let storedWs = localStorage.getItem(sk.workspaces)
+      let storedActiveId = localStorage.getItem(sk.activeWorkspace)
+
+      // Migração legacy → user-scoped (one-shot): só se o usuário ainda não
+      // tem dados próprios, ou seja, primeira carga depois da mudança.
+      if (!storedWs) {
+        const legWs = localStorage.getItem(LEGACY_KEYS.workspaces)
+        if (legWs) {
+          localStorage.setItem(sk.workspaces, legWs)
+          const legActive = localStorage.getItem(LEGACY_KEYS.activeWorkspace)
+          if (legActive) localStorage.setItem(sk.activeWorkspace, legActive)
+          storedWs = legWs
+          storedActiveId = legActive
+        }
+      }
+
       if (storedWs) {
         localWs = (JSON.parse(storedWs) as Workspace[]).map(w => ({
           id: w.id,
@@ -2174,9 +2221,9 @@ export function ProntuarioSystemPanel() {
         }))
         localActiveId = storedActiveId ?? localWs[0]?.id ?? ''
       } else {
-        // Legacy migration: existing patient list → first workspace named "UTI"
-        const legRec = localStorage.getItem(STORAGE_KEYS.records)
-        const legArc = localStorage.getItem(STORAGE_KEYS.archive)
+        // Sem dados próprios nem legacy: tenta o formato MAIS antigo (records/archive)
+        const legRec = localStorage.getItem(LEGACY_KEYS.records)
+        const legArc = localStorage.getItem(LEGACY_KEYS.archive)
         const legRecords: ICURecord[] = legRec
           ? (JSON.parse(legRec) as Array<Partial<ICURecord>>).map(r => normalizeRecord(r))
           : []
@@ -2193,7 +2240,6 @@ export function ProntuarioSystemPanel() {
       localActiveId = ws.id
     }
 
-    // Sanity: at least one workspace, valid active id
     if (localWs.length === 0) {
       const ws: Workspace = { id: generateId(), name: 'UTI', records: [], archive: [] }
       localWs = [ws]
@@ -2212,18 +2258,36 @@ export function ProntuarioSystemPanel() {
     setArchive(activeWs.archive)
     setHydrated(true)
 
-    // 2. Supabase sync in background — only fills local if local is empty (never
-    //    overwrites your data). Supports v2 (workspaces) and legacy (array) formats.
+    // 2. Supabase em background — busca o prontuário desse user.id.
+    //    Se vazio, faz migração one-shot do row legacy (session_id antigo).
     if (!supabase) return
-    const sessionId = getOrCreateSessionId()
+    const sessionId = getOrCreateSessionId() // agora retorna o user.id
     const timeout = new Promise<null>(res => setTimeout(() => res(null), 8000))
     const fetch = supabase.from('icu_sessions').select('records,archive').eq('session_id', sessionId).maybeSingle()
-    Promise.race([fetch, timeout]).then(result => {
+    Promise.race([fetch, timeout]).then(async (result) => {
       if (!result || !('data' in result)) return
-      const { data } = result
+      let { data } = result
+
+      // Migração one-shot: se não tem row pro user.id, tenta um session_id
+      // antigo guardado em 'sea-session-id'. Se achar, copia para user.id.
+      if (!data?.records && supabase) {
+        const legacySid = localStorage.getItem('sea-session-id-legacy')
+        if (legacySid && legacySid !== sessionId) {
+          const legacy = await supabase.from('icu_sessions').select('records,archive').eq('session_id', legacySid).maybeSingle()
+          if (legacy.data?.records) {
+            await supabase.from('icu_sessions').upsert({
+              session_id: sessionId,
+              records: legacy.data.records,
+              archive: legacy.data.archive ?? [],
+              updated_at: new Date().toISOString(),
+            }, { onConflict: 'session_id' })
+            data = legacy.data
+          }
+        }
+      }
       if (!data?.records) return
       const localIsEmpty = localWs.every(w => w.records.length === 0 && w.archive.length === 0)
-      if (!localIsEmpty) return // never overwrite existing local data
+      if (!localIsEmpty) return
 
       const raw = data.records as unknown
       let newWs: Workspace[] = []
@@ -2255,11 +2319,11 @@ export function ProntuarioSystemPanel() {
       setRecords(active.records)
       setArchive(active.archive)
       try {
-        localStorage.setItem(STORAGE_KEYS.workspaces, JSON.stringify(newWs))
-        localStorage.setItem(STORAGE_KEYS.activeWorkspace, newActiveId)
+        localStorage.setItem(sk.workspaces, JSON.stringify(newWs))
+        localStorage.setItem(sk.activeWorkspace, newActiveId)
       } catch { /* ignore */ }
     }).catch(() => { /* network error — local data already shown */ })
-  }, [])
+  }, [authUserId])
 
   useEffect(() => {
     if (!hydrated) return
@@ -2273,10 +2337,10 @@ export function ProntuarioSystemPanel() {
     // Mantém também as chaves legacy populadas com o setor ativo para que
     // qualquer código antigo que ainda as leia continue funcionando.
     try {
-      localStorage.setItem(STORAGE_KEYS.workspaces, JSON.stringify(snapshot))
-      localStorage.setItem(STORAGE_KEYS.activeWorkspace, activeWsIdRef.current)
-      localStorage.setItem(STORAGE_KEYS.records, JSON.stringify(records))
-      localStorage.setItem(STORAGE_KEYS.archive, JSON.stringify(archive))
+      localStorage.setItem(sk.workspaces, JSON.stringify(snapshot))
+      localStorage.setItem(sk.activeWorkspace, activeWsIdRef.current)
+      localStorage.setItem(sk.records, JSON.stringify(records))
+      localStorage.setItem(sk.archive, JSON.stringify(archive))
     } catch { /* quota / private mode */ }
 
     if (isFirstSync.current) {
@@ -3126,8 +3190,8 @@ export function ProntuarioSystemPanel() {
         const importedArchive = ((data.archive ?? []) as Array<Partial<ICURecord>>).map(r => normalizeRecord(r))
         // Switch this device to use the imported session_id
         localStorage.setItem('sea-session-id', code)
-        localStorage.setItem(STORAGE_KEYS.records, JSON.stringify(imported))
-        localStorage.setItem(STORAGE_KEYS.archive, JSON.stringify(importedArchive))
+        localStorage.setItem(sk.records, JSON.stringify(imported))
+        localStorage.setItem(sk.archive, JSON.stringify(importedArchive))
         setRecords(imported)
         setArchive(importedArchive)
         setShowSyncModal(false)

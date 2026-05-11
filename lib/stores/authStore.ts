@@ -5,9 +5,10 @@ import { supabase } from '@/lib/supabase'
 import { trackLogin } from '@/lib/analytics/track'
 import type { User, Session } from '@supabase/supabase-js'
 
-// Lista EXCLUSIVA de admins. Único email com acesso ao painel admin.
-// Mesmo que alguém seja marcado como role='admin' no banco, não terá acesso
-// se o email não estiver aqui — o painel é da Edmara, ponto.
+// Admin é determinado por profile.role === 'admin' no banco. Esse Set é só
+// um fallback de segurança: garante que a Edmara (criadora) NUNCA perde acesso
+// mesmo se a role no banco for zerada por engano. Promover/transferir admin
+// continua funcionando via painel (altera role no banco).
 const ADMIN_EMAILS = new Set<string>([
   'edmararbusiness1@gmail.com',
 ])
@@ -106,19 +107,19 @@ export const useAuthStore = create<AuthState & AuthActions>((set, get) => ({
     const session = sessionResult?.data?.session ?? null
     if (session?.user) {
       set({ user: session.user, session })
-      // Trava: só é admin se o email estiver na lista exclusiva — independente
-      // de cache antigo ou role no banco. Email errado → limpa cache e nega.
+      // Email-based fallback: Edmara é admin de garantia, mesmo se a role
+      // no banco estiver fora. Outros usuários ficam não-admin até que a
+      // role chegue do banco via fetchProfile.
       if (isAdminByEmail(session.user.email)) {
         set({ isAdmin: true })
         writeCachedAdmin(true)
       } else {
-        set({ isAdmin: false })
-        writeCachedAdmin(false)
+        // Não limpa o cache aqui — fetchProfile vai decidir baseado na role
+        // do banco. Isso permite que admins promovidos vejam o painel ao
+        // recarregar.
       }
       get().fetchProfile(session.user.id)
     }
-    // Mark initialized only AFTER session check — AuthGuard now sees the
-    // correct user/null and won't bounce a logged-in user to /auth on reload.
     set({ initialized: true })
 
     // Listen for auth changes
@@ -128,9 +129,6 @@ export const useAuthStore = create<AuthState & AuthActions>((set, get) => ({
         if (isAdminByEmail(session.user.email)) {
           set({ isAdmin: true })
           writeCachedAdmin(true)
-        } else {
-          set({ isAdmin: false })
-          writeCachedAdmin(false)
         }
         get().fetchProfile(session.user.id)
       } else {
@@ -157,9 +155,9 @@ export const useAuthStore = create<AuthState & AuthActions>((set, get) => ({
     }
     if (data) {
       const profile = data as Profile
-      // isAdmin é determinado SOMENTE pelo email — role no banco é informativo
-      // mas não dá acesso ao painel sozinho.
-      const isAdmin = isAdminByEmail(profile.email)
+      // Admin se: role='admin' no banco OU é a Edmara (fallback de segurança).
+      // Isso permite que admins promovidos/transferidos via painel funcionem.
+      const isAdmin = profile.role === 'admin' || isAdminByEmail(profile.email)
       set({ profile, isAdmin })
       writeCachedAdmin(isAdmin)
     }

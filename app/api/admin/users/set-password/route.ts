@@ -5,8 +5,9 @@ export const runtime = 'nodejs'
 
 type Body = { userId?: unknown; password?: unknown }
 
-// Admin allowlist — only this email can call the route.
-const ADMIN_EMAILS = new Set<string>(['edmararbusiness1@gmail.com'])
+// Edmara é sempre admin (fallback). Outros usuários precisam ter role='admin'
+// no banco (promovidos via painel).
+const ALWAYS_ADMIN_EMAILS = new Set<string>(['edmararbusiness1@gmail.com'])
 
 export async function POST(request: Request) {
   let body: Body = {}
@@ -25,7 +26,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Senha mínimo 6 caracteres.' }, { status: 400 })
   }
 
-  // Verify the caller is the authorized admin
+  // Verify the caller is an admin (role='admin' no banco OU Edmara por fallback)
   try {
     const supa = await getSupabaseServerClient()
     const { data: { user }, error: userErr } = await supa.auth.getUser()
@@ -33,7 +34,9 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Não autenticado.' }, { status: 401 })
     }
     const callerEmail = (user.email ?? '').toLowerCase()
-    if (!ADMIN_EMAILS.has(callerEmail)) {
+    const { data: profile } = await supa.from('profiles').select('role').eq('id', user.id).single()
+    const isAllowed = profile?.role === 'admin' || ALWAYS_ADMIN_EMAILS.has(callerEmail)
+    if (!isAllowed) {
       return NextResponse.json({ error: 'Permissão negada.' }, { status: 403 })
     }
   } catch (e) {
