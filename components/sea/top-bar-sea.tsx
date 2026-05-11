@@ -1,9 +1,8 @@
 'use client'
 
-import { Bell, User, X, BellOff } from 'lucide-react'
+import { Bell, User, X, BellOff, MoonStar, SunMedium } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { CalendarDays, MoonStar, SunMedium } from 'lucide-react'
 import { useAuthStore } from '@/lib/stores/authStore'
 import { useNotifications } from '@/hooks/useNotifications'
 import { useAccessibility } from '@/hooks/use-accessibility'
@@ -14,7 +13,7 @@ export function TopBarSEA() {
   const [showNotif, setShowNotif] = useState(false)
   const notifRef = useRef<HTMLDivElement>(null)
   const router = useRouter()
-  const { profile } = useAuthStore()
+  const { profile, user } = useAuthStore()
   const { notifications, unreadCount, markAllRead, enabled: notifEnabled } = useNotifications()
   const fontScale = useAccessibility((s) => s.fontScale)
   const increaseFontScale = useAccessibility((s) => s.increaseFontScale)
@@ -48,111 +47,124 @@ export function TopBarSEA() {
   const hour = now.getHours()
   const greeting = hour < 12 ? 'Bom dia' : hour < 18 ? 'Boa tarde' : 'Boa noite'
   const isDay = hour >= 6 && hour < 18
-  const GreetingIcon = isDay ? SunMedium : MoonStar
+  const GreetIcon = isDay ? SunMedium : MoonStar
 
+  const displayName = profile?.name ?? user?.user_metadata?.name ?? user?.email?.split('@')[0] ?? ''
+  const firstName = displayName.split(' ')[0]
+
+  // Data formato IPB: "06.MAI.2026"
   const dateLabel = mounted
-    ? new Intl.DateTimeFormat('pt-BR', { weekday: 'short', day: '2-digit', month: 'short' }).format(now)
-    : ''
-  const timeLabel = mounted
-    ? new Intl.DateTimeFormat('pt-BR', { hour: '2-digit', minute: '2-digit', second: '2-digit' }).format(now)
+    ? `${String(now.getDate()).padStart(2, '0')}.${['JAN', 'FEV', 'MAR', 'ABR', 'MAI', 'JUN', 'JUL', 'AGO', 'SET', 'OUT', 'NOV', 'DEZ'][now.getMonth()]}.${now.getFullYear()}`
     : ''
 
-  // Fundo dos botões internos (Bell, Profile, Zoom container)
-  const shellBackground =
+  // Fundo dos botões internos da direita (Zoom, Bell, Profile)
+  const btnShellBg =
+    'linear-gradient(180deg, rgba(255,255,255,0.14) 0%, rgba(18,18,20,0.84) 60%, rgba(8,8,10,0.98) 100%)'
+  const zoomShellBg =
     'linear-gradient(180deg, rgba(255,255,255,0.06) 0%, rgba(8,8,10,0.92) 100%)'
 
-  const btnClass = 'flex h-7 w-7 items-center justify-center rounded-[0.5rem] border border-white/10 text-white/70 transition hover:text-white active:scale-95'
-
   return (
-    <header className="fixed left-0 right-0 top-0 z-40 px-2 pt-2 md:px-6 md:pt-3">
-      <div
-        className="mx-auto flex max-w-5xl items-center justify-between gap-2 overflow-hidden rounded-[1.2rem] border border-white/8 p-1.5 px-2.5 text-white shadow-[0_6px_16px_rgba(0,0,0,0.32)] backdrop-blur-xl md:px-4"
-        style={{
-          background: 'rgba(5,5,5,0.82)',
-          borderBottom: '1px solid rgba(192,192,192,0.06)',
-        }}
-      >
-        {/* Left: SEA logo metálico + saudação + data */}
-        <div className="flex items-center gap-2">
+    <header
+      className="fixed left-0 right-0 top-0 z-40 px-2 pt-2 md:px-6 md:pt-3"
+      style={{
+        background: 'rgba(5,5,5,0.82)',
+        backdropFilter: 'blur(28px)',
+        WebkitBackdropFilter: 'blur(28px)',
+        borderBottom: '1px solid rgba(192,192,192,0.06)',
+      }}
+    >
+      <div className="mx-auto flex max-w-7xl items-center justify-between gap-2 py-1.5">
+        {/* ── ESQUERDA: logo SEA metálico + tagline (oculta em mobile) ── */}
+        <div className="flex items-center gap-2 md:gap-3">
           <div
-            className="flex h-6 w-6 shrink-0 items-center justify-center rounded-[0.5rem] border border-white/16"
+            className="flex h-6 w-6 shrink-0 items-center justify-center rounded-[0.5rem] border border-white/16 md:h-7 md:w-7 md:rounded-[0.6rem]"
             style={{
               background:
                 'linear-gradient(180deg, rgba(255,255,255,0.9) 0%, rgba(219,225,232,0.36) 16%, rgba(96,101,108,0.94) 42%, rgba(14,15,18,0.98) 100%)',
               boxShadow:
-                'inset 0 1px 0 rgba(255,255,255,0.24), inset 0 -1px 0 rgba(255,255,255,0.05), 0 8px 16px rgba(0,0,0,0.36)',
+                'inset 0 1px 0 rgba(255,255,255,0.24), inset 0 -1px 0 rgba(255,255,255,0.05), 0 16px 32px rgba(0,0,0,0.36)',
             }}
           >
             <span
-              className="text-[0.45rem] font-semibold tracking-[0.28em] text-white"
+              className="text-[0.45rem] font-semibold tracking-[0.28em] text-white md:text-[0.55rem]"
               style={{ fontFamily: 'Poppins, sans-serif', paddingLeft: '0.32em' }}
             >
               SEA
             </span>
           </div>
+          <p
+            className="metal-text hidden text-[8px] font-semibold uppercase tracking-[0.1em] text-white/50 sm:block md:text-[9px]"
+            style={{ fontFamily: 'Poppins, sans-serif' }}
+          >
+            Sistema de Estudo Avançado
+          </p>
+        </div>
 
+        {/* ── CENTRO: saudação + data (estilo IPB) ── */}
+        <div className="flex items-center gap-2">
           {mounted && (
             <>
-              <div className="flex items-center gap-1 rounded-full border border-white/12 bg-black/18 px-1.5 py-0.5 text-[7px] font-semibold uppercase tracking-[0.15em] text-white/74">
-                <GreetingIcon className="h-2.5 w-2.5 text-white/74" />
-                <span>{greeting}</span>
+              <div className="flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.04] px-2.5 py-1">
+                <GreetIcon className="h-2.5 w-2.5 text-white/50" />
+                <span
+                  className="text-[9px] font-medium text-white/45"
+                  style={{ fontFamily: 'Poppins, sans-serif' }}
+                >
+                  {greeting}{firstName ? `, ${firstName}` : ''}
+                </span>
               </div>
-
-              <div className="flex items-center gap-1 text-[7px] text-white/55">
-                <CalendarDays className="h-2.5 w-2.5 text-white/50" />
-                <span className="uppercase tracking-[0.08em]">{dateLabel}</span>
-              </div>
+              <span
+                className="hidden text-[9px] uppercase tracking-[0.12em] text-white/25 sm:block"
+                style={{ fontFamily: 'Poppins, sans-serif' }}
+              >
+                {dateLabel}
+              </span>
             </>
           )}
         </div>
 
-        {/* Right: time + zoom + buttons */}
-        <div className="flex shrink-0 items-center gap-1.5">
-          {mounted && (
-            <span className="hidden text-[8px] font-bold tabular-nums tracking-[0.12em] text-white/75 sm:inline">
-              {timeLabel}
-            </span>
-          )}
-
-          {/* Zoom A−/A+ — funciona em mobile e desktop */}
+        {/* ── DIREITA: zoom A−/A+ + bell + perfil ── */}
+        <div className="flex shrink-0 items-center gap-1.5 md:gap-2">
+          {/* Zoom — só desktop pra não bagunçar mobile */}
           <div
-            className="flex items-center gap-0.5 overflow-hidden rounded-[0.5rem] border border-white/12"
-            style={{ background: shellBackground }}
+            className="hidden md:flex items-center gap-0.5 overflow-hidden rounded-[0.6rem] border border-white/10"
+            style={{ background: zoomShellBg }}
           >
             <button
               onClick={decreaseFontScale}
               disabled={scalePct <= 60}
               aria-label="Diminuir texto"
               title="Diminuir texto"
-              className="flex h-6 w-5 items-center justify-center text-[8px] font-bold text-white/55 transition hover:text-white disabled:opacity-25"
+              className="flex h-7 w-7 items-center justify-center text-white/40 transition hover:text-white/75 disabled:opacity-20 disabled:cursor-not-allowed"
+            >
+              <span className="text-[9px] font-bold" style={{ fontFamily: 'monospace' }}>A−</span>
+            </button>
+            <span
+              className="select-none px-1 text-[8px] tabular-nums text-white/25 w-[28px] text-center"
               style={{ fontFamily: 'monospace' }}
             >
-              A−
-            </button>
-            <span className="select-none px-0.5 text-[7px] tabular-nums text-white/35" style={{ fontFamily: 'monospace' }}>
-              {scalePct}
+              {scalePct}%
             </span>
             <button
               onClick={increaseFontScale}
               disabled={scalePct >= 160}
               aria-label="Aumentar texto"
               title="Aumentar texto"
-              className="flex h-6 w-5 items-center justify-center text-[10px] font-bold text-white/55 transition hover:text-white disabled:opacity-25"
-              style={{ fontFamily: 'monospace' }}
+              className="flex h-7 w-7 items-center justify-center text-white/40 transition hover:text-white/75 disabled:opacity-20 disabled:cursor-not-allowed"
             >
-              A+
+              <span className="text-[11px] font-bold" style={{ fontFamily: 'monospace' }}>A+</span>
             </button>
           </div>
 
           {/* Bell */}
           <div className="relative" ref={notifRef}>
             <button
-              aria-label="Notificacoes"
+              aria-label="Notificações"
               onClick={handleBellClick}
-              className={btnClass}
-              style={{ background: shellBackground }}
+              className="flex h-6 w-6 items-center justify-center rounded-[0.5rem] border border-white/12 text-white/70 transition hover:text-white md:h-7 md:w-7 md:rounded-[0.6rem]"
+              style={{ background: btnShellBg }}
             >
-              <Bell className="h-3.5 w-3.5" />
+              <Bell className="h-3 w-3" />
               {unreadCount > 0 && (
                 <span className="absolute -right-0.5 -top-0.5 flex h-3 w-3 items-center justify-center rounded-full bg-white text-[6px] font-bold text-black">
                   {unreadCount > 9 ? '9+' : unreadCount}
@@ -161,24 +173,25 @@ export function TopBarSEA() {
             </button>
           </div>
 
+          {/* Perfil */}
           <button
             aria-label="Perfil"
             onClick={() => router.push('/profile')}
-            className={btnClass}
-            style={{ background: shellBackground }}
+            className="flex h-6 w-6 items-center justify-center rounded-[0.5rem] border border-white/12 text-white/70 transition hover:text-white md:h-7 md:w-7 md:rounded-[0.6rem]"
+            style={{ background: btnShellBg }}
           >
             {profile?.photo_url ? (
-              <img src={profile.photo_url} alt="" className="h-5 w-5 rounded-[0.3rem] object-cover" />
+              <img src={profile.photo_url} alt="" className="h-full w-full rounded-[0.3rem] object-cover" />
             ) : (
-              <User className="h-3.5 w-3.5" />
+              <User className="h-3 w-3" />
             )}
           </button>
         </div>
       </div>
 
-      {/* Painel fora do overflow-hidden para não ser cortado */}
+      {/* Painel de notificações */}
       {showNotif && (
-        <div className="fixed right-2.5 top-16 z-50 md:right-8">
+        <div className="fixed right-2 top-14 z-50 md:right-6">
           <NotificationPanel
             notifications={notifications}
             enabled={notifEnabled}
@@ -203,7 +216,6 @@ function NotificationPanel({ notifications, enabled, onClose }: { notifications:
       className="absolute right-0 top-8 z-50 w-72 rounded-[1.2rem] border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.5)]"
       style={{ background: 'linear-gradient(180deg, rgba(22,22,22,0.99) 0%, rgba(8,8,8,1) 100%)' }}
     >
-      {/* Header */}
       <div className="flex items-center justify-between border-b border-white/6 px-4 py-3">
         <p className="text-[9px] font-semibold uppercase tracking-[0.2em] text-white/60">Notificações</p>
         <button onClick={onClose} className="text-white/30 hover:text-white">
@@ -211,7 +223,6 @@ function NotificationPanel({ notifications, enabled, onClose }: { notifications:
         </button>
       </div>
 
-      {/* List */}
       <div className="max-h-[50vh] overflow-y-auto">
         {!enabled ? (
           <div className="flex flex-col items-center gap-2 px-4 py-8">
