@@ -1,19 +1,9 @@
-// SeaBackdrop — fundo espacial completo do app.
-// IpbBackground (2D: partículas douradas + halos + raios + grade) + VineCanvas
-// (3D Three.js: estrelas + sparkles + bloom + vinhas). VineCanvas é lazy via
-// dynamic import com ssr:false pra não pesar o initial bundle.
-'use client'
-
-import dynamic from 'next/dynamic'
+// SeaBackdrop — fundo espacial usado em todas as páginas internas (Home,
+// Explore, Conteúdos, Sistemas, Perfil, Admin). Apenas o IpbBackground 2D
+// (canvas leve com partículas+halos) — VineCanvas 3D fica EXCLUSIVO do splash
+// pra não pesar a navegação entre páginas.
 import { IpbBackground } from './ipb-background'
 
-const VineCanvas = dynamic(() => import('./vine-canvas'), { ssr: false })
-
 export function SeaBackdrop() {
-  return (
-    <>
-      <VineCanvas />
-      <IpbBackground />
-    </>
-  )
+  return <IpbBackground />
 }

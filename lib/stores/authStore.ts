@@ -211,16 +211,17 @@ export const useAuthStore = create<AuthState & AuthActions>((set, get) => ({
   },
 
   signOut: async () => {
-    if (!supabase) return
-    try { await supabase.auth.signOut() } catch { /* empty */ }
+    // Limpa estado local IMEDIATO — UI reage na hora, sem esperar Supabase.
     set({ user: null, session: null, profile: null, isAdmin: false, initialized: false })
-    // Clear any localStorage remnants
     if (typeof window !== 'undefined') {
-      localStorage.removeItem('sea_user')
-      // Limpa flag do splash pra que o próximo login mostre o splash de novo
+      try { localStorage.removeItem('sea_user') } catch { /* ignore */ }
       try { sessionStorage.removeItem('sea-splash-shown') } catch { /* ignore */ }
     }
     writeCachedAdmin(false)
+    // Supabase em background (fire-and-forget com timeout 3s) — não bloqueia logout.
+    if (supabase) {
+      withTimeout(supabase.auth.signOut(), 3000, 'signOut').catch(() => { /* ignore */ })
+    }
   },
 
   resetPassword: async (email) => {

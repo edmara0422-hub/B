@@ -24,8 +24,9 @@ function CanvasGlow() {
     window.addEventListener('resize', resize)
 
     type P = { x: number; y: number; vx: number; vy: number; r: number; a: number; va: number; gold: boolean }
-    const N = 40
-    const CONN2 = 110 * 110
+    // 28 partículas — equilíbrio brilho × performance mobile.
+    const N = 28
+    const CONN2 = 100 * 100
     const pts: P[] = Array.from({ length: N }, () => ({
       x: Math.random() * window.innerWidth,
       y: Math.random() * window.innerHeight,

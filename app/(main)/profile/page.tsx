@@ -90,8 +90,9 @@ export default function ProfilePage() {
     await updateProfile({ notifications_enabled: !profile?.notifications_enabled })
   }
 
-  const handleLogout = async () => {
-    await signOut()
+  const handleLogout = () => {
+    // Limpa estado e redireciona IMEDIATO — signOut roda em background (fire-and-forget)
+    signOut()
     window.location.href = '/auth'
   }
 
