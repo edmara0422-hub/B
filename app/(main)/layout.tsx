@@ -1,5 +1,6 @@
 import { MainShell } from '@/components/sea/main-shell'
 import { AuthGuard } from '@/components/sea/auth-guard'
+import { SeaBackdrop } from '@/components/sea/sea-backdrop'
 
 export default function MainLayout({
   children,
@@ -8,6 +9,9 @@ export default function MainLayout({
 }) {
   return (
     <AuthGuard>
+      {/* Fundo espacial montado UMA vez no layout — persiste em todas as transições
+          de página (Home→Explore→Perfil→Admin) sem recriar o canvas. */}
+      <SeaBackdrop />
       <MainShell>{children}</MainShell>
     </AuthGuard>
   )

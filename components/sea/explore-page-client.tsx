@@ -5,7 +5,6 @@ import { BookOpen, ChevronRight, Cpu } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 import BusinessClock from '@/components/sea/greeting-clock-card'
-import { SeaBackdrop } from '@/components/sea/sea-backdrop'
 
 // Defer carousel mount by 1 frame — clock renders instantly, carousel after
 function useDeferredMount() {
@@ -42,7 +41,6 @@ export default function ExplorePageClient() {
 
   return (
     <div className="relative min-h-screen overflow-hidden text-white">
-      <SeaBackdrop />
       <main className="relative z-10 px-4 pb-36 pt-14 md:px-8 md:pt-12">
         <div className="mx-auto flex min-h-[calc(100vh-8rem)] max-w-2xl flex-col justify-center space-y-6">
           <BusinessClock variant="hero" showGreeting />

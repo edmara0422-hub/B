@@ -5,7 +5,6 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { ArrowLeft, BookOpen, Brain, Heart, Wind, Radar, PanelLeftClose, PanelLeftOpen } from 'lucide-react'
 import Link from 'next/link'
 import type { LucideIcon } from 'lucide-react'
-import { SeaBackdrop } from '@/components/sea/sea-backdrop'
 import { CadernoModulePanel } from '@/components/caderno/caderno-module'
 
 // ── Module data ───────────────────────────────────────────────────────────────
@@ -260,7 +259,6 @@ export default function ConteudosPageClient() {
 
   return (
     <div className="relative min-h-screen overflow-hidden text-white">
-      <SeaBackdrop />
       <main className="relative z-10 px-2.5 pb-32 pt-8 md:px-8 md:pt-10">
         <div className="mx-auto max-w-5xl space-y-6">
 

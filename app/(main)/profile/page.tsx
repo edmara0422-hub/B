@@ -4,7 +4,6 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuthStore } from '@/lib/stores/authStore'
 import { supabase } from '@/lib/supabase'
-import { SeaBackdrop } from '@/components/sea/sea-backdrop'
 import {
   ArrowLeft, Bell, Camera, ChevronRight, HelpCircle, Info,
   Key, LogOut, Mail, Moon, PencilLine, Save, Shield, Trash2, User, X,
@@ -112,8 +111,6 @@ export default function ProfilePage() {
 
   return (
     <div className="relative min-h-screen text-white px-3 pb-32 pt-16 md:px-6">
-      {/* Fundo espacial IPB */}
-      <SeaBackdrop />
       {/* Wrapper relativo pra ficar acima do backdrop */}
       <div className="relative z-10 mx-auto max-w-2xl">
       {/* Back */}

@@ -24,9 +24,9 @@ function CanvasGlow() {
     window.addEventListener('resize', resize)
 
     type P = { x: number; y: number; vx: number; vy: number; r: number; a: number; va: number; gold: boolean }
-    // 28 partículas — equilíbrio brilho × performance mobile.
-    const N = 28
-    const CONN2 = 100 * 100
+    // 24 partículas + 16fps (60ms) — bem leve mas mantém o brilho dourado/prata.
+    const N = 24
+    const CONN2 = 95 * 95
     const pts: P[] = Array.from({ length: N }, () => ({
       x: Math.random() * window.innerWidth,
       y: Math.random() * window.innerHeight,
@@ -42,7 +42,7 @@ function CanvasGlow() {
     let last = 0
     const draw = (now: number) => {
       raf = requestAnimationFrame(draw)
-      if (now - last < 50) return
+      if (now - last < 60) return
       last = now
       ctx.clearRect(0, 0, canvas.width, canvas.height)
 

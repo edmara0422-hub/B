@@ -5,7 +5,6 @@ import { BookOpen, Cpu, Brain } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import BusinessClock from '@/components/sea/greeting-clock-card'
 import { PerformanceBar } from '@/components/sea/performance-bar'
-import { SeaBackdrop } from '@/components/sea/sea-backdrop'
 import { TopBarSEA } from '@/components/sea/top-bar-sea'
 
 const SimulationsMarquee = dynamic(
@@ -19,7 +18,6 @@ const SimulationsMarquee = dynamic(
 export default function HomePageClient() {
   return (
     <div className="relative overflow-hidden text-white">
-      <SeaBackdrop />
       <TopBarSEA />
 
       <main className="relative z-10 px-4 pb-0 pt-20 md:px-8 md:pt-24">
