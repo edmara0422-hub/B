@@ -6,7 +6,7 @@ import { useAuthStore, type Profile } from '@/lib/stores/authStore'
 import { supabase } from '@/lib/supabase'
 import {
   ArrowLeft, Ban, Brain, Crown, Eye, EyeOff, Key, LineChart,
-  Mail, MessageSquare, PencilLine, RefreshCw, Save, Search,
+  Mail, MessageSquare, PencilLine, Plus, RefreshCw, Save, Search,
   Send, Settings, Shield, Trash2, Unlock, User, Users, X,
   CheckCircle2, AlertTriangle, TrendingUp, Zap, UserMinus, UserPlus, ArrowRightLeft,
 } from 'lucide-react'
@@ -34,6 +34,13 @@ export default function AdminPage() {
   const [editEmail, setEditEmail] = useState('')
   const [resetPwUser, setResetPwUser] = useState<string | null>(null)
   const [resetPwValue, setResetPwValue] = useState('')
+  // Create new login (admin can register fresh accounts with email auto-confirmed)
+  const [creatingUser, setCreatingUser] = useState(false)
+  const [newName, setNewName] = useState('')
+  const [newEmail, setNewEmail] = useState('')
+  const [newPassword, setNewPassword] = useState('')
+  const [showNewPassword, setShowNewPassword] = useState(false)
+  const [creatingBusy, setCreatingBusy] = useState(false)
   // Password change for own account
   const [ownCurrentPw, setOwnCurrentPw] = useState('')
   const [showOwnCurrentPw, setShowOwnCurrentPw] = useState(false)
@@ -127,6 +134,30 @@ export default function AdminPage() {
     setOwnCurrentPw(''); setShowOwnCurrentPw(false)
     setOwnPw(''); setShowOwnPw(false)
     flash('Senha alterada com sucesso.')
+  }
+  const createNewUser = async () => {
+    if (creatingBusy) return
+    const name = newName.trim()
+    const email = newEmail.trim()
+    if (!name || !email || !newPassword) { flash('Preencha nome, email e senha.'); return }
+    if (newPassword.length < 6) { flash('Senha mínimo 6 caracteres.'); return }
+    setCreatingBusy(true)
+    try {
+      const res = await fetch('/api/admin/users/create', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, password: newPassword }),
+      })
+      const json = await res.json().catch(() => ({} as { error?: string }))
+      if (!res.ok) { flash(json?.error || 'Erro ao criar.'); return }
+      setNewName(''); setNewEmail(''); setNewPassword(''); setShowNewPassword(false); setCreatingUser(false)
+      flash('Login criado com sucesso.')
+      loadUsers()
+    } catch (e) {
+      flash(e instanceof Error ? e.message : 'Erro de rede.')
+    } finally {
+      setCreatingBusy(false)
+    }
   }
   const blockUser = async (id: string, block: boolean) => { if (!supabase) return; await supabase.from('profiles').update({ blocked: block }).eq('id', id); flash(block ? 'Bloqueado.' : 'Desbloqueado.'); loadUsers() }
   const deleteUser = async (id: string, email: string) => { if (!confirm(`Excluir ${email}?`)) return; if (!supabase) return; await supabase.from('profiles').delete().eq('id', id); flash('Excluido.'); loadUsers() }
@@ -365,8 +396,54 @@ export default function AdminPage() {
         <div className="space-y-2">
           <div className="flex items-center gap-1">
             <div className="relative flex-1"><Search className="absolute left-2 top-1/2 -translate-y-1/2 h-3 w-3 text-white/30" /><input className={`${inputClass} pl-7`} placeholder="Buscar..." value={search} onChange={(e) => setSearch(e.target.value)} /></div>
+            <button
+              onClick={() => { setCreatingUser(v => !v); if (!creatingUser) flash('') }}
+              title="Criar novo login"
+              className={`flex h-7 shrink-0 items-center gap-1 rounded-[0.4rem] border px-2 text-[7px] font-semibold uppercase tracking-[0.12em] transition-all ${creatingUser ? 'border-white/20 bg-white/10 text-white/70' : 'border-white/10 bg-white/5 text-white/50 hover:text-white/70'}`}
+            >
+              <Plus className="h-3 w-3" /> Novo login
+            </button>
             <button onClick={loadUsers} className="flex h-7 w-7 shrink-0 items-center justify-center rounded-[0.4rem] border border-white/10 bg-white/5"><RefreshCw className="h-3 w-3 text-white/40" /></button>
           </div>
+
+          {creatingUser && (
+            <div className="rounded-[0.6rem] border border-white/10 bg-white/[0.03] p-2 space-y-1.5">
+              <p className="text-[7px] font-semibold uppercase tracking-[0.12em] text-white/50">Criar novo login</p>
+              <p className="text-[6px] leading-relaxed text-white/30">Cria conta com email já confirmado — o usuário entra direto com email e senha, sem precisar confirmar caixa de entrada.</p>
+              <input className={inputClass} placeholder="Nome" value={newName} onChange={(e) => setNewName(e.target.value)} />
+              <input className={inputClass} type="email" placeholder="Email" value={newEmail} onChange={(e) => setNewEmail(e.target.value)} autoComplete="off" />
+              <div className="relative">
+                <input
+                  className={inputClass}
+                  type={showNewPassword ? 'text' : 'password'}
+                  placeholder="Senha (mín. 6 caracteres)"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  autoComplete="new-password"
+                />
+                <button type="button" onClick={() => setShowNewPassword(v => !v)} className="absolute right-2 top-1/2 -translate-y-1/2 text-white/30 hover:text-white/60">
+                  {showNewPassword ? <EyeOff className="h-3 w-3" /> : <Eye className="h-3 w-3" />}
+                </button>
+              </div>
+              <div className="flex gap-1 pt-0.5">
+                <button
+                  onClick={createNewUser}
+                  disabled={creatingBusy || !newName.trim() || !newEmail.trim() || newPassword.length < 6}
+                  className="flex h-6 items-center gap-1 rounded-[0.4rem] border border-[#4ade8020] bg-[#4ade8008] px-2 text-[7px] text-[#4ade80] disabled:opacity-30"
+                >
+                  {creatingBusy ? <div className="h-2.5 w-2.5 animate-spin rounded-full border border-[#4ade80]/30 border-t-[#4ade80]" /> : <Save className="h-2.5 w-2.5" />}
+                  Criar
+                </button>
+                <button
+                  onClick={() => { setCreatingUser(false); setNewName(''); setNewEmail(''); setNewPassword(''); setShowNewPassword(false) }}
+                  className="flex h-6 items-center gap-1 rounded-[0.4rem] border border-white/10 px-2 text-[7px] text-white/40"
+                >
+                  <X className="h-2.5 w-2.5" /> Cancelar
+                </button>
+              </div>
+            </div>
+          )}
+
           <p className="text-[6px] text-white/30">{filteredUsers.length} usuario(s)</p>
           <div className="space-y-1 max-h-[60vh] overflow-y-auto scrollbar-hide">
             {filteredUsers.map((u) => (

@@ -222,15 +222,18 @@ export default function ProfilePage() {
       {/* ═══ Admin Panel ═══ */}
       {isAdmin && (
         <>
-          <p className="mb-2 text-[7px] font-semibold uppercase tracking-[0.14em] text-[#a78bfa]/50">Administracao</p>
+          <p className="mb-2 text-[7px] font-semibold uppercase tracking-[0.14em] text-white/30">Administracao</p>
           <div className="space-y-1 mb-4">
             <button
               onClick={() => router.push('/admin')}
-              className="flex w-full items-center gap-2 rounded-[0.7rem] border border-[#a78bfa20] bg-[#a78bfa08] px-3 py-2"
+              className="flex w-full items-center gap-2 rounded-[0.7rem] border border-white/15 bg-white/[0.04] px-3 py-2.5 hover:bg-white/[0.06] transition-colors"
             >
-              <Shield className="h-3.5 w-3.5 text-[#a78bfa]" />
-              <span className="flex-1 text-left text-[8px] font-semibold text-[#a78bfa]">Painel Admin</span>
-              <ChevronRight className="h-3 w-3 text-[#a78bfa]/50" />
+              <Shield className="h-4 w-4 text-white/70" />
+              <div className="flex-1 text-left">
+                <p className="text-[9px] font-semibold uppercase tracking-[0.12em] text-white/80">Painel Admin</p>
+                <p className="text-[7px] text-white/35">Usuários · Assinaturas · Analytics · Equipes</p>
+              </div>
+              <ChevronRight className="h-3.5 w-3.5 text-white/40" />
             </button>
           </div>
         </>
