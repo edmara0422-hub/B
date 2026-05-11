@@ -92,7 +92,7 @@ export function PremiumSplash({
         />
       ))}
 
-      {/* SEA text */}
+      {/* SEA text — shimmer prata→branco→DOURADO→branco→prata em loop infinito */}
       <div className="relative flex h-full items-center justify-center px-4">
         <motion.div
           className="pointer-events-none relative text-center"
@@ -100,12 +100,29 @@ export function PremiumSplash({
           animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
           transition={{ duration: 1.2, delay: 0.15, ease: 'easeOut' }}
         >
-          <div className="mx-auto flex w-fit items-center justify-center gap-[0.02em] text-[4.8rem] font-semibold sm:text-[6.4rem] md:text-[8.5rem]">
-            <Letter value="S" />
-            <Letter value="E" />
-            <Letter value="A" />
-          </div>
-
+          <motion.h1
+            className="text-shimmer-noble uppercase"
+            style={{
+              fontFamily: 'Poppins, sans-serif',
+              fontSize: 'clamp(3.5rem, 12vw, 10rem)',
+              fontWeight: 200,
+              letterSpacing: '-0.02em',
+              lineHeight: 1,
+            }}
+            initial={{ opacity: 0, y: 20, scale: 0.96 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ duration: 0.6, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
+          >
+            SEA
+          </motion.h1>
+          <motion.p
+            className="mt-2 text-[5px] uppercase tracking-[0.18em] text-white/25 md:text-[10px] md:tracking-[0.42em]"
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.38, ease: 'easeOut' }}
+          >
+            Sistema de Estudo Avançado
+          </motion.p>
         </motion.div>
       </div>
 
@@ -231,14 +248,6 @@ function SplashOrb({ progress }: { progress: number }) {
       ref={canvasRef}
       className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
     />
-  )
-}
-
-function Letter({ value }: { value: string }) {
-  return (
-    <span className="relative inline-flex bg-[linear-gradient(180deg,#ffffff_0%,#dddddd_45%,#848484_100%)] bg-clip-text px-[0.02em] text-transparent drop-shadow-[0_0_18px_rgba(255,255,255,0.08)]">
-      {value}
-    </span>
   )
 }
 

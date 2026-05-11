@@ -429,24 +429,26 @@ body.sea-splash-active [data-sea-bottom-nav='true'] {
   pointer-events: none;
 }
 
-/* Texto shimmer prata para títulos importantes */
+/* Shimmer dourado/prata pro nome SEA — passa onda dourada em loop infinito */
 .text-shimmer-noble {
   background: linear-gradient(100deg,
-    rgba(196, 200, 212, 0.55)  0%,
-    rgba(255, 255, 255, 0.95) 40%,
-    rgba(255, 255, 255, 1)    50%,
-    rgba(255, 255, 255, 0.95) 60%,
-    rgba(196, 200, 212, 0.55) 100%);
-  background-size: 200% 100%;
+    rgba(196, 200, 212, 0.55)  0%,    /* prata sutil */
+    rgba(226, 229, 238, 1.00) 18%,    /* prata claro */
+    rgba(255, 255, 255, 1.00) 32%,    /* branco puro */
+    rgba(224, 184,  94, 1.00) 50%,    /* DOURADO no meio */
+    rgba(255, 255, 255, 1.00) 68%,    /* branco puro */
+    rgba(226, 229, 238, 1.00) 82%,    /* prata claro */
+    rgba(196, 200, 212, 0.55) 100%);  /* prata sutil */
+  background-size: 250% auto;
   -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
   background-clip: text;
-  animation: shimmer-noble 4s linear infinite;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer-noble 8s linear infinite;
 }
 
 @keyframes shimmer-noble {
-  0%   { background-position: 200% 50% }
-  100% { background-position: -200% 50% }
+  0%   { background-position: -300% center; }
+  100% { background-position:  300% center; }
 }
 
 /* Pulse universal usado em dots e indicadores */
