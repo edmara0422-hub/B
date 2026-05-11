@@ -26,12 +26,12 @@ export function BottomNav({
   return (
     <motion.nav
       data-sea-bottom-nav="true"
-      className="fixed bottom-2 left-0 right-0 z-50 px-2.5 md:bottom-3 md:px-8"
+      className="fixed bottom-2 left-0 right-0 z-50 px-2 md:bottom-3 md:px-6"
       initial={{ y: 70, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
     >
-      <div className="chrome-pill mx-auto grid max-w-2xl grid-cols-2 gap-0.5 rounded-[1.2rem] p-0.5 px-1 shadow-[0_6px_16px_rgba(0,0,0,0.3)] backdrop-blur-xl">
+      <div className="chrome-pill mx-auto grid max-w-md grid-cols-2 gap-0.5 rounded-[1.2rem] p-0.5 px-1 shadow-[0_6px_16px_rgba(0,0,0,0.3)] backdrop-blur-xl md:max-w-sm">
         <button className={tabClass(isHome)} onClick={() => onSwitch?.('home')}>
           <Home className="h-3.5 w-3.5" />
           <span>HOME</span>

@@ -41,7 +41,7 @@ export default function ExplorePageClient() {
   const ready = useDeferredMount()
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-[#010101] text-white">
+    <div className="relative min-h-screen overflow-hidden text-white">
       <SeaBackdrop />
       <main className="relative z-10 px-4 pb-36 pt-14 md:px-8 md:pt-12">
         <div className="mx-auto flex min-h-[calc(100vh-8rem)] max-w-2xl flex-col justify-center space-y-6">

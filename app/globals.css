@@ -23,6 +23,7 @@
 @source '../components/sea/sea-backdrop.tsx';
 @source '../components/sea/ipb-background.tsx';
 @source '../components/sea/vine-canvas.tsx';
+@source '../components/sea/sea-landing.tsx';
 @source '../components/sea/sea-page-entry.tsx';
 @source '../components/sea/simulations-grid.tsx';
 @source '../components/sea/top-bar-sea.tsx';

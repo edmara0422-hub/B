@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { IpbBackground } from './ipb-background'
 
 const PHRASES = [
   'Raciocínio clínico\nà beira do leito.',
@@ -131,10 +132,13 @@ export function SeaLanding({ onEnter }: { onEnter: () => void }) {
   return (
     <motion.div
       className="fixed inset-0 z-[9999] flex flex-col items-center justify-center overflow-hidden"
-      style={{ background: '#010101' }}
+      style={{ background: '#050507' }}
       animate={exiting ? { opacity: 0 } : { opacity: 1 }}
       transition={{ duration: 0.7, ease: 'easeInOut' }}
     >
+      {/* Fundo espacial IPB: partículas dourdas + halos + raios + grade */}
+      <IpbBackground />
+
       {/* Orb + ALL content inside it */}
       <div className="relative flex items-center justify-center">
         <canvas ref={canvasRef} />

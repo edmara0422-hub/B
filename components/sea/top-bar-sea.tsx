@@ -64,9 +64,9 @@ export function TopBarSEA() {
   const btnClass = 'flex h-7 w-7 items-center justify-center rounded-[0.5rem] border border-white/10 text-white/70 transition hover:text-white active:scale-95'
 
   return (
-    <header className="fixed left-0 right-0 top-0 z-40 px-2.5 pt-3 md:px-8 md:pt-4">
+    <header className="fixed left-0 right-0 top-0 z-40 px-2 pt-2 md:px-6 md:pt-3">
       <div
-        className="mx-auto flex max-w-2xl items-center justify-between gap-2 overflow-hidden rounded-[1.2rem] border border-white/8 p-1.5 px-2.5 text-white shadow-[0_6px_16px_rgba(0,0,0,0.32)] backdrop-blur-xl md:px-3"
+        className="mx-auto flex max-w-5xl items-center justify-between gap-2 overflow-hidden rounded-[1.2rem] border border-white/8 p-1.5 px-2.5 text-white shadow-[0_6px_16px_rgba(0,0,0,0.32)] backdrop-blur-xl md:px-4"
         style={{
           background: 'rgba(5,5,5,0.82)',
           borderBottom: '1px solid rgba(192,192,192,0.06)',

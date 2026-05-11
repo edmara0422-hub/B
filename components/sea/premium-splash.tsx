@@ -68,7 +68,7 @@ export function PremiumSplash({
   }, [durationMs, exitHoldMs, onComplete])
 
   return (
-    <div className="fixed inset-0 z-[90] h-[100dvh] w-screen overflow-hidden bg-[#010101]" suppressHydrationWarning>
+    <div className="fixed inset-0 z-[90] h-[100dvh] w-screen overflow-hidden" style={{ background: '#050507' }} suppressHydrationWarning>
       {/* Fundo espacial IPB: 3D (estrelas + bloom) + 2D (partículas dourdas + halos) */}
       <VineCanvas />
       <IpbBackground />
