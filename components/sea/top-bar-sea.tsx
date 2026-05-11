@@ -16,7 +16,9 @@ export function TopBarSEA() {
   const router = useRouter()
   const { profile } = useAuthStore()
   const { notifications, unreadCount, markAllRead, enabled: notifEnabled } = useNotifications()
-  const { fontScale, increaseFontScale, decreaseFontScale } = useAccessibility()
+  const fontScale = useAccessibility((s) => s.fontScale)
+  const increaseFontScale = useAccessibility((s) => s.increaseFontScale)
+  const decreaseFontScale = useAccessibility((s) => s.decreaseFontScale)
   const scalePct = Math.round(fontScale * 100)
 
   useEffect(() => {
@@ -55,29 +57,35 @@ export function TopBarSEA() {
     ? new Intl.DateTimeFormat('pt-BR', { hour: '2-digit', minute: '2-digit', second: '2-digit' }).format(now)
     : ''
 
+  // Fundo dos botões internos (Bell, Profile, Zoom container)
   const shellBackground =
-    'linear-gradient(180deg, rgba(255,255,255,0.08) 0%, rgba(10,10,12,0.92) 52%, rgba(3,3,4,0.985) 100%)'
+    'linear-gradient(180deg, rgba(255,255,255,0.06) 0%, rgba(8,8,10,0.92) 100%)'
 
-  const btnClass = 'flex h-6 w-6 items-center justify-center rounded-[0.5rem] border border-white/12 text-white/70 transition hover:text-white active:scale-95'
+  const btnClass = 'flex h-7 w-7 items-center justify-center rounded-[0.5rem] border border-white/10 text-white/70 transition hover:text-white active:scale-95'
 
   return (
-    <header className="fixed left-0 right-0 top-0 z-40 px-2.5 pt-5 md:px-8 md:pt-6">
+    <header className="fixed left-0 right-0 top-0 z-40 px-2.5 pt-3 md:px-8 md:pt-4">
       <div
-        className="mx-auto flex max-w-2xl items-center justify-between overflow-hidden rounded-[1.4rem] border border-white/12 p-0.5 px-2 text-white shadow-[0_6px_16px_rgba(0,0,0,0.2)] backdrop-blur-xl md:px-3"
+        className="mx-auto flex max-w-2xl items-center justify-between gap-2 overflow-hidden rounded-[1.2rem] border border-white/8 p-1.5 px-2.5 text-white shadow-[0_6px_16px_rgba(0,0,0,0.32)] backdrop-blur-xl md:px-3"
         style={{
-          background:
-            'linear-gradient(180deg, rgba(255,255,255,0.85) 0%, rgba(231,236,243,0.3) 14%, rgba(86,92,101,0.9) 42%, rgba(9,10,12,0.98) 100%)',
+          background: 'rgba(5,5,5,0.82)',
+          borderBottom: '1px solid rgba(192,192,192,0.06)',
         }}
       >
-        {/* Left: SEA logo + greeting + date */}
+        {/* Left: SEA logo metálico + saudação + data */}
         <div className="flex items-center gap-2">
           <div
-            className="flex h-6 w-6 shrink-0 items-center justify-center rounded-[0.4rem] border border-white/16"
-            style={{ background: shellBackground }}
+            className="flex h-6 w-6 shrink-0 items-center justify-center rounded-[0.5rem] border border-white/16"
+            style={{
+              background:
+                'linear-gradient(180deg, rgba(255,255,255,0.9) 0%, rgba(219,225,232,0.36) 16%, rgba(96,101,108,0.94) 42%, rgba(14,15,18,0.98) 100%)',
+              boxShadow:
+                'inset 0 1px 0 rgba(255,255,255,0.24), inset 0 -1px 0 rgba(255,255,255,0.05), 0 8px 16px rgba(0,0,0,0.36)',
+            }}
           >
             <span
-              className="metal-text text-[0.4rem] font-semibold tracking-[0.25em]"
-              style={{ paddingLeft: '0.3em' }}
+              className="text-[0.45rem] font-semibold tracking-[0.28em] text-white"
+              style={{ fontFamily: 'Poppins, sans-serif', paddingLeft: '0.32em' }}
             >
               SEA
             </span>

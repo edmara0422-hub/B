@@ -17,28 +17,21 @@ export function BottomNav({
   const isExplore = p === '/explore' || p.startsWith('/explore/')
 
   const tabClass = (active: boolean) =>
-    `flex items-center justify-center gap-1.5 rounded-[0.8rem] px-4 py-1 text-[8px] font-semibold tracking-[0.16em] transition-colors duration-200 ${
-      active ? 'chrome-active text-[#050505]' : 'text-white/82 hover:text-white'
+    `flex items-center justify-center gap-1.5 rounded-[0.7rem] px-3 py-1 text-[8px] font-semibold tracking-[0.16em] transition-colors duration-200 ${
+      active ? 'chrome-active text-[#050505]' : 'text-white/72 hover:text-white'
     }`
 
+  // Sem o block grosso h-20 que tampava conteúdo. Apenas o pill flutuante na base
+  // com backdrop-blur — conteúdo fica visível atrás dele.
   return (
-    <>
-    {/* Solid block below nav to hide content underneath */}
-    <div className="fixed bottom-0 left-0 right-0 z-40 h-20" style={{ background: '#010101' }} />
     <motion.nav
       data-sea-bottom-nav="true"
-      className="fixed bottom-5 left-0 right-0 z-50 px-2.5 md:px-8"
+      className="fixed bottom-2 left-0 right-0 z-50 px-2.5 md:bottom-3 md:px-8"
       initial={{ y: 70, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
     >
-      <div
-        className="mx-auto grid max-w-2xl grid-cols-2 gap-0.5 rounded-[1.4rem] border border-white/12 p-1 px-2 shadow-[0_6px_16px_rgba(0,0,0,0.2)] backdrop-blur-xl"
-        style={{
-          background:
-            'linear-gradient(180deg, rgba(255,255,255,0.85) 0%, rgba(231,236,243,0.3) 14%, rgba(86,92,101,0.9) 42%, rgba(9,10,12,0.98) 100%)',
-        }}
-      >
+      <div className="chrome-pill mx-auto grid max-w-2xl grid-cols-2 gap-0.5 rounded-[1.2rem] p-0.5 px-1 shadow-[0_6px_16px_rgba(0,0,0,0.3)] backdrop-blur-xl">
         <button className={tabClass(isHome)} onClick={() => onSwitch?.('home')}>
           <Home className="h-3.5 w-3.5" />
           <span>HOME</span>
@@ -50,6 +43,5 @@ export function BottomNav({
         </button>
       </div>
     </motion.nav>
-    </>
   )
 }

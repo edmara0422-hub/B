@@ -136,11 +136,11 @@ function ShellWithZoom({
   handleSwitch: (t: string) => void
   children: ReactNode
 }) {
-  const { fontScale } = useAccessibility()
+  const fontScale = useAccessibility((s) => s.fontScale)
   return (
     <div className="sea-shell-root">
       <main
-        className="pb-28"
+        className="pb-16"
         style={{ zoom: fontScale } as React.CSSProperties}
       >
         {visited.home && (
