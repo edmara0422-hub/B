@@ -74,10 +74,23 @@ type ICURecord = PatientData & {
   updatedAt: string
 }
 
+type Workspace = {
+  id: string
+  name: string
+  records: ICURecord[]
+  archive: ICURecord[]
+}
+
 const STORAGE_KEYS = {
+  // Legacy keys: kept for backward-compat / migration only. Active data
+  // lives in the workspaces key below.
   records: 'sea-icu-records',
   archive: 'sea-icu-archive',
+  workspaces: 'sea-icu-workspaces',
+  activeWorkspace: 'sea-icu-active-workspace',
 }
+
+const MAX_WORKSPACES = 6
 
 const FONT_SIZE = '10px'
 const INPUT_STYLE = { fontSize: FONT_SIZE } as const
@@ -2047,6 +2060,17 @@ export function ProntuarioSystemPanel() {
   const [importingSync, setImportingSync] = useState(false)
   const [syncCopied, setSyncCopied] = useState(false)
 
+  // Workspaces (setores) — UTI 1, PS, Enfermaria etc.
+  const [workspaces, setWorkspaces] = useState<Workspace[]>([])
+  const [activeWorkspaceId, setActiveWorkspaceId] = useState<string>('')
+  const [showWsModal, setShowWsModal] = useState(false)
+  const [wsNameInput, setWsNameInput] = useState('')
+  const [editingWsId, setEditingWsId] = useState<string | null>(null)
+  const workspacesRef = useRef<Workspace[]>([])
+  const activeWsIdRef = useRef<string>('')
+  useEffect(() => { workspacesRef.current = workspaces }, [workspaces])
+  useEffect(() => { activeWsIdRef.current = activeWorkspaceId }, [activeWorkspaceId])
+
   // Returns current session_id, creating one if needed
   function getOrCreateSessionId(): string {
     let id = localStorage.getItem('sea-session-id')
@@ -2054,26 +2078,142 @@ export function ProntuarioSystemPanel() {
     return id
   }
 
-  useEffect(() => {
-    // 1. Load localStorage instantly — UI appears without waiting for network
-    let localRecords: ICURecord[] = []
-    let localArchive: ICURecord[] = []
+  function switchWorkspace(id: string) {
+    if (id === activeWsIdRef.current) return
+    const saved = workspacesRef.current.map(w =>
+      w.id === activeWsIdRef.current ? { ...w, records, archive } : w
+    )
+    const target = saved.find(w => w.id === id)
+    if (!target) return
+    workspacesRef.current = saved
+    activeWsIdRef.current = id
+    setWorkspaces(saved)
+    setActiveWorkspaceId(id)
+    setRecords(target.records)
+    setArchive(target.archive)
+    setSelectedId(null)
     try {
-      const storedRecords = localStorage.getItem(STORAGE_KEYS.records)
-      const storedArchive = localStorage.getItem(STORAGE_KEYS.archive)
-      localRecords = storedRecords
-        ? (JSON.parse(storedRecords) as Array<Partial<ICURecord>>).map(r => normalizeRecord(r))
-        : []
-      localArchive = storedArchive
-        ? (JSON.parse(storedArchive) as Array<Partial<ICURecord>>).map(r => normalizeRecord(r))
-        : []
-    } catch { /* corrupted localStorage — start empty */ }
+      localStorage.setItem(STORAGE_KEYS.workspaces, JSON.stringify(saved))
+      localStorage.setItem(STORAGE_KEYS.activeWorkspace, id)
+    } catch { /* quota / private mode */ }
+  }
 
-    setRecords(localRecords)
-    setArchive(localArchive)
+  function createWorkspace(name: string) {
+    const trimmed = name.trim()
+    if (!trimmed || workspacesRef.current.length >= MAX_WORKSPACES) return
+    const newWs: Workspace = { id: generateId(), name: trimmed, records: [], archive: [] }
+    // Snapshot current edits into the active workspace before adding the new one
+    const saved = workspacesRef.current.map(w =>
+      w.id === activeWsIdRef.current ? { ...w, records, archive } : w
+    )
+    const updated = [...saved, newWs]
+    workspacesRef.current = updated
+    activeWsIdRef.current = newWs.id
+    setWorkspaces(updated)
+    setActiveWorkspaceId(newWs.id)
+    setRecords([])
+    setArchive([])
+    setSelectedId(null)
+    setShowWsModal(false)
+    setWsNameInput('')
+    setEditingWsId(null)
+    try {
+      localStorage.setItem(STORAGE_KEYS.workspaces, JSON.stringify(updated))
+      localStorage.setItem(STORAGE_KEYS.activeWorkspace, newWs.id)
+    } catch { /* ignore */ }
+  }
+
+  function renameWorkspace(id: string, name: string) {
+    const trimmed = name.trim()
+    if (!trimmed) return
+    const updated = workspacesRef.current.map(w => w.id === id ? { ...w, name: trimmed } : w)
+    workspacesRef.current = updated
+    setWorkspaces(updated)
+    setShowWsModal(false)
+    setWsNameInput('')
+    setEditingWsId(null)
+    try { localStorage.setItem(STORAGE_KEYS.workspaces, JSON.stringify(updated)) } catch { /* ignore */ }
+  }
+
+  function deleteWorkspace(id: string) {
+    if (workspacesRef.current.length <= 1) return
+    const updated = workspacesRef.current.filter(w => w.id !== id)
+    workspacesRef.current = updated
+    setWorkspaces(updated)
+    setShowWsModal(false)
+    setWsNameInput('')
+    setEditingWsId(null)
+    if (activeWsIdRef.current === id) {
+      const next = updated[0]
+      activeWsIdRef.current = next.id
+      setActiveWorkspaceId(next.id)
+      setRecords(next.records)
+      setArchive(next.archive)
+      setSelectedId(null)
+      try { localStorage.setItem(STORAGE_KEYS.activeWorkspace, next.id) } catch { /* ignore */ }
+    }
+    try { localStorage.setItem(STORAGE_KEYS.workspaces, JSON.stringify(updated)) } catch { /* ignore */ }
+  }
+
+  useEffect(() => {
+    // 1. Load localStorage instantly — UI appears without waiting for network.
+    //    Prefer the new workspaces key; fall back to legacy records/archive and
+    //    migrate them into a single "UTI" workspace (your existing patient list
+    //    becomes the first setor, no data lost).
+    let localWs: Workspace[] = []
+    let localActiveId = ''
+    try {
+      const storedWs = localStorage.getItem(STORAGE_KEYS.workspaces)
+      const storedActiveId = localStorage.getItem(STORAGE_KEYS.activeWorkspace)
+      if (storedWs) {
+        localWs = (JSON.parse(storedWs) as Workspace[]).map(w => ({
+          id: w.id,
+          name: w.name,
+          records: (w.records ?? []).map(r => normalizeRecord(r)),
+          archive: (w.archive ?? []).map(r => normalizeRecord(r)),
+        }))
+        localActiveId = storedActiveId ?? localWs[0]?.id ?? ''
+      } else {
+        // Legacy migration: existing patient list → first workspace named "UTI"
+        const legRec = localStorage.getItem(STORAGE_KEYS.records)
+        const legArc = localStorage.getItem(STORAGE_KEYS.archive)
+        const legRecords: ICURecord[] = legRec
+          ? (JSON.parse(legRec) as Array<Partial<ICURecord>>).map(r => normalizeRecord(r))
+          : []
+        const legArchive: ICURecord[] = legArc
+          ? (JSON.parse(legArc) as Array<Partial<ICURecord>>).map(r => normalizeRecord(r))
+          : []
+        const ws: Workspace = { id: generateId(), name: 'UTI', records: legRecords, archive: legArchive }
+        localWs = [ws]
+        localActiveId = ws.id
+      }
+    } catch {
+      const ws: Workspace = { id: generateId(), name: 'UTI', records: [], archive: [] }
+      localWs = [ws]
+      localActiveId = ws.id
+    }
+
+    // Sanity: at least one workspace, valid active id
+    if (localWs.length === 0) {
+      const ws: Workspace = { id: generateId(), name: 'UTI', records: [], archive: [] }
+      localWs = [ws]
+      localActiveId = ws.id
+    }
+    if (!localActiveId || !localWs.find(w => w.id === localActiveId)) {
+      localActiveId = localWs[0].id
+    }
+
+    const activeWs = localWs.find(w => w.id === localActiveId)!
+    workspacesRef.current = localWs
+    activeWsIdRef.current = localActiveId
+    setWorkspaces(localWs)
+    setActiveWorkspaceId(localActiveId)
+    setRecords(activeWs.records)
+    setArchive(activeWs.archive)
     setHydrated(true)
 
-    // 2. Supabase sync runs in background — updates state only if server has newer data
+    // 2. Supabase sync in background — only fills local if local is empty (never
+    //    overwrites your data). Supports v2 (workspaces) and legacy (array) formats.
     if (!supabase) return
     const sessionId = getOrCreateSessionId()
     const timeout = new Promise<null>(res => setTimeout(() => res(null), 8000))
@@ -2081,23 +2221,64 @@ export function ProntuarioSystemPanel() {
     Promise.race([fetch, timeout]).then(result => {
       if (!result || !('data' in result)) return
       const { data } = result
-      // Only restore from Supabase if localStorage is empty — never overwrite existing local data
-      if (data?.records && localRecords.length === 0) {
-        const remoteRecords = (data.records as Array<Partial<ICURecord>>).map(r => normalizeRecord(r))
-        const remoteArchive = ((data.archive ?? []) as Array<Partial<ICURecord>>).map(r => normalizeRecord(r))
-        localStorage.setItem(STORAGE_KEYS.records, JSON.stringify(remoteRecords))
-        localStorage.setItem(STORAGE_KEYS.archive, JSON.stringify(remoteArchive))
-        setRecords(remoteRecords)
-        setArchive(remoteArchive)
+      if (!data?.records) return
+      const localIsEmpty = localWs.every(w => w.records.length === 0 && w.archive.length === 0)
+      if (!localIsEmpty) return // never overwrite existing local data
+
+      const raw = data.records as unknown
+      let newWs: Workspace[] = []
+      let newActiveId = ''
+      if (raw && typeof raw === 'object' && !Array.isArray(raw) && (raw as Record<string, unknown>).__sea_v2) {
+        const v2 = raw as { workspaces: Workspace[]; activeId: string }
+        newWs = (v2.workspaces ?? []).map(w => ({
+          id: w.id,
+          name: w.name,
+          records: (w.records ?? []).map(r => normalizeRecord(r)),
+          archive: (w.archive ?? []).map(r => normalizeRecord(r)),
+        }))
+        newActiveId = v2.activeId || newWs[0]?.id || ''
+      } else {
+        const remoteRec = (data.records as Array<Partial<ICURecord>>).map(r => normalizeRecord(r))
+        const remoteArc = ((data.archive ?? []) as Array<Partial<ICURecord>>).map(r => normalizeRecord(r))
+        const ws: Workspace = { id: generateId(), name: 'UTI', records: remoteRec, archive: remoteArc }
+        newWs = [ws]
+        newActiveId = ws.id
       }
+      if (newWs.length === 0) return
+      if (!newActiveId || !newWs.find(w => w.id === newActiveId)) newActiveId = newWs[0].id
+
+      workspacesRef.current = newWs
+      activeWsIdRef.current = newActiveId
+      setWorkspaces(newWs)
+      setActiveWorkspaceId(newActiveId)
+      const active = newWs.find(w => w.id === newActiveId)!
+      setRecords(active.records)
+      setArchive(active.archive)
+      try {
+        localStorage.setItem(STORAGE_KEYS.workspaces, JSON.stringify(newWs))
+        localStorage.setItem(STORAGE_KEYS.activeWorkspace, newActiveId)
+      } catch { /* ignore */ }
     }).catch(() => { /* network error — local data already shown */ })
   }, [])
 
   useEffect(() => {
     if (!hydrated) return
-    // localStorage salva instantâneo — status verde imediato
-    localStorage.setItem(STORAGE_KEYS.records, JSON.stringify(records))
-    localStorage.setItem(STORAGE_KEYS.archive, JSON.stringify(archive))
+    // Snapshot the active workspace with the latest records/archive
+    const snapshot = workspacesRef.current.map(w =>
+      w.id === activeWsIdRef.current ? { ...w, records, archive } : w
+    )
+    workspacesRef.current = snapshot
+
+    // localStorage salva instantâneo — status verde imediato.
+    // Mantém também as chaves legacy populadas com o setor ativo para que
+    // qualquer código antigo que ainda as leia continue funcionando.
+    try {
+      localStorage.setItem(STORAGE_KEYS.workspaces, JSON.stringify(snapshot))
+      localStorage.setItem(STORAGE_KEYS.activeWorkspace, activeWsIdRef.current)
+      localStorage.setItem(STORAGE_KEYS.records, JSON.stringify(records))
+      localStorage.setItem(STORAGE_KEYS.archive, JSON.stringify(archive))
+    } catch { /* quota / private mode */ }
+
     if (isFirstSync.current) {
       isFirstSync.current = false
       setSyncStatus(supabase ? 'saved' : 'offline')
@@ -2112,8 +2293,8 @@ export function ProntuarioSystemPanel() {
         const sessionId = getOrCreateSessionId()
         const { error } = await supabase!.from('icu_sessions').upsert({
           session_id: sessionId,
-          records: records,
-          archive: archive,
+          records: { __sea_v2: true, workspaces: snapshot, activeId: activeWsIdRef.current },
+          archive: [],
           updated_at: new Date().toISOString(),
         }, { onConflict: 'session_id' })
         if (error) setSyncStatus('offline')
@@ -6364,6 +6545,95 @@ export function ProntuarioSystemPanel() {
           </div>
         ) : (
           <div className="space-y-4">
+
+            {/* ── Workspace tabs (setores: UTI 1, PS, Enfermaria…) ── */}
+            <div className="flex items-center gap-1.5 overflow-x-auto pb-0.5 scrollbar-hide">
+              {workspaces.map(ws => (
+                <button
+                  key={ws.id}
+                  onClick={() => switchWorkspace(ws.id)}
+                  className={`group flex shrink-0 items-center gap-1.5 rounded-[0.7rem] border px-2.5 py-1 text-[8px] font-semibold transition-colors ${
+                    ws.id === activeWorkspaceId
+                      ? 'border-white/20 bg-white/[0.07] text-white/85'
+                      : 'border-white/6 bg-transparent text-white/35 hover:text-white/55'
+                  }`}
+                >
+                  {ws.name}
+                  {ws.id === activeWorkspaceId && (
+                    <span
+                      role="button"
+                      onClick={(e) => { e.stopPropagation(); setEditingWsId(ws.id); setWsNameInput(ws.name); setShowWsModal(true) }}
+                      className="text-[9px] leading-none text-white/25 hover:text-white/60"
+                      aria-label="Editar setor"
+                    >
+                      ···
+                    </span>
+                  )}
+                </button>
+              ))}
+              {workspaces.length < MAX_WORKSPACES && (
+                <button
+                  onClick={() => { setEditingWsId(null); setWsNameInput(''); setShowWsModal(true) }}
+                  className="flex shrink-0 items-center gap-1 rounded-[0.7rem] border border-white/6 px-2.5 py-1 text-[8px] text-white/25 hover:text-white/50"
+                >
+                  <Plus className="h-3 w-3" />
+                  Setor
+                </button>
+              )}
+            </div>
+
+            {/* ── Workspace modal (criar / renomear / excluir) ── */}
+            {showWsModal && (
+              <div
+                className="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 px-4 backdrop-blur-sm"
+                onClick={() => { setShowWsModal(false); setWsNameInput(''); setEditingWsId(null) }}
+              >
+                <div
+                  className="w-full max-w-xs rounded-[1.2rem] border border-white/10 p-5"
+                  style={{ background: 'linear-gradient(180deg,rgba(20,20,20,0.99) 0%,rgba(8,8,8,1) 100%)' }}
+                  onClick={e => e.stopPropagation()}
+                >
+                  <p className="mb-3 text-[9px] font-semibold uppercase tracking-[0.2em] text-white/55">
+                    {editingWsId ? 'Editar setor' : 'Novo setor'}
+                  </p>
+                  <input
+                    value={wsNameInput}
+                    onChange={e => setWsNameInput(e.target.value)}
+                    onKeyDown={e => {
+                      if (e.key === 'Enter') {
+                        if (editingWsId) renameWorkspace(editingWsId, wsNameInput)
+                        else createWorkspace(wsNameInput)
+                      }
+                    }}
+                    placeholder="Ex: UTI 2, PS, Enfermaria…"
+                    className={INPUT_CLASS}
+                    maxLength={20}
+                    autoFocus
+                  />
+                  <div className="mt-3 flex gap-2">
+                    {editingWsId && workspaces.length > 1 && (
+                      <button
+                        onClick={() => deleteWorkspace(editingWsId)}
+                        className="flex-1 rounded-[0.7rem] border border-white/12 bg-white/[0.04] py-1.5 text-[8px] text-white/55 hover:bg-white/[0.08]"
+                      >
+                        Excluir setor
+                      </button>
+                    )}
+                    <button
+                      onClick={() => {
+                        if (editingWsId) renameWorkspace(editingWsId, wsNameInput)
+                        else createWorkspace(wsNameInput)
+                      }}
+                      disabled={!wsNameInput.trim()}
+                      className="flex-1 rounded-[0.7rem] border border-white/15 bg-white/[0.07] py-1.5 text-[8px] text-white/75 hover:bg-white/[0.10] disabled:opacity-40"
+                    >
+                      {editingWsId ? 'Salvar' : 'Criar setor'}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+
             {records.length ? (
               records.map((record, idx) => {
                 const cardStatus = record.statusClinico && STATUS_STYLES[record.statusClinico]
