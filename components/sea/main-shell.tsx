@@ -112,7 +112,7 @@ export function MainShell({ children }: { children: ReactNode }) {
 
       {/* 2. Splash SEA — aparece depois do "Entrar no SEA" */}
       {phase === 'splash' && (
-        <PremiumSplash durationMs={2400} exitHoldMs={500} onComplete={() => setPhase('ready')} />
+        <PremiumSplash durationMs={3500} exitHoldMs={1000} onComplete={() => setPhase('ready')} />
       )}
 
       {/* Home content — only visible when ready */}
