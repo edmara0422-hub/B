@@ -33,6 +33,9 @@
 @source '../app/auth/reset-password/page.tsx';
 @source '../app/(main)/profile/page.tsx';
 @source '../app/(main)/admin/page.tsx';
+@source '../components/sea/sistemas-page-client.tsx';
+@source '../components/sea/prontuario-system-panel.tsx';
+@source '../components/sea/vm-system-panel.tsx';
 
 @custom-variant dark (&:is(.dark *));
 

@@ -61,10 +61,8 @@ export function StudyRailBoard({
 
   return (
     <div className="space-y-4">
-      {/* Rail */}
-      <div
-        className="overflow-hidden rounded-[1.8rem] border border-white/10 bg-black/22 p-5 md:p-6"
-      >
+      {/* Rail — ipb-card (paleta prata translúcida) */}
+      <div className="ipb-card relative overflow-hidden rounded-[1.8rem] p-5 md:p-6">
         {/* Rail header */}
         <div className="mb-5 flex items-center justify-between gap-3">
           <div className="flex items-center gap-2.5">
@@ -199,9 +197,7 @@ export function StudyRailBoard({
             {hideDetailHeader && current.panel ? (
               current.panel
             ) : (
-              <div
-                className="overflow-hidden rounded-[1.8rem] border border-white/10 bg-black/22"
-              >
+              <div className="ipb-card relative overflow-hidden rounded-[1.8rem]">
                 {/* Detail header */}
                 <div className="flex items-center justify-between gap-4 border-b border-white/6 px-6 py-4">
                   <div className="flex items-center gap-3">
@@ -277,7 +273,7 @@ export function StudyRailBoard({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="flex items-center justify-center rounded-[1.8rem] border border-white/6 py-12"
+            className="ipb-card flex items-center justify-center rounded-[1.8rem] py-12"
             style={{ background: 'rgba(255,255,255,0.01)' }}
           >
             <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-white/22">
