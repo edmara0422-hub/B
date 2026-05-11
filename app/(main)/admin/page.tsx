@@ -162,10 +162,24 @@ export default function AdminPage() {
   const blockUser = async (id: string, block: boolean) => { if (!supabase) return; await supabase.from('profiles').update({ blocked: block }).eq('id', id); flash(block ? 'Bloqueado.' : 'Desbloqueado.'); loadUsers() }
   const deleteUser = async (id: string, email: string) => { if (!confirm(`Excluir ${email}?`)) return; if (!supabase) return; await supabase.from('profiles').delete().eq('id', id); flash('Excluido.'); loadUsers() }
   const saveUserEdit = async (id: string) => { if (!supabase) return; await supabase.from('profiles').update({ name: editName, email: editEmail }).eq('id', id); setEditingUser(null); flash('Atualizado.'); loadUsers() }
-  const resetUserPassword = async (email: string) => {
-    if (!supabase || !resetPwValue || resetPwValue.length < 6) { flash('Senha min 6 caracteres.'); return }
-    // Admin can't directly change another user's password via client SDK
-    // Instead send reset email
+  const resetUserPassword = async (userId: string, _email: string) => {
+    if (!resetPwValue || resetPwValue.length < 6) { flash('Senha mínimo 6 caracteres.'); return }
+    try {
+      const res = await fetch('/api/admin/users/set-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId, password: resetPwValue }),
+      })
+      const json = await res.json().catch(() => ({} as { error?: string }))
+      if (!res.ok) { flash(json?.error || 'Erro ao alterar senha.'); return }
+      setResetPwUser(null); setResetPwValue('')
+      flash('Senha alterada com sucesso.')
+    } catch (e) {
+      flash(e instanceof Error ? e.message : 'Erro de rede.')
+    }
+  }
+  const sendResetEmail = async (email: string) => {
+    if (!supabase) return
     await supabase.auth.resetPasswordForEmail(email, { redirectTo: `${window.location.origin}/auth/reset-password` })
     setResetPwUser(null); setResetPwValue('')
     flash(`Email de reset enviado para ${email}.`)
@@ -499,10 +513,25 @@ export default function AdminPage() {
                   </div>
                 ) : resetPwUser === u.id ? (
                   <div className="space-y-1">
-                    <p className="text-[7px] text-white/50">Enviar email de reset para {u.email}?</p>
+                    <p className="text-[7px] text-white/50">Alterar senha de <span className="text-white/75">{u.email}</span></p>
+                    <input
+                      type="text"
+                      className={inputClass}
+                      placeholder="Nova senha (mín. 6 caracteres)"
+                      value={resetPwValue}
+                      onChange={(e) => setResetPwValue(e.target.value)}
+                      autoFocus
+                    />
                     <div className="flex gap-1">
-                      <button onClick={() => resetUserPassword(u.email || '')} className="flex h-6 items-center gap-1 rounded-[0.4rem] border border-[#60a5fa20] bg-[#60a5fa08] px-2 text-[7px] text-[#60a5fa]"><Mail className="h-2.5 w-2.5" /> Enviar reset</button>
-                      <button onClick={() => setResetPwUser(null)} className="flex h-6 items-center gap-1 rounded-[0.4rem] border border-white/10 px-2 text-[7px] text-white/40"><X className="h-2.5 w-2.5" /> Cancelar</button>
+                      <button
+                        onClick={() => resetUserPassword(u.id, u.email || '')}
+                        disabled={resetPwValue.length < 6}
+                        className="flex h-6 items-center gap-1 rounded-[0.4rem] border border-[#4ade8020] bg-[#4ade8008] px-2 text-[7px] text-[#4ade80] disabled:opacity-30"
+                      >
+                        <Key className="h-2.5 w-2.5" /> Definir senha
+                      </button>
+                      <button onClick={() => sendResetEmail(u.email || '')} className="flex h-6 items-center gap-1 rounded-[0.4rem] border border-white/10 px-2 text-[7px] text-white/50"><Mail className="h-2.5 w-2.5" /> Email reset</button>
+                      <button onClick={() => { setResetPwUser(null); setResetPwValue('') }} className="flex h-6 items-center gap-1 rounded-[0.4rem] border border-white/10 px-2 text-[7px] text-white/40"><X className="h-2.5 w-2.5" /> Cancelar</button>
                     </div>
                   </div>
                 ) : (

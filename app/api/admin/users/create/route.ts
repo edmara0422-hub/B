@@ -24,7 +24,11 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Senha deve ter no mínimo 6 caracteres.' }, { status: 400 })
   }
 
-  // 1. Verify the caller is an authenticated admin
+  // Lista exclusiva de admins server-side — espelha o client e blinda a API
+  // contra qualquer tentativa de uso por outros usuários, mesmo com role='admin'.
+  const ADMIN_EMAILS = new Set<string>(['edmararbusiness1@gmail.com'])
+
+  // 1. Verify the caller is the authorized admin
   let callerId: string
   try {
     const supa = await getSupabaseServerClient()
@@ -32,8 +36,8 @@ export async function POST(request: Request) {
     if (userErr || !user) {
       return NextResponse.json({ error: 'Não autenticado.' }, { status: 401 })
     }
-    const { data: profile, error: profErr } = await supa.from('profiles').select('role').eq('id', user.id).single()
-    if (profErr || profile?.role !== 'admin') {
+    const callerEmail = (user.email ?? '').toLowerCase()
+    if (!ADMIN_EMAILS.has(callerEmail)) {
       return NextResponse.json({ error: 'Permissão negada.' }, { status: 403 })
     }
     callerId = user.id

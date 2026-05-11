@@ -5,12 +5,11 @@ import { supabase } from '@/lib/supabase'
 import { trackLogin } from '@/lib/analytics/track'
 import type { User, Session } from '@supabase/supabase-js'
 
-// Admin emails that are always recognized as admin, even if Supabase profile
-// fetch is slow/fails. Keeps the admin panel reachable through sync hiccups.
+// Lista EXCLUSIVA de admins. Único email com acesso ao painel admin.
+// Mesmo que alguém seja marcado como role='admin' no banco, não terá acesso
+// se o email não estiver aqui — o painel é da Edmara, ponto.
 const ADMIN_EMAILS = new Set<string>([
   'edmararbusiness1@gmail.com',
-  'edmararbusiness1@er-site.com',
-  'edmara0422@gmail.com',
 ])
 
 const ADMIN_CACHE_KEY = 'sea_is_admin'
@@ -107,11 +106,15 @@ export const useAuthStore = create<AuthState & AuthActions>((set, get) => ({
     const session = sessionResult?.data?.session ?? null
     if (session?.user) {
       set({ user: session.user, session })
+      // Trava: só é admin se o email estiver na lista exclusiva — independente
+      // de cache antigo ou role no banco. Email errado → limpa cache e nega.
       if (isAdminByEmail(session.user.email)) {
         set({ isAdmin: true })
         writeCachedAdmin(true)
+      } else {
+        set({ isAdmin: false })
+        writeCachedAdmin(false)
       }
-      // Fire-and-forget: profile fills in when it arrives; doesn't block UI.
       get().fetchProfile(session.user.id)
     }
     // Mark initialized only AFTER session check — AuthGuard now sees the
@@ -125,6 +128,9 @@ export const useAuthStore = create<AuthState & AuthActions>((set, get) => ({
         if (isAdminByEmail(session.user.email)) {
           set({ isAdmin: true })
           writeCachedAdmin(true)
+        } else {
+          set({ isAdmin: false })
+          writeCachedAdmin(false)
         }
         get().fetchProfile(session.user.id)
       } else {
@@ -151,7 +157,9 @@ export const useAuthStore = create<AuthState & AuthActions>((set, get) => ({
     }
     if (data) {
       const profile = data as Profile
-      const isAdmin = profile.role === 'admin' || isAdminByEmail(profile.email)
+      // isAdmin é determinado SOMENTE pelo email — role no banco é informativo
+      // mas não dá acesso ao painel sozinho.
+      const isAdmin = isAdminByEmail(profile.email)
       set({ profile, isAdmin })
       writeCachedAdmin(isAdmin)
     }
