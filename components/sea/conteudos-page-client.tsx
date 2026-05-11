@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ArrowLeft, BookOpen, Brain, Heart, Wind, Radar } from 'lucide-react'
+import { ArrowLeft, BookOpen, Brain, Heart, Wind, Radar, PanelLeftClose, PanelLeftOpen } from 'lucide-react'
 import Link from 'next/link'
 import type { LucideIcon } from 'lucide-react'
 import { SeaBackdrop } from '@/components/sea/sea-backdrop'
@@ -40,6 +40,89 @@ const MODULES: Module[] = [
 
 const ease = [0.16, 1, 0.3, 1] as const
 
+// ── Workspace Sidebar (lateral esquerda, lista de módulos) ───────────────────
+
+function WorkspaceSidebar({
+  modules,
+  activeIndex,
+  onSelect,
+  onClose,
+}: {
+  modules: Module[]
+  activeIndex: number | null
+  onSelect: (i: number) => void
+  onClose: () => void
+}) {
+  return (
+    <div
+      className="ipb-card flex flex-col overflow-hidden rounded-[1.65rem]"
+      style={{ maxHeight: 'calc(100vh - 140px)' }}
+    >
+      {/* Header */}
+      <div className="shrink-0 px-4 pb-3 pt-4" style={{ borderBottom: '1px solid rgba(220,225,235,0.08)' }}>
+        <div className="mb-1 flex items-center justify-between">
+          <p className="text-[9px] uppercase tracking-[0.4em] text-white/40">Trilha de Estudo</p>
+          <button
+            onClick={onClose}
+            title="Fechar sidebar"
+            className="flex h-6 w-6 items-center justify-center rounded-[0.5rem] text-white/36 transition hover:bg-white/[0.08] hover:text-white/64"
+          >
+            <PanelLeftClose className="h-3.5 w-3.5" />
+          </button>
+        </div>
+        <p className="text-[10px] text-white/40">{modules.length} módulos</p>
+      </div>
+
+      {/* Module list */}
+      <div className="flex-1 overflow-y-auto px-2 py-2 ipb-thinscroll">
+        {modules.map((mod, idx) => {
+          const isActive = activeIndex === idx
+          const ModIcon = mod.icon
+          return (
+            <div key={mod.id}>
+              {idx > 0 && <div className="mx-3 my-2 h-px bg-white/[0.06]" />}
+              <button
+                onClick={() => onSelect(idx)}
+                className="flex w-full items-center gap-2.5 rounded-[1rem] px-3 py-2.5 text-left transition"
+                style={
+                  isActive
+                    ? {
+                        background:
+                          'linear-gradient(135deg, rgba(255,255,255,0.09), rgba(255,255,255,0.04))',
+                        border: '1px solid rgba(220,225,235,0.22)',
+                        boxShadow: 'inset 0 1px 0 rgba(220,225,235,0.14)',
+                      }
+                    : { border: '1px solid transparent' }
+                }
+              >
+                <ModIcon
+                  className={`h-3.5 w-3.5 shrink-0 ${isActive ? 'text-white/85' : 'text-white/32'}`}
+                />
+                <div className="min-w-0 flex-1">
+                  <p
+                    className={`text-[9px] uppercase tracking-[0.22em] ${
+                      isActive ? 'text-white/55' : 'text-white/20'
+                    }`}
+                  >
+                    {mod.id}
+                  </p>
+                  <p
+                    className={`truncate text-[11px] font-medium leading-snug ${
+                      isActive ? 'text-white/92' : 'text-white/55'
+                    }`}
+                  >
+                    {mod.title}
+                  </p>
+                </div>
+              </button>
+            </div>
+          )
+        })}
+      </div>
+    </div>
+  )
+}
+
 // ── Module rail ───────────────────────────────────────────────────────────────
 
 function ModuleRail({
@@ -52,7 +135,7 @@ function ModuleRail({
   onSelect: (i: number) => void
 }) {
   return (
-    <div className="chrome-panel relative overflow-hidden rounded-[1.8rem] px-5 py-6 md:px-8">
+    <div className="ipb-card relative overflow-hidden rounded-[1.8rem] px-5 py-6 md:px-8">
       <div className="pointer-events-none absolute inset-0 grid-bg opacity-50" />
       <div className="pointer-events-none absolute inset-x-0 top-0 h-px silver-divider opacity-60" />
       {/* Header */}
@@ -87,8 +170,8 @@ function ModuleRail({
                 title={module.title}
               >
                 <motion.div
-                  animate={{ y: [0, -4, 0] }}
-                  transition={{ duration: floatDuration, repeat: Infinity, ease: 'easeInOut', delay: index * 0.14 }}
+                  animate={{ y: [0, active ? -5 : -2, 0] }}
+                  transition={{ duration: floatDuration, repeat: Infinity, ease: 'easeInOut', delay: index * 0.12 }}
                   className="flex flex-col items-center gap-2"
                 >
                   {/* Small icon above ball */}
@@ -166,6 +249,7 @@ function ModuleRail({
 
 export default function ConteudosPageClient() {
   const [activeIndex, setActiveIndex] = useState<number | null>(null)
+  const [sidebarOpen, setSidebarOpen] = useState(true)
 
   const current = activeIndex !== null ? MODULES[activeIndex] : null
   const CurrentIcon = current?.icon
@@ -191,17 +275,42 @@ export default function ConteudosPageClient() {
               </motion.div>
             </Link>
             <div className="h-px flex-1 bg-[linear-gradient(90deg,rgba(255,255,255,0.08),transparent)]" />
+            {!sidebarOpen && (
+              <button
+                onClick={() => setSidebarOpen(true)}
+                className="flex items-center gap-2 rounded-[0.85rem] border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-[10px] uppercase tracking-[0.2em] text-white/60 transition hover:text-white"
+              >
+                <PanelLeftOpen className="h-3.5 w-3.5" />
+                Trilha
+              </button>
+            )}
             <div className="flex items-center gap-2">
               <BookOpen className="h-4 w-4 text-white/30" />
               <span className="text-[10px] font-semibold uppercase tracking-[0.28em] text-white/30">Conteúdos</span>
             </div>
           </div>
 
-          {/* Rail */}
-          <ModuleRail modules={MODULES} activeIndex={activeIndex} onSelect={handleSelect} />
+          {/* Sidebar (desktop) + Rail + Conteúdo */}
+          <div className={sidebarOpen ? 'lg:grid lg:grid-cols-[240px_1fr] lg:gap-5 lg:items-start' : ''}>
+            {/* Sidebar — só em desktop quando aberta */}
+            {sidebarOpen && (
+              <div className="hidden lg:block">
+                <WorkspaceSidebar
+                  modules={MODULES}
+                  activeIndex={activeIndex}
+                  onSelect={handleSelect}
+                  onClose={() => setSidebarOpen(false)}
+                />
+              </div>
+            )}
 
-          {/* Module content */}
-          <AnimatePresence mode="wait">
+            {/* Coluna direita: rail + conteúdo */}
+            <div className="space-y-6">
+              {/* Rail (com bolas) */}
+              <ModuleRail modules={MODULES} activeIndex={activeIndex} onSelect={handleSelect} />
+
+              {/* Module content */}
+              <AnimatePresence mode="wait">
             {current ? (
               <motion.div
                 key={`module-${current.id}`}
@@ -212,7 +321,7 @@ export default function ConteudosPageClient() {
                 className="space-y-3"
               >
                 {/* Module hero card */}
-                <div className="chrome-panel relative overflow-hidden rounded-[2rem] px-6 py-7 md:px-8 md:py-8">
+                <div className="ipb-card relative overflow-hidden rounded-[2rem] px-6 py-7 md:px-8 md:py-8">
                   <div className="pointer-events-none absolute inset-0 grid-bg opacity-40" />
                   <div className="pointer-events-none absolute inset-x-0 top-0 h-px silver-divider opacity-70" />
                   <div className="pointer-events-none absolute right-[8%] top-[20%] h-32 w-40 rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.06)_0%,transparent_72%)] blur-2xl" />
@@ -242,7 +351,7 @@ export default function ConteudosPageClient() {
                 </div>
 
                 {/* Caderno + sidebar */}
-                <div className="chrome-panel relative overflow-hidden rounded-[2rem]">
+                <div className="ipb-card relative overflow-hidden rounded-[2rem]">
                   <div className="pointer-events-none absolute inset-x-0 top-0 h-px silver-divider opacity-40" />
                   <div className="p-5 md:p-6">
                     <CadernoModulePanel moduleId={current.id} />
@@ -275,7 +384,9 @@ export default function ConteudosPageClient() {
                 </div>
               </motion.div>
             )}
-          </AnimatePresence>
+              </AnimatePresence>
+            </div>
+          </div>
 
         </div>
       </main>
