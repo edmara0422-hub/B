@@ -6,6 +6,7 @@ import dynamic from 'next/dynamic'
 import { BottomNav } from '@/components/sea/bottom-nav'
 import { PremiumSplash } from '@/components/sea/premium-splash'
 import { SeaLanding } from '@/components/sea/sea-landing'
+import { useAccessibility } from '@/hooks/use-accessibility'
 
 // Lazy-load both pages once — they stay mounted forever after
 const HomePageClient = dynamic(
@@ -115,25 +116,46 @@ export function MainShell({ children }: { children: ReactNode }) {
 
       {/* Home content — only visible when ready */}
       {phase === 'ready' && (
-        <div className="sea-shell-root">
-          <main className="pb-28">
-            {visited.home && (
-              <div style={{ display: activeTab === 'home' ? 'block' : 'none' }}>
-                <HomePageClient />
-              </div>
-            )}
-
-            {visited.explore && (
-              <div style={{ display: activeTab === 'explore' ? 'block' : 'none' }}>
-                <ExplorePageClient />
-              </div>
-            )}
-
-            {!isMainTab && children}
-          </main>
-          <BottomNav onSwitch={handleSwitch} />
-        </div>
+        <ShellWithZoom activeTab={activeTab} visited={visited} isMainTab={isMainTab} handleSwitch={handleSwitch}>
+          {children}
+        </ShellWithZoom>
       )}
     </>
+  )
+}
+
+// Wrapper que aplica o zoom de acessibilidade do useAccessibility na área de
+// conteúdo (Home/Explore/sub-rotas). O TopBar e o BottomNav ficam FORA do
+// zoom para sempre permanecerem alcançáveis (clicáveis com tamanho normal).
+function ShellWithZoom({
+  activeTab, visited, isMainTab, handleSwitch, children,
+}: {
+  activeTab: Tab
+  visited: Record<'home' | 'explore', boolean>
+  isMainTab: boolean
+  handleSwitch: (t: string) => void
+  children: ReactNode
+}) {
+  const { fontScale } = useAccessibility()
+  return (
+    <div className="sea-shell-root">
+      <main
+        className="pb-28"
+        style={{ zoom: fontScale } as React.CSSProperties}
+      >
+        {visited.home && (
+          <div style={{ display: activeTab === 'home' ? 'block' : 'none' }}>
+            <HomePageClient />
+          </div>
+        )}
+        {visited.explore && (
+          <div style={{ display: activeTab === 'explore' ? 'block' : 'none' }}>
+            <ExplorePageClient />
+          </div>
+        )}
+        {!isMainTab && children}
+      </main>
+      <BottomNav onSwitch={handleSwitch} />
+    </div>
   )
 }

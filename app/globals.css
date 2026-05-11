@@ -21,6 +21,7 @@
 @source '../components/sea/premium-splash.tsx';
 @source '../components/sea/route-screen-fallback.tsx';
 @source '../components/sea/sea-backdrop.tsx';
+@source '../components/sea/ipb-background.tsx';
 @source '../components/sea/sea-page-entry.tsx';
 @source '../components/sea/simulations-grid.tsx';
 @source '../components/sea/top-bar-sea.tsx';
@@ -383,4 +384,92 @@ body.sea-splash-active [data-sea-bottom-nav='true'] {
   50% {
     transform: translateY(-10px);
   }
+}
+
+/* ─── IPB Design Kit additions ─────────────────────────────────── */
+
+/* Card unificado IPB — prata translúcido com toque sutil. Use em qualquer container */
+.ipb-card {
+  position: relative;
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(224, 230, 240, 0.06) 0%, transparent 60%),
+    linear-gradient(180deg,
+      rgba(255, 255, 255, 0.10) 0%,
+      rgba(210, 215, 225, 0.06) 28%,
+      rgba(180, 185, 195, 0.04) 60%,
+      rgba(140, 145, 155, 0.055) 100%);
+  border: 1px solid rgba(220, 225, 235, 0.14);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.16),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.03),
+    0 16px 48px rgba(0, 0, 0, 0.32),
+    0 2px 8px rgba(0, 0, 0, 0.18);
+  backdrop-filter: blur(32px) saturate(140%);
+  -webkit-backdrop-filter: blur(32px) saturate(140%);
+}
+
+.ipb-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 1.5rem;
+  right: 1.5rem;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent,
+    rgba(220, 225, 235, 0.28),
+    rgba(255, 255, 255, 0.16),
+    rgba(220, 225, 235, 0.28),
+    transparent);
+  pointer-events: none;
+}
+
+/* Texto shimmer prata para títulos importantes */
+.text-shimmer-noble {
+  background: linear-gradient(100deg,
+    rgba(196, 200, 212, 0.55)  0%,
+    rgba(255, 255, 255, 0.95) 40%,
+    rgba(255, 255, 255, 1)    50%,
+    rgba(255, 255, 255, 0.95) 60%,
+    rgba(196, 200, 212, 0.55) 100%);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer-noble 4s linear infinite;
+}
+
+@keyframes shimmer-noble {
+  0%   { background-position: 200% 50% }
+  100% { background-position: -200% 50% }
+}
+
+/* Pulse universal usado em dots e indicadores */
+@keyframes ipbpulse {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.55; }
+}
+
+@keyframes ipbfade {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.ipb-fadein {
+  animation: ipbfade 0.35s ease-out;
+}
+
+/* Scrollbar fininha */
+.ipb-thinscroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
+}
+.ipb-thinscroll::-webkit-scrollbar { width: 6px; height: 6px; }
+.ipb-thinscroll::-webkit-scrollbar-track { background: transparent; }
+.ipb-thinscroll::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.10);
+  border-radius: 3px;
+}
+.ipb-thinscroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.20);
 }

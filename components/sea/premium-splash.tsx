@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
+import { IpbBackground } from './ipb-background'
 
 type PremiumSplashProps = {
   durationMs?: number
@@ -64,6 +65,9 @@ export function PremiumSplash({
 
   return (
     <div className="fixed inset-0 z-[90] h-[100dvh] w-screen overflow-hidden bg-[#010101]" suppressHydrationWarning>
+      {/* Fundo espacial IPB: partículas + halos + raios */}
+      <IpbBackground />
+
       {/* Orb canvas — same as landing but with expansion effect */}
       <SplashOrb progress={progress} />
 

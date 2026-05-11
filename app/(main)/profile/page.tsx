@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuthStore } from '@/lib/stores/authStore'
 import { supabase } from '@/lib/supabase'
+import { SeaBackdrop } from '@/components/sea/sea-backdrop'
 import {
   ArrowLeft, Bell, Camera, ChevronRight, HelpCircle, Info,
   Key, LogOut, Mail, Moon, PencilLine, Save, Shield, Trash2, User, X,
@@ -109,7 +110,11 @@ export default function ProfilePage() {
   const menuBtn = 'flex w-full items-center gap-2 rounded-[0.7rem] border border-white/6 bg-white/[0.02] px-3 py-2 text-left'
 
   return (
-    <div className="relative min-h-screen bg-[#010101] text-white px-3 pb-32 pt-16 md:px-6">
+    <div className="relative min-h-screen text-white px-3 pb-32 pt-16 md:px-6">
+      {/* Fundo espacial IPB */}
+      <SeaBackdrop />
+      {/* Wrapper relativo pra ficar acima do backdrop */}
+      <div className="relative z-10 mx-auto max-w-2xl">
       {/* Back */}
       <button onClick={() => router.push('/sea')} className="mb-4 flex items-center gap-1 text-[8px] text-white/40 hover:text-white/60">
         <ArrowLeft className="h-3 w-3" /> Voltar
@@ -273,6 +278,7 @@ export default function ProfilePage() {
           <Trash2 className="h-3.5 w-3.5 text-white/20" />
           <span className="text-[8px] text-white/20">Excluir minha conta</span>
         </button>
+      </div>
       </div>
     </div>
   )

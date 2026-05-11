@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 import { CalendarDays, MoonStar, SunMedium } from 'lucide-react'
 import { useAuthStore } from '@/lib/stores/authStore'
 import { useNotifications } from '@/hooks/useNotifications'
+import { useAccessibility } from '@/hooks/use-accessibility'
 
 export function TopBarSEA() {
   const [mounted, setMounted] = useState(false)
@@ -15,6 +16,8 @@ export function TopBarSEA() {
   const router = useRouter()
   const { profile } = useAuthStore()
   const { notifications, unreadCount, markAllRead, enabled: notifEnabled } = useNotifications()
+  const { fontScale, increaseFontScale, decreaseFontScale } = useAccessibility()
+  const scalePct = Math.round(fontScale * 100)
 
   useEffect(() => {
     setMounted(true)
@@ -95,13 +98,43 @@ export function TopBarSEA() {
           )}
         </div>
 
-        {/* Right: time + buttons */}
+        {/* Right: time + zoom + buttons */}
         <div className="flex shrink-0 items-center gap-1.5">
           {mounted && (
-            <span className="text-[8px] font-bold tabular-nums tracking-[0.12em] text-white/75">
+            <span className="hidden text-[8px] font-bold tabular-nums tracking-[0.12em] text-white/75 sm:inline">
               {timeLabel}
             </span>
           )}
+
+          {/* Zoom A−/A+ — funciona em mobile e desktop */}
+          <div
+            className="flex items-center gap-0.5 overflow-hidden rounded-[0.5rem] border border-white/12"
+            style={{ background: shellBackground }}
+          >
+            <button
+              onClick={decreaseFontScale}
+              disabled={scalePct <= 60}
+              aria-label="Diminuir texto"
+              title="Diminuir texto"
+              className="flex h-6 w-5 items-center justify-center text-[8px] font-bold text-white/55 transition hover:text-white disabled:opacity-25"
+              style={{ fontFamily: 'monospace' }}
+            >
+              A−
+            </button>
+            <span className="select-none px-0.5 text-[7px] tabular-nums text-white/35" style={{ fontFamily: 'monospace' }}>
+              {scalePct}
+            </span>
+            <button
+              onClick={increaseFontScale}
+              disabled={scalePct >= 160}
+              aria-label="Aumentar texto"
+              title="Aumentar texto"
+              className="flex h-6 w-5 items-center justify-center text-[10px] font-bold text-white/55 transition hover:text-white disabled:opacity-25"
+              style={{ fontFamily: 'monospace' }}
+            >
+              A+
+            </button>
+          </div>
 
           {/* Bell */}
           <div className="relative" ref={notifRef}>
