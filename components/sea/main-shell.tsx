@@ -29,7 +29,18 @@ function usePreloadRoutes() {
   }, [])
 }
 
-let splashShownForRuntime = false
+// Flag em sessionStorage: persiste entre reloads mas é apagado quando o app é
+// completamente fechado/reaberto. Reload = pula landing/splash; fechar+reabrir
+// = mostra landing/splash de novo.
+const SPLASH_SHOWN_KEY = 'sea-splash-shown'
+function readSplashShown(): boolean {
+  if (typeof window === 'undefined') return false
+  try { return sessionStorage.getItem(SPLASH_SHOWN_KEY) === '1' } catch { return false }
+}
+function markSplashShown() {
+  if (typeof window === 'undefined') return
+  try { sessionStorage.setItem(SPLASH_SHOWN_KEY, '1') } catch { /* ignore */ }
+}
 
 type Tab = 'home' | 'explore' | 'other'
 
@@ -51,8 +62,15 @@ export function MainShell({ children }: { children: ReactNode }) {
     router.prefetch('/explore/conteudos')
     router.prefetch('/explore/sistemas')
   }, [router])
-  // Landing always shows on app open. Splash after clicking "Entrar no SEA".
-  const [phase, setPhase] = useState<'landing' | 'splash' | 'ready'>('landing')
+  // Landing/splash only on a fresh app open (sessionStorage cleared). After a
+  // simple reload, jump straight to 'ready' so the user stays on Home/Explore.
+  const [phase, setPhase] = useState<'landing' | 'splash' | 'ready'>(() =>
+    readSplashShown() ? 'ready' : 'landing'
+  )
+  // Once we reach 'ready', persist the flag so reloads skip the intro.
+  useEffect(() => {
+    if (phase === 'ready') markSplashShown()
+  }, [phase])
   const [activeTab, setActiveTab] = useState<Tab>(() => pathToTab(pathname))
   const [visited, setVisited] = useState<Record<'home' | 'explore', boolean>>(() => ({
     home: pathToTab(pathname) === 'home',

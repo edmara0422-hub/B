@@ -94,10 +94,11 @@ export const useAuthStore = create<AuthState & AuthActions>((set, get) => ({
     // Hydrate isAdmin instantly from localStorage cache so the admin panel
     // link stays reachable even before Supabase responds.
     if (readCachedAdmin()) set({ isAdmin: true })
-    // Mark initialized synchronously and let the session/profile load in the
-    // background — never block the UI waiting on Supabase here.
-    set({ initialized: true })
 
+    // Resolve the existing session FIRST so AuthGuard can decide reliably
+    // whether to render or redirect. 8s timeout prevents infinite spinner if
+    // Supabase hangs — after timeout we just proceed as "no session" without
+    // wiping the cached admin flag.
     const sessionResult = await withTimeout<{ data: { session: Session | null } }>(
       supabase.auth.getSession(),
       8000,
@@ -113,6 +114,9 @@ export const useAuthStore = create<AuthState & AuthActions>((set, get) => ({
       // Fire-and-forget: profile fills in when it arrives; doesn't block UI.
       get().fetchProfile(session.user.id)
     }
+    // Mark initialized only AFTER session check — AuthGuard now sees the
+    // correct user/null and won't bounce a logged-in user to /auth on reload.
+    set({ initialized: true })
 
     // Listen for auth changes
     supabase.auth.onAuthStateChange((_event, session) => {
