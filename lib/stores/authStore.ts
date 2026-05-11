@@ -179,6 +179,10 @@ export const useAuthStore = create<AuthState & AuthActions>((set, get) => ({
       if (error.message.includes('Email not confirmed')) return { error: 'Confirme seu email antes de entrar.' }
       return { error: error.message }
     }
+    // Limpa flag do splash — login bem-sucedido sempre mostra splash
+    if (typeof window !== 'undefined') {
+      try { sessionStorage.removeItem('sea-splash-shown') } catch { /* ignore */ }
+    }
     trackLogin()
     return { error: null }
   },
@@ -199,6 +203,10 @@ export const useAuthStore = create<AuthState & AuthActions>((set, get) => ({
       if (error.message.includes('Password')) return { error: 'Senha deve ter no minimo 6 caracteres.' }
       return { error: error.message }
     }
+    // Limpa flag do splash — signup bem-sucedido sempre mostra splash no próximo login
+    if (typeof window !== 'undefined') {
+      try { sessionStorage.removeItem('sea-splash-shown') } catch { /* ignore */ }
+    }
     return { error: null }
   },
 
@@ -209,6 +217,8 @@ export const useAuthStore = create<AuthState & AuthActions>((set, get) => ({
     // Clear any localStorage remnants
     if (typeof window !== 'undefined') {
       localStorage.removeItem('sea_user')
+      // Limpa flag do splash pra que o próximo login mostre o splash de novo
+      try { sessionStorage.removeItem('sea-splash-shown') } catch { /* ignore */ }
     }
     writeCachedAdmin(false)
   },
