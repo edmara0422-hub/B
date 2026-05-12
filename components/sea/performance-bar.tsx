@@ -1,11 +1,12 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { Leaf, Shield, Heart, Megaphone, FileText, Scale, BookOpen, Stethoscope, Star, MessageSquare, X, Send, Check, Scroll, Cookie, Target, UserCog, ChevronLeft, ChevronRight } from 'lucide-react'
+import { motion, AnimatePresence, useMotionValue, animate } from 'framer-motion'
+import { Leaf, Shield, Heart, Megaphone, FileText, Scale, BookOpen, Stethoscope, X, Send, Check, Scroll, Cookie, Target, UserCog } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
 
 const spring = { type: 'spring', stiffness: 380, damping: 32 } as const
+const carouselSpring = { type: 'spring', stiffness: 380, damping: 32 } as const
 
 // Real metrics from localStorage
 function useAppMetrics() {
@@ -93,28 +94,12 @@ export function PerformanceBar() {
   const [showReport, setShowReport] = useState(false)
   const [showGov, setShowGov] = useState<string | null>(null)
 
-  // Carrossel externo: 2 cards (Combined + Sustentabilidade). Sem setas — só swipe.
-  const TOTAL_CARDS = 2
-  const scrollRef = useRef<HTMLDivElement>(null)
-  const [activeIdx, setActiveIdx] = useState(0)
-
-  // Detecta qual card está visível via scroll position
-  useEffect(() => {
-    const el = scrollRef.current
-    if (!el) return
-    const onScroll = () => {
-      const idx = Math.round(el.scrollLeft / el.clientWidth)
-      setActiveIdx(idx)
-    }
-    el.addEventListener('scroll', onScroll, { passive: true })
-    return () => el.removeEventListener('scroll', onScroll)
-  }, [])
-
-  const goTo = (i: number) => {
-    const el = scrollRef.current
-    if (!el) return
-    el.scrollTo({ left: i * el.clientWidth, behavior: 'smooth' })
-  }
+  // 2 cards: [Impacto+NPS+Gov unificado] e [Sustentabilidade]
+  // Padrão 3D igual Explorar: perspective + rotateY + drag + side cards visíveis
+  const cards = [
+    { key: 'combined' as const },
+    { key: 'sustentabilidade' as const },
+  ]
 
   return (
     <motion.section
@@ -123,109 +108,25 @@ export function PerformanceBar() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.1 }}
     >
-      {/* Carrossel: cada card 100% width, snap mandatory — só swipe/drag, sem setas */}
-      <div
-        ref={scrollRef}
-        className="ipb-thinscroll flex snap-x snap-mandatory gap-0 overflow-x-auto [&>*]:snap-center [&>*]:snap-always [&>*]:shrink-0 [&>*]:w-full"
-        style={{ scrollbarWidth: 'none' }}
-      >
-      {/* CARD COMBINADO: Impacto + NPS + Governança — auto-rotate + swipe */}
-      <CombinedStatsCard
-        metrics={metrics}
-        folhasEconomizadas={folhasEconomizadas}
-        nps={nps}
-        fbCount={fbCount}
-        onGovOpen={setShowGov}
-        onReportOpen={() => setShowReport(true)}
+      <HomeCarousel3D
+        items={cards}
+        renderItem={(item, isActive) => {
+          if (item.key === 'combined') {
+            return (
+              <CombinedStatsCard
+                metrics={metrics}
+                folhasEconomizadas={folhasEconomizadas}
+                nps={nps}
+                fbCount={fbCount}
+                onGovOpen={setShowGov}
+                onReportOpen={() => setShowReport(true)}
+                isActive={isActive}
+              />
+            )
+          }
+          return <SustentabilidadeCard />
+        }}
       />
-
-      {/* Sustentabilidade — TBL + ODS + CSV juntos */}
-      <div
-        className="ipb-soft rounded-[1.4rem] p-4"
-      >
-        <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/75">
-          Sustentabilidade
-        </p>
-
-        {/* TBL */}
-        <div className="mb-3 grid grid-cols-3 gap-1.5">
-          {TBL_ITEMS.map((item) => (
-            <div key={item.label} className="rounded-[0.8rem] ipb-soft px-2 py-2.5 text-center">
-              <item.icon className="mx-auto mb-1 h-4 w-4 text-white/80" />
-              <p className="text-[11px] font-semibold text-white/90">{item.label}</p>
-              <p className="mt-0.5 text-[9px] leading-relaxed text-white/60">{item.desc}</p>
-            </div>
-          ))}
-        </div>
-
-        {/* ODS inline */}
-        <div className="mb-3 text-center">
-          <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/75">ODS</p>
-          <div className="flex flex-wrap justify-center gap-1">
-            {ODS_ITEMS.map((item) => (
-              <div key={item.num} className="flex items-center gap-1 rounded-full ipb-soft px-2 py-0.5">
-                <span className="text-[11px] font-bold text-white/90">{item.num}</span>
-                <span className="text-[9px] text-white/70">{item.label}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* CSV inline */}
-        <div className="text-center">
-          <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/75">CSV — Valor Compartilhado</p>
-          <div className="grid grid-cols-3 gap-1.5">
-            {CSV_ITEMS.map((item) => (
-              <div key={item.label} className="rounded-[0.6rem] ipb-soft px-2 py-2 text-center">
-                <p className="text-[10px] font-semibold text-white/90">{item.label}</p>
-                <p className="text-[9px] leading-relaxed text-white/60">{item.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Sustentabilidade Digital */}
-        <div className="mt-3 rounded-[0.8rem] ipb-soft px-3 py-3">
-          <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/75">Sustentabilidade Digital & ESG</p>
-          <div className="grid grid-cols-2 gap-1.5">
-            {[
-              { label: 'Offline-First como escolha ESG', desc: 'Menos requisições ao servidor = menor consumo de energia de datacenter. Padrão arquitetural com impacto ambiental mensurável.' },
-              { label: 'Pegada de Carbono Digital', desc: 'Cada componente é avaliado pelo custo energético. Bundling otimizado reduz transferência de dados e processamento desnecessário.' },
-              { label: 'Antigreenwashing', desc: 'Sem selos sem evidência. O SEA só declara práticas sustentáveis que são verificáveis no código, na arquitetura ou nos processos.' },
-              { label: 'ESG como produto', desc: 'Sustentabilidade não é relatório — é funcionalidade. Zero papel, menos IRAS, menos tempo de VM = impacto ESG no desfecho do paciente.' },
-            ].map((item) => (
-              <div key={item.label} className="rounded-[0.6rem] ipb-soft px-2 py-2">
-                <p className="text-[10px] font-semibold text-white/90">{item.label}</p>
-                <p className="mt-1 text-[9px] leading-relaxed text-white/55">{item.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Governança movida pro CombinedStatsCard (slide 3) */}
-      </div>{/* fim do snap-scroll */}
-
-      {/* Dots indicador — pill expansível pro card ativo */}
-      <div className="mt-4 flex items-center justify-center gap-2">
-        {Array.from({ length: TOTAL_CARDS }).map((_, i) => (
-          <button
-            key={i}
-            onClick={() => goTo(i)}
-            aria-label={`Card ${i + 1}`}
-            className="flex items-center justify-center"
-          >
-            <motion.span
-              animate={{
-                width: activeIdx === i ? 28 : 6,
-                background: activeIdx === i ? 'rgba(255,255,255,0.7)' : 'rgba(255,255,255,0.2)',
-              }}
-              transition={spring}
-              className="block h-1.5 rounded-full"
-            />
-          </button>
-        ))}
-      </div>
 
       {/* Modais */}
       <AnimatePresence>
@@ -234,6 +135,170 @@ export function PerformanceBar() {
         {showGov && <GovernanceModal type={showGov} onClose={() => setShowGov(null)} />}
       </AnimatePresence>
     </motion.section>
+  )
+}
+
+// ─── 3D Carousel ─ Mesmo padrão visual do Explorar (perspective + rotateY + drag) ───
+function HomeCarousel3D<T>({
+  items,
+  renderItem,
+}: {
+  items: T[]
+  renderItem: (item: T, isActive: boolean) => React.ReactNode
+}) {
+  const [active, setActive] = useState(0)
+  const dragX = useMotionValue(0)
+  const didDrag = useRef(false)
+
+  const handleDragStart = () => { didDrag.current = false }
+
+  const handleDragEnd = (_: unknown, info: { offset: { x: number } }) => {
+    if (Math.abs(info.offset.x) > 12) {
+      didDrag.current = true
+      if (info.offset.x < -50 && active < items.length - 1) setActive((v) => v + 1)
+      else if (info.offset.x > 50 && active > 0) setActive((v) => v - 1)
+    }
+    animate(dragX, 0, { type: 'spring', stiffness: 600, damping: 44 })
+  }
+
+  return (
+    <div className="space-y-5">
+      {/* 3D Stage — centralizado, com largura reduzida pra mostrar os cards laterais espiando */}
+      <div
+        className="relative mx-auto w-[82%] select-none md:w-[72%]"
+        style={{ perspective: '1100px', perspectiveOrigin: '50% 50%', height: 'clamp(360px, 52vh, 520px)' }}
+      >
+        {items.map((item, i) => {
+          const offset = i - active
+          const isActive = offset === 0
+          const isRight = offset > 0
+          const isLeft = offset < 0
+
+          return (
+            <motion.div
+              key={i}
+              drag={isActive ? 'x' : false}
+              dragConstraints={{ left: 0, right: 0 }}
+              dragElastic={0.18}
+              style={{
+                x: isActive ? dragX : undefined,
+                position: 'absolute',
+                inset: 0,
+                transformStyle: 'preserve-3d',
+                transformOrigin: isRight ? 'left center' : isLeft ? 'right center' : 'center center',
+                zIndex: isActive ? 10 : 1,
+              }}
+              animate={{
+                rotateY: isActive ? 0 : isRight ? 28 : -28,
+                x: isActive ? 0 : isRight ? '46%' : '-46%',
+                z: isActive ? 0 : -30,
+                scale: isActive ? 1 : 0.88,
+                opacity: isActive ? 1 : 0.58,
+              }}
+              transition={carouselSpring}
+              onDragStart={handleDragStart}
+              onDragEnd={handleDragEnd}
+              onClick={() => {
+                if (didDrag.current) { didDrag.current = false; return }
+                if (!isActive) setActive(i)
+              }}
+              className={isActive ? 'cursor-grab active:cursor-grabbing h-full' : 'cursor-pointer h-full'}
+            >
+              <div className="h-full w-full overflow-y-auto ipb-thinscroll">
+                {renderItem(item, isActive)}
+              </div>
+            </motion.div>
+          )
+        })}
+      </div>
+
+      {/* Dots — mesmo estilo Explorar */}
+      <div className="flex items-center justify-center gap-3">
+        {items.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => setActive(i)}
+            className="relative flex items-center justify-center"
+            aria-label={`Card ${i + 1}`}
+          >
+            <motion.span
+              animate={{
+                width: active === i ? 24 : 5,
+                background: active === i ? 'rgba(255,255,255,0.55)' : 'rgba(255,255,255,0.14)',
+              }}
+              transition={carouselSpring}
+              className="block h-1 rounded-full"
+            />
+          </button>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+// ─── Card Sustentabilidade (extraído pra ficar dentro do carrossel 3D) ───
+function SustentabilidadeCard() {
+  return (
+    <div className="ipb-soft h-full rounded-[1.4rem] p-4 md:p-5">
+      <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/75">
+        Sustentabilidade
+      </p>
+
+      {/* TBL */}
+      <div className="mb-3 grid grid-cols-3 gap-1.5">
+        {TBL_ITEMS.map((item) => (
+          <div key={item.label} className="rounded-[0.8rem] ipb-soft px-2 py-2.5 text-center">
+            <item.icon className="mx-auto mb-1 h-4 w-4 text-white/80" />
+            <p className="text-[11px] font-semibold text-white/90">{item.label}</p>
+            <p className="mt-0.5 text-[9px] leading-relaxed text-white/60">{item.desc}</p>
+          </div>
+        ))}
+      </div>
+
+      {/* ODS inline */}
+      <div className="mb-3 text-center">
+        <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/75">ODS</p>
+        <div className="flex flex-wrap justify-center gap-1">
+          {ODS_ITEMS.map((item) => (
+            <div key={item.num} className="flex items-center gap-1 rounded-full ipb-soft px-2 py-0.5">
+              <span className="text-[11px] font-bold text-white/90">{item.num}</span>
+              <span className="text-[9px] text-white/70">{item.label}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* CSV inline */}
+      <div className="text-center">
+        <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/75">CSV — Valor Compartilhado</p>
+        <div className="grid grid-cols-3 gap-1.5">
+          {CSV_ITEMS.map((item) => (
+            <div key={item.label} className="rounded-[0.6rem] ipb-soft px-2 py-2 text-center">
+              <p className="text-[10px] font-semibold text-white/90">{item.label}</p>
+              <p className="text-[9px] leading-relaxed text-white/60">{item.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Sustentabilidade Digital */}
+      <div className="mt-3 rounded-[0.8rem] ipb-soft px-3 py-3">
+        <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/75">Sustentabilidade Digital & ESG</p>
+        <div className="grid grid-cols-2 gap-1.5">
+          {[
+            { label: 'Offline-First como escolha ESG', desc: 'Menos requisições ao servidor = menor consumo de energia de datacenter. Padrão arquitetural com impacto ambiental mensurável.' },
+            { label: 'Pegada de Carbono Digital', desc: 'Cada componente é avaliado pelo custo energético. Bundling otimizado reduz transferência de dados e processamento desnecessário.' },
+            { label: 'Antigreenwashing', desc: 'Sem selos sem evidência. O SEA só declara práticas sustentáveis que são verificáveis no código, na arquitetura ou nos processos.' },
+            { label: 'ESG como produto', desc: 'Sustentabilidade não é relatório — é funcionalidade. Zero papel, menos IRAS, menos tempo de VM = impacto ESG no desfecho do paciente.' },
+          ].map((item) => (
+            <div key={item.label} className="rounded-[0.6rem] ipb-soft px-2 py-2">
+              <p className="text-[10px] font-semibold text-white/90">{item.label}</p>
+              <p className="mt-1 text-[9px] leading-relaxed text-white/55">{item.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
   )
 }
 
@@ -686,9 +751,8 @@ function GovernanceModal({ type, onClose }: { type: string; onClose: () => void 
   )
 }
 
-// ─── Card combinado: Impacto + NPS + Governança em carrossel interno ──────
-// Auto-rotaciona 3 slides com animação suave. Swipe horizontal pra navegar.
-// Dots internos indicam slide ativo. Sem setas — só toque/swipe + auto.
+// ─── Card combinado FLAT: Impacto + NPS + Governança tudo visível ao mesmo tempo ─
+// Sem slides internos — todas as 3 seções aparecem juntas neste card único, scrollable.
 function CombinedStatsCard({
   metrics,
   folhasEconomizadas,
@@ -696,6 +760,7 @@ function CombinedStatsCard({
   fbCount,
   onGovOpen,
   onReportOpen,
+  isActive,
 }: {
   metrics: { prontuarios: number; conteudosAcessados: number; simulacoesUsadas: number; calculosRealizados: number }
   folhasEconomizadas: number
@@ -703,137 +768,63 @@ function CombinedStatsCard({
   fbCount: number
   onGovOpen: (key: string) => void
   onReportOpen: () => void
+  isActive: boolean
 }) {
-  const [slide, setSlide] = useState(0)
-  const [paused, setPaused] = useState(false)
-  const SLIDES = 3
-  const AUTO_MS = 5500
-
-  // Auto-rotate (pausa quando o usuário interage)
-  useEffect(() => {
-    if (paused) return
-    const id = setInterval(() => setSlide((s) => (s + 1) % SLIDES), AUTO_MS)
-    return () => clearInterval(id)
-  }, [paused])
-
-  const SLIDE_TITLES = ['Impacto SEA', 'NPS e Feedback', 'Governança']
-
   return (
-    <div className="ipb-soft rounded-[1.4rem] p-4 md:p-5">
-      {/* Header com título dinâmico + dots */}
-      <div className="mb-3 flex items-center justify-between gap-3">
-        <AnimatePresence mode="wait">
-          <motion.p
-            key={slide}
-            initial={{ opacity: 0, y: 6 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -6 }}
-            transition={{ duration: 0.22 }}
-            className="text-[11px] md:text-[12px] font-semibold uppercase tracking-[0.18em] text-white/85"
-          >
-            {SLIDE_TITLES[slide]}
-          </motion.p>
-        </AnimatePresence>
-
-        {/* Dots internos clicáveis */}
-        <div className="flex items-center gap-1.5">
-          {Array.from({ length: SLIDES }).map((_, i) => (
-            <button
-              key={i}
-              onClick={() => { setSlide(i); setPaused(true) }}
-              aria-label={SLIDE_TITLES[i]}
-              className="flex items-center justify-center py-1"
-            >
-              <motion.span
-                animate={{
-                  width: slide === i ? 22 : 5,
-                  background: slide === i ? 'rgba(224,184,94,0.85)' : 'rgba(255,255,255,0.22)',
-                }}
-                transition={spring}
-                className="block h-1 rounded-full"
-              />
-            </button>
-          ))}
-        </div>
+    <div className="ipb-soft h-full rounded-[1.4rem] p-4 md:p-5">
+      {/* Seção 1 — Impacto SEA */}
+      <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/75">
+        Impacto SEA
+      </p>
+      <div className="mb-4 grid grid-cols-4 gap-1.5">
+        <MiniImpact icon={Stethoscope} value={metrics.prontuarios} label="Prontuários" />
+        <MiniImpact icon={BookOpen} value={metrics.conteudosAcessados} label="Conteúdos" />
+        <MiniImpact icon={Leaf} value={folhasEconomizadas} label="Folhas" />
+        <MiniImpact icon={Heart} value={metrics.calculosRealizados} label="Cálculos" />
       </div>
 
-      {/* Slide swipe area */}
-      <motion.div
-        drag="x"
-        dragConstraints={{ left: 0, right: 0 }}
-        dragElastic={0.22}
-        onDragStart={() => setPaused(true)}
-        onDragEnd={(_, info) => {
-          if (info.offset.x < -50 && slide < SLIDES - 1) setSlide(slide + 1)
-          else if (info.offset.x > 50 && slide > 0) setSlide(slide - 1)
-        }}
-        className="relative min-h-[140px] cursor-grab active:cursor-grabbing select-none"
-      >
-        <AnimatePresence mode="wait">
-          {slide === 0 && (
-            <motion.div
-              key="impact"
-              initial={{ opacity: 0, x: 24 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -24 }}
-              transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
-              className="grid grid-cols-4 gap-1.5"
-            >
-              <MiniImpact icon={Stethoscope} value={metrics.prontuarios} label="Prontuários" />
-              <MiniImpact icon={BookOpen} value={metrics.conteudosAcessados} label="Conteúdos" />
-              <MiniImpact icon={Leaf} value={folhasEconomizadas} label="Folhas" />
-              <MiniImpact icon={Heart} value={metrics.calculosRealizados} label="Cálculos" />
-            </motion.div>
-          )}
+      {/* Divider */}
+      <div className="my-3 h-px bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.10),transparent)]" />
 
-          {slide === 1 && (
-            <motion.div
-              key="nps"
-              initial={{ opacity: 0, x: 24 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -24 }}
-              transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
-              className="grid grid-cols-3 gap-2"
-            >
-              <StatBox value={nps ? String(nps.score) : '--'} label="NPS Score" />
-              <StatBox value={nps ? nps.total : 0} label="Avaliações" />
-              <StatBox value={fbCount} label="Feedbacks" />
-            </motion.div>
-          )}
+      {/* Seção 2 — NPS e Feedback */}
+      <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/75">
+        NPS e Feedback
+      </p>
+      <div className="mb-4 grid grid-cols-3 gap-2">
+        <StatBox value={nps ? String(nps.score) : '--'} label="NPS Score" />
+        <StatBox value={nps ? nps.total : 0} label="Avaliações" />
+        <StatBox value={fbCount} label="Feedbacks" />
+      </div>
 
-          {slide === 2 && (
-            <motion.div
-              key="gov"
-              initial={{ opacity: 0, x: 24 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -24 }}
-              transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
-              className="grid grid-cols-2 gap-2 md:grid-cols-4"
-            >
-              {GOVERNANCE_ITEMS.map((item) => (
-                <button
-                  key={item.label}
-                  onClick={() => {
-                    setPaused(true)
-                    if (item.label.includes('Denúncia')) onReportOpen()
-                    else if (item.label === 'Políticas') onGovOpen('politicas')
-                    else if (item.label === 'Práticas') onGovOpen('praticas')
-                    else if (item.label === 'Compliance') onGovOpen('compliance')
-                    else if (item.label === 'Termos de Uso') onGovOpen('termos')
-                    else if (item.label === 'Política de Cookies') onGovOpen('cookies')
-                    else if (item.label === 'Missão e Valores') onGovOpen('missao')
-                    else if (item.label === 'DPO') onGovOpen('dpo')
-                  }}
-                  className="flex items-center gap-2 rounded-[1rem] ipb-soft px-3 py-2.5 text-left transition-all hover:bg-white/[0.08] hover:border-white/20"
-                >
-                  <item.icon className="h-4 w-4 shrink-0 text-white/80" />
-                  <span className="text-[10px] font-medium tracking-wider text-white/90">{item.label}</span>
-                </button>
-              ))}
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </motion.div>
+      {/* Divider */}
+      <div className="my-3 h-px bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.10),transparent)]" />
+
+      {/* Seção 3 — Governança */}
+      <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/75">
+        Governança
+      </p>
+      <div className="grid grid-cols-2 gap-2 md:grid-cols-4">
+        {GOVERNANCE_ITEMS.map((item) => (
+          <button
+            key={item.label}
+            disabled={!isActive}
+            onClick={() => {
+              if (item.label.includes('Denúncia')) onReportOpen()
+              else if (item.label === 'Políticas') onGovOpen('politicas')
+              else if (item.label === 'Práticas') onGovOpen('praticas')
+              else if (item.label === 'Compliance') onGovOpen('compliance')
+              else if (item.label === 'Termos de Uso') onGovOpen('termos')
+              else if (item.label === 'Política de Cookies') onGovOpen('cookies')
+              else if (item.label === 'Missão e Valores') onGovOpen('missao')
+              else if (item.label === 'DPO') onGovOpen('dpo')
+            }}
+            className="flex items-center gap-2 rounded-[1rem] ipb-soft px-3 py-2.5 text-left transition-all hover:bg-white/[0.08] hover:border-white/20 disabled:cursor-default disabled:hover:bg-transparent"
+          >
+            <item.icon className="h-4 w-4 shrink-0 text-white/80" />
+            <span className="text-[10px] font-medium tracking-wider text-white/90">{item.label}</span>
+          </button>
+        ))}
+      </div>
     </div>
   )
 }

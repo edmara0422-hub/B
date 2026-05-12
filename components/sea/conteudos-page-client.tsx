@@ -1,11 +1,12 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ArrowLeft, BookOpen, Brain, Heart, Wind, Radar, PanelLeftClose, PanelLeftOpen, Search } from 'lucide-react'
+import { ArrowLeft, BookOpen, Brain, Heart, Wind, Radar, PanelLeftClose, PanelLeftOpen, Search, ChevronRight, FileText } from 'lucide-react'
 import Link from 'next/link'
 import type { LucideIcon } from 'lucide-react'
 import { CadernoModulePanel } from '@/components/caderno/caderno-module'
+import { loadModuleContent } from '@/data/caderno-content-loader'
 
 // ── Module data ───────────────────────────────────────────────────────────────
 
@@ -40,21 +41,42 @@ const MODULES: Module[] = [
 const ease = [0.16, 1, 0.3, 1] as const
 
 // ── Workspace Sidebar — lógica IPB Intelligence Kit ──────────────────────────
-// Header com label + busca · lista hierárquica com hair-line · estados ouro/prata.
+// Header label + busca · árvore hierárquica (módulo → tópicos) · estados ouro/prata.
+
+type TopicSummary = { id: string; title: string }
+type ModuleTopicsMap = Record<string, TopicSummary[]>
 
 function WorkspaceSidebar({
   modules,
   activeIndex,
-  onSelect,
+  topicsMap,
+  activeTopicId,
+  onSelectModule,
+  onSelectTopic,
   onClose,
 }: {
   modules: Module[]
   activeIndex: number | null
-  onSelect: (i: number) => void
+  topicsMap: ModuleTopicsMap
+  activeTopicId: string | null
+  onSelectModule: (i: number) => void
+  onSelectTopic: (moduleIndex: number, topicId: string) => void
   onClose: () => void
 }) {
   const [search, setSearch] = useState('')
   const q = search.toLowerCase().trim()
+
+  // Expansão manual independente do "ativo" — clicar caret expande sem trocar de módulo
+  const [expandedManual, setExpandedManual] = useState<Record<number, boolean>>({})
+  const toggleExpand = (idx: number) =>
+    setExpandedManual((prev) => ({ ...prev, [idx]: !prev[idx] }))
+
+  // Quando buscando, expande tudo que casar
+  const isExpanded = (idx: number, hasMatch: boolean) => {
+    if (q) return hasMatch
+    if (expandedManual[idx] !== undefined) return expandedManual[idx]
+    return activeIndex === idx
+  }
 
   return (
     <div
@@ -85,31 +107,39 @@ function WorkspaceSidebar({
           <input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Buscar disciplina..."
+            placeholder="Buscar módulo ou tópico..."
             className="flex-1 bg-transparent text-[11px] text-white/70 outline-none placeholder:text-white/25"
           />
         </div>
       </div>
 
-      {/* Lista de módulos — hair-line entre cada (sempre aberta) */}
+      {/* Árvore: módulo (pai) → tópicos (filhos) — hair-line entre módulos */}
       <div className="ipb-thinscroll flex-1 overflow-y-auto px-2 py-2">
         {modules.map((mod, idx) => {
           const isActive = activeIndex === idx
           const ModIcon = mod.icon
-          // Filtro por busca: título OU overview
-          const matches =
-            !q || mod.title.toLowerCase().includes(q) || mod.overview.toLowerCase().includes(q)
-          if (q && !matches) return null
+          const topics = topicsMap[mod.id] ?? []
+
+          // Busca: aceita módulo OU tópico
+          const modMatches =
+            !q || mod.title.toLowerCase().includes(q) || mod.overview.toLowerCase().includes(q) || mod.id.toLowerCase().includes(q)
+          const topicMatches = q
+            ? topics.filter((t) => t.title.toLowerCase().includes(q) || t.id.toLowerCase().includes(q))
+            : topics
+          const hasAnyMatch = modMatches || topicMatches.length > 0
+          if (q && !hasAnyMatch) return null
+
+          const expanded = isExpanded(idx, q ? topicMatches.length > 0 : false)
+          const visibleTopics = q ? topicMatches : topics
 
           return (
             <div key={mod.id}>
               {/* Hair-line separator entre módulos */}
-              {idx > 0 && !q && <div className="mx-3 my-2 h-px bg-white/[0.06]" />}
+              {idx > 0 && <div className="mx-3 my-2 h-px bg-white/[0.06]" />}
 
               {/* Linha do módulo (clicável) — ativo com border dourada */}
-              <button
-                onClick={() => onSelect(idx)}
-                className="flex w-full items-center gap-2.5 rounded-[1rem] px-3 py-2.5 text-left transition"
+              <div
+                className="flex items-stretch gap-1 rounded-[1rem] transition"
                 style={
                   isActive
                     ? {
@@ -121,37 +151,124 @@ function WorkspaceSidebar({
                     : { border: '1px solid transparent' }
                 }
               >
-                <ModIcon
-                  className={`h-3.5 w-3.5 shrink-0 ${isActive ? 'text-[#d2af5a]' : 'text-white/32'}`}
-                />
-                <div className="min-w-0 flex-1">
-                  <p
-                    className={`text-[9px] uppercase tracking-[0.22em] ${
-                      isActive ? 'text-[#d2af5a]/60' : 'text-white/20'
+                <button
+                  onClick={() => onSelectModule(idx)}
+                  className="flex flex-1 items-center gap-2.5 px-3 py-2.5 text-left"
+                >
+                  <ModIcon
+                    className={`h-3.5 w-3.5 shrink-0 ${isActive ? 'text-[#d2af5a]' : 'text-white/32'}`}
+                  />
+                  <div className="min-w-0 flex-1">
+                    <p
+                      className={`text-[9px] uppercase tracking-[0.22em] ${
+                        isActive ? 'text-[#d2af5a]/60' : 'text-white/20'
+                      }`}
+                    >
+                      {mod.id} · {topics.length || '…'} tópicos
+                    </p>
+                    <p
+                      className={`truncate text-[11px] font-medium leading-snug ${
+                        isActive ? 'text-white/92' : 'text-white/55'
+                      }`}
+                    >
+                      {mod.title}
+                    </p>
+                  </div>
+                  {/* Dot indicador (igual Intelligence Kit) */}
+                  <div
+                    className={`h-1.5 w-1.5 shrink-0 rounded-full transition ${
+                      isActive ? 'bg-[#d2af5a]' : 'bg-white/16'
                     }`}
+                  />
+                </button>
+                {/* Caret de expansão — só aparece se houver tópicos */}
+                {topics.length > 0 && (
+                  <button
+                    onClick={() => toggleExpand(idx)}
+                    title={expanded ? 'Recolher tópicos' : 'Ver tópicos'}
+                    className="flex w-8 items-center justify-center rounded-r-[1rem] text-white/30 transition hover:bg-white/[0.04] hover:text-white/70"
                   >
-                    {mod.id}
-                  </p>
-                  <p
-                    className={`truncate text-[11px] font-medium leading-snug ${
-                      isActive ? 'text-white/92' : 'text-white/55'
-                    }`}
+                    <motion.div animate={{ rotate: expanded ? 90 : 0 }} transition={{ duration: 0.18 }}>
+                      <ChevronRight className="h-3 w-3" />
+                    </motion.div>
+                  </button>
+                )}
+              </div>
+
+              {/* Tópicos aninhados */}
+              <AnimatePresence initial={false}>
+                {expanded && visibleTopics.length > 0 && (
+                  <motion.div
+                    key={`topics-${mod.id}`}
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: 'auto', opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.22, ease }}
+                    className="overflow-hidden"
                   >
-                    {mod.title}
-                  </p>
+                    <div className="relative mt-1.5 ml-[1.45rem] space-y-0.5 border-l border-white/[0.07] pl-2.5">
+                      {visibleTopics.map((t, ti) => {
+                        const isTopicActive = activeTopicId === t.id && isActive
+                        return (
+                          <button
+                            key={t.id}
+                            onClick={() => onSelectTopic(idx, t.id)}
+                            className="flex w-full items-center gap-2 rounded-[0.7rem] px-2 py-1.5 text-left transition"
+                            style={
+                              isTopicActive
+                                ? {
+                                    background: 'rgba(210,175,90,0.06)',
+                                    boxShadow: 'inset 0 0 0 1px rgba(210,175,90,0.18)',
+                                  }
+                                : { background: 'transparent' }
+                            }
+                          >
+                            <FileText
+                              className={`h-3 w-3 shrink-0 ${isTopicActive ? 'text-[#d2af5a]' : 'text-white/28'}`}
+                            />
+                            <span
+                              className={`shrink-0 font-mono text-[8.5px] tracking-[0.06em] ${
+                                isTopicActive ? 'text-[#d2af5a]/70' : 'text-white/26'
+                              }`}
+                            >
+                              {String(ti + 1).padStart(2, '0')}
+                            </span>
+                            <span
+                              className={`truncate text-[10.5px] leading-snug ${
+                                isTopicActive ? 'text-white/90' : 'text-white/52'
+                              }`}
+                            >
+                              {t.title}
+                            </span>
+                          </button>
+                        )
+                      })}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+              {/* Skeleton enquanto os tópicos ainda carregam */}
+              {!q && topics.length === 0 && expanded && (
+                <div className="ml-[1.45rem] mt-1.5 space-y-1 border-l border-white/[0.06] pl-2.5">
+                  {[60, 80, 50].map((w, i) => (
+                    <div
+                      key={i}
+                      className="h-[6px] rounded-full"
+                      style={{ width: `${w}%`, background: 'rgba(255,255,255,0.05)' }}
+                    />
+                  ))}
                 </div>
-                {/* Dot indicador de estado (igual Intelligence Kit) */}
-                <div
-                  className={`h-1.5 w-1.5 shrink-0 rounded-full transition ${
-                    isActive ? 'bg-[#d2af5a]' : 'bg-white/16'
-                  }`}
-                />
-              </button>
+              )}
             </div>
           )
         })}
-        {q && modules.every((m) => !m.title.toLowerCase().includes(q) && !m.overview.toLowerCase().includes(q)) && (
-          <p className="mt-4 px-3 text-[10px] text-white/30">Nenhuma disciplina encontrada.</p>
+        {q && modules.every((m) => {
+          const topics = topicsMap[m.id] ?? []
+          const modOk = m.title.toLowerCase().includes(q) || m.overview.toLowerCase().includes(q) || m.id.toLowerCase().includes(q)
+          const topicOk = topics.some((t) => t.title.toLowerCase().includes(q) || t.id.toLowerCase().includes(q))
+          return !modOk && !topicOk
+        }) && (
+          <p className="mt-4 px-3 text-[10px] text-white/30">Nenhum módulo ou tópico encontrado.</p>
         )}
       </div>
     </div>
@@ -285,12 +402,45 @@ function ModuleRail({
 export default function ConteudosPageClient() {
   const [activeIndex, setActiveIndex] = useState<number | null>(null)
   const [sidebarOpen, setSidebarOpen] = useState(true)
+  const [topicsMap, setTopicsMap] = useState<ModuleTopicsMap>({})
+  const [activeTopicId, setActiveTopicId] = useState<string | null>(null)
+
+  // Pré-carrega os títulos dos tópicos de cada módulo para a árvore da sidebar
+  useEffect(() => {
+    let cancelled = false
+    MODULES.forEach((mod) => {
+      loadModuleContent(mod.id).then((content) => {
+        if (cancelled || !content) return
+        setTopicsMap((prev) =>
+          prev[mod.id]
+            ? prev
+            : { ...prev, [mod.id]: content.topics.map((t) => ({ id: t.id, title: t.title })) },
+        )
+      })
+    })
+    return () => {
+      cancelled = true
+    }
+  }, [])
 
   const current = activeIndex !== null ? MODULES[activeIndex] : null
   const CurrentIcon = current?.icon
 
-  function handleSelect(index: number) {
-    setActiveIndex(activeIndex === index ? null : index)
+  function handleSelectModule(index: number) {
+    if (activeIndex === index) {
+      setActiveIndex(null)
+      setActiveTopicId(null)
+    } else {
+      setActiveIndex(index)
+      setActiveTopicId(null)
+    }
+  }
+
+  function handleSelectTopic(moduleIndex: number, topicId: string) {
+    setActiveIndex(moduleIndex)
+    // Força re-trigger do useEffect no CadernoModulePanel mesmo se for o mesmo id
+    setActiveTopicId(null)
+    requestAnimationFrame(() => setActiveTopicId(topicId))
   }
 
   return (
@@ -332,7 +482,10 @@ export default function ConteudosPageClient() {
                 <WorkspaceSidebar
                   modules={MODULES}
                   activeIndex={activeIndex}
-                  onSelect={handleSelect}
+                  topicsMap={topicsMap}
+                  activeTopicId={activeTopicId}
+                  onSelectModule={handleSelectModule}
+                  onSelectTopic={handleSelectTopic}
                   onClose={() => setSidebarOpen(false)}
                 />
               </div>
@@ -341,7 +494,7 @@ export default function ConteudosPageClient() {
             {/* Coluna direita: rail + conteúdo */}
             <div className="space-y-6">
               {/* Rail (com bolas) */}
-              <ModuleRail modules={MODULES} activeIndex={activeIndex} onSelect={handleSelect} />
+              <ModuleRail modules={MODULES} activeIndex={activeIndex} onSelect={handleSelectModule} />
 
               {/* Module content */}
               <AnimatePresence mode="wait">
@@ -388,7 +541,7 @@ export default function ConteudosPageClient() {
                 <div className="ipb-soft relative overflow-hidden rounded-[2rem]">
                   <div className="pointer-events-none absolute inset-x-0 top-0 h-px silver-divider opacity-40" />
                   <div className="p-5 md:p-6">
-                    <CadernoModulePanel moduleId={current.id} />
+                    <CadernoModulePanel moduleId={current.id} openTopicId={activeTopicId} />
                   </div>
                 </div>
               </motion.div>

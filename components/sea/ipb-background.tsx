@@ -6,8 +6,10 @@ import { motion } from 'framer-motion'
 /**
  * IpbBackground — fundo espacial. Partículas + halos + raios + grade.
  * Visível desde mobile fraco até desktop. Brilho prata+dourado nas linhas.
+ *
+ * Prop `subtle` reduz a intensidade global (Home/Explorar usam true; splash usa default false).
  */
-function CanvasGlow() {
+function CanvasGlow({ subtle = false }: { subtle?: boolean }) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
   useEffect(() => {
@@ -102,12 +104,12 @@ function CanvasGlow() {
     }
   }, [])
 
-  return <canvas ref={canvasRef} className="fixed inset-0 z-0 pointer-events-none" style={{ opacity: 1 }} />
+  return <canvas ref={canvasRef} className="fixed inset-0 z-0 pointer-events-none" style={{ opacity: subtle ? 0.38 : 1 }} />
 }
 
-function HalosDourados() {
+function HalosDourados({ subtle = false }: { subtle?: boolean }) {
   return (
-    <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
+    <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden" style={{ opacity: subtle ? 0.42 : 1 }}>
       {/* Halo central dourado pulsante (mais forte) */}
       <motion.div
         className="absolute rounded-full"
@@ -175,13 +177,14 @@ function HalosDourados() {
   )
 }
 
-export function IpbBackground() {
+export function IpbBackground({ subtle = false }: { subtle?: boolean } = {}) {
   // SEM div de fundo sólido — o body::before/after já dão a base radial.
   // Com solid div cobrindo, o VineCanvas 3D atrás ficava invisível.
+  // `subtle` = Home/Explorar (brilho discreto). Default = splash (intensidade cheia).
   return (
     <>
-      <CanvasGlow />
-      <HalosDourados />
+      <CanvasGlow subtle={subtle} />
+      <HalosDourados subtle={subtle} />
     </>
   )
 }

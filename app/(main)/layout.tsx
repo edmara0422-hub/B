@@ -10,8 +10,9 @@ export default function MainLayout({
   return (
     <AuthGuard>
       {/* Fundo espacial montado UMA vez no layout — persiste em todas as transições
-          de página (Home→Explore→Perfil→Admin) sem recriar o canvas. */}
-      <SeaBackdrop />
+          de página (Home→Explore→Perfil→Admin) sem recriar o canvas.
+          subtle = brilhos espaciais discretos no app (splash mantém intensidade cheia). */}
+      <SeaBackdrop subtle />
       <MainShell>{children}</MainShell>
     </AuthGuard>
   )

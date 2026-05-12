@@ -1,9 +1,6 @@
 'use client'
 
 import dynamic from 'next/dynamic'
-import { BookOpen, Cpu, Brain } from 'lucide-react'
-import type { LucideIcon } from 'lucide-react'
-import BusinessClock from '@/components/sea/greeting-clock-card'
 import { PerformanceBar } from '@/components/sea/performance-bar'
 import { TopBarSEA } from '@/components/sea/top-bar-sea'
 

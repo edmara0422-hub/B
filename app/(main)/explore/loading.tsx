@@ -2,14 +2,12 @@
 export default function ExploreLoading() {
   return (
     <div className="relative min-h-screen bg-[#020202]">
-      <div className="relative z-10 px-4 pb-36 pt-8 md:px-8 md:pt-12">
-        <div className="mx-auto max-w-2xl space-y-10">
-          {/* Clock skeleton */}
-          <div className="h-11 w-full rounded-[1.85rem] bg-white/4 animate-pulse" />
-          {/* Carousel skeleton */}
+      <div className="relative z-10 flex min-h-[calc(100vh-6rem)] w-full flex-col justify-center px-2 pb-36 pt-6 md:px-4 md:pt-8">
+        <div className="mx-auto w-[78%] md:w-[68%]">
+          {/* Carousel skeleton (sem relógio) */}
           <div
             className="w-full rounded-[2rem] bg-white/3 animate-pulse"
-            style={{ height: 'clamp(340px, 58vh, 520px)' }}
+            style={{ height: 'clamp(320px, 56vh, 540px)' }}
           />
         </div>
       </div>

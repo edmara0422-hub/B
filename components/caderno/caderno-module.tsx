@@ -21,7 +21,7 @@ const MODULE_NAMES: Record<string, string> = {
   M5: 'UTI',
 }
 
-export function CadernoModulePanel({ moduleId }: { moduleId: string }) {
+export function CadernoModulePanel({ moduleId, openTopicId: controlledOpenTopicId }: { moduleId: string; openTopicId?: string | null }) {
   const [module, setModule] = useState<CadernoModuleContent | null>(null)
   const [isLoading, setIsLoading] = useState(true)
 
@@ -41,6 +41,15 @@ export function CadernoModulePanel({ moduleId }: { moduleId: string }) {
   const [isTutorLoading, setIsTutorLoading]       = useState(false)
   const [selectionPopup, setSelectionPopup]       = useState<{ x: number; y: number; text: string } | null>(null)
   const popupRef = useRef<HTMLButtonElement>(null)
+
+  // Sincroniza tópico aberto quando vier controlado de fora (sidebar)
+  useEffect(() => {
+    if (controlledOpenTopicId !== undefined && controlledOpenTopicId !== null) {
+      setOpenTopicId(controlledOpenTopicId)
+      setActiveTopicId(controlledOpenTopicId)
+      setActiveSidebarTool('summary')
+    }
+  }, [controlledOpenTopicId])
 
   // ── Selection popup — desktop + mobile ──
   useEffect(() => {

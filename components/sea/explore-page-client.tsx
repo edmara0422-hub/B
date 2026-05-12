@@ -4,7 +4,6 @@ import { motion, useMotionValue, useTransform, useSpring, animate } from 'framer
 import { BookOpen, ChevronRight, Cpu } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
-import BusinessClock from '@/components/sea/greeting-clock-card'
 
 // Defer carousel mount by 1 frame — clock renders instantly, carousel after
 function useDeferredMount() {
@@ -40,13 +39,13 @@ export default function ExplorePageClient() {
   const ready = useDeferredMount()
 
   return (
-    <div className="relative min-h-screen overflow-hidden text-white">
-      <main className="relative z-10 px-2 pb-36 pt-14 md:px-4 md:pt-12">
-        <div className="flex min-h-[calc(100vh-8rem)] w-full flex-col justify-center space-y-6">
-          <BusinessClock variant="hero" showGreeting />
+    <div className="relative h-screen overflow-hidden text-white">
+      {/* Container ocupa a tela toda (descontando o BottomNav ~5rem) e centraliza o carrossel no meio absoluto */}
+      <main className="relative z-10 grid h-[calc(100vh-5rem)] w-full place-items-center px-2 md:px-4">
+        <div className="w-full">
           {ready
             ? <Carousel3D />
-            : <div className="w-full rounded-[2rem] bg-white/3" style={{ height: 'clamp(300px, 50vh, 520px)' }} />
+            : <div className="mx-auto w-[78%] rounded-[2rem] bg-white/3 md:w-[68%]" style={{ height: 'clamp(320px, 56vh, 540px)' }} />
           }
         </div>
       </main>
@@ -87,8 +86,8 @@ function Carousel3D() {
       {/* 3D Stage */}
       <div
         ref={containerRef}
-        className="relative select-none"
-        style={{ perspective: '1100px', perspectiveOrigin: '50% 45%', height: 'clamp(300px, 50vh, 520px)' }}
+        className="relative mx-auto w-[78%] select-none md:w-[68%]"
+        style={{ perspective: '1100px', perspectiveOrigin: '50% 50%', height: 'clamp(320px, 56vh, 540px)' }}
       >
         {CARDS.map((card, i) => {
           const offset = i - active
@@ -111,11 +110,11 @@ function Carousel3D() {
                 zIndex: isActive ? 10 : 1,
               }}
               animate={{
-                rotateY: isActive ? 0 : isRight ? 44 : -44,
-                x: isActive ? 0 : isRight ? '58%' : '-58%',
-                z: isActive ? 0 : -40,
-                scale: isActive ? 1 : 0.82,
-                opacity: isActive ? 1 : 0.46,
+                rotateY: isActive ? 0 : isRight ? 28 : -28,
+                x: isActive ? 0 : isRight ? '46%' : '-46%',
+                z: isActive ? 0 : -30,
+                scale: isActive ? 1 : 0.88,
+                opacity: isActive ? 1 : 0.58,
               }}
               transition={spring}
               onDragStart={handleDragStart}
