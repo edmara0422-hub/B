@@ -39,7 +39,13 @@ export default function AdminPage() {
   // Activity / device tracking
   type ActivityEvent = { action: string; ip: string | null; device: string; ua: string | null; created_at: string }
   type ActivitySession = { id: string; ip: string | null; device: string; ua: string | null; created_at: string; updated_at: string | null; not_after: string | null }
-  type ActivityData = { events: ActivityEvent[]; sessions: ActivitySession[]; suspicion: { level: 'ok' | 'medium' | 'high'; reasons: string[] } }
+  type ActivityData = {
+    lastSignIn: string | null
+    events: ActivityEvent[]
+    sessions: ActivitySession[]
+    suspicion: { level: 'ok' | 'medium' | 'high'; reasons: string[] }
+    debug?: { auditError?: string; sessionsError?: string; rawAuditCount?: number }
+  }
   const [activityUser, setActivityUser] = useState<UserRow | null>(null)
   const [activityData, setActivityData] = useState<ActivityData | null>(null)
   const [activityLoading, setActivityLoading] = useState(false)
@@ -957,6 +963,14 @@ export default function AdminPage() {
 
             {activityData && (
               <div className="space-y-3 max-h-[70vh] overflow-y-auto pr-1">
+                {/* Último login (sempre disponível do auth.users) */}
+                {activityData.lastSignIn && (
+                  <div className="rounded-[0.5rem] border border-white/8 bg-white/[0.02] px-2.5 py-1.5">
+                    <p className="text-[8px] uppercase tracking-[0.16em] text-white/35">Último login</p>
+                    <p className="text-[10px] text-white/72">{new Date(activityData.lastSignIn).toLocaleString('pt-BR')}</p>
+                  </div>
+                )}
+
                 {/* Suspicion indicator */}
                 <div
                   className="rounded-[0.6rem] border px-2.5 py-2"
@@ -1015,7 +1029,16 @@ export default function AdminPage() {
                 <div>
                   <p className="mb-1.5 text-[9px] font-semibold uppercase tracking-[0.16em] text-white/55">Histórico de eventos ({activityData.events.length})</p>
                   {activityData.events.length === 0 ? (
-                    <p className="text-[10px] text-white/30">Sem registros nos últimos 30 dias.</p>
+                    <div className="rounded-[0.5rem] border border-white/8 bg-white/[0.02] px-2.5 py-2 text-[9px] text-white/40">
+                      <p>O Supabase não tem registro de eventos para este usuário nos últimos 30 dias.</p>
+                      <p className="mt-1 text-white/30">Possíveis razões: audit log desabilitado no projeto, eventos antigos &gt; 30 dias, ou usuário ainda não logou após instalação.</p>
+                      {activityData.debug && (
+                        <details className="mt-1.5">
+                          <summary className="cursor-pointer text-[8px] text-white/30">debug</summary>
+                          <pre className="mt-1 text-[8px] text-white/40">{JSON.stringify(activityData.debug, null, 2)}</pre>
+                        </details>
+                      )}
+                    </div>
                   ) : (
                     <div className="space-y-1">
                       {activityData.events.map((e, i) => (

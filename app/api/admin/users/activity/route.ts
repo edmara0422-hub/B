@@ -106,42 +106,48 @@ export async function POST(request: Request) {
   // Use admin client to read auth schema tables
   const admin = getSupabaseAdminClient()
 
-  // Audit log entries — last 30 days, max 50
+  // 1. Get user info (always present — last_sign_in_at is on auth.users)
+  let lastSignIn: string | null = null
+  try {
+    const { data: userData, error: userErr } = await admin.auth.admin.getUserById(userId)
+    if (!userErr && userData?.user) {
+      lastSignIn = userData.user.last_sign_in_at ?? null
+    }
+  } catch { /* ignore */ }
+
+  // 2. Audit log entries — via RPC (função SECURITY DEFINER no schema public)
   const sinceIso = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString()
-  const { data: auditRows, error: auditErr } = await admin
-    .schema('auth')
-    .from('audit_log_entries')
-    .select('ip_address, payload, created_at')
-    .gte('created_at', sinceIso)
-    .order('created_at', { ascending: false })
-    .limit(200)
+  const debug: { auditError?: string; sessionsError?: string; rawAuditCount?: number } = {}
 
-  if (auditErr) {
-    return NextResponse.json({ error: `audit: ${auditErr.message}` }, { status: 500 })
+  let events: AuditEvent[] = []
+  try {
+    const { data: auditRows, error: auditErr } = await admin.rpc('admin_get_user_audit', {
+      target_user: userId,
+      since_iso: sinceIso,
+    })
+    if (auditErr) debug.auditError = auditErr.message
+    debug.rawAuditCount = auditRows?.length ?? 0
+    events = (auditRows ?? []) as AuditEvent[]
+  } catch (e) {
+    debug.auditError = e instanceof Error ? e.message : 'audit rpc failed'
   }
 
-  // Filter audit by actor_id matching userId (the payload has actor_id)
-  const events: AuditEvent[] = (auditRows ?? []).filter((r) => {
-    const p = r.payload as AuditEvent['payload']
-    return p?.actor_id === userId
-  }) as AuditEvent[]
-
-  // Sessions — active for this user
-  const { data: sessionRows, error: sessionErr } = await admin
-    .schema('auth')
-    .from('sessions')
-    .select('id, user_id, created_at, updated_at, user_agent, ip, not_after')
-    .eq('user_id', userId)
-    .order('updated_at', { ascending: false })
-
-  if (sessionErr) {
-    return NextResponse.json({ error: `sessions: ${sessionErr.message}` }, { status: 500 })
+  // 3. Sessions — via RPC
+  let sessions: SessionRow[] = []
+  try {
+    const { data: sessionRows, error: sessionErr } = await admin.rpc('admin_get_user_sessions', {
+      target_user: userId,
+    })
+    if (sessionErr) debug.sessionsError = sessionErr.message
+    sessions = (sessionRows ?? []) as SessionRow[]
+  } catch (e) {
+    debug.sessionsError = e instanceof Error ? e.message : 'sessions rpc failed'
   }
 
-  const sessions: SessionRow[] = sessionRows ?? []
   const suspicion = computeSuspicion(events, sessions)
 
   return NextResponse.json({
+    lastSignIn,
     events: events.slice(0, 50).map((e) => ({
       action: e.payload?.action ?? 'unknown',
       ip: e.ip_address ?? null,
@@ -159,5 +165,6 @@ export async function POST(request: Request) {
       not_after: s.not_after,
     })),
     suspicion,
+    debug,
   })
 }
