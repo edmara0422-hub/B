@@ -54,16 +54,14 @@ function WorkspaceSidebar({
   const q = search.toLowerCase().trim()
 
   return (
-    <div className="ipb-soft flex flex-col rounded-[1.65rem]">
-      {/* Header sticky com label + busca + close */}
+    <div
+      className="ipb-soft flex flex-col overflow-hidden rounded-[1.65rem]"
+      style={{ height: 'calc(100vh - 9rem)' }}
+    >
+      {/* Header fixo no topo da sidebar */}
       <div
-        className="sticky top-0 z-10 rounded-t-[1.65rem] px-4 pb-3 pt-4"
-        style={{
-          borderBottom: '1px solid rgba(210,175,90,0.12)',
-          background: 'rgba(8,8,10,0.86)',
-          backdropFilter: 'blur(16px)',
-          WebkitBackdropFilter: 'blur(16px)',
-        }}
+        className="shrink-0 rounded-t-[1.65rem] px-4 pb-3 pt-4"
+        style={{ borderBottom: '1px solid rgba(210,175,90,0.12)' }}
       >
         <div className="mb-3 flex items-center justify-between">
           <p className="text-[9px] uppercase tracking-[0.44em] text-white/40">Sistemas</p>
@@ -90,8 +88,8 @@ function WorkspaceSidebar({
         </div>
       </div>
 
-      {/* Lista de sistemas — hair-line entre cada */}
-      <div className="px-2 py-2">
+      {/* Lista de sistemas — scroll interno (estilo Business) */}
+      <div className="ipb-thinscroll flex-1 overflow-y-auto px-2 py-2">
         {modules.map((mod, idx) => {
           const isActive = activeIndex === idx
           const ModIcon = mod.icon
