@@ -129,18 +129,19 @@ function Scene({ tier }: { tier: 'high' | 'mid' | 'low' }) {
       {/* Sem <color background> — canvas transparente pra body bg passar atrás */}
       <ambientLight intensity={0.01} />
       <CameraRig />
-      <StarLayer count={tier === 'high' ? 3000 : 1800} spread={80} zRange={[-60, -20]} size={0.018} speed={0.002} opacity={0.55} />
-      <StarLayer count={tier === 'high' ? 800 : 500} spread={55} zRange={[-20, 0]} size={0.035} speed={0.004} opacity={0.7} />
-      <StarLayer count={200} spread={30} zRange={[0, 8]} size={0.055} speed={0.007} opacity={0.85} />
-      <BrightStars />
+      {/* Reduzido pra ser mais discreto — IpbBackground (2D) é o protagonista. */}
+      <StarLayer count={tier === 'high' ? 1200 : 600} spread={80} zRange={[-60, -20]} size={0.014} speed={0.002} opacity={0.35} />
+      <StarLayer count={tier === 'high' ? 300 : 180} spread={55} zRange={[-20, 0]} size={0.025} speed={0.004} opacity={0.45} />
+      <StarLayer count={80} spread={30} zRange={[0, 8]} size={0.04} speed={0.007} opacity={0.55} />
+      {/* Sparkles mais sutis */}
       {tier !== 'low' && (
-        <Sparkles count={60} scale={18} size={1.6} speed={0.15} opacity={0.55} color="#ffffff" />
+        <Sparkles count={20} scale={18} size={1.2} speed={0.1} opacity={0.3} color="#ffffff" />
       )}
-      <VineTendrils />
+      {/* Bloom bem mais suave (intensity 1.4 → 0.5, threshold 0.5 → 0.7) */}
       {tier !== 'low' && (
         <EffectComposer multisampling={tier === 'high' ? 4 : 0}>
-          <Bloom intensity={1.4} luminanceThreshold={0.5} luminanceSmoothing={0.9} mipmapBlur radius={0.8} />
-          <Vignette offset={0.2} darkness={0.85} />
+          <Bloom intensity={0.5} luminanceThreshold={0.7} luminanceSmoothing={0.9} mipmapBlur radius={0.6} />
+          <Vignette offset={0.3} darkness={0.7} />
         </EffectComposer>
       )}
     </>
