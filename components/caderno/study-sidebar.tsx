@@ -135,9 +135,33 @@ export function StudySidebar({
                     }`}
                   >
                     {msg.role === 'assistant' && (
-                      <p className="mb-1 text-[9px] uppercase tracking-[0.2em] text-white/28">Tutor</p>
+                      <p className="mb-1 flex items-center gap-1.5 text-[9px] uppercase tracking-[0.2em] text-white/28">
+                        Tutor
+                        {msg.evidence && msg.evidence.length > 0 && (
+                          <span className="rounded-full border border-[#34d39930] bg-[#34d39908] px-1.5 py-px text-[7px] text-[#6ee7b7]">
+                            evidência web
+                          </span>
+                        )}
+                      </p>
                     )}
                     {msg.content}
+                    {msg.role === 'assistant' && msg.evidence && msg.evidence.length > 0 && (
+                      <div className="mt-2 space-y-0.5 border-t border-white/8 pt-2">
+                        <p className="text-[8px] uppercase tracking-[0.14em] text-white/40">Fontes citadas</p>
+                        {msg.evidence.map((src, ei) => (
+                          <a
+                            key={ei}
+                            href={src.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="block truncate text-[10px] text-[#6ee7b7] hover:text-[#86efac]"
+                            title={src.url}
+                          >
+                            [{ei + 1}] {src.title}
+                          </a>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 ))}
                 {isTutorLoading && (

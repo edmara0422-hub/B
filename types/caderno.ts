@@ -26,4 +26,5 @@ export type CadernoModuleContent = {
 export type TutorMessage = {
   role: 'user' | 'assistant'
   content: string
+  evidence?: Array<{ title: string; url: string }> // citações web via Tavily
 }

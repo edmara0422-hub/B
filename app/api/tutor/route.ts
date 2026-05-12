@@ -1,7 +1,35 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { tavilySearch, type TavilyResult } from '@/lib/tavily'
 
 const GROQ_API_KEY = process.env.GROQ_API_KEY ?? ''
 const GROQ_URL = 'https://api.groq.com/openai/v1/chat/completions'
+
+// Detecta se a pergunta merece busca de evidência fresca (Tavily)
+// Aciona quando há palavras-chave indicando: guidelines, estudos, novas evidências, controvérsias
+function needsEvidence(question: string, selectedText?: string): boolean {
+  const fullText = `${question} ${selectedText ?? ''}`.toLowerCase()
+  const evidenceTriggers = [
+    'guideline', 'diretriz', 'evidência', 'evidencia', 'estudo recente', 'recente',
+    'meta-análise', 'meta-analise', 'revisão', 'revisao', 'consenso', 'atualizado',
+    'atualização', 'atualizacao', '2024', '2025', '2026', 'novo', 'nova', 'novidade',
+    'controvers', 'debate', 'comparativ', 'qual melhor', 'qual e melhor', 'qual a melhor',
+    'pesquisa', 'publicado', 'amib', 'sbpt', 'ats', 'ers', 'esicm',
+  ]
+  return evidenceTriggers.some((kw) => fullText.includes(kw))
+}
+
+// Constrói query específica de fisioterapia/medicina pra Tavily
+function buildClinicalQuery(question: string, topicTitle: string, moduleId: string): string {
+  const moduleKw: Record<string, string> = {
+    M1: 'neurology physiotherapy ICU',
+    M2: 'mechanical ventilation respiratory therapy ICU',
+    M3: 'cardiology rehabilitation ICU',
+  }
+  const ctx = moduleKw[moduleId] ?? 'physiotherapy intensive care'
+  // Usa parte da pergunta + contexto do módulo + tópico atual + filtros temporais
+  const cleanQuestion = question.replace(/[?!]/g, '').slice(0, 100)
+  return `${cleanQuestion} ${ctx} ${topicTitle} 2024 2025 evidence guidelines`
+}
 
 const MODULE_CONTEXT: Record<string, string> = {
   M1: `Módulo 1 — Neurologia e Neurociência aplicada à Fisioterapia:
@@ -82,7 +110,7 @@ export async function OPTIONS() {
 
 export async function POST(req: NextRequest) {
   try {
-    const { selectedText, question, topicTitle, moduleId, history = [] } = await req.json()
+    const { selectedText, question, topicTitle, moduleId, history = [], forceEvidence = false } = await req.json()
 
     if (!question?.trim()) {
       return NextResponse.json({ error: 'Pergunta obrigatória' }, { status: 400, headers: CORS_HEADERS })
@@ -90,7 +118,31 @@ export async function POST(req: NextRequest) {
 
     const moduleContext = MODULE_CONTEXT[moduleId] ?? 'fisioterapia clínica geral'
 
-    const contextMsg = `[Contexto do módulo]\n${moduleContext}\n\n[Tópico atual]\n${topicTitle}${selectedText ? `\n\n[Trecho selecionado pelo aluno]\n"${selectedText}"` : ''}`
+    // Busca evidência fresca via Tavily quando a pergunta tem trigger OU foi pedido explicitamente
+    let evidenceBlock = ''
+    let evidenceSources: Array<{ title: string; url: string }> = []
+    const shouldFetchEvidence = forceEvidence || needsEvidence(question, selectedText)
+
+    if (shouldFetchEvidence && process.env.TAVILY_API_KEY) {
+      try {
+        const tavQuery = buildClinicalQuery(question, topicTitle ?? '', moduleId ?? '')
+        const tav = await tavilySearch({
+          query: tavQuery,
+          searchDepth: 'basic',
+          maxResults: 4,
+          includeAnswer: true,
+        })
+        const topResults = tav.results.slice(0, 4) as TavilyResult[]
+        if (topResults.length > 0) {
+          evidenceSources = topResults.map((r) => ({ title: r.title, url: r.url }))
+          evidenceBlock = `\n\n[Evidência fresca da web · Tavily ${new Date().toLocaleDateString('pt-BR')}]\n${tav.answer ? `Resumo: ${tav.answer}\n\n` : ''}${topResults.map((r, i) => `[${i + 1}] ${r.title}\n${r.content.slice(0, 350)}\nFonte: ${r.url}`).join('\n\n')}\n\nUSE essa evidência se for relevante e CITE entre colchetes (ex: [1] ou [2]) no fim das frases que usaram a fonte.`
+        }
+      } catch (e) {
+        console.warn('[tutor] Tavily failed (continuing without evidence):', e instanceof Error ? e.message : e)
+      }
+    }
+
+    const contextMsg = `[Contexto do módulo]\n${moduleContext}\n\n[Tópico atual]\n${topicTitle}${selectedText ? `\n\n[Trecho selecionado pelo aluno]\n"${selectedText}"` : ''}${evidenceBlock}`
 
     const messages = [
       { role: 'system', content: SYSTEM_PROMPT },
@@ -130,7 +182,14 @@ export async function POST(req: NextRequest) {
     const data = await response.json()
     const text = data.choices?.[0]?.message?.content ?? 'Sem resposta do tutor.'
 
-    return NextResponse.json({ response: text, source: 'groq' }, { headers: CORS_HEADERS })
+    return NextResponse.json(
+      {
+        response: text,
+        source: evidenceSources.length > 0 ? 'groq+tavily' : 'groq',
+        evidence: evidenceSources, // [{ title, url }] — front-end pode renderizar links
+      },
+      { headers: CORS_HEADERS },
+    )
   } catch (err) {
     console.error('[tutor]', err)
     return NextResponse.json(

@@ -121,8 +121,13 @@ export function CadernoModulePanel({ moduleId, openTopicId: controlledOpenTopicI
         }),
       })
       const data = await res.json()
+      const assistantMsg: TutorMessage = {
+        role: 'assistant',
+        content: data.response,
+        evidence: Array.isArray(data.evidence) ? data.evidence : undefined,
+      }
       setTutorHistory((h) => ({
-        ...h, [resolvedTopicId]: [...updated, { role: 'assistant', content: data.response }],
+        ...h, [resolvedTopicId]: [...updated, assistantMsg],
       }))
     } catch {
       setTutorHistory((h) => ({
