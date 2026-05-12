@@ -205,8 +205,8 @@ export default function SistemasPageClient() {
             </div>
           </div>
 
-          {/* Sidebar (desktop) + Conteúdo */}
-          <div className={sidebarOpen ? 'lg:grid lg:grid-cols-[240px_1fr] lg:gap-5 lg:items-start' : ''}>
+          {/* Sidebar (desktop) + Conteúdo — Intelligence Kit: 280px largura, altura natural */}
+          <div className={sidebarOpen ? 'lg:grid lg:grid-cols-[280px_1fr] lg:gap-5 lg:items-start' : ''}>
             {/* Sidebar — só em desktop quando aberta */}
             {sidebarOpen && (
               <div className="hidden lg:block">
