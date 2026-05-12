@@ -68,8 +68,7 @@ function WorkspaceSidebar({
 
   return (
     <div
-      className="ipb-soft flex flex-col overflow-hidden rounded-[1.65rem]"
-      style={{ height: 'calc(100vh - 9rem)' }}
+      className="ipb-soft flex flex-col overflow-hidden rounded-[1.65rem] h-[50vh] lg:h-[calc(100vh-9rem)]"
     >
       {/* Header: label + busca + close (lógica Intelligence Kit) — fixo no topo da sidebar */}
       <div
@@ -437,10 +436,10 @@ export default function ConteudosPageClient() {
           {/* Sidebar (desktop) + Rail + Conteúdo — Intelligence Kit:
               280px largura, altura NATURAL (curta), todos os tópicos visíveis,
               página rola pra mostrar tudo. Header de busca sticky por dentro. */}
-          <div className={sidebarOpen ? 'lg:grid lg:grid-cols-[280px_1fr] lg:gap-5 lg:items-start' : ''}>
-            {/* Sidebar — só em desktop quando aberta */}
+          <div className={sidebarOpen ? 'space-y-4 lg:grid lg:grid-cols-[280px_1fr] lg:gap-5 lg:space-y-0 lg:items-start' : ''}>
+            {/* Sidebar visível em mobile e desktop */}
             {sidebarOpen && (
-              <div className="hidden lg:block">
+              <div className="block">
                 <WorkspaceSidebar
                   modules={MODULES}
                   activeIndex={activeIndex}

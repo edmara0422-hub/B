@@ -115,7 +115,7 @@ export function TopBarSEA() {
                 </span>
               </div>
               <span
-                className="hidden text-[9px] uppercase tracking-[0.12em] text-white/25 sm:block"
+                className="text-[8px] uppercase tracking-[0.12em] text-white/25 sm:text-[9px]"
                 style={{ fontFamily: 'Poppins, sans-serif' }}
               >
                 {dateLabel}
@@ -126,9 +126,9 @@ export function TopBarSEA() {
 
         {/* ── DIREITA: zoom A−/A+ + bell + perfil ── */}
         <div className="flex shrink-0 items-center gap-1.5 md:gap-2">
-          {/* Zoom — só desktop pra não bagunçar mobile */}
+          {/* Zoom A−/A+ — visível em mobile e desktop */}
           <div
-            className="hidden md:flex items-center gap-0.5 overflow-hidden rounded-[0.6rem] border border-white/10"
+            className="flex items-center gap-0.5 overflow-hidden rounded-[0.6rem] border border-white/10"
             style={{ background: zoomShellBg }}
           >
             <button
@@ -136,12 +136,12 @@ export function TopBarSEA() {
               disabled={scalePct <= 20}
               aria-label="Diminuir texto"
               title="Diminuir texto"
-              className="flex h-7 w-7 items-center justify-center text-white/40 transition hover:text-white/75 disabled:opacity-20 disabled:cursor-not-allowed"
+              className="flex h-6 w-6 items-center justify-center text-white/40 transition hover:text-white/75 disabled:opacity-20 disabled:cursor-not-allowed md:h-7 md:w-7"
             >
               <span className="text-[9px] font-bold" style={{ fontFamily: 'monospace' }}>A−</span>
             </button>
             <span
-              className="select-none px-1 text-[8px] tabular-nums text-white/25 w-[28px] text-center"
+              className="hidden select-none px-1 text-[8px] tabular-nums text-white/25 w-[28px] text-center md:inline-block"
               style={{ fontFamily: 'monospace' }}
             >
               {scalePct}%
@@ -151,7 +151,7 @@ export function TopBarSEA() {
               disabled={scalePct >= 200}
               aria-label="Aumentar texto"
               title="Aumentar texto"
-              className="flex h-7 w-7 items-center justify-center text-white/40 transition hover:text-white/75 disabled:opacity-20 disabled:cursor-not-allowed"
+              className="flex h-6 w-6 items-center justify-center text-white/40 transition hover:text-white/75 disabled:opacity-20 disabled:cursor-not-allowed md:h-7 md:w-7"
             >
               <span className="text-[11px] font-bold" style={{ fontFamily: 'monospace' }}>A+</span>
             </button>

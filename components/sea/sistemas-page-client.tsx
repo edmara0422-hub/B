@@ -55,8 +55,7 @@ function WorkspaceSidebar({
 
   return (
     <div
-      className="ipb-soft flex flex-col overflow-hidden rounded-[1.65rem]"
-      style={{ height: 'calc(100vh - 9rem)' }}
+      className="ipb-soft flex flex-col overflow-hidden rounded-[1.65rem] h-[40vh] lg:h-[calc(100vh-9rem)]"
     >
       {/* Header fixo no topo da sidebar */}
       <div
@@ -203,11 +202,11 @@ export default function SistemasPageClient() {
             </div>
           </div>
 
-          {/* Sidebar (desktop) + Conteúdo — Intelligence Kit: 280px largura, altura natural */}
-          <div className={sidebarOpen ? 'lg:grid lg:grid-cols-[280px_1fr] lg:gap-5 lg:items-start' : ''}>
-            {/* Sidebar — só em desktop quando aberta */}
+          {/* Sidebar (mobile + desktop) + Conteúdo */}
+          <div className={sidebarOpen ? 'space-y-4 lg:grid lg:grid-cols-[280px_1fr] lg:gap-5 lg:space-y-0 lg:items-start' : ''}>
+            {/* Sidebar visível em mobile e desktop */}
             {sidebarOpen && (
-              <div className="hidden lg:block">
+              <div className="block">
                 <WorkspaceSidebar
                   modules={SYSTEMS}
                   activeIndex={activeIndex}
@@ -250,10 +249,9 @@ export default function SistemasPageClient() {
                       </div>
                     </div>
 
-                    {/* Panel real (Prontuário ICU ou Calculadoras) — funções intactas */}
-                    <div className="ipb-soft relative overflow-hidden rounded-[2rem]">
-                      <div className="p-5 md:p-6">{current.panel()}</div>
-                    </div>
+                    {/* Panel real (Prontuário ICU ou Calculadoras) — sem wrapper externo
+                        pra não dobrar o ipb-soft com os cards internos (que já são ipb-soft) */}
+                    <div className="relative">{current.panel()}</div>
                   </motion.div>
                 ) : (
                   <motion.div
