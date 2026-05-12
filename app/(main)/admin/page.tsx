@@ -10,6 +10,7 @@ import {
   Mail, MessageSquare, PencilLine, Plus, RefreshCw, Save, Search,
   Send, Settings, Shield, Trash2, Unlock, User, Users, X,
   CheckCircle2, AlertTriangle, TrendingUp, Zap, UserMinus, UserPlus, ArrowRightLeft,
+  Activity, LogOut, Smartphone, MapPin,
 } from 'lucide-react'
 import { AreaChart, Area, BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts'
 
@@ -35,6 +36,13 @@ export default function AdminPage() {
   const [editEmail, setEditEmail] = useState('')
   const [resetPwUser, setResetPwUser] = useState<string | null>(null)
   const [resetPwValue, setResetPwValue] = useState('')
+  // Activity / device tracking
+  type ActivityEvent = { action: string; ip: string | null; device: string; ua: string | null; created_at: string }
+  type ActivitySession = { id: string; ip: string | null; device: string; ua: string | null; created_at: string; updated_at: string | null; not_after: string | null }
+  type ActivityData = { events: ActivityEvent[]; sessions: ActivitySession[]; suspicion: { level: 'ok' | 'medium' | 'high'; reasons: string[] } }
+  const [activityUser, setActivityUser] = useState<UserRow | null>(null)
+  const [activityData, setActivityData] = useState<ActivityData | null>(null)
+  const [activityLoading, setActivityLoading] = useState(false)
   // Create new login (admin can register fresh accounts with email auto-confirmed)
   const [creatingUser, setCreatingUser] = useState(false)
   const [newName, setNewName] = useState('')
@@ -184,6 +192,51 @@ export default function AdminPage() {
     await supabase.auth.resetPasswordForEmail(email, { redirectTo: `${window.location.origin}/auth/reset-password` })
     setResetPwUser(null); setResetPwValue('')
     flash(`Email de reset enviado para ${email}.`)
+  }
+
+  // ── Activity / Device Tracking ──
+  const openActivity = async (u: UserRow) => {
+    setActivityUser(u)
+    setActivityData(null)
+    setActivityLoading(true)
+    try {
+      const res = await fetch('/api/admin/users/activity', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId: u.id }),
+      })
+      const data = await res.json()
+      if (!res.ok) {
+        flash(data?.error || 'Erro ao carregar atividade.')
+        return
+      }
+      setActivityData(data as ActivityData)
+    } catch (e) {
+      flash(e instanceof Error ? e.message : 'Erro de rede.')
+    } finally {
+      setActivityLoading(false)
+    }
+  }
+  const forceLogoutUser = async () => {
+    if (!activityUser) return
+    if (!confirm(`Forçar logout de TODAS as sessões de ${activityUser.email}?`)) return
+    try {
+      const res = await fetch('/api/admin/users/force-logout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId: activityUser.id }),
+      })
+      const data = await res.json()
+      if (!res.ok) {
+        flash(data?.error || 'Erro ao forçar logout.')
+        return
+      }
+      flash('Sessões invalidadas. Usuário precisa fazer login de novo.')
+      // Refresh activity data
+      openActivity(activityUser)
+    } catch (e) {
+      flash(e instanceof Error ? e.message : 'Erro de rede.')
+    }
   }
 
   // ── Sub Actions ──
@@ -558,6 +611,7 @@ export default function AdminPage() {
                     </div>
                     <div className="flex shrink-0 gap-0.5">
                       <button onClick={() => { setEditingUser(u.id); setEditName(u.name || ''); setEditEmail(u.email || '') }} title="Editar" className="flex h-5 w-5 items-center justify-center rounded-[0.3rem] border border-white/8 text-white/65 hover:text-white/60"><PencilLine className="h-2.5 w-2.5" /></button>
+                      <button onClick={() => openActivity(u)} title="Atividade · dispositivos · IPs" className="flex h-5 w-5 items-center justify-center rounded-[0.3rem] border border-white/8 text-white/65 hover:text-white/60"><Activity className="h-2.5 w-2.5" /></button>
                       <button onClick={() => setResetPwUser(u.id)} title="Reset senha" className="flex h-5 w-5 items-center justify-center rounded-[0.3rem] border border-white/8 text-white/65 hover:text-white/60"><Key className="h-2.5 w-2.5" /></button>
                       <button onClick={() => blockUser(u.id, !u.blocked)} title={u.blocked ? 'Desbloquear' : 'Bloquear'} className="flex h-5 w-5 items-center justify-center rounded-[0.3rem] border border-white/8 text-white/65 hover:text-white/60">{u.blocked ? <Unlock className="h-2.5 w-2.5" /> : <Ban className="h-2.5 w-2.5" />}</button>
                       {u.role !== 'admin' && u.id !== user?.id && (
@@ -878,6 +932,119 @@ export default function AdminPage() {
         </div>
       )}
       </div>
+
+      {/* ══════ ACTIVITY MODAL — auditoria de logins, IPs, dispositivos e sessões ativas ══════ */}
+      {activityUser && (
+        <div
+          className="fixed inset-0 z-[200] flex items-center justify-center bg-black/70 px-2 backdrop-blur-sm"
+          onClick={() => { setActivityUser(null); setActivityData(null) }}
+        >
+          <div
+            className="w-full max-w-2xl rounded-[1rem] border border-white/10 p-4"
+            style={{ background: 'linear-gradient(180deg,rgba(20,20,20,0.99) 0%,rgba(8,8,8,1) 100%)' }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Header */}
+            <div className="mb-3 flex items-center justify-between gap-2">
+              <div className="min-w-0">
+                <p className="truncate text-[10px] font-semibold text-white/80">Atividade · {activityUser.name || activityUser.email}</p>
+                <p className="truncate text-[8px] text-white/40">{activityUser.email}</p>
+              </div>
+              <button onClick={() => { setActivityUser(null); setActivityData(null) }} className="flex h-6 w-6 items-center justify-center rounded-[0.4rem] border border-white/10 text-white/60 hover:text-white"><X className="h-3 w-3" /></button>
+            </div>
+
+            {activityLoading && <p className="py-6 text-center text-[10px] text-white/40">Carregando…</p>}
+
+            {activityData && (
+              <div className="space-y-3 max-h-[70vh] overflow-y-auto pr-1">
+                {/* Suspicion indicator */}
+                <div
+                  className="rounded-[0.6rem] border px-2.5 py-2"
+                  style={{
+                    borderColor: activityData.suspicion.level === 'high' ? 'rgba(248,113,113,0.35)' : activityData.suspicion.level === 'medium' ? 'rgba(250,204,21,0.35)' : 'rgba(74,222,128,0.30)',
+                    background: activityData.suspicion.level === 'high' ? 'rgba(248,113,113,0.06)' : activityData.suspicion.level === 'medium' ? 'rgba(250,204,21,0.06)' : 'rgba(74,222,128,0.05)',
+                  }}
+                >
+                  <div className="flex items-center gap-2">
+                    {activityData.suspicion.level === 'high' ? <AlertTriangle className="h-3.5 w-3.5 text-[#f87171]" /> : activityData.suspicion.level === 'medium' ? <AlertTriangle className="h-3.5 w-3.5 text-[#facc15]" /> : <CheckCircle2 className="h-3.5 w-3.5 text-[#4ade80]" />}
+                    <p className="text-[10px] font-semibold" style={{ color: activityData.suspicion.level === 'high' ? '#fca5a5' : activityData.suspicion.level === 'medium' ? '#fde68a' : '#86efac' }}>
+                      {activityData.suspicion.level === 'high' ? 'Suspeita ALTA de compartilhamento' : activityData.suspicion.level === 'medium' ? 'Atividade incomum' : 'Padrão normal'}
+                    </p>
+                  </div>
+                  {activityData.suspicion.reasons.length > 0 && (
+                    <ul className="mt-1 pl-5 text-[9px] text-white/55">
+                      {activityData.suspicion.reasons.map((r, i) => <li key={i} className="list-disc">{r}</li>)}
+                    </ul>
+                  )}
+                </div>
+
+                {/* Active sessions */}
+                <div>
+                  <div className="mb-1.5 flex items-center justify-between">
+                    <p className="text-[9px] font-semibold uppercase tracking-[0.16em] text-white/55">Sessões ativas ({activityData.sessions.length})</p>
+                    {activityData.sessions.length > 0 && (
+                      <button
+                        onClick={forceLogoutUser}
+                        className="flex h-6 items-center gap-1 rounded-[0.4rem] border border-[#f8717125] bg-[#f8717108] px-2 text-[9px] font-semibold text-[#fca5a5] hover:bg-[#f8717115]"
+                      >
+                        <LogOut className="h-2.5 w-2.5" /> Forçar logout em todos
+                      </button>
+                    )}
+                  </div>
+                  {activityData.sessions.length === 0 ? (
+                    <p className="text-[10px] text-white/30">Nenhuma sessão ativa.</p>
+                  ) : (
+                    <div className="space-y-1">
+                      {activityData.sessions.map((s) => (
+                        <div key={s.id} className="flex items-center gap-2 rounded-[0.5rem] border border-white/8 bg-white/[0.02] px-2 py-1.5">
+                          <Smartphone className="h-3 w-3 shrink-0 text-white/45" />
+                          <div className="min-w-0 flex-1">
+                            <p className="truncate text-[10px] text-white/75">{s.device}</p>
+                            <p className="truncate text-[8px] text-white/40">
+                              {s.ip ? <><MapPin className="mr-0.5 inline h-2 w-2" />{s.ip}</> : 'IP desconhecido'}
+                              {s.updated_at ? ` · atualizado ${new Date(s.updated_at).toLocaleString('pt-BR')}` : ''}
+                            </p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                {/* Audit events */}
+                <div>
+                  <p className="mb-1.5 text-[9px] font-semibold uppercase tracking-[0.16em] text-white/55">Histórico de eventos ({activityData.events.length})</p>
+                  {activityData.events.length === 0 ? (
+                    <p className="text-[10px] text-white/30">Sem registros nos últimos 30 dias.</p>
+                  ) : (
+                    <div className="space-y-1">
+                      {activityData.events.map((e, i) => (
+                        <div key={i} className="flex items-center gap-2 rounded-[0.4rem] border border-white/6 bg-white/[0.015] px-2 py-1">
+                          <span
+                            className="shrink-0 rounded-full px-1.5 py-px text-[8px] font-semibold uppercase"
+                            style={{
+                              background: e.action === 'login' ? 'rgba(74,222,128,0.10)' : e.action === 'logout' ? 'rgba(251,146,60,0.10)' : 'rgba(96,165,250,0.10)',
+                              color: e.action === 'login' ? '#86efac' : e.action === 'logout' ? '#fdba74' : '#93c5fd',
+                            }}
+                          >
+                            {e.action}
+                          </span>
+                          <p className="min-w-0 flex-1 truncate text-[9px] text-white/60">
+                            {e.device} · {e.ip || '—'}
+                          </p>
+                          <p className="shrink-0 text-[8px] text-white/35">
+                            {new Date(e.created_at).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' })}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   )
 }
