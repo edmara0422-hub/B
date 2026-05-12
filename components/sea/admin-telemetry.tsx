@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
-import { Activity, Brain, ExternalLink, Globe, MapPin, Radar, RefreshCw, Smartphone, Zap } from 'lucide-react'
+import { Activity, AlertCircle, Brain, ExternalLink, Globe, Heart, MapPin, MessageSquare, Radar, RefreshCw, Smartphone, ThumbsDown, ThumbsUp, Zap } from 'lucide-react'
 
 type DeviceRow = { device: string; count: number }
 type HeatmapRow = { day_of_week: number; hour_of_day: number; count: number }
@@ -90,6 +90,9 @@ export function AdminTelemetry() {
 
       {/* Market Watch — Tavily + IA monitora evidências/mercado/compliance */}
       <MarketWatchCard />
+
+      {/* NPS Sentiment — IA classifica feedbacks em positivo/neutro/negativo + temas */}
+      <NPSSentimentCard />
 
       {/* Live feed */}
       <LiveFeedCard feed={data?.feed ?? []} />
@@ -566,6 +569,169 @@ function MarketWatchCard() {
         <p className="mt-1 text-[8px] text-white/35">
           Clica pra ativar — Tavily pesquisa evidência clínica + compliance + mercado, IA Groq resume em ações
         </p>
+      )}
+    </div>
+  )
+}
+
+type Theme = { theme: string; count: number; tone: 'positive' | 'neutral' | 'negative'; sample: string }
+type CriticalFb = { id: string; excerpt: string; severity: 'high' | 'medium' }
+type PraiseFb = { id: string; excerpt: string }
+type NPSSentiment = {
+  summary?: string
+  sentiment_distribution?: { positive: number; neutral: number; negative: number }
+  top_themes?: Theme[]
+  critical?: CriticalFb[]
+  praise?: PraiseFb[]
+  total?: number
+  generatedAt?: string
+  cached?: boolean
+  error?: string
+}
+
+function NPSSentimentCard() {
+  const [data, setData] = useState<NPSSentiment | null>(null)
+  const [loading, setLoading] = useState(false)
+  const [hasFetched, setHasFetched] = useState(false)
+
+  const fetchData = async (refresh = false) => {
+    setLoading(true)
+    try {
+      const res = await fetch(`/api/admin/analytics/nps-sentiment${refresh ? '?refresh=1' : ''}`)
+      const json = await res.json()
+      setData(json)
+    } catch (e) {
+      setData({ error: e instanceof Error ? e.message : 'erro de rede' })
+    } finally {
+      setLoading(false)
+      setHasFetched(true)
+    }
+  }
+
+  useEffect(() => { fetchData(false) }, [])
+
+  const dist = data?.sentiment_distribution ?? { positive: 0, neutral: 0, negative: 0 }
+  const total = dist.positive + dist.neutral + dist.negative
+  const positivePct = total > 0 ? (dist.positive / total) * 100 : 0
+  const neutralPct = total > 0 ? (dist.neutral / total) * 100 : 0
+  const negativePct = total > 0 ? (dist.negative / total) * 100 : 0
+
+  return (
+    <div className="ipb-soft rounded-[0.7rem] p-2.5">
+      <div className="mb-2 flex items-center justify-between">
+        <div className="flex items-center gap-1.5">
+          <Heart className="h-3 w-3 text-[#f87171]" />
+          <p className="text-[9px] font-semibold uppercase tracking-[0.16em] text-white/65">NPS Sentiment · IA</p>
+          {data?.total !== undefined && <span className="text-[8px] text-white/35">({data.total} feedbacks)</span>}
+        </div>
+        <button
+          onClick={() => fetchData(true)}
+          disabled={loading}
+          className="flex h-5 items-center gap-1 rounded-[0.4rem] border border-white/10 bg-white/[0.04] px-1.5 text-[8px] text-white/55 transition hover:text-white disabled:opacity-30"
+        >
+          <RefreshCw className={`h-2.5 w-2.5 ${loading ? 'animate-spin' : ''}`} />
+          {loading ? 'Analisando' : data?.cached ? 'Cache' : 'Atualizar'}
+        </button>
+      </div>
+
+      {!hasFetched && loading && (
+        <p className="py-3 text-center text-[10px] text-white/40">IA classificando feedbacks…</p>
+      )}
+
+      {data?.error && (
+        <p className="rounded-[0.4rem] border border-[#f8717125] bg-[#f8717108] px-2 py-1.5 text-[9px] text-[#fca5a5]">
+          {data.error}
+        </p>
+      )}
+
+      {data && !data.error && (
+        <>
+          {data.summary && (
+            <div className="mb-2 rounded-[0.5rem] border border-white/8 bg-white/[0.02] px-2.5 py-1.5">
+              <p className="text-[10px] font-semibold text-white/85">{data.summary}</p>
+            </div>
+          )}
+
+          {/* Sentiment bar */}
+          {total > 0 && (
+            <div className="mb-2">
+              <div className="mb-1 flex items-center justify-between text-[8px]">
+                <span className="text-[#86efac]"><ThumbsUp className="mr-0.5 inline h-2.5 w-2.5" />{dist.positive}</span>
+                <span className="text-white/45">{dist.neutral}</span>
+                <span className="text-[#fca5a5]"><ThumbsDown className="mr-0.5 inline h-2.5 w-2.5" />{dist.negative}</span>
+              </div>
+              <div className="flex h-2 overflow-hidden rounded-full bg-white/5">
+                {positivePct > 0 && <div style={{ width: `${positivePct}%`, background: '#4ade80' }} />}
+                {neutralPct > 0 && <div style={{ width: `${neutralPct}%`, background: '#94a3b8' }} />}
+                {negativePct > 0 && <div style={{ width: `${negativePct}%`, background: '#f87171' }} />}
+              </div>
+              <div className="mt-0.5 flex justify-between text-[7px] text-white/30">
+                <span>{positivePct.toFixed(0)}% positivo</span>
+                <span>{neutralPct.toFixed(0)}% neutro</span>
+                <span>{negativePct.toFixed(0)}% negativo</span>
+              </div>
+            </div>
+          )}
+
+          {/* Top themes */}
+          {data.top_themes && data.top_themes.length > 0 && (
+            <div className="mb-2">
+              <p className="mb-1 text-[8px] font-semibold uppercase tracking-[0.14em] text-white/45">Top temas</p>
+              <div className="space-y-1">
+                {data.top_themes.map((t, i) => {
+                  const tColor = t.tone === 'positive' ? '#4ade80' : t.tone === 'negative' ? '#f87171' : '#94a3b8'
+                  return (
+                    <div key={i} className="flex items-center gap-1.5 rounded-[0.4rem] border border-white/6 bg-white/[0.02] px-2 py-1">
+                      <span className="h-1.5 w-1.5 shrink-0 rounded-full" style={{ background: tColor }} />
+                      <p className="flex-1 truncate text-[9px] font-semibold text-white/80">{t.theme}</p>
+                      <span className="shrink-0 text-[7px] tabular-nums text-white/40">{t.count}x</span>
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+          )}
+
+          {/* Critical feedbacks */}
+          {data.critical && data.critical.length > 0 && (
+            <div className="mb-2">
+              <p className="mb-1 text-[8px] font-semibold uppercase tracking-[0.14em] text-[#fca5a5]">
+                <AlertCircle className="mr-0.5 inline h-2.5 w-2.5" />Críticos
+              </p>
+              <div className="space-y-1">
+                {data.critical.map((c, i) => (
+                  <div key={i} className="rounded-[0.4rem] border border-[#f8717120] bg-[#f8717108] px-2 py-1">
+                    <p className="text-[9px] text-white/75">"{c.excerpt}"</p>
+                    <p className="mt-0.5 text-[7px] uppercase text-[#fca5a5]/65">severidade: {c.severity}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Praise */}
+          {data.praise && data.praise.length > 0 && (
+            <div>
+              <p className="mb-1 text-[8px] font-semibold uppercase tracking-[0.14em] text-[#86efac]">
+                <ThumbsUp className="mr-0.5 inline h-2.5 w-2.5" />Elogios
+              </p>
+              <div className="space-y-1">
+                {data.praise.map((p, i) => (
+                  <div key={i} className="rounded-[0.4rem] border border-[#4ade8020] bg-[#4ade8008] px-2 py-1">
+                    <p className="text-[9px] text-white/75">"{p.excerpt}"</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {data.generatedAt && (
+            <p className="mt-1.5 text-right text-[7px] text-white/30">
+              Gerado {new Date(data.generatedAt).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' })}
+              {data.cached ? ' · cache 30min' : ''}
+            </p>
+          )}
+        </>
       )}
     </div>
   )
