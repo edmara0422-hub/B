@@ -995,7 +995,16 @@ export default function AdminPage() {
                 {/* Active sessions */}
                 <div>
                   <div className="mb-1.5 flex items-center justify-between">
-                    <p className="text-[9px] font-semibold uppercase tracking-[0.16em] text-white/55">Sessões ativas ({activityData.sessions.length})</p>
+                    <div>
+                      <p className="text-[9px] font-semibold uppercase tracking-[0.16em] text-white/55">
+                        Sessões ativas ({activityData.sessions.length})
+                      </p>
+                      {activityData.sessions.length > 0 && (
+                        <p className="text-[8px] text-white/35">
+                          {new Set(activityData.sessions.map((s) => s.device).filter((d) => d !== 'Desconhecido')).size || activityData.sessions.length} dispositivo(s) único(s) · {new Set(activityData.sessions.map((s) => s.ip).filter(Boolean)).size} IP(s)
+                        </p>
+                      )}
+                    </div>
                     {activityData.sessions.length > 0 && (
                       <button
                         onClick={forceLogoutUser}
@@ -1006,21 +1015,37 @@ export default function AdminPage() {
                     )}
                   </div>
                   {activityData.sessions.length === 0 ? (
-                    <p className="text-[10px] text-white/30">Nenhuma sessão ativa.</p>
+                    <div className="rounded-[0.5rem] border border-white/8 bg-white/[0.02] px-2.5 py-2 text-[9px] text-white/40">
+                      <p>Sem sessões ativas registradas em <code className="text-white/60">auth.sessions</code>.</p>
+                      <p className="mt-1 text-white/30">
+                        O Supabase só persiste sessões na tabela quando o auth está configurado em modo &quot;database&quot;. No modo cookie/JWT padrão, sessões ficam no cliente e não aparecem aqui mesmo com usuário logado.
+                      </p>
+                    </div>
                   ) : (
                     <div className="space-y-1">
-                      {activityData.sessions.map((s) => (
-                        <div key={s.id} className="flex items-center gap-2 rounded-[0.5rem] border border-white/8 bg-white/[0.02] px-2 py-1.5">
-                          <Smartphone className="h-3 w-3 shrink-0 text-white/45" />
-                          <div className="min-w-0 flex-1">
-                            <p className="truncate text-[10px] text-white/75">{s.device}</p>
-                            <p className="truncate text-[8px] text-white/40">
-                              {s.ip ? <><MapPin className="mr-0.5 inline h-2 w-2" />{s.ip}</> : 'IP desconhecido'}
-                              {s.updated_at ? ` · atualizado ${new Date(s.updated_at).toLocaleString('pt-BR')}` : ''}
-                            </p>
+                      {activityData.sessions.map((s) => {
+                        const ageMs = s.created_at ? Date.now() - new Date(s.created_at).getTime() : 0
+                        const ageHours = Math.floor(ageMs / 3600000)
+                        const ageDays = Math.floor(ageHours / 24)
+                        const ageLabel = ageDays > 0 ? `${ageDays}d` : ageHours > 0 ? `${ageHours}h` : `<1h`
+                        return (
+                          <div key={s.id} className="flex items-center gap-2 rounded-[0.5rem] border border-white/8 bg-white/[0.02] px-2 py-1.5">
+                            <Smartphone className="h-3 w-3 shrink-0 text-white/45" />
+                            <div className="min-w-0 flex-1">
+                              <div className="flex items-center gap-1.5">
+                                <p className="truncate text-[10px] text-white/75">{s.device}</p>
+                                <span className="shrink-0 rounded-full border border-white/12 bg-white/[0.04] px-1.5 py-px text-[7px] uppercase tracking-[0.10em] text-white/55">
+                                  há {ageLabel}
+                                </span>
+                              </div>
+                              <p className="truncate text-[8px] text-white/40">
+                                {s.ip ? <><MapPin className="mr-0.5 inline h-2 w-2" />{s.ip}</> : 'IP desconhecido'}
+                                {s.updated_at ? ` · ativo até ${new Date(s.updated_at).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' })}` : ''}
+                              </p>
+                            </div>
                           </div>
-                        </div>
-                      ))}
+                        )
+                      })}
                     </div>
                   )}
                 </div>
