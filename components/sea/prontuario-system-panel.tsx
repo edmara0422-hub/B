@@ -6608,7 +6608,7 @@ export function ProntuarioSystemPanel() {
             </div>
           </div>
         ) : (
-          <div className="space-y-4">
+          <div className="@container space-y-4">
 
             {/* ── Workspace tabs (setores: UTI 1, PS, Enfermaria…) ── */}
             <div className="flex items-center gap-1.5 overflow-x-auto pb-0.5 scrollbar-hide">
@@ -6729,10 +6729,13 @@ export function ProntuarioSystemPanel() {
                       )}
                     </div>
 
-                    {/* Nome + diagnóstico */}
-                    <div className="min-w-0 flex-1">
-                      <p className="truncate text-[8px] font-semibold text-white/90">{recordTitle(record)}</p>
-                      <p className="truncate text-[8px] text-white/48">{recordSubtitle(record)}</p>
+                    {/* Nome + diagnóstico — texto escondido quando container < 320px (sidebar aberta no mobile)
+                        Mantém flex-1 pra badges/botões ficarem à direita mesmo sem texto */}
+                    <div className="min-w-0 flex-1 overflow-hidden">
+                      <div className="hidden @[320px]:block">
+                        <p className="truncate text-[8px] font-semibold text-white/90">{recordTitle(record)}</p>
+                        <p className="truncate text-[8px] text-white/48">{recordSubtitle(record)}</p>
+                      </div>
                     </div>
 
                     {/* Badges afastados do nome */}
