@@ -437,75 +437,81 @@ body.sea-splash-active [data-sea-bottom-nav='true'] {
 
 /* ─── IPB Design Kit additions ─────────────────────────────────── */
 
-/* CARD — TRANSLÚCIDO como Explorar: hint DOURADO no topo, PRATA glow leve,
-   sombra PRETA na base. Maioria do card é transparente pro fundo passar. */
+/* CARD — cópia EXATA do Carousel3D do Explorar (translúcido + silver border)
+   + uma faixa DOURADA no topo (acento IPB). PRATA + DOURADO + PRETO visíveis. */
 .ipb-card {
   position: relative;
-  background:
-    /* Hint dourado no topo (sutil) */
-    radial-gradient(ellipse at 50% 0%, rgba(224,184,94,0.07) 0%, transparent 55%),
-    /* Glow prata leve */
-    radial-gradient(ellipse at 50% 0%, rgba(220,225,235,0.06) 0%, transparent 65%),
-    /* Quase transparente com leve toque preto na base */
-    linear-gradient(180deg,
-      rgba(255,255,255,0.05) 0%,
-      rgba(255,255,255,0.02) 45%,
-      rgba(0,0,0,0.10) 100%);
-  border: 1px solid rgba(224, 184, 94, 0.12);
+  /* Gradient diagonal do Explorar: silver translúcido → transparente */
+  background: linear-gradient(160deg,
+    rgba(255, 255, 255, 0.04) 0%,
+    rgba(255, 255, 255, 0.01) 40%,
+    rgba(0, 0, 0, 0) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);  /* PRATA border (igual Explorar) */
   box-shadow:
-    inset 0 1px 0 rgba(255, 220, 150, 0.16),
-    0 12px 32px rgba(0, 0, 0, 0.30);
-  backdrop-filter: blur(16px) saturate(115%);
-  -webkit-backdrop-filter: blur(16px) saturate(115%);
+    inset 0 0 0 1px rgba(255, 255, 255, 0.06),   /* PRATA inset glow */
+    inset 0 1px 0 rgba(255, 255, 255, 0.10),     /* PRATA fio interno topo */
+    0 20px 40px rgba(0, 0, 0, 0.40);             /* PRETO drop shadow */
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
 }
 
-/* CARD SOFT — translúcido com hints sutis das 3 cores */
+/* CARD SOFT — mesmo padrão (translúcido + silver) com faixa DOURADA fininha. */
 .ipb-soft {
   position: relative;
-  background:
-    /* Hint dourado topo */
-    radial-gradient(ellipse at 50% 0%, rgba(224,184,94,0.06) 0%, transparent 60%),
-    /* Hint prata */
-    radial-gradient(ellipse at 50% 0%, rgba(220,225,235,0.04) 0%, transparent 70%),
-    /* Quase transparente com toque preto na base */
-    linear-gradient(180deg,
-      rgba(255,255,255,0.05) 0%,
-      rgba(255,255,255,0.02) 50%,
-      rgba(0,0,0,0.10) 100%);
-  border: 1px solid rgba(224, 184, 94, 0.11);
+  background: linear-gradient(160deg,
+    rgba(255, 255, 255, 0.04) 0%,
+    rgba(255, 255, 255, 0.01) 50%,
+    rgba(0, 0, 0, 0) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow:
-    inset 0 1px 0 rgba(255, 220, 150, 0.10),
-    0 2px 8px rgba(0, 0, 0, 0.14);
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 4px 12px rgba(0, 0, 0, 0.20);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
 }
 
-.ipb-soft:hover {
-  background:
-    radial-gradient(ellipse at 50% 0%, rgba(224,184,94,0.10) 0%, transparent 60%),
-    radial-gradient(ellipse at 50% 0%, rgba(220,225,235,0.06) 0%, transparent 70%),
-    linear-gradient(180deg,
-      rgba(255,255,255,0.08) 0%,
-      rgba(255,255,255,0.04) 50%,
-      rgba(0,0,0,0.13) 100%);
-  border-color: rgba(224, 184, 94, 0.20);
+/* Faixa dourada no topo do .ipb-soft */
+.ipb-soft::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1.5px;
+  background: linear-gradient(90deg,
+    transparent,
+    rgba(224, 184, 94, 0.40) 30%,
+    rgba(255, 220, 150, 0.70) 50%,
+    rgba(224, 184, 94, 0.40) 70%,
+    transparent);
+  pointer-events: none;
+  border-radius: inherit;
 }
 
-/* Linha sutil no topo: prata + dourado discreto no centro */
+.ipb-soft:hover {
+  background: linear-gradient(160deg,
+    rgba(255, 255, 255, 0.07) 0%,
+    rgba(255, 255, 255, 0.03) 50%,
+    rgba(0, 0, 0, 0) 100%);
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+/* FAIXA DOURADA no topo do card (acento IPB visível) */
 .ipb-card::before {
   content: '';
   position: absolute;
   top: 0;
-  left: 1.5rem;
-  right: 1.5rem;
-  height: 1px;
+  left: 0;
+  right: 0;
+  height: 2px;
   background: linear-gradient(90deg,
     transparent,
-    rgba(220, 225, 235, 0.18),
-    rgba(224, 184, 94, 0.30),     /* dourado no centro (sutil) */
-    rgba(220, 225, 235, 0.18),
+    rgba(224, 184, 94, 0.45) 25%,
+    rgba(255, 220, 150, 0.85) 50%,   /* DOURADO claro no centro */
+    rgba(224, 184, 94, 0.45) 75%,
     transparent);
   pointer-events: none;
+  border-radius: inherit;
 }
 
 /* Shimmer dourado/prata pro nome SEA — passa onda dourada em loop infinito */
