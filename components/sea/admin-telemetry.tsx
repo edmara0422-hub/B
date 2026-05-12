@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
-import { Activity, Globe, MapPin, Smartphone, Zap } from 'lucide-react'
+import { Activity, Brain, Globe, MapPin, RefreshCw, Smartphone, Zap } from 'lucide-react'
 
 type DeviceRow = { device: string; count: number }
 type HeatmapRow = { day_of_week: number; hour_of_day: number; count: number }
@@ -84,6 +84,9 @@ export function AdminTelemetry() {
           {lastUpdate ? `Atualizado ${lastUpdate.toLocaleTimeString('pt-BR')}` : 'Aguardando'} · refresh 30s
         </p>
       </div>
+
+      {/* AI Briefing — análise IA dos últimos 30 dias com cache 15min */}
+      <AIBriefingCard />
 
       {/* Live feed */}
       <LiveFeedCard feed={data?.feed ?? []} />
@@ -274,6 +277,128 @@ function HeatmapCard({ heatmap }: { heatmap: HeatmapRow[] }) {
           <span>0h</span><span>6h</span><span>12h</span><span>18h</span><span>23h</span>
         </div>
       </div>
+    </div>
+  )
+}
+
+type Insight = { icon: string; title: string; body: string; priority: 'high' | 'medium' | 'low' }
+type Briefing = {
+  headline?: string
+  mood?: 'ok' | 'alert' | 'win'
+  insights?: Insight[]
+  next_action?: string
+  stats?: { totalUsers: number; newLast7Days: number; activeLast7Days: number; peakConcurrent: number; npsNet: number | null; totalFeedbacks: number }
+  generatedAt?: string
+  cached?: boolean
+  error?: string
+}
+
+function AIBriefingCard() {
+  const [briefing, setBriefing] = useState<Briefing | null>(null)
+  const [loading, setLoading] = useState(false)
+  const [hasFetched, setHasFetched] = useState(false)
+
+  const fetchBriefing = async (refresh = false) => {
+    setLoading(true)
+    try {
+      const res = await fetch(`/api/admin/analytics/briefing${refresh ? '?refresh=1' : ''}`)
+      const json = await res.json()
+      setBriefing(json)
+    } catch (e) {
+      setBriefing({ error: e instanceof Error ? e.message : 'erro de rede' })
+    } finally {
+      setLoading(false)
+      setHasFetched(true)
+    }
+  }
+
+  useEffect(() => { fetchBriefing(false) }, [])
+
+  const moodColor = briefing?.mood === 'alert' ? '#f87171' : briefing?.mood === 'win' ? '#4ade80' : '#a78bfa'
+  const moodBg = briefing?.mood === 'alert' ? 'rgba(248,113,113,0.08)' : briefing?.mood === 'win' ? 'rgba(74,222,128,0.08)' : 'rgba(167,139,250,0.08)'
+  const moodBorder = briefing?.mood === 'alert' ? 'rgba(248,113,113,0.30)' : briefing?.mood === 'win' ? 'rgba(74,222,128,0.30)' : 'rgba(167,139,250,0.30)'
+
+  return (
+    <div className="ipb-soft rounded-[0.7rem] p-2.5">
+      <div className="mb-2 flex items-center justify-between">
+        <div className="flex items-center gap-1.5">
+          <Brain className="h-3 w-3 text-[#a78bfa]" />
+          <p className="text-[9px] font-semibold uppercase tracking-[0.16em] text-white/65">Briefing IA · Groq Llama 3.3</p>
+        </div>
+        <button
+          onClick={() => fetchBriefing(true)}
+          disabled={loading}
+          className="flex h-5 items-center gap-1 rounded-[0.4rem] border border-white/10 bg-white/[0.04] px-1.5 text-[8px] text-white/55 transition hover:text-white disabled:opacity-30"
+        >
+          <RefreshCw className={`h-2.5 w-2.5 ${loading ? 'animate-spin' : ''}`} />
+          {loading ? 'Analisando' : briefing?.cached ? 'Cache' : 'Atualizar'}
+        </button>
+      </div>
+
+      {!hasFetched && loading && (
+        <p className="py-3 text-center text-[10px] text-white/40">IA analisando últimos 30 dias…</p>
+      )}
+
+      {briefing?.error && (
+        <p className="rounded-[0.4rem] border border-[#f8717125] bg-[#f8717108] px-2 py-1.5 text-[9px] text-[#fca5a5]">
+          {briefing.error}
+        </p>
+      )}
+
+      {briefing && !briefing.error && (
+        <>
+          {/* Headline */}
+          {briefing.headline && (
+            <div
+              className="mb-2 rounded-[0.5rem] border px-2.5 py-2"
+              style={{ borderColor: moodBorder, background: moodBg }}
+            >
+              <p className="text-[10px] font-semibold leading-snug" style={{ color: moodColor }}>
+                {briefing.headline}
+              </p>
+            </div>
+          )}
+
+          {/* Insights */}
+          {briefing.insights && briefing.insights.length > 0 && (
+            <div className="space-y-1">
+              {briefing.insights.map((insight, i) => {
+                const pColor = insight.priority === 'high' ? '#f87171' : insight.priority === 'medium' ? '#facc15' : '#94a3b8'
+                return (
+                  <div key={i} className="rounded-[0.4rem] border border-white/8 bg-white/[0.02] px-2 py-1.5">
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-[12px]">{insight.icon}</span>
+                      <p className="flex-1 text-[10px] font-semibold text-white/85">{insight.title}</p>
+                      <span
+                        className="rounded-full px-1 py-px text-[7px] font-bold uppercase"
+                        style={{ color: pColor, background: `${pColor}14`, border: `1px solid ${pColor}30` }}
+                      >
+                        {insight.priority === 'high' ? 'ALTA' : insight.priority === 'medium' ? 'MÉDIA' : 'BAIXA'}
+                      </span>
+                    </div>
+                    <p className="mt-0.5 pl-5 text-[9px] leading-relaxed text-white/55">{insight.body}</p>
+                  </div>
+                )
+              })}
+            </div>
+          )}
+
+          {/* Next action */}
+          {briefing.next_action && (
+            <div className="mt-2 rounded-[0.5rem] border border-[#4ade8030] bg-[#4ade8008] px-2.5 py-1.5">
+              <p className="text-[8px] font-semibold uppercase tracking-[0.14em] text-[#86efac]">Próxima ação hoje</p>
+              <p className="mt-0.5 text-[10px] text-white/85">{briefing.next_action}</p>
+            </div>
+          )}
+
+          {briefing.generatedAt && (
+            <p className="mt-1.5 text-right text-[7px] text-white/30">
+              Gerado {new Date(briefing.generatedAt).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' })}
+              {briefing.cached ? ' · cache 15min' : ''}
+            </p>
+          )}
+        </>
+      )}
     </div>
   )
 }
