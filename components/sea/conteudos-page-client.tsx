@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ArrowLeft, BookOpen, Brain, Heart, Wind, Radar, PanelLeftClose, PanelLeftOpen } from 'lucide-react'
+import { ArrowLeft, BookOpen, Brain, Heart, Wind, Radar, PanelLeftClose, PanelLeftOpen, Search } from 'lucide-react'
 import Link from 'next/link'
 import type { LucideIcon } from 'lucide-react'
 import { CadernoModulePanel } from '@/components/caderno/caderno-module'
@@ -39,7 +39,8 @@ const MODULES: Module[] = [
 
 const ease = [0.16, 1, 0.3, 1] as const
 
-// ── Workspace Sidebar (lateral esquerda, lista de módulos) ───────────────────
+// ── Workspace Sidebar — lógica IPB Intelligence Kit ──────────────────────────
+// Header com label + busca · lista hierárquica com hair-line · estados ouro/prata.
 
 function WorkspaceSidebar({
   modules,
@@ -52,15 +53,21 @@ function WorkspaceSidebar({
   onSelect: (i: number) => void
   onClose: () => void
 }) {
+  const [search, setSearch] = useState('')
+  const q = search.toLowerCase().trim()
+
   return (
     <div
       className="ipb-soft flex flex-col overflow-hidden rounded-[1.65rem]"
       style={{ maxHeight: 'calc(100vh - 140px)' }}
     >
-      {/* Header */}
-      <div className="shrink-0 px-4 pb-3 pt-4" style={{ borderBottom: '1px solid rgba(220,225,235,0.08)' }}>
-        <div className="mb-1 flex items-center justify-between">
-          <p className="text-[9px] uppercase tracking-[0.4em] text-white/40">Trilha de Estudo</p>
+      {/* Header: label + busca + close (lógica Intelligence Kit) */}
+      <div
+        className="shrink-0 px-4 pb-3 pt-4"
+        style={{ borderBottom: '1px solid rgba(210,175,90,0.12)' }}
+      >
+        <div className="mb-3 flex items-center justify-between">
+          <p className="text-[9px] uppercase tracking-[0.44em] text-white/40">Trilha de Estudo</p>
           <button
             onClick={onClose}
             title="Fechar sidebar"
@@ -69,17 +76,37 @@ function WorkspaceSidebar({
             <PanelLeftClose className="h-3.5 w-3.5" />
           </button>
         </div>
-        <p className="text-[10px] text-white/40">{modules.length} módulos</p>
+        {/* Busca */}
+        <div
+          className="flex items-center gap-2 rounded-[0.85rem] px-3 py-2"
+          style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.10)' }}
+        >
+          <Search className="h-3 w-3 shrink-0 text-white/30" />
+          <input
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Buscar disciplina..."
+            className="flex-1 bg-transparent text-[11px] text-white/70 outline-none placeholder:text-white/25"
+          />
+        </div>
       </div>
 
-      {/* Module list */}
-      <div className="flex-1 overflow-y-auto px-2 py-2 ipb-thinscroll">
+      {/* Lista de módulos — hair-line entre cada (sempre aberta) */}
+      <div className="ipb-thinscroll flex-1 overflow-y-auto px-2 py-2">
         {modules.map((mod, idx) => {
           const isActive = activeIndex === idx
           const ModIcon = mod.icon
+          // Filtro por busca: título OU overview
+          const matches =
+            !q || mod.title.toLowerCase().includes(q) || mod.overview.toLowerCase().includes(q)
+          if (q && !matches) return null
+
           return (
             <div key={mod.id}>
-              {idx > 0 && <div className="mx-3 my-2 h-px bg-white/[0.06]" />}
+              {/* Hair-line separator entre módulos */}
+              {idx > 0 && !q && <div className="mx-3 my-2 h-px bg-white/[0.06]" />}
+
+              {/* Linha do módulo (clicável) — ativo com border dourada */}
               <button
                 onClick={() => onSelect(idx)}
                 className="flex w-full items-center gap-2.5 rounded-[1rem] px-3 py-2.5 text-left transition"
@@ -88,19 +115,19 @@ function WorkspaceSidebar({
                     ? {
                         background:
                           'linear-gradient(135deg, rgba(255,255,255,0.09), rgba(255,255,255,0.04))',
-                        border: '1px solid rgba(220,225,235,0.22)',
-                        boxShadow: 'inset 0 1px 0 rgba(220,225,235,0.14)',
+                        border: '1px solid rgba(210,175,90,0.22)',
+                        boxShadow: 'inset 0 1px 0 rgba(210,175,90,0.14)',
                       }
                     : { border: '1px solid transparent' }
                 }
               >
                 <ModIcon
-                  className={`h-3.5 w-3.5 shrink-0 ${isActive ? 'text-white/85' : 'text-white/32'}`}
+                  className={`h-3.5 w-3.5 shrink-0 ${isActive ? 'text-[#d2af5a]' : 'text-white/32'}`}
                 />
                 <div className="min-w-0 flex-1">
                   <p
                     className={`text-[9px] uppercase tracking-[0.22em] ${
-                      isActive ? 'text-white/55' : 'text-white/20'
+                      isActive ? 'text-[#d2af5a]/60' : 'text-white/20'
                     }`}
                   >
                     {mod.id}
@@ -113,10 +140,19 @@ function WorkspaceSidebar({
                     {mod.title}
                   </p>
                 </div>
+                {/* Dot indicador de estado (igual Intelligence Kit) */}
+                <div
+                  className={`h-1.5 w-1.5 shrink-0 rounded-full transition ${
+                    isActive ? 'bg-[#d2af5a]' : 'bg-white/16'
+                  }`}
+                />
               </button>
             </div>
           )
         })}
+        {q && modules.every((m) => !m.title.toLowerCase().includes(q) && !m.overview.toLowerCase().includes(q)) && (
+          <p className="mt-4 px-3 text-[10px] text-white/30">Nenhuma disciplina encontrada.</p>
+        )}
       </div>
     </div>
   )
