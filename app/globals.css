@@ -437,60 +437,59 @@ body.sea-splash-active [data-sea-bottom-nav='true'] {
 
 /* ─── IPB Design Kit additions ─────────────────────────────────── */
 
-/* CARD UNIFICADO — mistura prata + preto com toque sutil dourado.
-   Mais escuro e prateado, com leve acento dourado quase imperceptível. */
+/* CARD UNIFICADO — PRATA dominante + preto na base + toque dourado.
+   Visualmente: prata claro no topo, prata médio meio, transição pro preto base. */
 .ipb-card {
   position: relative;
   background:
-    /* Toque dourado bem discreto no topo (era 0.07) */
-    radial-gradient(ellipse at 50% 0%, rgba(224,184,94,0.025) 0%, transparent 55%),
-    /* Glow prata sutil no topo */
-    radial-gradient(ellipse at 50% 0%, rgba(220,225,235,0.06) 0%, transparent 60%),
-    /* Base prata→preto vertical, mais escura */
+    /* Acento dourado bem leve só no topo */
+    radial-gradient(ellipse at 50% 0%, rgba(224,184,94,0.05) 0%, transparent 55%),
+    /* GLOW PRATA forte no topo (era 0.06, agora 0.18) */
+    radial-gradient(ellipse at 50% -10%, rgba(220,225,235,0.18) 0%, transparent 70%),
+    /* Base PRATA→preto vertical (prata domina o meio) */
     linear-gradient(180deg,
-      rgba(255,255,255,0.10) 0%,
-      rgba(180,185,195,0.05) 24%,
-      rgba(40,42,46,0.30) 60%,
-      rgba(10,11,13,0.50) 100%);
-  border: 1px solid rgba(220, 225, 235, 0.12);
+      rgba(225,228,236,0.22) 0%,    /* prata bem claro */
+      rgba(195,200,210,0.16) 22%,   /* prata claro */
+      rgba(150,155,165,0.18) 48%,   /* prata médio (visível!) */
+      rgba(75,78,84,0.28) 75%,      /* prata escuro/cinza */
+      rgba(18,20,24,0.42) 100%);    /* preto profundo na base */
+  border: 1px solid rgba(220, 225, 235, 0.22);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.14),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.28),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.22),
     0 16px 48px rgba(0, 0, 0, 0.42),
     0 2px 8px rgba(0, 0, 0, 0.24);
-  backdrop-filter: blur(28px) saturate(130%);
-  -webkit-backdrop-filter: blur(28px) saturate(130%);
+  backdrop-filter: blur(28px) saturate(135%);
+  -webkit-backdrop-filter: blur(28px) saturate(135%);
 }
 
-/* CARD SOFT — versão menor do .ipb-card pra mini-elementos internos.
-   Mesma vibe prata+preto+dourado sutil, mas sem a linha brilhante no topo
-   e com sombras mais leves. Use em StatBox, MiniImpact, ODS pills, etc. */
+/* CARD SOFT — mini versão com PRATA forte dominante + preto na base. */
 .ipb-soft {
   position: relative;
   background:
-    radial-gradient(ellipse at 50% 0%, rgba(224,184,94,0.04) 0%, transparent 65%),
+    radial-gradient(ellipse at 50% 0%, rgba(224,184,94,0.04) 0%, transparent 60%),
     linear-gradient(180deg,
-      rgba(255,255,255,0.08) 0%,
-      rgba(180,185,195,0.04) 35%,
-      rgba(28,30,34,0.22) 75%,
-      rgba(8,10,12,0.32) 100%);
-  border: 1px solid rgba(220, 225, 235, 0.13);
+      rgba(220,225,235,0.18) 0%,    /* prata claro topo */
+      rgba(170,175,185,0.14) 35%,   /* prata médio */
+      rgba(60,64,70,0.26) 78%,      /* cinza/prata escuro */
+      rgba(12,14,18,0.36) 100%);    /* preto base */
+  border: 1px solid rgba(220, 225, 235, 0.22);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.10),
+    inset 0 1px 0 rgba(255, 255, 255, 0.22),
     0 4px 14px rgba(0, 0, 0, 0.22);
-  backdrop-filter: blur(18px) saturate(125%);
-  -webkit-backdrop-filter: blur(18px) saturate(125%);
+  backdrop-filter: blur(18px) saturate(130%);
+  -webkit-backdrop-filter: blur(18px) saturate(130%);
 }
 
 .ipb-soft:hover {
   background:
-    radial-gradient(ellipse at 50% 0%, rgba(224,184,94,0.06) 0%, transparent 65%),
+    radial-gradient(ellipse at 50% 0%, rgba(224,184,94,0.06) 0%, transparent 60%),
     linear-gradient(180deg,
-      rgba(255,255,255,0.11) 0%,
-      rgba(180,185,195,0.06) 35%,
-      rgba(28,30,34,0.26) 75%,
-      rgba(8,10,12,0.36) 100%);
-  border-color: rgba(220, 225, 235, 0.18);
+      rgba(220,225,235,0.23) 0%,
+      rgba(170,175,185,0.18) 35%,
+      rgba(60,64,70,0.30) 78%,
+      rgba(12,14,18,0.40) 100%);
+  border-color: rgba(220, 225, 235, 0.30);
 }
 
 /* Linha do topo: prata predominante + dourado bem leve no centro */

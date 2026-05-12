@@ -106,9 +106,9 @@ export default function ProfilePage() {
   }
 
 
-  const inputClass = 'w-full h-9 rounded-[0.5rem] border border-white/15 bg-white/[0.06] px-3 text-[12px] text-white placeholder:text-white/40 outline-none focus:border-white/30'
-  // Mais opaco (era bg-white/[0.02]) e border mais firme — leitura melhor
-  const menuBtn = 'flex w-full items-center gap-2.5 rounded-[0.8rem] border border-white/12 bg-white/[0.06] px-3 py-2.5 text-left transition-colors hover:bg-white/[0.09]'
+  const inputClass = 'w-full h-9 rounded-[0.5rem] border border-white/15 bg-white/[0.08] px-3 text-[12px] text-white placeholder:text-white/40 outline-none focus:border-white/30'
+  // Cards do perfil usam .ipb-soft: prata forte + preto base + toque dourado
+  const menuBtn = 'ipb-soft flex w-full items-center gap-2.5 rounded-[0.8rem] px-3 py-2.5 text-left transition-all'
 
   return (
     <div className="relative min-h-screen text-white px-2 pb-32 pt-16 md:px-4">
@@ -156,7 +156,7 @@ export default function ProfilePage() {
 
         {/* ── Nome ── */}
         {editField === 'name' ? (
-          <div className="flex items-center gap-1 rounded-[0.7rem] border border-white/10 bg-white/[0.03] px-3 py-1.5">
+          <div className="flex items-center gap-1 rounded-[0.7rem] ipb-soft px-3 py-1.5">
             <User className="h-3.5 w-3.5 shrink-0 text-white/30" />
             <input className={inputClass} value={editValue} onChange={(e) => setEditValue(e.target.value)} placeholder="Seu nome" autoFocus />
             <button onClick={handleSaveName} disabled={saving} className="shrink-0 text-[#4ade80]"><Save className="h-3.5 w-3.5" /></button>
@@ -175,7 +175,7 @@ export default function ProfilePage() {
 
         {/* ── Email ── */}
         {editField === 'email' ? (
-          <div className="flex items-center gap-1 rounded-[0.7rem] border border-white/10 bg-white/[0.03] px-3 py-1.5">
+          <div className="flex items-center gap-1 rounded-[0.7rem] ipb-soft px-3 py-1.5">
             <Mail className="h-3.5 w-3.5 shrink-0 text-white/30" />
             <input className={inputClass} type="email" value={editValue} onChange={(e) => setEditValue(e.target.value)} placeholder="Seu email" autoFocus />
             <button onClick={handleSaveEmail} disabled={saving} className="shrink-0 text-[#4ade80]"><Save className="h-3.5 w-3.5" /></button>
@@ -199,7 +199,7 @@ export default function ProfilePage() {
           <ChevronRight className={`h-3.5 w-3.5 text-white/55 transition-transform ${changePassword ? 'rotate-90' : ''}`} />
         </button>
         {changePassword && (
-          <div className="rounded-[0.7rem] border border-white/6 bg-white/[0.02] px-3 py-2 space-y-1.5">
+          <div className="rounded-[0.7rem] ipb-soft px-3 py-2 space-y-1.5">
             <input className={inputClass} type="password" placeholder="Nova senha (min 6 caracteres)" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} />
             <input className={inputClass} type="password" placeholder="Confirmar nova senha" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
             <button onClick={handleChangePassword} disabled={saving} className="w-full h-7 rounded-[0.5rem] border border-white/10 bg-white/5 text-[8px] font-semibold text-white/60 disabled:opacity-50">
@@ -236,7 +236,7 @@ export default function ProfilePage() {
           <div className="space-y-1 mb-4">
             <button
               onClick={() => router.push('/admin')}
-              className="flex w-full items-center gap-2 rounded-[0.7rem] border border-white/15 bg-white/[0.04] px-3 py-2.5 hover:bg-white/[0.06] transition-colors"
+              className="flex w-full items-center gap-2 rounded-[0.7rem] ipb-soft px-3 py-2.5 transition-all"
             >
               <Shield className="h-4 w-4 text-white/70" />
               <div className="flex-1 text-left">
@@ -342,7 +342,7 @@ function AjudaModal({ onClose }: { onClose: () => void }) {
         <div className="max-h-[62vh] space-y-4 overflow-y-auto pr-1">
 
           {/* Status do sistema */}
-          <div className="flex items-center gap-2 rounded-[0.8rem] border border-white/6 bg-white/[0.02] px-3 py-2">
+          <div className="flex items-center gap-2 rounded-[0.8rem] ipb-soft px-3 py-2">
             <span className="h-1.5 w-1.5 rounded-full bg-white/50" />
             <p className="text-[8px] text-white/50">Sistema operacional</p>
           </div>
@@ -352,7 +352,7 @@ function AjudaModal({ onClose }: { onClose: () => void }) {
             <p className="mb-2 text-[8px] font-semibold uppercase tracking-wider text-white/40">Perguntas Frequentes</p>
             <div className="space-y-1.5">
               {FAQ_ITEMS.map((item, i) => (
-                <div key={i} className="rounded-[0.8rem] border border-white/6 bg-white/[0.02] overflow-hidden">
+                <div key={i} className="rounded-[0.8rem] ipb-soft overflow-hidden">
                   <button
                     className="flex w-full items-center justify-between px-3 py-2.5 text-left"
                     onClick={() => setOpenIndex(openIndex === i ? null : i)}
@@ -374,7 +374,7 @@ function AjudaModal({ onClose }: { onClose: () => void }) {
             <div className="space-y-1.5">
               <a
                 href="mailto:edmararbusiness1@gmail.com?subject=Suporte SEA Fisio"
-                className="flex items-center gap-2 rounded-[0.8rem] border border-white/6 bg-white/[0.02] px-3 py-2.5 hover:bg-white/[0.04]"
+                className="flex items-center gap-2 rounded-[0.8rem] ipb-soft px-3 py-2.5 hover:bg-white/[0.04]"
               >
                 <Mail className="h-3.5 w-3.5 shrink-0 text-white/40" />
                 <div>
@@ -390,7 +390,7 @@ function AjudaModal({ onClose }: { onClose: () => void }) {
             <p className="mb-2 text-[8px] font-semibold uppercase tracking-wider text-white/40">Documentos Legais</p>
             <div className="grid grid-cols-3 gap-1.5">
               {['Termos de Uso', 'Políticas', 'Compliance'].map((doc) => (
-                <div key={doc} className="rounded-[0.7rem] border border-white/6 bg-white/[0.02] px-2 py-2 text-center">
+                <div key={doc} className="rounded-[0.7rem] ipb-soft px-2 py-2 text-center">
                   <p className="text-[8px] text-white/45">{doc}</p>
                   <p className="text-[7px] text-white/25 mt-0.5">Home → Governança</p>
                 </div>
