@@ -101,11 +101,7 @@ export function PerformanceBar() {
     >
       {/* Impacto SEA */}
       <div
-        className="rounded-[1.4rem] p-4"
-        style={{
-          border: '1px solid rgba(255,255,255,0.08)',
-          background: 'linear-gradient(160deg, rgba(255,255,255,0.03) 0%, rgba(0,0,0,0) 100%)',
-        }}
+        className="ipb-card rounded-[1.4rem] p-4"
       >
         <p className="mb-3 text-[9px] font-semibold uppercase tracking-[0.2em] text-white/40">
           Impacto SEA
@@ -121,8 +117,7 @@ export function PerformanceBar() {
 
       {/* NPS + Feedback — dados em tempo real */}
       <div
-        className="rounded-[1.4rem] p-4"
-        style={{ border: '1px solid rgba(255,255,255,0.08)', background: 'linear-gradient(160deg, rgba(255,255,255,0.03) 0%, rgba(0,0,0,0) 100%)' }}
+        className="ipb-card rounded-[1.4rem] p-4"
       >
         <p className="mb-3 text-[9px] font-semibold uppercase tracking-[0.2em] text-white/40">NPS e Feedback</p>
         <div className="grid grid-cols-3 gap-2">
@@ -143,8 +138,7 @@ export function PerformanceBar() {
 
       {/* Sustentabilidade — TBL + ODS + CSV juntos */}
       <div
-        className="rounded-[1.4rem] p-4"
-        style={{ border: '1px solid rgba(255,255,255,0.08)', background: 'linear-gradient(160deg, rgba(255,255,255,0.03) 0%, rgba(0,0,0,0) 100%)' }}
+        className="ipb-card rounded-[1.4rem] p-4"
       >
         <p className="mb-3 text-[9px] font-semibold uppercase tracking-[0.2em] text-white/40">
           Sustentabilidade
@@ -208,11 +202,7 @@ export function PerformanceBar() {
 
       {/* Governança */}
       <div
-        className="rounded-[1.4rem] p-4"
-        style={{
-          border: '1px solid rgba(255,255,255,0.08)',
-          background: 'linear-gradient(160deg, rgba(255,255,255,0.03) 0%, rgba(0,0,0,0) 100%)',
-        }}
+        className="ipb-card rounded-[1.4rem] p-4"
       >
         <p className="mb-3 text-[9px] font-semibold uppercase tracking-[0.2em] text-white/40">
           Governança
