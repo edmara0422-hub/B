@@ -68,7 +68,7 @@ function WorkspaceSidebar({
 
   return (
     <div
-      className="ipb-soft flex flex-col overflow-hidden rounded-[1.65rem] h-[50vh] lg:h-[calc(100vh-9rem)]"
+      className="ipb-soft flex h-full flex-col overflow-hidden rounded-[1.65rem] lg:h-[calc(100vh-9rem)]"
     >
       {/* Header: label + busca + close (lógica Intelligence Kit) — fixo no topo da sidebar */}
       <div
@@ -364,6 +364,13 @@ export default function ConteudosPageClient() {
   const [topicsMap, setTopicsMap] = useState<ModuleTopicsMap>({})
   const [activeTopicId, setActiveTopicId] = useState<string | null>(null)
 
+  // Mobile: fecha sidebar por padrão (desktop ≥ 1024px mantém aberto)
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.innerWidth < 1024) {
+      setSidebarOpen(false)
+    }
+  }, [])
+
   // Pré-carrega os títulos dos tópicos de cada módulo para a árvore da sidebar
   useEffect(() => {
     let cancelled = false
@@ -436,20 +443,28 @@ export default function ConteudosPageClient() {
           {/* Sidebar (desktop) + Rail + Conteúdo — Intelligence Kit:
               280px largura, altura NATURAL (curta), todos os tópicos visíveis,
               página rola pra mostrar tudo. Header de busca sticky por dentro. */}
-          <div className={sidebarOpen ? 'space-y-4 lg:grid lg:grid-cols-[280px_1fr] lg:gap-5 lg:space-y-0 lg:items-start' : ''}>
-            {/* Sidebar visível em mobile e desktop */}
+          <div className={sidebarOpen ? 'lg:grid lg:grid-cols-[280px_1fr] lg:gap-5 lg:items-start' : ''}>
+            {/* Sidebar — drawer mobile + coluna desktop */}
             {sidebarOpen && (
-              <div className="block">
-                <WorkspaceSidebar
-                  modules={MODULES}
-                  activeIndex={activeIndex}
-                  topicsMap={topicsMap}
-                  activeTopicId={activeTopicId}
-                  onSelectModule={handleSelectModule}
-                  onSelectTopic={handleSelectTopic}
-                  onClose={() => setSidebarOpen(false)}
+              <>
+                {/* Backdrop só no mobile pra fechar tocando fora */}
+                <div
+                  onClick={() => setSidebarOpen(false)}
+                  className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm lg:hidden"
                 />
-              </div>
+                {/* Sidebar: fixo (drawer) no mobile, relativo (grid) no desktop */}
+                <div className="fixed inset-y-4 left-2 right-2 z-50 max-w-[320px] lg:relative lg:inset-auto lg:left-auto lg:right-auto lg:z-auto lg:max-w-none">
+                  <WorkspaceSidebar
+                    modules={MODULES}
+                    activeIndex={activeIndex}
+                    topicsMap={topicsMap}
+                    activeTopicId={activeTopicId}
+                    onSelectModule={handleSelectModule}
+                    onSelectTopic={handleSelectTopic}
+                    onClose={() => setSidebarOpen(false)}
+                  />
+                </div>
+              </>
             )}
 
             {/* Coluna direita: rail + conteúdo */}

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ArrowLeft, Calculator, FileText, PanelLeftClose, PanelLeftOpen, Search } from 'lucide-react'
 import Link from 'next/link'
@@ -55,7 +55,7 @@ function WorkspaceSidebar({
 
   return (
     <div
-      className="ipb-soft flex flex-col overflow-hidden rounded-[1.65rem] h-[40vh] lg:h-[calc(100vh-9rem)]"
+      className="ipb-soft flex h-full flex-col overflow-hidden rounded-[1.65rem] lg:h-[calc(100vh-9rem)]"
     >
       {/* Header fixo no topo da sidebar */}
       <div
@@ -165,11 +165,22 @@ export default function SistemasPageClient() {
   const [activeIndex, setActiveIndex] = useState<number | null>(0)
   const [sidebarOpen, setSidebarOpen] = useState(true)
 
+  // Mobile: fecha sidebar por padrão (desktop ≥ 1024px mantém aberto)
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.innerWidth < 1024) {
+      setSidebarOpen(false)
+    }
+  }, [])
+
   const current = activeIndex !== null ? SYSTEMS[activeIndex] : null
   const CurrentIcon = current?.icon
 
   function handleSelect(index: number) {
     setActiveIndex(index)
+    // Fecha sidebar automaticamente em mobile ao selecionar
+    if (typeof window !== 'undefined' && window.innerWidth < 1024) {
+      setSidebarOpen(false)
+    }
   }
 
   return (
@@ -202,18 +213,25 @@ export default function SistemasPageClient() {
             </div>
           </div>
 
-          {/* Sidebar (mobile + desktop) + Conteúdo */}
-          <div className={sidebarOpen ? 'space-y-4 lg:grid lg:grid-cols-[280px_1fr] lg:gap-5 lg:space-y-0 lg:items-start' : ''}>
-            {/* Sidebar visível em mobile e desktop */}
+          {/* Sidebar — drawer mobile + coluna desktop */}
+          <div className={sidebarOpen ? 'lg:grid lg:grid-cols-[280px_1fr] lg:gap-5 lg:items-start' : ''}>
             {sidebarOpen && (
-              <div className="block">
-                <WorkspaceSidebar
-                  modules={SYSTEMS}
-                  activeIndex={activeIndex}
-                  onSelect={handleSelect}
-                  onClose={() => setSidebarOpen(false)}
+              <>
+                {/* Backdrop só no mobile pra fechar tocando fora */}
+                <div
+                  onClick={() => setSidebarOpen(false)}
+                  className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm lg:hidden"
                 />
-              </div>
+                {/* Sidebar: fixo (drawer) no mobile, relativo (grid) no desktop */}
+                <div className="fixed inset-y-4 left-2 right-2 z-50 max-w-[320px] lg:relative lg:inset-auto lg:left-auto lg:right-auto lg:z-auto lg:max-w-none">
+                  <WorkspaceSidebar
+                    modules={SYSTEMS}
+                    activeIndex={activeIndex}
+                    onSelect={handleSelect}
+                    onClose={() => setSidebarOpen(false)}
+                  />
+                </div>
+              </>
             )}
 
             {/* Coluna direita: hero + panel */}

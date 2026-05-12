@@ -3659,7 +3659,7 @@ export function ProntuarioSystemPanel() {
                                 color: '#22d3ee',
                               } : {
                                 borderColor: 'rgba(255,255,255,0.10)',
-                                background: 'rgba(0,0,0,0.16)',
+                                background: 'rgba(255,255,255,0.04)',
                                 color: 'rgba(255,255,255,0.62)',
                               }}
                             >
