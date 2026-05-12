@@ -438,8 +438,7 @@ body.sea-splash-active [data-sea-bottom-nav='true'] {
 /* ─── IPB Design Kit additions ─────────────────────────────────── */
 
 /* CARD .ipb-card — cópia EXATA do Card3D do Explorar.
-   SÓ PRATA TRANSLÚCIDO + SOMBRA PRETA. Sem dourado. Usado em Explorar,
-   Conteúdos, Sistemas, Home (cards grandes do PerformanceBar). */
+   TRANSPARENTE de verdade (sem backdrop-blur). Só prata sutil + drop preto. */
 .ipb-card {
   position: relative;
   background: linear-gradient(160deg,
@@ -451,12 +450,11 @@ body.sea-splash-active [data-sea-bottom-nav='true'] {
     inset 0 0 0 1px rgba(255, 255, 255, 0.06),
     inset 0 1px 0 rgba(255, 255, 255, 0.10),
     0 20px 40px rgba(0, 0, 0, 0.40);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  /* SEM backdrop-filter blur — deixa o fundo passar limpo igual o Explorar */
 }
 
-/* CARD .ipb-soft — design do PERFIL: PRATA + DOURADO + PRETO no mix.
-   Translúcido pra leitura, com glow dourado lateral + base preta. */
+/* CARD .ipb-soft — design do PERFIL: prata + dourado + preto no mix.
+   Translúcido VERDADEIRO sem backdrop-blur. Fundo espacial passa atrás. */
 .ipb-soft {
   position: relative;
   background:
@@ -466,17 +464,16 @@ body.sea-splash-active [data-sea-bottom-nav='true'] {
     radial-gradient(ellipse at 100% 50%, rgba(224,184,94,0.12) 0%, transparent 42%),
     /* Toque dourado topo */
     radial-gradient(ellipse at 50% 0%, rgba(224,184,94,0.06) 0%, transparent 60%),
-    /* Base translúcida diagonal com leve toque PRETO base */
+    /* Base diagonal translúcida com leve preto base */
     linear-gradient(160deg,
-      rgba(255,255,255,0.06) 0%,
+      rgba(255,255,255,0.05) 0%,
       rgba(255,255,255,0.02) 50%,
-      rgba(0,0,0,0.10) 100%);
+      rgba(0,0,0,0.08) 100%);
   border: 1px solid rgba(224, 184, 94, 0.14);
   box-shadow:
     inset 0 1px 0 rgba(255, 220, 150, 0.14),
     0 4px 14px rgba(0, 0, 0, 0.22);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  /* SEM backdrop-filter — fundo espacial passa direto */
 }
 
 /* Fio dourado sutil no topo (acento Perfil/IPB) */
