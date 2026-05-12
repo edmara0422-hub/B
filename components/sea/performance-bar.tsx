@@ -1,9 +1,11 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Leaf, Shield, Heart, Megaphone, FileText, Scale, BookOpen, Stethoscope, X, Send, Check, Scroll, Cookie, Target, UserCog } from 'lucide-react'
+import { Leaf, Shield, Heart, Megaphone, FileText, Scale, BookOpen, Stethoscope, X, Send, Check, Scroll, Cookie, Target, UserCog, ChevronLeft, ChevronRight } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
+
+const spring = { type: 'spring', stiffness: 380, damping: 32 } as const
 
 // Real metrics from localStorage
 function useAppMetrics() {
@@ -91,27 +93,96 @@ export function PerformanceBar() {
   const [showReport, setShowReport] = useState(false)
   const [showGov, setShowGov] = useState<string | null>(null)
 
-  // Layout antigo: 2 cards empilhados full-width
-  // Card 1 = Impacto+NPS+Gov unificado (sem slides internos, tudo flat)
-  // Card 2 = Sustentabilidade
+  // 2 cards SEPARADOS no carrossel com setas pra navegar
+  // Card 1 = Impacto + NPS + Governanca (sem slides internos, tudo flat juntos)
+  // Card 2 = Sustentabilidade (separado, mostrado quando passa pra direita)
+  const TOTAL = 2
+  const scrollRef = useRef<HTMLDivElement>(null)
+  const [active, setActive] = useState(0)
+
+  useEffect(() => {
+    const el = scrollRef.current
+    if (!el) return
+    const onScroll = () => {
+      const idx = Math.round(el.scrollLeft / el.clientWidth)
+      setActive(idx)
+    }
+    el.addEventListener('scroll', onScroll, { passive: true })
+    return () => el.removeEventListener('scroll', onScroll)
+  }, [])
+
+  const goTo = (i: number) => {
+    const el = scrollRef.current
+    if (!el) return
+    el.scrollTo({ left: i * el.clientWidth, behavior: 'smooth' })
+  }
+
   return (
     <motion.section
-      className="relative space-y-4 w-full"
+      className="relative w-full"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.1 }}
     >
-      <CombinedStatsCard
-        metrics={metrics}
-        folhasEconomizadas={folhasEconomizadas}
-        nps={nps}
-        fbCount={fbCount}
-        onGovOpen={setShowGov}
-        onReportOpen={() => setShowReport(true)}
-        isActive={true}
-      />
+      {/* Scroll-snap horizontal: 1 card por tela, full-width, todo conteúdo visível */}
+      <div
+        ref={scrollRef}
+        className="ipb-thinscroll flex snap-x snap-mandatory gap-0 overflow-x-auto [&>*]:snap-center [&>*]:snap-always [&>*]:shrink-0 [&>*]:w-full"
+        style={{ scrollbarWidth: 'none' }}
+      >
+        <CombinedStatsCard
+          metrics={metrics}
+          folhasEconomizadas={folhasEconomizadas}
+          nps={nps}
+          fbCount={fbCount}
+          onGovOpen={setShowGov}
+          onReportOpen={() => setShowReport(true)}
+          isActive={true}
+        />
 
-      <SustentabilidadeCard />
+        <SustentabilidadeCard />
+      </div>
+
+      {/* Setas + dots — abaixo do carrossel */}
+      <div className="mt-3 flex items-center justify-center gap-3">
+        <button
+          onClick={() => goTo(Math.max(0, active - 1))}
+          disabled={active === 0}
+          aria-label="Anterior"
+          className="flex h-7 w-7 items-center justify-center rounded-full border border-white/12 bg-white/[0.04] text-white/55 transition hover:bg-white/[0.10] hover:text-white disabled:opacity-30 disabled:cursor-not-allowed"
+        >
+          <ChevronLeft className="h-3.5 w-3.5" />
+        </button>
+
+        <div className="flex items-center gap-2">
+          {Array.from({ length: TOTAL }).map((_, i) => (
+            <button
+              key={i}
+              onClick={() => goTo(i)}
+              aria-label={`Card ${i + 1}`}
+              className="flex items-center justify-center"
+            >
+              <motion.span
+                animate={{
+                  width: active === i ? 28 : 6,
+                  background: active === i ? 'rgba(255,255,255,0.7)' : 'rgba(255,255,255,0.2)',
+                }}
+                transition={spring}
+                className="block h-1.5 rounded-full"
+              />
+            </button>
+          ))}
+        </div>
+
+        <button
+          onClick={() => goTo(Math.min(TOTAL - 1, active + 1))}
+          disabled={active === TOTAL - 1}
+          aria-label="Próximo"
+          className="flex h-7 w-7 items-center justify-center rounded-full border border-white/12 bg-white/[0.04] text-white/55 transition hover:bg-white/[0.10] hover:text-white disabled:opacity-30 disabled:cursor-not-allowed"
+        >
+          <ChevronRight className="h-3.5 w-3.5" />
+        </button>
+      </div>
 
       {/* Modais */}
       <AnimatePresence>

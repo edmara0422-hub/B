@@ -1,7 +1,7 @@
 'use client'
 
-import { motion, useMotionValue, useTransform, useSpring, animate } from 'framer-motion'
-import { BookOpen, ChevronRight, Cpu } from 'lucide-react'
+import { motion, useMotionValue, useTransform, useSpring } from 'framer-motion'
+import { BookOpen, ChevronLeft, ChevronRight as ChevronRightIcon, Cpu } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 
@@ -39,130 +39,110 @@ export default function ExplorePageClient() {
   const ready = useDeferredMount()
 
   return (
-    <div className="relative h-screen overflow-hidden text-white">
-      {/* Container ocupa a tela toda (descontando o BottomNav ~5rem) e centraliza o carrossel no meio absoluto */}
-      <main className="relative z-10 grid h-[calc(100vh-5rem)] w-full place-items-center px-2 md:px-4">
-        <div className="w-full">
-          {ready
-            ? <Carousel3D />
-            : <div className="mx-auto w-[78%] rounded-[2rem] bg-white/3 md:w-[68%]" style={{ height: 'clamp(320px, 56vh, 540px)' }} />
-          }
-        </div>
+    <div className="relative min-h-screen text-white">
+      {/* Carrossel full-width centralizado verticalmente */}
+      <main className="relative z-10 flex min-h-[calc(100vh-5rem)] w-full flex-col justify-center px-2 md:px-4">
+        {ready
+          ? <Carousel3D />
+          : <div className="w-full rounded-[2rem] bg-white/3" style={{ height: 'clamp(360px, 58vh, 560px)' }} />
+        }
       </main>
     </div>
   )
 }
 
 function Carousel3D() {
+  const scrollRef = useRef<HTMLDivElement>(null)
   const [active, setActive] = useState(0)
-  const dragX = useMotionValue(0)
-  const containerRef = useRef<HTMLDivElement>(null)
-  const didDrag = useRef(false)
   const router = useRouter()
 
   useEffect(() => {
     CARDS.forEach((c) => router.prefetch(c.href))
   }, [router])
 
-  const handleDragStart = () => { didDrag.current = false }
-
-  const handleDragEnd = (_: unknown, info: { offset: { x: number } }) => {
-    if (Math.abs(info.offset.x) > 12) {
-      didDrag.current = true
-      if (info.offset.x < -50 && active < CARDS.length - 1) setActive((v) => v + 1)
-      else if (info.offset.x > 50 && active > 0) setActive((v) => v - 1)
+  useEffect(() => {
+    const el = scrollRef.current
+    if (!el) return
+    const onScroll = () => {
+      const idx = Math.round(el.scrollLeft / el.clientWidth)
+      setActive(idx)
     }
-    animate(dragX, 0, { type: 'spring', stiffness: 600, damping: 44 })
-  }
+    el.addEventListener('scroll', onScroll, { passive: true })
+    return () => el.removeEventListener('scroll', onScroll)
+  }, [])
 
-  const handleCardClick = (i: number) => {
-    if (didDrag.current) { didDrag.current = false; return }
-    if (i === active) router.push(CARDS[i].href)
-    else setActive(i)
+  const goTo = (i: number) => {
+    const el = scrollRef.current
+    if (!el) return
+    el.scrollTo({ left: i * el.clientWidth, behavior: 'smooth' })
   }
 
   return (
-    <div className="space-y-5">
-      {/* 3D Stage */}
+    <div className="space-y-4 w-full">
+      {/* Carrossel full-width — mesmo padrão do Home (scroll-snap horizontal) */}
       <div
-        ref={containerRef}
-        className="relative mx-auto w-[78%] select-none md:w-[68%]"
-        style={{ perspective: '1100px', perspectiveOrigin: '50% 50%', height: 'clamp(320px, 56vh, 540px)' }}
+        ref={scrollRef}
+        className="ipb-thinscroll flex w-full snap-x snap-mandatory overflow-x-auto [&>*]:snap-center [&>*]:snap-always [&>*]:shrink-0 [&>*]:w-full"
+        style={{ scrollbarWidth: 'none', height: 'clamp(360px, 58vh, 560px)' }}
       >
-        {CARDS.map((card, i) => {
-          const offset = i - active
-          const isActive = offset === 0
-          const isRight = offset > 0
-          const isLeft = offset < 0
-
-          return (
-            <motion.div
-              key={card.href}
-              drag={isActive ? 'x' : false}
-              dragConstraints={{ left: 0, right: 0 }}
-              dragElastic={0.18}
-              style={{
-                x: isActive ? dragX : undefined,
-                position: 'absolute',
-                inset: 0,
-                transformStyle: 'preserve-3d',
-                transformOrigin: isRight ? 'left center' : isLeft ? 'right center' : 'center center',
-                zIndex: isActive ? 10 : 1,
-              }}
-              animate={{
-                rotateY: isActive ? 0 : isRight ? 28 : -28,
-                x: isActive ? 0 : isRight ? '46%' : '-46%',
-                z: isActive ? 0 : -30,
-                scale: isActive ? 1 : 0.88,
-                opacity: isActive ? 1 : 0.58,
-              }}
-              transition={spring}
-              onDragStart={handleDragStart}
-              onDragEnd={handleDragEnd}
-              onClick={() => handleCardClick(i)}
-              className={isActive ? 'cursor-grab active:cursor-grabbing' : 'cursor-pointer'}
-            >
-              <Card3D card={card} isActive={isActive} />
-            </motion.div>
-          )
-        })}
+        {CARDS.map((card) => (
+          <div key={card.href} className="w-full px-1 md:px-2">
+            <FlatCard card={card} onClick={() => router.push(card.href)} />
+          </div>
+        ))}
       </div>
 
-      {/* Dots + nav */}
+      {/* Setas + dots */}
       <div className="flex items-center justify-center gap-3">
-        {CARDS.map((card, i) => (
-          <button
-            key={i}
-            onClick={() => setActive(i)}
-            className="relative flex items-center justify-center"
-          >
-            <motion.span
-              animate={{
-                width: active === i ? 24 : 5,
-                background: active === i ? 'rgba(255,255,255,0.55)' : 'rgba(255,255,255,0.14)',
-              }}
-              transition={spring}
-              className="block h-1 rounded-full"
-            />
-          </button>
-        ))}
+        <button
+          onClick={() => goTo(Math.max(0, active - 1))}
+          disabled={active === 0}
+          aria-label="Anterior"
+          className="flex h-7 w-7 items-center justify-center rounded-full border border-white/12 bg-white/[0.04] text-white/55 transition hover:bg-white/[0.10] hover:text-white disabled:opacity-30 disabled:cursor-not-allowed"
+        >
+          <ChevronLeft className="h-3.5 w-3.5" />
+        </button>
+
+        <div className="flex items-center gap-2">
+          {CARDS.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => goTo(i)}
+              aria-label={`Card ${i + 1}`}
+              className="flex items-center justify-center"
+            >
+              <motion.span
+                animate={{
+                  width: active === i ? 24 : 5,
+                  background: active === i ? 'rgba(255,255,255,0.55)' : 'rgba(255,255,255,0.14)',
+                }}
+                transition={spring}
+                className="block h-1 rounded-full"
+              />
+            </button>
+          ))}
+        </div>
+
+        <button
+          onClick={() => goTo(Math.min(CARDS.length - 1, active + 1))}
+          disabled={active === CARDS.length - 1}
+          aria-label="Próximo"
+          className="flex h-7 w-7 items-center justify-center rounded-full border border-white/12 bg-white/[0.04] text-white/55 transition hover:bg-white/[0.10] hover:text-white disabled:opacity-30 disabled:cursor-not-allowed"
+        >
+          <ChevronRightIcon className="h-3.5 w-3.5" />
+        </button>
       </div>
     </div>
   )
 }
 
-function Card3D({
-  card,
-  isActive,
-}: {
-  card: (typeof CARDS)[number]
-  isActive: boolean
-}) {
+// ─── Card flat (sem rotação 3D) — full width estilo Home ───
+function FlatCard({ card, onClick }: { card: (typeof CARDS)[number]; onClick: () => void }) {
   const ref = useRef<HTMLDivElement>(null)
   const mx = useMotionValue(0.5)
   const my = useMotionValue(0.5)
-  const rotX = useSpring(useTransform(my, [0, 1], [6, -6]), { stiffness: 160, damping: 20 })
-  const rotY = useSpring(useTransform(mx, [0, 1], [-6, 6]), { stiffness: 160, damping: 20 })
+  const rotX = useSpring(useTransform(my, [0, 1], [3, -3]), { stiffness: 160, damping: 20 })
+  const rotY = useSpring(useTransform(mx, [0, 1], [-3, 3]), { stiffness: 160, damping: 20 })
   const glowX = useTransform(mx, [0, 1], [20, 80])
   const glowY = useTransform(my, [0, 1], [20, 80])
   const glowBackground = useTransform(
@@ -171,7 +151,7 @@ function Card3D({
   )
 
   const onMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!isActive || !ref.current) return
+    if (!ref.current) return
     const r = ref.current.getBoundingClientRect()
     mx.set((e.clientX - r.left) / r.width)
     my.set((e.clientY - r.top) / r.height)
@@ -183,106 +163,63 @@ function Card3D({
       ref={ref}
       onMouseMove={onMove}
       onMouseLeave={onLeave}
-      style={{ rotateX: isActive ? rotX : 0, rotateY: isActive ? rotY : 0 }}
-      className="h-full w-full"
+      onClick={onClick}
+      style={{ rotateX: rotX, rotateY: rotY }}
+      className="h-full w-full cursor-pointer"
     >
       <div
         className="ipb-soft relative h-full w-full overflow-hidden rounded-[1.75rem]"
         style={{
-          boxShadow: isActive
-            ? '0 40px 80px rgba(0,0,0,0.6), inset 0 0 0 1px rgba(255,255,255,0.06), inset 0 1px 0 rgba(255,255,255,0.10)'
-            : '0 20px 40px rgba(0,0,0,0.4)',
+          boxShadow: '0 40px 80px rgba(0,0,0,0.6), inset 0 0 0 1px rgba(255,255,255,0.06), inset 0 1px 0 rgba(255,255,255,0.10)',
         }}
       >
-        {/* Dynamic spotlight */}
-        {isActive && (
-          <motion.div
-            className="pointer-events-none absolute inset-0"
-            style={{ background: glowBackground }}
-          />
-        )}
-
-        {/* Top shimmer */}
+        <motion.div className="pointer-events-none absolute inset-0" style={{ background: glowBackground }} />
         <div className="pointer-events-none absolute inset-x-8 top-0 h-px bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.12)_50%,transparent)]" />
 
-        {/* Content */}
-        <div className="relative z-10 flex h-full flex-col justify-between p-6 md:p-7">
-          {/* Top row */}
+        <div className="relative z-10 flex h-full flex-col justify-between p-6 md:p-8">
           <div className="flex items-start justify-between">
             <motion.div
-              animate={isActive ? { scale: 1, opacity: 1 } : { scale: 0.9, opacity: 0.6 }}
-              transition={spring}
               className="flex h-11 w-11 items-center justify-center rounded-[1rem] border border-white/8"
               style={{ background: 'rgba(255,255,255,0.05)' }}
             >
               <card.icon className="h-5 w-5 text-white/50" />
             </motion.div>
-
-            {isActive ? (
-              <motion.div
-                whileHover={{ x: 2, y: -2, scale: 1.06 }}
-                transition={spring}
-                className="flex h-7 w-7 items-center justify-center rounded-full border border-white/10 bg-white/5"
-              >
-                <ChevronRight className="h-3.5 w-3.5 text-white/45" />
-              </motion.div>
-            ) : (
-              <div className="text-[8px] font-medium uppercase tracking-[0.28em] text-white/20">
-                Toque para ver
-              </div>
-            )}
+            <motion.div
+              whileHover={{ x: 2, y: -2, scale: 1.06 }}
+              transition={spring}
+              className="flex h-7 w-7 items-center justify-center rounded-full border border-white/10 bg-white/5"
+            >
+              <ChevronRightIcon className="h-3.5 w-3.5 text-white/45" />
+            </motion.div>
           </div>
 
-          {/* Bottom */}
           <div className="space-y-2.5">
-            <motion.div
-              className="h-px w-10"
-              animate={{ width: isActive ? 40 : 20, opacity: isActive ? 1 : 0.35 }}
-              transition={spring}
-              style={{ background: 'linear-gradient(90deg, rgba(255,255,255,0.4), transparent)' }}
-            />
+            <motion.div className="h-px w-10" style={{ background: 'linear-gradient(90deg, rgba(255,255,255,0.4), transparent)' }} />
             <div className="space-y-1.5">
               <h2
-                className="font-light leading-none tracking-[0.12em]"
-                style={{
-                  fontSize: 'clamp(1.75rem, 7vw, 2.8rem)',
-                  color: isActive ? 'rgba(255,255,255,0.85)' : 'rgba(255,255,255,0.30)',
-                }}
+                className="font-light leading-none tracking-[0.12em] text-white/85"
+                style={{ fontSize: 'clamp(1.75rem, 7vw, 2.8rem)' }}
               >
                 {card.title}
               </h2>
-              {isActive && (
-                <motion.p
-                  initial={{ opacity: 0, y: 8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.18 }}
-                  className="text-[11px] leading-relaxed tracking-[0.04em] text-white/35 max-w-[28ch]"
-                >
-                  {card.sub}
-                </motion.p>
-              )}
+              <p className="text-[11px] leading-relaxed tracking-[0.04em] text-white/35 max-w-[28ch]">
+                {card.sub}
+              </p>
             </div>
 
-            {isActive && (
-              <motion.div
-                initial={{ opacity: 0, y: 6 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.15 }}
-              >
-                <motion.div
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.96 }}
-                  transition={spring}
-                  className="mt-1 inline-flex items-center gap-1.5 rounded-[0.8rem] border border-white/10 bg-white/5 px-3.5 py-2 text-[10px] font-medium uppercase tracking-[0.22em] text-white/50"
-                >
-                  Abrir
-                  <ChevronRight className="h-3 w-3" />
-                </motion.div>
-              </motion.div>
-            )}
+            <motion.div
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.96 }}
+              transition={spring}
+              className="mt-1 inline-flex items-center gap-1.5 rounded-[0.8rem] border border-white/10 bg-white/5 px-3.5 py-2 text-[10px] font-medium uppercase tracking-[0.22em] text-white/50"
+            >
+              Abrir
+              <ChevronRightIcon className="h-3 w-3" />
+            </motion.div>
           </div>
         </div>
       </div>
     </motion.div>
   )
 }
+
