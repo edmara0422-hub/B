@@ -437,65 +437,53 @@ body.sea-splash-active [data-sea-bottom-nav='true'] {
 
 /* ─── IPB Design Kit additions ─────────────────────────────────── */
 
-/* CARD UNIFICADO — PRATA + DOURADO + PRETO (3 cores visíveis e balanceadas). */
+/* CARD UNIFICADO — translúcido com tom DOURADO + leve prata + base preta sutil.
+   Bem transparente pro fundo espacial passar atrás. */
 .ipb-card {
   position: relative;
   background:
-    /* DOURADO forte no topo (era 0.05, agora 0.14 + segunda camada) */
-    radial-gradient(ellipse at 50% -5%, rgba(224,184,94,0.14) 0%, transparent 50%),
-    radial-gradient(ellipse at 50% 100%, rgba(224,184,94,0.05) 0%, transparent 40%),
-    /* GLOW PRATA forte no topo */
-    radial-gradient(ellipse at 50% -10%, rgba(220,225,235,0.20) 0%, transparent 70%),
-    /* Base PRATA→preto vertical */
+    /* DOURADO no topo (visível mas não saturado) */
+    radial-gradient(ellipse at 50% 0%, rgba(224,184,94,0.10) 0%, transparent 55%),
+    /* Glow prata sutil no topo */
+    radial-gradient(ellipse at 50% -10%, rgba(220,225,235,0.10) 0%, transparent 70%),
+    /* Base bem transparente com tons sutis */
     linear-gradient(180deg,
-      rgba(225,228,236,0.22) 0%,    /* prata claro */
-      rgba(195,200,210,0.16) 22%,   /* prata */
-      rgba(150,155,165,0.18) 48%,   /* prata médio */
-      rgba(75,78,84,0.28) 75%,      /* cinza escuro */
-      rgba(18,20,24,0.42) 100%);    /* preto base */
-  /* Border DOURADO sutil + prata */
-  border: 1px solid rgba(224, 184, 94, 0.20);
+      rgba(255,255,255,0.08) 0%,
+      rgba(255,255,255,0.04) 40%,
+      rgba(10,12,16,0.18) 100%);
+  border: 1px solid rgba(224, 184, 94, 0.16);
   box-shadow:
-    inset 0 1px 0 rgba(255, 220, 150, 0.30),   /* linha dourada interna no topo */
-    inset 0 -1px 0 rgba(0, 0, 0, 0.22),
-    0 0 24px rgba(224, 184, 94, 0.06),         /* glow dourado externo sutil */
-    0 16px 48px rgba(0, 0, 0, 0.42),
-    0 2px 8px rgba(0, 0, 0, 0.24);
-  backdrop-filter: blur(28px) saturate(140%);
-  -webkit-backdrop-filter: blur(28px) saturate(140%);
+    inset 0 1px 0 rgba(255, 220, 150, 0.20),
+    0 8px 28px rgba(0, 0, 0, 0.28);
+  backdrop-filter: blur(20px) saturate(125%);
+  -webkit-backdrop-filter: blur(20px) saturate(125%);
 }
 
-/* CARD SOFT — mini versão com PRATA + DOURADO + PRETO. */
+/* CARD SOFT — TRANSPARENTE como o perfil original, com tom dourado sutil.
+   bg-white/[0.06] base + glow dourado leve + border dourado-prata. */
 .ipb-soft {
   position: relative;
   background:
-    /* DOURADO no topo (era 0.04, agora 0.10) */
-    radial-gradient(ellipse at 50% -5%, rgba(224,184,94,0.10) 0%, transparent 55%),
-    linear-gradient(180deg,
-      rgba(220,225,235,0.18) 0%,    /* prata claro topo */
-      rgba(170,175,185,0.14) 35%,   /* prata médio */
-      rgba(60,64,70,0.26) 78%,      /* cinza escuro */
-      rgba(12,14,18,0.36) 100%);    /* preto base */
-  border: 1px solid rgba(224, 184, 94, 0.18);    /* border DOURADO sutil */
+    /* Toque DOURADO sutil no topo */
+    radial-gradient(ellipse at 50% 0%, rgba(224,184,94,0.07) 0%, transparent 60%),
+    /* Base bem transparente — vê o fundo espacial passar */
+    rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(224, 184, 94, 0.14);
   box-shadow:
-    inset 0 1px 0 rgba(255, 220, 150, 0.22),    /* linha dourada topo */
-    0 4px 14px rgba(0, 0, 0, 0.22);
-  backdrop-filter: blur(18px) saturate(135%);
-  -webkit-backdrop-filter: blur(18px) saturate(135%);
+    inset 0 1px 0 rgba(255, 220, 150, 0.12),
+    0 2px 8px rgba(0, 0, 0, 0.12);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
 }
 
 .ipb-soft:hover {
   background:
-    radial-gradient(ellipse at 50% -5%, rgba(224,184,94,0.14) 0%, transparent 55%),
-    linear-gradient(180deg,
-      rgba(220,225,235,0.23) 0%,
-      rgba(170,175,185,0.18) 35%,
-      rgba(60,64,70,0.30) 78%,
-      rgba(12,14,18,0.40) 100%);
-  border-color: rgba(224, 184, 94, 0.28);
+    radial-gradient(ellipse at 50% 0%, rgba(224,184,94,0.10) 0%, transparent 60%),
+    rgba(255, 255, 255, 0.09);
+  border-color: rgba(224, 184, 94, 0.22);
 }
 
-/* Linha brilhante no topo: prata nas pontas + DOURADO no centro (mais forte) */
+/* Linha brilhante no topo: prata nas pontas + dourado sutil no centro */
 .ipb-card::before {
   content: '';
   position: absolute;
@@ -505,11 +493,11 @@ body.sea-splash-active [data-sea-bottom-nav='true'] {
   height: 1px;
   background: linear-gradient(90deg,
     transparent,
-    rgba(220, 225, 235, 0.35),
-    rgba(255, 240, 200, 0.55),
-    rgba(224, 184, 94, 0.85),    /* DOURADO forte no centro */
-    rgba(255, 240, 200, 0.55),
-    rgba(220, 225, 235, 0.35),
+    rgba(220, 225, 235, 0.22),
+    rgba(255, 220, 150, 0.40),    /* dourado claro */
+    rgba(224, 184, 94, 0.50),     /* dourado no centro */
+    rgba(255, 220, 150, 0.40),
+    rgba(220, 225, 235, 0.22),
     transparent);
   pointer-events: none;
 }
