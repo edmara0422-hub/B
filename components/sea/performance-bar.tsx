@@ -150,7 +150,7 @@ export function PerformanceBar() {
         {/* TBL */}
         <div className="mb-3 grid grid-cols-3 gap-1.5">
           {TBL_ITEMS.map((item) => (
-            <div key={item.label} className="rounded-[0.8rem] border border-white/6 bg-white/[0.02] px-2 py-2.5 text-center">
+            <div key={item.label} className="rounded-[0.8rem] ipb-soft px-2 py-2.5 text-center">
               <item.icon className="mx-auto mb-1 h-4 w-4 text-white/80" />
               <p className="text-[11px] font-semibold text-white/90">{item.label}</p>
               <p className="mt-0.5 text-[9px] leading-relaxed text-white/60">{item.desc}</p>
@@ -163,7 +163,7 @@ export function PerformanceBar() {
           <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/75">ODS</p>
           <div className="flex flex-wrap justify-center gap-1">
             {ODS_ITEMS.map((item) => (
-              <div key={item.num} className="flex items-center gap-1 rounded-full border border-white/6 bg-white/[0.02] px-2 py-0.5">
+              <div key={item.num} className="flex items-center gap-1 rounded-full ipb-soft px-2 py-0.5">
                 <span className="text-[11px] font-bold text-white/90">{item.num}</span>
                 <span className="text-[9px] text-white/70">{item.label}</span>
               </div>
@@ -176,7 +176,7 @@ export function PerformanceBar() {
           <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/75">CSV — Valor Compartilhado</p>
           <div className="grid grid-cols-3 gap-1.5">
             {CSV_ITEMS.map((item) => (
-              <div key={item.label} className="rounded-[0.6rem] border border-white/5 bg-white/[0.015] px-2 py-2 text-center">
+              <div key={item.label} className="rounded-[0.6rem] ipb-soft px-2 py-2 text-center">
                 <p className="text-[10px] font-semibold text-white/90">{item.label}</p>
                 <p className="text-[9px] leading-relaxed text-white/60">{item.desc}</p>
               </div>
@@ -185,7 +185,7 @@ export function PerformanceBar() {
         </div>
 
         {/* Sustentabilidade Digital */}
-        <div className="mt-3 rounded-[0.8rem] border border-white/5 bg-white/[0.015] px-3 py-3">
+        <div className="mt-3 rounded-[0.8rem] ipb-soft px-3 py-3">
           <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/75">Sustentabilidade Digital & ESG</p>
           <div className="grid grid-cols-2 gap-1.5">
             {[
@@ -194,7 +194,7 @@ export function PerformanceBar() {
               { label: 'Antigreenwashing', desc: 'Sem selos sem evidência. O SEA só declara práticas sustentáveis que são verificáveis no código, na arquitetura ou nos processos.' },
               { label: 'ESG como produto', desc: 'Sustentabilidade não é relatório — é funcionalidade. Zero papel, menos IRAS, menos tempo de VM = impacto ESG no desfecho do paciente.' },
             ].map((item) => (
-              <div key={item.label} className="rounded-[0.6rem] border border-white/4 bg-white/[0.01] px-2 py-2">
+              <div key={item.label} className="rounded-[0.6rem] ipb-soft px-2 py-2">
                 <p className="text-[10px] font-semibold text-white/90">{item.label}</p>
                 <p className="mt-1 text-[9px] leading-relaxed text-white/55">{item.desc}</p>
               </div>
@@ -824,7 +824,7 @@ function CombinedStatsCard({
                     else if (item.label === 'Missão e Valores') onGovOpen('missao')
                     else if (item.label === 'DPO') onGovOpen('dpo')
                   }}
-                  className="flex items-center gap-2 rounded-[1rem] border border-white/10 bg-white/[0.04] px-3 py-2.5 text-left transition-all hover:bg-white/[0.08] hover:border-white/20"
+                  className="flex items-center gap-2 rounded-[1rem] ipb-soft px-3 py-2.5 text-left transition-all hover:bg-white/[0.08] hover:border-white/20"
                 >
                   <item.icon className="h-4 w-4 shrink-0 text-white/80" />
                   <span className="text-[10px] font-medium tracking-wider text-white/90">{item.label}</span>
@@ -841,7 +841,7 @@ function CombinedStatsCard({
 // Card de stat reutilizável (NPS, Avaliações, Feedbacks)
 function StatBox({ value, label }: { value: string | number; label: string }) {
   return (
-    <div className="rounded-[0.8rem] border border-white/10 bg-white/[0.04] px-2 py-3 text-center transition-colors hover:bg-white/[0.06]">
+    <div className="rounded-[0.8rem] ipb-soft px-2 py-3 text-center transition-colors hover:bg-white/[0.06]">
       <p className="text-2xl font-bold tabular-nums text-white/95">{value}</p>
       <p className="mt-1 text-[10px] font-medium text-white/75">{label}</p>
     </div>
@@ -850,7 +850,7 @@ function StatBox({ value, label }: { value: string | number; label: string }) {
 
 function MiniImpact({ icon: Icon, value, label }: { icon: typeof Leaf; value: number; label: string }) {
   return (
-    <div className="rounded-[0.7rem] border border-white/10 bg-white/[0.04] px-2 py-2.5 text-center">
+    <div className="rounded-[0.7rem] ipb-soft px-2 py-2.5 text-center">
       <Icon className="mx-auto mb-1 h-4 w-4 text-white/75" />
       <p className="text-lg font-bold tabular-nums text-white/95">{value}</p>
       <p className="text-[9px] font-medium uppercase tracking-wider text-white/70">{label}</p>
