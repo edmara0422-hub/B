@@ -437,67 +437,61 @@ body.sea-splash-active [data-sea-bottom-nav='true'] {
 
 /* ─── IPB Design Kit additions ─────────────────────────────────── */
 
-/* CARD UNIFICADO — DOURADO topo · PRATA shimmer · PRETO base
-   3 cores visíveis simultaneamente, com transparência pro fundo passar. */
+/* CARD — TRANSLÚCIDO como Explorar: hint DOURADO no topo, PRATA glow leve,
+   sombra PRETA na base. Maioria do card é transparente pro fundo passar. */
 .ipb-card {
   position: relative;
   background:
-    /* 1. DOURADO radial no topo (visível) */
-    radial-gradient(ellipse at 50% -10%, rgba(224,184,94,0.16) 0%, transparent 55%),
-    /* 2. PRATA shimmer band */
-    radial-gradient(ellipse at 50% 20%, rgba(225,230,240,0.12) 0%, transparent 65%),
-    /* 3. Vertical: prata claro → meio translúcido → PRETO base */
+    /* Hint dourado no topo (sutil) */
+    radial-gradient(ellipse at 50% 0%, rgba(224,184,94,0.07) 0%, transparent 55%),
+    /* Glow prata leve */
+    radial-gradient(ellipse at 50% 0%, rgba(220,225,235,0.06) 0%, transparent 65%),
+    /* Quase transparente com leve toque preto na base */
     linear-gradient(180deg,
-      rgba(225,230,240,0.10) 0%,    /* PRATA topo */
-      rgba(255,255,255,0.04) 35%,   /* translúcido meio */
-      rgba(0,0,0,0.18) 75%,         /* preto subindo */
-      rgba(0,0,0,0.38) 100%);       /* PRETO forte base */
-  /* Border DOURADO visível */
-  border: 1px solid rgba(224, 184, 94, 0.22);
+      rgba(255,255,255,0.05) 0%,
+      rgba(255,255,255,0.02) 45%,
+      rgba(0,0,0,0.10) 100%);
+  border: 1px solid rgba(224, 184, 94, 0.12);
   box-shadow:
-    inset 0 1px 0 rgba(255, 220, 150, 0.30),   /* fio DOURADO interno topo */
-    inset 0 -1px 0 rgba(0, 0, 0, 0.30),        /* fio PRETO interno base */
-    0 8px 28px rgba(0, 0, 0, 0.32);            /* sombra externa preta */
-  backdrop-filter: blur(20px) saturate(130%);
-  -webkit-backdrop-filter: blur(20px) saturate(130%);
+    inset 0 1px 0 rgba(255, 220, 150, 0.16),
+    0 12px 32px rgba(0, 0, 0, 0.30);
+  backdrop-filter: blur(16px) saturate(115%);
+  -webkit-backdrop-filter: blur(16px) saturate(115%);
 }
 
-/* CARD SOFT — DOURADO topo · PRATA meio · PRETO base. Translúcido. */
+/* CARD SOFT — translúcido com hints sutis das 3 cores */
 .ipb-soft {
   position: relative;
   background:
-    /* DOURADO radial topo (visível) */
-    radial-gradient(ellipse at 50% 0%, rgba(224,184,94,0.12) 0%, transparent 60%),
-    /* PRATA shimmer */
-    radial-gradient(ellipse at 50% 30%, rgba(225,230,240,0.10) 0%, transparent 70%),
-    /* Vertical: prata → translúcido → PRETO */
+    /* Hint dourado topo */
+    radial-gradient(ellipse at 50% 0%, rgba(224,184,94,0.06) 0%, transparent 60%),
+    /* Hint prata */
+    radial-gradient(ellipse at 50% 0%, rgba(220,225,235,0.04) 0%, transparent 70%),
+    /* Quase transparente com toque preto na base */
     linear-gradient(180deg,
-      rgba(225,230,240,0.10) 0%,    /* prata */
-      rgba(255,255,255,0.04) 40%,
-      rgba(0,0,0,0.16) 80%,
-      rgba(0,0,0,0.28) 100%);       /* preto base */
-  border: 1px solid rgba(224, 184, 94, 0.18);
+      rgba(255,255,255,0.05) 0%,
+      rgba(255,255,255,0.02) 50%,
+      rgba(0,0,0,0.10) 100%);
+  border: 1px solid rgba(224, 184, 94, 0.11);
   box-shadow:
-    inset 0 1px 0 rgba(255, 220, 150, 0.20),   /* fio dourado topo */
-    inset 0 -1px 0 rgba(0, 0, 0, 0.22),        /* fio preto base */
-    0 2px 10px rgba(0, 0, 0, 0.18);
-  backdrop-filter: blur(14px) saturate(125%);
-  -webkit-backdrop-filter: blur(14px) saturate(125%);
+    inset 0 1px 0 rgba(255, 220, 150, 0.10),
+    0 2px 8px rgba(0, 0, 0, 0.14);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
 .ipb-soft:hover {
   background:
-    radial-gradient(ellipse at 50% 0%, rgba(224,184,94,0.16) 0%, transparent 60%),
-    radial-gradient(ellipse at 50% 30%, rgba(225,230,240,0.14) 0%, transparent 70%),
+    radial-gradient(ellipse at 50% 0%, rgba(224,184,94,0.10) 0%, transparent 60%),
+    radial-gradient(ellipse at 50% 0%, rgba(220,225,235,0.06) 0%, transparent 70%),
     linear-gradient(180deg,
-      rgba(225,230,240,0.13) 0%,
-      rgba(255,255,255,0.06) 40%,
-      rgba(0,0,0,0.20) 80%,
-      rgba(0,0,0,0.32) 100%);
-  border-color: rgba(224, 184, 94, 0.30);
+      rgba(255,255,255,0.08) 0%,
+      rgba(255,255,255,0.04) 50%,
+      rgba(0,0,0,0.13) 100%);
+  border-color: rgba(224, 184, 94, 0.20);
 }
 
-/* Linha brilhante no topo: prata nas pontas + dourado sutil no centro */
+/* Linha sutil no topo: prata + dourado discreto no centro */
 .ipb-card::before {
   content: '';
   position: absolute;
@@ -507,11 +501,9 @@ body.sea-splash-active [data-sea-bottom-nav='true'] {
   height: 1px;
   background: linear-gradient(90deg,
     transparent,
-    rgba(220, 225, 235, 0.22),
-    rgba(255, 220, 150, 0.40),    /* dourado claro */
-    rgba(224, 184, 94, 0.50),     /* dourado no centro */
-    rgba(255, 220, 150, 0.40),
-    rgba(220, 225, 235, 0.22),
+    rgba(220, 225, 235, 0.18),
+    rgba(224, 184, 94, 0.30),     /* dourado no centro (sutil) */
+    rgba(220, 225, 235, 0.18),
     transparent);
   pointer-events: none;
 }
