@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ArrowLeft, BookOpen, Brain, Heart, Wind, Radar, PanelLeftClose, PanelLeftOpen, Search, ChevronRight, FileText } from 'lucide-react'
+import { ArrowLeft, BookOpen, Brain, Heart, Wind, Radar, PanelLeftClose, PanelLeftOpen, Search, FileText } from 'lucide-react'
 import Link from 'next/link'
 import type { LucideIcon } from 'lucide-react'
 import { CadernoModulePanel } from '@/components/caderno/caderno-module'
@@ -66,18 +66,6 @@ function WorkspaceSidebar({
   const [search, setSearch] = useState('')
   const q = search.toLowerCase().trim()
 
-  // Expansão manual independente do "ativo" — clicar caret expande sem trocar de módulo
-  const [expandedManual, setExpandedManual] = useState<Record<number, boolean>>({})
-  const toggleExpand = (idx: number) =>
-    setExpandedManual((prev) => ({ ...prev, [idx]: !prev[idx] }))
-
-  // Quando buscando, expande tudo que casar
-  const isExpanded = (idx: number, hasMatch: boolean) => {
-    if (q) return hasMatch
-    if (expandedManual[idx] !== undefined) return expandedManual[idx]
-    return activeIndex === idx
-  }
-
   return (
     <div
       className="ipb-soft flex flex-col overflow-hidden rounded-[1.65rem]"
@@ -129,7 +117,8 @@ function WorkspaceSidebar({
           const hasAnyMatch = modMatches || topicMatches.length > 0
           if (q && !hasAnyMatch) return null
 
-          const expanded = isExpanded(idx, q ? topicMatches.length > 0 : false)
+          // SEMPRE expandido — usuário pediu pra ver TODOS os tópicos de todos os módulos
+          // sem precisar clicar pra abrir. A sidebar rola natural se ficar maior que a tela.
           const visibleTopics = q ? topicMatches : topics
 
           return (
@@ -138,8 +127,9 @@ function WorkspaceSidebar({
               {idx > 0 && <div className="mx-3 my-2 h-px bg-white/[0.06]" />}
 
               {/* Linha do módulo (clicável) — ativo com border dourada */}
-              <div
-                className="flex items-stretch gap-1 rounded-[1rem] transition"
+              <button
+                onClick={() => onSelectModule(idx)}
+                className="flex w-full items-center gap-2.5 rounded-[1rem] px-3 py-2.5 text-left transition"
                 style={
                   isActive
                     ? {
@@ -151,104 +141,76 @@ function WorkspaceSidebar({
                     : { border: '1px solid transparent' }
                 }
               >
-                <button
-                  onClick={() => onSelectModule(idx)}
-                  className="flex flex-1 items-center gap-2.5 px-3 py-2.5 text-left"
-                >
-                  <ModIcon
-                    className={`h-3.5 w-3.5 shrink-0 ${isActive ? 'text-[#d2af5a]' : 'text-white/32'}`}
-                  />
-                  <div className="min-w-0 flex-1">
-                    <p
-                      className={`text-[9px] uppercase tracking-[0.22em] ${
-                        isActive ? 'text-[#d2af5a]/60' : 'text-white/20'
-                      }`}
-                    >
-                      {mod.id} · {topics.length || '…'} tópicos
-                    </p>
-                    <p
-                      className={`truncate text-[11px] font-medium leading-snug ${
-                        isActive ? 'text-white/92' : 'text-white/55'
-                      }`}
-                    >
-                      {mod.title}
-                    </p>
-                  </div>
-                  {/* Dot indicador (igual Intelligence Kit) */}
-                  <div
-                    className={`h-1.5 w-1.5 shrink-0 rounded-full transition ${
-                      isActive ? 'bg-[#d2af5a]' : 'bg-white/16'
+                <ModIcon
+                  className={`h-3.5 w-3.5 shrink-0 ${isActive ? 'text-[#d2af5a]' : 'text-white/32'}`}
+                />
+                <div className="min-w-0 flex-1">
+                  <p
+                    className={`text-[9px] uppercase tracking-[0.22em] ${
+                      isActive ? 'text-[#d2af5a]/60' : 'text-white/20'
                     }`}
-                  />
-                </button>
-                {/* Caret de expansão — só aparece se houver tópicos */}
-                {topics.length > 0 && (
-                  <button
-                    onClick={() => toggleExpand(idx)}
-                    title={expanded ? 'Recolher tópicos' : 'Ver tópicos'}
-                    className="flex w-8 items-center justify-center rounded-r-[1rem] text-white/30 transition hover:bg-white/[0.04] hover:text-white/70"
                   >
-                    <motion.div animate={{ rotate: expanded ? 90 : 0 }} transition={{ duration: 0.18 }}>
-                      <ChevronRight className="h-3 w-3" />
-                    </motion.div>
-                  </button>
-                )}
-              </div>
+                    {mod.id} · {topics.length || '…'} tópicos
+                  </p>
+                  <p
+                    className={`truncate text-[11px] font-medium leading-snug ${
+                      isActive ? 'text-white/92' : 'text-white/55'
+                    }`}
+                  >
+                    {mod.title}
+                  </p>
+                </div>
+                {/* Dot indicador (igual Intelligence Kit) */}
+                <div
+                  className={`h-1.5 w-1.5 shrink-0 rounded-full transition ${
+                    isActive ? 'bg-[#d2af5a]' : 'bg-white/16'
+                  }`}
+                />
+              </button>
 
-              {/* Tópicos aninhados */}
-              <AnimatePresence initial={false}>
-                {expanded && visibleTopics.length > 0 && (
-                  <motion.div
-                    key={`topics-${mod.id}`}
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: 'auto', opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.22, ease }}
-                    className="overflow-hidden"
-                  >
-                    <div className="relative mt-1.5 ml-[1.45rem] space-y-0.5 border-l border-white/[0.07] pl-2.5">
-                      {visibleTopics.map((t, ti) => {
-                        const isTopicActive = activeTopicId === t.id && isActive
-                        return (
-                          <button
-                            key={t.id}
-                            onClick={() => onSelectTopic(idx, t.id)}
-                            className="flex w-full items-center gap-2 rounded-[0.7rem] px-2 py-1.5 text-left transition"
-                            style={
-                              isTopicActive
-                                ? {
-                                    background: 'rgba(210,175,90,0.06)',
-                                    boxShadow: 'inset 0 0 0 1px rgba(210,175,90,0.18)',
-                                  }
-                                : { background: 'transparent' }
-                            }
-                          >
-                            <FileText
-                              className={`h-3 w-3 shrink-0 ${isTopicActive ? 'text-[#d2af5a]' : 'text-white/28'}`}
-                            />
-                            <span
-                              className={`shrink-0 font-mono text-[8.5px] tracking-[0.06em] ${
-                                isTopicActive ? 'text-[#d2af5a]/70' : 'text-white/26'
-                              }`}
-                            >
-                              {String(ti + 1).padStart(2, '0')}
-                            </span>
-                            <span
-                              className={`truncate text-[10.5px] leading-snug ${
-                                isTopicActive ? 'text-white/90' : 'text-white/52'
-                              }`}
-                            >
-                              {t.title}
-                            </span>
-                          </button>
-                        )
-                      })}
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+              {/* Tópicos aninhados — SEMPRE visíveis (não é toggle) */}
+              {visibleTopics.length > 0 && (
+                <div className="relative mt-1.5 ml-[1.45rem] space-y-0.5 border-l border-white/[0.07] pl-2.5">
+                  {visibleTopics.map((t, ti) => {
+                    const isTopicActive = activeTopicId === t.id && isActive
+                    return (
+                      <button
+                        key={t.id}
+                        onClick={() => onSelectTopic(idx, t.id)}
+                        className="flex w-full items-center gap-2 rounded-[0.7rem] px-2 py-1.5 text-left transition"
+                        style={
+                          isTopicActive
+                            ? {
+                                background: 'rgba(210,175,90,0.06)',
+                                boxShadow: 'inset 0 0 0 1px rgba(210,175,90,0.18)',
+                              }
+                            : { background: 'transparent' }
+                        }
+                      >
+                        <FileText
+                          className={`h-3 w-3 shrink-0 ${isTopicActive ? 'text-[#d2af5a]' : 'text-white/28'}`}
+                        />
+                        <span
+                          className={`shrink-0 font-mono text-[8.5px] tracking-[0.06em] ${
+                            isTopicActive ? 'text-[#d2af5a]/70' : 'text-white/26'
+                          }`}
+                        >
+                          {String(ti + 1).padStart(2, '0')}
+                        </span>
+                        <span
+                          className={`truncate text-[10.5px] leading-snug ${
+                            isTopicActive ? 'text-white/90' : 'text-white/52'
+                          }`}
+                        >
+                          {t.title}
+                        </span>
+                      </button>
+                    )
+                  })}
+                </div>
+              )}
               {/* Skeleton enquanto os tópicos ainda carregam */}
-              {!q && topics.length === 0 && expanded && (
+              {!q && topics.length === 0 && (
                 <div className="ml-[1.45rem] mt-1.5 space-y-1 border-l border-white/[0.06] pl-2.5">
                   {[60, 80, 50].map((w, i) => (
                     <div

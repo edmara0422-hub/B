@@ -1,12 +1,9 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
-import { motion, AnimatePresence, useMotionValue, animate } from 'framer-motion'
+import { useEffect, useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import { Leaf, Shield, Heart, Megaphone, FileText, Scale, BookOpen, Stethoscope, X, Send, Check, Scroll, Cookie, Target, UserCog } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
-
-const spring = { type: 'spring', stiffness: 380, damping: 32 } as const
-const carouselSpring = { type: 'spring', stiffness: 380, damping: 32 } as const
 
 // Real metrics from localStorage
 function useAppMetrics() {
@@ -94,39 +91,27 @@ export function PerformanceBar() {
   const [showReport, setShowReport] = useState(false)
   const [showGov, setShowGov] = useState<string | null>(null)
 
-  // 2 cards: [Impacto+NPS+Gov unificado] e [Sustentabilidade]
-  // Padrão 3D igual Explorar: perspective + rotateY + drag + side cards visíveis
-  const cards = [
-    { key: 'combined' as const },
-    { key: 'sustentabilidade' as const },
-  ]
-
+  // Layout antigo: 2 cards empilhados full-width
+  // Card 1 = Impacto+NPS+Gov unificado (sem slides internos, tudo flat)
+  // Card 2 = Sustentabilidade
   return (
     <motion.section
-      className="relative"
+      className="relative space-y-4 w-full"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.1 }}
     >
-      <HomeCarousel3D
-        items={cards}
-        renderItem={(item, isActive) => {
-          if (item.key === 'combined') {
-            return (
-              <CombinedStatsCard
-                metrics={metrics}
-                folhasEconomizadas={folhasEconomizadas}
-                nps={nps}
-                fbCount={fbCount}
-                onGovOpen={setShowGov}
-                onReportOpen={() => setShowReport(true)}
-                isActive={isActive}
-              />
-            )
-          }
-          return <SustentabilidadeCard />
-        }}
+      <CombinedStatsCard
+        metrics={metrics}
+        folhasEconomizadas={folhasEconomizadas}
+        nps={nps}
+        fbCount={fbCount}
+        onGovOpen={setShowGov}
+        onReportOpen={() => setShowReport(true)}
+        isActive={true}
       />
+
+      <SustentabilidadeCard />
 
       {/* Modais */}
       <AnimatePresence>
@@ -138,108 +123,10 @@ export function PerformanceBar() {
   )
 }
 
-// ─── 3D Carousel ─ Mesmo padrão visual do Explorar (perspective + rotateY + drag) ───
-function HomeCarousel3D<T>({
-  items,
-  renderItem,
-}: {
-  items: T[]
-  renderItem: (item: T, isActive: boolean) => React.ReactNode
-}) {
-  const [active, setActive] = useState(0)
-  const dragX = useMotionValue(0)
-  const didDrag = useRef(false)
-
-  const handleDragStart = () => { didDrag.current = false }
-
-  const handleDragEnd = (_: unknown, info: { offset: { x: number } }) => {
-    if (Math.abs(info.offset.x) > 12) {
-      didDrag.current = true
-      if (info.offset.x < -50 && active < items.length - 1) setActive((v) => v + 1)
-      else if (info.offset.x > 50 && active > 0) setActive((v) => v - 1)
-    }
-    animate(dragX, 0, { type: 'spring', stiffness: 600, damping: 44 })
-  }
-
-  return (
-    <div className="space-y-5">
-      {/* 3D Stage — centralizado, com largura reduzida pra mostrar os cards laterais espiando */}
-      <div
-        className="relative mx-auto w-[82%] select-none md:w-[72%]"
-        style={{ perspective: '1100px', perspectiveOrigin: '50% 50%', height: 'clamp(360px, 52vh, 520px)' }}
-      >
-        {items.map((item, i) => {
-          const offset = i - active
-          const isActive = offset === 0
-          const isRight = offset > 0
-          const isLeft = offset < 0
-
-          return (
-            <motion.div
-              key={i}
-              drag={isActive ? 'x' : false}
-              dragConstraints={{ left: 0, right: 0 }}
-              dragElastic={0.18}
-              style={{
-                x: isActive ? dragX : undefined,
-                position: 'absolute',
-                inset: 0,
-                transformStyle: 'preserve-3d',
-                transformOrigin: isRight ? 'left center' : isLeft ? 'right center' : 'center center',
-                zIndex: isActive ? 10 : 1,
-              }}
-              animate={{
-                rotateY: isActive ? 0 : isRight ? 28 : -28,
-                x: isActive ? 0 : isRight ? '46%' : '-46%',
-                z: isActive ? 0 : -30,
-                scale: isActive ? 1 : 0.88,
-                opacity: isActive ? 1 : 0.58,
-              }}
-              transition={carouselSpring}
-              onDragStart={handleDragStart}
-              onDragEnd={handleDragEnd}
-              onClick={() => {
-                if (didDrag.current) { didDrag.current = false; return }
-                if (!isActive) setActive(i)
-              }}
-              className={isActive ? 'cursor-grab active:cursor-grabbing h-full' : 'cursor-pointer h-full'}
-            >
-              <div className="h-full w-full overflow-y-auto ipb-thinscroll">
-                {renderItem(item, isActive)}
-              </div>
-            </motion.div>
-          )
-        })}
-      </div>
-
-      {/* Dots — mesmo estilo Explorar */}
-      <div className="flex items-center justify-center gap-3">
-        {items.map((_, i) => (
-          <button
-            key={i}
-            onClick={() => setActive(i)}
-            className="relative flex items-center justify-center"
-            aria-label={`Card ${i + 1}`}
-          >
-            <motion.span
-              animate={{
-                width: active === i ? 24 : 5,
-                background: active === i ? 'rgba(255,255,255,0.55)' : 'rgba(255,255,255,0.14)',
-              }}
-              transition={carouselSpring}
-              className="block h-1 rounded-full"
-            />
-          </button>
-        ))}
-      </div>
-    </div>
-  )
-}
-
-// ─── Card Sustentabilidade (extraído pra ficar dentro do carrossel 3D) ───
+// ─── Card Sustentabilidade ───
 function SustentabilidadeCard() {
   return (
-    <div className="ipb-soft h-full rounded-[1.4rem] p-4 md:p-5">
+    <div className="ipb-soft w-full rounded-[1.4rem] p-4 md:p-5">
       <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/75">
         Sustentabilidade
       </p>
@@ -771,7 +658,7 @@ function CombinedStatsCard({
   isActive: boolean
 }) {
   return (
-    <div className="ipb-soft h-full rounded-[1.4rem] p-4 md:p-5">
+    <div className="ipb-soft w-full rounded-[1.4rem] p-4 md:p-5">
       {/* Seção 1 — Impacto SEA */}
       <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/75">
         Impacto SEA
