@@ -60,7 +60,7 @@ export function SimulationsMarquee() {
   }
 
   const neuroCard = (key: string) => (
-    <div key={key} className="relative overflow-hidden rounded-[1.5rem]" style={{ ...cardStyle, border: '1px solid rgba(255,255,255,0.08)', background: 'linear-gradient(160deg, rgba(45,212,191,0.03) 0%, rgba(0,0,0,0) 100%)' }}>
+    <div key={key} className="ipb-soft relative overflow-hidden rounded-[1.5rem]" style={cardStyle}>
       <div className="absolute inset-0">{neuroOn && pageVisible && <BrainHeroScene compact transparent />}</div>
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <div style={{ position: 'absolute', left: 0, right: 0, height: '2px', background: 'linear-gradient(90deg, transparent 10%, rgba(45,212,191,0.55) 30%, rgba(180,255,248,0.90) 50%, rgba(45,212,191,0.55) 70%, transparent 90%)', boxShadow: '0 0 8px 2px rgba(45,212,191,0.30)', animation: 'scanline 4s linear infinite' }} />
@@ -77,7 +77,7 @@ export function SimulationsMarquee() {
   )
 
   const cardioCard = (key: string) => (
-    <div key={key} className="relative overflow-hidden rounded-[1.5rem]" style={{ ...cardStyle, border: '1px solid rgba(255,255,255,0.08)', background: 'linear-gradient(160deg, rgba(180,30,40,0.04) 0%, rgba(0,0,0,0) 100%)' }}>
+    <div key={key} className="ipb-soft relative overflow-hidden rounded-[1.5rem]" style={cardStyle}>
       <div className="absolute inset-0">{cardioOn && pageVisible && <CardioHeroScene transparent />}</div>
       <div className="pointer-events-none absolute bottom-0 inset-x-0 h-28" style={{ background: 'linear-gradient(to top, rgba(5,3,4,0.92) 0%, transparent 100%)' }} />
       <div className="absolute bottom-0 inset-x-0 p-4 flex items-end justify-between">
@@ -91,7 +91,7 @@ export function SimulationsMarquee() {
   )
 
   const pneumoCard = (key: string) => (
-    <div key={key} className="relative overflow-hidden rounded-[1.5rem]" style={{ ...cardStyle, border: '1px solid rgba(255,255,255,0.08)', background: 'linear-gradient(160deg, rgba(30,120,180,0.04) 0%, rgba(0,0,0,0) 100%)' }}>
+    <div key={key} className="ipb-soft relative overflow-hidden rounded-[1.5rem]" style={cardStyle}>
       <div className="absolute inset-0">{pneumoOn && pageVisible && <PneumoHeroScene transparent />}</div>
       <div className="pointer-events-none absolute bottom-0 inset-x-0 h-28" style={{ background: 'linear-gradient(to top, rgba(4,6,7,0.92) 0%, transparent 100%)' }} />
       <div className="absolute bottom-0 inset-x-0 p-4 flex items-end justify-between">

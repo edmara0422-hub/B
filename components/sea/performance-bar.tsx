@@ -141,7 +141,7 @@ export function PerformanceBar() {
 
       {/* Sustentabilidade — TBL + ODS + CSV juntos */}
       <div
-        className="ipb-card rounded-[1.4rem] p-4"
+        className="ipb-soft rounded-[1.4rem] p-4"
       >
         <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/75">
           Sustentabilidade
@@ -719,7 +719,7 @@ function CombinedStatsCard({
   const SLIDE_TITLES = ['Impacto SEA', 'NPS e Feedback', 'Governança']
 
   return (
-    <div className="ipb-card rounded-[1.4rem] p-4 md:p-5">
+    <div className="ipb-soft rounded-[1.4rem] p-4 md:p-5">
       {/* Header com título dinâmico + dots */}
       <div className="mb-3 flex items-center justify-between gap-3">
         <AnimatePresence mode="wait">

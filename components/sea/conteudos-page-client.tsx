@@ -54,7 +54,7 @@ function WorkspaceSidebar({
 }) {
   return (
     <div
-      className="ipb-card flex flex-col overflow-hidden rounded-[1.65rem]"
+      className="ipb-soft flex flex-col overflow-hidden rounded-[1.65rem]"
       style={{ maxHeight: 'calc(100vh - 140px)' }}
     >
       {/* Header */}
@@ -134,7 +134,7 @@ function ModuleRail({
   onSelect: (i: number) => void
 }) {
   return (
-    <div className="ipb-card relative overflow-hidden rounded-[1.8rem] px-5 py-6 md:px-8">
+    <div className="ipb-soft relative overflow-hidden rounded-[1.8rem] px-5 py-6 md:px-8">
       <div className="pointer-events-none absolute inset-0 grid-bg opacity-50" />
       <div className="pointer-events-none absolute inset-x-0 top-0 h-px silver-divider opacity-60" />
       {/* Header */}
@@ -319,7 +319,7 @@ export default function ConteudosPageClient() {
                 className="space-y-3"
               >
                 {/* Module hero card */}
-                <div className="ipb-card relative overflow-hidden rounded-[2rem] px-6 py-7 md:px-8 md:py-8">
+                <div className="ipb-soft relative overflow-hidden rounded-[2rem] px-6 py-7 md:px-8 md:py-8">
                   <div className="pointer-events-none absolute inset-0 grid-bg opacity-40" />
                   <div className="pointer-events-none absolute inset-x-0 top-0 h-px silver-divider opacity-70" />
                   <div className="pointer-events-none absolute right-[8%] top-[20%] h-32 w-40 rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.06)_0%,transparent_72%)] blur-2xl" />
@@ -349,7 +349,7 @@ export default function ConteudosPageClient() {
                 </div>
 
                 {/* Caderno + sidebar */}
-                <div className="ipb-card relative overflow-hidden rounded-[2rem]">
+                <div className="ipb-soft relative overflow-hidden rounded-[2rem]">
                   <div className="pointer-events-none absolute inset-x-0 top-0 h-px silver-divider opacity-40" />
                   <div className="p-5 md:p-6">
                     <CadernoModulePanel moduleId={current.id} />
