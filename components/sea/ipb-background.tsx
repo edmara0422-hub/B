@@ -176,10 +176,10 @@ function HalosDourados() {
 }
 
 export function IpbBackground() {
+  // SEM div de fundo sólido — o body::before/after já dão a base radial.
+  // Com solid div cobrindo, o VineCanvas 3D atrás ficava invisível.
   return (
     <>
-      {/* Base — preto-azulado IPB */}
-      <div className="fixed inset-0 z-0 pointer-events-none" style={{ background: '#050507' }} />
       <CanvasGlow />
       <HalosDourados />
     </>

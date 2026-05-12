@@ -126,7 +126,7 @@ function VineTendrils() {
 function Scene({ tier }: { tier: 'high' | 'mid' | 'low' }) {
   return (
     <>
-      <color attach="background" args={['#000000']} />
+      {/* Sem <color background> — canvas transparente pra body bg passar atrás */}
       <ambientLight intensity={0.01} />
       <CameraRig />
       <StarLayer count={tier === 'high' ? 3000 : 1800} spread={80} zRange={[-60, -20]} size={0.018} speed={0.002} opacity={0.55} />
@@ -157,13 +157,13 @@ export default function VineCanvas() {
         camera={{ position: [0, 0, 10], fov: 55 }}
         gl={{
           antialias: tier === 'high',
-          alpha: false,
+          alpha: true, // canvas transparente — deixa body bg + IpbBackground passarem
           powerPreference: 'high-performance',
           toneMapping: THREE.ACESFilmicToneMapping,
           stencil: false,
           depth: true,
         }}
-        style={{ background: '#000000' }}
+        style={{ background: 'transparent' }}
         dpr={dpr}
       >
         <PerformanceMonitor
