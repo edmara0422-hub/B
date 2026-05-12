@@ -39,10 +39,12 @@ export default function AdminPage() {
   // Activity / device tracking
   type ActivityEvent = { action: string; ip: string | null; device: string; ua: string | null; created_at: string }
   type ActivitySession = { id: string; ip: string | null; device: string; ua: string | null; created_at: string; updated_at: string | null; not_after: string | null }
+  type ActivityPresence = { device_fingerprint: string; device: string; ua: string | null; last_seen: string }
   type ActivityData = {
     lastSignIn: string | null
     events: ActivityEvent[]
     sessions: ActivitySession[]
+    presence: ActivityPresence[]
     suspicion: { level: 'ok' | 'medium' | 'high'; reasons: string[] }
     debug?: { auditError?: string; sessionsError?: string; rawAuditCount?: number }
   }
@@ -87,6 +89,25 @@ export default function AdminPage() {
   const flash = (m: string) => { setMsg(m); setTimeout(() => setMsg(''), 3000) }
 
   useEffect(() => { if (initialized && !isAdmin) router.replace('/sea') }, [initialized, isAdmin, router])
+
+  // Auto-refresh do modal de atividade a cada 15s pra mostrar presença real-time
+  useEffect(() => {
+    if (!activityUser) return
+    const id = setInterval(async () => {
+      try {
+        const res = await fetch('/api/admin/users/activity', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ userId: activityUser.id }),
+        })
+        if (res.ok) {
+          const data = await res.json()
+          setActivityData(data as ActivityData)
+        }
+      } catch { /* ignore */ }
+    }, 15_000)
+    return () => clearInterval(id)
+  }, [activityUser])
 
   // ── Data Loaders ──
   const loadUsers = useCallback(async () => {
@@ -991,6 +1012,69 @@ export default function AdminPage() {
                     </ul>
                   )}
                 </div>
+
+                {/* ATIVO AGORA — baseado em heartbeat real-time (last_seen < 60s) */}
+                {(() => {
+                  const now = Date.now()
+                  const live = (activityData.presence ?? []).filter((p) => now - new Date(p.last_seen).getTime() < 60_000)
+                  const recent = (activityData.presence ?? []).filter((p) => {
+                    const age = now - new Date(p.last_seen).getTime()
+                    return age >= 60_000 && age < 10 * 60_000
+                  })
+                  if ((activityData.presence ?? []).length === 0) return null
+
+                  return (
+                    <div>
+                      <p className="mb-1.5 text-[9px] font-semibold uppercase tracking-[0.16em] text-white/55">
+                        Em uso agora · heartbeat <span className="text-[#4ade80]">({live.length} online · {recent.length} recente)</span>
+                      </p>
+                      {live.length === 0 && recent.length === 0 ? (
+                        <p className="text-[10px] text-white/30">Ninguém usando o app neste momento.</p>
+                      ) : (
+                        <div className="space-y-1">
+                          {[...live, ...recent].map((p) => {
+                            const ageMs = now - new Date(p.last_seen).getTime()
+                            const isLive = ageMs < 60_000
+                            const color = isLive ? '#4ade80' : '#facc15'
+                            const label = isLive ? 'ATIVO AGORA' : 'há alguns minutos'
+                            return (
+                              <div
+                                key={p.device_fingerprint}
+                                className="flex items-center gap-2 rounded-[0.5rem] border px-2 py-1.5"
+                                style={{
+                                  borderColor: isLive ? 'rgba(74,222,128,0.40)' : 'rgba(250,204,21,0.30)',
+                                  background: isLive ? 'rgba(74,222,128,0.06)' : 'rgba(250,204,21,0.04)',
+                                }}
+                              >
+                                <div className="relative flex h-3 w-3 shrink-0 items-center justify-center">
+                                  <span className="h-2 w-2 rounded-full" style={{ background: color }} />
+                                  {isLive && (
+                                    <span className="absolute inset-0 animate-ping rounded-full" style={{ background: color, opacity: 0.7 }} />
+                                  )}
+                                </div>
+                                <Smartphone className="h-3 w-3 shrink-0 text-white/55" />
+                                <div className="min-w-0 flex-1">
+                                  <div className="flex items-center gap-1.5">
+                                    <p className="truncate text-[10px] font-semibold text-white/90">{p.device}</p>
+                                    <span
+                                      className="shrink-0 rounded-full px-1.5 py-px text-[7px] font-bold uppercase tracking-[0.10em]"
+                                      style={{ color, background: `${color}14`, border: `1px solid ${color}40` }}
+                                    >
+                                      {label}
+                                    </span>
+                                  </div>
+                                  <p className="truncate text-[8px] text-white/40">
+                                    Último ping: {ageMs < 60_000 ? `${Math.floor(ageMs / 1000)}s atrás` : `${Math.floor(ageMs / 60_000)} min atrás`}
+                                  </p>
+                                </div>
+                              </div>
+                            )
+                          })}
+                        </div>
+                      )}
+                    </div>
+                  )
+                })()}
 
                 {/* Active sessions — ordenadas por última atividade, com classificação online/dormente */}
                 {(() => {

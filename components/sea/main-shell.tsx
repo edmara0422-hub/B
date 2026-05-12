@@ -7,6 +7,7 @@ import { BottomNav } from '@/components/sea/bottom-nav'
 import { PremiumSplash } from '@/components/sea/premium-splash'
 import { SeaLanding } from '@/components/sea/sea-landing'
 import { useAccessibility } from '@/hooks/use-accessibility'
+import { usePresenceHeartbeat } from '@/hooks/use-presence-heartbeat'
 
 // Lazy-load both pages once — they stay mounted forever after
 const HomePageClient = dynamic(
@@ -56,6 +57,7 @@ export function MainShell({ children }: { children: ReactNode }) {
   const pathname = usePathname()
   const router = useRouter()
   usePreloadRoutes()
+  usePresenceHeartbeat()
 
   // Prefetch Next.js routes so server response is instant
   useEffect(() => {

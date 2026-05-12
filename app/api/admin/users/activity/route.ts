@@ -154,6 +154,16 @@ export async function POST(request: Request) {
     if (!leErr) loginEvents = (leRows ?? []) as LoginEvent[]
   } catch { /* ignore */ }
 
+  // 5. presence — heartbeat real-time (client manda ping a cada 30s)
+  type PresenceRow = { device_fingerprint: string; user_agent: string | null; last_seen: string }
+  let presence: PresenceRow[] = []
+  try {
+    const { data: pRows, error: pErr } = await admin.rpc('admin_get_user_presence', {
+      target_user: userId,
+    })
+    if (!pErr) presence = (pRows ?? []) as PresenceRow[]
+  } catch { /* ignore */ }
+
   // Mescla audit (Supabase) + login_events (próprio) num histórico unificado
   const mergedEvents: AuditEvent[] = [
     ...events,
@@ -187,6 +197,12 @@ export async function POST(request: Request) {
       created_at: s.created_at,
       updated_at: s.updated_at,
       not_after: s.not_after,
+    })),
+    presence: presence.map((p) => ({
+      device_fingerprint: p.device_fingerprint,
+      device: parseUserAgent(p.user_agent),
+      ua: p.user_agent,
+      last_seen: p.last_seen,
     })),
     suspicion,
     debug,
