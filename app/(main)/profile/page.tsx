@@ -110,9 +110,11 @@ export default function ProfilePage() {
   const menuBtn = 'flex w-full items-center gap-2 rounded-[0.7rem] border border-white/6 bg-white/[0.02] px-3 py-2 text-left'
 
   return (
-    <div className="relative min-h-screen text-white px-3 pb-32 pt-16 md:px-6">
-      {/* Wrapper relativo pra ficar acima do backdrop */}
-      <div className="relative z-10 mx-auto max-w-2xl">
+    <div className="relative min-h-screen text-white px-2 pb-32 pt-16 md:px-4">
+      {/* Wrapper relativo pra ficar acima do backdrop.
+          Mobile: max-w-2xl mantém leitura confortável.
+          Desktop: w-full ocupa toda a largura disponível (acompanha TopBar/BottomNav). */}
+      <div className="relative z-10 mx-auto w-full max-w-2xl md:max-w-none">
       {/* Back */}
       <button onClick={() => router.push('/sea')} className="mb-4 flex items-center gap-1 text-[8px] text-white/40 hover:text-white/60">
         <ArrowLeft className="h-3 w-3" /> Voltar

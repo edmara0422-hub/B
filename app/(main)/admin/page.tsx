@@ -393,8 +393,8 @@ export default function AdminPage() {
   ]
 
   return (
-    <div className="relative min-h-screen text-white px-3 pb-32 pt-16 md:px-6">
-      <div className="relative z-10 mx-auto max-w-5xl">
+    <div className="relative min-h-screen text-white px-2 pb-32 pt-16 md:px-4">
+      <div className="relative z-10 mx-auto w-full max-w-5xl md:max-w-none">
       <button onClick={() => router.push('/profile')} className="mb-3 flex items-center gap-1 text-[8px] text-white/40 hover:text-white/60"><ArrowLeft className="h-3 w-3" /> Perfil</button>
       <div className="mb-3 flex items-center gap-2"><Shield className="h-4 w-4 text-[#a78bfa]" /><h1 className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#a78bfa]">Painel Admin</h1></div>
       {msg && <div className="mb-2 rounded-[0.5rem] border border-[#4ade8030] bg-[#4ade8008] px-2 py-1"><p className="text-[7px] text-[#86efac]">{msg}</p></div>}
