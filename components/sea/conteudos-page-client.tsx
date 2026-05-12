@@ -70,32 +70,32 @@ function WorkspaceSidebar({
     <div
       className="ipb-soft flex flex-col overflow-hidden rounded-[1.65rem] h-[calc(100vh-9rem)]"
     >
-      {/* Header: label + busca + close (lógica Intelligence Kit) — fixo no topo da sidebar */}
+      {/* Header: label + busca + close — fixo no topo da sidebar (compacto mobile, normal desktop) */}
       <div
-        className="shrink-0 rounded-t-[1.65rem] px-4 pb-3 pt-4"
+        className="shrink-0 rounded-t-[1.65rem] px-2 pb-2 pt-2.5 lg:px-4 lg:pb-3 lg:pt-4"
         style={{ borderBottom: '1px solid rgba(210,175,90,0.12)' }}
       >
-        <div className="mb-3 flex items-center justify-between">
-          <p className="text-[9px] uppercase tracking-[0.44em] text-white/40">Trilha de Estudo</p>
+        <div className="mb-2 flex items-center justify-between lg:mb-3">
+          <p className="text-[7px] uppercase tracking-[0.22em] text-white/40 lg:text-[9px] lg:tracking-[0.44em]">Trilha</p>
           <button
             onClick={onClose}
             title="Fechar sidebar"
-            className="flex h-6 w-6 items-center justify-center rounded-[0.5rem] text-white/36 transition hover:bg-white/[0.08] hover:text-white/64"
+            className="flex h-5 w-5 items-center justify-center rounded-[0.4rem] text-white/36 transition hover:bg-white/[0.08] hover:text-white/64 lg:h-6 lg:w-6 lg:rounded-[0.5rem]"
           >
-            <PanelLeftClose className="h-3.5 w-3.5" />
+            <PanelLeftClose className="h-3 w-3 lg:h-3.5 lg:w-3.5" />
           </button>
         </div>
         {/* Busca */}
         <div
-          className="flex items-center gap-2 rounded-[0.85rem] px-3 py-2"
+          className="flex items-center gap-1.5 rounded-[0.6rem] px-2 py-1.5 lg:gap-2 lg:rounded-[0.85rem] lg:px-3 lg:py-2"
           style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.10)' }}
         >
-          <Search className="h-3 w-3 shrink-0 text-white/30" />
+          <Search className="h-2.5 w-2.5 shrink-0 text-white/30 lg:h-3 lg:w-3" />
           <input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Buscar módulo ou tópico..."
-            className="flex-1 bg-transparent text-[11px] text-white/70 outline-none placeholder:text-white/25"
+            placeholder="Buscar..."
+            className="flex-1 bg-transparent text-[9px] text-white/70 outline-none placeholder:text-white/25 lg:text-[11px]"
           />
         </div>
       </div>
@@ -128,7 +128,7 @@ function WorkspaceSidebar({
               {/* Linha do módulo (clicável) — ativo com border dourada */}
               <button
                 onClick={() => onSelectModule(idx)}
-                className="flex w-full items-center gap-2.5 rounded-[1rem] px-3 py-2.5 text-left transition"
+                className="flex w-full items-center gap-1.5 rounded-[0.8rem] px-2 py-1.5 text-left transition lg:gap-2.5 lg:rounded-[1rem] lg:px-3 lg:py-2.5"
                 style={
                   isActive
                     ? {
@@ -141,18 +141,18 @@ function WorkspaceSidebar({
                 }
               >
                 <ModIcon
-                  className={`h-3.5 w-3.5 shrink-0 ${isActive ? 'text-[#d2af5a]' : 'text-white/32'}`}
+                  className={`h-3 w-3 shrink-0 lg:h-3.5 lg:w-3.5 ${isActive ? 'text-[#d2af5a]' : 'text-white/32'}`}
                 />
                 <div className="min-w-0 flex-1">
                   <p
-                    className={`text-[9px] uppercase tracking-[0.22em] ${
+                    className={`text-[7px] uppercase tracking-[0.16em] lg:text-[9px] lg:tracking-[0.22em] ${
                       isActive ? 'text-[#d2af5a]/60' : 'text-white/20'
                     }`}
                   >
-                    {mod.id} · {topics.length || '…'} tópicos
+                    {mod.id} · {topics.length || '…'}
                   </p>
                   <p
-                    className={`truncate text-[11px] font-medium leading-snug ${
+                    className={`truncate text-[9.5px] font-medium leading-snug lg:text-[11px] ${
                       isActive ? 'text-white/92' : 'text-white/55'
                     }`}
                   >
@@ -169,14 +169,14 @@ function WorkspaceSidebar({
 
               {/* Tópicos aninhados — SEMPRE visíveis (não é toggle) */}
               {visibleTopics.length > 0 && (
-                <div className="relative mt-1.5 ml-[1.45rem] space-y-0.5 border-l border-white/[0.07] pl-2.5">
+                <div className="relative mt-1 ml-[0.9rem] space-y-0.5 border-l border-white/[0.07] pl-1.5 lg:mt-1.5 lg:ml-[1.45rem] lg:pl-2.5">
                   {visibleTopics.map((t, ti) => {
                     const isTopicActive = activeTopicId === t.id && isActive
                     return (
                       <button
                         key={t.id}
                         onClick={() => onSelectTopic(idx, t.id)}
-                        className="flex w-full items-center gap-2 rounded-[0.7rem] px-2 py-1.5 text-left transition"
+                        className="flex w-full items-center gap-1 rounded-[0.5rem] px-1.5 py-1 text-left transition lg:gap-2 lg:rounded-[0.7rem] lg:px-2 lg:py-1.5"
                         style={
                           isTopicActive
                             ? {
@@ -187,17 +187,17 @@ function WorkspaceSidebar({
                         }
                       >
                         <FileText
-                          className={`h-3 w-3 shrink-0 ${isTopicActive ? 'text-[#d2af5a]' : 'text-white/28'}`}
+                          className={`h-2.5 w-2.5 shrink-0 lg:h-3 lg:w-3 ${isTopicActive ? 'text-[#d2af5a]' : 'text-white/28'}`}
                         />
                         <span
-                          className={`shrink-0 font-mono text-[8.5px] tracking-[0.06em] ${
+                          className={`shrink-0 font-mono text-[7px] tracking-[0.04em] lg:text-[8.5px] lg:tracking-[0.06em] ${
                             isTopicActive ? 'text-[#d2af5a]/70' : 'text-white/26'
                           }`}
                         >
                           {String(ti + 1).padStart(2, '0')}
                         </span>
                         <span
-                          className={`truncate text-[10.5px] leading-snug ${
+                          className={`truncate text-[8.5px] leading-snug lg:text-[10.5px] ${
                             isTopicActive ? 'text-white/90' : 'text-white/52'
                           }`}
                         >
@@ -436,8 +436,8 @@ export default function ConteudosPageClient() {
           {/* Sidebar (desktop) + Rail + Conteúdo — Intelligence Kit:
               280px largura, altura NATURAL (curta), todos os tópicos visíveis,
               página rola pra mostrar tudo. Header de busca sticky por dentro. */}
-          {/* Sidebar inline lado-a-lado em mobile e desktop — mobile com colunas mais estreitas */}
-          <div className={sidebarOpen ? 'grid grid-cols-[140px_1fr] items-start gap-2 sm:grid-cols-[180px_1fr] sm:gap-3 lg:grid-cols-[280px_1fr] lg:gap-5' : ''}>
+          {/* Sidebar inline lado-a-lado em mobile e desktop — mobile com colunas bem mais estreitas */}
+          <div className={sidebarOpen ? 'grid grid-cols-[110px_1fr] items-start gap-2 sm:grid-cols-[160px_1fr] sm:gap-3 lg:grid-cols-[280px_1fr] lg:gap-5' : ''}>
             {sidebarOpen && (
               <div className="block">
                 <WorkspaceSidebar
