@@ -33,18 +33,24 @@ const DEVICE_COLORS: Record<string, string> = {
 export function AdminTelemetry() {
   const [data, setData] = useState<TelemetryData | null>(null)
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
   const [lastUpdate, setLastUpdate] = useState<Date | null>(null)
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
   const fetchData = async () => {
     try {
       const res = await fetch('/api/admin/analytics/realtime')
-      if (res.ok) {
-        const json = await res.json()
-        setData(json)
-        setLastUpdate(new Date())
+      const json = await res.json()
+      if (!res.ok) {
+        setError(json?.error || `HTTP ${res.status}`)
+        return
       }
-    } catch { /* silent */ }
+      setError(null)
+      setData(json)
+      setLastUpdate(new Date())
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Erro de rede')
+    }
     finally { setLoading(false) }
   }
 
@@ -55,6 +61,13 @@ export function AdminTelemetry() {
   }, [])
 
   if (loading && !data) return <p className="py-6 text-center text-[10px] text-white/40">Carregando telemetria…</p>
+
+  if (error && !data) return (
+    <div className="rounded-[0.6rem] border border-[#f8717125] bg-[#f8717108] px-3 py-2.5">
+      <p className="text-[10px] font-semibold text-[#fca5a5]">Erro ao carregar telemetria</p>
+      <p className="mt-1 text-[9px] text-white/45">{error}</p>
+    </div>
+  )
 
   return (
     <div className="space-y-3">

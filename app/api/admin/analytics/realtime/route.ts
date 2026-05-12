@@ -7,9 +7,9 @@ const ALWAYS_ADMIN_EMAILS = new Set<string>(['edmararbusiness1@gmail.com'])
 
 // Geolocaliza IPs novos via ip-api.com (sem chave, free tier: 45 req/min).
 // Resultado vai pro cache em public.ip_geolocation.
+// IMPORTANTE: paralelo + timeout de 3s pra não estourar timeout da serverless function.
 async function geolocateMissingIps(admin: ReturnType<typeof getSupabaseAdminClient>, ips: string[]) {
   if (ips.length === 0) return
-  // Verifica quais não estão no cache
   const { data: cached } = await admin
     .from('ip_geolocation')
     .select('ip')
@@ -18,23 +18,32 @@ async function geolocateMissingIps(admin: ReturnType<typeof getSupabaseAdminClie
   const missing = ips.filter((ip) => !cachedSet.has(ip))
   if (missing.length === 0) return
 
-  // Limita a 10 IPs por request pra não estourar o free tier
-  for (const ip of missing.slice(0, 10)) {
-    try {
-      const res = await fetch(`http://ip-api.com/json/${ip}?fields=status,country,regionName,city,lat,lon`)
-      const data = await res.json()
-      if (data?.status === 'success') {
-        await admin.from('ip_geolocation').upsert({
-          ip,
-          country: data.country ?? null,
-          region: data.regionName ?? null,
-          city: data.city ?? null,
-          latitude: data.lat ?? null,
-          longitude: data.lon ?? null,
+  // Limita a 3 IPs por request, em paralelo, com timeout total de 4s
+  const toLookup = missing.slice(0, 3)
+  const controller = new AbortController()
+  const timeoutId = setTimeout(() => controller.abort(), 4000)
+
+  await Promise.allSettled(
+    toLookup.map(async (ip) => {
+      try {
+        const res = await fetch(`http://ip-api.com/json/${ip}?fields=status,country,regionName,city,lat,lon`, {
+          signal: controller.signal,
         })
-      }
-    } catch { /* silent */ }
-  }
+        const data = await res.json()
+        if (data?.status === 'success') {
+          await admin.from('ip_geolocation').upsert({
+            ip,
+            country: data.country ?? null,
+            region: data.regionName ?? null,
+            city: data.city ?? null,
+            latitude: data.lat ?? null,
+            longitude: data.lon ?? null,
+          })
+        }
+      } catch { /* silent — timeout ou erro de rede */ }
+    }),
+  )
+  clearTimeout(timeoutId)
 }
 
 export async function GET() {
@@ -62,19 +71,19 @@ export async function GET() {
     admin.rpc('admin_analytics_geography', { days_back: 30 }),
   ])
 
-  // Geolocate any missing IPs (best-effort, runs in background)
+  // Geolocaliza IPs novos FIRE-AND-FORGET (sem await — não bloqueia o response)
+  // Próxima chamada (em 30s) vai pegar o cache populado
   const allIps = ((geoRes.data ?? []) as { ip: string }[]).map((r) => r.ip).filter(Boolean)
-  await geolocateMissingIps(admin, allIps)
-
-  // Re-fetch geography with cache populated
-  const { data: geoFinal } = await admin.rpc('admin_analytics_geography', { days_back: 30 })
+  if (allIps.length > 0) {
+    void geolocateMissingIps(admin, allIps).catch(() => { /* silent */ })
+  }
 
   return NextResponse.json({
     devices: devicesRes.data ?? [],
     heatmap: heatmapRes.data ?? [],
     feed: feedRes.data ?? [],
     concurrent: concurrentRes.data ?? [],
-    geography: geoFinal ?? geoRes.data ?? [],
+    geography: geoRes.data ?? [],
     timestamp: new Date().toISOString(),
   })
 }
