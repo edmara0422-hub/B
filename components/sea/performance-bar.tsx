@@ -93,9 +93,8 @@ export function PerformanceBar() {
   const [showReport, setShowReport] = useState(false)
   const [showGov, setShowGov] = useState<string | null>(null)
 
-  // Carrossel: 4 cards (Impacto, NPS, Sustentabilidade, Governança). Cada um
-  // ocupa 100% do viewport. Snap-scroll + dots de navegação + setas no desktop.
-  const TOTAL_CARDS = 4
+  // Carrossel externo: 2 cards (Combined + Sustentabilidade). Sem setas — só swipe.
+  const TOTAL_CARDS = 2
   const scrollRef = useRef<HTMLDivElement>(null)
   const [activeIdx, setActiveIdx] = useState(0)
 
@@ -124,68 +123,21 @@ export function PerformanceBar() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.1 }}
     >
-      {/* Setas desktop pra navegar carrossel */}
-      {activeIdx > 0 && (
-        <button
-          onClick={() => goTo(activeIdx - 1)}
-          className="absolute left-0 top-1/2 z-20 hidden -translate-y-1/2 flex h-10 w-10 items-center justify-center rounded-full border border-white/15 bg-black/60 text-white/75 backdrop-blur-md transition hover:bg-black/80 md:flex"
-          aria-label="Anterior"
-        >
-          <ChevronLeft className="h-4 w-4" />
-        </button>
-      )}
-      {activeIdx < TOTAL_CARDS - 1 && (
-        <button
-          onClick={() => goTo(activeIdx + 1)}
-          className="absolute right-0 top-1/2 z-20 hidden -translate-y-1/2 flex h-10 w-10 items-center justify-center rounded-full border border-white/15 bg-black/60 text-white/75 backdrop-blur-md transition hover:bg-black/80 md:flex"
-          aria-label="Próximo"
-        >
-          <ChevronRight className="h-4 w-4" />
-        </button>
-      )}
-
-      {/* Carrossel: cada card 100% width, snap mandatory */}
+      {/* Carrossel: cada card 100% width, snap mandatory — só swipe/drag, sem setas */}
       <div
         ref={scrollRef}
         className="ipb-thinscroll flex snap-x snap-mandatory gap-0 overflow-x-auto [&>*]:snap-center [&>*]:snap-always [&>*]:shrink-0 [&>*]:w-full"
         style={{ scrollbarWidth: 'none' }}
       >
-      {/* Impacto SEA */}
-      <div
-        className="ipb-card rounded-[1.4rem] p-4"
-      >
-        <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/75">
-          Impacto SEA
-        </p>
-
-        <div className="grid grid-cols-4 gap-1.5">
-          <MiniImpact icon={Stethoscope} value={metrics.prontuarios} label="Prontuários" />
-          <MiniImpact icon={BookOpen} value={metrics.conteudosAcessados} label="Conteúdos" />
-          <MiniImpact icon={Leaf} value={folhasEconomizadas} label="Folhas" />
-          <MiniImpact icon={Heart} value={metrics.calculosRealizados} label="Cálculos" />
-        </div>
-      </div>
-
-      {/* NPS + Feedback — dados em tempo real */}
-      <div
-        className="ipb-card rounded-[1.4rem] p-4"
-      >
-        <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/75">NPS e Feedback</p>
-        <div className="grid grid-cols-3 gap-2">
-          <div className="rounded-[0.8rem] border border-white/6 bg-white/[0.02] px-2 py-2 text-center">
-            <p className="text-xl font-semibold tabular-nums text-white/85">{nps ? nps.score : '--'}</p>
-            <p className="text-[10px] font-medium text-white/75">NPS Score</p>
-          </div>
-          <div className="rounded-[0.8rem] border border-white/6 bg-white/[0.02] px-2 py-2 text-center">
-            <p className="text-xl font-semibold tabular-nums text-white/85">{nps ? nps.total : 0}</p>
-            <p className="text-[10px] font-medium text-white/75">Avaliações</p>
-          </div>
-          <div className="rounded-[0.8rem] border border-white/6 bg-white/[0.02] px-2 py-2 text-center">
-            <p className="text-xl font-semibold tabular-nums text-white/85">{fbCount}</p>
-            <p className="text-[10px] font-medium text-white/75">Feedbacks</p>
-          </div>
-        </div>
-      </div>
+      {/* CARD COMBINADO: Impacto + NPS + Governança — auto-rotate + swipe */}
+      <CombinedStatsCard
+        metrics={metrics}
+        folhasEconomizadas={folhasEconomizadas}
+        nps={nps}
+        fbCount={fbCount}
+        onGovOpen={setShowGov}
+        onReportOpen={() => setShowReport(true)}
+      />
 
       {/* Sustentabilidade — TBL + ODS + CSV juntos */}
       <div
@@ -251,36 +203,7 @@ export function PerformanceBar() {
         </div>
       </div>
 
-      {/* Governança */}
-      <div
-        className="ipb-card rounded-[1.4rem] p-4"
-      >
-        <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/75">
-          Governança
-        </p>
-
-        <div className="grid grid-cols-2 gap-2 md:grid-cols-4">
-          {GOVERNANCE_ITEMS.map((item) => (
-            <button
-              key={item.label}
-              onClick={() => {
-                if (item.label.includes('Denúncia')) setShowReport(true)
-                else if (item.label === 'Políticas') setShowGov('politicas')
-                else if (item.label === 'Práticas') setShowGov('praticas')
-                else if (item.label === 'Compliance') setShowGov('compliance')
-                else if (item.label === 'Termos de Uso') setShowGov('termos')
-                else if (item.label === 'Política de Cookies') setShowGov('cookies')
-                else if (item.label === 'Missão e Valores') setShowGov('missao')
-                else if (item.label === 'DPO') setShowGov('dpo')
-              }}
-              className="flex items-center gap-2 rounded-[1rem] border border-white/6 bg-white/[0.02] px-3 py-2.5 text-left transition-colors hover:bg-white/[0.04]"
-            >
-              <item.icon className="h-4 w-4 shrink-0 text-white/75" />
-              <span className="text-[10px] font-medium tracking-wider text-white/85">{item.label}</span>
-            </button>
-          ))}
-        </div>
-      </div>
+      {/* Governança movida pro CombinedStatsCard (slide 3) */}
       </div>{/* fim do snap-scroll */}
 
       {/* Dots indicador — pill expansível pro card ativo */}
@@ -760,6 +683,168 @@ function GovernanceModal({ type, onClose }: { type: string; onClose: () => void 
         ))}
       </div>
     </ModalShell>
+  )
+}
+
+// ─── Card combinado: Impacto + NPS + Governança em carrossel interno ──────
+// Auto-rotaciona 3 slides com animação suave. Swipe horizontal pra navegar.
+// Dots internos indicam slide ativo. Sem setas — só toque/swipe + auto.
+function CombinedStatsCard({
+  metrics,
+  folhasEconomizadas,
+  nps,
+  fbCount,
+  onGovOpen,
+  onReportOpen,
+}: {
+  metrics: { prontuarios: number; conteudosAcessados: number; simulacoesUsadas: number; calculosRealizados: number }
+  folhasEconomizadas: number
+  nps: { score: number; total: number } | null
+  fbCount: number
+  onGovOpen: (key: string) => void
+  onReportOpen: () => void
+}) {
+  const [slide, setSlide] = useState(0)
+  const [paused, setPaused] = useState(false)
+  const SLIDES = 3
+  const AUTO_MS = 5500
+
+  // Auto-rotate (pausa quando o usuário interage)
+  useEffect(() => {
+    if (paused) return
+    const id = setInterval(() => setSlide((s) => (s + 1) % SLIDES), AUTO_MS)
+    return () => clearInterval(id)
+  }, [paused])
+
+  const SLIDE_TITLES = ['Impacto SEA', 'NPS e Feedback', 'Governança']
+
+  return (
+    <div className="ipb-card rounded-[1.4rem] p-4 md:p-5">
+      {/* Header com título dinâmico + dots */}
+      <div className="mb-3 flex items-center justify-between gap-3">
+        <AnimatePresence mode="wait">
+          <motion.p
+            key={slide}
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -6 }}
+            transition={{ duration: 0.22 }}
+            className="text-[11px] md:text-[12px] font-semibold uppercase tracking-[0.18em] text-white/85"
+          >
+            {SLIDE_TITLES[slide]}
+          </motion.p>
+        </AnimatePresence>
+
+        {/* Dots internos clicáveis */}
+        <div className="flex items-center gap-1.5">
+          {Array.from({ length: SLIDES }).map((_, i) => (
+            <button
+              key={i}
+              onClick={() => { setSlide(i); setPaused(true) }}
+              aria-label={SLIDE_TITLES[i]}
+              className="flex items-center justify-center py-1"
+            >
+              <motion.span
+                animate={{
+                  width: slide === i ? 22 : 5,
+                  background: slide === i ? 'rgba(224,184,94,0.85)' : 'rgba(255,255,255,0.22)',
+                }}
+                transition={spring}
+                className="block h-1 rounded-full"
+              />
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Slide swipe area */}
+      <motion.div
+        drag="x"
+        dragConstraints={{ left: 0, right: 0 }}
+        dragElastic={0.22}
+        onDragStart={() => setPaused(true)}
+        onDragEnd={(_, info) => {
+          if (info.offset.x < -50 && slide < SLIDES - 1) setSlide(slide + 1)
+          else if (info.offset.x > 50 && slide > 0) setSlide(slide - 1)
+        }}
+        className="relative min-h-[140px] cursor-grab active:cursor-grabbing select-none"
+      >
+        <AnimatePresence mode="wait">
+          {slide === 0 && (
+            <motion.div
+              key="impact"
+              initial={{ opacity: 0, x: 24 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -24 }}
+              transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+              className="grid grid-cols-4 gap-1.5"
+            >
+              <MiniImpact icon={Stethoscope} value={metrics.prontuarios} label="Prontuários" />
+              <MiniImpact icon={BookOpen} value={metrics.conteudosAcessados} label="Conteúdos" />
+              <MiniImpact icon={Leaf} value={folhasEconomizadas} label="Folhas" />
+              <MiniImpact icon={Heart} value={metrics.calculosRealizados} label="Cálculos" />
+            </motion.div>
+          )}
+
+          {slide === 1 && (
+            <motion.div
+              key="nps"
+              initial={{ opacity: 0, x: 24 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -24 }}
+              transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+              className="grid grid-cols-3 gap-2"
+            >
+              <StatBox value={nps ? String(nps.score) : '--'} label="NPS Score" />
+              <StatBox value={nps ? nps.total : 0} label="Avaliações" />
+              <StatBox value={fbCount} label="Feedbacks" />
+            </motion.div>
+          )}
+
+          {slide === 2 && (
+            <motion.div
+              key="gov"
+              initial={{ opacity: 0, x: 24 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -24 }}
+              transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+              className="grid grid-cols-2 gap-2 md:grid-cols-4"
+            >
+              {GOVERNANCE_ITEMS.map((item) => (
+                <button
+                  key={item.label}
+                  onClick={() => {
+                    setPaused(true)
+                    if (item.label.includes('Denúncia')) onReportOpen()
+                    else if (item.label === 'Políticas') onGovOpen('politicas')
+                    else if (item.label === 'Práticas') onGovOpen('praticas')
+                    else if (item.label === 'Compliance') onGovOpen('compliance')
+                    else if (item.label === 'Termos de Uso') onGovOpen('termos')
+                    else if (item.label === 'Política de Cookies') onGovOpen('cookies')
+                    else if (item.label === 'Missão e Valores') onGovOpen('missao')
+                    else if (item.label === 'DPO') onGovOpen('dpo')
+                  }}
+                  className="flex items-center gap-2 rounded-[1rem] border border-white/10 bg-white/[0.04] px-3 py-2.5 text-left transition-all hover:bg-white/[0.08] hover:border-white/20"
+                >
+                  <item.icon className="h-4 w-4 shrink-0 text-white/80" />
+                  <span className="text-[10px] font-medium tracking-wider text-white/90">{item.label}</span>
+                </button>
+              ))}
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.div>
+    </div>
+  )
+}
+
+// Card de stat reutilizável (NPS, Avaliações, Feedbacks)
+function StatBox({ value, label }: { value: string | number; label: string }) {
+  return (
+    <div className="rounded-[0.8rem] border border-white/10 bg-white/[0.04] px-2 py-3 text-center transition-colors hover:bg-white/[0.06]">
+      <p className="text-2xl font-bold tabular-nums text-white/95">{value}</p>
+      <p className="mt-1 text-[10px] font-medium text-white/75">{label}</p>
+    </div>
   )
 }
 
