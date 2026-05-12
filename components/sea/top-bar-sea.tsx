@@ -65,15 +65,16 @@ export function TopBarSEA() {
 
   return (
     <header
-      className="fixed left-0 right-0 top-0 z-40 px-2 pt-2 md:px-6 md:pt-3"
+      className="fixed left-0 right-0 top-0 z-40 px-2 pt-2 pb-2 md:px-4"
       style={{
         background: 'rgba(5,5,5,0.82)',
         backdropFilter: 'blur(28px)',
         WebkitBackdropFilter: 'blur(28px)',
         borderBottom: '1px solid rgba(192,192,192,0.06)',
+        paddingTop: 'max(0.5rem, env(safe-area-inset-top))',
       }}
     >
-      <div className="mx-auto flex max-w-7xl items-center justify-between gap-2 py-1.5">
+      <div className="flex w-full items-center justify-between gap-2">
         {/* ── ESQUERDA: logo SEA metálico + tagline (oculta em mobile) ── */}
         <div className="flex items-center gap-2 md:gap-3">
           <div
@@ -132,7 +133,7 @@ export function TopBarSEA() {
           >
             <button
               onClick={decreaseFontScale}
-              disabled={scalePct <= 60}
+              disabled={scalePct <= 20}
               aria-label="Diminuir texto"
               title="Diminuir texto"
               className="flex h-7 w-7 items-center justify-center text-white/40 transition hover:text-white/75 disabled:opacity-20 disabled:cursor-not-allowed"
@@ -147,7 +148,7 @@ export function TopBarSEA() {
             </span>
             <button
               onClick={increaseFontScale}
-              disabled={scalePct >= 160}
+              disabled={scalePct >= 200}
               aria-label="Aumentar texto"
               title="Aumentar texto"
               className="flex h-7 w-7 items-center justify-center text-white/40 transition hover:text-white/75 disabled:opacity-20 disabled:cursor-not-allowed"

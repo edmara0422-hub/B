@@ -20,14 +20,13 @@ export default function HomePageClient() {
     <div className="relative overflow-hidden text-white">
       <TopBarSEA />
 
-      <main className="relative z-10 px-4 pb-0 pt-20 md:px-8 md:pt-24">
+      <main className="relative z-10 px-2 pb-0 pt-20 md:px-4 md:pt-24">
 
         {/* 3D Simulations marquee — full width */}
         <SimulationsMarquee />
 
-        {/* Mobile: max-w-2xl (672px). Desktop: max-w-7xl pra acompanhar TopBar/BottomNav */}
-        <div className="mx-auto max-w-2xl md:max-w-7xl">
-
+        {/* Edge-to-edge: sem max-w, acompanha TopBar/BottomNav que também não têm max */}
+        <div className="w-full">
           {/* Performance */}
           <div className="mt-5">
             <PerformanceBar />

@@ -41,8 +41,8 @@ export default function ExplorePageClient() {
 
   return (
     <div className="relative min-h-screen overflow-hidden text-white">
-      <main className="relative z-10 px-4 pb-36 pt-14 md:px-8 md:pt-12">
-        <div className="mx-auto flex min-h-[calc(100vh-8rem)] max-w-2xl md:max-w-7xl flex-col justify-center space-y-6">
+      <main className="relative z-10 px-2 pb-36 pt-14 md:px-4 md:pt-12">
+        <div className="flex min-h-[calc(100vh-8rem)] w-full flex-col justify-center space-y-6">
           <BusinessClock variant="hero" showGreeting />
           {ready
             ? <Carousel3D />
