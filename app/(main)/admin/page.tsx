@@ -4,6 +4,7 @@ import { useEffect, useState, useCallback, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuthStore, type Profile } from '@/lib/stores/authStore'
 import { supabase } from '@/lib/supabase'
+import { useAccessibility } from '@/hooks/use-accessibility'
 import {
   ArrowLeft, Ban, Brain, Crown, Eye, EyeOff, Key, LineChart,
   Mail, MessageSquare, PencilLine, Plus, RefreshCw, Save, Search,
@@ -378,8 +379,8 @@ export default function AdminPage() {
   }, [faseDetectada, totalUsers, activeWeek, activeToday, retention7d, retention30d, churnRate, eventCounts, nonAdminSubs.length])
 
   const filteredUsers = users.filter(u => !search || (u.name || '').toLowerCase().includes(search.toLowerCase()) || (u.email || '').toLowerCase().includes(search.toLowerCase()))
-  const inputClass = 'w-full h-7 rounded-[0.4rem] border border-white/10 bg-white/5 px-2 text-[10px] text-white placeholder:text-white/30 outline-none focus:border-white/20'
-  const chip = (active: boolean) => active ? 'border-[#60a5fa30] bg-[#60a5fa10] text-[#60a5fa]' : 'border-white/8 bg-white/[0.02] text-white/40 hover:text-white/60'
+  const inputClass = 'w-full h-9 rounded-[0.5rem] border border-white/15 bg-white/[0.06] px-3 text-[12px] text-white placeholder:text-white/45 outline-none focus:border-white/30'
+  const chip = (active: boolean) => active ? 'border-[#60a5fa30] bg-[#60a5fa10] text-[#60a5fa]' : 'border-white/8 bg-white/[0.02] text-white/70 hover:text-white/60'
 
   if (!isAdmin) return null
 
@@ -395,13 +396,21 @@ export default function AdminPage() {
   return (
     <div className="relative min-h-screen text-white px-2 pb-32 pt-16 md:px-4">
       <div className="relative z-10 mx-auto w-full max-w-5xl md:max-w-none">
-      <button onClick={() => router.push('/profile')} className="mb-3 flex items-center gap-1 text-[8px] text-white/40 hover:text-white/60"><ArrowLeft className="h-3 w-3" /> Perfil</button>
-      <div className="mb-3 flex items-center gap-2"><Shield className="h-4 w-4 text-[#a78bfa]" /><h1 className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#a78bfa]">Painel Admin</h1></div>
-      {msg && <div className="mb-2 rounded-[0.5rem] border border-[#4ade8030] bg-[#4ade8008] px-2 py-1"><p className="text-[7px] text-[#86efac]">{msg}</p></div>}
+      <div className="mb-4 flex items-center justify-between gap-2">
+        <button onClick={() => router.push('/profile')} className="flex items-center gap-1.5 text-[11px] text-white/65 hover:text-white/90 transition-colors">
+          <ArrowLeft className="h-3.5 w-3.5" /> Perfil
+        </button>
+        <AdminZoomControls />
+      </div>
+      <div className="mb-4 flex items-center gap-2">
+        <Shield className="h-5 w-5 text-white/85" />
+        <h1 className="text-[13px] font-semibold uppercase tracking-[0.16em] text-white/90">Painel Admin</h1>
+      </div>
+      {msg && <div className="mb-2 rounded-[0.5rem] border border-[#4ade8030] bg-[#4ade8008] px-2 py-1"><p className="text-[10px] text-[#86efac]">{msg}</p></div>}
 
       {/* Tabs */}
       <div className="mb-3 scrollbar-hide flex gap-1 overflow-x-auto">
-        {TABS.map((t) => (<button key={t.id} onClick={() => setTab(t.id)} className={`shrink-0 flex items-center gap-1 rounded-full border px-2.5 py-1 text-[7px] font-semibold uppercase tracking-[0.12em] transition-all ${chip(tab === t.id)}`}><t.icon className="h-2.5 w-2.5" />{t.label}</button>))}
+        {TABS.map((t) => (<button key={t.id} onClick={() => setTab(t.id)} className={`shrink-0 flex items-center gap-1 rounded-full border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.12em] transition-all ${chip(tab === t.id)}`}><t.icon className="h-2.5 w-2.5" />{t.label}</button>))}
       </div>
 
       {loading && <div className="flex justify-center py-8"><div className="h-5 w-5 animate-spin rounded-full border-2 border-white/20 border-t-[#a78bfa]" /></div>}
@@ -410,21 +419,21 @@ export default function AdminPage() {
       {tab === 'users' && !loading && (
         <div className="space-y-2">
           <div className="flex items-center gap-1">
-            <div className="relative flex-1"><Search className="absolute left-2 top-1/2 -translate-y-1/2 h-3 w-3 text-white/30" /><input className={`${inputClass} pl-7`} placeholder="Buscar..." value={search} onChange={(e) => setSearch(e.target.value)} /></div>
+            <div className="relative flex-1"><Search className="absolute left-2 top-1/2 -translate-y-1/2 h-3 w-3 text-white/65" /><input className={`${inputClass} pl-7`} placeholder="Buscar..." value={search} onChange={(e) => setSearch(e.target.value)} /></div>
             <button
               onClick={() => { setCreatingUser(v => !v); if (!creatingUser) flash('') }}
               title="Criar novo login"
-              className={`flex h-7 shrink-0 items-center gap-1 rounded-[0.4rem] border px-2 text-[7px] font-semibold uppercase tracking-[0.12em] transition-all ${creatingUser ? 'border-white/20 bg-white/10 text-white/70' : 'border-white/10 bg-white/5 text-white/50 hover:text-white/70'}`}
+              className={`flex h-7 shrink-0 items-center gap-1 rounded-[0.4rem] border px-2 text-[10px] font-semibold uppercase tracking-[0.12em] transition-all ${creatingUser ? 'border-white/20 bg-white/10 text-white/70' : 'border-white/10 bg-white/5 text-white/50 hover:text-white/70'}`}
             >
               <Plus className="h-3 w-3" /> Novo login
             </button>
-            <button onClick={loadUsers} className="flex h-7 w-7 shrink-0 items-center justify-center rounded-[0.4rem] border border-white/10 bg-white/5"><RefreshCw className="h-3 w-3 text-white/40" /></button>
+            <button onClick={loadUsers} className="flex h-7 w-7 shrink-0 items-center justify-center rounded-[0.4rem] border border-white/10 bg-white/5"><RefreshCw className="h-3 w-3 text-white/70" /></button>
           </div>
 
           {creatingUser && (
             <div className="rounded-[0.6rem] border border-white/10 bg-white/[0.03] p-2 space-y-1.5">
-              <p className="text-[7px] font-semibold uppercase tracking-[0.12em] text-white/50">Criar novo login</p>
-              <p className="text-[6px] leading-relaxed text-white/30">Cria conta com email já confirmado — o usuário entra direto com email e senha, sem precisar confirmar caixa de entrada.</p>
+              <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-white/50">Criar novo login</p>
+              <p className="text-[9px] leading-relaxed text-white/65">Cria conta com email já confirmado — o usuário entra direto com email e senha, sem precisar confirmar caixa de entrada.</p>
               <input className={inputClass} placeholder="Nome" value={newName} onChange={(e) => setNewName(e.target.value)} />
               <input className={inputClass} type="email" placeholder="Email" value={newEmail} onChange={(e) => setNewEmail(e.target.value)} autoComplete="off" />
               <div className="relative">
@@ -436,7 +445,7 @@ export default function AdminPage() {
                   onChange={(e) => setNewPassword(e.target.value)}
                   autoComplete="new-password"
                 />
-                <button type="button" onClick={() => setShowNewPassword(v => !v)} className="absolute right-2 top-1/2 -translate-y-1/2 text-white/30 hover:text-white/60">
+                <button type="button" onClick={() => setShowNewPassword(v => !v)} className="absolute right-2 top-1/2 -translate-y-1/2 text-white/65 hover:text-white/60">
                   {showNewPassword ? <EyeOff className="h-3 w-3" /> : <Eye className="h-3 w-3" />}
                 </button>
               </div>
@@ -444,14 +453,14 @@ export default function AdminPage() {
                 <button
                   onClick={createNewUser}
                   disabled={creatingBusy || !newName.trim() || !newEmail.trim() || newPassword.length < 6}
-                  className="flex h-6 items-center gap-1 rounded-[0.4rem] border border-[#4ade8020] bg-[#4ade8008] px-2 text-[7px] text-[#4ade80] disabled:opacity-30"
+                  className="flex h-6 items-center gap-1 rounded-[0.4rem] border border-[#4ade8020] bg-[#4ade8008] px-2 text-[10px] text-[#4ade80] disabled:opacity-30"
                 >
                   {creatingBusy ? <div className="h-2.5 w-2.5 animate-spin rounded-full border border-[#4ade80]/30 border-t-[#4ade80]" /> : <Save className="h-2.5 w-2.5" />}
                   Criar
                 </button>
                 <button
                   onClick={() => { setCreatingUser(false); setNewName(''); setNewEmail(''); setNewPassword(''); setShowNewPassword(false) }}
-                  className="flex h-6 items-center gap-1 rounded-[0.4rem] border border-white/10 px-2 text-[7px] text-white/40"
+                  className="flex h-6 items-center gap-1 rounded-[0.4rem] border border-white/10 px-2 text-[10px] text-white/70"
                 >
                   <X className="h-2.5 w-2.5" /> Cancelar
                 </button>
@@ -459,7 +468,7 @@ export default function AdminPage() {
             </div>
           )}
 
-          <p className="text-[6px] text-white/30">{filteredUsers.length} usuario(s)</p>
+          <p className="text-[9px] text-white/65">{filteredUsers.length} usuario(s)</p>
           <div className="space-y-1 max-h-[60vh] overflow-y-auto scrollbar-hide">
             {filteredUsers.map((u) => (
               <div key={u.id} className="rounded-[0.6rem] border border-white/6 bg-white/[0.02] px-2 py-1.5">
@@ -469,7 +478,7 @@ export default function AdminPage() {
                     <input className={inputClass} value={editEmail} onChange={(e) => setEditEmail(e.target.value)} placeholder="Email" />
                     {u.id === user?.id && (
                       <div className="space-y-1">
-                        <p className="text-[6px] uppercase tracking-[0.1em] text-white/30">Alterar senha (conta própria)</p>
+                        <p className="text-[9px] uppercase tracking-[0.1em] text-white/65">Alterar senha (conta própria)</p>
                         {/* Senha atual */}
                         <div className="relative">
                           <input
@@ -479,7 +488,7 @@ export default function AdminPage() {
                             value={ownCurrentPw}
                             onChange={(e) => setOwnCurrentPw(e.target.value)}
                           />
-                          <button type="button" onClick={() => setShowOwnCurrentPw(v => !v)} className="absolute right-2 top-1/2 -translate-y-1/2 text-white/30 hover:text-white/60">
+                          <button type="button" onClick={() => setShowOwnCurrentPw(v => !v)} className="absolute right-2 top-1/2 -translate-y-1/2 text-white/65 hover:text-white/60">
                             {showOwnCurrentPw ? <EyeOff className="h-3 w-3" /> : <Eye className="h-3 w-3" />}
                           </button>
                         </div>
@@ -493,14 +502,14 @@ export default function AdminPage() {
                               value={ownPw}
                               onChange={(e) => setOwnPw(e.target.value)}
                             />
-                            <button type="button" onClick={() => setShowOwnPw(v => !v)} className="absolute right-2 top-1/2 -translate-y-1/2 text-white/30 hover:text-white/60">
+                            <button type="button" onClick={() => setShowOwnPw(v => !v)} className="absolute right-2 top-1/2 -translate-y-1/2 text-white/65 hover:text-white/60">
                               {showOwnPw ? <EyeOff className="h-3 w-3" /> : <Eye className="h-3 w-3" />}
                             </button>
                           </div>
                           <button
                             onClick={changeOwnPassword}
                             disabled={!ownCurrentPw || ownPw.length < 6}
-                            className="flex h-7 shrink-0 items-center gap-1 rounded-[0.4rem] border border-[#60a5fa20] bg-[#60a5fa08] px-2 text-[7px] text-[#60a5fa] disabled:opacity-30"
+                            className="flex h-7 shrink-0 items-center gap-1 rounded-[0.4rem] border border-[#60a5fa20] bg-[#60a5fa08] px-2 text-[10px] text-[#60a5fa] disabled:opacity-30"
                           >
                             <Key className="h-2.5 w-2.5" /> Alterar
                           </button>
@@ -508,13 +517,13 @@ export default function AdminPage() {
                       </div>
                     )}
                     <div className="flex gap-1">
-                      <button onClick={() => saveUserEdit(u.id)} className="flex h-6 items-center gap-1 rounded-[0.4rem] border border-[#4ade8020] bg-[#4ade8008] px-2 text-[7px] text-[#4ade80]"><Save className="h-2.5 w-2.5" /> Salvar</button>
-                      <button onClick={() => { setEditingUser(null); setOwnPw(''); setShowOwnPw(false) }} className="flex h-6 items-center gap-1 rounded-[0.4rem] border border-white/10 px-2 text-[7px] text-white/40"><X className="h-2.5 w-2.5" /> Cancelar</button>
+                      <button onClick={() => saveUserEdit(u.id)} className="flex h-6 items-center gap-1 rounded-[0.4rem] border border-[#4ade8020] bg-[#4ade8008] px-2 text-[10px] text-[#4ade80]"><Save className="h-2.5 w-2.5" /> Salvar</button>
+                      <button onClick={() => { setEditingUser(null); setOwnPw(''); setShowOwnPw(false) }} className="flex h-6 items-center gap-1 rounded-[0.4rem] border border-white/10 px-2 text-[10px] text-white/70"><X className="h-2.5 w-2.5" /> Cancelar</button>
                     </div>
                   </div>
                 ) : resetPwUser === u.id ? (
                   <div className="space-y-1">
-                    <p className="text-[7px] text-white/50">Alterar senha de <span className="text-white/75">{u.email}</span></p>
+                    <p className="text-[10px] text-white/50">Alterar senha de <span className="text-white/75">{u.email}</span></p>
                     <input
                       type="text"
                       className={inputClass}
@@ -527,30 +536,30 @@ export default function AdminPage() {
                       <button
                         onClick={() => resetUserPassword(u.id, u.email || '')}
                         disabled={resetPwValue.length < 6}
-                        className="flex h-6 items-center gap-1 rounded-[0.4rem] border border-[#4ade8020] bg-[#4ade8008] px-2 text-[7px] text-[#4ade80] disabled:opacity-30"
+                        className="flex h-6 items-center gap-1 rounded-[0.4rem] border border-[#4ade8020] bg-[#4ade8008] px-2 text-[10px] text-[#4ade80] disabled:opacity-30"
                       >
                         <Key className="h-2.5 w-2.5" /> Definir senha
                       </button>
-                      <button onClick={() => sendResetEmail(u.email || '')} className="flex h-6 items-center gap-1 rounded-[0.4rem] border border-white/10 px-2 text-[7px] text-white/50"><Mail className="h-2.5 w-2.5" /> Email reset</button>
-                      <button onClick={() => { setResetPwUser(null); setResetPwValue('') }} className="flex h-6 items-center gap-1 rounded-[0.4rem] border border-white/10 px-2 text-[7px] text-white/40"><X className="h-2.5 w-2.5" /> Cancelar</button>
+                      <button onClick={() => sendResetEmail(u.email || '')} className="flex h-6 items-center gap-1 rounded-[0.4rem] border border-white/10 px-2 text-[10px] text-white/50"><Mail className="h-2.5 w-2.5" /> Email reset</button>
+                      <button onClick={() => { setResetPwUser(null); setResetPwValue('') }} className="flex h-6 items-center gap-1 rounded-[0.4rem] border border-white/10 px-2 text-[10px] text-white/70"><X className="h-2.5 w-2.5" /> Cancelar</button>
                     </div>
                   </div>
                 ) : (
                   <div className="flex items-center gap-2">
-                    <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-white/8 bg-white/[0.03]"><User className="h-3 w-3 text-white/25" /></div>
+                    <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-white/8 bg-white/[0.03]"><User className="h-3 w-3 text-white/55" /></div>
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center gap-1">
-                        <p className="truncate text-[8px] font-semibold text-white/70">{u.name || 'Sem nome'}</p>
-                        {u.role === 'admin' && <span className="text-[5px] font-bold text-[#a78bfa]">ADM</span>}
-                        {u.blocked && <span className="text-[5px] font-bold text-[#f87171]">BLOQ</span>}
+                        <p className="truncate text-[11px] font-semibold text-white/70">{u.name || 'Sem nome'}</p>
+                        {u.role === 'admin' && <span className="text-[8px] font-bold text-[#a78bfa]">ADM</span>}
+                        {u.blocked && <span className="text-[8px] font-bold text-[#f87171]">BLOQ</span>}
                       </div>
-                      <p className="truncate text-[6px] text-white/30">{u.email}</p>
-                      <p className="text-[5px] text-white/20">Criado: {new Date(u.created_at).toLocaleDateString('pt-BR')}{u.last_login ? ` · Login: ${new Date(u.last_login).toLocaleDateString('pt-BR')}` : ''}</p>
+                      <p className="truncate text-[9px] text-white/65">{u.email}</p>
+                      <p className="text-[8px] text-white/50">Criado: {new Date(u.created_at).toLocaleDateString('pt-BR')}{u.last_login ? ` · Login: ${new Date(u.last_login).toLocaleDateString('pt-BR')}` : ''}</p>
                     </div>
                     <div className="flex shrink-0 gap-0.5">
-                      <button onClick={() => { setEditingUser(u.id); setEditName(u.name || ''); setEditEmail(u.email || '') }} title="Editar" className="flex h-5 w-5 items-center justify-center rounded-[0.3rem] border border-white/8 text-white/30 hover:text-white/60"><PencilLine className="h-2.5 w-2.5" /></button>
-                      <button onClick={() => setResetPwUser(u.id)} title="Reset senha" className="flex h-5 w-5 items-center justify-center rounded-[0.3rem] border border-white/8 text-white/30 hover:text-white/60"><Key className="h-2.5 w-2.5" /></button>
-                      <button onClick={() => blockUser(u.id, !u.blocked)} title={u.blocked ? 'Desbloquear' : 'Bloquear'} className="flex h-5 w-5 items-center justify-center rounded-[0.3rem] border border-white/8 text-white/30 hover:text-white/60">{u.blocked ? <Unlock className="h-2.5 w-2.5" /> : <Ban className="h-2.5 w-2.5" />}</button>
+                      <button onClick={() => { setEditingUser(u.id); setEditName(u.name || ''); setEditEmail(u.email || '') }} title="Editar" className="flex h-5 w-5 items-center justify-center rounded-[0.3rem] border border-white/8 text-white/65 hover:text-white/60"><PencilLine className="h-2.5 w-2.5" /></button>
+                      <button onClick={() => setResetPwUser(u.id)} title="Reset senha" className="flex h-5 w-5 items-center justify-center rounded-[0.3rem] border border-white/8 text-white/65 hover:text-white/60"><Key className="h-2.5 w-2.5" /></button>
+                      <button onClick={() => blockUser(u.id, !u.blocked)} title={u.blocked ? 'Desbloquear' : 'Bloquear'} className="flex h-5 w-5 items-center justify-center rounded-[0.3rem] border border-white/8 text-white/65 hover:text-white/60">{u.blocked ? <Unlock className="h-2.5 w-2.5" /> : <Ban className="h-2.5 w-2.5" />}</button>
                       {u.role !== 'admin' && u.id !== user?.id && (
                         <button onClick={() => promoteToAdmin(u.id, u.name || u.email || '')} title="Tornar Admin" className="flex h-5 w-5 items-center justify-center rounded-[0.3rem] border border-[#a78bfa20] text-[#a78bfa]/35 hover:text-[#a78bfa]"><Crown className="h-2.5 w-2.5" /></button>
                       )}
@@ -573,10 +582,10 @@ export default function AdminPage() {
       {/* ══════ SUBSCRIPTIONS ══════ */}
       {tab === 'subscriptions' && !loading && (
         <div className="space-y-2">
-          <p className="text-[6px] text-white/25">Conta admin excluída das estatísticas</p>
+          <p className="text-[9px] text-white/55">Conta admin excluída das estatísticas</p>
           <div className="grid grid-cols-5 gap-1">
             {[{ l: 'Total', v: nonAdminSubs.length, c: '#60a5fa' }, { l: 'Ativos', v: nonAdminSubs.filter((s: SubRow) => s.status === 'active').length, c: '#4ade80' }, { l: 'Trial', v: nonAdminSubs.filter((s: SubRow) => s.status === 'trial').length, c: '#facc15' }, { l: 'Cancel.', v: nonAdminSubs.filter((s: SubRow) => s.status === 'cancelled').length, c: '#fb923c' }, { l: 'Devendo', v: nonAdminSubs.filter((s: SubRow) => s.status === 'overdue').length, c: '#f87171' }].map((s) => (
-              <div key={s.l} className="rounded-[0.5rem] border border-white/6 bg-black/20 px-1 py-1.5 text-center"><p className="text-[10px] font-bold" style={{ color: s.c }}>{s.v}</p><p className="text-[5px] text-white/30">{s.l}</p></div>
+              <div key={s.l} className="rounded-[0.5rem] border border-white/6 bg-black/20 px-1 py-1.5 text-center"><p className="text-[10px] font-bold" style={{ color: s.c }}>{s.v}</p><p className="text-[8px] text-white/65">{s.l}</p></div>
             ))}
           </div>
           {subDistribution.length > 0 && (
@@ -586,12 +595,12 @@ export default function AdminPage() {
               </ResponsiveContainer>
             </div>
           )}
-          {nonAdminSubs.length === 0 && <p className="text-center text-[7px] text-white/30 py-4">Nenhuma assinatura de usuário registrada.</p>}
+          {nonAdminSubs.length === 0 && <p className="text-center text-[10px] text-white/65 py-4">Nenhuma assinatura de usuário registrada.</p>}
           {subs.filter((s: SubRow) => { const u = users.find(u => u.id === s.user_id); return !u || u.role !== 'admin' }).map((s: SubRow) => { const up = users.find(u => u.id === s.user_id); return (
             <div key={s.id} className="flex items-center gap-2 rounded-[0.6rem] border border-white/6 bg-white/[0.02] px-2 py-1.5">
-              <div className="min-w-0 flex-1"><p className="truncate text-[8px] font-semibold text-white/70">{up?.name || up?.email || s.user_id}</p><p className="text-[6px] text-white/30">{s.plan} · {s.status} · {new Date(s.started_at).toLocaleDateString('pt-BR')}</p></div>
-              <select className="h-5 rounded-[0.3rem] border border-white/10 bg-black/30 px-1 text-[6px] text-white/60 outline-none" value={s.status} onChange={(e) => changeSubStatus(s.id, e.target.value)}><option value="active">Ativo</option><option value="trial">Trial</option><option value="cancelled">Cancelado</option><option value="overdue">Devendo</option><option value="expired">Expirado</option></select>
-              <select className="h-5 rounded-[0.3rem] border border-white/10 bg-black/30 px-1 text-[6px] text-white/60 outline-none" value={s.plan} onChange={(e) => changeSubPlan(s.id, e.target.value)}><option value="free">Free</option><option value="monthly">Mensal</option><option value="yearly">Anual</option><option value="trial">Trial</option></select>
+              <div className="min-w-0 flex-1"><p className="truncate text-[11px] font-semibold text-white/70">{up?.name || up?.email || s.user_id}</p><p className="text-[9px] text-white/65">{s.plan} · {s.status} · {new Date(s.started_at).toLocaleDateString('pt-BR')}</p></div>
+              <select className="h-5 rounded-[0.3rem] border border-white/10 bg-black/30 px-1 text-[9px] text-white/60 outline-none" value={s.status} onChange={(e) => changeSubStatus(s.id, e.target.value)}><option value="active">Ativo</option><option value="trial">Trial</option><option value="cancelled">Cancelado</option><option value="overdue">Devendo</option><option value="expired">Expirado</option></select>
+              <select className="h-5 rounded-[0.3rem] border border-white/10 bg-black/30 px-1 text-[9px] text-white/60 outline-none" value={s.plan} onChange={(e) => changeSubPlan(s.id, e.target.value)}><option value="free">Free</option><option value="monthly">Mensal</option><option value="yearly">Anual</option><option value="trial">Trial</option></select>
             </div>
           ) })}
         </div>
@@ -606,9 +615,9 @@ export default function AdminPage() {
             <div className="rounded-[0.8rem] border border-white/8 bg-white/[0.02] px-3 py-2.5">
               <div className="mb-1 flex items-center gap-1.5">
                 <Zap className="h-3 w-3 text-white/50" />
-                <p className="text-[7px] font-semibold uppercase tracking-[0.14em] text-white/50">Modo Fundador Ativo · Fase {faseDetectada === 'validacao' ? 'Validação' : faseDetectada === 'pmf' ? 'PMF' : 'Crescimento'}</p>
+                <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-white/50">Modo Fundador Ativo · Fase {faseDetectada === 'validacao' ? 'Validação' : faseDetectada === 'pmf' ? 'PMF' : 'Crescimento'}</p>
               </div>
-              <p className="text-[7px] leading-relaxed text-white/35">Com {totalUsers} usuário(s) real(is), os dados ainda não revelam padrões estatísticos. Analytics se torna poderoso a partir de 30+ usuários. Abaixo você vê as métricas reais disponíveis e as metas que definem a próxima fase.</p>
+              <p className="text-[10px] leading-relaxed text-white/65">Com {totalUsers} usuário(s) real(is), os dados ainda não revelam padrões estatísticos. Analytics se torna poderoso a partir de 30+ usuários. Abaixo você vê as métricas reais disponíveis e as metas que definem a próxima fase.</p>
               <div className="mt-2 grid grid-cols-3 gap-1">
                 {[
                   { l: 'Meta usuários', v: '10 ativos/sem', ok: activeWeek >= 10 },
@@ -616,9 +625,9 @@ export default function AdminPage() {
                   { l: 'Meta NPS', v: 'NPS > 0', ok: false },
                 ].map(m => (
                   <div key={m.l} className={`rounded-[0.5rem] border px-2 py-1.5 text-center ${m.ok ? 'border-white/15 bg-white/[0.04]' : 'border-white/5'}`}>
-                    {m.ok ? <CheckCircle2 className="mx-auto mb-0.5 h-3 w-3 text-white/60" /> : <AlertTriangle className="mx-auto mb-0.5 h-3 w-3 text-white/20" />}
-                    <p className="text-[7px] font-semibold text-white/50">{m.v}</p>
-                    <p className="text-[6px] text-white/25">{m.l}</p>
+                    {m.ok ? <CheckCircle2 className="mx-auto mb-0.5 h-3 w-3 text-white/60" /> : <AlertTriangle className="mx-auto mb-0.5 h-3 w-3 text-white/50" />}
+                    <p className="text-[10px] font-semibold text-white/50">{m.v}</p>
+                    <p className="text-[9px] text-white/55">{m.l}</p>
                   </div>
                 ))}
               </div>
@@ -627,10 +636,10 @@ export default function AdminPage() {
 
           {/* KPIs — non-admin only */}
           <div>
-            <p className="mb-1 text-[6px] uppercase tracking-[0.1em] text-white/25">Usuários reais (admin excluído)</p>
+            <p className="mb-1 text-[9px] uppercase tracking-[0.1em] text-white/55">Usuários reais (admin excluído)</p>
             <div className="grid grid-cols-4 gap-1">
               {[{ l: 'Total', v: totalUsers, c: '#60a5fa' }, { l: 'Hoje', v: activeToday, c: '#4ade80' }, { l: 'Semana', v: activeWeek, c: '#facc15' }, { l: 'Mês', v: activeMonth, c: '#fb923c' }].map((s) => (
-                <div key={s.l} className="rounded-[0.5rem] border border-white/6 bg-black/20 px-1 py-2 text-center"><p className="text-[12px] font-bold" style={{ color: s.c }}>{s.v}</p><p className="text-[5px] text-white/30">{s.l}</p></div>
+                <div key={s.l} className="rounded-[0.5rem] border border-white/6 bg-black/20 px-1 py-2 text-center"><p className="text-[12px] font-bold" style={{ color: s.c }}>{s.v}</p><p className="text-[8px] text-white/65">{s.l}</p></div>
               ))}
             </div>
           </div>
@@ -639,21 +648,21 @@ export default function AdminPage() {
           <div className="grid grid-cols-3 gap-1">
             <div className="rounded-[0.5rem] border border-white/6 bg-black/20 px-2 py-1.5 text-center">
               <p className={`text-[10px] font-bold ${retention7d >= 40 ? 'text-[#4ade80]' : retention7d >= 20 ? 'text-[#facc15]' : 'text-[#f87171]'}`}>{retention7d}%</p>
-              <p className="text-[5px] text-white/30">Ret. 7d · meta &gt;40%</p>
+              <p className="text-[8px] text-white/65">Ret. 7d · meta &gt;40%</p>
             </div>
             <div className="rounded-[0.5rem] border border-white/6 bg-black/20 px-2 py-1.5 text-center">
               <p className={`text-[10px] font-bold ${retention30d >= 40 ? 'text-[#4ade80]' : retention30d >= 20 ? 'text-[#facc15]' : 'text-[#f87171]'}`}>{retention30d}%</p>
-              <p className="text-[5px] text-white/30">Ret. 30d · meta &gt;40%</p>
+              <p className="text-[8px] text-white/65">Ret. 30d · meta &gt;40%</p>
             </div>
             <div className="rounded-[0.5rem] border border-white/6 bg-black/20 px-2 py-1.5 text-center">
               <p className={`text-[10px] font-bold ${churnRate < 5 ? 'text-[#4ade80]' : churnRate < 20 ? 'text-[#facc15]' : 'text-[#f87171]'}`}>{churnRate}%</p>
-              <p className="text-[5px] text-white/30">Churn · meta &lt;5%</p>
+              <p className="text-[8px] text-white/65">Churn · meta &lt;5%</p>
             </div>
           </div>
 
           {/* Signup chart */}
           <div>
-            <p className="mb-1 text-[7px] font-semibold uppercase tracking-[0.12em] text-white/30">Novos usuários (30 dias)</p>
+            <p className="mb-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-white/65">Novos usuários (30 dias)</p>
             <div className="h-24">
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart data={signupsByDay}><defs><linearGradient id="gSignup" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#60a5fa" stopOpacity={0.3} /><stop offset="100%" stopColor="#60a5fa" stopOpacity={0} /></linearGradient></defs><XAxis dataKey="date" tick={{ fontSize: 7, fill: 'rgba(255,255,255,0.2)' }} axisLine={false} tickLine={false} /><YAxis hide /><Tooltip contentStyle={{ background: '#111', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8, fontSize: 10 }} /><Area type="monotone" dataKey="count" stroke="#60a5fa" fill="url(#gSignup)" strokeWidth={1.5} /></AreaChart>
@@ -663,7 +672,7 @@ export default function AdminPage() {
 
           {/* Events chart */}
           <div>
-            <p className="mb-1 text-[7px] font-semibold uppercase tracking-[0.12em] text-white/30">Eventos por dia (14 dias)</p>
+            <p className="mb-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-white/65">Eventos por dia (14 dias)</p>
             <div className="h-24">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={eventsByDay}><XAxis dataKey="date" tick={{ fontSize: 7, fill: 'rgba(255,255,255,0.2)' }} axisLine={false} tickLine={false} /><YAxis hide /><Tooltip contentStyle={{ background: '#111', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8, fontSize: 10 }} /><Bar dataKey="count" fill="#a78bfa" radius={[2, 2, 0, 0]} /></BarChart>
@@ -673,14 +682,14 @@ export default function AdminPage() {
 
           {/* Top features */}
           <div>
-            <p className="mb-1 text-[7px] font-semibold uppercase tracking-[0.12em] text-white/30">Features mais usadas</p>
-            {eventCounts.length === 0 ? <p className="py-2 text-[7px] text-white/20">Nenhum evento registrado ainda.</p> : (
+            <p className="mb-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-white/65">Features mais usadas</p>
+            {eventCounts.length === 0 ? <p className="py-2 text-[10px] text-white/50">Nenhum evento registrado ainda.</p> : (
               <div className="space-y-0.5">
                 {eventCounts.slice(0, 10).map((a) => (
                   <div key={a.event} className="flex items-center gap-2 rounded-[0.4rem] border border-white/4 bg-white/[0.02] px-2 py-1">
                     <div className="h-1.5 rounded-full bg-[#a78bfa]" style={{ width: `${Math.min((a.count / (eventCounts[0]?.count || 1)) * 100, 100)}%`, minWidth: 4 }} />
-                    <p className="flex-1 truncate text-[7px] text-white/50">{a.event}</p>
-                    <p className="shrink-0 text-[7px] font-bold text-white/60">{a.count}</p>
+                    <p className="flex-1 truncate text-[10px] text-white/50">{a.event}</p>
+                    <p className="shrink-0 text-[10px] font-bold text-white/60">{a.count}</p>
                   </div>
                 ))}
               </div>
@@ -691,8 +700,8 @@ export default function AdminPage() {
           <div>
             <div className="mb-2 flex items-center gap-1.5">
               <Brain className="h-3 w-3 text-white/50" />
-              <p className="text-[7px] font-semibold uppercase tracking-[0.12em] text-white/50">Insights IA · {insights.length} análises</p>
-              <span className="rounded-full border border-white/8 px-1.5 py-0.5 text-[6px] text-white/30">Fase: {faseDetectada}</span>
+              <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-white/50">Insights IA · {insights.length} análises</p>
+              <span className="rounded-full border border-white/8 px-1.5 py-0.5 text-[9px] text-white/65">Fase: {faseDetectada}</span>
             </div>
             <div className="space-y-1.5">
               {insights.map((insight, i) => {
@@ -702,17 +711,17 @@ export default function AdminPage() {
                   <div key={i} className={`rounded-[0.6rem] border ${borderColor} bg-white/[0.02] px-3 py-2`}>
                     <div className="mb-0.5 flex items-center gap-1.5">
                       <span className={`h-1.5 w-1.5 shrink-0 rounded-full ${dotColor}`} />
-                      <span className="text-[6px] font-bold uppercase tracking-[0.12em] text-white/35">{insight.dimensao}</span>
-                      {insight.prioridade === 'critica' && <span className="rounded-full border border-[#f8717120] px-1 text-[5px] font-bold uppercase text-[#f87171]/70">Crítico</span>}
+                      <span className="text-[9px] font-bold uppercase tracking-[0.12em] text-white/65">{insight.dimensao}</span>
+                      {insight.prioridade === 'critica' && <span className="rounded-full border border-[#f8717120] px-1 text-[8px] font-bold uppercase text-[#f87171]/70">Crítico</span>}
                     </div>
-                    <p className="text-[7px] leading-relaxed text-white/50">{insight.texto}</p>
+                    <p className="text-[10px] leading-relaxed text-white/50">{insight.texto}</p>
                   </div>
                 )
               })}
             </div>
           </div>
 
-          <button onClick={loadAnalytics} className="flex items-center gap-1 text-[7px] text-white/30 hover:text-white/50"><RefreshCw className="h-2.5 w-2.5" /> Atualizar dados</button>
+          <button onClick={loadAnalytics} className="flex items-center gap-1 text-[10px] text-white/65 hover:text-white/50"><RefreshCw className="h-2.5 w-2.5" /> Atualizar dados</button>
         </div>
       )}
 
@@ -722,10 +731,10 @@ export default function AdminPage() {
           {/* Como funciona */}
           <div className="rounded-[0.8rem] border border-white/6 bg-white/[0.02] px-3 py-3">
             <div className="mb-2 flex items-center gap-1.5">
-              <TrendingUp className="h-3 w-3 text-white/40" />
-              <p className="text-[7px] font-semibold uppercase tracking-[0.12em] text-white/40">Como funciona</p>
+              <TrendingUp className="h-3 w-3 text-white/70" />
+              <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-white/70">Como funciona</p>
             </div>
-            <div className="space-y-1.5 text-[7px] leading-relaxed text-white/35">
+            <div className="space-y-1.5 text-[10px] leading-relaxed text-white/65">
               <p>· Você escreve título e mensagem aqui e escolhe o público-alvo (Todos, Ativos ou Trial).</p>
               <p>· A notificação é inserida na tabela <span className="font-mono text-white/50">notifications</span> do Supabase para cada usuário do grupo selecionado.</p>
               <p>· Usuários que têm <span className="font-mono text-white/50">notifications_enabled = true</span> no perfil recebem em tempo real via Supabase Realtime — o sininho no topo fica com badge.</p>
@@ -733,14 +742,14 @@ export default function AdminPage() {
               <p>· Use para: avisos de atualização, novos conteúdos, convites para feedback, alerta de manutenção.</p>
             </div>
           </div>
-          <p className="text-[7px] font-semibold uppercase tracking-[0.12em] text-white/30">Enviar notificação</p>
+          <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-white/65">Enviar notificação</p>
           <input className={inputClass} placeholder="Titulo" value={notifTitle} onChange={(e) => setNotifTitle(e.target.value)} />
           <textarea className={`${inputClass} h-16 resize-none py-1.5`} placeholder="Mensagem..." value={notifBody} onChange={(e) => setNotifBody(e.target.value)} />
           <div className="flex gap-1">
-            {(['all', 'active', 'trial'] as const).map((t) => (<button key={t} onClick={() => setNotifTarget(t)} className={`rounded-full border px-2 py-0.5 text-[7px] font-semibold ${chip(notifTarget === t)}`}>{t === 'all' ? 'Todos' : t === 'active' ? 'Ativos' : 'Trial'}</button>))}
+            {(['all', 'active', 'trial'] as const).map((t) => (<button key={t} onClick={() => setNotifTarget(t)} className={`rounded-full border px-2 py-0.5 text-[10px] font-semibold ${chip(notifTarget === t)}`}>{t === 'all' ? 'Todos' : t === 'active' ? 'Ativos' : 'Trial'}</button>))}
           </div>
-          <button onClick={sendNotification} disabled={!notifTitle || !notifBody} className="flex items-center gap-1 rounded-[0.5rem] border border-[#a78bfa30] bg-[#a78bfa10] px-3 py-1.5 text-[8px] font-semibold text-[#a78bfa] disabled:opacity-30"><Send className="h-3 w-3" /> Enviar</button>
-          {notifSent && <p className="text-[7px] text-[#4ade80]">Enviado.</p>}
+          <button onClick={sendNotification} disabled={!notifTitle || !notifBody} className="flex items-center gap-1 rounded-[0.5rem] border border-[#a78bfa30] bg-[#a78bfa10] px-3 py-1.5 text-[11px] font-semibold text-[#a78bfa] disabled:opacity-30"><Send className="h-3 w-3" /> Enviar</button>
+          {notifSent && <p className="text-[10px] text-[#4ade80]">Enviado.</p>}
         </div>
       )}
 
@@ -761,7 +770,7 @@ export default function AdminPage() {
             <button
               onClick={createTeam}
               disabled={!newTeamName.trim()}
-              className="flex h-7 shrink-0 items-center gap-1 rounded-[0.4rem] border border-[#4ade8020] bg-[#4ade8008] px-3 text-[8px] text-[#4ade80] disabled:opacity-30"
+              className="flex h-7 shrink-0 items-center gap-1 rounded-[0.4rem] border border-[#4ade8020] bg-[#4ade8008] px-3 text-[11px] text-[#4ade80] disabled:opacity-30"
             >
               <UserPlus className="h-3 w-3" /> Criar
             </button>
@@ -769,16 +778,16 @@ export default function AdminPage() {
 
           {/* Lista de equipes */}
           {teams.length === 0 && (
-            <p className="py-6 text-center text-[8px] text-white/30">Nenhuma equipe criada. Adicione uma acima.</p>
+            <p className="py-6 text-center text-[11px] text-white/65">Nenhuma equipe criada. Adicione uma acima.</p>
           )}
           {teams.map(team => (
             <div key={team.id} className="rounded-[0.8rem] border border-white/7 bg-white/[0.02] p-3 space-y-2">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <p className="text-[9px] font-semibold text-white/75">{team.nome}</p>
-                  <span className="text-[7px] text-white/28">{team.memberIds.length} membro(s)</span>
+                  <span className="text-[10px] text-white/28">{team.memberIds.length} membro(s)</span>
                 </div>
-                <button onClick={() => deleteTeam(team.id)} className="text-white/20 hover:text-[#f87171]/60">
+                <button onClick={() => deleteTeam(team.id)} className="text-white/50 hover:text-[#f87171]/60">
                   <Trash2 className="h-3 w-3" />
                 </button>
               </div>
@@ -792,12 +801,12 @@ export default function AdminPage() {
                       className={`flex w-full items-center gap-2 rounded-[0.4rem] px-2 py-1 text-left transition-all ${isMember ? 'bg-white/[0.04]' : 'hover:bg-white/[0.015]'}`}
                     >
                       <div className={`h-3 w-3 shrink-0 rounded-[0.2rem] border ${isMember ? 'border-white/30 bg-white/20' : 'border-white/12'}`} />
-                      <span className={`text-[8px] ${isMember ? 'text-white/70' : 'text-white/38'}`}>{u.name || u.email}</span>
+                      <span className={`text-[11px] ${isMember ? 'text-white/70' : 'text-white/38'}`}>{u.name || u.email}</span>
                     </button>
                   )
                 })}
                 {users.filter(u => u.role !== 'admin').length === 0 && (
-                  <p className="text-[7px] text-white/25 px-2">Nenhum usuário disponível.</p>
+                  <p className="text-[10px] text-white/55 px-2">Nenhum usuário disponível.</p>
                 )}
               </div>
             </div>
@@ -805,24 +814,24 @@ export default function AdminPage() {
 
           {/* Gestão de admins */}
           <div className="rounded-[0.8rem] border border-white/6 p-3 space-y-2">
-            <p className="text-[8px] font-semibold uppercase tracking-[0.12em] text-white/30">Admins</p>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-white/65">Admins</p>
             {users.filter(u => u.id !== user?.id).map(u => (
               <div key={u.id} className="flex items-center gap-2">
                 <div className="flex-1 min-w-0">
                   <p className="truncate text-[8.5px] text-white/65">{u.name || u.email}</p>
-                  {u.role === 'admin' && <span className="text-[6px] font-bold text-[#a78bfa]">ADMIN</span>}
+                  {u.role === 'admin' && <span className="text-[9px] font-bold text-[#a78bfa]">ADMIN</span>}
                 </div>
                 {u.role !== 'admin' ? (
                   <button
                     onClick={() => promoteToAdmin(u.id, u.name || u.email || '')}
-                    className="flex h-6 shrink-0 items-center gap-1 rounded-[0.4rem] border border-[#a78bfa20] bg-[#a78bfa08] px-2 text-[7px] text-[#a78bfa]/70 hover:text-[#a78bfa]"
+                    className="flex h-6 shrink-0 items-center gap-1 rounded-[0.4rem] border border-[#a78bfa20] bg-[#a78bfa08] px-2 text-[10px] text-[#a78bfa]/70 hover:text-[#a78bfa]"
                   >
                     <Crown className="h-2.5 w-2.5" /> Tornar Admin
                   </button>
                 ) : (
                   <button
                     onClick={() => demoteFromAdmin(u.id, u.name || u.email || '')}
-                    className="flex h-6 shrink-0 items-center gap-1 rounded-[0.4rem] border border-[#fb923c20] bg-[#fb923c08] px-2 text-[7px] text-[#fb923c]/70 hover:text-[#fb923c]"
+                    className="flex h-6 shrink-0 items-center gap-1 rounded-[0.4rem] border border-[#fb923c20] bg-[#fb923c08] px-2 text-[10px] text-[#fb923c]/70 hover:text-[#fb923c]"
                   >
                     <UserMinus className="h-2.5 w-2.5" /> Remover Admin
                   </button>
@@ -833,8 +842,8 @@ export default function AdminPage() {
 
           {/* Transferir admin */}
           <div className="rounded-[0.8rem] border border-[#f8717115] bg-[#f8717106] p-3 space-y-2">
-            <p className="text-[8px] font-semibold uppercase tracking-[0.12em] text-[#fca5a5]/50">Transferir sua conta admin</p>
-            <p className="text-[7.5px] text-white/30">Você perderá o acesso imediatamente. Selecione para quem transferir:</p>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[#fca5a5]/50">Transferir sua conta admin</p>
+            <p className="text-[7.5px] text-white/65">Você perderá o acesso imediatamente. Selecione para quem transferir:</p>
             <div className="space-y-1">
               {users.filter(u => u.id !== user?.id && u.role !== 'admin').map(u => (
                 <button
@@ -843,11 +852,11 @@ export default function AdminPage() {
                   className="flex w-full items-center gap-2 rounded-[0.5rem] border border-[#f8717118] px-3 py-1.5 text-left hover:bg-[#f8717108]"
                 >
                   <ArrowRightLeft className="h-3 w-3 shrink-0 text-[#fca5a5]/40" />
-                  <span className="text-[8px] text-white/55">{u.name || u.email}</span>
+                  <span className="text-[11px] text-white/55">{u.name || u.email}</span>
                 </button>
               ))}
               {users.filter(u => u.id !== user?.id && u.role !== 'admin').length === 0 && (
-                <p className="text-[7px] text-white/25">Nenhum usuário disponível para transferência.</p>
+                <p className="text-[10px] text-white/55">Nenhum usuário disponível para transferência.</p>
               )}
             </div>
           </div>
@@ -858,17 +867,56 @@ export default function AdminPage() {
       {/* ══════ CONFIG ══════ */}
       {tab === 'config' && !loading && (
         <div className="space-y-2">
-          <p className="text-[7px] font-semibold uppercase tracking-[0.12em] text-white/30">Configuracoes do app</p>
+          <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-white/65">Configuracoes do app</p>
           {Object.entries(configs).map(([key, value]) => (
             <div key={key} className="rounded-[0.6rem] border border-white/6 bg-white/[0.02] px-2 py-1.5">
-              <p className="mb-0.5 text-[7px] font-semibold text-white/50">{key}</p>
-              <div className="flex gap-1"><input className={inputClass} value={value} onChange={(e) => setConfigs((prev) => ({ ...prev, [key]: e.target.value }))} /><button onClick={() => saveConfig(key, value)} className="flex h-7 w-7 shrink-0 items-center justify-center rounded-[0.4rem] border border-white/10 bg-white/5 text-white/40 hover:text-white/60"><Save className="h-3 w-3" /></button></div>
+              <p className="mb-0.5 text-[10px] font-semibold text-white/50">{key}</p>
+              <div className="flex gap-1"><input className={inputClass} value={value} onChange={(e) => setConfigs((prev) => ({ ...prev, [key]: e.target.value }))} /><button onClick={() => saveConfig(key, value)} className="flex h-7 w-7 shrink-0 items-center justify-center rounded-[0.4rem] border border-white/10 bg-white/5 text-white/70 hover:text-white/60"><Save className="h-3 w-3" /></button></div>
             </div>
           ))}
-          {configSaved && <p className="text-[7px] text-[#4ade80]">Salvo.</p>}
+          {configSaved && <p className="text-[10px] text-[#4ade80]">Salvo.</p>}
         </div>
       )}
       </div>
+    </div>
+  )
+}
+
+// ─── Zoom A−/A+ embutido no painel admin ──────────────────────────────────
+function AdminZoomControls() {
+  const fontScale = useAccessibility((s) => s.fontScale)
+  const increaseFontScale = useAccessibility((s) => s.increaseFontScale)
+  const decreaseFontScale = useAccessibility((s) => s.decreaseFontScale)
+  const scalePct = Math.round(fontScale * 100)
+  return (
+    <div
+      className="flex items-center gap-0.5 overflow-hidden rounded-[0.6rem] border border-white/15"
+      style={{ background: 'linear-gradient(180deg, rgba(255,255,255,0.06) 0%, rgba(8,8,10,0.92) 100%)' }}
+    >
+      <button
+        onClick={decreaseFontScale}
+        disabled={scalePct <= 20}
+        title="Diminuir texto"
+        aria-label="Diminuir texto"
+        className="flex h-8 w-8 items-center justify-center text-white/65 transition hover:text-white disabled:opacity-25"
+      >
+        <span className="text-[11px] font-bold" style={{ fontFamily: 'monospace' }}>A−</span>
+      </button>
+      <span
+        className="select-none px-1.5 text-[10px] tabular-nums text-white/55 w-[36px] text-center"
+        style={{ fontFamily: 'monospace' }}
+      >
+        {scalePct}%
+      </span>
+      <button
+        onClick={increaseFontScale}
+        disabled={scalePct >= 200}
+        title="Aumentar texto"
+        aria-label="Aumentar texto"
+        className="flex h-8 w-8 items-center justify-center text-white/65 transition hover:text-white disabled:opacity-25"
+      >
+        <span className="text-[13px] font-bold" style={{ fontFamily: 'monospace' }}>A+</span>
+      </button>
     </div>
   )
 }
