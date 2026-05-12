@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
-import { Activity, Brain, Globe, MapPin, RefreshCw, Smartphone, Zap } from 'lucide-react'
+import { Activity, Brain, ExternalLink, Globe, MapPin, Radar, RefreshCw, Smartphone, Zap } from 'lucide-react'
 
 type DeviceRow = { device: string; count: number }
 type HeatmapRow = { day_of_week: number; hour_of_day: number; count: number }
@@ -87,6 +87,9 @@ export function AdminTelemetry() {
 
       {/* AI Briefing — análise IA dos últimos 30 dias com cache 15min */}
       <AIBriefingCard />
+
+      {/* Market Watch — Tavily + IA monitora evidências/mercado/compliance */}
+      <MarketWatchCard />
 
       {/* Live feed */}
       <LiveFeedCard feed={data?.feed ?? []} />
@@ -398,6 +401,171 @@ function AIBriefingCard() {
             </p>
           )}
         </>
+      )}
+    </div>
+  )
+}
+
+type MarketItem = {
+  category: 'clinical' | 'evidence' | 'market' | 'compliance'
+  title: string
+  implication: string
+  source_url: string
+  source_domain: string
+  priority: 'high' | 'medium' | 'low'
+}
+type MarketWatch = {
+  summary?: string
+  items?: MarketItem[]
+  action_for_sea?: string
+  rawCounts?: Record<string, number>
+  generatedAt?: string
+  cached?: boolean
+  error?: string
+}
+
+function MarketWatchCard() {
+  const [data, setData] = useState<MarketWatch | null>(null)
+  const [loading, setLoading] = useState(false)
+  const [hasFetched, setHasFetched] = useState(false)
+  const [open, setOpen] = useState(false)
+
+  const fetchData = async (refresh = false) => {
+    setLoading(true)
+    try {
+      const res = await fetch(`/api/admin/analytics/market-watch${refresh ? '?refresh=1' : ''}`)
+      const json = await res.json()
+      setData(json)
+    } catch (e) {
+      setData({ error: e instanceof Error ? e.message : 'erro de rede' })
+    } finally {
+      setLoading(false)
+      setHasFetched(true)
+    }
+  }
+
+  // Não busca automaticamente — usuário clica pra ativar (economiza quota Tavily)
+  const onToggle = () => {
+    if (!open && !hasFetched) fetchData(false)
+    setOpen(!open)
+  }
+
+  const categoryColors: Record<string, string> = {
+    compliance: '#f87171',
+    evidence: '#60a5fa',
+    market: '#facc15',
+    clinical: '#4ade80',
+  }
+  const categoryLabels: Record<string, string> = {
+    compliance: 'Compliance',
+    evidence: 'Evidência',
+    market: 'Mercado',
+    clinical: 'Clínica',
+  }
+
+  return (
+    <div className="ipb-soft rounded-[0.7rem] p-2.5">
+      <button onClick={onToggle} className="flex w-full items-center justify-between gap-2 text-left">
+        <div className="flex items-center gap-1.5">
+          <Radar className="h-3 w-3 text-[#34d399]" />
+          <p className="text-[9px] font-semibold uppercase tracking-[0.16em] text-white/65">Market Watch · Tavily + IA</p>
+          {data?.cached && <span className="text-[7px] text-white/30">cache 1h</span>}
+        </div>
+        <div className="flex items-center gap-1.5">
+          {hasFetched && (
+            <button
+              onClick={(e) => { e.stopPropagation(); fetchData(true) }}
+              disabled={loading}
+              className="flex h-5 items-center gap-1 rounded-[0.4rem] border border-white/10 bg-white/[0.04] px-1.5 text-[8px] text-white/55 transition hover:text-white disabled:opacity-30"
+            >
+              <RefreshCw className={`h-2.5 w-2.5 ${loading ? 'animate-spin' : ''}`} />
+              {loading ? 'Buscando' : 'Atualizar'}
+            </button>
+          )}
+          <span className="text-[8px] text-white/40">{open ? '▼' : '▶'}</span>
+        </div>
+      </button>
+
+      {open && (
+        <div className="mt-2 space-y-1.5">
+          {loading && !data && (
+            <p className="py-3 text-center text-[10px] text-white/40">Tavily pesquisando + IA analisando…</p>
+          )}
+
+          {data?.error && (
+            <p className="rounded-[0.4rem] border border-[#f8717125] bg-[#f8717108] px-2 py-1.5 text-[9px] text-[#fca5a5]">
+              {data.error}
+            </p>
+          )}
+
+          {data && !data.error && (
+            <>
+              {data.summary && (
+                <div className="rounded-[0.5rem] border border-[#34d39930] bg-[#34d39908] px-2.5 py-1.5">
+                  <p className="text-[10px] font-semibold leading-snug text-[#6ee7b7]">{data.summary}</p>
+                </div>
+              )}
+
+              {data.items && data.items.length > 0 && (
+                <div className="space-y-1">
+                  {data.items.map((item, i) => {
+                    const catColor = categoryColors[item.category] ?? '#94a3b8'
+                    const pColor = item.priority === 'high' ? '#f87171' : item.priority === 'medium' ? '#facc15' : '#94a3b8'
+                    return (
+                      <div key={i} className="rounded-[0.4rem] border border-white/8 bg-white/[0.02] px-2 py-1.5">
+                        <div className="flex items-center gap-1.5">
+                          <span
+                            className="shrink-0 rounded-full px-1.5 py-px text-[7px] font-bold uppercase"
+                            style={{ color: catColor, background: `${catColor}14`, border: `1px solid ${catColor}30` }}
+                          >
+                            {categoryLabels[item.category]}
+                          </span>
+                          <p className="flex-1 truncate text-[10px] font-semibold text-white/85">{item.title}</p>
+                          <span
+                            className="shrink-0 rounded-full px-1 py-px text-[7px] font-bold"
+                            style={{ color: pColor, background: `${pColor}14`, border: `1px solid ${pColor}30` }}
+                          >
+                            {item.priority === 'high' ? 'ALTA' : item.priority === 'medium' ? 'MÉD' : 'BX'}
+                          </span>
+                        </div>
+                        <p className="mt-0.5 text-[9px] leading-relaxed text-white/55">{item.implication}</p>
+                        <a
+                          href={item.source_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="mt-0.5 flex items-center gap-1 text-[7px] text-white/35 hover:text-white/65"
+                        >
+                          <ExternalLink className="h-2 w-2" />
+                          {item.source_domain}
+                        </a>
+                      </div>
+                    )
+                  })}
+                </div>
+              )}
+
+              {data.action_for_sea && (
+                <div className="mt-1.5 rounded-[0.5rem] border border-[#a78bfa30] bg-[#a78bfa08] px-2.5 py-1.5">
+                  <p className="text-[8px] font-semibold uppercase tracking-[0.14em] text-[#c4b5fd]">Ação SEA esta semana</p>
+                  <p className="mt-0.5 text-[10px] text-white/85">{data.action_for_sea}</p>
+                </div>
+              )}
+
+              {data.generatedAt && (
+                <p className="text-right text-[7px] text-white/30">
+                  Gerado {new Date(data.generatedAt).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' })}
+                  {data.cached ? ' · cache' : ''}
+                </p>
+              )}
+            </>
+          )}
+        </div>
+      )}
+
+      {!open && !hasFetched && (
+        <p className="mt-1 text-[8px] text-white/35">
+          Clica pra ativar — Tavily pesquisa evidência clínica + compliance + mercado, IA Groq resume em ações
+        </p>
       )}
     </div>
   )
