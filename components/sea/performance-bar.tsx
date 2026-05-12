@@ -1,9 +1,11 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Leaf, Shield, Heart, Megaphone, FileText, Scale, BookOpen, Stethoscope, Star, MessageSquare, X, Send, Check, Scroll, Cookie, Target, UserCog } from 'lucide-react'
+import { Leaf, Shield, Heart, Megaphone, FileText, Scale, BookOpen, Stethoscope, Star, MessageSquare, X, Send, Check, Scroll, Cookie, Target, UserCog, ChevronLeft, ChevronRight } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
+
+const spring = { type: 'spring', stiffness: 380, damping: 32 } as const
 
 // Real metrics from localStorage
 function useAppMetrics() {
@@ -91,16 +93,63 @@ export function PerformanceBar() {
   const [showReport, setShowReport] = useState(false)
   const [showGov, setShowGov] = useState<string | null>(null)
 
+  // Carrossel: 4 cards (Impacto, NPS, Sustentabilidade, Governança). Cada um
+  // ocupa 100% do viewport. Snap-scroll + dots de navegação + setas no desktop.
+  const TOTAL_CARDS = 4
+  const scrollRef = useRef<HTMLDivElement>(null)
+  const [activeIdx, setActiveIdx] = useState(0)
+
+  // Detecta qual card está visível via scroll position
+  useEffect(() => {
+    const el = scrollRef.current
+    if (!el) return
+    const onScroll = () => {
+      const idx = Math.round(el.scrollLeft / el.clientWidth)
+      setActiveIdx(idx)
+    }
+    el.addEventListener('scroll', onScroll, { passive: true })
+    return () => el.removeEventListener('scroll', onScroll)
+  }, [])
+
+  const goTo = (i: number) => {
+    const el = scrollRef.current
+    if (!el) return
+    el.scrollTo({ left: i * el.clientWidth, behavior: 'smooth' })
+  }
+
   return (
     <motion.section
-      // Carrossel horizontal: snap-scroll mobile/desktop. Cards lado a lado,
-      // arrastáveis (mobile: swipe touch · desktop: scroll com mouse/trackpad).
-      // Cada card tem largura mínima pra não ficar espremido.
-      className="ipb-thinscroll flex snap-x snap-mandatory gap-4 overflow-x-auto px-1 pb-2 [&>*]:snap-start [&>*]:shrink-0 [&>*]:w-[88%] sm:[&>*]:w-[60%] md:[&>*]:w-[44%] lg:[&>*]:w-[32%]"
+      className="relative"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.1 }}
     >
+      {/* Setas desktop pra navegar carrossel */}
+      {activeIdx > 0 && (
+        <button
+          onClick={() => goTo(activeIdx - 1)}
+          className="absolute left-0 top-1/2 z-20 hidden -translate-y-1/2 flex h-10 w-10 items-center justify-center rounded-full border border-white/15 bg-black/60 text-white/75 backdrop-blur-md transition hover:bg-black/80 md:flex"
+          aria-label="Anterior"
+        >
+          <ChevronLeft className="h-4 w-4" />
+        </button>
+      )}
+      {activeIdx < TOTAL_CARDS - 1 && (
+        <button
+          onClick={() => goTo(activeIdx + 1)}
+          className="absolute right-0 top-1/2 z-20 hidden -translate-y-1/2 flex h-10 w-10 items-center justify-center rounded-full border border-white/15 bg-black/60 text-white/75 backdrop-blur-md transition hover:bg-black/80 md:flex"
+          aria-label="Próximo"
+        >
+          <ChevronRight className="h-4 w-4" />
+        </button>
+      )}
+
+      {/* Carrossel: cada card 100% width, snap mandatory */}
+      <div
+        ref={scrollRef}
+        className="ipb-thinscroll flex snap-x snap-mandatory gap-0 overflow-x-auto [&>*]:snap-center [&>*]:snap-always [&>*]:shrink-0 [&>*]:w-full"
+        style={{ scrollbarWidth: 'none' }}
+      >
       {/* Impacto SEA */}
       <div
         className="ipb-card rounded-[1.4rem] p-4"
@@ -232,6 +281,29 @@ export function PerformanceBar() {
           ))}
         </div>
       </div>
+      </div>{/* fim do snap-scroll */}
+
+      {/* Dots indicador — pill expansível pro card ativo */}
+      <div className="mt-4 flex items-center justify-center gap-2">
+        {Array.from({ length: TOTAL_CARDS }).map((_, i) => (
+          <button
+            key={i}
+            onClick={() => goTo(i)}
+            aria-label={`Card ${i + 1}`}
+            className="flex items-center justify-center"
+          >
+            <motion.span
+              animate={{
+                width: activeIdx === i ? 28 : 6,
+                background: activeIdx === i ? 'rgba(255,255,255,0.7)' : 'rgba(255,255,255,0.2)',
+              }}
+              transition={spring}
+              className="block h-1.5 rounded-full"
+            />
+          </button>
+        ))}
+      </div>
+
       {/* Modais */}
       <AnimatePresence>
         {showFeedback && <FeedbackModal onClose={() => setShowFeedback(false)} />}
