@@ -184,6 +184,13 @@ export const useAuthStore = create<AuthState & AuthActions>((set, get) => ({
       try { sessionStorage.removeItem('sea-splash-shown') } catch { /* ignore */ }
     }
     trackLogin()
+    // Registra evento de login na tabela public.login_events (audit de dispositivos)
+    if (typeof window !== 'undefined' && supabase) {
+      try {
+        const ua = window.navigator?.userAgent ?? null
+        supabase.rpc('log_my_login', { p_ip: null, p_user_agent: ua }).then(() => {})
+      } catch { /* não bloqueia o login se o log falhar */ }
+    }
     return { error: null }
   },
 

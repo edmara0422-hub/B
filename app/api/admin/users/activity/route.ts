@@ -144,11 +144,35 @@ export async function POST(request: Request) {
     debug.sessionsError = e instanceof Error ? e.message : 'sessions rpc failed'
   }
 
-  const suspicion = computeSuspicion(events, sessions)
+  // 4. login_events — tabela própria capturando TODOS os logins (trigger + RPC client)
+  type LoginEvent = { id: string; user_id: string; ip: string | null; user_agent: string | null; event_type: string; created_at: string }
+  let loginEvents: LoginEvent[] = []
+  try {
+    const { data: leRows, error: leErr } = await admin.rpc('admin_get_login_events', {
+      target_user: userId,
+    })
+    if (!leErr) loginEvents = (leRows ?? []) as LoginEvent[]
+  } catch { /* ignore */ }
+
+  // Mescla audit (Supabase) + login_events (próprio) num histórico unificado
+  const mergedEvents: AuditEvent[] = [
+    ...events,
+    ...loginEvents.map((le) => ({
+      ip_address: le.ip,
+      payload: {
+        action: le.event_type,
+        actor_id: le.user_id,
+        traits: { user_agent: le.user_agent ?? undefined },
+      },
+      created_at: le.created_at,
+    } as AuditEvent)),
+  ].sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+
+  const suspicion = computeSuspicion(mergedEvents, sessions)
 
   return NextResponse.json({
     lastSignIn,
-    events: events.slice(0, 50).map((e) => ({
+    events: mergedEvents.slice(0, 50).map((e) => ({
       action: e.payload?.action ?? 'unknown',
       ip: e.ip_address ?? null,
       device: parseUserAgent(e.payload?.traits?.user_agent),
