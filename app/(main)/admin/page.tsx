@@ -992,63 +992,107 @@ export default function AdminPage() {
                   )}
                 </div>
 
-                {/* Active sessions */}
-                <div>
-                  <div className="mb-1.5 flex items-center justify-between">
+                {/* Active sessions — ordenadas por última atividade, com classificação online/dormente */}
+                {(() => {
+                  const now = Date.now()
+                  const sessionsWithMeta = activityData.sessions.map((s) => {
+                    const lastActive = s.updated_at ? new Date(s.updated_at).getTime() : (s.created_at ? new Date(s.created_at).getTime() : 0)
+                    const ageMs = now - lastActive
+                    const status: 'live' | 'recent' | 'dormant' =
+                      ageMs < 5 * 60 * 1000 ? 'live' : ageMs < 60 * 60 * 1000 ? 'recent' : 'dormant'
+                    return { ...s, lastActive, ageMs, status }
+                  }).sort((a, b) => b.lastActive - a.lastActive)
+
+                  const fmtAge = (ms: number) => {
+                    if (ms < 60 * 1000) return 'agora'
+                    if (ms < 3600 * 1000) return `há ${Math.floor(ms / 60000)} min`
+                    if (ms < 86400 * 1000) return `há ${Math.floor(ms / 3600000)}h`
+                    return `há ${Math.floor(ms / 86400000)}d`
+                  }
+
+                  const liveCount = sessionsWithMeta.filter((s) => s.status === 'live').length
+                  const uniqueDevices = new Set(sessionsWithMeta.map((s) => s.device).filter((d) => d !== 'Desconhecido')).size || sessionsWithMeta.length
+                  const uniqueIps = new Set(sessionsWithMeta.map((s) => s.ip).filter(Boolean)).size
+
+                  return (
                     <div>
-                      <p className="text-[9px] font-semibold uppercase tracking-[0.16em] text-white/55">
-                        Sessões ativas ({activityData.sessions.length})
-                      </p>
-                      {activityData.sessions.length > 0 && (
-                        <p className="text-[8px] text-white/35">
-                          {new Set(activityData.sessions.map((s) => s.device).filter((d) => d !== 'Desconhecido')).size || activityData.sessions.length} dispositivo(s) único(s) · {new Set(activityData.sessions.map((s) => s.ip).filter(Boolean)).size} IP(s)
-                        </p>
+                      <div className="mb-1.5 flex items-center justify-between">
+                        <div>
+                          <p className="text-[9px] font-semibold uppercase tracking-[0.16em] text-white/55">
+                            Sessões ({sessionsWithMeta.length}) {liveCount > 0 && <span className="text-[#4ade80]">· {liveCount} ATIVO AGORA</span>}
+                          </p>
+                          {sessionsWithMeta.length > 0 && (
+                            <p className="text-[8px] text-white/35">
+                              {uniqueDevices} dispositivo(s) único(s) · {uniqueIps} IP(s)
+                            </p>
+                          )}
+                        </div>
+                        {sessionsWithMeta.length > 0 && (
+                          <button
+                            onClick={forceLogoutUser}
+                            className="flex h-6 items-center gap-1 rounded-[0.4rem] border border-[#f8717125] bg-[#f8717108] px-2 text-[9px] font-semibold text-[#fca5a5] hover:bg-[#f8717115]"
+                          >
+                            <LogOut className="h-2.5 w-2.5" /> Forçar logout em todos
+                          </button>
+                        )}
+                      </div>
+                      {sessionsWithMeta.length === 0 ? (
+                        <div className="rounded-[0.5rem] border border-white/8 bg-white/[0.02] px-2.5 py-2 text-[9px] text-white/40">
+                          <p>Sem sessões registradas em <code className="text-white/60">auth.sessions</code>.</p>
+                        </div>
+                      ) : (
+                        <div className="space-y-1">
+                          {sessionsWithMeta.map((s) => {
+                            const statusColor =
+                              s.status === 'live' ? '#4ade80' : s.status === 'recent' ? '#facc15' : '#71717a'
+                            const statusLabel =
+                              s.status === 'live' ? 'ONLINE' : s.status === 'recent' ? 'RECENTE' : 'DORMENTE'
+                            return (
+                              <div
+                                key={s.id}
+                                className="flex items-center gap-2 rounded-[0.5rem] border px-2 py-1.5"
+                                style={{
+                                  borderColor: s.status === 'live' ? 'rgba(74,222,128,0.25)' : 'rgba(255,255,255,0.08)',
+                                  background: s.status === 'live' ? 'rgba(74,222,128,0.04)' : 'rgba(255,255,255,0.02)',
+                                }}
+                              >
+                                {/* Dot pulsante quando ONLINE */}
+                                <div className="relative flex h-3 w-3 shrink-0 items-center justify-center">
+                                  <span
+                                    className="h-2 w-2 rounded-full"
+                                    style={{ background: statusColor }}
+                                  />
+                                  {s.status === 'live' && (
+                                    <span
+                                      className="absolute inset-0 animate-ping rounded-full"
+                                      style={{ background: statusColor, opacity: 0.6 }}
+                                    />
+                                  )}
+                                </div>
+                                <Smartphone className="h-3 w-3 shrink-0 text-white/45" />
+                                <div className="min-w-0 flex-1">
+                                  <div className="flex items-center gap-1.5">
+                                    <p className="truncate text-[10px] text-white/85">{s.device}</p>
+                                    <span
+                                      className="shrink-0 rounded-full px-1.5 py-px text-[7px] font-bold uppercase tracking-[0.10em]"
+                                      style={{ color: statusColor, background: `${statusColor}14`, border: `1px solid ${statusColor}33` }}
+                                    >
+                                      {statusLabel}
+                                    </span>
+                                  </div>
+                                  <p className="truncate text-[8px] text-white/40">
+                                    Última atividade: {fmtAge(s.ageMs)}
+                                    {s.ip ? <> · <MapPin className="inline h-2 w-2" />{s.ip}</> : ''}
+                                  </p>
+                                </div>
+                              </div>
+                            )
+                          })}
+                        </div>
                       )}
                     </div>
-                    {activityData.sessions.length > 0 && (
-                      <button
-                        onClick={forceLogoutUser}
-                        className="flex h-6 items-center gap-1 rounded-[0.4rem] border border-[#f8717125] bg-[#f8717108] px-2 text-[9px] font-semibold text-[#fca5a5] hover:bg-[#f8717115]"
-                      >
-                        <LogOut className="h-2.5 w-2.5" /> Forçar logout em todos
-                      </button>
-                    )}
-                  </div>
-                  {activityData.sessions.length === 0 ? (
-                    <div className="rounded-[0.5rem] border border-white/8 bg-white/[0.02] px-2.5 py-2 text-[9px] text-white/40">
-                      <p>Sem sessões ativas registradas em <code className="text-white/60">auth.sessions</code>.</p>
-                      <p className="mt-1 text-white/30">
-                        O Supabase só persiste sessões na tabela quando o auth está configurado em modo &quot;database&quot;. No modo cookie/JWT padrão, sessões ficam no cliente e não aparecem aqui mesmo com usuário logado.
-                      </p>
-                    </div>
-                  ) : (
-                    <div className="space-y-1">
-                      {activityData.sessions.map((s) => {
-                        const ageMs = s.created_at ? Date.now() - new Date(s.created_at).getTime() : 0
-                        const ageHours = Math.floor(ageMs / 3600000)
-                        const ageDays = Math.floor(ageHours / 24)
-                        const ageLabel = ageDays > 0 ? `${ageDays}d` : ageHours > 0 ? `${ageHours}h` : `<1h`
-                        return (
-                          <div key={s.id} className="flex items-center gap-2 rounded-[0.5rem] border border-white/8 bg-white/[0.02] px-2 py-1.5">
-                            <Smartphone className="h-3 w-3 shrink-0 text-white/45" />
-                            <div className="min-w-0 flex-1">
-                              <div className="flex items-center gap-1.5">
-                                <p className="truncate text-[10px] text-white/75">{s.device}</p>
-                                <span className="shrink-0 rounded-full border border-white/12 bg-white/[0.04] px-1.5 py-px text-[7px] uppercase tracking-[0.10em] text-white/55">
-                                  há {ageLabel}
-                                </span>
-                              </div>
-                              <p className="truncate text-[8px] text-white/40">
-                                {s.ip ? <><MapPin className="mr-0.5 inline h-2 w-2" />{s.ip}</> : 'IP desconhecido'}
-                                {s.updated_at ? ` · ativo até ${new Date(s.updated_at).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' })}` : ''}
-                              </p>
-                            </div>
-                          </div>
-                        )
-                      })}
-                    </div>
-                  )}
-                </div>
+                  )
+                })()}
 
                 {/* Audit events */}
                 <div>
