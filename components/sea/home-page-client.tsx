@@ -25,7 +25,8 @@ export default function HomePageClient() {
         {/* 3D Simulations marquee — full width */}
         <SimulationsMarquee />
 
-        <div className="mx-auto max-w-2xl">
+        {/* Mobile: max-w-2xl (672px). Desktop: max-w-7xl pra acompanhar TopBar/BottomNav */}
+        <div className="mx-auto max-w-2xl md:max-w-7xl">
 
           {/* Performance */}
           <div className="mt-5">

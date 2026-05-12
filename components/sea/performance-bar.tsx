@@ -93,7 +93,8 @@ export function PerformanceBar() {
 
   return (
     <motion.section
-      className="space-y-4"
+      // Mobile: stack vertical (space-y-4). Desktop: 2-col grid pra cards lado a lado.
+      className="space-y-4 md:space-y-0 md:grid md:grid-cols-2 md:gap-4"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.1 }}

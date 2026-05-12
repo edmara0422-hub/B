@@ -29,7 +29,7 @@ export default function SistemasPageClient() {
     <div className="relative min-h-screen overflow-hidden text-white">
 
       <main className="relative z-10 px-2.5 pb-32 pt-8 md:px-8 md:pt-10">
-        <div className="mx-auto max-w-5xl space-y-6">
+        <div className="mx-auto max-w-2xl md:max-w-7xl space-y-6">
 
           {/* Header */}
           <div className="flex items-center gap-4">
