@@ -13,6 +13,7 @@ import {
   Activity, LogOut, Smartphone, MapPin,
 } from 'lucide-react'
 import { AreaChart, Area, BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts'
+import { AdminTelemetry } from '@/components/sea/admin-telemetry'
 
 type AdminTab = 'users' | 'subscriptions' | 'analytics' | 'communication' | 'config' | 'equipes'
 type Team = { id: string; nome: string; memberIds: string[] }
@@ -690,6 +691,9 @@ export default function AdminPage() {
       {/* ══════ ANALYTICS ══════ */}
       {tab === 'analytics' && !loading && (
         <div className="space-y-3">
+
+          {/* Telemetria NASA — feed ao vivo, gráfico concorrentes 24h, pizza devices, heatmap, geografia */}
+          <AdminTelemetry />
 
           {/* Modo Fundador banner */}
           {isModoFundador && (
