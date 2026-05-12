@@ -106,8 +106,9 @@ export default function ProfilePage() {
   }
 
 
-  const inputClass = 'w-full h-8 rounded-[0.5rem] border border-white/10 bg-white/5 px-2 text-[10px] text-white placeholder:text-white/30 outline-none focus:border-white/20'
-  const menuBtn = 'flex w-full items-center gap-2 rounded-[0.7rem] border border-white/6 bg-white/[0.02] px-3 py-2 text-left'
+  const inputClass = 'w-full h-9 rounded-[0.5rem] border border-white/15 bg-white/[0.06] px-3 text-[12px] text-white placeholder:text-white/40 outline-none focus:border-white/30'
+  // Mais opaco (era bg-white/[0.02]) e border mais firme — leitura melhor
+  const menuBtn = 'flex w-full items-center gap-2.5 rounded-[0.8rem] border border-white/12 bg-white/[0.06] px-3 py-2.5 text-left transition-colors hover:bg-white/[0.09]'
 
   return (
     <div className="relative min-h-screen text-white px-2 pb-32 pt-16 md:px-4">
@@ -116,7 +117,7 @@ export default function ProfilePage() {
           Desktop: w-full ocupa toda a largura disponível (acompanha TopBar/BottomNav). */}
       <div className="relative z-10 mx-auto w-full max-w-2xl md:max-w-none">
       {/* Back */}
-      <button onClick={() => router.push('/sea')} className="mb-4 flex items-center gap-1 text-[8px] text-white/40 hover:text-white/60">
+      <button onClick={() => router.push('/sea')} className="mb-5 flex items-center gap-1.5 text-[11px] text-white/65 hover:text-white/90 transition-colors">
         <ArrowLeft className="h-3 w-3" /> Voltar
       </button>
 
@@ -125,28 +126,32 @@ export default function ProfilePage() {
       {error && <div className="mb-3 rounded-[0.5rem] border border-[#f8717130] bg-[#f8717108] px-3 py-1.5"><p className="text-[8px] text-[#fca5a5]">{error}</p></div>}
 
       {/* ═══ Avatar + Header ═══ */}
-      <div className="mb-5 flex items-center gap-3">
+      <div className="mb-6 flex items-center gap-4">
         <div className="relative">
-          <div className="flex h-14 w-14 items-center justify-center overflow-hidden rounded-full border border-white/10 bg-white/[0.04]">
+          <div className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-full border border-white/20 bg-white/[0.08]">
             {profile?.photo_url ? (
               <img src={profile.photo_url} alt="" className="h-full w-full object-cover" />
             ) : (
-              <User className="h-6 w-6 text-white/30" />
+              <User className="h-7 w-7 text-white/60" />
             )}
           </div>
-          <label className="absolute -bottom-1 -right-1 flex h-5 w-5 cursor-pointer items-center justify-center rounded-full border border-white/20 bg-black/80">
-            {uploading ? <div className="h-2.5 w-2.5 animate-spin rounded-full border border-white/30 border-t-white" /> : <Camera className="h-2.5 w-2.5 text-white/60" />}
+          <label className="absolute -bottom-1 -right-1 flex h-6 w-6 cursor-pointer items-center justify-center rounded-full border border-white/25 bg-black/85">
+            {uploading ? <div className="h-3 w-3 animate-spin rounded-full border border-white/30 border-t-white" /> : <Camera className="h-3 w-3 text-white/80" />}
             <input type="file" accept="image/*" className="hidden" onChange={handleUploadPhoto} />
           </label>
         </div>
-        <div>
-          <p className="text-[10px] font-semibold">{profile?.name || 'Usuario'}</p>
-          <p className="text-[7px] text-white/40">{profile?.email || user?.email}</p>
-          {isAdmin && <span className="mt-0.5 inline-block rounded-full border border-[#a78bfa30] bg-[#a78bfa10] px-1.5 py-0.5 text-[6px] font-semibold text-[#a78bfa]">ADMIN</span>}
+        <div className="min-w-0 flex-1">
+          <p className="text-[15px] font-semibold text-white/95">{profile?.name || 'Usuário'}</p>
+          <p className="text-[11px] text-white/65">{profile?.email || user?.email}</p>
+          {isAdmin && (
+            <span className="mt-1.5 inline-block rounded-full border border-white/20 bg-white/[0.06] px-2 py-0.5 text-[9px] font-semibold uppercase tracking-wider text-white/85">
+              Admin
+            </span>
+          )}
         </div>
       </div>
 
-      <p className="mb-2 text-[7px] font-semibold uppercase tracking-[0.14em] text-white/30">Conta</p>
+      <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/70">Conta</p>
       <div className="space-y-1 mb-4">
 
         {/* ── Nome ── */}
@@ -159,12 +164,12 @@ export default function ProfilePage() {
           </div>
         ) : (
           <button onClick={() => { setEditField('name'); setEditValue(profile?.name || '') }} className={menuBtn}>
-            <User className="h-3.5 w-3.5 text-white/40" />
+            <User className="h-4 w-4 text-white/75" />
             <div className="flex-1">
-              <p className="text-[6px] text-white/30">Nome</p>
-              <p className="text-[8px] text-white/70">{profile?.name || 'Nao informado'}</p>
+              <p className="text-[9px] uppercase tracking-wider text-white/50">Nome</p>
+              <p className="text-[12px] font-medium text-white/95">{profile?.name || 'Não informado'}</p>
             </div>
-            <PencilLine className="h-3 w-3 text-white/20" />
+            <PencilLine className="h-3.5 w-3.5 text-white/55" />
           </button>
         )}
 
@@ -178,20 +183,20 @@ export default function ProfilePage() {
           </div>
         ) : (
           <button onClick={() => { setEditField('email'); setEditValue(profile?.email || user?.email || '') }} className={menuBtn}>
-            <Mail className="h-3.5 w-3.5 text-white/40" />
+            <Mail className="h-4 w-4 text-white/75" />
             <div className="flex-1">
-              <p className="text-[6px] text-white/30">Email</p>
-              <p className="text-[8px] text-white/70">{profile?.email || user?.email}</p>
+              <p className="text-[9px] uppercase tracking-wider text-white/50">Email</p>
+              <p className="text-[12px] font-medium text-white/95">{profile?.email || user?.email}</p>
             </div>
-            <PencilLine className="h-3 w-3 text-white/20" />
+            <PencilLine className="h-3.5 w-3.5 text-white/55" />
           </button>
         )}
 
         {/* ── Senha ── */}
         <button onClick={() => { setChangePassword(!changePassword); setError('') }} className={menuBtn}>
-          <Key className="h-3.5 w-3.5 text-white/40" />
-          <span className="flex-1 text-[8px] text-white/70">Alterar senha</span>
-          <ChevronRight className={`h-3 w-3 text-white/20 transition-transform ${changePassword ? 'rotate-90' : ''}`} />
+          <Key className="h-4 w-4 text-white/75" />
+          <span className="flex-1 text-[12px] font-medium text-white/90">Alterar senha</span>
+          <ChevronRight className={`h-3.5 w-3.5 text-white/55 transition-transform ${changePassword ? 'rotate-90' : ''}`} />
         </button>
         {changePassword && (
           <div className="rounded-[0.7rem] border border-white/6 bg-white/[0.02] px-3 py-2 space-y-1.5">
@@ -205,12 +210,12 @@ export default function ProfilePage() {
       </div>
 
       {/* ═══ Configurações ═══ */}
-      <p className="mb-2 text-[7px] font-semibold uppercase tracking-[0.14em] text-white/30">Configuracoes</p>
+      <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/70">Configurações</p>
       <div className="space-y-1 mb-4">
         {/* Notificações */}
         <button onClick={handleToggleNotifications} className={menuBtn}>
-          <Bell className="h-3.5 w-3.5 text-white/40" />
-          <span className="flex-1 text-[8px] text-white/70">Notificacoes</span>
+          <Bell className="h-4 w-4 text-white/75" />
+          <span className="flex-1 text-[12px] font-medium text-white/90">Notificações</span>
           <span className={`rounded-full px-1.5 py-0.5 text-[6px] font-semibold ${profile?.notifications_enabled ? 'border border-[#4ade8030] bg-[#4ade8010] text-[#4ade80]' : 'border border-white/10 bg-white/5 text-white/30'}`}>
             {profile?.notifications_enabled ? 'ON' : 'OFF'}
           </span>
@@ -218,16 +223,16 @@ export default function ProfilePage() {
 
         {/* Tema */}
         <div className={menuBtn}>
-          <Moon className="h-3.5 w-3.5 text-white/40" />
-          <span className="flex-1 text-[8px] text-white/70">Tema</span>
-          <span className="text-[7px] text-white/30">Dark</span>
+          <Moon className="h-4 w-4 text-white/75" />
+          <span className="flex-1 text-[12px] font-medium text-white/90">Tema</span>
+          <span className="text-[10px] text-white/60">Dark</span>
         </div>
       </div>
 
       {/* ═══ Admin Panel ═══ */}
       {isAdmin && (
         <>
-          <p className="mb-2 text-[7px] font-semibold uppercase tracking-[0.14em] text-white/30">Administracao</p>
+          <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/70">Administração</p>
           <div className="space-y-1 mb-4">
             <button
               onClick={() => router.push('/admin')}
@@ -238,32 +243,32 @@ export default function ProfilePage() {
                 <p className="text-[9px] font-semibold uppercase tracking-[0.12em] text-white/80">Painel Admin</p>
                 <p className="text-[7px] text-white/35">Usuários · Assinaturas · Analytics · Equipes</p>
               </div>
-              <ChevronRight className="h-3.5 w-3.5 text-white/40" />
+              <ChevronRight className="h-4 w-4 text-white/75" />
             </button>
           </div>
         </>
       )}
 
       {/* ═══ Legal / Suporte ═══ */}
-      <p className="mb-2 text-[7px] font-semibold uppercase tracking-[0.14em] text-white/30">Suporte</p>
+      <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/70">Suporte</p>
       <div className="space-y-1 mb-4">
         <button onClick={() => setShowAjuda(true)} className={menuBtn}>
-          <HelpCircle className="h-3.5 w-3.5 text-white/40" />
-          <span className="flex-1 text-left text-[8px] text-white/70">Ajuda e suporte</span>
-          <ChevronRight className="h-3 w-3 text-white/20" />
+          <HelpCircle className="h-4 w-4 text-white/75" />
+          <span className="flex-1 text-left text-[12px] font-medium text-white/90">Ajuda e suporte</span>
+          <ChevronRight className="h-3.5 w-3.5 text-white/55" />
         </button>
       </div>
 
       {showAjuda && <AjudaModal onClose={() => setShowAjuda(false)} />}
 
       {/* ═══ Sobre ═══ */}
-      <p className="mb-2 text-[7px] font-semibold uppercase tracking-[0.14em] text-white/30">Sobre</p>
+      <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/70">Sobre</p>
       <div className="space-y-1 mb-4">
         <div className={menuBtn}>
-          <Info className="h-3.5 w-3.5 text-white/40" />
+          <Info className="h-4 w-4 text-white/75" />
           <div className="flex-1">
-            <p className="text-[8px] text-white/70">SEA Fisio</p>
-            <p className="text-[6px] text-white/30">Versao 1.0.0 · Sistema de Estudo Avancado.</p>
+            <p className="text-[12px] font-semibold text-white/90">SEA Fisio</p>
+            <p className="text-[10px] text-white/60">Versão 1.0.0 · Sistema de Estudo Avançado.</p>
           </div>
         </div>
       </div>
@@ -272,11 +277,11 @@ export default function ProfilePage() {
       <div className="space-y-1">
         <button onClick={handleLogout} className="flex w-full items-center gap-2 rounded-[0.7rem] border border-[#f8717120] bg-[#f8717108] px-3 py-2">
           <LogOut className="h-3.5 w-3.5 text-[#fca5a5]" />
-          <span className="text-[8px] font-semibold text-[#fca5a5]">Sair da conta</span>
+          <span className="text-[12px] font-semibold text-[#fca5a5]">Sair da conta</span>
         </button>
         <button onClick={handleDeleteAccount} className="flex w-full items-center gap-2 rounded-[0.7rem] border border-[#f8717108] bg-transparent px-3 py-2">
           <Trash2 className="h-3.5 w-3.5 text-white/20" />
-          <span className="text-[8px] text-white/20">Excluir minha conta</span>
+          <span className="text-[11px] text-white/45">Excluir minha conta</span>
         </button>
       </div>
       </div>
