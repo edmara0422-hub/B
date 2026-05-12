@@ -252,8 +252,6 @@ function ModuleRail({
 }) {
   return (
     <div className="ipb-soft relative overflow-hidden rounded-[1.8rem] px-5 py-6 md:px-8">
-      <div className="pointer-events-none absolute inset-0 grid-bg opacity-50" />
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-px silver-divider opacity-60" />
       {/* Header */}
       <div className="mb-6 flex items-center justify-between">
         <div className="flex items-center gap-2.5">
@@ -471,13 +469,8 @@ export default function ConteudosPageClient() {
                 transition={{ duration: 0.3, ease }}
                 className="space-y-3"
               >
-                {/* Module hero card */}
+                {/* Module hero card — ipb-soft puro (igual Home) */}
                 <div className="ipb-soft relative overflow-hidden rounded-[2rem] px-6 py-7 md:px-8 md:py-8">
-                  <div className="pointer-events-none absolute inset-0 grid-bg opacity-40" />
-                  <div className="pointer-events-none absolute inset-x-0 top-0 h-px silver-divider opacity-70" />
-                  <div className="pointer-events-none absolute right-[8%] top-[20%] h-32 w-40 rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.06)_0%,transparent_72%)] blur-2xl" />
-                  <div className="pointer-events-none absolute left-[10%] bottom-0 h-20 w-32 rounded-full bg-[radial-gradient(circle,rgba(192,199,208,0.06)_0%,transparent_76%)] blur-2xl" />
-
                   <div className="flex items-start gap-5">
                     <div className="chrome-subtle flex h-16 w-16 shrink-0 items-center justify-center rounded-[1.4rem]">
                       {CurrentIcon && <CurrentIcon className="h-7 w-7 text-white/88" />}
@@ -501,9 +494,8 @@ export default function ConteudosPageClient() {
                   </div>
                 </div>
 
-                {/* Caderno + sidebar */}
+                {/* Caderno + sidebar — ipb-soft puro (igual Home) */}
                 <div className="ipb-soft relative overflow-hidden rounded-[2rem]">
-                  <div className="pointer-events-none absolute inset-x-0 top-0 h-px silver-divider opacity-40" />
                   <div className="p-5 md:p-6">
                     <CadernoModulePanel moduleId={current.id} openTopicId={activeTopicId} />
                   </div>

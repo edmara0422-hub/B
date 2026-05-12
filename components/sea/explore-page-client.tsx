@@ -40,8 +40,8 @@ export default function ExplorePageClient() {
 
   return (
     <div className="relative min-h-screen text-white">
-      {/* Carrossel deslocado um pouco abaixo do centro pra respirar do topo */}
-      <main className="relative z-10 flex min-h-[calc(100vh-5rem)] w-full flex-col justify-center px-2 md:px-4 pt-12 md:pt-16">
+      {/* Carrossel posicionado no terço superior+ pra não ficar grudado no topo */}
+      <main className="relative z-10 w-full px-2 md:px-4 pt-24 md:pt-32">
         {ready
           ? <Carousel3D />
           : <div className="w-full rounded-[2rem] bg-white/3" style={{ height: 'clamp(360px, 58vh, 560px)' }} />
