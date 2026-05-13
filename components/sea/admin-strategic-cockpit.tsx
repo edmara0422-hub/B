@@ -443,13 +443,26 @@ function PositionSynthesisCard({ data }: { data: CockpitData }) {
   const trl = data.state.trl ?? { level: 7, label: 'Produção', max: 9 }
   const hype = data.state.hype_cycle ?? { position: 'encosta_iluminacao', label: 'Encosta da Iluminação', stage_num: 4 }
   const phase = data.state.phase ?? { current: 'validacao', label: 'Validação', goal_users: 10 }
-  const mrr = data.cockpit.financials.mrr
-
-  const windowOpen = trl.level >= 7 && (hype.stage_num === 3 || hype.stage_num === 4)
-  const dangerSignal = mrr === 0 && trl.level >= 7
+  const maturity = data.state.maturity_sgi ?? { projects: 0, processes: 0, culture: 0, results: 0 }
+  const structuralReadiness = (maturity.projects + maturity.processes) / 6 // 0 a 1
+  const hasStructuralBlocker = data.state.compliance?.technical_blocker === true
   
-  const status = dangerSignal ? 'CRÍTICO' : windowOpen ? 'OPORTUNIDADE' : 'EVOLUÇÃO'
-  const statusColor = dangerSignal ? '#f87171' : windowOpen ? '#facc15' : '#94a3b8'
+  const windowOpen = trl.level >= 7 && (hype.stage_num === 3 || hype.stage_num === 4)
+  const isRevenueGap = mrr === 0 && trl.level >= 7
+  const isStructuralGap = structuralReadiness < 0.5 || hasStructuralBlocker
+
+  const status = isRevenueGap && !isStructuralGap ? 'ALERTA VENDAS' : isStructuralGap ? 'ESTRUTURA' : windowOpen ? 'OPORTUNIDADE' : 'EVOLUÇÃO'
+  const statusColor = isRevenueGap && !isStructuralGap ? '#f87171' : isStructuralGap ? '#fb923c' : windowOpen ? '#facc15' : '#94a3b8'
+
+  const toggleBlocker = async () => {
+    try {
+      await fetch('/api/admin/strategy/update', {
+        method: 'POST',
+        body: JSON.stringify({ key: 'compliance', value: { ...data.state.compliance, technical_blocker: !hasStructuralBlocker } })
+      })
+      fetchData()
+    } catch { /* ... */ }
+  }
 
   return (
     <div className="rounded-[2rem] border border-white/5 bg-white/[0.02] p-6 space-y-6">
@@ -458,9 +471,17 @@ function PositionSynthesisCard({ data }: { data: CockpitData }) {
           <Gauge className="h-4 w-4 text-white/40" />
           <h3 className="text-[11px] font-black text-white/60 uppercase tracking-widest">SÍNTESE DE POSIÇÃO</h3>
         </div>
-        <span className="px-2 py-0.5 rounded-full text-[8px] font-black border" style={{ color: statusColor, borderColor: `${statusColor}40`, backgroundColor: `${statusColor}10` }}>
-          {status}
-        </span>
+        <div className="flex items-center gap-2">
+          <button 
+            onClick={toggleBlocker}
+            className={`px-2 py-0.5 rounded-full text-[8px] font-black border transition-all ${hasStructuralBlocker ? 'bg-orange-500 border-orange-500 text-white' : 'border-white/10 text-white/30'}`}
+          >
+            {hasStructuralBlocker ? 'BLOQUEIO ATIVO' : 'SINALIZAR ERROS'}
+          </button>
+          <span className="px-2 py-0.5 rounded-full text-[8px] font-black border" style={{ color: statusColor, borderColor: `${statusColor}40`, backgroundColor: `${statusColor}10` }}>
+            {status}
+          </span>
+        </div>
       </div>
 
       <div className="grid grid-cols-2 gap-3">
@@ -468,17 +489,29 @@ function PositionSynthesisCard({ data }: { data: CockpitData }) {
           <p className="text-[8px] font-black text-white/30 uppercase mb-1">MRR Atual</p>
           <p className={`text-[20px] font-black ${mrr === 0 ? 'text-red-500' : 'text-green-500'}`}>R${mrr}</p>
         </div>
-        <div className="p-4 rounded-2xl bg-white/[0.03] border border-white/5 text-center">
-          <p className="text-[8px] font-black text-white/30 uppercase mb-1">Hype Cycle</p>
-          <p className="text-[12px] font-black text-white uppercase">{hype.label.split(' ')[0]}</p>
-          <p className="text-[8px] text-white/40 uppercase font-medium">{hype.label.split(' ').slice(1).join(' ')}</p>
+        <div className="p-4 rounded-2xl bg-white/[0.03] border border-white/5 text-center relative group">
+          <p className="text-[8px] font-black text-white/30 uppercase mb-1">Prontidão Técnica</p>
+          <p className={`text-[12px] font-black uppercase ${isStructuralGap ? 'text-orange-400' : 'text-blue-400'}`}>
+            {isStructuralGap ? 'Instável' : 'Sólida'}
+          </p>
+          <div className="mt-1 h-1 w-full bg-white/5 rounded-full overflow-hidden">
+            <div className="h-full bg-current" style={{ width: `${structuralReadiness * 100}%`, color: isStructuralGap ? '#fb923c' : '#60a5fa' }} />
+          </div>
+          {/* Tooltip explicativo */}
+          <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-48 p-3 bg-black border border-white/10 rounded-xl opacity-0 group-hover:opacity-100 transition-all pointer-events-none z-50 shadow-2xl">
+            <p className="text-[9px] text-white/60 leading-relaxed">
+              Calculado via <span className="text-white font-bold">Maturidade SGI</span> (Projetos + Processos). Se < 50% ou com Bloqueio ativo, a IA prioriza <span className="text-orange-400 font-bold">Estabilidade</span> sobre Vendas.
+            </p>
+          </div>
         </div>
       </div>
 
       <div className="p-4 rounded-2xl border bg-black/40" style={{ borderColor: `${statusColor}20` }}>
          <p className="text-[12px] font-bold leading-relaxed italic" style={{ color: statusColor }}>
-           {dangerSignal 
-             ? "⚠️ ALERTA: TRL 7 atingido mas MRR é zero. Você está em zona de 'Morte por Perfeccionismo'. PARE DE CONSTRUIR E COMECE A VENDER HOJE."
+           {isRevenueGap && !isStructuralGap 
+             ? "⚠️ ALERTA: TRL 7 atingido com estrutura sólida, mas MRR é zero. Zona de 'Morte por Perfeccionismo'. Comece a vender hoje."
+             : isStructuralGap
+             ? "🛠️ ESTRUTURA FRÁGIL: TRL alto mas processos/projetos imaturos. Corrija erros críticos e estabilize a fundação antes de escalar vendas."
              : windowOpen 
              ? "🚀 JANELA DE MERCADO ABERTA: O produto está maduro e o mercado receptivo. Foco total em tração comercial."
              : "🏗️ ESTÁGIO DE MATURAÇÃO: Continue validando hipóteses e refinando o produto para o próximo TRL."}
@@ -487,6 +520,7 @@ function PositionSynthesisCard({ data }: { data: CockpitData }) {
     </div>
   )
 }
+
 
 function InnovationHorizonsCard({ state, onReload }: { state?: CockpitData['state']['innovation_horizons']; onReload: () => void }) {
   const h = state ?? { h1: 60, h2: 30, h3: 10 }
@@ -801,6 +835,7 @@ function AdoptionTrailCard({ state, onReload }: { state?: CockpitData['state']['
 }
 
 function MaturityExecutionCard({ state, onReload }: { state?: CockpitData['state']['maturity_sgi']; onReload: () => void }) {
+  const [updating, setUpdating] = useState<string | null>(null)
   const current = state ?? { projects: 1, processes: 1, culture: 0, results: 1 }
   const items = [
     { key: 'projects', label: 'Projetos', icon: Briefcase },
@@ -808,6 +843,17 @@ function MaturityExecutionCard({ state, onReload }: { state?: CockpitData['state
     { key: 'culture', label: 'Cultura', icon: Heart },
     { key: 'results', label: 'Resultados', icon: Trophy },
   ] as const
+
+  const updateLevel = async (key: string, val: number) => {
+    setUpdating(key)
+    try {
+      await fetch('/api/admin/strategy/update', {
+        method: 'POST',
+        body: JSON.stringify({ key: 'maturity_sgi', value: { ...current, [key]: val } })
+      })
+      onReload()
+    } catch { /* ... */ } finally { setUpdating(null) }
+  }
 
   return (
     <div className="rounded-[2rem] border border-white/5 bg-white/[0.02] p-8">
@@ -817,21 +863,26 @@ function MaturityExecutionCard({ state, onReload }: { state?: CockpitData['state
           </div>
           <div>
             <h3 className="text-[14px] font-black text-white uppercase tracking-tight">SGI + TD · Maturidade de Execução</h3>
-            <p className="text-[9px] text-white/30 uppercase font-bold tracking-widest">Sistema de Gestão Integrada</p>
+            <p className="text-[9px] text-white/30 uppercase font-bold tracking-widest">Ajuste os níveis conforme a realidade do campo</p>
           </div>
        </div>
 
        <div className="grid grid-cols-2 gap-4">
           {items.map(item => (
-            <div key={item.key} className="p-4 rounded-2xl bg-white/[0.02] border border-white/5 space-y-2">
+            <div key={item.key} className={`p-4 rounded-2xl bg-white/[0.02] border border-white/5 space-y-2 transition-all ${updating === item.key ? 'opacity-50 scale-[0.98]' : ''}`}>
                <div className="flex items-center justify-between">
                   <item.icon className="h-4 w-4 text-white/30" />
-                  <span className="text-[10px] font-black text-white">{current[item.key]}/3</span>
+                  <span className="text-[10px] font-black text-white">{current[item.key as keyof typeof current]}/3</span>
                </div>
                <p className="text-[11px] font-black text-white/60 uppercase">{item.label}</p>
                <div className="flex gap-1">
                   {[0, 1, 2, 3].map(step => (
-                    <div key={step} className={`h-1.5 flex-1 rounded-full ${step <= current[item.key] ? 'bg-pink-500' : 'bg-white/5'}`} />
+                    <button 
+                      key={step} 
+                      disabled={updating !== null}
+                      onClick={() => updateLevel(item.key, step)}
+                      className={`h-1.5 flex-1 rounded-full transition-all hover:scale-y-150 ${step <= current[item.key as keyof typeof current] ? 'bg-pink-500' : 'bg-white/5'}`} 
+                    />
                   ))}
                </div>
             </div>

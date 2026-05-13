@@ -89,12 +89,14 @@ DADOS ATUAIS:
 - MRR: R$${mrr}
 - Usuários: ${totalUsers} (Ativos: ${activeSubs})
 - Maturidade SGI: ${JSON.stringify(state.maturity_sgi ?? {})}
+- Prontidão Estrutural: ${(state.readiness as any)?.score ?? 60}%
 
 DIRETRIZES:
-- Gere uma "Pergunta do Dia" que ataque o maior gap (ex: se TRL 7 e MRR 0, pergunte sobre vendas).
+- Gere uma "Pergunta do Dia" que ataque o maior gap estratégico real.
 - Gere uma "Ação de Hoje" prática (max 100 caracteres).
-- Tom: Fundador pragmático. Sem "frufru".
-- Se MRR é 0 e TRL >= 7, o diagnóstico DEVE ser sobre "morte por perfeccionismo".
+- Tom: Fundador experiente e pragmático.
+- EQUILÍBRIO: Se TRL >= 7 e MRR = 0, avalie: O problema é medo de vender (perfeccionismo) OU instabilidade na estrutura básica (erros críticos e falta de fundação)?
+- Se a Prontidão Estrutural for baixa, priorize estabilização antes de vendas.
 
 RETORNE JSON:
 {
