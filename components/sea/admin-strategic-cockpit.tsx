@@ -1,7 +1,16 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { Activity, AlertTriangle, BarChart3, Brain, Briefcase, Building2, CheckSquare, Crown, Database, DollarSign, ExternalLink, Eye, FileText, Flag, Gauge, Goal, Heart, Hospital, LayoutGrid, Map as MapIcon, Network, RefreshCw, Rocket, Square, Target, TrendingUp, Trophy, Users, Users2 } from 'lucide-react'
+import { 
+  Activity, AlertTriangle, BarChart3, Brain, Briefcase, Building2, 
+  CheckSquare, Crown, Database, DollarSign, ExternalLink, Eye, 
+  FileText, Flag, Gauge, Goal, Heart, Hospital, LayoutGrid, 
+  Map as MapIcon, Network, RefreshCw, Rocket, Square, Target, 
+  TrendingUp, Trophy, Users, Users2, Zap, Shield, ChevronRight, 
+  MessageSquare, Layers, Search, MousePointer2, Clock, Globe
+} from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { AdminTelemetry } from './admin-telemetry'
 
 type Financials = { mrr: number; arr: number; pricing: number; active_subs: number; trial_subs: number; cancelled_subs: number; churn_rate_pct: number; runway_months: number }
 type UsersStats = { total: number; new_30d: number; active_7d: number; active_30d: number; dau7d_pct: number; dau30d_pct: number }
@@ -103,332 +112,332 @@ export function AdminStrategicCockpit() {
 
   if (loading && !data) return (
     <div className="flex flex-col items-center justify-center py-20 space-y-4">
-      <div className="h-8 w-8 animate-spin rounded-full border-2 border-[#a78bfa] border-t-transparent" />
-      <p className="text-[10px] uppercase tracking-widest text-white/40">Sincronizando Assistente Estratégico…</p>
+      <div className="h-12 w-12 animate-spin rounded-full border-b-2 border-[#a78bfa]" />
+      <p className="text-[10px] uppercase tracking-[0.2em] text-[#a78bfa] animate-pulse">Sincronizando Cockpit de IA...</p>
     </div>
   )
 
   if (error && !data) return (
-    <div className="rounded-[0.7rem] border border-[#f8717125] bg-[#f8717108] p-4 text-center">
-      <AlertTriangle className="mx-auto mb-2 h-6 w-6 text-[#f87171]" />
-      <p className="text-[11px] text-[#fca5a5]">{error}</p>
-      <button onClick={fetchData} className="mt-3 text-[10px] font-bold text-[#f87171] underline uppercase">Tentar novamente</button>
+    <div className="rounded-2xl border border-red-500/20 bg-red-500/5 p-8 text-center backdrop-blur-xl">
+      <AlertTriangle className="mx-auto mb-4 h-10 w-10 text-red-500" />
+      <p className="text-[14px] font-bold text-red-400 uppercase tracking-wider">{error}</p>
+      <button onClick={fetchData} className="mt-4 px-6 py-2 rounded-full bg-red-500/10 border border-red-500/20 text-[10px] font-black text-red-500 hover:bg-red-500/20 transition uppercase">Tentar Reconexão</button>
     </div>
   )
 
   if (!data) return null
 
   return (
-    <div className="space-y-6 max-w-4xl mx-auto pb-20">
-      {/* HEADER: A Trilha de Progresso (F1-F6) */}
-      <div className="ipb-soft rounded-[1rem] p-4 border border-white/5">
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-2">
-            <div className="p-1.5 bg-[#a78bfa15] rounded-lg">
-              <Rocket className="h-4 w-4 text-[#a78bfa]" />
-            </div>
-            <div>
-              <h2 className="text-[12px] font-bold text-white/90">IPB Strategic Assistant</h2>
-              <p className="text-[9px] text-white/40 uppercase tracking-tighter">Automated Innovation Management System</p>
-            </div>
-          </div>
-          <div className="flex items-center gap-1.5 px-2 py-1 bg-green-500/10 border border-green-500/20 rounded-full">
-            <div className="h-1.5 w-1.5 rounded-full bg-green-500 animate-pulse" />
-            <span className="text-[8px] font-bold text-green-500 uppercase">Diagnóstico Ativo</span>
-          </div>
+    <div className="space-y-6 max-w-6xl mx-auto pb-32 px-4">
+      {/* 🚀 HEADER PREMIUM: STATUS DO SISTEMA */}
+      <header className="relative overflow-hidden rounded-[2rem] border border-white/5 bg-gradient-to-br from-white/[0.05] to-transparent p-6 backdrop-blur-2xl">
+        <div className="absolute top-0 right-0 p-8 opacity-10 pointer-events-none">
+          <Zap className="h-32 w-32 text-[#a78bfa]" />
         </div>
         
-        <CompactTrails data={data} onReload={() => reloadRef.current?.()} />
-      </div>
+        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div className="flex items-center gap-4">
+            <div className="h-14 w-14 rounded-2xl bg-gradient-to-br from-[#a78bfa] to-[#8b5cf6] flex items-center justify-center shadow-[0_0_20px_rgba(167,139,250,0.3)]">
+              <Rocket className="h-7 w-7 text-white" />
+            </div>
+            <div>
+              <h1 className="text-[20px] font-black text-white tracking-tight">IPB STRATEGIC COCKPIT</h1>
+              <div className="flex items-center gap-2 mt-1">
+                <span className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-green-500/10 border border-green-500/20 text-[8px] font-black text-green-500 uppercase">
+                  <div className="h-1.5 w-1.5 rounded-full bg-green-500 animate-pulse" />
+                  Live Diagnostic
+                </span>
+                <span className="text-[9px] text-white/30 uppercase font-bold tracking-widest">v2.4 Autonomous</span>
+              </div>
+            </div>
+          </div>
+          
+          <div className="grid grid-cols-2 gap-4">
+             <div className="px-4 py-2 rounded-xl bg-white/[0.03] border border-white/5">
+                <p className="text-[8px] font-bold text-white/30 uppercase mb-1">Maturidade TRL</p>
+                <div className="flex items-center gap-2">
+                  <span className="text-[18px] font-black text-white">{data.state.trl?.level || 7}</span>
+                  <div className="h-1 flex-1 bg-white/5 rounded-full overflow-hidden">
+                    <div className="h-full bg-[#a78bfa]" style={{ width: `${((data.state.trl?.level || 7)/9)*100}%` }} />
+                  </div>
+                </div>
+             </div>
+             <div className="px-4 py-2 rounded-xl bg-white/[0.03] border border-white/5">
+                <p className="text-[8px] font-bold text-white/30 uppercase mb-1">Fase Atual</p>
+                <div className="flex items-center gap-2">
+                  <Target className="h-4 w-4 text-[#facc15]" />
+                  <span className="text-[14px] font-black text-white uppercase tracking-tighter">{data.state.phase?.label || 'Validação'}</span>
+                </div>
+             </div>
+          </div>
+        </div>
 
-      {/* NAVEGAÇÃO POR ABAS */}
-      <div className="flex gap-1 p-1 bg-white/[0.03] border border-white/5 rounded-xl">
+        <div className="mt-8">
+           <CompactTrails data={data} />
+        </div>
+      </header>
+
+      {/* 🧭 NAVEGAÇÃO DE ALTA PERFORMANCE */}
+      <nav className="flex gap-2 p-1.5 bg-black/40 border border-white/5 rounded-2xl sticky top-4 z-50 backdrop-blur-3xl shadow-2xl">
         {[
-          { id: 'guia', label: 'Plano de Hoje', icon: <Brain className="h-3 w-3" /> },
-          { id: 'metricas', label: 'Cockpit Real', icon: <DollarSign className="h-3 w-3" /> },
-          { id: 'inovacao', label: 'Inovação', icon: <LayoutGrid className="h-3 w-3" /> },
-          { id: 'lideranca', label: 'Liderança', icon: <Users2 className="h-3 w-3" /> },
+          { id: 'guia', label: 'PLANO DE HOJE', icon: Brain, color: '#a78bfa' },
+          { id: 'metricas', label: 'COCKPIT REAL', icon: DollarSign, color: '#4ade80' },
+          { id: 'inovacao', label: 'INOVAÇÃO', icon: LayoutGrid, color: '#60a5fa' },
+          { id: 'lideranca', label: 'LIDERANÇA', icon: Users2, color: '#facc15' },
         ].map((tab) => (
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id as any)}
-            className={`flex flex-1 items-center justify-center gap-1.5 py-2 px-3 rounded-lg text-[10px] font-bold transition ${
-              activeTab === tab.id ? 'bg-[#a78bfa15] text-[#a78bfa] border border-[#a78bfa20]' : 'text-white/40 hover:text-white/60'
+            className={`flex flex-1 items-center justify-center gap-2 py-3 px-4 rounded-xl text-[11px] font-black transition-all duration-300 relative overflow-hidden ${
+              activeTab === tab.id 
+                ? 'text-white' 
+                : 'text-white/40 hover:text-white/60 hover:bg-white/5'
             }`}
           >
-            {tab.icon}
-            {tab.label}
+            {activeTab === tab.id && (
+              <motion.div 
+                layoutId="activeTab" 
+                className="absolute inset-0 z-0 bg-gradient-to-br opacity-20" 
+                style={{ backgroundColor: tab.color }}
+              />
+            )}
+            <tab.icon className={`h-4 w-4 relative z-10 ${activeTab === tab.id ? '' : 'opacity-50'}`} style={{ color: activeTab === tab.id ? tab.color : undefined }} />
+            <span className="relative z-10 hidden md:inline">{tab.label}</span>
           </button>
         ))}
-      </div>
+      </nav>
 
-      {/* CONTEÚDO DINÂMICO */}
-      <div className="min-h-[400px]">
-        {activeTab === 'guia' && (
-          <div className="space-y-4 animate-in fade-in slide-in-from-bottom-2 duration-500">
-            {/* ALERTA CRÍTICO */}
-            {alerts.filter(a => !a.read && a.level === 'critical').map(alert => (
-              <div key={alert.id} className="bg-red-500/10 border border-red-500/20 rounded-2xl p-4 flex gap-4 items-start">
-                <AlertTriangle className="h-5 w-5 text-red-500 shrink-0 mt-1" />
-                <div className="flex-1">
-                  <h3 className="text-[11px] font-bold text-red-400 uppercase tracking-wider">{alert.title}</h3>
-                  <p className="text-[13px] text-white/80 mt-1 leading-relaxed">{alert.message}</p>
-                  {alert.action && (
-                    <div className="mt-3 flex items-center gap-2">
-                      <span className="text-[10px] font-bold text-red-500 uppercase">Ação Imediata:</span>
-                      <p className="text-[11px] text-white font-medium">{alert.action}</p>
+      {/* 🎭 PALCO DINÂMICO (ABAS) */}
+      <div className="min-h-[600px]">
+        <AnimatePresence mode="wait">
+          {activeTab === 'guia' && (
+            <motion.div 
+              key="guia"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              className="space-y-6"
+            >
+              {/* ALERTA CRÍTICO: FLASH DESIGN */}
+              {alerts.filter(a => !a.read && a.level === 'critical').map(alert => (
+                <div key={alert.id} className="relative overflow-hidden rounded-3xl bg-red-500/10 border-2 border-red-500/20 p-6 shadow-[0_0_40px_rgba(239,68,68,0.1)]">
+                  <div className="absolute top-0 left-0 w-1 h-full bg-red-500" />
+                  <div className="flex gap-6 items-start">
+                    <div className="p-3 bg-red-500 rounded-2xl shadow-lg shadow-red-500/40 animate-pulse">
+                      <AlertTriangle className="h-6 w-6 text-white" />
                     </div>
-                  )}
-                </div>
-                <button onClick={() => dismissAlert(alert.id)} className="text-white/20 hover:text-white/40">✕</button>
-              </div>
-            ))}
-
-            {/* ASSISTENTE: Briefing Principal */}
-            <div className="bg-gradient-to-br from-[#a78bfa08] to-transparent border border-[#a78bfa15] rounded-3xl p-6 relative overflow-hidden">
-              <div className="absolute top-0 right-0 p-4 opacity-5">
-                <Brain className="h-32 w-32" />
-              </div>
-              
-              <div className="relative z-10 space-y-6">
-                <div className="flex items-center gap-3">
-                  <div className="h-10 w-10 rounded-2xl bg-[#a78bfa] flex items-center justify-center shadow-lg shadow-[#a78bfa30]">
-                    <Brain className="h-6 w-6 text-white" />
-                  </div>
-                  <div>
-                    <h3 className="text-[14px] font-bold text-white">IA Strategist Diagnostic</h3>
-                    <p className="text-[10px] text-white/40 uppercase tracking-widest">Passo a Passo Automático</p>
+                    <div className="flex-1">
+                      <h3 className="text-[12px] font-black text-red-400 uppercase tracking-[0.2em] mb-2">{alert.title}</h3>
+                      <p className="text-[16px] text-white font-medium leading-relaxed">{alert.message}</p>
+                      {alert.action && (
+                        <div className="mt-4 inline-flex items-center gap-3 px-4 py-2 bg-red-500/20 rounded-xl border border-red-500/30">
+                          <Zap className="h-4 w-4 text-red-500" />
+                          <span className="text-[13px] font-bold text-white">{alert.action}</span>
+                        </div>
+                      )}
+                    </div>
+                    <button onClick={() => dismissAlert(alert.id)} className="p-2 hover:bg-white/10 rounded-full transition text-white/20 hover:text-white">✕</button>
                   </div>
                 </div>
+              ))}
 
-                {brief ? (
-                  <div className="space-y-4">
-                    <div className="bg-white/[0.02] border border-white/5 rounded-2xl p-4">
-                      <p className="text-[10px] text-[#a78bfa] uppercase font-bold mb-2">Pergunta para o Fundador:</p>
-                      <p className="text-[16px] font-medium text-white leading-relaxed italic">"{brief.question}"</p>
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <p className="text-[10px] text-white/40 uppercase font-bold px-1">Seu Próximo Passo Hoje:</p>
-                      <div className="bg-gradient-to-r from-[#a78bfa20] to-transparent border-l-4 border-[#a78bfa] p-4 rounded-r-2xl">
-                        <p className="text-[14px] font-bold text-white leading-snug">{brief.action}</p>
+              {/* IA BRIEFING: THE BRAIN */}
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div className="lg:col-span-2 relative overflow-hidden rounded-[2.5rem] bg-gradient-to-br from-[#a78bfa15] to-[#8b5cf605] border border-[#a78bfa20] p-8">
+                  <div className="absolute -top-12 -right-12 p-8 opacity-5">
+                    <Brain className="h-64 w-64 text-[#a78bfa]" />
+                  </div>
+                  
+                  <div className="relative z-10">
+                    <div className="flex items-center gap-3 mb-8">
+                      <div className="h-12 w-12 rounded-2xl bg-[#a78bfa] flex items-center justify-center shadow-xl shadow-[#a78bfa40]">
+                        <Brain className="h-6 w-6 text-white" />
+                      </div>
+                      <div>
+                        <h2 className="text-[16px] font-black text-white uppercase tracking-tight">AI Strategist Diagnostic</h2>
+                        <p className="text-[10px] text-[#a78bfa] uppercase font-black tracking-widest">Processamento Neural Ativo</p>
                       </div>
                     </div>
-                    
-                    <button 
-                      onClick={fetchBrief}
-                      disabled={briefLoading}
-                      className="mt-4 flex items-center gap-2 text-[10px] font-bold text-[#a78bfa] hover:opacity-80 transition disabled:opacity-30"
-                    >
-                      <RefreshCw className={`h-3 w-3 ${briefLoading ? 'animate-spin' : ''}`} />
-                      ATUALIZAR DIAGNÓSTICO
-                    </button>
+
+                    {brief ? (
+                      <div className="space-y-8">
+                        <div className="space-y-3">
+                          <div className="flex items-center gap-2">
+                             <MessageSquare className="h-3 w-3 text-[#a78bfa]" />
+                             <span className="text-[9px] font-black text-[#a78bfa] uppercase tracking-widest">Pergunta para o Fundador</span>
+                          </div>
+                          <p className="text-[24px] md:text-[28px] font-bold text-white leading-tight italic tracking-tight">
+                            "{brief.question}"
+                          </p>
+                        </div>
+                        
+                        <div className="space-y-4 pt-4 border-t border-white/5">
+                          <div className="flex items-center gap-2">
+                             <Zap className="h-3 w-3 text-[#facc15]" />
+                             <span className="text-[9px] font-black text-[#facc15] uppercase tracking-widest">Execução Recomendada</span>
+                          </div>
+                          <div className="bg-gradient-to-r from-[#a78bfa25] to-transparent border-l-4 border-[#a78bfa] p-6 rounded-r-3xl">
+                            <p className="text-[18px] font-black text-white leading-snug">{brief.action}</p>
+                          </div>
+                        </div>
+                        
+                        <button 
+                          onClick={fetchBrief}
+                          disabled={briefLoading}
+                          className="flex items-center gap-3 px-6 py-3 rounded-2xl bg-white/[0.05] border border-white/10 text-[11px] font-black text-[#a78bfa] hover:bg-white/10 transition disabled:opacity-30 uppercase tracking-widest"
+                        >
+                          <RefreshCw className={`h-4 w-4 ${briefLoading ? 'animate-spin' : ''}`} />
+                          Atualizar Diagnóstico
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="py-20 text-center space-y-6">
+                        <p className="text-white/40 text-[12px] uppercase font-bold tracking-widest">Briefing aguardando sincronização</p>
+                        <button onClick={fetchBrief} className="px-10 py-4 rounded-full bg-[#a78bfa] text-white font-black text-[12px] uppercase tracking-[0.2em] shadow-2xl shadow-[#a78bfa50] hover:scale-105 transition active:scale-95">
+                          Gerar Briefing Estratégico
+                        </button>
+                      </div>
+                    )}
                   </div>
-                ) : (
-                  <button onClick={fetchBrief} className="w-full py-4 rounded-2xl bg-[#a78bfa] text-white font-bold text-[12px] uppercase tracking-widest hover:scale-[1.02] active:scale-[0.98] transition">
-                    Gerar Briefing de Hoje
-                  </button>
-                )}
+                </div>
+
+                <div className="space-y-6">
+                  <PositionSynthesisCard data={data} />
+                  <SprintAlphaCard state={data.state.sprint_alpha} onReload={() => reloadRef.current?.()} />
+                </div>
               </div>
-            </div>
 
-            {/* SÍNTESE DE POSIÇÃO (TRL + HYPE) */}
-            <PositionSynthesisCard data={data} />
-            
-            {/* ALERTAS SECUNDÁRIOS */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <SprintAlphaCard state={data.state.sprint_alpha} onReload={() => reloadRef.current?.()} />
-              <AlertsList alerts={alerts.filter(a => !a.read && a.level !== 'critical')} onDismiss={dismissAlert} onRun={runAnalysis} loading={alertsLoading} />
-            </div>
-          </div>
-        )}
+              {/* ALERTAS SECUNDÁRIOS */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <AlertsList alerts={alerts.filter(a => !a.read && a.level !== 'critical')} onDismiss={dismissAlert} onRun={runAnalysis} loading={alertsLoading} />
+                <div className="rounded-3xl border border-white/5 bg-white/[0.02] p-6 flex flex-col justify-center items-center text-center space-y-4">
+                  <Shield className="h-10 w-10 text-white/10" />
+                  <p className="text-[10px] font-bold text-white/30 uppercase tracking-[0.2em]">Compliance Guard Ativo</p>
+                  <p className="text-[12px] text-white/50 px-8">O sistema monitora alterações regulatórias e de mercado 24/7 para proteger o Roadmap.</p>
+                </div>
+              </div>
+            </motion.div>
+          )}
 
-        {activeTab === 'metricas' && (
-          <div className="space-y-4 animate-in fade-in duration-300">
-            <FinancialCockpitCard cockpit={data.cockpit} />
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <DDDMMaturityCard state={data.state.maturity_dddm} onReload={() => reloadRef.current?.()} />
-              <ComplianceTrackerCard compliance={data.cockpit.compliance} onReload={() => reloadRef.current?.()} />
-            </div>
-            <AdoptionTrailCard state={data.state.adoption_trail} onReload={() => reloadRef.current?.()} />
-          </div>
-        )}
+          {activeTab === 'metricas' && (
+            <motion.div 
+              key="metricas"
+              initial={{ opacity: 0, scale: 0.98 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.98 }}
+              className="space-y-6"
+            >
+              <FinancialCockpitCard cockpit={data.cockpit} />
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <DDDMMaturityCard state={data.state.maturity_dddm} onReload={() => reloadRef.current?.()} />
+                <ComplianceTrackerCard compliance={data.cockpit.compliance} onReload={() => reloadRef.current?.()} />
+              </div>
 
-        {activeTab === 'inovacao' && (
-          <div className="space-y-4 animate-in fade-in duration-300">
-            <InnovationFunnelCard data={data} onReload={() => reloadRef.current?.()} />
-            <TargetsRadarCard />
-            <MaturityExecutionCard state={data.state.maturity_sgi} onReload={() => reloadRef.current?.()} />
-          </div>
-        )}
+              <div className="rounded-3xl border border-white/5 bg-black/20 p-8">
+                 <div className="flex items-center gap-3 mb-8">
+                    <div className="h-10 w-10 rounded-xl bg-[#60a5fa15] border border-[#60a5fa20] flex items-center justify-center">
+                      <Activity className="h-5 w-5 text-[#60a5fa]" />
+                    </div>
+                    <div>
+                      <h3 className="text-[14px] font-black text-white uppercase tracking-tight">Telemetria ao Vivo</h3>
+                      <p className="text-[9px] text-white/30 uppercase font-bold tracking-widest">Dados Reais de Uso do Sistema</p>
+                    </div>
+                 </div>
+                 <AdminTelemetry />
+              </div>
 
-        {activeTab === 'lideranca' && (
-          <div className="space-y-4 animate-in fade-in duration-300">
-            <LeadershipProcessCard state={data.state.leadership_process} onReload={() => reloadRef.current?.()} />
-            <OKRGeneratorCard />
-          </div>
-        )}
+              <AdoptionTrailCard state={data.state.adoption_trail} onReload={() => reloadRef.current?.()} />
+            </motion.div>
+          )}
+
+          {activeTab === 'inovacao' && (
+            <motion.div 
+              key="inovacao"
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              className="space-y-6"
+            >
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <InnovationHorizonsCard state={data.state.innovation_horizons} onReload={() => reloadRef.current?.()} />
+                <MaturityExecutionCard state={data.state.maturity_sgi} onReload={() => reloadRef.current?.()} />
+              </div>
+
+              <InnovationFunnelCard data={data} onReload={() => reloadRef.current?.()} />
+              
+              <TargetsRadarCard />
+            </motion.div>
+          )}
+
+          {activeTab === 'lideranca' && (
+            <motion.div 
+              key="lideranca"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 20 }}
+              className="space-y-6"
+            >
+              <LeadershipProcessCard state={data.state.leadership_process} onReload={() => reloadRef.current?.()} />
+              
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                 <div className="md:col-span-2">
+                    <OKRGeneratorCard />
+                 </div>
+                 <div className="rounded-3xl border border-white/5 bg-gradient-to-br from-white/[0.03] to-transparent p-8 flex flex-col items-center justify-center text-center space-y-6">
+                    <Users className="h-12 w-12 text-[#facc15]" />
+                    <h4 className="text-[14px] font-black text-white uppercase tracking-widest">Cultura de Execução</h4>
+                    <p className="text-[12px] text-white/40 leading-relaxed">
+                      "Estratégia é 1%, Execução é 99%."<br/>
+                      Mantenha rituais de 1:1 e rituais de time ativos para escalar.
+                    </p>
+                    <div className="w-full h-1 bg-white/5 rounded-full overflow-hidden">
+                       <div className="h-full bg-[#facc15]" style={{ width: '65%' }} />
+                    </div>
+                    <span className="text-[10px] font-black text-[#facc15] uppercase">Saúde do Time: 65%</span>
+                 </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </div>
   )
 }
 
-// ───────────────────────────── COMPONENTES AUXILIARES ─────────────────────────────
+// ───────────────────────────── COMPONENTES AUXILIARES REDESENHADOS ─────────────────────────────
 
-function CompactTrails({ data, onReload }: { data: CockpitData; onReload: () => void }) {
+function CompactTrails({ data }: { data: CockpitData }) {
   const company = data.state.company_trail ?? { current_stage: 2 }
   const market = data.state.market_trail ?? { current_stage: 2 }
 
   return (
-    <div className="space-y-3">
-      <div className="flex items-center gap-2">
-        <p className="text-[8px] font-bold text-white/30 uppercase w-12 shrink-0">Empresa</p>
-        <div className="flex flex-1 gap-1">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="px-5 py-3 rounded-2xl bg-white/[0.02] border border-white/5">
+        <div className="flex items-center justify-between mb-2">
+          <p className="text-[9px] font-black text-white/30 uppercase tracking-[0.1em]">Roadmap Empresa</p>
+          <span className="text-[11px] font-black text-[#a78bfa]">F{company.current_stage}</span>
+        </div>
+        <div className="flex gap-1.5">
           {[1, 2, 3, 4, 5, 6].map(s => (
-            <div key={s} className={`h-1.5 flex-1 rounded-full ${s <= company.current_stage ? 'bg-[#a78bfa]' : 'bg-white/5'}`} />
+            <div key={s} className={`h-2 flex-1 rounded-full transition-all duration-1000 ${s <= company.current_stage ? 'bg-gradient-to-r from-[#a78bfa] to-[#8b5cf6] shadow-[0_0_10px_rgba(167,139,250,0.3)]' : 'bg-white/5'}`} />
           ))}
         </div>
-        <p className="text-[10px] font-bold text-[#a78bfa] w-6 text-right">F{company.current_stage}</p>
       </div>
-      <div className="flex items-center gap-2">
-        <p className="text-[8px] font-bold text-white/30 uppercase w-12 shrink-0">Mercado</p>
-        <div className="flex flex-1 gap-1">
+      <div className="px-5 py-3 rounded-2xl bg-white/[0.02] border border-white/5">
+        <div className="flex items-center justify-between mb-2">
+          <p className="text-[9px] font-black text-white/30 uppercase tracking-[0.1em]">Adoção de Mercado</p>
+          <span className="text-[11px] font-black text-[#60a5fa]">F{market.current_stage}</span>
+        </div>
+        <div className="flex gap-1.5">
           {[1, 2, 3, 4, 5, 6].map(s => (
-            <div key={s} className={`h-1.5 flex-1 rounded-full ${s <= market.current_stage ? 'bg-[#60a5fa]' : 'bg-white/5'}`} />
+            <div key={s} className={`h-2 flex-1 rounded-full transition-all duration-1000 ${s <= market.current_stage ? 'bg-gradient-to-r from-[#60a5fa] to-[#3b82f6] shadow-[0_0_10px_rgba(96,165,250,0.3)]' : 'bg-white/5'}`} />
           ))}
         </div>
-        <p className="text-[10px] font-bold text-[#60a5fa] w-6 text-right">F{market.current_stage}</p>
       </div>
     </div>
   )
 }
-
-function AlertsList({ alerts, onDismiss, onRun, loading }: { alerts: StrategicAlert[], onDismiss: (id: string) => void, onRun: () => void, loading: boolean }) {
-  return (
-    <div className="ipb-soft rounded-[1.5rem] p-4 flex flex-col h-full">
-      <div className="flex items-center justify-between mb-3">
-        <h4 className="text-[10px] font-bold text-white/60 uppercase tracking-widest">Alertas Secundários</h4>
-        <button onClick={onRun} disabled={loading} className="p-1.5 hover:bg-white/5 rounded-lg transition text-white/40 hover:text-white">
-          <RefreshCw className={`h-3 w-3 ${loading ? 'animate-spin' : ''}`} />
-        </button>
-      </div>
-      <div className="space-y-2 flex-1 overflow-y-auto max-h-[150px] pr-2 custom-scrollbar">
-        {alerts.length === 0 ? (
-          <p className="text-[9px] text-white/20 italic text-center py-8">Nenhum alerta pendente</p>
-        ) : (
-          alerts.map(a => (
-            <div key={a.id} className="p-2 bg-white/[0.02] border border-white/5 rounded-xl flex items-start gap-2 group">
-              <div className={`h-1.5 w-1.5 rounded-full mt-1.5 ${a.level === 'warning' ? 'bg-yellow-500' : 'bg-blue-500'}`} />
-              <div className="flex-1">
-                <p className="text-[10px] font-bold text-white/80 leading-tight">{a.title}</p>
-              </div>
-              <button onClick={() => onDismiss(a.id)} className="opacity-0 group-hover:opacity-100 transition text-white/20 hover:text-white/60">✕</button>
-            </div>
-          ))
-        )}
-      </div>
-    </div>
-  )
-}
-
-// ───────────────────────────── ALERTS PANEL ─────────────────────────────
-
-function AlertsPanel({
-  alerts, loading, onRun, onDismiss
-}: {
-  alerts: StrategicAlert[]
-  loading: boolean
-  onRun: () => void
-  onDismiss: (id: string) => void
-}) {
-  const unread = alerts.filter((a) => !a.read)
-  const levelColor = (level: StrategicAlert['level']) =>
-    level === 'critical' ? '#f87171' : level === 'warning' ? '#facc15' : '#60a5fa'
-  const levelBg = (level: StrategicAlert['level']) =>
-    level === 'critical' ? 'rgba(248,113,113,0.06)' : level === 'warning' ? 'rgba(250,204,21,0.06)' : 'rgba(96,165,250,0.06)'
-
-  return (
-    <div className="ipb-soft rounded-[0.7rem] p-2.5">
-      <div className="mb-2 flex items-center justify-between">
-        <div className="flex items-center gap-1.5">
-          <AlertTriangle className="h-3 w-3 text-[#f87171]" />
-          <p className="text-[9px] font-semibold uppercase tracking-[0.16em] text-white/65">Alertas Estratégicos</p>
-          {unread.length > 0 && (
-            <span className="flex h-3.5 w-3.5 items-center justify-center rounded-full bg-[#f87171] text-[7px] font-bold text-white">
-              {unread.length}
-            </span>
-          )}
-        </div>
-        <button
-          onClick={onRun}
-          disabled={loading}
-          className="flex h-5 items-center gap-1 rounded-[0.4rem] border border-white/10 bg-white/[0.04] px-1.5 text-[8px] text-white/55 hover:text-white disabled:opacity-30"
-        >
-          <RefreshCw className={`h-2.5 w-2.5 ${loading ? 'animate-spin' : ''}`} />
-          {loading ? 'Analisando…' : 'Analisar Agora'}
-        </button>
-      </div>
-
-      {unread.length === 0 && (
-        <p className="text-[9px] text-white/35">
-          {alerts.length > 0 ? '✅ Todos os alertas foram revisados.' : 'Clique em "Analisar Agora" para o agente verificar seus dados.'}
-        </p>
-      )}
-
-      <div className="space-y-1.5">
-        {unread.map((alert) => (
-          <div
-            key={alert.id}
-            className="rounded-[0.4rem] border px-2 py-1.5"
-            style={{ borderColor: `${levelColor(alert.level)}30`, background: levelBg(alert.level) }}
-          >
-            <div className="flex items-start justify-between gap-2">
-              <div className="flex-1">
-                <p className="text-[9px] font-bold" style={{ color: levelColor(alert.level) }}>{alert.title}</p>
-                <p className="text-[8.5px] text-white/65 mt-0.5">{alert.message}</p>
-                {alert.action && (
-                  <p className="text-[8px] text-white/45 mt-0.5">✅ {alert.action}</p>
-                )}
-              </div>
-              <button
-                onClick={() => onDismiss(alert.id)}
-                className="mt-0.5 shrink-0 text-[7px] text-white/25 hover:text-white/60"
-              >
-                ✕
-              </button>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  )
-}
-
-// ───────────────────────────── DAILY BRIEF CARD ─────────────────────────────
-
-function DailyBriefCard({ brief, onRefresh }: { brief: { question: string; action: string }; onRefresh: () => void }) {
-  return (
-    <div className="rounded-[0.7rem] border border-[#a78bfa30] bg-[#a78bfa08] p-2.5">
-      <div className="mb-1.5 flex items-center justify-between">
-        <div className="flex items-center gap-1.5">
-          <Brain className="h-3 w-3 text-[#a78bfa]" />
-          <p className="text-[9px] font-semibold uppercase tracking-[0.16em] text-white/65">Pergunta do Dia · IA Cockpit</p>
-        </div>
-        <button
-          onClick={onRefresh}
-          className="flex h-5 items-center gap-1 rounded-[0.4rem] border border-white/10 bg-white/[0.04] px-1.5 text-[8px] text-white/55 hover:text-white"
-        >
-          <RefreshCw className="h-2.5 w-2.5" />
-          Atualizar
-        </button>
-      </div>
-      <p className="text-[10px] font-semibold text-white/85 mb-1">❓ {brief.question}</p>
-      <p className="text-[9px] text-white/55">💡 Ação: {brief.action}</p>
-    </div>
-  )
-}
-
-// ───────────────────────────── POSITION SYNTHESIS ─────────────────────────────
 
 function PositionSynthesisCard({ data }: { data: CockpitData }) {
   const trl = data.state.trl ?? { level: 7, label: 'Produção', max: 9 }
@@ -438,151 +447,146 @@ function PositionSynthesisCard({ data }: { data: CockpitData }) {
 
   const windowOpen = trl.level >= 7 && (hype.stage_num === 3 || hype.stage_num === 4)
   const dangerSignal = mrr === 0 && trl.level >= 7
-  const synthesis = dangerSignal
-    ? 'Produto em TRL 7 mas MRR R$0 — morte por perfeccionismo. Pare de construir, comece a vender.'
-    : windowOpen
-    ? 'Janela aberta — produto pronto + mercado disposto. Foco máximo em aquisição.'
-    : 'Continue construindo, validando hipóteses antes de escalar.'
-
-  const synthColor = dangerSignal ? '#f87171' : windowOpen ? '#facc15' : '#94a3b8'
+  
+  const status = dangerSignal ? 'CRÍTICO' : windowOpen ? 'OPORTUNIDADE' : 'EVOLUÇÃO'
+  const statusColor = dangerSignal ? '#f87171' : windowOpen ? '#facc15' : '#94a3b8'
 
   return (
-    <div className="ipb-soft rounded-[0.7rem] p-2.5">
-      <div className="mb-2 flex items-center gap-1.5">
-        <Gauge className="h-3 w-3 text-[#a78bfa]" />
-        <p className="text-[9px] font-semibold uppercase tracking-[0.16em] text-white/65">Posição síntese · diagnóstico</p>
+    <div className="rounded-[2rem] border border-white/5 bg-white/[0.02] p-6 space-y-6">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <Gauge className="h-4 w-4 text-white/40" />
+          <h3 className="text-[11px] font-black text-white/60 uppercase tracking-widest">SÍNTESE DE POSIÇÃO</h3>
+        </div>
+        <span className="px-2 py-0.5 rounded-full text-[8px] font-black border" style={{ color: statusColor, borderColor: `${statusColor}40`, backgroundColor: `${statusColor}10` }}>
+          {status}
+        </span>
       </div>
 
-      <div className="grid grid-cols-3 gap-1.5">
-        <div className="ipb-soft rounded-[0.5rem] p-2 text-center">
-          <p className="text-[7px] uppercase tracking-[0.14em] text-white/35">TRL</p>
-          <p className="text-[16px] font-bold tabular-nums text-white/90">{trl.level}<span className="text-[10px] text-white/35">/{trl.max}</span></p>
-          <p className="text-[7px] text-white/45">{trl.label}</p>
+      <div className="grid grid-cols-2 gap-3">
+        <div className="p-4 rounded-2xl bg-white/[0.03] border border-white/5 text-center">
+          <p className="text-[8px] font-black text-white/30 uppercase mb-1">MRR Atual</p>
+          <p className={`text-[20px] font-black ${mrr === 0 ? 'text-red-500' : 'text-green-500'}`}>R${mrr}</p>
         </div>
-        <div className="ipb-soft rounded-[0.5rem] p-2 text-center">
-          <p className="text-[7px] uppercase tracking-[0.14em] text-white/35">Hype Cycle</p>
-          <p className="text-[10px] font-bold text-white/90 leading-tight">{hype.label.split(' ')[0]}</p>
-          <p className="text-[7px] text-white/45">{hype.label.split(' ').slice(1).join(' ')}</p>
-        </div>
-        <div className="ipb-soft rounded-[0.5rem] p-2 text-center">
-          <p className="text-[7px] uppercase tracking-[0.14em] text-white/35">MRR</p>
-          <p className={`text-[16px] font-bold tabular-nums ${mrr === 0 ? 'text-[#f87171]' : 'text-[#4ade80]'}`}>R${mrr}</p>
-          <p className="text-[7px] text-white/45">{phase.label}</p>
+        <div className="p-4 rounded-2xl bg-white/[0.03] border border-white/5 text-center">
+          <p className="text-[8px] font-black text-white/30 uppercase mb-1">Hype Cycle</p>
+          <p className="text-[12px] font-black text-white uppercase">{hype.label.split(' ')[0]}</p>
+          <p className="text-[8px] text-white/40 uppercase font-medium">{hype.label.split(' ').slice(1).join(' ')}</p>
         </div>
       </div>
 
-      <div
-        className="mt-2 rounded-[0.5rem] border px-2.5 py-1.5"
-        style={{ borderColor: `${synthColor}40`, background: `${synthColor}10` }}
-      >
-        <p className="text-[10px] font-semibold leading-snug" style={{ color: synthColor }}>{synthesis}</p>
+      <div className="p-4 rounded-2xl border bg-black/40" style={{ borderColor: `${statusColor}20` }}>
+         <p className="text-[12px] font-bold leading-relaxed italic" style={{ color: statusColor }}>
+           {dangerSignal 
+             ? "⚠️ ALERTA: TRL 7 atingido mas MRR é zero. Você está em zona de 'Morte por Perfeccionismo'. PARE DE CONSTRUIR E COMECE A VENDER HOJE."
+             : windowOpen 
+             ? "🚀 JANELA DE MERCADO ABERTA: O produto está maduro e o mercado receptivo. Foco total em tração comercial."
+             : "🏗️ ESTÁGIO DE MATURAÇÃO: Continue validando hipóteses e refinando o produto para o próximo TRL."}
+         </p>
       </div>
     </div>
   )
 }
 
-// ───────────────────────────── FINANCIAL COCKPIT ─────────────────────────────
-
-function FinancialCockpitCard({ cockpit }: { cockpit: CockpitData['cockpit'] }) {
-  const { financials, users, engagement } = cockpit
+function InnovationHorizonsCard({ state, onReload }: { state?: CockpitData['state']['innovation_horizons']; onReload: () => void }) {
+  const h = state ?? { h1: 60, h2: 30, h3: 10 }
+  
   return (
-    <div className="ipb-soft rounded-[0.7rem] p-2.5">
-      <div className="mb-2 flex items-center gap-1.5">
-        <DollarSign className="h-3 w-3 text-[#4ade80]" />
-        <p className="text-[9px] font-semibold uppercase tracking-[0.16em] text-white/65">Cockpit Financeiro · ao vivo</p>
+    <div className="rounded-[2rem] border border-white/5 bg-gradient-to-br from-white/[0.04] to-transparent p-8">
+      <div className="flex items-center justify-between mb-8">
+        <div className="flex items-center gap-3">
+          <div className="h-10 w-10 rounded-xl bg-blue-500/10 flex items-center justify-center">
+            <Layers className="h-5 w-5 text-blue-500" />
+          </div>
+          <div>
+            <h3 className="text-[15px] font-black text-white uppercase tracking-tight">3 Horizontes de Inovação</h3>
+            <p className="text-[9px] text-white/30 uppercase font-bold tracking-widest">Alocação de Energia Estratégica</p>
+          </div>
+        </div>
       </div>
 
-      <div className="grid grid-cols-4 gap-1.5">
-        <KpiBox label="MRR" value={`R$${financials.mrr}`} color={financials.mrr > 0 ? '#4ade80' : '#f87171'} />
-        <KpiBox label="ARR" value={`R$${financials.arr}`} color="#4ade80" />
-        <KpiBox label="Pricing" value={`R$${financials.pricing}`} color="#94a3b8" />
-        <KpiBox label="Ativos" value={financials.active_subs} color="#60a5fa" />
-        <KpiBox label="Trial" value={financials.trial_subs} color="#facc15" />
-        <KpiBox label="Cancel." value={financials.cancelled_subs} color="#fb923c" />
-        <KpiBox label="Churn" value={`${financials.churn_rate_pct}%`} color={financials.churn_rate_pct > 10 ? '#f87171' : '#94a3b8'} />
-        <KpiBox label="Users" value={users.total} color="#a78bfa" />
-        <KpiBox label="DAU 7d" value={`${users.dau7d_pct}%`} color="#60a5fa" />
-        <KpiBox label="DAU 30d" value={`${users.dau30d_pct}%`} color="#60a5fa" />
-        <KpiBox label="Eventos" value={engagement.events_30d} color="#a78bfa" />
-        <KpiBox label="NPS" value={engagement.nps_net === null ? '—' : engagement.nps_net.toString()} color={engagement.nps_net !== null && engagement.nps_net > 0 ? '#4ade80' : '#94a3b8'} />
+      <div className="space-y-6">
+        {[
+          { id: 'h1', label: 'H1 · CORE', desc: 'Melhorar o produto atual (hoje)', val: h.h1, color: '#60a5fa', target: '60%' },
+          { id: 'h2', label: 'H2 · ADJACENTE', desc: 'Novos mercados/features (amanhã)', val: h.h2, color: '#a78bfa', target: '30%' },
+          { id: 'h3', label: 'H3 · DISRUPTIVO', desc: 'Futuro radical (depois de amanhã)', val: h.h3, color: '#facc15', target: '10%' },
+        ].map(item => (
+          <div key={item.id} className="space-y-2">
+            <div className="flex justify-between items-end">
+               <div>
+                 <p className="text-[11px] font-black text-white/80">{item.label}</p>
+                 <p className="text-[8px] text-white/40 uppercase font-bold">{item.desc}</p>
+               </div>
+               <div className="text-right">
+                 <span className="text-[14px] font-black" style={{ color: item.color }}>{item.val}%</span>
+                 <p className="text-[8px] text-white/20 uppercase font-bold">Ideal: {item.target}</p>
+               </div>
+            </div>
+            <div className="h-2 w-full bg-white/5 rounded-full overflow-hidden">
+               <motion.div 
+                 initial={{ width: 0 }}
+                 animate={{ width: `${item.val}%` }}
+                 className="h-full rounded-full shadow-lg"
+                 style={{ backgroundColor: item.color, boxShadow: `0 0 10px ${item.color}40` }}
+               />
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div className="mt-8 p-4 rounded-2xl bg-white/[0.02] border border-white/5">
+         <p className="text-[10px] text-white/40 leading-relaxed italic">
+           O equilíbrio 60/30/10 garante que você não morra hoje por falta de eficiência, nem morra amanhã por obsolescência.
+         </p>
       </div>
     </div>
   )
 }
 
-function KpiBox({ label, value, color }: { label: string; value: string | number; color: string }) {
-  return (
-    <div className="ipb-soft rounded-[0.4rem] px-1.5 py-1 text-center">
-      <p className="text-[7px] uppercase tracking-[0.10em] text-white/35">{label}</p>
-      <p className="text-[11px] font-bold tabular-nums" style={{ color }}>{value}</p>
-    </div>
-  )
-}
-
-// ───────────────────────────── ADOPTION TRAIL ─────────────────────────────
-
-// ───────────────────────────── COMPANY & MARKET TRAILS ─────────────────────────────
-
-const TRAIL_STAGES = [
-  'F1 · Infra',
-  'F2 · Processo',
-  'F3 · Estratégia',
-  'F4 · Digitização',
-  'F5 · Digitalização',
-  'F6 · Transformação'
-]
-
-function CompanyMarketTrailsCard({ data, onReload }: { data: CockpitData; onReload: () => void }) {
-  const company = data.state.company_trail ?? { current_stage: 2, stages: TRAIL_STAGES }
-  const market = data.state.market_trail ?? { current_stage: 2, stages: TRAIL_STAGES }
-
-  const updateTrail = async (key: 'company_trail' | 'market_trail', newStage: number) => {
-    await fetch('/api/admin/strategy/update', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ key, value: { current_stage: newStage, stages: TRAIL_STAGES } }),
-    })
-    onReload()
-  }
+function InnovationFunnelCard({ data, onReload }: { data: CockpitData; onReload: () => void }) {
+  const funnel = data.state.innovation_funnel ?? { stage: 1, items: {} }
+  const stages = [
+    { id: 1, label: 'Ideação', desc: 'Fuzzy Front-End' },
+    { id: 2, label: 'Triagem', desc: 'Stage Gate 1' },
+    { id: 3, label: 'Protótipo', desc: 'Desenvolvimento' },
+    { id: 4, label: 'Decisão', desc: 'Stage Gate 2' },
+    { id: 5, label: 'Escala', desc: 'Lançamento' },
+  ]
 
   return (
-    <div className="ipb-soft rounded-[0.7rem] p-2.5 space-y-4">
-      <TrailRow label="Trilho da Empresa" current={company.current_stage} onSelect={(s) => updateTrail('company_trail', s)} icon={<Building2 className="h-3 w-3 text-[#a78bfa]" />} />
-      <TrailRow label="Trilho do Mercado" current={market.current_stage} onSelect={(s) => updateTrail('market_trail', s)} icon={<LayoutGrid className="h-3 w-3 text-[#60a5fa]" />} />
-    </div>
-  )
-}
-
-function TrailRow({ label, current, onSelect, icon }: { label: string; current: number; onSelect: (s: number) => void; icon: React.ReactNode }) {
-  return (
-    <div>
-      <div className="mb-2 flex items-center gap-1.5">
-        {icon}
-        <p className="text-[9px] font-semibold uppercase tracking-[0.16em] text-white/65">{label}</p>
+    <div className="rounded-[2.5rem] border border-white/5 bg-black/20 p-8">
+      <div className="flex items-center gap-3 mb-10">
+        <div className="h-10 w-10 rounded-xl bg-orange-500/10 flex items-center justify-center">
+          <Target className="h-5 w-5 text-orange-500" />
+        </div>
+        <div>
+          <h3 className="text-[15px] font-black text-white uppercase tracking-tight">Funil de Inovação</h3>
+          <p className="text-[9px] text-white/30 uppercase font-bold tracking-widest">Fluxo de Maturidade de Ideias</p>
+        </div>
       </div>
-      <div className="flex items-center gap-1">
-        {TRAIL_STAGES.map((stage, i) => {
-          const stageNum = i + 1
-          const isDone = stageNum < current
-          const isCurrent = stageNum === current
+
+      <div className="flex flex-col md:flex-row gap-4 items-center justify-between relative">
+        {/* Linha conectora */}
+        <div className="absolute top-1/2 left-0 w-full h-px bg-white/5 -z-0 hidden md:block" />
+        
+        {stages.map((s, idx) => {
+          const isCurrent = s.id === funnel.stage
+          const isPast = s.id < funnel.stage
           return (
-            <button
-              key={stage}
-              onClick={() => onSelect(stageNum)}
-              className="group flex flex-1 flex-col items-center gap-1"
-            >
-              <div
-                className="flex h-6 w-full items-center justify-center rounded-[0.3rem] border text-[8px] font-bold transition"
-                style={{
-                  borderColor: isDone ? 'rgba(74,222,128,0.4)' : isCurrent ? 'rgba(250,204,21,0.4)' : 'rgba(255,255,255,0.1)',
-                  background: isDone ? 'rgba(74,222,128,0.1)' : isCurrent ? 'rgba(250,204,21,0.1)' : 'rgba(255,255,255,0.02)',
-                  color: isDone ? '#86efac' : isCurrent ? '#fde68a' : 'rgba(255,255,255,0.3)',
-                }}
-              >
-                F{stageNum}
-              </div>
-              <p className="text-center text-[6px] leading-tight text-white/40">{stage.split(' · ')[1]}</p>
-            </button>
+            <div key={s.id} className="relative z-10 flex flex-col items-center gap-4 w-full md:w-auto">
+               <div className={`h-12 w-12 rounded-full border-2 flex items-center justify-center transition-all duration-500 ${
+                 isCurrent ? 'bg-orange-500 border-orange-400 shadow-[0_0_20px_rgba(249,115,22,0.4)] scale-110' : 
+                 isPast ? 'bg-green-500/20 border-green-500/40 text-green-500' : 
+                 'bg-white/5 border-white/10 text-white/20'
+               }`}>
+                  {isPast ? <CheckSquare className="h-5 w-5" /> : <span className="text-[14px] font-black">{s.id}</span>}
+               </div>
+               <div className="text-center">
+                 <p className={`text-[11px] font-black uppercase tracking-widest ${isCurrent ? 'text-white' : 'text-white/40'}`}>{s.label}</p>
+                 <p className="text-[8px] text-white/20 uppercase font-bold">{s.desc}</p>
+               </div>
+               {idx < stages.length - 1 && <ChevronRight className="hidden md:block h-4 w-4 text-white/10" />}
+            </div>
           )
         })}
       </div>
@@ -590,516 +594,382 @@ function TrailRow({ label, current, onSelect, icon }: { label: string; current: 
   )
 }
 
-// ───────────────────────────── MATURITY MATRICES (SGI & DDDM) ─────────────────────────────
-
-function MaturityExecutionCard({ state, onReload }: { state?: CockpitData['state']['maturity_sgi']; onReload: () => void }) {
-  const current = state ?? { projects: 1, processes: 1, culture: 0, results: 1 }
-  const items = [
-    { key: 'projects', label: 'Projetos', icon: <Briefcase className="h-2.5 w-2.5" /> },
-    { key: 'processes', label: 'Processos', icon: <Activity className="h-2.5 w-2.5" /> },
-    { key: 'culture', label: 'Cultura', icon: <Heart className="h-2.5 w-2.5" /> },
-    { key: 'results', label: 'Resultados', icon: <TrendingUp className="h-2.5 w-2.5" /> }
-  ]
-
-  const update = async (key: string, val: number) => {
-    await fetch('/api/admin/strategy/update', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ key: 'maturity_sgi', value: { ...current, [key]: val } }),
-    })
-    onReload()
-  }
-
+function LeadershipProcessCard({ state }: { state?: CockpitData['state']['leadership_process'] }) {
+  const p = state ?? { clarity: 0, alignment: 0, training: 0, execution: 0, results: 0 }
+  
   return (
-    <div className="ipb-soft rounded-[0.7rem] p-2.5">
-      <div className="mb-2 flex items-center gap-1.5">
-        <Target className="h-3 w-3 text-[#fb923c]" />
-        <p className="text-[9px] font-semibold uppercase tracking-[0.16em] text-white/65">SGI + TD · Maturidade de Execução</p>
+    <div className="rounded-[2.5rem] border border-white/5 bg-gradient-to-br from-[#facc1508] to-transparent p-8">
+      <div className="flex items-center gap-3 mb-10">
+        <div className="h-12 w-12 rounded-2xl bg-[#facc15] flex items-center justify-center shadow-xl shadow-[#facc1530]">
+          <Users2 className="h-6 w-6 text-black" />
+        </div>
+        <div>
+          <h3 className="text-[16px] font-black text-white uppercase tracking-tight">Processo de Liderança</h3>
+          <p className="text-[10px] text-[#facc15] uppercase font-black tracking-widest">Motor de Escala Humana</p>
+        </div>
       </div>
-      <div className="grid grid-cols-1 gap-2">
-        {items.map(it => (
-          <MaturityRow key={it.key} label={it.label} icon={it.icon} value={current[it.key as keyof typeof current]} onSelect={(v) => update(it.key, v)} />
+
+      <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
+        {[
+          { id: 'clarity', label: 'Clareza', sub: 'Meta + KPI', val: p.clarity, icon: Eye },
+          { id: 'alignment', label: 'Alinhamento', sub: '1:1 + Acordos', val: p.alignment, icon: Network },
+          { id: 'training', label: 'Capacitação', sub: 'Habilidade + PDI', val: p.training, icon: Rocket },
+          { id: 'execution', label: 'Execução', sub: 'Rituais', val: p.execution, icon: Activity },
+          { id: 'results', label: 'Resultado', sub: 'Performance', val: p.results, icon: Trophy },
+        ].map(item => (
+          <div key={item.id} className="relative p-6 rounded-3xl bg-white/[0.02] border border-white/5 flex flex-col items-center text-center space-y-4 hover:bg-white/[0.05] transition group">
+             <div className="p-3 rounded-2xl bg-white/5 group-hover:bg-[#facc1520] transition">
+               <item.icon className={`h-6 w-6 ${item.val > 50 ? 'text-[#facc15]' : 'text-white/20'}`} />
+             </div>
+             <div>
+               <p className="text-[12px] font-black text-white uppercase tracking-widest">{item.label}</p>
+               <p className="text-[8px] text-white/30 uppercase font-bold">{item.sub}</p>
+             </div>
+             <div className="w-full h-1.5 bg-white/5 rounded-full overflow-hidden mt-2">
+                <div className="h-full bg-[#facc15] transition-all duration-1000" style={{ width: `${item.val}%` }} />
+             </div>
+             <span className="text-[10px] font-black text-[#facc15]">{item.val}%</span>
+          </div>
         ))}
       </div>
     </div>
   )
 }
+
+function FinancialCockpitCard({ cockpit }: { cockpit: CockpitData['cockpit'] }) {
+  const { financials, users, engagement } = cockpit
+  return (
+    <div className="rounded-[2.5rem] border border-white/5 bg-gradient-to-br from-green-500/5 to-transparent p-8">
+      <div className="flex items-center justify-between mb-8">
+        <div className="flex items-center gap-3">
+          <div className="h-10 w-10 rounded-xl bg-green-500/10 flex items-center justify-center">
+            <DollarSign className="h-5 w-5 text-green-500" />
+          </div>
+          <div>
+            <h3 className="text-[15px] font-black text-white uppercase tracking-tight">Cockpit Financeiro</h3>
+            <p className="text-[9px] text-white/30 uppercase font-bold tracking-widest">Real-time Performance Metrics</p>
+          </div>
+        </div>
+        <div className="text-right">
+           <p className="text-[10px] font-bold text-white/20 uppercase tracking-widest">Runway Estimado</p>
+           <p className="text-[18px] font-black text-white tracking-tighter">{financials.runway_months === Infinity ? '∞' : `${financials.runway_months} Meses`}</p>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+        <KpiBox label="MRR" value={`R$${financials.mrr}`} color={financials.mrr > 0 ? '#4ade80' : '#f87171'} icon={TrendingUp} />
+        <KpiBox label="ARR" value={`R$${financials.arr}`} color="#4ade80" icon={Globe} />
+        <KpiBox label="Price" value={`R$${financials.pricing}`} color="#94a3b8" icon={Tag} />
+        <KpiBox label="Active" value={financials.active_subs} color="#60a5fa" icon={Users} />
+        <KpiBox label="Churn" value={`${financials.churn_rate_pct}%`} color={financials.churn_rate_pct > 10 ? '#f87171' : '#94a3b8'} icon={Activity} />
+        <KpiBox label="NPS" value={engagement.nps_net === null ? '—' : engagement.nps_net.toString()} color={engagement.nps_net !== null && engagement.nps_net > 0 ? '#4ade80' : '#94a3b8'} icon={Heart} />
+      </div>
+    </div>
+  )
+}
+
+function KpiBox({ label, value, color, icon: Icon }: { label: string; value: string | number; color: string; icon: any }) {
+  return (
+    <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/5 flex flex-col items-center text-center group hover:bg-white/[0.05] transition">
+      <div className="p-2 rounded-lg bg-white/5 mb-3 group-hover:scale-110 transition">
+        <Icon className="h-4 w-4" style={{ color }} />
+      </div>
+      <p className="text-[8px] font-black text-white/30 uppercase tracking-widest mb-1">{label}</p>
+      <p className="text-[16px] font-black tabular-nums tracking-tighter" style={{ color }}>{value}</p>
+    </div>
+  )
+}
+
+function Tag(props: any) {
+  return <div {...props}><DollarSign /></div>
+}
+
+// ───────────────────────────── COMPONENTS FROM OLD FILE (KEEPING LOGIC, UPDATING UI) ─────────────────────────────
 
 function DDDMMaturityCard({ state, onReload }: { state?: CockpitData['state']['maturity_dddm']; onReload: () => void }) {
-  const current = state ?? { collection: 2, analysis: 1, visualization: 2, integration: 1 }
+  const current = state ?? { collection: 1, analysis: 1, visualization: 1, integration: 0 }
   const items = [
-    { key: 'collection', label: 'Coleta', icon: <Database className="h-2.5 w-2.5" /> },
-    { key: 'analysis', label: 'Análise', icon: <Brain className="h-2.5 w-2.5" /> },
-    { key: 'visualization', label: 'Visualização', icon: <BarChart3 className="h-2.5 w-2.5" /> },
-    { key: 'integration', label: 'Integração', icon: <Network className="h-2.5 w-2.5" /> }
-  ]
-
-  const update = async (key: string, val: number) => {
-    await fetch('/api/admin/strategy/update', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ key: 'maturity_dddm', value: { ...current, [key]: val } }),
-    })
-    onReload()
-  }
+    { key: 'collection', label: 'Coleta', icon: Database },
+    { key: 'analysis', label: 'Análise', icon: Brain },
+    { key: 'visualization', label: 'Visualização', icon: BarChart3 },
+    { key: 'integration', label: 'Integração', icon: Network },
+  ] as const
 
   return (
-    <div className="ipb-soft rounded-[0.7rem] p-2.5">
-      <div className="mb-2 flex items-center gap-1.5">
-        <Database className="h-3 w-3 text-[#60a5fa]" />
-        <p className="text-[9px] font-semibold uppercase tracking-[0.16em] text-white/65">DDDM · Decisão Baseada em Dados</p>
-      </div>
-      <div className="grid grid-cols-1 gap-2">
-        {items.map(it => (
-          <MaturityRow key={it.key} label={it.label} icon={it.icon} value={current[it.key as keyof typeof current]} onSelect={(v) => update(it.key, v)} />
-        ))}
-      </div>
-    </div>
-  )
-}
-
-function MaturityRow({ label, icon, value, onSelect }: { label: string; icon: React.ReactNode; value: number; onSelect: (v: number) => void }) {
-  const levels = ['Não iniciado', 'Em desenvolvimento', 'Implementado', 'Otimizado']
-  return (
-    <div className="flex items-center gap-2">
-      <div className="flex items-center gap-1 w-20">
-        <div className="text-white/40">{icon}</div>
-        <p className="text-[8px] font-semibold text-white/60">{label}</p>
-      </div>
-      <div className="flex flex-1 gap-1">
-        {levels.map((lvl, i) => (
-          <button
-            key={lvl}
-            onClick={() => onSelect(i)}
-            className={`h-4 flex-1 rounded-[0.2rem] border text-[6px] font-bold transition flex items-center justify-center`}
-            style={{
-              borderColor: i <= value ? (i === 3 ? '#4ade8050' : i === 2 ? '#60a5fa50' : i === 1 ? '#facc1550' : 'rgba(255,255,255,0.1)') : 'rgba(255,255,255,0.05)',
-              background: i <= value ? (i === 3 ? '#4ade8015' : i === 2 ? '#60a5fa15' : i === 1 ? '#facc1515' : 'rgba(255,255,255,0.02)') : 'transparent',
-              color: i <= value ? (i === 3 ? '#86efac' : i === 2 ? '#93c5fd' : i === 1 ? '#fde68a' : 'rgba(255,255,255,0.2)') : 'rgba(255,255,255,0.15)',
-            }}
-          >
-            {i}
-          </button>
-        ))}
-      </div>
-      <p className="text-[7px] text-white/30 w-24 text-right truncate">{levels[value]}</p>
-    </div>
-  )
-}
-
-// ───────────────────────────── GESTÃO DE INOVAÇÃO (HORIZONTES + FUNIL) ─────────────────────────────
-
-function InnovationFunnelCard({ data, onReload }: { data: CockpitData; onReload: () => void }) {
-  const funnel = data.state.innovation_funnel ?? { stage: 3, items: { ffe: true, sg1: true, dev: true, sg2: false, scale: false } }
-  const horizons = data.state.innovation_horizons ?? { h1: 60, h2: 30, h3: 10 }
-
-  const updateHorizons = async (h1: number, h2: number, h3: number) => {
-    await fetch('/api/admin/strategy/update', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ key: 'innovation_horizons', value: { h1, h2, h3 } }),
-    })
-    onReload()
-  }
-
-  const toggleFunnel = async (key: string) => {
-    const newItems = { ...funnel.items, [key]: !funnel.items[key] }
-    const stage = Object.values(newItems).filter(Boolean).length
-    await fetch('/api/admin/strategy/update', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ key: 'innovation_funnel', value: { stage, items: newItems } }),
-    })
-    onReload()
-  }
-
-  return (
-    <div className="ipb-soft rounded-[0.7rem] p-2.5 space-y-4">
-      <div>
-        <div className="mb-2 flex items-center justify-between">
-          <div className="flex items-center gap-1.5">
-            <LayoutGrid className="h-3 w-3 text-[#facc15]" />
-            <p className="text-[9px] font-semibold uppercase tracking-[0.16em] text-white/65">3 Horizontes de Inovação</p>
+    <div className="rounded-3xl border border-white/5 bg-white/[0.02] p-8">
+       <div className="flex items-center gap-3 mb-8">
+          <div className="h-10 w-10 rounded-xl bg-purple-500/10 flex items-center justify-center">
+            <Database className="h-5 w-5 text-purple-500" />
           </div>
-          <div className="flex gap-1">
-            <button onClick={() => updateHorizons(60, 30, 10)} className="text-[7px] text-white/30 hover:text-white/50 px-1 border border-white/10 rounded">Padrão</button>
-            <button onClick={() => updateHorizons(70, 20, 10)} className="text-[7px] text-white/30 hover:text-white/50 px-1 border border-white/10 rounded">Eficiente</button>
+          <div>
+            <h3 className="text-[14px] font-black text-white uppercase tracking-tight">DDDM · Maturidade de Dados</h3>
+            <p className="text-[9px] text-white/30 uppercase font-bold tracking-widest">Data-Driven Decision Making</p>
           </div>
-        </div>
-        <div className="flex h-3 gap-0.5 overflow-hidden rounded-full bg-white/5 mb-1.5">
-          <div className="h-full bg-[#4ade80] opacity-60" style={{ width: `${horizons.h1}%` }} />
-          <div className="h-full bg-[#60a5fa] opacity-60" style={{ width: `${horizons.h2}%` }} />
-          <div className="h-full bg-[#a78bfa] opacity-60" style={{ width: `${horizons.h3}%` }} />
-        </div>
-        <div className="grid grid-cols-3 gap-2">
-          <HorizonInfo label="H1 Core" val={horizons.h1} color="#4ade80" />
-          <HorizonInfo label="H2 Adjacente" val={horizons.h2} color="#60a5fa" />
-          <HorizonInfo label="H3 Disruptivo" val={horizons.h3} color="#a78bfa" />
-        </div>
-      </div>
+       </div>
 
-      <div>
-        <div className="mb-2 flex items-center gap-1.5">
-          <Rocket className="h-3 w-3 text-[#fb923c]" />
-          <p className="text-[9px] font-semibold uppercase tracking-[0.16em] text-white/65">Funil de Inovação</p>
-        </div>
-        <div className="space-y-0.5">
-          {[
-            { key: 'ffe', label: '1. Fuzzy Front-End (Ideias)' },
-            { key: 'sg1', label: '2. Stage Gate 1 (Triagem)' },
-            { key: 'dev', label: '3. Desenvolvimento (Prototipagem)' },
-            { key: 'sg2', label: '4. Stage Gate 2 (Decisão Final)' },
-            { key: 'scale', label: '5. Lançamento e Escala' }
-          ].map((it) => (
-            <button
-              key={it.key}
-              onClick={() => toggleFunnel(it.key)}
-              className="flex w-full items-center gap-2 rounded-[0.3rem] border border-white/6 bg-white/[0.01] px-2 py-1 text-left hover:bg-white/[0.03]"
-            >
-              {funnel.items[it.key as keyof typeof funnel.items] ? <CheckSquare className="h-3 w-3 text-[#4ade80]" /> : <Square className="h-3 w-3 text-white/20" />}
-              <p className={`text-[8px] font-semibold ${funnel.items[it.key as keyof typeof funnel.items] ? 'text-white/80' : 'text-white/40'}`}>{it.label}</p>
-            </button>
+       <div className="grid grid-cols-2 gap-4">
+          {items.map(item => (
+            <div key={item.key} className="p-4 rounded-2xl bg-white/[0.02] border border-white/5 space-y-2">
+               <div className="flex items-center justify-between">
+                  <item.icon className="h-4 w-4 text-white/30" />
+                  <span className="text-[10px] font-black text-white">{current[item.key]}/3</span>
+               </div>
+               <p className="text-[11px] font-black text-white/60 uppercase">{item.label}</p>
+               <div className="flex gap-1">
+                  {[1, 2, 3].map(step => (
+                    <div key={step} className={`h-1.5 flex-1 rounded-full ${step <= current[item.key] ? 'bg-purple-500' : 'bg-white/5'}`} />
+                  ))}
+               </div>
+            </div>
           ))}
-        </div>
-      </div>
+       </div>
     </div>
   )
 }
 
-function HorizonInfo({ label, val, color }: { label: string; val: number; color: string }) {
+function ComplianceTrackerCard({ compliance, onReload }: { compliance: Compliance; onReload: () => void }) {
   return (
-    <div className="text-center">
-      <p className="text-[7px] uppercase tracking-wider text-white/40 mb-0.5">{label}</p>
-      <p className="text-[10px] font-bold" style={{ color }}>{val}%</p>
-    </div>
-  )
-}
-
-// ───────────────────────────── PROCESSO DE LIDERANÇA ─────────────────────────────
-
-function LeadershipProcessCard({ state, onReload }: { state?: CockpitData['state']['leadership_process']; onReload: () => void }) {
-  const current = state ?? { clarity: 0, alignment: 0, training: 0, execution: 0, results: 0 }
-  const items = [
-    { key: 'clarity', label: 'Clareza (Meta + KPI)' },
-    { key: 'alignment', label: 'Alinhamento (1:1 + Acordos)' },
-    { key: 'training', label: 'Capacitação (Habilidade + PDI)' },
-    { key: 'execution', label: 'Execução (Rituais de Time)' },
-    { key: 'results', label: 'Resultado (Performance + Reconhecimento)' }
-  ]
-
-  const update = async (key: string, val: number) => {
-    await fetch('/api/admin/strategy/update', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ key: 'leadership_process', value: { ...current, [key]: val } }),
-    })
-    onReload()
-  }
-
-  const score = Object.values(current).reduce((a, b) => a + b, 0)
-  const totalScore = (score / 15) * 100
-
-  return (
-    <div className="ipb-soft rounded-[0.7rem] p-2.5">
-      <div className="mb-2 flex items-center justify-between">
-        <div className="flex items-center gap-1.5">
-          <Users2 className="h-3 w-3 text-[#a78bfa]" />
-          <p className="text-[9px] font-semibold uppercase tracking-[0.16em] text-white/65">Processo de Liderança</p>
-        </div>
-        <p className="text-[10px] font-bold" style={{ color: totalScore >= 70 ? '#4ade80' : totalScore >= 40 ? '#facc15' : '#f87171' }}>{Math.round(totalScore)}/100</p>
-      </div>
-      <div className="space-y-2">
-        {items.map(it => (
-          <div key={it.key} className="space-y-1">
-            <div className="flex justify-between items-center">
-              <p className="text-[8px] text-white/50">{it.label}</p>
-              <div className="flex gap-1">
-                {[0, 1, 2, 3].map(v => (
-                  <button
-                    key={v}
-                    onClick={() => update(it.key, v)}
-                    className={`h-2.5 w-4 rounded-[0.15rem] border transition ${current[it.key as keyof typeof current] === v ? 'border-white/40 bg-white/20' : 'border-white/5 bg-white/5'}`}
-                  />
-                ))}
-              </div>
+    <div className="rounded-3xl border border-white/5 bg-white/[0.02] p-8">
+       <div className="flex items-center justify-between mb-8">
+          <div className="flex items-center gap-3">
+            <div className="h-10 w-10 rounded-xl bg-orange-500/10 flex items-center justify-center">
+              <Shield className="h-5 w-5 text-orange-500" />
+            </div>
+            <div>
+              <h3 className="text-[14px] font-black text-white uppercase tracking-tight">Compliance Tracker</h3>
+              <p className="text-[9px] text-white/30 uppercase font-bold tracking-widest">Lei 13.709/2018 (LGPD)</p>
             </div>
           </div>
-        ))}
-      </div>
+          <div className="text-right">
+             <p className="text-[18px] font-black text-orange-500">{Math.round((compliance.score / compliance.max) * 100)}%</p>
+          </div>
+       </div>
+
+       <div className="space-y-2 max-h-[160px] overflow-y-auto pr-2 custom-scrollbar">
+          {Object.entries(compliance.items).map(([label, active]) => (
+            <div key={label} className="flex items-center gap-3 p-3 rounded-xl bg-white/[0.02] border border-white/5">
+               <div className={`h-4 w-4 rounded-md border flex items-center justify-center ${active ? 'bg-green-500 border-green-400' : 'border-white/10'}`}>
+                 {active && <CheckSquare className="h-3 w-3 text-white" />}
+               </div>
+               <span className={`text-[10px] font-bold ${active ? 'text-white/80' : 'text-white/30'}`}>{label}</span>
+            </div>
+          ))}
+       </div>
     </div>
   )
 }
 
 function AdoptionTrailCard({ state, onReload }: { state?: CockpitData['state']['adoption_trail']; onReload: () => void }) {
-  const stages = state?.stages ?? ['Validação', 'Piloto Hospitalar', 'Multi-centro', 'Comercial B2C', 'Comercial B2B']
-  const current = state?.current_stage ?? 1
-
-  const updateStage = async (newStage: number) => {
-    await fetch('/api/admin/strategy/update', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ key: 'adoption_trail', value: { current_stage: newStage, stages } }),
-    })
-    onReload()
-  }
-
+  const current = state ?? { current_stage: 1, stages: ['Validação', 'Piloto', 'Multi-centro', 'Comercial B2C', 'Comercial B2B'] }
+  
   return (
-    <div className="ipb-soft rounded-[0.7rem] p-2.5">
-      <div className="mb-2 flex items-center gap-1.5">
-        <Hospital className="h-3 w-3 text-[#60a5fa]" />
-        <p className="text-[9px] font-semibold uppercase tracking-[0.16em] text-white/65">Trilho de Adoção Clínica</p>
-      </div>
+    <div className="rounded-3xl border border-white/5 bg-gradient-to-br from-blue-500/5 to-transparent p-8 mt-6">
+       <div className="flex items-center gap-3 mb-10">
+          <div className="h-10 w-10 rounded-xl bg-blue-500/10 flex items-center justify-center">
+            <MapIcon className="h-5 w-5 text-blue-500" />
+          </div>
+          <div>
+            <h3 className="text-[14px] font-black text-white uppercase tracking-tight">Trilho de Adoção Clínica</h3>
+            <p className="text-[9px] text-white/30 uppercase font-bold tracking-widest">Roadmap de Escala Setorial</p>
+          </div>
+       </div>
 
-      <div className="flex items-center gap-1">
-        {stages.map((stage, i) => {
-          const stageNum = i + 1
-          const isDone = stageNum < current
-          const isCurrent = stageNum === current
-          return (
-            <button
-              key={stage}
-              onClick={() => updateStage(stageNum)}
-              className="group flex flex-1 flex-col items-center gap-1"
-            >
-              <div
-                className="flex h-7 w-7 items-center justify-center rounded-full border text-[10px] font-bold transition"
-                style={{
-                  borderColor: isDone ? 'rgba(74,222,128,0.6)' : isCurrent ? 'rgba(250,204,21,0.6)' : 'rgba(255,255,255,0.15)',
-                  background: isDone ? 'rgba(74,222,128,0.15)' : isCurrent ? 'rgba(250,204,21,0.15)' : 'rgba(255,255,255,0.04)',
-                  color: isDone ? '#86efac' : isCurrent ? '#fde68a' : 'rgba(255,255,255,0.45)',
-                }}
-              >
-                {stageNum}
+       <div className="flex items-center justify-between relative px-4">
+          <div className="absolute top-1/2 left-0 w-full h-px bg-white/5 -z-0" />
+          {current.stages.map((label, i) => {
+            const isDone = i + 1 < current.current_stage
+            const isCurrent = i + 1 === current.current_stage
+            return (
+              <div key={label} className="relative z-10 flex flex-col items-center gap-4">
+                 <div className={`h-10 w-10 rounded-full border-2 flex items-center justify-center transition-all duration-700 ${
+                   isCurrent ? 'bg-blue-500 border-blue-400 shadow-[0_0_20px_rgba(59,130,246,0.4)] scale-110' : 
+                   isDone ? 'bg-green-500 border-green-400 text-white' : 
+                   'bg-white/5 border-white/10 text-white/20'
+                 }`}>
+                   {isDone ? <CheckSquare className="h-4 w-4" /> : <span className="text-[12px] font-black">{i + 1}</span>}
+                 </div>
+                 <div className="text-center">
+                    <p className={`text-[9px] font-black uppercase tracking-widest ${isCurrent ? 'text-white' : 'text-white/30'}`}>{label}</p>
+                    {isCurrent && <span className="text-[7px] font-black text-blue-400 uppercase tracking-widest">Agora</span>}
+                 </div>
               </div>
-              <p className="text-center text-[7px] leading-tight text-white/55">{stage}</p>
-              {isCurrent && <span className="rounded-full bg-[#facc1520] px-1 text-[6px] uppercase text-[#fde68a]">AGORA</span>}
-            </button>
-          )
-        })}
-      </div>
-      <p className="mt-1 text-[7px] text-white/30">Clique no estágio pra atualizar</p>
+            )
+          })}
+       </div>
     </div>
   )
 }
 
-// ───────────────────────────── SPRINT ALPHA 7 DIAS ─────────────────────────────
-
-const SPRINT_DAYS = [
-  { day: 1, title: 'Lista de Alvos', desc: 'Identifique 20 fisioterapeutas/hospitais alvo no LinkedIn' },
-  { day: 2, title: 'Convite Beta', desc: 'Mande pitch curto: "preciso de olhar crítico antes de lançar"' },
-  { day: 3, title: 'Demo de Stress', desc: 'Mostre o app — objetivo: ver se entendem o valor clínico' },
-  { day: 4, title: 'Coleta de Atrito', desc: 'Anote onde travou. UX falhou se não entenderam' },
-  { day: 5, title: '"Sim Hipotético"', desc: '"R$X/mês, assinaria?" — valida disposição a pagar' },
-  { day: 6, title: 'Ajuste de Rota', desc: 'Priorize código com base no feedback real' },
-  { day: 7, title: 'Documentação', desc: 'Atualize OKRs/Roadmap com o que ouviu' },
-]
-
-function SprintAlphaCard({ state, onReload }: { state?: CockpitData['state']['sprint_alpha']; onReload: () => void }) {
-  const completed = state?.completed_days ?? []
-
-  const toggleDay = async (day: number) => {
-    const newCompleted = completed.includes(day) ? completed.filter((d) => d !== day) : [...completed, day]
-    await fetch('/api/admin/strategy/update', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ key: 'sprint_alpha', value: { ...state, completed_days: newCompleted, current_day: Math.max(...newCompleted, 0) + 1 } }),
-    })
-    onReload()
-  }
+function MaturityExecutionCard({ state, onReload }: { state?: CockpitData['state']['maturity_sgi']; onReload: () => void }) {
+  const current = state ?? { projects: 1, processes: 1, culture: 0, results: 1 }
+  const items = [
+    { key: 'projects', label: 'Projetos', icon: Briefcase },
+    { key: 'processes', label: 'Processos', icon: Activity },
+    { key: 'culture', label: 'Cultura', icon: Heart },
+    { key: 'results', label: 'Resultados', icon: Trophy },
+  ] as const
 
   return (
-    <div className="ipb-soft rounded-[0.7rem] p-2.5">
-      <div className="mb-2 flex items-center justify-between">
-        <div className="flex items-center gap-1.5">
-          <Rocket className="h-3 w-3 text-[#fb923c]" />
-          <p className="text-[9px] font-semibold uppercase tracking-[0.16em] text-white/65">Sprint Validação Alpha</p>
-        </div>
-        <p className="text-[8px] text-white/40">{completed.length}/7 dias</p>
-      </div>
+    <div className="rounded-[2rem] border border-white/5 bg-white/[0.02] p-8">
+       <div className="flex items-center gap-3 mb-8">
+          <div className="h-10 w-10 rounded-xl bg-pink-500/10 flex items-center justify-center">
+            <Rocket className="h-5 w-5 text-pink-500" />
+          </div>
+          <div>
+            <h3 className="text-[14px] font-black text-white uppercase tracking-tight">SGI + TD · Maturidade de Execução</h3>
+            <p className="text-[9px] text-white/30 uppercase font-bold tracking-widest">Sistema de Gestão Integrada</p>
+          </div>
+       </div>
 
-      <div className="space-y-1">
-        {SPRINT_DAYS.map((d) => {
-          const isDone = completed.includes(d.day)
-          return (
-            <button
-              key={d.day}
-              onClick={() => toggleDay(d.day)}
-              className="flex w-full items-start gap-2 rounded-[0.4rem] border border-white/8 bg-white/[0.02] px-2 py-1.5 text-left transition hover:bg-white/[0.04]"
-            >
-              {isDone
-                ? <CheckSquare className="mt-0.5 h-3 w-3 shrink-0 text-[#4ade80]" />
-                : <Square className="mt-0.5 h-3 w-3 shrink-0 text-white/35" />
-              }
-              <div className="min-w-0 flex-1">
-                <p className="flex items-center gap-1 text-[9px] font-semibold uppercase tracking-[0.12em] text-white/45">
-                  <span>Dia {d.day}</span>
-                  <span className="text-white/75">·</span>
-                  <span className="normal-case tracking-normal text-white/85">{d.title}</span>
-                </p>
-                <p className={`text-[9px] leading-snug ${isDone ? 'text-white/40 line-through' : 'text-white/65'}`}>
-                  {d.desc}
-                </p>
-              </div>
-            </button>
-          )
-        })}
-      </div>
-    </div>
-  )
-}
-
-// ───────────────────────────── COMPLIANCE TRACKER ─────────────────────────────
-
-const COMPLIANCE_ITEMS = [
-  { key: 'lgpd', label: 'Política LGPD publicada', hint: 'Documento de conformidade Lei 13.709/2018' },
-  { key: 'privacy', label: 'Política de Privacidade no site', hint: '/privacidade publicado' },
-  { key: 'terms', label: 'Termos de Uso publicados', hint: '/termos publicado' },
-  { key: 'cookies', label: 'Política de Cookies', hint: 'Banner + texto explicativo' },
-  { key: 'dpo', label: 'DPO designado', hint: 'Encarregado de proteção de dados nomeado' },
-  { key: 'canal_denuncias', label: 'Canal de denúncias ativo', hint: 'Formulário anônimo no app' },
-]
-
-function ComplianceTrackerCard({ compliance, onReload }: { compliance: Compliance; onReload: () => void }) {
-  const pct = compliance.max > 0 ? Math.round((compliance.score / compliance.max) * 100) : 0
-
-  const toggleItem = async (key: string) => {
-    const newItems = { ...compliance.items, [key]: !compliance.items[key] }
-    await fetch('/api/admin/strategy/update', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ key: 'compliance', value: newItems }),
-    })
-    onReload()
-  }
-
-  return (
-    <div className="ipb-soft rounded-[0.7rem] p-2.5">
-      <div className="mb-2 flex items-center justify-between">
-        <div className="flex items-center gap-1.5">
-          <Crown className="h-3 w-3 text-[#facc15]" />
-          <p className="text-[9px] font-semibold uppercase tracking-[0.16em] text-white/65">Compliance Tracker</p>
-        </div>
-        <p className="text-[10px] font-bold tabular-nums" style={{ color: pct >= 80 ? '#4ade80' : pct >= 40 ? '#facc15' : '#f87171' }}>
-          {compliance.score}/{compliance.max} · {pct}%
-        </p>
-      </div>
-
-      <div className="mb-2 h-1.5 overflow-hidden rounded-full bg-white/5">
-        <div className="h-full transition-all" style={{ width: `${pct}%`, background: pct >= 80 ? '#4ade80' : pct >= 40 ? '#facc15' : '#f87171' }} />
-      </div>
-
-      <div className="space-y-0.5">
-        {COMPLIANCE_ITEMS.map((it) => {
-          const done = !!compliance.items[it.key]
-          return (
-            <button
-              key={it.key}
-              onClick={() => toggleItem(it.key)}
-              className="flex w-full items-center gap-2 rounded-[0.4rem] border border-white/8 bg-white/[0.02] px-2 py-1 text-left hover:bg-white/[0.04]"
-            >
-              {done
-                ? <CheckSquare className="h-3 w-3 shrink-0 text-[#4ade80]" />
-                : <Square className="h-3 w-3 shrink-0 text-white/35" />
-              }
-              <div className="min-w-0 flex-1">
-                <p className={`text-[9px] font-semibold ${done ? 'text-white/55 line-through' : 'text-white/80'}`}>{it.label}</p>
-                <p className="text-[8px] text-white/35">{it.hint}</p>
-              </div>
-            </button>
-          )
-        })}
-      </div>
-    </div>
-  )
-}
-
-// ───────────────────────────── OKR GENERATOR IA ─────────────────────────────
-
-type OKR = { horizon?: string; rationale?: string; objectives?: Array<{ id: number; title: string; key_results: Array<{ id: number; kr: string }> }>; cached?: boolean; generatedAt?: string; error?: string }
-
-function OKRGeneratorCard() {
-  const [data, setData] = useState<OKR | null>(null)
-  const [loading, setLoading] = useState(false)
-  const [hasFetched, setHasFetched] = useState(false)
-
-  const fetchOKRs = async (refresh = false) => {
-    setLoading(true)
-    try {
-      const res = await fetch(`/api/admin/strategy/okr-generator${refresh ? '?refresh=1' : ''}`)
-      const json = await res.json()
-      setData(json)
-    } catch (e) {
-      setData({ error: e instanceof Error ? e.message : 'erro' })
-    } finally { setLoading(false); setHasFetched(true) }
-  }
-
-  return (
-    <div className="ipb-soft rounded-[0.7rem] p-2.5">
-      <div className="mb-2 flex items-center justify-between">
-        <div className="flex items-center gap-1.5">
-          <Target className="h-3 w-3 text-[#a78bfa]" />
-          <p className="text-[9px] font-semibold uppercase tracking-[0.16em] text-white/65">OKR Generator · IA</p>
-        </div>
-        <button
-          onClick={() => fetchOKRs(hasFetched)}
-          disabled={loading}
-          className="flex h-5 items-center gap-1 rounded-[0.4rem] border border-white/10 bg-white/[0.04] px-1.5 text-[8px] text-white/55 transition hover:text-white disabled:opacity-30"
-        >
-          <RefreshCw className={`h-2.5 w-2.5 ${loading ? 'animate-spin' : ''}`} />
-          {hasFetched ? (loading ? 'Gerando' : 'Refazer') : 'Gerar OKRs'}
-        </button>
-      </div>
-
-      {!hasFetched && (
-        <p className="text-[9px] text-white/40">IA gera OKRs trimestrais baseado em TRL, fase e MRR atual</p>
-      )}
-
-      {data?.error && <p className="rounded-[0.4rem] border border-[#f8717125] bg-[#f8717108] px-2 py-1.5 text-[9px] text-[#fca5a5]">{data.error}</p>}
-
-      {data && !data.error && data.objectives && (
-        <>
-          {data.horizon && <p className="mb-1 text-[8px] uppercase tracking-[0.14em] text-white/45">Horizonte: <span className="text-white/75">{data.horizon}</span></p>}
-          {data.rationale && (
-            <div className="mb-2 rounded-[0.4rem] border border-[#a78bfa20] bg-[#a78bfa08] px-2 py-1">
-              <p className="text-[9px] text-[#c4b5fd]">💡 {data.rationale}</p>
-            </div>
-          )}
-          {data.objectives.map((obj) => (
-            <div key={obj.id} className="mb-1.5 rounded-[0.4rem] border border-white/8 bg-white/[0.02] px-2 py-1.5">
-              <p className="text-[10px] font-semibold text-white/85">
-                <Goal className="mr-1 inline h-3 w-3 text-[#facc15]" />
-                Objetivo {obj.id}: {obj.title}
-              </p>
-              <ul className="mt-1 space-y-0.5 pl-4">
-                {obj.key_results.map((kr) => (
-                  <li key={kr.id} className="text-[9px] text-white/55">
-                    <span className="font-mono text-[#a78bfa]">KR{kr.id}:</span> {kr.kr}
-                  </li>
-                ))}
-              </ul>
+       <div className="grid grid-cols-2 gap-4">
+          {items.map(item => (
+            <div key={item.key} className="p-4 rounded-2xl bg-white/[0.02] border border-white/5 space-y-2">
+               <div className="flex items-center justify-between">
+                  <item.icon className="h-4 w-4 text-white/30" />
+                  <span className="text-[10px] font-black text-white">{current[item.key]}/3</span>
+               </div>
+               <p className="text-[11px] font-black text-white/60 uppercase">{item.label}</p>
+               <div className="flex gap-1">
+                  {[0, 1, 2, 3].map(step => (
+                    <div key={step} className={`h-1.5 flex-1 rounded-full ${step <= current[item.key] ? 'bg-pink-500' : 'bg-white/5'}`} />
+                  ))}
+               </div>
             </div>
           ))}
-        </>
-      )}
+       </div>
     </div>
   )
 }
 
-// ───────────────────────────── TARGETS RADAR (Tavily) ─────────────────────────────
+function SprintAlphaCard({ state, onReload }: { state?: CockpitData['state']['sprint_alpha']; onReload: () => void }) {
+  const s = state ?? { started_at: null, current_day: 1, completed_days: [] }
+  if (!s.started_at) return null
 
-type Targets = {
-  hospitals?: Array<{ name: string; city?: string; why?: string; url?: string; priority?: 'high' | 'medium' | 'low' }>
-  investors?: Array<{ name: string; focus?: string; ticket?: string; url?: string; priority?: 'high' | 'medium' | 'low' }>
-  competitors?: Array<{ name: string; positioning?: string; url?: string; threat?: 'high' | 'medium' | 'low' }>
-  cached?: boolean
-  generatedAt?: string
-  error?: string
+  return (
+    <div className="rounded-3xl border border-white/5 bg-white/[0.02] p-6 space-y-4">
+       <div className="flex items-center gap-3">
+          <Clock className="h-4 w-4 text-[#a78bfa]" />
+          <h3 className="text-[11px] font-black text-white/60 uppercase tracking-widest">Sprint Alpha · 21 Dias</h3>
+       </div>
+       <div className="flex flex-wrap gap-1.5">
+          {Array.from({ length: 21 }).map((_, i) => {
+            const day = i + 1
+            const done = s.completed_days.includes(day)
+            const current = day === s.current_day
+            return (
+              <div 
+                key={day} 
+                className={`h-6 w-6 rounded-lg flex items-center justify-center text-[10px] font-black border transition-all ${
+                  done ? 'bg-green-500/20 border-green-500/40 text-green-500' : 
+                  current ? 'bg-[#a78bfa] border-[#a78bfa] text-white shadow-[0_0_10px_rgba(167,139,250,0.5)]' : 
+                  'bg-white/5 border-white/10 text-white/20'
+                }`}
+              >
+                {day}
+              </div>
+            )
+          })}
+       </div>
+    </div>
+  )
+}
+
+function AlertsList({ alerts, onDismiss, onRun, loading }: { alerts: StrategicAlert[], onDismiss: (id: string) => void, onRun: () => void, loading: boolean }) {
+  return (
+    <div className="rounded-3xl border border-white/5 bg-white/[0.02] p-6 flex flex-col h-full">
+      <div className="flex items-center justify-between mb-6">
+        <h4 className="text-[10px] font-black text-white/40 uppercase tracking-widest">Alertas Estratégicos</h4>
+        <button onClick={onRun} disabled={loading} className="p-2 hover:bg-white/5 rounded-xl transition text-[#a78bfa] disabled:opacity-30">
+          <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
+        </button>
+      </div>
+      <div className="space-y-3 flex-1 overflow-y-auto max-h-[300px] pr-2 custom-scrollbar">
+        {alerts.length === 0 ? (
+          <div className="flex flex-col items-center justify-center py-20 text-center space-y-2 opacity-20">
+             <Shield className="h-10 w-10" />
+             <p className="text-[10px] font-black uppercase">Nenhuma Anomalia</p>
+          </div>
+        ) : (
+          alerts.map(a => (
+            <div key={a.id} className="p-4 bg-white/[0.02] border border-white/5 rounded-2xl flex items-start gap-4 group hover:border-[#a78bfa40] transition">
+              <div className={`h-2 w-2 rounded-full mt-2 shrink-0 ${a.level === 'warning' ? 'bg-yellow-500' : 'bg-blue-500'}`} />
+              <div className="flex-1">
+                <p className="text-[12px] font-black text-white/90 leading-tight mb-1">{a.title}</p>
+                <p className="text-[10px] text-white/40 leading-relaxed">{a.message}</p>
+              </div>
+              <button onClick={() => onDismiss(a.id)} className="opacity-0 group-hover:opacity-100 transition text-white/20 hover:text-white">✕</button>
+            </div>
+          ))
+        )}
+      </div>
+    </div>
+  )
+}
+
+function OKRGeneratorCard() {
+  const [loading, setLoading] = useState(false)
+  const [okrs, setOkrs] = useState<any[] | null>(null)
+
+  const generate = async () => {
+    setLoading(true)
+    try {
+      const res = await fetch('/api/admin/strategy/okr-generator', { method: 'POST' })
+      const json = await res.json()
+      setOkrs(json.okrs)
+    } catch { /* ... */ } finally { setLoading(false) }
+  }
+
+  return (
+    <div className="rounded-3xl border border-white/5 bg-white/[0.02] p-8">
+       <div className="flex items-center justify-between mb-8">
+          <div className="flex items-center gap-3">
+            <div className="h-10 w-10 rounded-xl bg-blue-500/10 flex items-center justify-center">
+              <Goal className="h-5 w-5 text-blue-500" />
+            </div>
+            <div>
+              <h3 className="text-[14px] font-black text-white uppercase tracking-tight">OKR Generator · IA</h3>
+              <p className="text-[9px] text-white/30 uppercase font-bold tracking-widest">Alinhamento Estratégico Trimestral</p>
+            </div>
+          </div>
+          {!okrs && (
+            <button onClick={generate} disabled={loading} className="px-6 py-2 rounded-full bg-blue-500 text-white text-[10px] font-black uppercase tracking-widest hover:scale-105 transition active:scale-95 disabled:opacity-30">
+              {loading ? 'Processando...' : 'Gerar OKRs'}
+            </button>
+          )}
+       </div>
+
+       {okrs ? (
+         <div className="space-y-6">
+            {okrs.map((o: any, i: number) => (
+              <div key={i} className="p-5 rounded-2xl bg-white/[0.02] border border-white/5 space-y-4">
+                 <div className="flex items-center gap-3">
+                    <span className="text-[11px] font-black text-blue-400">OBJ {i+1}</span>
+                    <p className="text-[14px] font-bold text-white">{o.objective}</p>
+                 </div>
+                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pl-4 border-l-2 border-white/5">
+                    {o.key_results.map((kr: string, j: number) => (
+                      <div key={j} className="flex gap-2">
+                         <div className="h-1.5 w-1.5 rounded-full bg-blue-500/40 mt-1.5 shrink-0" />
+                         <p className="text-[11px] text-white/50">{kr}</p>
+                      </div>
+                    ))}
+                 </div>
+              </div>
+            ))}
+            <button onClick={() => setOkrs(null)} className="text-[9px] font-black text-white/20 uppercase hover:text-white transition tracking-widest">Recomeçar Processo</button>
+         </div>
+       ) : (
+         <div className="py-12 text-center opacity-30">
+            <p className="text-[11px] uppercase font-bold tracking-[0.2em]">Pressione o botão para a IA propor seus OKRs do trimestre</p>
+         </div>
+       )}
+    </div>
+  )
 }
 
 function TargetsRadarCard() {
-  const [data, setData] = useState<Targets | null>(null)
+  const [data, setData] = useState<any>(null)
   const [loading, setLoading] = useState(false)
-  const [hasFetched, setHasFetched] = useState(false)
   const [open, setOpen] = useState(false)
 
   const fetchTargets = async (refresh = false) => {
@@ -1108,117 +978,60 @@ function TargetsRadarCard() {
       const res = await fetch(`/api/admin/strategy/targets${refresh ? '?refresh=1' : ''}`)
       const json = await res.json()
       setData(json)
-    } catch (e) {
-      setData({ error: e instanceof Error ? e.message : 'erro' })
-    } finally { setLoading(false); setHasFetched(true) }
+    } catch { /* ... */ } finally { setLoading(false) }
   }
-
-  const onToggle = () => {
-    if (!open && !hasFetched) fetchTargets(false)
-    setOpen(!open)
-  }
-
-  const pillColor = (p?: 'high' | 'medium' | 'low') => p === 'high' ? '#f87171' : p === 'medium' ? '#facc15' : '#94a3b8'
 
   return (
-    <div className="ipb-soft rounded-[0.7rem] p-2.5">
-      <button onClick={onToggle} className="flex w-full items-center justify-between gap-2 text-left">
-        <div className="flex items-center gap-1.5">
-          <Trophy className="h-3 w-3 text-[#facc15]" />
-          <p className="text-[9px] font-semibold uppercase tracking-[0.16em] text-white/65">Targets Radar · Hospitais + VCs + Concorrentes</p>
-          {data?.cached && <span className="text-[7px] text-white/30">cache 6h</span>}
-        </div>
-        <span className="text-[8px] text-white/40">{open ? '▼' : '▶'}</span>
-      </button>
-
-      {open && (
-        <div className="mt-2 space-y-3">
-          {loading && !data && <p className="py-2 text-center text-[10px] text-white/40">Tavily pesquisando + IA estruturando…</p>}
-          {data?.error && <p className="rounded-[0.4rem] border border-[#f8717125] bg-[#f8717108] px-2 py-1.5 text-[9px] text-[#fca5a5]">{data.error}</p>}
-
-          {data && !data.error && (
-            <>
-              {hasFetched && (
-                <button
-                  onClick={(e) => { e.stopPropagation(); fetchTargets(true) }}
-                  disabled={loading}
-                  className="ml-auto flex h-5 items-center gap-1 rounded-[0.4rem] border border-white/10 bg-white/[0.04] px-1.5 text-[8px] text-white/55 hover:text-white disabled:opacity-30"
-                >
-                  <RefreshCw className={`h-2.5 w-2.5 ${loading ? 'animate-spin' : ''}`} />
-                  Atualizar
-                </button>
-              )}
-
-              {/* Hospitais */}
-              {data.hospitals && data.hospitals.length > 0 && (
-                <div>
-                  <p className="mb-1 flex items-center gap-1 text-[8px] uppercase tracking-[0.14em] text-[#93c5fd]">
-                    <Building2 className="h-2.5 w-2.5" /> Hospitais alvo ({data.hospitals.length})
-                  </p>
-                  <div className="space-y-0.5">
-                    {data.hospitals.map((h, i) => (
-                      <div key={i} className="rounded-[0.4rem] border border-white/6 bg-white/[0.02] px-2 py-1">
-                        <div className="flex items-center gap-1.5">
-                          <p className="flex-1 text-[10px] font-semibold text-white/85">{h.name}</p>
-                          {h.priority && <span className="rounded-full px-1.5 py-px text-[7px] font-bold uppercase" style={{ color: pillColor(h.priority), background: `${pillColor(h.priority)}14`, border: `1px solid ${pillColor(h.priority)}30` }}>{h.priority === 'high' ? 'ALTA' : h.priority === 'medium' ? 'MÉD' : 'BX'}</span>}
-                        </div>
-                        {h.why && <p className="text-[8.5px] text-white/55">{h.city ? `${h.city} · ` : ''}{h.why}</p>}
-                        {h.url && <a href={h.url} target="_blank" rel="noopener noreferrer" className="text-[7px] text-[#93c5fd] hover:text-[#bfdbfe]"><ExternalLink className="mr-0.5 inline h-2 w-2" />{h.url.replace(/^https?:\/\//, '').split('/')[0]}</a>}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Investors */}
-              {data.investors && data.investors.length > 0 && (
-                <div>
-                  <p className="mb-1 flex items-center gap-1 text-[8px] uppercase tracking-[0.14em] text-[#fde68a]">
-                    <TrendingUp className="h-2.5 w-2.5" /> VCs ({data.investors.length})
-                  </p>
-                  <div className="space-y-0.5">
-                    {data.investors.map((v, i) => (
-                      <div key={i} className="rounded-[0.4rem] border border-white/6 bg-white/[0.02] px-2 py-1">
-                        <div className="flex items-center gap-1.5">
-                          <p className="flex-1 text-[10px] font-semibold text-white/85">{v.name}</p>
-                          {v.priority && <span className="rounded-full px-1.5 py-px text-[7px] font-bold uppercase" style={{ color: pillColor(v.priority), background: `${pillColor(v.priority)}14`, border: `1px solid ${pillColor(v.priority)}30` }}>{v.priority === 'high' ? 'ALTA' : v.priority === 'medium' ? 'MÉD' : 'BX'}</span>}
-                        </div>
-                        {v.focus && <p className="text-[8.5px] text-white/55">{v.focus}{v.ticket ? ` · ${v.ticket}` : ''}</p>}
-                        {v.url && <a href={v.url} target="_blank" rel="noopener noreferrer" className="text-[7px] text-[#93c5fd] hover:text-[#bfdbfe]"><ExternalLink className="mr-0.5 inline h-2 w-2" />{v.url.replace(/^https?:\/\//, '').split('/')[0]}</a>}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Competitors */}
-              {data.competitors && data.competitors.length > 0 && (
-                <div>
-                  <p className="mb-1 flex items-center gap-1 text-[8px] uppercase tracking-[0.14em] text-[#fca5a5]">
-                    <AlertTriangle className="h-2.5 w-2.5" /> Concorrentes ({data.competitors.length})
-                  </p>
-                  <div className="space-y-0.5">
-                    {data.competitors.map((c, i) => (
-                      <div key={i} className="rounded-[0.4rem] border border-white/6 bg-white/[0.02] px-2 py-1">
-                        <div className="flex items-center gap-1.5">
-                          <p className="flex-1 text-[10px] font-semibold text-white/85">{c.name}</p>
-                          {c.threat && <span className="rounded-full px-1.5 py-px text-[7px] font-bold uppercase" style={{ color: pillColor(c.threat), background: `${pillColor(c.threat)}14`, border: `1px solid ${pillColor(c.threat)}30` }}>{c.threat === 'high' ? 'ALTA' : c.threat === 'medium' ? 'MÉD' : 'BX'}</span>}
-                        </div>
-                        {c.positioning && <p className="text-[8.5px] text-white/55">{c.positioning}</p>}
-                        {c.url && <a href={c.url} target="_blank" rel="noopener noreferrer" className="text-[7px] text-[#93c5fd] hover:text-[#bfdbfe]"><ExternalLink className="mr-0.5 inline h-2 w-2" />{c.url.replace(/^https?:\/\//, '').split('/')[0]}</a>}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </>
+    <div className="rounded-3xl border border-white/5 bg-black/20 p-8">
+       <div className="flex items-center justify-between mb-8">
+          <div className="flex items-center gap-3">
+            <div className="h-10 w-10 rounded-xl bg-[#facc1515] flex items-center justify-center">
+              <Search className="h-5 w-5 text-[#facc15]" />
+            </div>
+            <div>
+              <h3 className="text-[14px] font-black text-white uppercase tracking-tight">Targets Radar · Inteligência</h3>
+              <p className="text-[9px] text-white/30 uppercase font-bold tracking-widest">Hospitais + VCs + Concorrentes</p>
+            </div>
+          </div>
+          {!data ? (
+            <button onClick={() => fetchTargets()} disabled={loading} className="px-6 py-2 rounded-full border border-[#facc1520] text-[#facc15] text-[10px] font-black uppercase tracking-widest hover:bg-[#facc1510] transition disabled:opacity-30">
+              {loading ? 'Pesquisando...' : 'Ativar Radar'}
+            </button>
+          ) : (
+            <button onClick={() => fetchTargets(true)} disabled={loading} className="p-2 hover:bg-white/5 rounded-xl transition text-white/20">
+               <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
+            </button>
           )}
-        </div>
-      )}
+       </div>
 
-      {!open && !hasFetched && (
-        <p className="mt-1 text-[8px] text-white/35">Clica pra ativar — Tavily mapeia 5+ hospitais alvo, 3+ VCs healthtech e 2+ concorrentes diretos</p>
-      )}
+       {data && (
+         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {['Hospitais Alvo', 'Investidores (VCs)', 'Concorrentes'].map((category, idx) => {
+              const keys = ['hospitals', 'vcs', 'competitors'] as const
+              const items = data[keys[idx]] || []
+              return (
+                <div key={category} className="space-y-4">
+                   <p className="text-[9px] font-black text-white/30 uppercase tracking-[0.2em]">{category}</p>
+                   <div className="space-y-2">
+                      {items.map((it: any, i: number) => (
+                        <div key={i} className="p-4 rounded-2xl bg-white/[0.02] border border-white/5 hover:border-[#facc1530] transition group">
+                           <div className="flex items-center justify-between mb-1">
+                              <p className="text-[11px] font-black text-white">{it.name}</p>
+                              <ExternalLink className="h-3 w-3 text-white/0 group-hover:text-white/20 transition" />
+                           </div>
+                           <p className="text-[9px] text-white/40 leading-relaxed">{it.relevance || it.description}</p>
+                        </div>
+                      ))}
+                   </div>
+                </div>
+              )
+            })}
+         </div>
+       )}
     </div>
   )
+}
+
+function TagIcon(props: any) {
+  return <DollarSign {...props} />
 }

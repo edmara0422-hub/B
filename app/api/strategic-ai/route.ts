@@ -73,7 +73,7 @@ Responda SOMENTE com JSON válido, sem markdown, sem texto antes ou depois:
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'llama-3.3-70b-versatile',
+        model: 'llama-3.1-8b-instant',
         messages: [{ role: 'user', content: prompt }],
         temperature: 0.65,
         max_tokens: 900,
