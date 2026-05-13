@@ -45,6 +45,7 @@ export function AdminStrategicCockpit() {
   const [briefLoading, setBriefLoading] = useState(false)
   const [alerts, setAlerts] = useState<StrategicAlert[]>([])
   const [alertsLoading, setAlertsLoading] = useState(false)
+  const [activeTab, setActiveTab] = useState<'guia' | 'metricas' | 'inovacao' | 'lideranca'>('guia')
   const reloadRef = useRef<() => void>(() => {})
 
   const fetchData = async () => {
@@ -100,53 +101,232 @@ export function AdminStrategicCockpit() {
   useEffect(() => { fetchData(); fetchBrief(); fetchAlerts() }, [])
   reloadRef.current = fetchData
 
+  if (loading && !data) return (
+    <div className="flex flex-col items-center justify-center py-20 space-y-4">
+      <div className="h-8 w-8 animate-spin rounded-full border-2 border-[#a78bfa] border-t-transparent" />
+      <p className="text-[10px] uppercase tracking-widest text-white/40">Sincronizando Assistente Estratégico…</p>
+    </div>
+  )
 
-  if (loading && !data) return <p className="py-6 text-center text-[10px] text-white/40">Carregando cockpit estratégico…</p>
-  if (error && !data) return <p className="rounded-[0.4rem] border border-[#f8717125] bg-[#f8717108] px-2 py-1.5 text-[9px] text-[#fca5a5]">{error}</p>
+  if (error && !data) return (
+    <div className="rounded-[0.7rem] border border-[#f8717125] bg-[#f8717108] p-4 text-center">
+      <AlertTriangle className="mx-auto mb-2 h-6 w-6 text-[#f87171]" />
+      <p className="text-[11px] text-[#fca5a5]">{error}</p>
+      <button onClick={fetchData} className="mt-3 text-[10px] font-bold text-[#f87171] underline uppercase">Tentar novamente</button>
+    </div>
+  )
+
   if (!data) return null
 
   return (
+    <div className="space-y-6 max-w-4xl mx-auto pb-20">
+      {/* HEADER: A Trilha de Progresso (F1-F6) */}
+      <div className="ipb-soft rounded-[1rem] p-4 border border-white/5">
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-2">
+            <div className="p-1.5 bg-[#a78bfa15] rounded-lg">
+              <Rocket className="h-4 w-4 text-[#a78bfa]" />
+            </div>
+            <div>
+              <h2 className="text-[12px] font-bold text-white/90">IPB Strategic Assistant</h2>
+              <p className="text-[9px] text-white/40 uppercase tracking-tighter">Automated Innovation Management System</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-1.5 px-2 py-1 bg-green-500/10 border border-green-500/20 rounded-full">
+            <div className="h-1.5 w-1.5 rounded-full bg-green-500 animate-pulse" />
+            <span className="text-[8px] font-bold text-green-500 uppercase">Diagnóstico Ativo</span>
+          </div>
+        </div>
+        
+        <CompactTrails data={data} onReload={() => reloadRef.current?.()} />
+      </div>
+
+      {/* NAVEGAÇÃO POR ABAS */}
+      <div className="flex gap-1 p-1 bg-white/[0.03] border border-white/5 rounded-xl">
+        {[
+          { id: 'guia', label: 'Plano de Hoje', icon: <Brain className="h-3 w-3" /> },
+          { id: 'metricas', label: 'Cockpit Real', icon: <DollarSign className="h-3 w-3" /> },
+          { id: 'inovacao', label: 'Inovação', icon: <LayoutGrid className="h-3 w-3" /> },
+          { id: 'lideranca', label: 'Liderança', icon: <Users2 className="h-3 w-3" /> },
+        ].map((tab) => (
+          <button
+            key={tab.id}
+            onClick={() => setActiveTab(tab.id as any)}
+            className={`flex flex-1 items-center justify-center gap-1.5 py-2 px-3 rounded-lg text-[10px] font-bold transition ${
+              activeTab === tab.id ? 'bg-[#a78bfa15] text-[#a78bfa] border border-[#a78bfa20]' : 'text-white/40 hover:text-white/60'
+            }`}
+          >
+            {tab.icon}
+            {tab.label}
+          </button>
+        ))}
+      </div>
+
+      {/* CONTEÚDO DINÂMICO */}
+      <div className="min-h-[400px]">
+        {activeTab === 'guia' && (
+          <div className="space-y-4 animate-in fade-in slide-in-from-bottom-2 duration-500">
+            {/* ALERTA CRÍTICO */}
+            {alerts.filter(a => !a.read && a.level === 'critical').map(alert => (
+              <div key={alert.id} className="bg-red-500/10 border border-red-500/20 rounded-2xl p-4 flex gap-4 items-start">
+                <AlertTriangle className="h-5 w-5 text-red-500 shrink-0 mt-1" />
+                <div className="flex-1">
+                  <h3 className="text-[11px] font-bold text-red-400 uppercase tracking-wider">{alert.title}</h3>
+                  <p className="text-[13px] text-white/80 mt-1 leading-relaxed">{alert.message}</p>
+                  {alert.action && (
+                    <div className="mt-3 flex items-center gap-2">
+                      <span className="text-[10px] font-bold text-red-500 uppercase">Ação Imediata:</span>
+                      <p className="text-[11px] text-white font-medium">{alert.action}</p>
+                    </div>
+                  )}
+                </div>
+                <button onClick={() => dismissAlert(alert.id)} className="text-white/20 hover:text-white/40">✕</button>
+              </div>
+            ))}
+
+            {/* ASSISTENTE: Briefing Principal */}
+            <div className="bg-gradient-to-br from-[#a78bfa08] to-transparent border border-[#a78bfa15] rounded-3xl p-6 relative overflow-hidden">
+              <div className="absolute top-0 right-0 p-4 opacity-5">
+                <Brain className="h-32 w-32" />
+              </div>
+              
+              <div className="relative z-10 space-y-6">
+                <div className="flex items-center gap-3">
+                  <div className="h-10 w-10 rounded-2xl bg-[#a78bfa] flex items-center justify-center shadow-lg shadow-[#a78bfa30]">
+                    <Brain className="h-6 w-6 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="text-[14px] font-bold text-white">IA Strategist Diagnostic</h3>
+                    <p className="text-[10px] text-white/40 uppercase tracking-widest">Passo a Passo Automático</p>
+                  </div>
+                </div>
+
+                {brief ? (
+                  <div className="space-y-4">
+                    <div className="bg-white/[0.02] border border-white/5 rounded-2xl p-4">
+                      <p className="text-[10px] text-[#a78bfa] uppercase font-bold mb-2">Pergunta para o Fundador:</p>
+                      <p className="text-[16px] font-medium text-white leading-relaxed italic">"{brief.question}"</p>
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <p className="text-[10px] text-white/40 uppercase font-bold px-1">Seu Próximo Passo Hoje:</p>
+                      <div className="bg-gradient-to-r from-[#a78bfa20] to-transparent border-l-4 border-[#a78bfa] p-4 rounded-r-2xl">
+                        <p className="text-[14px] font-bold text-white leading-snug">{brief.action}</p>
+                      </div>
+                    </div>
+                    
+                    <button 
+                      onClick={fetchBrief}
+                      disabled={briefLoading}
+                      className="mt-4 flex items-center gap-2 text-[10px] font-bold text-[#a78bfa] hover:opacity-80 transition disabled:opacity-30"
+                    >
+                      <RefreshCw className={`h-3 w-3 ${briefLoading ? 'animate-spin' : ''}`} />
+                      ATUALIZAR DIAGNÓSTICO
+                    </button>
+                  </div>
+                ) : (
+                  <button onClick={fetchBrief} className="w-full py-4 rounded-2xl bg-[#a78bfa] text-white font-bold text-[12px] uppercase tracking-widest hover:scale-[1.02] active:scale-[0.98] transition">
+                    Gerar Briefing de Hoje
+                  </button>
+                )}
+              </div>
+            </div>
+
+            {/* SÍNTESE DE POSIÇÃO (TRL + HYPE) */}
+            <PositionSynthesisCard data={data} />
+            
+            {/* ALERTAS SECUNDÁRIOS */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <SprintAlphaCard state={data.state.sprint_alpha} onReload={() => reloadRef.current?.()} />
+              <AlertsList alerts={alerts.filter(a => !a.read && a.level !== 'critical')} onDismiss={dismissAlert} onRun={runAnalysis} loading={alertsLoading} />
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'metricas' && (
+          <div className="space-y-4 animate-in fade-in duration-300">
+            <FinancialCockpitCard cockpit={data.cockpit} />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <DDDMMaturityCard state={data.state.maturity_dddm} onReload={() => reloadRef.current?.()} />
+              <ComplianceTrackerCard compliance={data.cockpit.compliance} onReload={() => reloadRef.current?.()} />
+            </div>
+            <AdoptionTrailCard state={data.state.adoption_trail} onReload={() => reloadRef.current?.()} />
+          </div>
+        )}
+
+        {activeTab === 'inovacao' && (
+          <div className="space-y-4 animate-in fade-in duration-300">
+            <InnovationFunnelCard data={data} onReload={() => reloadRef.current?.()} />
+            <TargetsRadarCard />
+            <MaturityExecutionCard state={data.state.maturity_sgi} onReload={() => reloadRef.current?.()} />
+          </div>
+        )}
+
+        {activeTab === 'lideranca' && (
+          <div className="space-y-4 animate-in fade-in duration-300">
+            <LeadershipProcessCard state={data.state.leadership_process} onReload={() => reloadRef.current?.()} />
+            <OKRGeneratorCard />
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
+
+// ───────────────────────────── COMPONENTES AUXILIARES ─────────────────────────────
+
+function CompactTrails({ data, onReload }: { data: CockpitData; onReload: () => void }) {
+  const company = data.state.company_trail ?? { current_stage: 2 }
+  const market = data.state.market_trail ?? { current_stage: 2 }
+
+  return (
     <div className="space-y-3">
-      {/* Alertas Estratégicos */}
-      <AlertsPanel alerts={alerts} loading={alertsLoading} onRun={runAnalysis} onDismiss={dismissAlert} />
+      <div className="flex items-center gap-2">
+        <p className="text-[8px] font-bold text-white/30 uppercase w-12 shrink-0">Empresa</p>
+        <div className="flex flex-1 gap-1">
+          {[1, 2, 3, 4, 5, 6].map(s => (
+            <div key={s} className={`h-1.5 flex-1 rounded-full ${s <= company.current_stage ? 'bg-[#a78bfa]' : 'bg-white/5'}`} />
+          ))}
+        </div>
+        <p className="text-[10px] font-bold text-[#a78bfa] w-6 text-right">F{company.current_stage}</p>
+      </div>
+      <div className="flex items-center gap-2">
+        <p className="text-[8px] font-bold text-white/30 uppercase w-12 shrink-0">Mercado</p>
+        <div className="flex flex-1 gap-1">
+          {[1, 2, 3, 4, 5, 6].map(s => (
+            <div key={s} className={`h-1.5 flex-1 rounded-full ${s <= market.current_stage ? 'bg-[#60a5fa]' : 'bg-white/5'}`} />
+          ))}
+        </div>
+        <p className="text-[10px] font-bold text-[#60a5fa] w-6 text-right">F{market.current_stage}</p>
+      </div>
+    </div>
+  )
+}
 
-      {/* Brief Diário – Pergunta do dia */}
-      {brief && <DailyBriefCard brief={brief} onRefresh={fetchBrief} />}
-      {/* Posição síntese — TRL + Hype + Fase + Janela */}
-      <PositionSynthesisCard data={data} />
-
-      {/* Cockpit Financeiro */}
-      <FinancialCockpitCard cockpit={data.cockpit} />
-
-      {/* Trilho de Adoção Clínica */}
-      <AdoptionTrailCard state={data.state.adoption_trail} onReload={() => reloadRef.current?.()} />
-
-      {/* Trilhos de Evolução (Empresa vs Mercado) */}
-      <CompanyMarketTrailsCard data={data} onReload={() => reloadRef.current?.()} />
-
-      {/* Maturidade de Execução (SGI + TD) */}
-      <MaturityExecutionCard state={data.state.maturity_sgi} onReload={() => reloadRef.current?.()} />
-
-      {/* DDDM — Decisão Baseada em Dados */}
-      <DDDMMaturityCard state={data.state.maturity_dddm} onReload={() => reloadRef.current?.()} />
-
-      {/* Gestão de Inovação (Horizontes + Funil) */}
-      <InnovationFunnelCard data={data} onReload={() => reloadRef.current?.()} />
-
-      {/* Processo de Liderança */}
-      <LeadershipProcessCard state={data.state.leadership_process} onReload={() => reloadRef.current?.()} />
-
-      {/* Sprint Alpha 7 dias */}
-      <SprintAlphaCard state={data.state.sprint_alpha} onReload={() => reloadRef.current?.()} />
-
-      {/* Compliance Tracker */}
-      <ComplianceTrackerCard compliance={data.cockpit.compliance} onReload={() => reloadRef.current?.()} />
-
-      {/* OKR Generator IA */}
-      <OKRGeneratorCard />
-
-      {/* Hospitais Alvo + Investor Radar + Concorrentes */}
-      <TargetsRadarCard />
+function AlertsList({ alerts, onDismiss, onRun, loading }: { alerts: StrategicAlert[], onDismiss: (id: string) => void, onRun: () => void, loading: boolean }) {
+  return (
+    <div className="ipb-soft rounded-[1.5rem] p-4 flex flex-col h-full">
+      <div className="flex items-center justify-between mb-3">
+        <h4 className="text-[10px] font-bold text-white/60 uppercase tracking-widest">Alertas Secundários</h4>
+        <button onClick={onRun} disabled={loading} className="p-1.5 hover:bg-white/5 rounded-lg transition text-white/40 hover:text-white">
+          <RefreshCw className={`h-3 w-3 ${loading ? 'animate-spin' : ''}`} />
+        </button>
+      </div>
+      <div className="space-y-2 flex-1 overflow-y-auto max-h-[150px] pr-2 custom-scrollbar">
+        {alerts.length === 0 ? (
+          <p className="text-[9px] text-white/20 italic text-center py-8">Nenhum alerta pendente</p>
+        ) : (
+          alerts.map(a => (
+            <div key={a.id} className="p-2 bg-white/[0.02] border border-white/5 rounded-xl flex items-start gap-2 group">
+              <div className={`h-1.5 w-1.5 rounded-full mt-1.5 ${a.level === 'warning' ? 'bg-yellow-500' : 'bg-blue-500'}`} />
+              <div className="flex-1">
+                <p className="text-[10px] font-bold text-white/80 leading-tight">{a.title}</p>
+              </div>
+              <button onClick={() => onDismiss(a.id)} className="opacity-0 group-hover:opacity-100 transition text-white/20 hover:text-white/60">✕</button>
+            </div>
+          ))
+        )}
+      </div>
     </div>
   )
 }

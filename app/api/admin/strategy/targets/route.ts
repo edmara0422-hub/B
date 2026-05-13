@@ -6,7 +6,7 @@ export const runtime = 'nodejs'
 
 const ALWAYS_ADMIN_EMAILS = new Set<string>(['edmararbusiness1@gmail.com'])
 const GROQ_API = 'https://api.groq.com/openai/v1/chat/completions'
-const MODEL = 'llama-3.3-70b-versatile'
+const MODEL = 'llama-3.1-8b-instant'
 
 // Cache 6h — lista de alvos não muda toda hora
 let cache: { data: unknown; expiresAt: number } | null = null
