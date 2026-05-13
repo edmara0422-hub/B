@@ -50,6 +50,11 @@ export type ImageExamEntry = {
   tipo: string
   laudo: string
   achados: string[]
+  measurements?: {
+    tot_to_carina_cm?: number
+    status?: string
+    alert?: string
+  }
 }
 
 export type GasometryHistoryEntry = {

@@ -19,6 +19,7 @@ import {
   PencilLine,
   Plus,
   RotateCcw,
+  Ruler,
   Save,
   Scan,
   Trash2,
@@ -2826,19 +2827,38 @@ export function ProntuarioSystemPanel() {
         updateCurrentRecord((record) => {
           const next = [...record.examesImagemList]
           const item = { ...next[index] }
+          
           if (data.findings) {
             const currentAchados = Array.isArray(item.achados) ? item.achados : []
             item.achados = Array.from(new Set([...currentAchados, ...data.findings]))
           }
-          if (data.report) {
-            item.laudo = (item.laudo ? item.laudo + '\n\n' : '') + `[IA SCAN]: ${data.report}`
+          
+          if (data.measurements) {
+            item.measurements = data.measurements
+            const m = data.measurements
+            const rulerText = `[RÉGUA DIGITAL]: ${m.tot_to_carina_cm}cm da carina (${m.status}). ${m.alert || ''}`
+            item.laudo = (item.laudo ? item.laudo + '\n\n' : '') + rulerText
           }
+
+          if (data.report) {
+            item.laudo = (item.laudo ? item.laudo + '\n\n' : '') + `[LAUDO IA]: ${data.report}`
+          }
+
+          if (data.evidence && data.evidence.length > 0) {
+            const evidenceLinks = data.evidence.map((e: any) => `• ${e.title}: ${e.url}`).join('\n')
+            item.laudo = (item.laudo ? item.laudo + '\n\n' : '') + `[EVIDÊNCIA CLÍNICA (Tavily)]:\n${evidenceLinks}`
+          }
+          
           next[index] = item
           return { ...record, examesImagemList: next }
         })
+      } else {
+        const errData = await res.json()
+        alert(`Falha no Scan: ${errData.error || 'Erro desconhecido'}`)
       }
     } catch (err) {
       console.error('Scan failed', err)
+      alert('Erro ao conectar com o serviço de IA. Verifique sua conexão.')
     } finally {
       setIsScanning(null)
       if (fileInputRef.current) fileInputRef.current.value = ''
@@ -3868,6 +3888,18 @@ export function ProntuarioSystemPanel() {
                                     <option key={v} value={v}>{l}</option>
                                   ))}
                                 </select>
+                                {exam.measurements?.tot_to_carina_cm && (
+                                  <div className={`flex items-center gap-1 rounded-full border px-1.5 py-0.5 ${
+                                    exam.measurements.status === 'Adequado' 
+                                      ? 'border-green-500/30 bg-green-500/10 text-green-400' 
+                                      : 'border-amber-500/30 bg-amber-500/10 text-amber-400'
+                                  }`} title={exam.measurements.alert}>
+                                    <Ruler className="h-2 w-2" />
+                                    <span className="text-[6px] font-bold whitespace-nowrap">
+                                      {exam.measurements.tot_to_carina_cm}cm
+                                    </span>
+                                  </div>
+                                )}
                                 <button
                                   onClick={() => {
                                     setIsScanning(index)
