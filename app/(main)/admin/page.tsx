@@ -16,7 +16,7 @@ import { AreaChart, Area, BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContai
 import { AdminTelemetry } from '@/components/sea/admin-telemetry'
 import { AdminStrategicCockpit } from '@/components/sea/admin-strategic-cockpit'
 
-type AdminTab = 'users' | 'subscriptions' | 'analytics' | 'strategy' | 'communication' | 'config' | 'equipes'
+type AdminTab = 'users' | 'subscriptions' | 'estrategia' | 'communication' | 'config' | 'equipes'
 type Team = { id: string; nome: string; memberIds: string[] }
 type UserRow = Profile & { blocked: boolean; last_login: string | null }
 type SubRow = { id: string; user_id: string; plan: string; status: string; started_at: string; expires_at: string | null; cancelled_at: string | null }
@@ -26,7 +26,7 @@ const COLORS = ['#4ade80', '#facc15', '#fb923c', '#f87171', '#60a5fa', '#a78bfa'
 export default function AdminPage() {
   const router = useRouter()
   const { isAdmin, initialized, user } = useAuthStore()
-  const [tab, setTab] = useState<AdminTab>('users')
+  const [tab, setTab] = useState<AdminTab>('estrategia')
   const [loading, setLoading] = useState(false)
   const [msg, setMsg] = useState('')
 
@@ -154,7 +154,7 @@ export default function AdminPage() {
     if (!isAdmin) return
     if (tab === 'users') loadUsers()
     else if (tab === 'subscriptions') loadSubs()
-    else if (tab === 'analytics') loadAnalytics()
+    else if (tab === 'estrategia') loadAnalytics()
     else if (tab === 'config') loadConfigs()
     else if (tab === 'equipes') { loadTeams(); if (users.length === 0) loadUsers() }
   }, [tab, isAdmin, loadUsers, loadSubs, loadAnalytics, loadConfigs, loadTeams, users.length])
@@ -469,8 +469,7 @@ export default function AdminPage() {
   const TABS: { id: AdminTab; label: string; icon: typeof Users }[] = [
     { id: 'users', label: 'Usuarios', icon: Users },
     { id: 'subscriptions', label: 'Assinaturas', icon: Crown },
-    { id: 'analytics', label: 'Analytics', icon: LineChart },
-    { id: 'strategy', label: 'Estrategia', icon: TrendingUp },
+    { id: 'estrategia', label: 'Estratégia', icon: TrendingUp },
     { id: 'communication', label: 'Avisos', icon: MessageSquare },
     { id: 'equipes', label: 'Equipes', icon: UserPlus },
     { id: 'config', label: 'Config', icon: Settings },
@@ -690,9 +689,13 @@ export default function AdminPage() {
         </div>
       )}
 
-      {/* ══════ ANALYTICS ══════ */}
-      {tab === 'analytics' && !loading && (
+      {/* ══════ ESTRATÉGIA & ANALYTICS ══════ */}
+      {tab === 'estrategia' && !loading && (
         <div className="space-y-3">
+          {/* Cockpit Estratégico (IA, OKRs, Targets) */}
+          <AdminStrategicCockpit />
+
+          <div className="my-4 h-px w-full bg-white/10" />
 
           {/* Telemetria NASA — feed ao vivo, gráfico concorrentes 24h, pizza devices, heatmap, geografia */}
           <AdminTelemetry />
@@ -951,10 +954,6 @@ export default function AdminPage() {
         </div>
       )}
 
-      {/* ══════ STRATEGY — Cockpit Estratégico ══════ */}
-      {tab === 'strategy' && (
-        <AdminStrategicCockpit />
-      )}
 
       {/* ══════ CONFIG ══════ */}
       {tab === 'config' && !loading && (

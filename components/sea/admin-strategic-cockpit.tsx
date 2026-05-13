@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { AlertTriangle, Building2, CheckSquare, Crown, DollarSign, ExternalLink, Eye, Flag, Gauge, Goal, Heart, Hospital, Map as MapIcon, RefreshCw, Rocket, Square, Target, TrendingUp, Trophy, Users } from 'lucide-react'
+import { Activity, AlertTriangle, BarChart3, Brain, Briefcase, Building2, CheckSquare, Crown, Database, DollarSign, ExternalLink, Eye, FileText, Flag, Gauge, Goal, Heart, Hospital, LayoutGrid, Map as MapIcon, Network, RefreshCw, Rocket, Square, Target, TrendingUp, Trophy, Users, Users2 } from 'lucide-react'
 
 type Financials = { mrr: number; arr: number; pricing: number; active_subs: number; trial_subs: number; cancelled_subs: number; churn_rate_pct: number; runway_months: number }
 type UsersStats = { total: number; new_30d: number; active_7d: number; active_30d: number; dau7d_pct: number; dau30d_pct: number }
@@ -15,6 +15,13 @@ type CockpitData = {
     phase?: { current: string; label: string; goal_users: number }
     financials?: { mrr?: number; pricing?: number; target_first_revenue?: number }
     adoption_trail?: { current_stage: number; stages: string[] }
+    company_trail?: { current_stage: number; stages: string[] }
+    market_trail?: { current_stage: number; stages: string[] }
+    maturity_sgi?: { projects: number; processes: number; culture: number; results: number }
+    maturity_dddm?: { collection: number; analysis: number; visualization: number; integration: number }
+    innovation_horizons?: { h1: number; h2: number; h3: number }
+    innovation_funnel?: { stage: number; items: Record<string, boolean> }
+    leadership_process?: { clarity: number; alignment: number; training: number; execution: number; results: number }
     sprint_alpha?: { started_at: string | null; current_day: number; completed_days: number[] }
     weekly_checks?: { week: string | null; completed: string[] }
     compliance?: Record<string, boolean>
@@ -28,10 +35,16 @@ type CockpitData = {
   timestamp: string
 }
 
+type StrategicAlert = { id: string; level: 'info' | 'warning' | 'critical'; title: string; message: string; action?: string; created_at: string; read: boolean }
+
 export function AdminStrategicCockpit() {
   const [data, setData] = useState<CockpitData | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [brief, setBrief] = useState<{question: string; action: string} | null>(null)
+  const [briefLoading, setBriefLoading] = useState(false)
+  const [alerts, setAlerts] = useState<StrategicAlert[]>([])
+  const [alertsLoading, setAlertsLoading] = useState(false)
   const reloadRef = useRef<() => void>(() => {})
 
   const fetchData = async () => {
@@ -47,7 +60,33 @@ export function AdminStrategicCockpit() {
     } finally { setLoading(false) }
   }
 
-  useEffect(() => { fetchData() }, [])
+  const fetchAlerts = async () => {
+    try {
+      const res = await fetch('/api/admin/strategy/notify')
+      const json = await res.json()
+      if (res.ok) setAlerts(json.alerts ?? [])
+    } catch { /* silencioso */ }
+  }
+
+  const runAnalysis = async () => {
+    setAlertsLoading(true)
+    try {
+      const res = await fetch('/api/admin/strategy/notify', { method: 'POST' })
+      const json = await res.json()
+      if (res.ok) setAlerts(json.alerts ?? [])
+    } catch { /* silencioso */ } finally { setAlertsLoading(false) }
+  }
+
+  const dismissAlert = async (id: string) => {
+    await fetch('/api/admin/strategy/notify', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id }),
+    })
+    setAlerts((prev) => prev.map((a) => a.id === id ? { ...a, read: true } : a))
+  }
+
+  useEffect(() => { fetchData(); fetchBrief(); fetchAlerts() }, [])
   reloadRef.current = fetchData
 
   if (loading && !data) return <p className="py-6 text-center text-[10px] text-white/40">Carregando cockpit estratégico…</p>
@@ -56,6 +95,11 @@ export function AdminStrategicCockpit() {
 
   return (
     <div className="space-y-3">
+      {/* Alertas Estratégicos */}
+      <AlertsPanel alerts={alerts} loading={alertsLoading} onRun={runAnalysis} onDismiss={dismissAlert} />
+
+      {/* Brief Diário – Pergunta do dia */}
+      {brief && <DailyBriefCard brief={brief} onRefresh={fetchBrief} />}
       {/* Posição síntese — TRL + Hype + Fase + Janela */}
       <PositionSynthesisCard data={data} />
 
@@ -64,6 +108,21 @@ export function AdminStrategicCockpit() {
 
       {/* Trilho de Adoção Clínica */}
       <AdoptionTrailCard state={data.state.adoption_trail} onReload={() => reloadRef.current?.()} />
+
+      {/* Trilhos de Evolução (Empresa vs Mercado) */}
+      <CompanyMarketTrailsCard data={data} onReload={() => reloadRef.current?.()} />
+
+      {/* Maturidade de Execução (SGI + TD) */}
+      <MaturityExecutionCard state={data.state.maturity_sgi} onReload={() => reloadRef.current?.()} />
+
+      {/* DDDM — Decisão Baseada em Dados */}
+      <DDDMMaturityCard state={data.state.maturity_dddm} onReload={() => reloadRef.current?.()} />
+
+      {/* Gestão de Inovação (Horizontes + Funil) */}
+      <InnovationFunnelCard data={data} onReload={() => reloadRef.current?.()} />
+
+      {/* Processo de Liderança */}
+      <LeadershipProcessCard state={data.state.leadership_process} onReload={() => reloadRef.current?.()} />
 
       {/* Sprint Alpha 7 dias */}
       <SprintAlphaCard state={data.state.sprint_alpha} onReload={() => reloadRef.current?.()} />
@@ -76,6 +135,103 @@ export function AdminStrategicCockpit() {
 
       {/* Hospitais Alvo + Investor Radar + Concorrentes */}
       <TargetsRadarCard />
+    </div>
+  )
+}
+
+// ───────────────────────────── ALERTS PANEL ─────────────────────────────
+
+function AlertsPanel({
+  alerts, loading, onRun, onDismiss
+}: {
+  alerts: StrategicAlert[]
+  loading: boolean
+  onRun: () => void
+  onDismiss: (id: string) => void
+}) {
+  const unread = alerts.filter((a) => !a.read)
+  const levelColor = (level: StrategicAlert['level']) =>
+    level === 'critical' ? '#f87171' : level === 'warning' ? '#facc15' : '#60a5fa'
+  const levelBg = (level: StrategicAlert['level']) =>
+    level === 'critical' ? 'rgba(248,113,113,0.06)' : level === 'warning' ? 'rgba(250,204,21,0.06)' : 'rgba(96,165,250,0.06)'
+
+  return (
+    <div className="ipb-soft rounded-[0.7rem] p-2.5">
+      <div className="mb-2 flex items-center justify-between">
+        <div className="flex items-center gap-1.5">
+          <AlertTriangle className="h-3 w-3 text-[#f87171]" />
+          <p className="text-[9px] font-semibold uppercase tracking-[0.16em] text-white/65">Alertas Estratégicos</p>
+          {unread.length > 0 && (
+            <span className="flex h-3.5 w-3.5 items-center justify-center rounded-full bg-[#f87171] text-[7px] font-bold text-white">
+              {unread.length}
+            </span>
+          )}
+        </div>
+        <button
+          onClick={onRun}
+          disabled={loading}
+          className="flex h-5 items-center gap-1 rounded-[0.4rem] border border-white/10 bg-white/[0.04] px-1.5 text-[8px] text-white/55 hover:text-white disabled:opacity-30"
+        >
+          <RefreshCw className={`h-2.5 w-2.5 ${loading ? 'animate-spin' : ''}`} />
+          {loading ? 'Analisando…' : 'Analisar Agora'}
+        </button>
+      </div>
+
+      {unread.length === 0 && (
+        <p className="text-[9px] text-white/35">
+          {alerts.length > 0 ? '✅ Todos os alertas foram revisados.' : 'Clique em "Analisar Agora" para o agente verificar seus dados.'}
+        </p>
+      )}
+
+      <div className="space-y-1.5">
+        {unread.map((alert) => (
+          <div
+            key={alert.id}
+            className="rounded-[0.4rem] border px-2 py-1.5"
+            style={{ borderColor: `${levelColor(alert.level)}30`, background: levelBg(alert.level) }}
+          >
+            <div className="flex items-start justify-between gap-2">
+              <div className="flex-1">
+                <p className="text-[9px] font-bold" style={{ color: levelColor(alert.level) }}>{alert.title}</p>
+                <p className="text-[8.5px] text-white/65 mt-0.5">{alert.message}</p>
+                {alert.action && (
+                  <p className="text-[8px] text-white/45 mt-0.5">✅ {alert.action}</p>
+                )}
+              </div>
+              <button
+                onClick={() => onDismiss(alert.id)}
+                className="mt-0.5 shrink-0 text-[7px] text-white/25 hover:text-white/60"
+              >
+                ✕
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+// ───────────────────────────── DAILY BRIEF CARD ─────────────────────────────
+
+function DailyBriefCard({ brief, onRefresh }: { brief: { question: string; action: string }; onRefresh: () => void }) {
+  return (
+    <div className="rounded-[0.7rem] border border-[#a78bfa30] bg-[#a78bfa08] p-2.5">
+      <div className="mb-1.5 flex items-center justify-between">
+        <div className="flex items-center gap-1.5">
+          <Brain className="h-3 w-3 text-[#a78bfa]" />
+          <p className="text-[9px] font-semibold uppercase tracking-[0.16em] text-white/65">Pergunta do Dia · IA Cockpit</p>
+        </div>
+        <button
+          onClick={onRefresh}
+          className="flex h-5 items-center gap-1 rounded-[0.4rem] border border-white/10 bg-white/[0.04] px-1.5 text-[8px] text-white/55 hover:text-white"
+        >
+          <RefreshCw className="h-2.5 w-2.5" />
+          Atualizar
+        </button>
+      </div>
+      <p className="text-[10px] font-semibold text-white/85 mb-1">❓ {brief.question}</p>
+      <p className="text-[9px] text-white/55">💡 Ação: {brief.action}</p>
     </div>
   )
 }
@@ -172,6 +328,315 @@ function KpiBox({ label, value, color }: { label: string; value: string | number
 }
 
 // ───────────────────────────── ADOPTION TRAIL ─────────────────────────────
+
+// ───────────────────────────── COMPANY & MARKET TRAILS ─────────────────────────────
+
+const TRAIL_STAGES = [
+  'F1 · Infra',
+  'F2 · Processo',
+  'F3 · Estratégia',
+  'F4 · Digitização',
+  'F5 · Digitalização',
+  'F6 · Transformação'
+]
+
+function CompanyMarketTrailsCard({ data, onReload }: { data: CockpitData; onReload: () => void }) {
+  const company = data.state.company_trail ?? { current_stage: 2, stages: TRAIL_STAGES }
+  const market = data.state.market_trail ?? { current_stage: 2, stages: TRAIL_STAGES }
+
+  const updateTrail = async (key: 'company_trail' | 'market_trail', newStage: number) => {
+    await fetch('/api/admin/strategy/update', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ key, value: { current_stage: newStage, stages: TRAIL_STAGES } }),
+    })
+    onReload()
+  }
+
+  return (
+    <div className="ipb-soft rounded-[0.7rem] p-2.5 space-y-4">
+      <TrailRow label="Trilho da Empresa" current={company.current_stage} onSelect={(s) => updateTrail('company_trail', s)} icon={<Building2 className="h-3 w-3 text-[#a78bfa]" />} />
+      <TrailRow label="Trilho do Mercado" current={market.current_stage} onSelect={(s) => updateTrail('market_trail', s)} icon={<LayoutGrid className="h-3 w-3 text-[#60a5fa]" />} />
+    </div>
+  )
+}
+
+function TrailRow({ label, current, onSelect, icon }: { label: string; current: number; onSelect: (s: number) => void; icon: React.ReactNode }) {
+  return (
+    <div>
+      <div className="mb-2 flex items-center gap-1.5">
+        {icon}
+        <p className="text-[9px] font-semibold uppercase tracking-[0.16em] text-white/65">{label}</p>
+      </div>
+      <div className="flex items-center gap-1">
+        {TRAIL_STAGES.map((stage, i) => {
+          const stageNum = i + 1
+          const isDone = stageNum < current
+          const isCurrent = stageNum === current
+          return (
+            <button
+              key={stage}
+              onClick={() => onSelect(stageNum)}
+              className="group flex flex-1 flex-col items-center gap-1"
+            >
+              <div
+                className="flex h-6 w-full items-center justify-center rounded-[0.3rem] border text-[8px] font-bold transition"
+                style={{
+                  borderColor: isDone ? 'rgba(74,222,128,0.4)' : isCurrent ? 'rgba(250,204,21,0.4)' : 'rgba(255,255,255,0.1)',
+                  background: isDone ? 'rgba(74,222,128,0.1)' : isCurrent ? 'rgba(250,204,21,0.1)' : 'rgba(255,255,255,0.02)',
+                  color: isDone ? '#86efac' : isCurrent ? '#fde68a' : 'rgba(255,255,255,0.3)',
+                }}
+              >
+                F{stageNum}
+              </div>
+              <p className="text-center text-[6px] leading-tight text-white/40">{stage.split(' · ')[1]}</p>
+            </button>
+          )
+        })}
+      </div>
+    </div>
+  )
+}
+
+// ───────────────────────────── MATURITY MATRICES (SGI & DDDM) ─────────────────────────────
+
+function MaturityExecutionCard({ state, onReload }: { state?: CockpitData['state']['maturity_sgi']; onReload: () => void }) {
+  const current = state ?? { projects: 1, processes: 1, culture: 0, results: 1 }
+  const items = [
+    { key: 'projects', label: 'Projetos', icon: <Briefcase className="h-2.5 w-2.5" /> },
+    { key: 'processes', label: 'Processos', icon: <Activity className="h-2.5 w-2.5" /> },
+    { key: 'culture', label: 'Cultura', icon: <Heart className="h-2.5 w-2.5" /> },
+    { key: 'results', label: 'Resultados', icon: <TrendingUp className="h-2.5 w-2.5" /> }
+  ]
+
+  const update = async (key: string, val: number) => {
+    await fetch('/api/admin/strategy/update', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ key: 'maturity_sgi', value: { ...current, [key]: val } }),
+    })
+    onReload()
+  }
+
+  return (
+    <div className="ipb-soft rounded-[0.7rem] p-2.5">
+      <div className="mb-2 flex items-center gap-1.5">
+        <Target className="h-3 w-3 text-[#fb923c]" />
+        <p className="text-[9px] font-semibold uppercase tracking-[0.16em] text-white/65">SGI + TD · Maturidade de Execução</p>
+      </div>
+      <div className="grid grid-cols-1 gap-2">
+        {items.map(it => (
+          <MaturityRow key={it.key} label={it.label} icon={it.icon} value={current[it.key as keyof typeof current]} onSelect={(v) => update(it.key, v)} />
+        ))}
+      </div>
+    </div>
+  )
+}
+
+function DDDMMaturityCard({ state, onReload }: { state?: CockpitData['state']['maturity_dddm']; onReload: () => void }) {
+  const current = state ?? { collection: 2, analysis: 1, visualization: 2, integration: 1 }
+  const items = [
+    { key: 'collection', label: 'Coleta', icon: <Database className="h-2.5 w-2.5" /> },
+    { key: 'analysis', label: 'Análise', icon: <Brain className="h-2.5 w-2.5" /> },
+    { key: 'visualization', label: 'Visualização', icon: <BarChart3 className="h-2.5 w-2.5" /> },
+    { key: 'integration', label: 'Integração', icon: <Network className="h-2.5 w-2.5" /> }
+  ]
+
+  const update = async (key: string, val: number) => {
+    await fetch('/api/admin/strategy/update', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ key: 'maturity_dddm', value: { ...current, [key]: val } }),
+    })
+    onReload()
+  }
+
+  return (
+    <div className="ipb-soft rounded-[0.7rem] p-2.5">
+      <div className="mb-2 flex items-center gap-1.5">
+        <Database className="h-3 w-3 text-[#60a5fa]" />
+        <p className="text-[9px] font-semibold uppercase tracking-[0.16em] text-white/65">DDDM · Decisão Baseada em Dados</p>
+      </div>
+      <div className="grid grid-cols-1 gap-2">
+        {items.map(it => (
+          <MaturityRow key={it.key} label={it.label} icon={it.icon} value={current[it.key as keyof typeof current]} onSelect={(v) => update(it.key, v)} />
+        ))}
+      </div>
+    </div>
+  )
+}
+
+function MaturityRow({ label, icon, value, onSelect }: { label: string; icon: React.ReactNode; value: number; onSelect: (v: number) => void }) {
+  const levels = ['Não iniciado', 'Em desenvolvimento', 'Implementado', 'Otimizado']
+  return (
+    <div className="flex items-center gap-2">
+      <div className="flex items-center gap-1 w-20">
+        <div className="text-white/40">{icon}</div>
+        <p className="text-[8px] font-semibold text-white/60">{label}</p>
+      </div>
+      <div className="flex flex-1 gap-1">
+        {levels.map((lvl, i) => (
+          <button
+            key={lvl}
+            onClick={() => onSelect(i)}
+            className={`h-4 flex-1 rounded-[0.2rem] border text-[6px] font-bold transition flex items-center justify-center`}
+            style={{
+              borderColor: i <= value ? (i === 3 ? '#4ade8050' : i === 2 ? '#60a5fa50' : i === 1 ? '#facc1550' : 'rgba(255,255,255,0.1)') : 'rgba(255,255,255,0.05)',
+              background: i <= value ? (i === 3 ? '#4ade8015' : i === 2 ? '#60a5fa15' : i === 1 ? '#facc1515' : 'rgba(255,255,255,0.02)') : 'transparent',
+              color: i <= value ? (i === 3 ? '#86efac' : i === 2 ? '#93c5fd' : i === 1 ? '#fde68a' : 'rgba(255,255,255,0.2)') : 'rgba(255,255,255,0.15)',
+            }}
+          >
+            {i}
+          </button>
+        ))}
+      </div>
+      <p className="text-[7px] text-white/30 w-24 text-right truncate">{levels[value]}</p>
+    </div>
+  )
+}
+
+// ───────────────────────────── GESTÃO DE INOVAÇÃO (HORIZONTES + FUNIL) ─────────────────────────────
+
+function InnovationFunnelCard({ data, onReload }: { data: CockpitData; onReload: () => void }) {
+  const funnel = data.state.innovation_funnel ?? { stage: 3, items: { ffe: true, sg1: true, dev: true, sg2: false, scale: false } }
+  const horizons = data.state.innovation_horizons ?? { h1: 60, h2: 30, h3: 10 }
+
+  const updateHorizons = async (h1: number, h2: number, h3: number) => {
+    await fetch('/api/admin/strategy/update', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ key: 'innovation_horizons', value: { h1, h2, h3 } }),
+    })
+    onReload()
+  }
+
+  const toggleFunnel = async (key: string) => {
+    const newItems = { ...funnel.items, [key]: !funnel.items[key] }
+    const stage = Object.values(newItems).filter(Boolean).length
+    await fetch('/api/admin/strategy/update', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ key: 'innovation_funnel', value: { stage, items: newItems } }),
+    })
+    onReload()
+  }
+
+  return (
+    <div className="ipb-soft rounded-[0.7rem] p-2.5 space-y-4">
+      <div>
+        <div className="mb-2 flex items-center justify-between">
+          <div className="flex items-center gap-1.5">
+            <LayoutGrid className="h-3 w-3 text-[#facc15]" />
+            <p className="text-[9px] font-semibold uppercase tracking-[0.16em] text-white/65">3 Horizontes de Inovação</p>
+          </div>
+          <div className="flex gap-1">
+            <button onClick={() => updateHorizons(60, 30, 10)} className="text-[7px] text-white/30 hover:text-white/50 px-1 border border-white/10 rounded">Padrão</button>
+            <button onClick={() => updateHorizons(70, 20, 10)} className="text-[7px] text-white/30 hover:text-white/50 px-1 border border-white/10 rounded">Eficiente</button>
+          </div>
+        </div>
+        <div className="flex h-3 gap-0.5 overflow-hidden rounded-full bg-white/5 mb-1.5">
+          <div className="h-full bg-[#4ade80] opacity-60" style={{ width: `${horizons.h1}%` }} />
+          <div className="h-full bg-[#60a5fa] opacity-60" style={{ width: `${horizons.h2}%` }} />
+          <div className="h-full bg-[#a78bfa] opacity-60" style={{ width: `${horizons.h3}%` }} />
+        </div>
+        <div className="grid grid-cols-3 gap-2">
+          <HorizonInfo label="H1 Core" val={horizons.h1} color="#4ade80" />
+          <HorizonInfo label="H2 Adjacente" val={horizons.h2} color="#60a5fa" />
+          <HorizonInfo label="H3 Disruptivo" val={horizons.h3} color="#a78bfa" />
+        </div>
+      </div>
+
+      <div>
+        <div className="mb-2 flex items-center gap-1.5">
+          <Rocket className="h-3 w-3 text-[#fb923c]" />
+          <p className="text-[9px] font-semibold uppercase tracking-[0.16em] text-white/65">Funil de Inovação</p>
+        </div>
+        <div className="space-y-0.5">
+          {[
+            { key: 'ffe', label: '1. Fuzzy Front-End (Ideias)' },
+            { key: 'sg1', label: '2. Stage Gate 1 (Triagem)' },
+            { key: 'dev', label: '3. Desenvolvimento (Prototipagem)' },
+            { key: 'sg2', label: '4. Stage Gate 2 (Decisão Final)' },
+            { key: 'scale', label: '5. Lançamento e Escala' }
+          ].map((it) => (
+            <button
+              key={it.key}
+              onClick={() => toggleFunnel(it.key)}
+              className="flex w-full items-center gap-2 rounded-[0.3rem] border border-white/6 bg-white/[0.01] px-2 py-1 text-left hover:bg-white/[0.03]"
+            >
+              {funnel.items[it.key as keyof typeof funnel.items] ? <CheckSquare className="h-3 w-3 text-[#4ade80]" /> : <Square className="h-3 w-3 text-white/20" />}
+              <p className={`text-[8px] font-semibold ${funnel.items[it.key as keyof typeof funnel.items] ? 'text-white/80' : 'text-white/40'}`}>{it.label}</p>
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function HorizonInfo({ label, val, color }: { label: string; val: number; color: string }) {
+  return (
+    <div className="text-center">
+      <p className="text-[7px] uppercase tracking-wider text-white/40 mb-0.5">{label}</p>
+      <p className="text-[10px] font-bold" style={{ color }}>{val}%</p>
+    </div>
+  )
+}
+
+// ───────────────────────────── PROCESSO DE LIDERANÇA ─────────────────────────────
+
+function LeadershipProcessCard({ state, onReload }: { state?: CockpitData['state']['leadership_process']; onReload: () => void }) {
+  const current = state ?? { clarity: 0, alignment: 0, training: 0, execution: 0, results: 0 }
+  const items = [
+    { key: 'clarity', label: 'Clareza (Meta + KPI)' },
+    { key: 'alignment', label: 'Alinhamento (1:1 + Acordos)' },
+    { key: 'training', label: 'Capacitação (Habilidade + PDI)' },
+    { key: 'execution', label: 'Execução (Rituais de Time)' },
+    { key: 'results', label: 'Resultado (Performance + Reconhecimento)' }
+  ]
+
+  const update = async (key: string, val: number) => {
+    await fetch('/api/admin/strategy/update', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ key: 'leadership_process', value: { ...current, [key]: val } }),
+    })
+    onReload()
+  }
+
+  const score = Object.values(current).reduce((a, b) => a + b, 0)
+  const totalScore = (score / 15) * 100
+
+  return (
+    <div className="ipb-soft rounded-[0.7rem] p-2.5">
+      <div className="mb-2 flex items-center justify-between">
+        <div className="flex items-center gap-1.5">
+          <Users2 className="h-3 w-3 text-[#a78bfa]" />
+          <p className="text-[9px] font-semibold uppercase tracking-[0.16em] text-white/65">Processo de Liderança</p>
+        </div>
+        <p className="text-[10px] font-bold" style={{ color: totalScore >= 70 ? '#4ade80' : totalScore >= 40 ? '#facc15' : '#f87171' }}>{Math.round(totalScore)}/100</p>
+      </div>
+      <div className="space-y-2">
+        {items.map(it => (
+          <div key={it.key} className="space-y-1">
+            <div className="flex justify-between items-center">
+              <p className="text-[8px] text-white/50">{it.label}</p>
+              <div className="flex gap-1">
+                {[0, 1, 2, 3].map(v => (
+                  <button
+                    key={v}
+                    onClick={() => update(it.key, v)}
+                    className={`h-2.5 w-4 rounded-[0.15rem] border transition ${current[it.key as keyof typeof current] === v ? 'border-white/40 bg-white/20' : 'border-white/5 bg-white/5'}`}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
 
 function AdoptionTrailCard({ state, onReload }: { state?: CockpitData['state']['adoption_trail']; onReload: () => void }) {
   const stages = state?.stages ?? ['Validação', 'Piloto Hospitalar', 'Multi-centro', 'Comercial B2C', 'Comercial B2B']
