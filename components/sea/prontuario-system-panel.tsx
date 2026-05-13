@@ -6865,6 +6865,7 @@ export function ProntuarioSystemPanel() {
         capture="environment"
         className="hidden"
       />
+      </div>
     </div>
   )
 }
