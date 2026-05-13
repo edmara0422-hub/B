@@ -302,7 +302,7 @@ export function AdminStrategicCockpit() {
                 </div>
 
                 <div className="space-y-6">
-                  <PositionSynthesisCard data={data} />
+                  <PositionSynthesisCard data={data} onReload={fetchData} />
                   <SprintAlphaCard state={data.state.sprint_alpha} onReload={() => reloadRef.current?.()} />
                 </div>
               </div>
@@ -439,13 +439,14 @@ function CompactTrails({ data }: { data: CockpitData }) {
   )
 }
 
-function PositionSynthesisCard({ data }: { data: CockpitData }) {
+function PositionSynthesisCard({ data, onReload }: { data: CockpitData; onReload: () => void }) {
   const trl = data.state.trl ?? { level: 7, label: 'Produção', max: 9 }
   const hype = data.state.hype_cycle ?? { position: 'encosta_iluminacao', label: 'Encosta da Iluminação', stage_num: 4 }
   const phase = data.state.phase ?? { current: 'validacao', label: 'Validação', goal_users: 10 }
   const maturity = data.state.maturity_sgi ?? { projects: 0, processes: 0, culture: 0, results: 0 }
   const structuralReadiness = (maturity.projects + maturity.processes) / 6 // 0 a 1
   const hasStructuralBlocker = data.state.compliance?.technical_blocker === true
+  const mrr = data.cockpit.financials.mrr
   
   const windowOpen = trl.level >= 7 && (hype.stage_num === 3 || hype.stage_num === 4)
   const isRevenueGap = mrr === 0 && trl.level >= 7
@@ -460,7 +461,7 @@ function PositionSynthesisCard({ data }: { data: CockpitData }) {
         method: 'POST',
         body: JSON.stringify({ key: 'compliance', value: { ...data.state.compliance, technical_blocker: !hasStructuralBlocker } })
       })
-      fetchData()
+      onReload()
     } catch { /* ... */ }
   }
 
@@ -500,7 +501,7 @@ function PositionSynthesisCard({ data }: { data: CockpitData }) {
           {/* Tooltip explicativo */}
           <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-48 p-3 bg-black border border-white/10 rounded-xl opacity-0 group-hover:opacity-100 transition-all pointer-events-none z-50 shadow-2xl">
             <p className="text-[9px] text-white/60 leading-relaxed">
-              Calculado via <span className="text-white font-bold">Maturidade SGI</span> (Projetos + Processos). Se < 50% ou com Bloqueio ativo, a IA prioriza <span className="text-orange-400 font-bold">Estabilidade</span> sobre Vendas.
+              Calculado via <span className="text-white font-bold">Maturidade SGI</span> (Projetos + Processos). Se {'<'} 50% ou com Bloqueio ativo, a IA prioriza <span className="text-orange-400 font-bold">Estabilidade</span> sobre Vendas.
             </p>
           </div>
         </div>
