@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
-import { Activity, AlertCircle, Brain, ExternalLink, Globe, Heart, MapPin, MessageSquare, Radar, RefreshCw, Smartphone, ThumbsDown, ThumbsUp, Zap } from 'lucide-react'
+import { Activity, AlertCircle, AlertTriangle, Brain, ExternalLink, Globe, Heart, MapPin, MessageSquare, Radar, RefreshCw, ShieldAlert, Smartphone, ThumbsDown, ThumbsUp, Zap } from 'lucide-react'
 
 type DeviceRow = { device: string; count: number }
 type HeatmapRow = { day_of_week: number; hour_of_day: number; count: number }
@@ -93,6 +93,9 @@ export function AdminTelemetry() {
 
       {/* NPS Sentiment — IA classifica feedbacks em positivo/neutro/negativo + temas */}
       <NPSSentimentCard />
+
+      {/* Anomaly Detection — score composto 0-100 por usuário com sinais */}
+      <AnomalyDetectionCard />
 
       {/* Live feed */}
       <LiveFeedCard feed={data?.feed ?? []} />
@@ -733,6 +736,166 @@ function NPSSentimentCard() {
           )}
         </>
       )}
+    </div>
+  )
+}
+
+type AnomalyRow = {
+  user_id: string
+  user_email: string | null
+  user_name: string | null
+  score: number
+  level: 'high' | 'medium' | 'low'
+  signals: {
+    multi_ip: number
+    simultaneous_diff_ip: number
+    cities: number
+    late_night_events: number
+    inactive_days: number | null
+  }
+  last_seen: string | null
+  total_events: number
+  unique_ips: number
+  unique_devices: number
+  cities_count: number
+}
+
+function AnomalyDetectionCard() {
+  const [anomalies, setAnomalies] = useState<AnomalyRow[]>([])
+  const [loading, setLoading] = useState(false)
+  const [hasFetched, setHasFetched] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+
+  const fetchData = async () => {
+    setLoading(true)
+    setError(null)
+    try {
+      const res = await fetch('/api/admin/analytics/anomalies')
+      const json = await res.json()
+      if (!res.ok) {
+        setError(json?.error || `HTTP ${res.status}`)
+        return
+      }
+      setAnomalies(json.anomalies ?? [])
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'erro de rede')
+    } finally {
+      setLoading(false)
+      setHasFetched(true)
+    }
+  }
+
+  useEffect(() => { fetchData() }, [])
+
+  const highCount = anomalies.filter((a) => a.level === 'high').length
+  const mediumCount = anomalies.filter((a) => a.level === 'medium').length
+
+  return (
+    <div className="ipb-soft rounded-[0.7rem] p-2.5">
+      <div className="mb-2 flex items-center justify-between">
+        <div className="flex items-center gap-1.5">
+          <ShieldAlert className="h-3 w-3 text-[#fb923c]" />
+          <p className="text-[9px] font-semibold uppercase tracking-[0.16em] text-white/65">
+            Anomalias · score composto
+          </p>
+          {anomalies.length > 0 && (
+            <span className="text-[8px] text-white/40">
+              ({highCount > 0 && <span className="text-[#fca5a5]">{highCount} alta</span>}
+              {highCount > 0 && mediumCount > 0 && ' · '}
+              {mediumCount > 0 && <span className="text-[#fde68a]">{mediumCount} média</span>}
+              {highCount === 0 && mediumCount === 0 && 'tudo normal'})
+            </span>
+          )}
+        </div>
+        <button
+          onClick={fetchData}
+          disabled={loading}
+          className="flex h-5 items-center gap-1 rounded-[0.4rem] border border-white/10 bg-white/[0.04] px-1.5 text-[8px] text-white/55 transition hover:text-white disabled:opacity-30"
+        >
+          <RefreshCw className={`h-2.5 w-2.5 ${loading ? 'animate-spin' : ''}`} />
+          {loading ? 'Calculando' : 'Atualizar'}
+        </button>
+      </div>
+
+      {!hasFetched && loading && (
+        <p className="py-3 text-center text-[10px] text-white/40">Calculando scores de anomalia…</p>
+      )}
+
+      {error && (
+        <p className="rounded-[0.4rem] border border-[#f8717125] bg-[#f8717108] px-2 py-1.5 text-[9px] text-[#fca5a5]">
+          {error}
+        </p>
+      )}
+
+      {hasFetched && !error && anomalies.length === 0 && (
+        <p className="rounded-[0.4rem] border border-white/8 bg-white/[0.02] px-2 py-2 text-[9px] text-white/40">
+          Sem dados de usuários ainda. Quando tiver atividade real, anomalias aparecem aqui.
+        </p>
+      )}
+
+      {anomalies.length > 0 && (
+        <div className="space-y-1">
+          {anomalies.slice(0, 10).map((a) => {
+            const isHigh = a.level === 'high'
+            const isMed = a.level === 'medium'
+            const color = isHigh ? '#f87171' : isMed ? '#facc15' : '#94a3b8'
+            const sigParts: string[] = []
+            if (a.signals.simultaneous_diff_ip > 0) sigParts.push(`🚩 ${a.signals.simultaneous_diff_ip} sessões simultâneas em IPs distintos`)
+            if (a.signals.multi_ip >= 3) sigParts.push(`🌍 ${a.signals.multi_ip} IPs distintos`)
+            if (a.signals.cities > 1) sigParts.push(`📍 ${a.signals.cities} cidades`)
+            if (a.signals.late_night_events > 0) sigParts.push(`🕐 ${a.signals.late_night_events} eventos madrugada`)
+            if (a.signals.inactive_days !== null && a.signals.inactive_days > 7) sigParts.push(`💤 inativo há ${a.signals.inactive_days}d`)
+            if (sigParts.length === 0) sigParts.push('Padrão normal — sem sinais suspeitos')
+
+            return (
+              <div
+                key={a.user_id}
+                className="rounded-[0.5rem] border px-2 py-1.5"
+                style={{
+                  borderColor: isHigh ? 'rgba(248,113,113,0.30)' : isMed ? 'rgba(250,204,21,0.25)' : 'rgba(255,255,255,0.08)',
+                  background: isHigh ? 'rgba(248,113,113,0.06)' : isMed ? 'rgba(250,204,21,0.04)' : 'rgba(255,255,255,0.02)',
+                }}
+              >
+                <div className="flex items-center gap-2">
+                  {isHigh && <AlertTriangle className="h-3 w-3 shrink-0 text-[#f87171]" />}
+                  {isMed && <AlertCircle className="h-3 w-3 shrink-0 text-[#facc15]" />}
+                  <div className="min-w-0 flex-1">
+                    <p className="truncate text-[10px] font-semibold text-white/85">
+                      {a.user_name || a.user_email || 'Anônimo'}
+                    </p>
+                    <p className="truncate text-[8px] text-white/40">{a.user_email}</p>
+                  </div>
+                  <div className="shrink-0 text-right">
+                    <p className="text-[12px] font-bold tabular-nums" style={{ color }}>{a.score}</p>
+                    <p className="text-[7px] uppercase" style={{ color }}>{a.level === 'high' ? 'ALTA' : a.level === 'medium' ? 'MÉDIA' : 'BAIXA'}</p>
+                  </div>
+                </div>
+                <ul className="mt-1 space-y-0.5 pl-5 text-[8.5px] text-white/55">
+                  {sigParts.map((s, i) => <li key={i}>{s}</li>)}
+                </ul>
+              </div>
+            )
+          })}
+          {anomalies.length > 10 && (
+            <p className="text-center text-[7px] text-white/30">+ {anomalies.length - 10} usuário(s) mais</p>
+          )}
+        </div>
+      )}
+
+      {/* Legenda dos sinais */}
+      <details className="mt-2">
+        <summary className="cursor-pointer text-[7px] uppercase tracking-[0.14em] text-white/30 hover:text-white/55">
+          Como funciona o score
+        </summary>
+        <div className="mt-1 space-y-0.5 rounded-[0.4rem] border border-white/6 bg-white/[0.02] px-2 py-1.5 text-[8px] text-white/45">
+          <p>• 3+ IPs distintos → até <span className="text-white/70">30 pts</span></p>
+          <p>• Sessões simultâneas em IPs diferentes → até <span className="text-white/70">35 pts</span> (sinal forte de compartilhamento)</p>
+          <p>• Múltiplas cidades → até <span className="text-white/70">15 pts</span></p>
+          <p>• &gt;30% eventos em madrugada → <span className="text-white/70">10 pts</span></p>
+          <p>• Inativo &gt;7 dias → <span className="text-white/70">10 pts</span> (churn risk)</p>
+          <p className="mt-1 text-white/35">Limite: 100. Alta ≥50, Média ≥25, Baixa &lt;25.</p>
+        </div>
+      </details>
     </div>
   )
 }
