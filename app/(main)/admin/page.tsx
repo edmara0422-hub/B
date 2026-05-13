@@ -695,8 +695,7 @@ export default function AdminPage() {
           <AdminStrategicCockpit />
         </div>
       )}
-        </div>
-      )}
+
 
       {/* ══════ COMMUNICATION ══════ */}
       {tab === 'communication' && !loading && (

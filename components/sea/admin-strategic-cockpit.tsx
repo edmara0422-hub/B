@@ -378,7 +378,7 @@ export function AdminStrategicCockpit() {
               exit={{ opacity: 0, x: 20 }}
               className="space-y-6"
             >
-              <LeadershipProcessCard state={data.state.leadership_process} onReload={() => reloadRef.current?.()} />
+              <LeadershipProcessCard state={data.state.leadership_process} />
               
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                  <div className="md:col-span-2">
