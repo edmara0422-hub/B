@@ -68,6 +68,17 @@ export function AdminStrategicCockpit() {
     } catch { /* silencioso */ }
   }
 
+  const fetchBrief = async () => {
+    setBriefLoading(true)
+    try {
+      const res = await fetch('/api/admin/strategy/daily-brief')
+      const json = await res.json()
+      if (res.ok && json.brief) {
+        setBrief({ question: json.brief.question, action: json.brief.action })
+      }
+    } catch { /* silencioso */ } finally { setBriefLoading(false) }
+  }
+
   const runAnalysis = async () => {
     setAlertsLoading(true)
     try {
@@ -88,6 +99,7 @@ export function AdminStrategicCockpit() {
 
   useEffect(() => { fetchData(); fetchBrief(); fetchAlerts() }, [])
   reloadRef.current = fetchData
+
 
   if (loading && !data) return <p className="py-6 text-center text-[10px] text-white/40">Carregando cockpit estratégico…</p>
   if (error && !data) return <p className="rounded-[0.4rem] border border-[#f8717125] bg-[#f8717108] px-2 py-1.5 text-[9px] text-[#fca5a5]">{error}</p>
