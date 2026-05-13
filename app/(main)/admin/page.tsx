@@ -14,8 +14,9 @@ import {
 } from 'lucide-react'
 import { AreaChart, Area, BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts'
 import { AdminTelemetry } from '@/components/sea/admin-telemetry'
+import { AdminStrategicCockpit } from '@/components/sea/admin-strategic-cockpit'
 
-type AdminTab = 'users' | 'subscriptions' | 'analytics' | 'communication' | 'config' | 'equipes'
+type AdminTab = 'users' | 'subscriptions' | 'analytics' | 'strategy' | 'communication' | 'config' | 'equipes'
 type Team = { id: string; nome: string; memberIds: string[] }
 type UserRow = Profile & { blocked: boolean; last_login: string | null }
 type SubRow = { id: string; user_id: string; plan: string; status: string; started_at: string; expires_at: string | null; cancelled_at: string | null }
@@ -469,6 +470,7 @@ export default function AdminPage() {
     { id: 'users', label: 'Usuarios', icon: Users },
     { id: 'subscriptions', label: 'Assinaturas', icon: Crown },
     { id: 'analytics', label: 'Analytics', icon: LineChart },
+    { id: 'strategy', label: 'Estrategia', icon: TrendingUp },
     { id: 'communication', label: 'Avisos', icon: MessageSquare },
     { id: 'equipes', label: 'Equipes', icon: UserPlus },
     { id: 'config', label: 'Config', icon: Settings },
@@ -947,6 +949,11 @@ export default function AdminPage() {
           </div>
 
         </div>
+      )}
+
+      {/* ══════ STRATEGY — Cockpit Estratégico ══════ */}
+      {tab === 'strategy' && (
+        <AdminStrategicCockpit />
       )}
 
       {/* ══════ CONFIG ══════ */}
