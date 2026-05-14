@@ -23,6 +23,7 @@ import {
   Ruler,
   Save,
   Scan,
+  Search,
   Trash2,
   WifiOff,
   Wind,
