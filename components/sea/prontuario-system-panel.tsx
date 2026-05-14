@@ -2445,9 +2445,15 @@ export function ProntuarioSystemPanel() {
       
       setWorkspaces(newWs)
       setActiveWorkspaceId(newActiveId)
-      const active = newWs.find(w => w.id === newActiveId)!
-      setRecords(active.records)
-      setArchive(active.archive)
+      
+      const active = newWs.find(w => w.id === newActiveId) || newWs[0]
+      if (active) {
+        setRecords(active.records || [])
+        setArchive(active.archive || [])
+      } else {
+        setRecords([])
+        setArchive([])
+      }
       
       localStorage.setItem(sk.workspaces, JSON.stringify(newWs))
       localStorage.setItem(sk.activeWorkspace, newActiveId)
@@ -2492,13 +2498,14 @@ export function ProntuarioSystemPanel() {
         let found: ICURecord[] = []
         
         if (raw?.__sea_v2) {
-          found = (raw.workspaces ?? []).flatMap((w: any) => 
-            (w.records ?? []).concat(w.archive ?? [])
-              .filter((r: any) => (r.name || '').toLowerCase().includes(name.toLowerCase()))
+          found = (raw.workspaces ?? []).flatMap((w: any) => {
+            if (!w) return []
+            return (w.records ?? []).concat(w.archive ?? [])
+              .filter((r: any) => r && (r.name || '').toLowerCase().includes(name.toLowerCase()))
               .map((r: any) => normalizeRecord(r))
-          )
+          })
         } else if (Array.isArray(raw)) {
-          found = raw.filter((r: any) => (r.name || '').toLowerCase().includes(name.toLowerCase()))
+          found = raw.filter((r: any) => r && (r.name || '').toLowerCase().includes(name.toLowerCase()))
                      .map((r: any) => normalizeRecord(r))
         }
         
