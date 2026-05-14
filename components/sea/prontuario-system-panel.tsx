@@ -2962,7 +2962,7 @@ export function ProntuarioSystemPanel() {
             img.src = ev.target?.result as string
             img.onload = () => {
               const canvas = document.createElement('canvas')
-              const MAX_WIDTH = 512
+              const MAX_WIDTH = 800
               let width = img.width
               let height = img.height
               if (width > MAX_WIDTH) {
@@ -2973,7 +2973,7 @@ export function ProntuarioSystemPanel() {
               canvas.height = height
               const ctx = canvas.getContext('2d')
               ctx?.drawImage(img, 0, 0, width, height)
-              const dataUrl = canvas.toDataURL('image/jpeg', 0.5)
+              const dataUrl = canvas.toDataURL('image/jpeg', 0.7)
               resolve(dataUrl)
             }
           }

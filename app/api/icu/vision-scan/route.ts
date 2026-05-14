@@ -20,33 +20,14 @@ export async function POST(req: NextRequest) {
     
     console.log(`[Vision API] Processando: ${file.name} (${Math.round(arrayBuffer.byteLength / 1024)} KB)`)
 
-    // Prompt clínico de Alta Precisão (Protocolo TOT-Carina)
-    const prompt = `Você é um Radiologista Sênior de UTI. Sua missão é fornecer uma análise de ALTA PRECISÃO deste Raio-X de Tórax.
-
-DIRETRIZES TÉCNICAS:
-1. IDENTIFICAÇÃO DA CARINA: Localize o ponto de bifurcação da traqueia. É o seu ponto zero.
-2. MENSURAÇÃO DO TOT: Meça a distância da ponta do tubo até a Carina.
-   - ADEQUADO: 2.0 a 3.0 cm.
-   - ALERTA: > 3.0 cm (Tubo Alto).
-   - CRÍTICO: < 2.0 cm (Tubo Baixo/Seletivo).
-3. DISPOSITIVOS: Avalie SNE (Gástrica/Enteral) e CVC (Veia Cava Superior).
-4. ACHADOS: Descreva Consolidações, Vidro Fosco, Derrame, Pneumotórax.
-
-RESPONDA APENAS EM JSON (TRADUZA TUDO PARA PORTUGUÊS):
-{
-  "findings": ["Achado Detalhado"],
-  "report": "Laudo radiológico técnico completo",
-  "measurements": {
-    "tot_to_carina_cm": 2.5,
-    "status": "ADEQUADO | ALERTA | CRÍTICO",
-    "alert": "Explicação médica do risco"
-  },
-  "deviceStatus": {
-    "tot": "posição exata",
-    "sne": "localização anatômica",
-    "central_access": "posição da ponta"
-  }
-}`
+    const prompt = `Analise este Raio-X de Tórax. 
+    Retorne APENAS um JSON:
+    {
+      "findings": ["Descreva os achados"],
+      "report": "Laudo resumido",
+      "measurements": { "tot_to_carina_cm": 0, "status": "NORMAL", "alert": "" },
+      "deviceStatus": { "tot": "ok", "sne": "ok", "central_access": "ok" }
+    }`
 
 
     const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
@@ -70,9 +51,7 @@ RESPONDA APENAS EM JSON (TRADUZA TUDO PARA PORTUGUÊS):
               { type: 'text', text: prompt }
             ]
           }
-        ],
-        max_tokens: 1024,
-        temperature: 0.1
+        ]
       })
     })
 
