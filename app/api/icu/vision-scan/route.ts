@@ -18,6 +18,8 @@ export async function POST(req: NextRequest) {
     const arrayBuffer = await file.arrayBuffer()
     const base64Image = Buffer.from(arrayBuffer).toString('base64')
     const mimeType = file.type
+    
+    console.log(`[Vision API] Processando: ${file.name} (${Math.round(arrayBuffer.byteLength / 1024)} KB)`)
 
     // Prompt clínico de Alta Precisão (Protocolo TOT-Carina)
     const prompt = `Você é um Radiologista Sênior de UTI. Sua missão é fornecer uma análise de ALTA PRECISÃO deste Raio-X de Tórax.
@@ -47,7 +49,6 @@ RESPONDA APENAS EM JSON (TRADUZA TUDO PARA PORTUGUÊS):
   }
 }`
 
-    console.log(`[Vision API] Processando: ${file.name}`)
 
     const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
@@ -56,7 +57,7 @@ RESPONDA APENAS EM JSON (TRADUZA TUDO PARA PORTUGUÊS):
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        model: 'llama-3.2-11b-vision-preview',
+        model: 'llama-3.2-90b-vision-preview',
         messages: [
           {
             role: 'user',

@@ -2288,16 +2288,8 @@ export function ProntuarioSystemPanel() {
         localWs = parsed.map(w => ({
           id: w.id,
           name: w.name,
-          records: (w.records ?? []).map(r => normalizeRecord(r)).filter(r => {
-            if (isAdmin) return true
-            const upDate = new Date(r.updatedAt)
-            return upDate >= latestCutoff
-          }),
-          archive: (w.archive ?? []).map(r => normalizeRecord(r)).filter(r => {
-            if (isAdmin) return true
-            const upDate = new Date(r.updatedAt)
-            return upDate >= latestCutoff
-          }),
+          records: (w.records ?? []).map(r => normalizeRecord(r)),
+          archive: (w.archive ?? []).map(r => normalizeRecord(r)),
         }))
         localActiveId = storedActiveId ?? localWs[0]?.id ?? ''
       } else {
@@ -2923,7 +2915,7 @@ export function ProntuarioSystemPanel() {
             img.src = ev.target?.result as string
             img.onload = () => {
               const canvas = document.createElement('canvas')
-              const MAX_WIDTH = 1024
+              const MAX_WIDTH = 800
               let width = img.width
               let height = img.height
               if (width > MAX_WIDTH) {
@@ -2934,7 +2926,7 @@ export function ProntuarioSystemPanel() {
               canvas.height = height
               const ctx = canvas.getContext('2d')
               ctx?.drawImage(img, 0, 0, width, height)
-              canvas.toBlob((blob) => resolve(blob || f), 'image/jpeg', 0.8)
+              canvas.toBlob((blob) => resolve(blob || f), 'image/jpeg', 0.7)
             }
           }
         })
@@ -3543,7 +3535,23 @@ export function ProntuarioSystemPanel() {
                 <Cloud className="h-2.5 w-2.5" />Erro
               </span>
             )}
-            <ActionButton icon={Link2} label="Sincronizar" active={showSyncModal} onClick={() => setShowSyncModal(v => !v)} />
+            {isAdmin && (
+              <>
+                <ActionButton 
+                  icon={RotateCcw} 
+                  label="Resgatar" 
+                  onClick={() => {
+                    if (confirm('Forçar resgate de dados do servidor?')) {
+                      // O resgate já acontece no useEffect de hidratação se local estiver vazio.
+                      // Mas podemos forçar uma limpeza local para disparar a recarga.
+                      localStorage.removeItem(sk.workspaces)
+                      window.location.reload()
+                    }
+                  }} 
+                />
+                <ActionButton icon={Link2} label="Sincronizar" active={showSyncModal} onClick={() => setShowSyncModal(v => !v)} />
+              </>
+            )}
             <ActionButton icon={Archive} label="Arquivo" badge={archive.length} active={view === 'archive'} onClick={() => setView(view === 'archive' ? 'records' : 'archive')} />
             <ActionButton icon={BookOpen} label="Ref." active={view === 'reference'} onClick={() => setView(view === 'reference' ? 'records' : 'reference')} />
             <ActionButton icon={Plus} label="Adicionar" onClick={addRecord} />
