@@ -2399,8 +2399,55 @@ export function ProntuarioSystemPanel() {
         localStorage.setItem(sk.workspaces, JSON.stringify(newWs))
         localStorage.setItem(sk.activeWorkspace, newActiveId)
       } catch { /* ignore */ }
-    }).catch(() => { /* network error — local data already shown */ })
+    }).catch((err) => { 
+      console.error('[Supabase Sync] Erro no fetch inicial:', err)
+    })
   }, [authUserId])
+
+  const forceRestoreFromServer = async () => {
+    if (!supabase || !authUserId) return
+    setSyncStatus('syncing')
+    try {
+      const sid = authUserId
+      const { data, error } = await supabase.from('icu_sessions').select('records,archive').eq('session_id', sid).maybeSingle()
+      if (error) throw error
+      if (!data?.records) {
+        alert('Nenhum dado encontrado no servidor para este usuário.')
+        return
+      }
+
+      const raw = data.records as any
+      let newWs: Workspace[] = []
+      let newActiveId = ''
+      if (raw?.__sea_v2) {
+        newWs = (raw.workspaces ?? []).map((w: any) => ({
+          id: w.id,
+          name: w.name,
+          records: (w.records ?? []).map((r: any) => normalizeRecord(r)),
+          archive: (w.archive ?? []).map((r: any) => normalizeRecord(r)),
+        }))
+        newActiveId = raw.activeId || newWs[0]?.id || ''
+      } else {
+        const remoteRec = (data.records as any[]).map(r => normalizeRecord(r))
+        const remoteArc = ((data.archive ?? []) as any[]).map(r => normalizeRecord(r))
+        newWs = [{ id: generateId(), name: 'UTI', records: remoteRec, archive: remoteArc }]
+        newActiveId = newWs[0].id
+      }
+      
+      setWorkspaces(newWs)
+      setActiveWorkspaceId(newActiveId)
+      const active = newWs.find(w => w.id === newActiveId)!
+      setRecords(active.records)
+      setArchive(active.archive)
+      localStorage.setItem(sk.workspaces, JSON.stringify(newWs))
+      localStorage.setItem(sk.activeWorkspace, newActiveId)
+      setSyncStatus('saved')
+      alert('Dados resgatados com sucesso!')
+    } catch (err: any) {
+      alert(`Falha ao resgatar: ${err.message}`)
+      setSyncStatus('error')
+    }
+  }
 
   useEffect(() => {
     if (!hydrated) return
@@ -2915,7 +2962,7 @@ export function ProntuarioSystemPanel() {
             img.src = ev.target?.result as string
             img.onload = () => {
               const canvas = document.createElement('canvas')
-              const MAX_WIDTH = 800
+              const MAX_WIDTH = 640
               let width = img.width
               let height = img.height
               if (width > MAX_WIDTH) {
@@ -2926,7 +2973,7 @@ export function ProntuarioSystemPanel() {
               canvas.height = height
               const ctx = canvas.getContext('2d')
               ctx?.drawImage(img, 0, 0, width, height)
-              canvas.toBlob((blob) => resolve(blob || f), 'image/jpeg', 0.7)
+              canvas.toBlob((blob) => resolve(blob || f), 'image/jpeg', 0.6)
             }
           }
         })
@@ -2977,7 +3024,8 @@ export function ProntuarioSystemPanel() {
         })
       } else {
         const errData = await res.json()
-        alert(`Falha no Scan: ${errData.error || 'Erro desconhecido'}`)
+        console.error('[Scan Error]', errData)
+        alert(`FALHA TÉCNICA (Erro 400): A imagem pode estar muito grande ou o modelo está instável. \n\nDetalhe: ${JSON.stringify(errData)}`)
       }
     } catch (err) {
       console.error('Scan failed', err)
@@ -3541,11 +3589,8 @@ export function ProntuarioSystemPanel() {
                   icon={RotateCcw} 
                   label="Resgatar" 
                   onClick={() => {
-                    if (confirm('Forçar resgate de dados do servidor?')) {
-                      // O resgate já acontece no useEffect de hidratação se local estiver vazio.
-                      // Mas podemos forçar uma limpeza local para disparar a recarga.
-                      localStorage.removeItem(sk.workspaces)
-                      window.location.reload()
+                    if (confirm('Forçar resgate de dados do servidor? (Isso sobrescreverá sua lista atual)')) {
+                      forceRestoreFromServer()
                     }
                   }} 
                 />
