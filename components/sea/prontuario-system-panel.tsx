@@ -2462,28 +2462,34 @@ export function ProntuarioSystemPanel() {
 
   const rescuePatientByName = async () => {
     if (!supabase || !isAdmin) return
-    const name = prompt('Digite o nome do paciente para buscar em TODAS as sessões do servidor:')
+    const name = prompt('Digite o nome do paciente para resgatar:')
     if (!name) return
 
     setSyncStatus('syncing')
     try {
+      // Busca as últimas 50 sessões para procurar o paciente nelas
+      // Isso é muito mais seguro e evita erros de sintaxe do Postgres
       const { data, error } = await supabase
         .from('icu_sessions')
         .select('session_id, records, updated_at')
-        .filter('records::text', 'ilike', `%${name}%`)
         .order('updated_at', { ascending: false })
-        .limit(10)
+        .limit(50)
 
       if (error) throw error
       if (!data || data.length === 0) {
-        alert(`Nenhum paciente encontrado com o nome "${name}".`)
+        alert('Nenhuma sessão encontrada no servidor.')
         setSyncStatus('saved')
         return
       }
 
-      const options = data.flatMap(session => {
+      console.log(`[Supabase Rescue] Analisando ${data.length} sessões em busca de "${name}"...`)
+      
+      const options: Array<{ record: ICURecord, updatedAt: string, sessionId: string }> = []
+      
+      data.forEach(session => {
         const raw = session.records as any
         let found: ICURecord[] = []
+        
         if (raw?.__sea_v2) {
           found = (raw.workspaces ?? []).flatMap((w: any) => 
             (w.records ?? []).concat(w.archive ?? [])
@@ -2494,20 +2500,23 @@ export function ProntuarioSystemPanel() {
           found = raw.filter((r: any) => (r.name || '').toLowerCase().includes(name.toLowerCase()))
                      .map((r: any) => normalizeRecord(r))
         }
-        return found.map(r => ({ record: r, updatedAt: session.updated_at, sessionId: session.session_id }))
+        
+        found.forEach(r => {
+          options.push({ record: r, updatedAt: session.updated_at, sessionId: session.session_id })
+        })
       })
 
       if (options.length === 0) {
-        alert(`O nome "${name}" foi citado em sessões, mas não é o nome principal de um paciente.`)
+        alert(`Não encontramos nenhum paciente com o nome "${name}" nas sessões recentes.`)
         setSyncStatus('saved')
         return
       }
 
-      const listStr = options.map((opt, i) => 
-        `${i+1}. ${opt.record.name} (Quarto: ${opt.record.room || '?'}) - Atualizado: ${new Date(opt.updatedAt).toLocaleString()}`
+      const listStr = options.slice(0, 10).map((opt, i) => 
+        `${i+1}. ${opt.record.name} (Quarto: ${opt.record.room || '?'}) - Salvo em: ${new Date(opt.updatedAt).toLocaleString()}`
       ).join('\n')
       
-      const choice = prompt(`Pacientes encontrados:\n\n${listStr}\n\nDigite o número para importar:`)
+      const choice = prompt(`Pacientes encontrados (últimos 10):\n\n${listStr}\n\nDigite o número para importar:`)
       const selected = options[parseInt(choice || '0') - 1]
 
       if (selected) {
@@ -2518,13 +2527,26 @@ export function ProntuarioSystemPanel() {
           updatedAt: new Date().toISOString() 
         }
         addRecord(imported)
-        alert(`${selected.record.name} importado para sua lista atual!`)
+        alert(`${selected.record.name} foi importado com sucesso!`)
       }
       setSyncStatus('saved')
     } catch (err: any) {
       console.error('[Supabase Rescue] Erro:', err)
-      alert(`Erro na busca: ${err.message}`)
+      alert(`Erro técnico na busca: ${err.message || 'Erro desconhecido'}`)
       setSyncStatus('error')
+    }
+  }
+
+  const handleUnifiedRescue = async () => {
+    if (!supabase || !isAdmin) return
+    const mode = prompt('O que deseja fazer?\n1. Resgatar minha ÚLTIMA LISTA completa\n2. Buscar um PACIENTE pelo nome\n\nDigite 1 ou 2:')
+    
+    if (mode === '1') {
+      if (confirm('Isso apagará seus dados locais atuais. Continuar?')) {
+        forceRestoreFromServer()
+      }
+    } else if (mode === '2') {
+      rescuePatientByName()
     }
   }
 
@@ -3689,30 +3711,23 @@ export function ProntuarioSystemPanel() {
               </span>
             )}
             {isAdmin && (
-              <>
-                <ActionButton 
-                  icon={CloudUpload} 
-                  label="Salvar" 
-                  onClick={() => {
-                    forceSaveToServer()
-                  }} 
-                />
-                <ActionButton 
-                  icon={RotateCcw} 
-                  label="Resgatar" 
-                  onClick={() => {
-                    if (confirm('AVISO: Isso apagará seus dados LOCAIS e puxará a última versão salva no NUVEM. Deseja continuar?')) {
-                      forceRestoreFromServer()
-                    }
-                  }} 
-                />
-                <ActionButton 
-                  icon={Brain} 
-                  label="Busca Global" 
-                  onClick={rescuePatientByName} 
-                />
-                <ActionButton icon={Link2} label="Sincronizar" active={showSyncModal} onClick={() => setShowSyncModal(v => !v)} />
-              </>
+              <div className="flex items-center gap-1.5 border-l border-white/10 pl-2 ml-1">
+                <button 
+                  onClick={forceSaveToServer}
+                  className="p-1.5 hover:bg-white/5 rounded-lg transition-colors text-white/60 hover:text-white"
+                  title="Salvar na Nuvem"
+                >
+                  <CloudUpload className="h-4 w-4" />
+                </button>
+                <button 
+                  onClick={handleUnifiedRescue}
+                  className="p-1.5 bg-blue-500/10 hover:bg-blue-500/20 rounded-lg transition-colors text-blue-400"
+                  title="Resgatar Dados"
+                >
+                  <Search className="h-4 w-4" />
+                </button>
+                <ActionButton icon={Link2} label="Sinc." active={showSyncModal} onClick={() => setShowSyncModal(v => !v)} />
+              </div>
             )}
             <ActionButton icon={Archive} label="Arquivo" badge={archive.length} active={view === 'archive'} onClick={() => setView(view === 'archive' ? 'records' : 'archive')} />
             <ActionButton icon={BookOpen} label="Ref." active={view === 'reference'} onClick={() => setView(view === 'reference' ? 'records' : 'reference')} />
