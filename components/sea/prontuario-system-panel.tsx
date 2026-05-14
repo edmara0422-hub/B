@@ -2621,6 +2621,13 @@ export function ProntuarioSystemPanel() {
       newWs = [{ id: generateId(), name: 'UTI', records: remoteRec, archive: [] }]
       newActiveId = newWs[0].id
     }
+
+    // Se por algum motivo o resgate vier 100% vazio, cria um setor padrão
+    if (newWs.length === 0) {
+      const defaultWs = { id: generateId(), name: 'UTI', records: [], archive: [] }
+      newWs = [defaultWs]
+      newActiveId = defaultWs.id
+    }
     
     setWorkspaces(newWs)
     setActiveWorkspaceId(newActiveId)
