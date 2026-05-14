@@ -2550,16 +2550,132 @@ export function ProntuarioSystemPanel() {
     }
   }
 
+  const listAllRecentSessions = async () => {
+    if (!supabase || !isAdmin) return
+    setSyncStatus('syncing')
+    try {
+      const { data, error } = await supabase
+        .from('icu_sessions')
+        .select('session_id, records, updated_at')
+        .order('updated_at', { ascending: false })
+        .limit(15)
+
+      if (error) throw error
+      if (!data || data.length === 0) {
+        alert('Nenhum dado encontrado no servidor.')
+        setSyncStatus('saved')
+        return
+      }
+
+      const summary = data.map((s, i) => {
+        const raw = s.records as any
+        let count = 0
+        if (raw?.__sea_v2) {
+          count = (raw.workspaces ?? []).reduce((acc: number, w: any) => acc + (w.records?.length || 0), 0)
+        } else if (Array.isArray(raw)) {
+          count = raw.length
+        }
+        return `${i+1}. ID: ${s.session_id.slice(0,8)}... | Pacientes: ${count} | Atualizado: ${new Date(s.updated_at).toLocaleString()}`
+      }).join('\n')
+
+      const choice = prompt(`Últimas sessões no servidor:\n\n${summary}\n\nDigite o número para ver os detalhes desta sessão:`)
+      const selected = data[parseInt(choice || '0') - 1]
+      
+      if (selected) {
+        const raw = selected.records as any
+        let names = ''
+        if (raw?.__sea_v2) {
+          names = (raw.workspaces ?? []).flatMap((w: any) => (w.records ?? []).map((r: any) => r.name)).join(', ')
+        } else if (Array.isArray(raw)) {
+          names = raw.map((r: any) => r.name).join(', ')
+        }
+        
+        if (confirm(`Sessão selecionada contém: ${names || 'Nenhum nome'}\n\nDeseja restaurar ESTA LISTA completa?`)) {
+          // Simula o resgate desta data específica
+          const fakeData = { records: selected.records, archive: [], updated_at: selected.updated_at }
+          processRescuedData(fakeData)
+        }
+      }
+      setSyncStatus('saved')
+    } catch (err: any) {
+      alert(`Erro no Raio-X: ${err.message}`)
+      setSyncStatus('error')
+    }
+  }
+
+  const processRescuedData = (data: any) => {
+    const raw = data.records as any
+    let newWs: Workspace[] = []
+    let newActiveId = ''
+    
+    if (raw?.__sea_v2) {
+      newWs = (raw.workspaces ?? []).map((w: any) => ({
+        id: w.id,
+        name: w.name,
+        records: (w.records ?? []).map((r: any) => normalizeRecord(r)),
+        archive: (w.archive ?? []).map((r: any) => normalizeRecord(r)),
+      }))
+      newActiveId = raw.activeId || newWs[0]?.id || ''
+    } else {
+      const remoteRec = (Array.isArray(data.records) ? data.records : []).map((r: any) => normalizeRecord(r))
+      newWs = [{ id: generateId(), name: 'UTI', records: remoteRec, archive: [] }]
+      newActiveId = newWs[0].id
+    }
+    
+    setWorkspaces(newWs)
+    setActiveWorkspaceId(newActiveId)
+    const active = newWs.find(w => w.id === newActiveId) || newWs[0]
+    if (active) {
+      setRecords(active.records || [])
+      setArchive(active.archive || [])
+      workspacesRef.current = newWs
+      activeWsIdRef.current = newActiveId
+    }
+    localStorage.setItem(sk.workspaces, JSON.stringify(newWs))
+    localStorage.setItem(sk.activeWorkspace, newActiveId)
+    alert('Dados restaurados com sucesso!')
+  }
+
   const handleUnifiedRescue = async () => {
     if (!supabase || !isAdmin) return
-    const mode = prompt('O que deseja fazer?\n1. Resgatar minha ÚLTIMA LISTA completa\n2. Buscar um PACIENTE pelo nome\n\nDigite 1 ou 2:')
+    const mode = prompt('Resgate de Dados:\n1. Resgatar minha ÚLTIMA LISTA\n2. Buscar PACIENTE por nome\n3. Raio-X (Ver sessões recentes)\n4. Digitar ID de Sessão manualmente\n5. Resgatar dados de ANTES do login (Legacy)\n\nDigite 1, 2, 3, 4 ou 5:')
     
     if (mode === '1') {
-      if (confirm('Isso apagará seus dados locais atuais. Continuar?')) {
-        forceRestoreFromServer()
-      }
+      if (confirm('Restaurar sua última lista?')) forceRestoreFromServer()
     } else if (mode === '2') {
       rescuePatientByName()
+    } else if (mode === '3') {
+      listAllRecentSessions()
+    } else if (mode === '4') {
+      const sid = prompt('Cole aqui o session_id do Supabase:')
+      if (sid) {
+        setSyncStatus('syncing')
+        const { data, error } = await supabase.from('icu_sessions').select('records,archive,updated_at').eq('session_id', sid).maybeSingle()
+        if (error || !data) {
+          alert('Erro ao buscar esse ID ou ID não encontrado.')
+          setSyncStatus('error')
+        } else {
+          processRescuedData(data)
+          setSyncStatus('saved')
+        }
+      }
+    } else if (mode === '5') {
+      const legacySid = localStorage.getItem('sea-session-id-legacy')
+      if (!legacySid) {
+        alert('Não encontramos nenhum ID antigo registrado neste navegador.')
+        return
+      }
+      if (confirm(`Encontramos um ID antigo: ${legacySid.slice(0,8)}...\nDeseja tentar resgatar os dados dele?`)) {
+        setSyncStatus('syncing')
+        const { data, error } = await supabase.from('icu_sessions').select('records,archive,updated_at').eq('session_id', legacySid).maybeSingle()
+        if (error || !data || !data.records) {
+          alert('Nenhum dado encontrado para esse ID antigo no servidor.')
+          setSyncStatus('error')
+        } else {
+          processRescuedData(data)
+          setSyncStatus('saved')
+        }
+      }
     }
   }
 
@@ -2595,6 +2711,14 @@ export function ProntuarioSystemPanel() {
     setSyncStatus('syncing')
     const timer = setTimeout(async () => {
       try {
+        // SEGURANÇA: Não sincroniza automaticamente se a lista local estiver vazia
+        // Isso evita sobrescrever backups bons com "nada".
+        const hasData = records.length > 0 || archive.length > 0 || workspaces.some(w => w.records.length > 0)
+        if (!hasData) {
+          setSyncStatus('saved')
+          return
+        }
+
         const sessionId = getOrCreateSessionId()
         const { error } = await supabase!.from('icu_sessions').upsert({
           session_id: sessionId,
