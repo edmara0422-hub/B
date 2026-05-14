@@ -2973,15 +2973,21 @@ export function ProntuarioSystemPanel() {
               canvas.height = height
               const ctx = canvas.getContext('2d')
               ctx?.drawImage(img, 0, 0, width, height)
-              canvas.toBlob((blob) => resolve(blob || f), 'image/jpeg', 0.5)
+              const dataUrl = canvas.toDataURL('image/jpeg', 0.5)
+              resolve(dataUrl)
             }
           }
         })
       }
 
-      const resizedBlob = await resizeImage(file)
+      const resizedDataUrl = await resizeImage(file)
+      // Extract base64 part only for the API
+      const base64Part = (resizedDataUrl as string).split(',')[1]
+      
       const formData = new FormData()
-      formData.append('file', resizedBlob, 'scan.jpg')
+      // We send it as a blob still but the API will just read the bytes
+      const resBlob = await (await fetch(resizedDataUrl as string)).blob()
+      formData.append('file', resBlob, 'scan.jpg')
       
       const res = await fetch('/api/icu/vision-scan', {
         method: 'POST',

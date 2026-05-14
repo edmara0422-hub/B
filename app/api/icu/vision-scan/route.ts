@@ -16,8 +16,7 @@ export async function POST(req: NextRequest) {
     }
 
     const arrayBuffer = await file.arrayBuffer()
-    const base64Image = Buffer.from(arrayBuffer).toString('base64')
-    const mimeType = file.type
+    const base64Image = Buffer.from(arrayBuffer).toString('base64').replace(/[\r\n]/g, '')
     
     console.log(`[Vision API] Processando: ${file.name} (${Math.round(arrayBuffer.byteLength / 1024)} KB)`)
 
@@ -62,17 +61,17 @@ RESPONDA APENAS EM JSON (TRADUZA TUDO PARA PORTUGUÊS):
           {
             role: 'user',
             content: [
-              { type: 'text', text: prompt },
               {
                 type: 'image_url',
                 image_url: {
                   url: `data:image/jpeg;base64,${base64Image}`
                 }
-              }
+              },
+              { type: 'text', text: prompt }
             ]
           }
         ],
-        max_tokens: 800,
+        max_tokens: 1024,
         temperature: 0.1
       })
     })
@@ -80,7 +79,7 @@ RESPONDA APENAS EM JSON (TRADUZA TUDO PARA PORTUGUÊS):
     if (!response.ok) {
       const errorText = await response.text()
       console.error('[Vision API] Erro Groq:', response.status, errorText)
-      return NextResponse.json({ error: `Groq API Error: ${response.status}` }, { status: response.status })
+      return NextResponse.json({ error: `Groq API Error: ${response.status}`, details: errorText }, { status: response.status })
     }
 
     const data = await response.json()
