@@ -66,7 +66,7 @@ RESPONDA APENAS EM JSON (TRADUZA TUDO PARA PORTUGUÊS):
               {
                 type: 'image_url',
                 image_url: {
-                  url: `data:${mimeType || 'image/jpeg'};base64,${base64Image}`
+                  url: `data:image/jpeg;base64,${base64Image}`
                 }
               }
             ]
