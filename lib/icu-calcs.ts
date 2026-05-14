@@ -55,6 +55,11 @@ export type ImageExamEntry = {
     status?: string
     alert?: string
   }
+  deviceStatus?: {
+    tot?: string
+    sne?: string
+    central_access?: string
+  }
 }
 
 export type GasometryHistoryEntry = {
