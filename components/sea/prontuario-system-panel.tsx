@@ -2953,7 +2953,7 @@ export function ProntuarioSystemPanel() {
     
     try {
       // Redimensionar imagem antes de enviar (Max 1024px) para evitar Erro 400/413
-      const resizeImage = (f: File): Promise<Blob> => {
+      const resizeImage = (f: File): Promise<string> => {
         return new Promise((resolve) => {
           const reader = new FileReader()
           reader.readAsDataURL(f)
@@ -2981,12 +2981,8 @@ export function ProntuarioSystemPanel() {
       }
 
       const resizedDataUrl = await resizeImage(file)
-      // Extract base64 part only for the API
-      const base64Part = (resizedDataUrl as string).split(',')[1]
-      
       const formData = new FormData()
-      // We send it as a blob still but the API will just read the bytes
-      const resBlob = await (await fetch(resizedDataUrl as string)).blob()
+      const resBlob = await (await fetch(resizedDataUrl)).blob()
       formData.append('file', resBlob, 'scan.jpg')
       
       const res = await fetch('/api/icu/vision-scan', {
