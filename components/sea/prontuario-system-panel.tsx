@@ -2727,9 +2727,22 @@ export function ProntuarioSystemPanel() {
         }
 
         const sessionId = getOrCreateSessionId()
+
+        const getCircularReplacer = () => {
+          const seen = new WeakSet()
+          return (key: string, value: any) => {
+            if (typeof value === "object" && value !== null) {
+              if (seen.has(value)) return "[Circular Reference]"
+              seen.add(value)
+            }
+            return value
+          }
+        }
+        const safeSnapshot = JSON.parse(JSON.stringify(snapshot, getCircularReplacer()))
+
         const { error } = await supabase!.from('icu_sessions').upsert({
           session_id: sessionId,
-          records: { __sea_v2: true, workspaces: snapshot, activeId: activeWsIdRef.current },
+          records: { __sea_v2: true, workspaces: safeSnapshot, activeId: activeWsIdRef.current },
           archive: [],
           updated_at: new Date().toISOString(),
         }, { onConflict: 'session_id' })
@@ -2749,9 +2762,24 @@ export function ProntuarioSystemPanel() {
       const snapshot = workspaces.map(w =>
         w.id === activeWorkspaceId ? { ...w, records, archive } : w
       )
+
+      // Sanitiza o objeto para remover referências cíclicas antes do Supabase dar erro de JSON.stringify
+      const getCircularReplacer = () => {
+        const seen = new WeakSet()
+        return (key: string, value: any) => {
+          if (typeof value === "object" && value !== null) {
+            if (seen.has(value)) return "[Circular Reference]"
+            seen.add(value)
+          }
+          return value
+        }
+      }
+      
+      const safeSnapshot = JSON.parse(JSON.stringify(snapshot, getCircularReplacer()))
+
       const { error } = await supabase.from('icu_sessions').upsert({
         session_id: sid,
-        records: { __sea_v2: true, workspaces: snapshot, activeId: activeWorkspaceId },
+        records: { __sea_v2: true, workspaces: safeSnapshot, activeId: activeWorkspaceId },
         archive: [],
         updated_at: new Date().toISOString(),
       }, { onConflict: 'session_id' })
