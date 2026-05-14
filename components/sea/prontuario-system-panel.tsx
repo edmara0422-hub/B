@@ -2052,6 +2052,22 @@ export function ProntuarioSystemPanel() {
   const [importingSync, setImportingSync] = useState(false)
   const [syncCopied, setSyncCopied] = useState(false)
 
+  // --- ICU Master Clock & Shift Policy ---
+  const [currentTime, setCurrentTime] = useState(new Date())
+  const [showShiftModal, setShowShiftModal] = useState(false)
+  const [shiftStart, setShiftStart] = useState<string | null>(() => {
+    if (typeof window !== 'undefined') return localStorage.getItem('sea-shift-start')
+    return null
+  })
+  const [shiftDuration, setShiftDuration] = useState<number>(() => {
+    if (typeof window !== 'undefined') return Number(localStorage.getItem('sea-shift-duration') || 12)
+    return 12
+  })
+  const [shiftCutoff, setShiftCutoff] = useState<string | null>(() => {
+    if (typeof window !== 'undefined') return localStorage.getItem('sea-shift-cutoff')
+    return null
+  })
+
   // Workspaces (setores) — UTI 1, PS, Enfermaria etc.
   const [workspaces, setWorkspaces] = useState<Workspace[]>([])
   const [activeWorkspaceId, setActiveWorkspaceId] = useState<string>('')
@@ -2092,6 +2108,47 @@ export function ProntuarioSystemPanel() {
     if (!id) { id = generateId(); localStorage.setItem('sea-session-id', id) }
     return id
   }
+
+  // --- Clock & Cleanup Effect ---
+  useEffect(() => {
+    const timer = setInterval(() => {
+      const now = new Date()
+      setCurrentTime(now)
+
+      // Se não for admin e o horário de corte chegou, incinera tudo
+      if (!isAdmin && shiftCutoff) {
+        const cutoffDate = new Date(shiftCutoff)
+        if (now >= cutoffDate) {
+          console.log('[Shift Policy] Cutoff reached. Wiping all data.')
+          // Limpeza Total: Records e Archive em todos os workspaces
+          const wipedWorkspaces = workspacesRef.current.map(w => ({
+            ...w,
+            records: [],
+            archive: []
+          }))
+          
+          workspacesRef.current = wipedWorkspaces
+          setWorkspaces(wipedWorkspaces)
+          setRecords([])
+          setArchive([])
+          setShiftCutoff(null)
+          setShiftStart(null)
+          localStorage.removeItem('sea-shift-cutoff')
+          localStorage.removeItem('sea-shift-start')
+          localStorage.removeItem('sea-shift-duration')
+          
+          // Força persistência do wipe
+          const skLocal = keysFor(authUserId)
+          localStorage.setItem(skLocal.workspaces, JSON.stringify(wipedWorkspaces))
+          localStorage.setItem(skLocal.records, '[]')
+          localStorage.setItem(skLocal.archive, '[]')
+          
+          alert('Plantão Encerrado: Os dados foram removidos por conformidade LGPD.')
+        }
+      }
+    }, 1000)
+    return () => clearInterval(timer)
+  }, [isAdmin, shiftCutoff, authUserId])
 
   function switchWorkspace(id: string) {
     if (id === activeWsIdRef.current) return
@@ -2202,11 +2259,40 @@ export function ProntuarioSystemPanel() {
       }
 
       if (storedWs) {
-        localWs = (JSON.parse(storedWs) as Workspace[]).map(w => ({
+        const parsed = JSON.parse(storedWs) as Workspace[]
+        
+        // --- POLÍTICA DE RETENÇÃO BASEADA EM TURNOS (SHIFT DATA POLICY) ---
+        // Se não for admin, dados expiram nos horários de corte: 09:00 e 21:00.
+        // Isso dá um buffer de 2h após o fim do plantão (07:00-19:00).
+        const isAdmin = useAuthStore.getState().isAdmin
+        const now = new Date()
+        
+        // Calcula o horário do último corte (09:00 ou 21:00)
+        const getLatestCutoff = () => {
+          const c1 = new Date(now); c1.setHours(9, 0, 0, 0)
+          const c2 = new Date(now); c2.setHours(21, 0, 0, 0)
+          const yesterdayC2 = new Date(now); yesterdayC2.setDate(now.getDate() - 1); yesterdayC2.setHours(21, 0, 0, 0)
+          
+          if (now >= c2) return c2
+          if (now >= c1) return c1
+          return yesterdayC2
+        }
+        
+        const latestCutoff = getLatestCutoff()
+
+        localWs = parsed.map(w => ({
           id: w.id,
           name: w.name,
-          records: (w.records ?? []).map(r => normalizeRecord(r)),
-          archive: (w.archive ?? []).map(r => normalizeRecord(r)),
+          records: (w.records ?? []).map(r => normalizeRecord(r)).filter(r => {
+            if (isAdmin) return true
+            const upDate = new Date(r.updatedAt)
+            return upDate >= latestCutoff
+          }),
+          archive: (w.archive ?? []).map(r => normalizeRecord(r)).filter(r => {
+            if (isAdmin) return true
+            const upDate = new Date(r.updatedAt)
+            return upDate >= latestCutoff
+          }),
         }))
         localActiveId = storedActiveId ?? localWs[0]?.id ?? ''
       } else {
@@ -2239,17 +2325,22 @@ export function ProntuarioSystemPanel() {
     }
 
     const activeWs = localWs.find(w => w.id === localActiveId)!
-    workspacesRef.current = localWs
-    activeWsIdRef.current = localActiveId
-    setWorkspaces(localWs)
-    setActiveWorkspaceId(localActiveId)
-    setRecords(activeWs.records)
-    setArchive(activeWs.archive)
-    setHydrated(true)
+    
+    // --- POLÍTICA DE SYNC ADMIN-ONLY ---
+    // Somente o e-mail da Edmara Rocha persiste listas no Supabase.
+    // Outros usuários operam localmente e são limpos pelo relógio.
+    const isAdminEmail = authUserId && useAuthStore.getState().isAdmin
+    
+    if (!supabase || !isAdminEmail) {
+      setWorkspaces(localWs)
+      setActiveWorkspaceId(localActiveId)
+      setRecords(activeWs.records)
+      setArchive(activeWs.archive)
+      setHydrated(true)
+      setSyncStatus('offline')
+      return
+    }
 
-    // 2. Supabase em background — busca o prontuário desse user.id.
-    //    Se vazio, faz migração one-shot do row legacy (session_id antigo).
-    if (!supabase) return
     const sessionId = getOrCreateSessionId() // agora retorna o user.id
     const timeout = new Promise<null>(res => setTimeout(() => res(null), 8000))
     const fetch = supabase.from('icu_sessions').select('records,archive').eq('session_id', sessionId).maybeSingle()
@@ -2337,10 +2428,13 @@ export function ProntuarioSystemPanel() {
       setSyncStatus(supabase ? 'saved' : 'offline')
       return
     }
-    setSyncStatus(supabase ? 'saved' : 'offline')
+    const isAdminEmail = authUserId && useAuthStore.getState().isAdmin
+    if (!supabase || !isAdminEmail) {
+      setSyncStatus('offline')
+      return
+    }
 
-    // Supabase em background — debounced 3s, não bloqueia o status
-    if (!supabase) return
+    setSyncStatus('syncing')
     const timer = setTimeout(async () => {
       try {
         const sessionId = getOrCreateSessionId()
@@ -2814,8 +2908,36 @@ export function ProntuarioSystemPanel() {
     const index = isScanning
     
     try {
+      // Redimensionar imagem antes de enviar (Max 1024px) para evitar Erro 400/413
+      const resizeImage = (f: File): Promise<Blob> => {
+        return new Promise((resolve) => {
+          const reader = new FileReader()
+          reader.readAsDataURL(f)
+          reader.onload = (ev) => {
+            const img = new Image()
+            img.src = ev.target?.result as string
+            img.onload = () => {
+              const canvas = document.createElement('canvas')
+              const MAX_WIDTH = 1024
+              let width = img.width
+              let height = img.height
+              if (width > MAX_WIDTH) {
+                height *= MAX_WIDTH / width
+                width = MAX_WIDTH
+              }
+              canvas.width = width
+              canvas.height = height
+              const ctx = canvas.getContext('2d')
+              ctx?.drawImage(img, 0, 0, width, height)
+              canvas.toBlob((blob) => resolve(blob || f), 'image/jpeg', 0.8)
+            }
+          }
+        })
+      }
+
+      const resizedBlob = await resizeImage(file)
       const formData = new FormData()
-      formData.append('file', file)
+      formData.append('file', resizedBlob, 'scan.jpg')
       
       const res = await fetch('/api/icu/vision-scan', {
         method: 'POST',
@@ -2838,6 +2960,10 @@ export function ProntuarioSystemPanel() {
             const m = data.measurements
             const rulerText = `[RÉGUA DIGITAL]: ${m.tot_to_carina_cm}cm da carina (${m.status}). ${m.alert || ''}`
             item.laudo = (item.laudo ? item.laudo + '\n\n' : '') + rulerText
+          }
+
+          if (data.deviceStatus) {
+            item.deviceStatus = data.deviceStatus
           }
 
           if (data.report) {
@@ -3217,12 +3343,40 @@ export function ProntuarioSystemPanel() {
   }
 
   const addRecord = () => {
+    // Se não for admin e não tiver turno configurado, abre o modal
+    if (!isAdmin && !shiftCutoff) {
+      setShowShiftModal(true)
+      return
+    }
     const record = createRecord()
     setRecords((prev) => [record, ...prev])
     setSelectedId(record.id)
     setActiveTab('dados')
     setView('records')
     window.scrollTo({ top: 0, behavior: 'smooth' })
+    
+    // Força update no workspacesRef para garantir persistência local imediata
+    const snapshot = workspacesRef.current.map(w =>
+      w.id === activeWsIdRef.current ? { ...w, records: [record, ...w.records] } : w
+    )
+    workspacesRef.current = snapshot
+  }
+
+  const startShift = (duration: number) => {
+    const start = new Date()
+    // Corte = Início + Duração + 2h de buffer
+    const cutoff = new Date(start.getTime() + (duration + 2) * 60 * 60 * 1000)
+    
+    setShiftStart(start.toISOString())
+    setShiftDuration(duration)
+    setShiftCutoff(cutoff.toISOString())
+    localStorage.setItem('sea-shift-start', start.toISOString())
+    localStorage.setItem('sea-shift-duration', duration.toString())
+    localStorage.setItem('sea-shift-cutoff', cutoff.toISOString())
+    setShowShiftModal(false)
+    
+    // Após configurar, adiciona o registro
+    addRecord()
   }
 
   // Import data from another device's session
@@ -3324,9 +3478,22 @@ export function ProntuarioSystemPanel() {
                 <span className="rounded-full border border-white/10 px-1.5 py-0.5 text-[8px] uppercase tracking-[0.14em] text-white/52">
                   Prontuario ICU
                 </span>
-                <span className="rounded-full border border-white/10 px-1.5 py-0.5 text-[8px] uppercase tracking-[0.14em] text-white/52">
-                  {records.length} ativos
+                <span className="flex items-center gap-1 rounded-full border border-white/12 bg-white/5 px-2 py-0.5 text-[9px] font-mono font-bold text-[#60a5fa]">
+                  <Activity className="h-2.5 w-2.5 animate-pulse" />
+                  {currentTime.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
                 </span>
+                {shiftCutoff && !isAdmin && (
+                  <span className="flex items-center gap-1 rounded-full border border-amber-500/30 bg-amber-500/10 px-2 py-0.5 text-[8px] font-bold text-amber-400">
+                    <RotateCcw className="h-2.5 w-2.5" />
+                    Sessão Expira em: {Math.max(0, Math.floor((new Date(shiftCutoff).getTime() - currentTime.getTime()) / 60000))} min
+                  </span>
+                )}
+                {isAdmin && (
+                  <span className="flex items-center gap-1 rounded-full border border-green-500/30 bg-green-500/10 px-2 py-0.5 text-[8px] font-bold text-green-400">
+                    <Zap className="h-2.5 w-2.5" />
+                    Modo Admin (Persistência)
+                  </span>
+                )}
               </div>
               <h3 className="text-[1rem] font-semibold text-white/92">Pacientes e referencia clinica</h3>
               <div className="mt-2 flex flex-wrap gap-1.5">
@@ -3379,6 +3546,50 @@ export function ProntuarioSystemPanel() {
         </div>
 
         {/* Sync modal — share session code between devices */}
+        {/* Modal de Configuração de Plantão */}
+        {showShiftModal && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+            <div className="chrome-panel w-full max-w-sm rounded-[2rem] p-6 space-y-6 border border-white/10 shadow-2xl">
+              <div className="space-y-2 text-center">
+                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#60a5fa1a] border border-[#60a5fa30]">
+                  <RotateCcw className="h-6 w-6 text-[#60a5fa]" />
+                </div>
+                <h3 className="text-lg font-bold text-white">Configurar Plantão</h3>
+                <p className="text-[10px] text-white/48">Defina a duração do seu turno para iniciar o prontuário.</p>
+              </div>
+
+              <div className="grid grid-cols-3 gap-3">
+                {[6, 8, 12].map((h) => (
+                  <button
+                    key={h}
+                    onClick={() => startShift(h)}
+                    className="flex flex-col items-center gap-2 rounded-[1.2rem] border border-white/10 bg-white/5 p-4 hover:border-[#60a5fa/50] hover:bg-[#60a5fa/10] transition-all group"
+                  >
+                    <span className="text-xl font-bold text-white group-hover:text-[#60a5fa]">{h}h</span>
+                    <span className="text-[8px] uppercase tracking-widest text-white/40">Duração</span>
+                  </button>
+                ))}
+              </div>
+
+              <div className="rounded-[1rem] bg-amber-500/5 border border-amber-500/20 p-3">
+                <div className="flex gap-2">
+                  <Activity className="h-3.5 w-3.5 text-amber-500 shrink-0" />
+                  <p className="text-[9px] leading-relaxed text-amber-200/70">
+                    <span className="font-bold text-amber-400">Política de Segurança:</span> Os dados deste plantão serão removidos automaticamente 2 horas após o término da jornada selecionada.
+                  </p>
+                </div>
+              </div>
+
+              <button
+                onClick={() => setShowShiftModal(false)}
+                className="w-full rounded-[1rem] py-3 text-[10px] font-bold text-white/40 hover:text-white transition-colors"
+              >
+                Cancelar
+              </button>
+            </div>
+          </div>
+        )}
+
         {showSyncModal && (
           <div className="chrome-panel rounded-[1rem] p-2 space-y-1.5">
             <div className="flex items-center justify-between">
@@ -3429,6 +3640,15 @@ export function ProntuarioSystemPanel() {
                 </button>
               </div>
             </div>
+          </div>
+        )}
+        
+        {!isAdmin && view === 'records' && !selectedId && (
+          <div className="flex items-center gap-2 rounded-[0.8rem] border border-[#facc151a] bg-[#facc150a] px-3 py-1.5">
+            <Zap className="h-3 w-3 text-[#fbbf24]" />
+            <p className="text-[7px] font-semibold uppercase tracking-[0.1em] text-[#fbbf24]/80">
+              Política de Plantão: Os dados expiram automaticamente nos cortes de 09:00 e 21:00.
+            </p>
           </div>
         )}
 
@@ -3890,12 +4110,14 @@ export function ProntuarioSystemPanel() {
                                 </select>
                                 {exam.measurements?.tot_to_carina_cm && (
                                   <div className={`flex items-center gap-1 rounded-full border px-1.5 py-0.5 ${
-                                    exam.measurements.status === 'Adequado' 
+                                    exam.measurements.status === 'ADEQUADO' 
                                       ? 'border-green-500/30 bg-green-500/10 text-green-400' 
-                                      : 'border-amber-500/30 bg-amber-500/10 text-amber-400'
-                                  }`} title={exam.measurements.alert}>
-                                    <Ruler className="h-2 w-2" />
-                                    <span className="text-[6px] font-bold whitespace-nowrap">
+                                      : exam.measurements.status === 'ALERTA (ALTO)'
+                                      ? 'border-amber-500/30 bg-amber-500/10 text-amber-400'
+                                      : 'border-red-500/30 bg-red-500/10 text-red-400'
+                                  }`} title={exam.measurements.alert || `Distância: ${exam.measurements.tot_to_carina_cm}cm`}>
+                                    <Ruler className="h-2.5 w-2.5" />
+                                    <span className="text-[7px] font-bold whitespace-nowrap">
                                       {exam.measurements.tot_to_carina_cm}cm
                                     </span>
                                   </div>
@@ -3950,6 +4172,25 @@ export function ProntuarioSystemPanel() {
                                   ))}
                                 </div>
                               ) : null}
+                              {exam.deviceStatus && (
+                                <div className="mt-1 flex flex-wrap gap-1">
+                                  {exam.deviceStatus.tot && (
+                                    <span className="rounded-md bg-[#60a5fa10] border border-[#60a5fa30] px-1.5 py-0.5 text-[6px] font-medium text-[#93c5fd]">
+                                      TOT: {exam.deviceStatus.tot}
+                                    </span>
+                                  )}
+                                  {exam.deviceStatus.sne && (
+                                    <span className="rounded-md bg-[#c084fc10] border border-[#c084fc30] px-1.5 py-0.5 text-[6px] font-medium text-[#e879f9]">
+                                      SNE: {exam.deviceStatus.sne}
+                                    </span>
+                                  )}
+                                  {exam.deviceStatus.central_access && (
+                                    <span className="rounded-md bg-[#2dd4bf10] border border-[#2dd4bf30] px-1.5 py-0.5 text-[6px] font-medium text-[#5eead4]">
+                                      CVC: {exam.deviceStatus.central_access}
+                                    </span>
+                                  )}
+                                </div>
+                              )}
                               {/* linha 3: laudo */}
                               <AutoGrowTextarea
                                 value={exam.laudo}

@@ -20,36 +20,38 @@ export async function POST(req: NextRequest) {
     const mimeType = file.type
 
     // Prompt clínico refinado com foco em medição e tradução
-    const prompt = `Você é um Radiologista de UTI de elite. Analise a imagem e forneça um laudo em PORTUGUÊS (Brasil).
+    const prompt = `Você é um Radiologista de UTI de elite especializado em terapia intensiva. Analise este RAIO-X de tórax.
 
-OBJETIVO PRINCIPAL: MENSURAÇÃO DO TUBO ORO-TRAQUEAL (TOT)
-1. Localize a ponta do TOT e a Carina.
-2. MENSURAÇÃO (Régua Digital): Estime a distância exata da ponta do TOT até a Carina em centímetros.
-   - O IDEAL é entre 2cm e 3cm acima da carina.
-   - Abaixo de 2cm: Risco de intubação seletiva.
-   - Acima de 5cm: Risco de extubação acidental.
+OBJETIVO CRÍTICO: POSICIONAMENTO DO TUBO ORO-TRAQUEAL (TOT)
+1. Identifique a Carina e a ponta do TOT.
+2. MEÇA a distância (Régua Digital) da ponta do TOT até a Carina em centímetros.
+   - REGRA DE OURO: O ideal é de 2.0 a 3.0 cm acima da carina.
+   - STATUS: 
+     * 'ADEQUADO': 2.0cm a 3.0cm.
+     * 'ALERTA (ALTO)': > 3.0cm (Risco de extubação ou hipoventilação).
+     * 'CRÍTICO (BAIXO)': < 2.0cm (Risco de intubação seletiva).
 
-3. OUTROS DISPOSITIVOS:
-   - Sonda Nasoentérica (SNE): Confirme se está pós-pilórica (duodenal) ou gástrica.
-   - Acesso Central: Posição da ponta.
+OUTROS DISPOSITIVOS:
+- Sonda Nasoentérica (SNE): Está em posição gástrica ou enteral (pós-pilórica)?
+- Acesso Venoso Central: Posição da ponta em relação à Veia Cava Superior.
 
-4. ANÁLISE PULMONAR: Descreva consolidações, derrames ou pneumotórax.
+ACHADOS PULMONARES: Consolidações, Atelectasias, Pneumotórax, Derrame Pleural.
 
 RESPONDA EXCLUSIVAMENTE EM JSON:
 {
   "findings": ["Achado 1", "Achado 2"],
-  "report": "Laudo descritivo em português",
+  "report": "Laudo descritivo técnico em português",
   "measurements": {
     "tot_to_carina_cm": 2.5,
-    "status": "Adequado | Baixo (Seletivo) | Alto",
-    "alert": "Aviso se estiver fora de 2-3cm"
+    "status": "ADEQUADO | ALERTA (ALTO) | CRÍTICO (BAIXO)",
+    "alert": "Aviso imediato se fora de 2-3cm"
   },
   "deviceStatus": {
-    "tot": "descrição detalhada",
-    "sne": "posição confirmada"
+    "tot": "descrição da posição",
+    "sne": "posição da sonda",
+    "central_access": "posição do acesso"
   }
-}
-
+}`
 Importante: Se a imagem não permitir ver a carina, descreva como 'Inconclusivo por má visualização'. Traduza termos como 'ground-glass' para 'vidro fosco'.`
 
     console.log(`[Vision API] Processando arquivo: ${file.name} (${file.size} bytes)`)
@@ -61,7 +63,7 @@ Importante: Se a imagem não permitir ver a carina, descreva como 'Inconclusivo 
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        model: 'llama-3.2-11b-vision-preview',
+        model: 'llama-3.2-90b-vision-preview',
         messages: [
           {
             role: 'user',
@@ -70,14 +72,14 @@ Importante: Se a imagem não permitir ver a carina, descreva como 'Inconclusivo 
               {
                 type: 'image_url',
                 image_url: {
-                  url: `data:${mimeType};base64,${base64Image}`
+                  url: `data:${mimeType || 'image/jpeg'};base64,${base64Image}`
                 }
               }
             ]
           }
         ],
-        temperature: 0.1,
-        response_format: { type: 'json_object' }
+        max_tokens: 1024,
+        temperature: 0.2
       })
     })
 
@@ -88,13 +90,20 @@ Importante: Se a imagem não permitir ver a carina, descreva como 'Inconclusivo 
     }
 
     const data = await response.json()
-    const content = data.choices?.[0]?.message?.content
+    let content = data.choices?.[0]?.message?.content
     
     if (!content) {
       throw new Error('Resposta vazia da IA')
     }
 
-    const aiResult = JSON.parse(content)
+    // Extrai JSON se a IA retornar markdown code blocks
+    if (content.includes('```json')) {
+      content = content.split('```json')[1].split('```')[0]
+    } else if (content.includes('```')) {
+      content = content.split('```')[1].split('```')[0]
+    }
+
+    const aiResult = JSON.parse(content.trim())
 
     // --- Integração com Tavily (Busca de Evidência Clínica) ---
     if (process.env.TAVILY_API_KEY && aiResult.findings?.length > 0) {
