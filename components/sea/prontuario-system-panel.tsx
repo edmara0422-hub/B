@@ -2083,6 +2083,7 @@ export function ProntuarioSystemPanel() {
 
   // Usuário autenticado — cada user tem seu próprio prontuário isolado.
   const authUserId = useAuthStore((s) => s.user?.id ?? null)
+  const isAdmin = useAuthStore((s) => s.isAdmin)
   const userIdRef = useRef<string | null>(null)
   useEffect(() => { userIdRef.current = authUserId }, [authUserId])
   const sk = keysFor(authUserId)
