@@ -245,20 +245,24 @@ const IMAGE_FINDING_OPTIONS = [
   'Pneumotorax / Pneumomediastino',
   'Enfisema subcutaneo',
   'Cardiomegalia / Congestao',
-  'TOT bem posicionado (3-5cm carina)',
+  'Sinal do Bico (Hiperdistensao)',
+  'TOT bem posicionado (2-3cm carina)',
   'TOT seletivo / Mal posicionado',
   'SNE em posicao gastrica',
-  'SNE em posicao duodenal',
+  'SNE em posicao enteral (pos-pilorica)',
   'CVC em veia cava superior',
-  'Cateter de Swan-Ganz visivel',
+  'Cateter de Swan-Ganz bem posicionado',
   'Pneumoperitoneo (Ar subdiafragmatico)',
-  'Obstrucao / Alcas dilatadas',
-  'Desvio de linha media / Edema cerebral',
-  'Hemorragia / Isquemia aguda',
-  'Fratura / Luxacao',
+  'Obstrucao / Alcas dilatadas / Niveis hidroaereos',
+  'Desvio de linha media / Apagamento de sulcos',
+  'Hemorragia aguda (HSA/HIP)',
+  'Isquemia aguda / Hipodensidade',
+  'Fratura / Luxacao / Alinhamento osseo',
   'Ascite / Liquido livre (FAST+)',
-  'Colecao / Abscesso',
-  'Trombo / TEP',
+  'Colecao / Abscesso / Processo expansivo',
+  'Trombo venoso / Sinais de TVP',
+  'Derrame pericardico / Tamponamento',
+  'Disfuncao ventricular (FE reduzida)',
 ] as const
 
 const VM_OPTIONS = [
@@ -4113,7 +4117,7 @@ export function ProntuarioSystemPanel() {
                                   <div className={`flex items-center gap-1 rounded-full border px-1.5 py-0.5 ${
                                     exam.measurements.status === 'ADEQUADO' 
                                       ? 'border-green-500/30 bg-green-500/10 text-green-400' 
-                                      : exam.measurements.status === 'ALERTA (ALTO)'
+                                      : exam.measurements.status === 'ALERTA'
                                       ? 'border-amber-500/30 bg-amber-500/10 text-amber-400'
                                       : 'border-red-500/30 bg-red-500/10 text-red-400'
                                   }`} title={exam.measurements.alert || `Distância: ${exam.measurements.tot_to_carina_cm}cm`}>

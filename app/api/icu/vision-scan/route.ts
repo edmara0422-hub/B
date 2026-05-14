@@ -19,43 +19,35 @@ export async function POST(req: NextRequest) {
     const base64Image = Buffer.from(arrayBuffer).toString('base64')
     const mimeType = file.type
 
-    // Prompt clínico refinado com foco em medição e tradução
-    const prompt = `Você é um Radiologista de UTI de elite especializado em terapia intensiva. Analise este RAIO-X de tórax.
+    // Prompt clínico de Alta Precisão (Protocolo TOT-Carina)
+    const prompt = `Você é um Radiologista Sênior de UTI. Sua missão é fornecer uma análise de ALTA PRECISÃO deste Raio-X de Tórax.
 
-OBJETIVO CRÍTICO: POSICIONAMENTO DO TUBO ORO-TRAQUEAL (TOT)
-1. Identifique a Carina e a ponta do TOT.
-2. MEÇA a distância (Régua Digital) da ponta do TOT até a Carina em centímetros.
-   - REGRA DE OURO: O ideal é de 2.0 a 3.0 cm acima da carina.
-   - STATUS: 
-     * 'ADEQUADO': 2.0cm a 3.0cm.
-     * 'ALERTA (ALTO)': > 3.0cm (Risco de extubação ou hipoventilação).
-     * 'CRÍTICO (BAIXO)': < 2.0cm (Risco de intubação seletiva).
+DIRETRIZES TÉCNICAS:
+1. IDENTIFICAÇÃO DA CARINA: Localize o ponto de bifurcação da traqueia. É o seu ponto zero.
+2. MENSURAÇÃO DO TOT: Meça a distância da ponta do tubo até a Carina.
+   - ADEQUADO: 2.0 a 3.0 cm.
+   - ALERTA: > 3.0 cm (Tubo Alto).
+   - CRÍTICO: < 2.0 cm (Tubo Baixo/Seletivo).
+3. DISPOSITIVOS: Avalie SNE (Gástrica/Enteral) e CVC (Veia Cava Superior).
+4. ACHADOS: Descreva Consolidações, Vidro Fosco, Derrame, Pneumotórax.
 
-OUTROS DISPOSITIVOS:
-- Sonda Nasoentérica (SNE): Está em posição gástrica ou enteral (pós-pilórica)?
-- Acesso Venoso Central: Posição da ponta em relação à Veia Cava Superior.
-
-ACHADOS PULMONARES: Consolidações, Atelectasias, Pneumotórax, Derrame Pleural.
-
-RESPONDA EXCLUSIVAMENTE EM JSON:
+RESPONDA APENAS EM JSON (TRADUZA TUDO PARA PORTUGUÊS):
 {
-  "findings": ["Achado 1", "Achado 2"],
-  "report": "Laudo descritivo técnico em português",
+  "findings": ["Achado Detalhado"],
+  "report": "Laudo radiológico técnico completo",
   "measurements": {
     "tot_to_carina_cm": 2.5,
-    "status": "ADEQUADO | ALERTA (ALTO) | CRÍTICO (BAIXO)",
-    "alert": "Aviso imediato se fora de 2-3cm"
+    "status": "ADEQUADO | ALERTA | CRÍTICO",
+    "alert": "Explicação médica do risco"
   },
-    "deviceStatus": {
-      "tot": "posição do tubo",
-      "sne": "posição da sonda",
-      "central_access": "posição do acesso"
-    }
+  "deviceStatus": {
+    "tot": "posição exata",
+    "sne": "localização anatômica",
+    "central_access": "posição da ponta"
   }
-  Importante: Se a imagem não permitir ver a carina, descreva como 'Inconclusivo por má visualização'. Traduza termos como 'ground-glass' para 'vidro fosco'.`
+}`
 
-
-    console.log(`[Vision API] Processando arquivo: ${file.name} (${file.size} bytes)`)
+    console.log(`[Vision API] Processando: ${file.name}`)
 
     const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
@@ -64,7 +56,7 @@ RESPONDA EXCLUSIVAMENTE EM JSON:
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        model: 'llama-3.2-90b-vision-preview',
+        model: 'llama-3.2-11b-vision-preview',
         messages: [
           {
             role: 'user',
@@ -79,8 +71,8 @@ RESPONDA EXCLUSIVAMENTE EM JSON:
             ]
           }
         ],
-        max_tokens: 1024,
-        temperature: 0.2
+        max_tokens: 800,
+        temperature: 0.1
       })
     })
 
