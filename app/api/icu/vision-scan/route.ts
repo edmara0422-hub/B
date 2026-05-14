@@ -20,13 +20,19 @@ export async function POST(req: NextRequest) {
     
     console.log(`[Vision API] Processando: ${file.name} (${Math.round(arrayBuffer.byteLength / 1024)} KB)`)
 
-    const prompt = `Analise este Raio-X de Tórax. 
-    Retorne APENAS um JSON:
+    const prompt = `Analise este exame de imagem médica (Raio-X, TC, USG ou RM).
+    
+    DIRETRIZES:
+    1. Identifique o tipo de exame e a região anatômica.
+    2. Liste achados clínicos relevantes (pulmonares, cardíacos, neurológicos, abdominais ou vasculares).
+    3. Se for RX de Tórax, identifique a Carina e meça a distância do Tubo Orotraqueal (TOT) até ela.
+    4. Avalie o posicionamento de dispositivos (TOT, Sonda, Acesso Central).
+    5. Retorne APENAS um JSON no seguinte formato:
     {
-      "findings": ["Descreva os achados"],
-      "report": "Laudo resumido",
-      "measurements": { "tot_to_carina_cm": 0, "status": "NORMAL", "alert": "" },
-      "deviceStatus": { "tot": "ok", "sne": "ok", "central_access": "ok" }
+      "findings": ["Achado 1", "Achado 2"],
+      "report": "Descrição detalhada do laudo em português",
+      "measurements": { "tot_to_carina_cm": 0, "status": "ADEQUADO|ALERTA|CRITICO", "alert": "Mensagem de alerta se necessário" },
+      "deviceStatus": { "tot": "descrição", "sne": "descrição", "central_access": "descrição" }
     }`
 
 
@@ -37,7 +43,7 @@ export async function POST(req: NextRequest) {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        model: 'llama-3.2-11b-vision-preview',
+        model: 'llama-3.2-90b-vision-preview',
         messages: [
           {
             role: 'user',
@@ -51,14 +57,22 @@ export async function POST(req: NextRequest) {
               { type: 'text', text: prompt }
             ]
           }
-        ]
+        ],
+        temperature: 0.1,
+        max_tokens: 1024
       })
     })
 
     if (!response.ok) {
       const errorText = await response.text()
       console.error('[Vision API] Erro Groq:', response.status, errorText)
-      return NextResponse.json({ error: `Groq API Error: ${response.status}`, details: errorText }, { status: response.status })
+      // Tenta extrair a mensagem de erro específica do JSON se houver
+      let errorMsg = errorText
+      try {
+        const errJson = JSON.parse(errorText)
+        errorMsg = errJson.error?.message || errorText
+      } catch {}
+      return NextResponse.json({ error: `Groq API Error: ${response.status}`, details: errorMsg }, { status: response.status })
     }
 
     const data = await response.json()

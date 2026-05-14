@@ -12,6 +12,7 @@ import {
   Eye,
   CheckCircle2,
   Cloud,
+  CloudUpload,
   FileText,
   HeartPulse,
   Link2,
@@ -2407,18 +2408,23 @@ export function ProntuarioSystemPanel() {
   const forceRestoreFromServer = async () => {
     if (!supabase || !authUserId) return
     setSyncStatus('syncing')
+    console.log('[Supabase Sync] Iniciando resgate manual para:', authUserId)
     try {
-      const sid = authUserId
-      const { data, error } = await supabase.from('icu_sessions').select('records,archive').eq('session_id', sid).maybeSingle()
+      const { data, error } = await supabase.from('icu_sessions').select('records,archive,updated_at').eq('session_id', authUserId).maybeSingle()
       if (error) throw error
+      
+      console.log('[Supabase Sync] Dados recebidos. Última atualização:', data?.updated_at)
+      
       if (!data?.records) {
         alert('Nenhum dado encontrado no servidor para este usuário.')
+        setSyncStatus('saved')
         return
       }
 
       const raw = data.records as any
       let newWs: Workspace[] = []
       let newActiveId = ''
+      
       if (raw?.__sea_v2) {
         newWs = (raw.workspaces ?? []).map((w: any) => ({
           id: w.id,
@@ -2427,11 +2433,13 @@ export function ProntuarioSystemPanel() {
           archive: (w.archive ?? []).map((r: any) => normalizeRecord(r)),
         }))
         newActiveId = raw.activeId || newWs[0]?.id || ''
+        console.log(`[Supabase Sync] Restaurando ${newWs.length} workspaces (formato v2)`)
       } else {
         const remoteRec = (data.records as any[]).map(r => normalizeRecord(r))
         const remoteArc = ((data.archive ?? []) as any[]).map(r => normalizeRecord(r))
         newWs = [{ id: generateId(), name: 'UTI', records: remoteRec, archive: remoteArc }]
         newActiveId = newWs[0].id
+        console.log('[Supabase Sync] Restaurando formato legacy')
       }
       
       setWorkspaces(newWs)
@@ -2439,12 +2447,83 @@ export function ProntuarioSystemPanel() {
       const active = newWs.find(w => w.id === newActiveId)!
       setRecords(active.records)
       setArchive(active.archive)
+      
       localStorage.setItem(sk.workspaces, JSON.stringify(newWs))
       localStorage.setItem(sk.activeWorkspace, newActiveId)
+      
       setSyncStatus('saved')
-      alert('Dados resgatados com sucesso!')
+      alert(`Dados resgatados com sucesso!\nSincronizados em: ${new Date(data.updated_at).toLocaleString()}`)
     } catch (err: any) {
+      console.error('[Supabase Sync] Erro no resgate:', err)
       alert(`Falha ao resgatar: ${err.message}`)
+      setSyncStatus('error')
+    }
+  }
+
+  const rescuePatientByName = async () => {
+    if (!supabase || !isAdmin) return
+    const name = prompt('Digite o nome do paciente para buscar em TODAS as sessões do servidor:')
+    if (!name) return
+
+    setSyncStatus('syncing')
+    try {
+      const { data, error } = await supabase
+        .from('icu_sessions')
+        .select('session_id, records, updated_at')
+        .filter('records::text', 'ilike', `%${name}%`)
+        .order('updated_at', { ascending: false })
+        .limit(10)
+
+      if (error) throw error
+      if (!data || data.length === 0) {
+        alert(`Nenhum paciente encontrado com o nome "${name}".`)
+        setSyncStatus('saved')
+        return
+      }
+
+      const options = data.flatMap(session => {
+        const raw = session.records as any
+        let found: ICURecord[] = []
+        if (raw?.__sea_v2) {
+          found = (raw.workspaces ?? []).flatMap((w: any) => 
+            (w.records ?? []).concat(w.archive ?? [])
+              .filter((r: any) => (r.name || '').toLowerCase().includes(name.toLowerCase()))
+              .map((r: any) => normalizeRecord(r))
+          )
+        } else if (Array.isArray(raw)) {
+          found = raw.filter((r: any) => (r.name || '').toLowerCase().includes(name.toLowerCase()))
+                     .map((r: any) => normalizeRecord(r))
+        }
+        return found.map(r => ({ record: r, updatedAt: session.updated_at, sessionId: session.session_id }))
+      })
+
+      if (options.length === 0) {
+        alert(`O nome "${name}" foi citado em sessões, mas não é o nome principal de um paciente.`)
+        setSyncStatus('saved')
+        return
+      }
+
+      const listStr = options.map((opt, i) => 
+        `${i+1}. ${opt.record.name} (Quarto: ${opt.record.room || '?'}) - Atualizado: ${new Date(opt.updatedAt).toLocaleString()}`
+      ).join('\n')
+      
+      const choice = prompt(`Pacientes encontrados:\n\n${listStr}\n\nDigite o número para importar:`)
+      const selected = options[parseInt(choice || '0') - 1]
+
+      if (selected) {
+        const imported = { 
+          ...selected.record, 
+          id: generateId(), 
+          createdAt: new Date().toISOString(), 
+          updatedAt: new Date().toISOString() 
+        }
+        addRecord(imported)
+        alert(`${selected.record.name} importado para sua lista atual!`)
+      }
+      setSyncStatus('saved')
+    } catch (err: any) {
+      console.error('[Supabase Rescue] Erro:', err)
+      alert(`Erro na busca: ${err.message}`)
       setSyncStatus('error')
     }
   }
@@ -2494,7 +2573,31 @@ export function ProntuarioSystemPanel() {
       }
     }, 3000)
     return () => clearTimeout(timer)
-  }, [archive, hydrated, records])
+  }, [archive, hydrated, records, workspaces])
+
+  const forceSaveToServer = async () => {
+    if (!supabase || !authUserId) return
+    setSyncStatus('syncing')
+    try {
+      const sid = authUserId
+      const snapshot = workspaces.map(w =>
+        w.id === activeWorkspaceId ? { ...w, records, archive } : w
+      )
+      const { error } = await supabase.from('icu_sessions').upsert({
+        session_id: sid,
+        records: { __sea_v2: true, workspaces: snapshot, activeId: activeWorkspaceId },
+        archive: [],
+        updated_at: new Date().toISOString(),
+      }, { onConflict: 'session_id' })
+      
+      if (error) throw error
+      setSyncStatus('saved')
+      alert('Sincronização concluída! Dados salvos no servidor.')
+    } catch (err: any) {
+      alert(`Falha ao sincronizar: ${err.message}`)
+      setSyncStatus('error')
+    }
+  }
 
   useEffect(() => {
     if (selectedId && !records.some((record) => record.id === selectedId) && !archive.some((record) => record.id === selectedId)) {
@@ -3389,13 +3492,13 @@ export function ProntuarioSystemPanel() {
     updateCurrentRecord((record) => ({ ...record, pronaHist: (record.pronaHist || []).filter((_, i) => i !== index) }))
   }
 
-  const addRecord = () => {
+  const addRecord = (template?: ICURecord) => {
     // Se não for admin e não tiver turno configurado, abre o modal
     if (!isAdmin && !shiftCutoff) {
       setShowShiftModal(true)
       return
     }
-    const record = createRecord()
+    const record = template ? { ...template, id: template.id || generateId() } : createRecord()
     setRecords((prev) => [record, ...prev])
     setSelectedId(record.id)
     setActiveTab('dados')
@@ -3588,13 +3691,25 @@ export function ProntuarioSystemPanel() {
             {isAdmin && (
               <>
                 <ActionButton 
+                  icon={CloudUpload} 
+                  label="Salvar" 
+                  onClick={() => {
+                    forceSaveToServer()
+                  }} 
+                />
+                <ActionButton 
                   icon={RotateCcw} 
                   label="Resgatar" 
                   onClick={() => {
-                    if (confirm('Forçar resgate de dados do servidor? (Isso sobrescreverá sua lista atual)')) {
+                    if (confirm('AVISO: Isso apagará seus dados LOCAIS e puxará a última versão salva no NUVEM. Deseja continuar?')) {
                       forceRestoreFromServer()
                     }
                   }} 
+                />
+                <ActionButton 
+                  icon={Brain} 
+                  label="Busca Global" 
+                  onClick={rescuePatientByName} 
                 />
                 <ActionButton icon={Link2} label="Sincronizar" active={showSyncModal} onClick={() => setShowSyncModal(v => !v)} />
               </>
