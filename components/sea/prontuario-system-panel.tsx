@@ -2450,6 +2450,10 @@ export function ProntuarioSystemPanel() {
       if (active) {
         setRecords(active.records || [])
         setArchive(active.archive || [])
+        // Sincroniza as REFs internas para evitar que o auto-save sobrescreva com dados vazios
+        workspacesRef.current = newWs
+        activeWsIdRef.current = newActiveId
+        console.log(`[Supabase Sync] Interface atualizada com ${active.records?.length || 0} pacientes.`)
       } else {
         setRecords([])
         setArchive([])
@@ -2459,7 +2463,8 @@ export function ProntuarioSystemPanel() {
       localStorage.setItem(sk.activeWorkspace, newActiveId)
       
       setSyncStatus('saved')
-      alert(`Dados resgatados com sucesso!\nSincronizados em: ${new Date(data.updated_at).toLocaleString()}`)
+      const count = active?.records?.length || 0
+      alert(`Resgate concluído!\n${count} pacientes carregados.\nSincronizados em: ${new Date(data.updated_at).toLocaleString()}`)
     } catch (err: any) {
       console.error('[Supabase Sync] Erro no resgate:', err)
       alert(`Falha ao resgatar: ${err.message}`)
