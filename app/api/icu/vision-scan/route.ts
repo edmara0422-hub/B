@@ -46,13 +46,14 @@ RESPONDA EXCLUSIVAMENTE EM JSON:
     "status": "ADEQUADO | ALERTA (ALTO) | CRÍTICO (BAIXO)",
     "alert": "Aviso imediato se fora de 2-3cm"
   },
-  "deviceStatus": {
-    "tot": "descrição da posição",
-    "sne": "posição da sonda",
-    "central_access": "posição do acesso"
+    "deviceStatus": {
+      "tot": "posição do tubo",
+      "sne": "posição da sonda",
+      "central_access": "posição do acesso"
+    }
   }
-}`
-Importante: Se a imagem não permitir ver a carina, descreva como 'Inconclusivo por má visualização'. Traduza termos como 'ground-glass' para 'vidro fosco'.`
+  Importante: Se a imagem não permitir ver a carina, descreva como 'Inconclusivo por má visualização'. Traduza termos como 'ground-glass' para 'vidro fosco'.`
+
 
     console.log(`[Vision API] Processando arquivo: ${file.name} (${file.size} bytes)`)
 
