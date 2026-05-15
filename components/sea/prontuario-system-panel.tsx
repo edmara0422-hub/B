@@ -4606,27 +4606,44 @@ export function ProntuarioSystemPanel() {
                                   </button>
                                 </div>
 
-                                {/* badges TOT (só quando há measurements ou é exame de tórax) */}
+                                {/* badges TOT */}
                                 {(m?.tot_to_carina_cm || m?.rim_labial_cm || isSeletiva) && (
                                   <div className="flex flex-wrap gap-1 pt-0.5">
-                                    {/* badge carina */}
-                                    {m?.tot_to_carina_cm ? (
-                                      <div className={`flex items-center gap-1 rounded-full border px-1.5 py-0.5 ${
-                                        m.status === 'ADEQUADO'
-                                          ? 'border-green-500/30 bg-green-500/10 text-green-400'
-                                          : m.status === 'ALERTA'
-                                          ? 'border-amber-500/30 bg-amber-500/10 text-amber-400'
-                                          : 'border-red-500/30 bg-red-500/10 text-red-400'
-                                      }`} title={m.alert || `TOT → Carina: ${m.tot_to_carina_cm}cm`}>
-                                        <Ruler className="h-2.5 w-2.5" />
-                                        <span className="text-[7px] font-bold whitespace-nowrap">
-                                          {m.tot_to_carina_cm}cm carina
-                                        </span>
-                                      </div>
-                                    ) : null}
+                                    {/* badge distância TOT → carina com direção clínica correta */}
+                                    {m?.tot_to_carina_cm ? (() => {
+                                      const dir = m.direction
+                                      const isOk = dir === 'ADEQUADO' || m.status === 'ADEQUADO'
+                                      const isSubido = dir === 'SUBIDO' || m.status === 'ALERTA_SUBIDO'
+                                      const isBaixo = dir === 'PROXIMO_CARINA' || m.status === 'ALERTA_BAIXO'
+                                      const isCritico = dir === 'SELETIVO' || m.status === 'CRITICO_SELETIVO'
+                                      const badgeClass = isOk
+                                        ? 'border-green-500/30 bg-green-500/10 text-green-400'
+                                        : isCritico
+                                        ? 'border-red-500/50 bg-red-500/15 text-red-400'
+                                        : 'border-amber-500/30 bg-amber-500/10 text-amber-400'
+                                      const label = isOk
+                                        ? `${m.tot_to_carina_cm}cm ✓ adequado`
+                                        : isSubido
+                                        ? `${m.tot_to_carina_cm}cm ↑ SUBIDO`
+                                        : isBaixo
+                                        ? `${m.tot_to_carina_cm}cm ↓ PRÓX. CARINA`
+                                        : `${m.tot_to_carina_cm}cm SELETIVO`
+                                      const tooltip = m.alert || (
+                                        isOk ? `TOT adequado (2-3cm da carina)` :
+                                        isSubido ? `Tubo SUBIDO — avançar para 2-3cm da carina` :
+                                        isBaixo ? `Tubo MUITO PRÓXIMO da carina — risco de intubação seletiva` :
+                                        `Intubação seletiva — reposicionar imediatamente`
+                                      )
+                                      return (
+                                        <div className={`flex items-center gap-1 rounded-full border px-1.5 py-0.5 ${badgeClass}`} title={tooltip}>
+                                          <Ruler className="h-2.5 w-2.5" />
+                                          <span className="text-[7px] font-bold whitespace-nowrap">{label}</span>
+                                        </div>
+                                      )
+                                    })() : null}
                                     {/* badge rima labial */}
                                     {m?.rim_labial_cm ? (
-                                      <div className="flex items-center gap-1 rounded-full border border-white/20 bg-white/[0.06] px-1.5 py-0.5 text-white/60" title={`Fixação estimada pelo scan: ${m.rim_labial_cm}cm`}>
+                                      <div className="flex items-center gap-1 rounded-full border border-white/20 bg-white/[0.06] px-1.5 py-0.5 text-white/60" title={`Fixação estimada: ${m.rim_labial_cm}cm no lábio`}>
                                         <Ruler className="h-2.5 w-2.5" />
                                         <span className="text-[7px] font-bold whitespace-nowrap">
                                           {m.rim_labial_cm}cm lábio
@@ -4635,7 +4652,7 @@ export function ProntuarioSystemPanel() {
                                     ) : null}
                                     {/* badge intubação seletiva */}
                                     {isSeletiva ? (
-                                      <div className="flex items-center gap-1 rounded-full border border-red-500/50 bg-red-500/15 px-1.5 py-0.5 text-red-400" title={`Intubação seletiva suspeita — ${m?.seletiva_side || 'lado indeterminado'}`}>
+                                      <div className="flex items-center gap-1 rounded-full border border-red-500/50 bg-red-500/15 px-1.5 py-0.5 text-red-400" title={`Intubação seletiva — ${m?.seletiva_side || 'lado indeterminado'}`}>
                                         <span className="text-[7px] font-bold whitespace-nowrap">
                                           ⚠ SELETIVA {m?.seletiva_side ? m.seletiva_side.toUpperCase() : ''}
                                         </span>

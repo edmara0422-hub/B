@@ -54,6 +54,7 @@ export type ImageExamEntry = {
   measurements?: {
     tot_to_carina_cm?: number
     status?: string
+    direction?: 'ADEQUADO' | 'SUBIDO' | 'PROXIMO_CARINA' | 'SELETIVO'
     alert?: string
     rim_labial_cm?: number
     seletiva?: boolean
