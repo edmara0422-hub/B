@@ -2046,6 +2046,7 @@ type LightboxPayload = {
   measurements?: ImageExamEntry['measurements']
   imgW?: number
   imgH?: number
+  onSave?: (annotatedDataUrl: string) => void
 }
 
 function ScanLightbox({ data, onClose }: { data: LightboxPayload | null; onClose: () => void }) {
@@ -2219,6 +2220,12 @@ function ScanLightbox({ data, onClose }: { data: LightboxPayload | null; onClose
         ctx.textAlign = 'left'; ctx.textBaseline = 'alphabetic'
       }
 
+      const annotatedDataUrl = canvas.toDataURL('image/jpeg', 0.88)
+
+      // Persiste a imagem anotada de volta no card do exame
+      data.onSave?.(annotatedDataUrl)
+
+      // Exporta para galeria / download
       const blob = await new Promise<Blob>((res) => canvas.toBlob((b) => res(b!), 'image/jpeg', 0.92))
       const file = new File([blob], 'regua-tot.jpg', { type: 'image/jpeg' })
       if (navigator.share && navigator.canShare?.({ files: [file] })) {
@@ -2391,6 +2398,7 @@ function ScanThumbnail({
   imgW,
   imgH,
   onOpen,
+  onSave,
 }: {
   thumbnail?: string
   thumbnailPath?: string
@@ -2399,6 +2407,7 @@ function ScanThumbnail({
   imgW?: number
   imgH?: number
   onOpen: (payload: LightboxPayload) => void
+  onSave?: (annotatedDataUrl: string) => void
 }) {
   const [resolvedSrc, setResolvedSrc] = useState<string | null>(thumbnail ?? null)
   const [loading, setLoading] = useState(false)
@@ -2421,7 +2430,7 @@ function ScanThumbnail({
   return (
     <div className="flex items-start gap-2 pt-0.5">
       <button
-        onClick={() => resolvedSrc && onOpen({ src: resolvedSrc, measurements, imgW, imgH })}
+        onClick={() => resolvedSrc && onOpen({ src: resolvedSrc, measurements, imgW, imgH, onSave })}
         disabled={!resolvedSrc}
         className="relative shrink-0 overflow-hidden rounded-[0.5rem] border border-white/14 bg-black/30 hover:border-white/26 transition-all"
         title={isAdmin ? 'Ver imagem — salva no Supabase Storage' : 'Ver imagem — some ao fim do plantão (LGPD)'}
@@ -5137,6 +5146,10 @@ export function ProntuarioSystemPanel() {
                                     imgW={exam.imgW}
                                     imgH={exam.imgH}
                                     onOpen={(payload) => setLightboxData(payload)}
+                                    onSave={(annotatedDataUrl) => {
+                                      updateListItem('examesImagemList', index, 'thumbnail', annotatedDataUrl)
+                                      setLightboxData(null)
+                                    }}
                                   />
                                 )}
 

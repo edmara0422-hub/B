@@ -197,9 +197,8 @@ export const useAuthStore = create<AuthState & AuthActions>((set, get) => ({
   signUp: async (email, password, name) => {
     if (!supabase) return { error: 'Supabase nao configurado.' }
     set({ isLoading: true })
-    const redirectTo = typeof window !== 'undefined'
-      ? `${window.location.origin}/auth/callback`
-      : undefined
+    const siteUrl = process.env.NEXT_PUBLIC_API_URL ?? (typeof window !== 'undefined' ? window.location.origin : '')
+    const redirectTo = siteUrl ? `${siteUrl}/auth/callback` : undefined
     const res = await withTimeout<{ data: { user: unknown } | null; error: { message: string } | null }>(
       supabase.auth.signUp({ email, password, options: { data: { name }, emailRedirectTo: redirectTo } }),
       12000,
