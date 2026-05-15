@@ -2330,20 +2330,23 @@ export function ProntuarioSystemPanel() {
     // Outros usuários operam localmente e são limpos pelo relógio.
     const isAdminEmail = authUserId && useAuthStore.getState().isAdmin
     
+    // Sempre carrega os dados locais primeiro para garantir que a UI não fique vazia
+    // e o usuário não perca dados ao recarregar a página.
+    setWorkspaces(localWs)
+    setActiveWorkspaceId(localActiveId)
+    setRecords(activeWs.records)
+    setArchive(activeWs.archive)
+    setHydrated(true)
+
     if (!supabase || !isAdminEmail) {
-      setWorkspaces(localWs)
-      setActiveWorkspaceId(localActiveId)
-      setRecords(activeWs.records)
-      setArchive(activeWs.archive)
-      setHydrated(true)
       setSyncStatus('offline')
       return
     }
 
     const sessionId = getOrCreateSessionId() // agora retorna o user.id
     const timeout = new Promise<null>(res => setTimeout(() => res(null), 8000))
-    const fetch = supabase.from('icu_sessions').select('records,archive').eq('session_id', sessionId).maybeSingle()
-    Promise.race([fetch, timeout]).then(async (result) => {
+    const fetchReq = supabase.from('icu_sessions').select('records,archive').eq('session_id', sessionId).maybeSingle()
+    Promise.race([fetchReq, timeout]).then(async (result) => {
       if (!result || !('data' in result)) return
       let { data } = result
 
