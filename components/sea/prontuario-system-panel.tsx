@@ -2716,12 +2716,12 @@ export function ProntuarioSystemPanel() {
       localStorage.setItem(sk.archive, JSON.stringify(archive))
     } catch { /* quota / private mode */ }
 
+    const isAdminEmail = authUserId && useAuthStore.getState().isAdmin
     if (isFirstSync.current) {
       isFirstSync.current = false
-      setSyncStatus(supabase ? 'saved' : 'offline')
+      setSyncStatus(supabase && isAdminEmail ? 'saved' : 'offline')
       return
     }
-    const isAdminEmail = authUserId && useAuthStore.getState().isAdmin
     if (!supabase || !isAdminEmail) {
       setSyncStatus('offline')
       return
