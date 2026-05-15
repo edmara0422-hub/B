@@ -3724,6 +3724,25 @@ export function ProntuarioSystemPanel() {
     executeAddRecord(template)
   }
 
+  const startShift = (duration: number) => {
+    const start = new Date()
+    // Corte = Início + Duração + 2h de buffer
+    const cutoff = new Date(start.getTime() + (duration + 2) * 60 * 60 * 1000)
+    
+    setShiftStart(start.toISOString())
+    setShiftDuration(duration)
+    setShiftCutoff(cutoff.toISOString())
+    localStorage.setItem('sea-shift-start', start.toISOString())
+    localStorage.setItem('sea-shift-duration', duration.toString())
+    localStorage.setItem('sea-shift-cutoff', cutoff.toISOString())
+    setShowShiftModal(false)
+    
+    if (pendingAddRecordRef.current) {
+      pendingAddRecordRef.current = false
+      executeAddRecord()
+    }
+  }
+
   const startShiftPreset = (endHour: number, bufferHours: number) => {
     const now = new Date()
     let cutoff = new Date(now)
@@ -3905,8 +3924,8 @@ export function ProntuarioSystemPanel() {
               </span>
             )}
             {syncStatus === 'offline' && (
-              <span className="flex items-center gap-1 rounded-full border border-[#facc1530] bg-[#facc150a] px-2 py-0.5 text-[8px] font-semibold text-[#facc15]">
-                <WifiOff className="h-2.5 w-2.5" />Offline
+              <span className="flex items-center gap-1 rounded-full border border-[#facc1530] bg-[#facc150a] px-2 py-0.5 text-[8px] font-semibold text-[#facc15]" title="Dados salvos apenas no seu dispositivo">
+                <WifiOff className="h-2.5 w-2.5" />Modo Local
               </span>
             )}
             {syncStatus === 'error' && (
@@ -3949,7 +3968,26 @@ export function ProntuarioSystemPanel() {
                   <RotateCcw className="h-6 w-6 text-[#60a5fa]" />
                 </div>
                 <h3 className="text-lg font-bold text-white">Configurar Turno</h3>
-                <p className="text-[10px] text-white/48">Selecione seu turno de trabalho para garantir a segurança dos dados.</p>
+                <p className="text-[10px] text-white/48">Defina a duração do seu plantão para proteger os dados.</p>
+              </div>
+
+              <div className="grid grid-cols-3 gap-3">
+                {[6, 8, 12].map((h) => (
+                  <button
+                    key={h}
+                    onClick={() => startShift(h)}
+                    className="flex flex-col items-center gap-2 rounded-[1.2rem] border border-white/10 bg-white/5 p-3 hover:border-[#60a5fa/50] hover:bg-[#60a5fa/10] transition-all group"
+                  >
+                    <span className="text-xl font-bold text-white group-hover:text-[#60a5fa]">{h}h</span>
+                    <span className="text-[7px] uppercase tracking-widest text-white/40">A partir de agora</span>
+                  </button>
+                ))}
+              </div>
+
+              <div className="relative flex items-center py-2">
+                <div className="flex-grow border-t border-white/10"></div>
+                <span className="flex-shrink-0 mx-4 text-white/40 text-[9px] uppercase tracking-widest">Ou selecione horário fixo</span>
+                <div className="flex-grow border-t border-white/10"></div>
               </div>
 
               <div className="grid grid-cols-2 gap-3">
@@ -3958,28 +3996,28 @@ export function ProntuarioSystemPanel() {
                   className="flex flex-col items-center justify-center gap-1 rounded-[1.2rem] border border-white/10 bg-white/5 p-3 hover:border-[#60a5fa/50] hover:bg-[#60a5fa/10] transition-all group"
                 >
                   <span className="text-sm font-bold text-white group-hover:text-[#60a5fa]">Manhã</span>
-                  <span className="text-[8px] text-white/40">07h às 13h</span>
+                  <span className="text-[8px] text-white/40">Término às 13h</span>
                 </button>
                 <button
                   onClick={() => startShiftPreset(19, 2)}
                   className="flex flex-col items-center justify-center gap-1 rounded-[1.2rem] border border-white/10 bg-white/5 p-3 hover:border-[#60a5fa/50] hover:bg-[#60a5fa/10] transition-all group"
                 >
                   <span className="text-sm font-bold text-white group-hover:text-[#60a5fa]">Tarde</span>
-                  <span className="text-[8px] text-white/40">13h às 19h</span>
+                  <span className="text-[8px] text-white/40">Término às 19h</span>
                 </button>
                 <button
                   onClick={() => startShiftPreset(19, 2)}
                   className="flex flex-col items-center justify-center gap-1 rounded-[1.2rem] border border-white/10 bg-white/5 p-3 hover:border-[#60a5fa/50] hover:bg-[#60a5fa/10] transition-all group"
                 >
                   <span className="text-sm font-bold text-white group-hover:text-[#60a5fa]">Plantão Dia</span>
-                  <span className="text-[8px] text-white/40">07h às 19h</span>
+                  <span className="text-[8px] text-white/40">Término às 19h</span>
                 </button>
                 <button
                   onClick={() => startShiftPreset(7, 2)}
                   className="flex flex-col items-center justify-center gap-1 rounded-[1.2rem] border border-white/10 bg-white/5 p-3 hover:border-[#60a5fa/50] hover:bg-[#60a5fa/10] transition-all group"
                 >
                   <span className="text-sm font-bold text-white group-hover:text-[#60a5fa]">Plantão Noite</span>
-                  <span className="text-[8px] text-white/40">19h às 07h</span>
+                  <span className="text-[8px] text-white/40">Término às 07h</span>
                 </button>
               </div>
 
