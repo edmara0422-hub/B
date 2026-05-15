@@ -2,6 +2,85 @@ import { NextRequest, NextResponse } from 'next/server'
 
 const GROQ_API_KEY = process.env.GROQ_API_KEY || ''
 
+// Fallback model chain: tenta modelos em ordem até ter sucesso
+const VISION_MODELS = [
+  'meta-llama/llama-4-scout-17b-16e-instruct',
+  'meta-llama/llama-4-maverick-17b-128e-instruct',
+  'llama-3.2-11b-vision-preview',
+]
+
+const prompt = `Você é um sistema especialista em análise de imagens médicas de UTI. Analise esta imagem com precisão clínica.
+
+TAREFAS OBRIGATÓRIAS:
+1. Identifique o tipo de exame (RX, TC, USG, RM, Broncoscopia, etc.) e região anatômica.
+2. Liste TODOS os achados clínicos relevantes em português, incluindo: achados pulmonares, cardíacos, pleurais, mediastinais, abdominais, neurológicos, vasculares e ósseos.
+3. Se for RX ou TC de Tórax:
+   a. Identifique a Carina (bifurcação traqueal) — normalmente em T4-T5.
+   b. Localize a ponta do Tubo Orotraqueal (TOT).
+   c. Meça em centímetros a distância da ponta do TOT até a Carina.
+   d. Classifique: ADEQUADO (2-4cm acima da carina), ALERTA (<2cm ou >4cm), CRITICO (na carina, abaixo da carina = intubação seletiva, ou tubo muito subido).
+   e. Se houver marcação de graduação no tubo visível na imagem (ou inferível pela anatomia), estime a posição de fixação no lábio em cm.
+   f. Informe se há suspeita de intubação seletiva (tubo apenas no brônquio direito — atelectasia esquerda, hipertransparência esquerda).
+4. Avalie o posicionamento de TODOS os dispositivos visíveis: TOT, SNE, CVC, Swan-Ganz, drenos, marca-passos, próteses.
+5. Gere um laudo sucinto e objetivo em português.
+
+RETORNE APENAS JSON válido, sem markdown, sem texto extra:
+{
+  "findings": ["Achado 1", "Achado 2", "..."],
+  "report": "Laudo detalhado em português com todos os achados e interpretação clínica",
+  "measurements": {
+    "tot_to_carina_cm": 0,
+    "status": "ADEQUADO|ALERTA|CRITICO",
+    "alert": "Descrição do alerta ou null se ADEQUADO",
+    "rim_labial_cm": 0,
+    "seletiva": false,
+    "seletiva_side": "direita|esquerda|null"
+  },
+  "deviceStatus": {
+    "tot": "descrição do posicionamento",
+    "sne": "descrição ou null",
+    "central_access": "descrição ou null",
+    "outros": "outros dispositivos ou null"
+  }
+}`
+
+async function callGroq(base64Image: string, model: string) {
+  const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${GROQ_API_KEY}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      model,
+      messages: [
+        {
+          role: 'user',
+          content: [
+            {
+              type: 'image_url',
+              image_url: { url: `data:image/jpeg;base64,${base64Image}` },
+            },
+            { type: 'text', text: prompt },
+          ],
+        },
+      ],
+      temperature: 0.1,
+      max_tokens: 1500,
+    }),
+  })
+
+  return response
+}
+
+function extractJson(content: string): string {
+  const jsonMatch = content.match(/\{[\s\S]*\}/)
+  if (jsonMatch) return jsonMatch[0]
+  if (content.includes('```json')) return content.split('```json')[1].split('```')[0]
+  if (content.includes('```')) return content.split('```')[1].split('```')[0]
+  return content.trim()
+}
+
 export async function POST(req: NextRequest) {
   if (!GROQ_API_KEY) {
     return NextResponse.json({ error: 'GROQ_API_KEY não configurada' }, { status: 500 })
@@ -17,110 +96,76 @@ export async function POST(req: NextRequest) {
 
     const arrayBuffer = await file.arrayBuffer()
     const base64Image = Buffer.from(arrayBuffer).toString('base64').replace(/[\r\n]/g, '')
-    
-    console.log(`[Vision API] Processando: ${file.name} (${Math.round(arrayBuffer.byteLength / 1024)} KB)`)
 
-    const prompt = `Analise este exame de imagem médica (Raio-X, TC, USG ou RM).
-    
-    DIRETRIZES:
-    1. Identifique o tipo de exame e a região anatômica.
-    2. Liste achados clínicos relevantes (pulmonares, cardíacos, neurológicos, abdominais ou vasculares).
-    3. Se for RX de Tórax, identifique a Carina e meça a distância do Tubo Orotraqueal (TOT) até ela.
-    4. Avalie o posicionamento de dispositivos (TOT, Sonda, Acesso Central).
-    5. Retorne APENAS um JSON no seguinte formato:
-    {
-      "findings": ["Achado 1", "Achado 2"],
-      "report": "Descrição detalhada do laudo em português",
-      "measurements": { "tot_to_carina_cm": 0, "status": "ADEQUADO|ALERTA|CRITICO", "alert": "Mensagem de alerta se necessário" },
-      "deviceStatus": { "tot": "descrição", "sne": "descrição", "central_access": "descrição" }
-    }`
+    console.log(`[Vision API] Imagem: ${file.name} (${Math.round(arrayBuffer.byteLength / 1024)} KB)`)
 
+    let lastError = ''
+    let aiResult: Record<string, unknown> | null = null
 
-    const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${GROQ_API_KEY}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        model: 'llama-3.2-90b-vision-preview',
-        messages: [
-          {
-            role: 'user',
-            content: [
-              {
-                type: 'image_url',
-                image_url: {
-                  url: `data:image/jpeg;base64,${base64Image}`
-                }
-              },
-              { type: 'text', text: prompt }
-            ]
-          }
-        ],
-        temperature: 0.1,
-        max_tokens: 1024
-      })
-    })
-
-    if (!response.ok) {
-      const errorText = await response.text()
-      console.error('[Vision API] Erro Groq:', response.status, errorText)
-      // Tenta extrair a mensagem de erro específica do JSON se houver
-      let errorMsg = errorText
+    for (const model of VISION_MODELS) {
       try {
-        const errJson = JSON.parse(errorText)
-        errorMsg = errJson.error?.message || errorText
-      } catch {}
-      return NextResponse.json({ error: `Groq API Error: ${response.status}`, details: errorMsg }, { status: response.status })
-    }
+        console.log(`[Vision API] Tentando modelo: ${model}`)
+        const response = await callGroq(base64Image, model)
 
-    const data = await response.json()
-    let content = data.choices?.[0]?.message?.content
-    
-    if (!content) {
-      throw new Error('Resposta vazia da IA')
-    }
-
-    // Extrai JSON se a IA retornar markdown code blocks
-    if (content.includes('```json')) {
-      content = content.split('```json')[1].split('```')[0]
-    } else if (content.includes('```')) {
-      content = content.split('```')[1].split('```')[0]
-    }
-
-    const aiResult = JSON.parse(content.trim())
-
-    // --- Integração com Tavily (Busca de Evidência Clínica) ---
-    if (process.env.TAVILY_API_KEY && aiResult.findings?.length > 0) {
-      try {
-        const { tavilySearch } = require('@/lib/tavily')
-        const mainFinding = aiResult.findings[0]
-        const tavQuery = `${mainFinding} ICU clinical guidelines 2024 2025 management`
-        
-        const tav = await tavilySearch({
-          query: tavQuery,
-          searchDepth: 'basic',
-          maxResults: 2
-        })
-
-        if (tav.results?.length > 0) {
-          aiResult.evidence = tav.results.map((r: any) => ({
-            title: r.title,
-            url: r.url,
-            snippet: r.content.slice(0, 200)
-          }))
+        if (!response.ok) {
+          const errorText = await response.text()
+          console.warn(`[Vision API] ${model} falhou (${response.status}):`, errorText.slice(0, 300))
+          lastError = `${model}: HTTP ${response.status}`
+          continue
         }
-      } catch (tavErr) {
-        console.warn('[Vision API] Tavily search failed:', tavErr)
+
+        const data = await response.json()
+        const rawContent = data.choices?.[0]?.message?.content
+
+        if (!rawContent) {
+          lastError = `${model}: resposta vazia`
+          continue
+        }
+
+        const jsonStr = extractJson(rawContent)
+        aiResult = JSON.parse(jsonStr)
+        console.log(`[Vision API] Sucesso com modelo: ${model}`)
+        break
+      } catch (modelErr: unknown) {
+        const errMsg = modelErr instanceof Error ? modelErr.message : String(modelErr)
+        console.warn(`[Vision API] Erro com ${model}:`, errMsg)
+        lastError = `${model}: ${errMsg}`
       }
     }
 
-    console.log('[Vision API] Sucesso no processamento')
-    return NextResponse.json(aiResult)
+    if (!aiResult) {
+      return NextResponse.json(
+        { error: 'Todos os modelos de visão falharam', details: lastError },
+        { status: 502 }
+      )
+    }
 
-  } catch (error: any) {
-    console.error('[Vision API] Erro Crítico:', error)
-    return NextResponse.json({ error: error.message || 'Erro interno no servidor' }, { status: 500 })
+    // Integração Tavily (evidência clínica)
+    if (process.env.TAVILY_API_KEY && Array.isArray(aiResult.findings) && aiResult.findings.length > 0) {
+      try {
+        const { tavilySearch } = require('@/lib/tavily')
+        const mainFinding = aiResult.findings[0]
+        const tav = await tavilySearch({
+          query: `${mainFinding} ICU clinical guidelines 2024 2025 management`,
+          searchDepth: 'basic',
+          maxResults: 2,
+        })
+        if (tav.results?.length > 0) {
+          aiResult.evidence = tav.results.map((r: { title: string; url: string; content: string }) => ({
+            title: r.title,
+            url: r.url,
+            snippet: r.content.slice(0, 200),
+          }))
+        }
+      } catch {
+        // Tavily é opcional — falha silenciosa
+      }
+    }
+
+    return NextResponse.json(aiResult)
+  } catch (error: unknown) {
+    const errMsg = error instanceof Error ? error.message : 'Erro interno no servidor'
+    console.error('[Vision API] Erro crítico:', errMsg)
+    return NextResponse.json({ error: errMsg }, { status: 500 })
   }
 }

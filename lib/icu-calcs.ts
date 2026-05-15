@@ -50,15 +50,20 @@ export type ImageExamEntry = {
   tipo: string
   laudo: string
   achados: string[]
+  fixacaoLabial?: string
   measurements?: {
     tot_to_carina_cm?: number
     status?: string
     alert?: string
+    rim_labial_cm?: number
+    seletiva?: boolean
+    seletiva_side?: string
   }
   deviceStatus?: {
     tot?: string
     sne?: string
     central_access?: string
+    outros?: string
   }
 }
 

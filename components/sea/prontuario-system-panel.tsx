@@ -3230,7 +3230,7 @@ export function ProntuarioSystemPanel() {
           inr: '',
         } satisfies LabExamEntry)
       } else if (key === 'examesImagemList') {
-        next.push({ data: '', tipo: '', laudo: '', achados: [] as string[] } as unknown as Record<string, string>)
+        next.push({ data: '', tipo: '', laudo: '', achados: [] as string[], fixacaoLabial: '' } as unknown as Record<string, string>)
       }
 
       return {
@@ -3317,7 +3317,12 @@ export function ProntuarioSystemPanel() {
           if (data.measurements) {
             item.measurements = data.measurements
             const m = data.measurements
-            const rulerText = `[RÉGUA DIGITAL]: ${m.tot_to_carina_cm}cm da carina (${m.status}). ${m.alert || ''}`
+            const parts: string[] = []
+            if (m.tot_to_carina_cm) parts.push(`${m.tot_to_carina_cm}cm da carina (${m.status})`)
+            if (m.rim_labial_cm) parts.push(`fixação labial estimada: ${m.rim_labial_cm}cm`)
+            if (m.seletiva) parts.push(`⚠ INTUBAÇÃO SELETIVA SUSPEITA (${m.seletiva_side || 'lado indeterminado'})`)
+            if (m.alert) parts.push(m.alert)
+            const rulerText = `[RÉGUA IA]: ${parts.join(' | ')}`
             item.laudo = (item.laudo ? item.laudo + '\n\n' : '') + rulerText
           }
 
@@ -3330,17 +3335,17 @@ export function ProntuarioSystemPanel() {
           }
 
           if (data.evidence && data.evidence.length > 0) {
-            const evidenceLinks = data.evidence.map((e: any) => `• ${e.title}: ${e.url}`).join('\n')
+            const evidenceLinks = data.evidence.map((e: { title: string; url: string }) => `• ${e.title}: ${e.url}`).join('\n')
             item.laudo = (item.laudo ? item.laudo + '\n\n' : '') + `[EVIDÊNCIA CLÍNICA (Tavily)]:\n${evidenceLinks}`
           }
-          
+
           next[index] = item
           return { ...record, examesImagemList: next }
         })
       } else {
-        const errData = await res.json()
+        const errData = await res.json().catch(() => ({}))
         console.error('[Scan Error]', errData)
-        alert(`FALHA TÉCNICA (Erro 400): A imagem pode estar muito grande ou o modelo está instável. \n\nDetalhe: ${JSON.stringify(errData)}`)
+        alert(`Erro no scan de IA.\n\nDetalhe: ${errData.error || errData.details || JSON.stringify(errData)}`)
       }
     } catch (err) {
       console.error('Scan failed', err)
@@ -4555,116 +4560,177 @@ export function ProntuarioSystemPanel() {
 
                       <div className="space-y-1.5">
                         {currentRecord.examesImagemList?.length ? (
-                          currentRecord.examesImagemList.map((exam, index) => (
-                            <div key={`img-${index}`} className="space-y-1 rounded-[0.7rem] ipb-soft p-1.5">
-                              {/* linha 1: data · tipo · apagar */}
-                              <div className="flex items-center gap-2">
-                                <input
-                                  className={`${INPUT_FLEX} w-[7rem] shrink-0`}
-                                  type="date"
-                                  value={exam.data}
-                                  onChange={(e) => updateListItem('examesImagemList', index, 'data', e.target.value)}
-                                />
-                                <select
-                                  className={`${INPUT_FLEX} min-w-0 flex-1`}
-                                  value={exam.tipo}
-                                  onChange={(e) => updateListItem('examesImagemList', index, 'tipo', e.target.value)}
-                                >
-                                  {IMAGE_TYPE_OPTIONS.map(([v, l]) => (
-                                    <option key={v} value={v}>{l}</option>
-                                  ))}
-                                </select>
-                                {exam.measurements?.tot_to_carina_cm && (
-                                  <div className={`flex items-center gap-1 rounded-full border px-1.5 py-0.5 ${
-                                    exam.measurements.status === 'ADEQUADO' 
-                                      ? 'border-green-500/30 bg-green-500/10 text-green-400' 
-                                      : exam.measurements.status === 'ALERTA'
-                                      ? 'border-amber-500/30 bg-amber-500/10 text-amber-400'
-                                      : 'border-red-500/30 bg-red-500/10 text-red-400'
-                                  }`} title={exam.measurements.alert || `Distância: ${exam.measurements.tot_to_carina_cm}cm`}>
-                                    <Ruler className="h-2.5 w-2.5" />
-                                    <span className="text-[7px] font-bold whitespace-nowrap">
-                                      {exam.measurements.tot_to_carina_cm}cm
-                                    </span>
+                          currentRecord.examesImagemList.map((exam, index) => {
+                            const isChestExam = exam.tipo?.includes('RX Torax') || exam.tipo?.includes('TC Torax') || exam.tipo?.includes('AngioTC')
+                            const m = exam.measurements
+                            const isSeletiva = m?.seletiva
+                            return (
+                              <div key={`img-${index}`} className="space-y-1 rounded-[0.7rem] ipb-soft p-1.5">
+                                {/* linha 1: data · tipo · scan · apagar */}
+                                <div className="flex items-center gap-1.5">
+                                  <input
+                                    className={`${INPUT_FLEX} w-[7rem] shrink-0`}
+                                    type="date"
+                                    value={exam.data}
+                                    onChange={(e) => updateListItem('examesImagemList', index, 'data', e.target.value)}
+                                  />
+                                  <select
+                                    className={`${INPUT_FLEX} min-w-0 flex-1`}
+                                    value={exam.tipo}
+                                    onChange={(e) => updateListItem('examesImagemList', index, 'tipo', e.target.value)}
+                                  >
+                                    {IMAGE_TYPE_OPTIONS.map(([v, l]) => (
+                                      <option key={v} value={v}>{l}</option>
+                                    ))}
+                                  </select>
+                                  <button
+                                    onClick={() => {
+                                      setIsScanning(index)
+                                      fileInputRef.current?.click()
+                                    }}
+                                    disabled={isScanning !== null}
+                                    className="flex h-6 w-6 shrink-0 items-center justify-center rounded-[0.5rem] border border-[#fb923c30] bg-[#fb923c10] text-[#fdba74] hover:bg-[#fb923c20]"
+                                    title="SCAN AI — Análise inteligente de imagem"
+                                  >
+                                    {isScanning === index ? (
+                                      <Loader2 className="h-3 w-3 animate-spin" />
+                                    ) : (
+                                      <Scan className="h-3 w-3" />
+                                    )}
+                                  </button>
+                                  <button
+                                    onClick={() => removeListItem('examesImagemList', index)}
+                                    className="flex h-6 w-6 shrink-0 items-center justify-center rounded-[0.5rem] border border-[#f8717130] bg-[#f8717110] text-[#fca5a5]"
+                                  >
+                                    <Trash2 className="h-3 w-3" />
+                                  </button>
+                                </div>
+
+                                {/* badges TOT (só quando há measurements ou é exame de tórax) */}
+                                {(m?.tot_to_carina_cm || m?.rim_labial_cm || isSeletiva) && (
+                                  <div className="flex flex-wrap gap-1 pt-0.5">
+                                    {/* badge carina */}
+                                    {m?.tot_to_carina_cm ? (
+                                      <div className={`flex items-center gap-1 rounded-full border px-1.5 py-0.5 ${
+                                        m.status === 'ADEQUADO'
+                                          ? 'border-green-500/30 bg-green-500/10 text-green-400'
+                                          : m.status === 'ALERTA'
+                                          ? 'border-amber-500/30 bg-amber-500/10 text-amber-400'
+                                          : 'border-red-500/30 bg-red-500/10 text-red-400'
+                                      }`} title={m.alert || `TOT → Carina: ${m.tot_to_carina_cm}cm`}>
+                                        <Ruler className="h-2.5 w-2.5" />
+                                        <span className="text-[7px] font-bold whitespace-nowrap">
+                                          {m.tot_to_carina_cm}cm carina
+                                        </span>
+                                      </div>
+                                    ) : null}
+                                    {/* badge rima labial */}
+                                    {m?.rim_labial_cm ? (
+                                      <div className="flex items-center gap-1 rounded-full border border-white/20 bg-white/[0.06] px-1.5 py-0.5 text-white/60" title={`Fixação estimada pelo scan: ${m.rim_labial_cm}cm`}>
+                                        <Ruler className="h-2.5 w-2.5" />
+                                        <span className="text-[7px] font-bold whitespace-nowrap">
+                                          {m.rim_labial_cm}cm lábio
+                                        </span>
+                                      </div>
+                                    ) : null}
+                                    {/* badge intubação seletiva */}
+                                    {isSeletiva ? (
+                                      <div className="flex items-center gap-1 rounded-full border border-red-500/50 bg-red-500/15 px-1.5 py-0.5 text-red-400" title={`Intubação seletiva suspeita — ${m?.seletiva_side || 'lado indeterminado'}`}>
+                                        <span className="text-[7px] font-bold whitespace-nowrap">
+                                          ⚠ SELETIVA {m?.seletiva_side ? m.seletiva_side.toUpperCase() : ''}
+                                        </span>
+                                      </div>
+                                    ) : null}
                                   </div>
                                 )}
-                                <button
-                                  onClick={() => {
-                                    setIsScanning(index)
-                                    fileInputRef.current?.click()
+
+                                {/* campo fixação labial manual (apenas exames de tórax) */}
+                                {isChestExam && (
+                                  <div className="flex items-center gap-1.5">
+                                    <span className="shrink-0 text-[8px] text-white/46">Fixação lábio:</span>
+                                    <input
+                                      className={`${INPUT_FLEX} w-16 shrink-0`}
+                                      type="number"
+                                      min="10"
+                                      max="35"
+                                      step="0.5"
+                                      value={exam.fixacaoLabial ?? ''}
+                                      onChange={(e) => updateListItem('examesImagemList', index, 'fixacaoLabial', e.target.value)}
+                                      placeholder="cm"
+                                    />
+                                    <span className="text-[8px] text-white/36">cm</span>
+                                    {exam.fixacaoLabial && m?.tot_to_carina_cm ? (
+                                      <span className="text-[7px] text-white/50 italic">
+                                        ({Number(exam.fixacaoLabial).toFixed(1)}cm no lábio → {m.tot_to_carina_cm}cm da carina)
+                                      </span>
+                                    ) : null}
+                                  </div>
+                                )}
+
+                                {/* achados */}
+                                <select
+                                  className={INPUT_CLASS_SM} style={INPUT_STYLE}
+                                  defaultValue=""
+                                  onChange={(e) => {
+                                    toggleImageFinding(index, e.target.value)
+                                    e.currentTarget.selectedIndex = 0
                                   }}
-                                  disabled={isScanning !== null}
-                                  className="flex h-6 w-6 shrink-0 items-center justify-center rounded-[0.5rem] border border-[#fb923c30] bg-[#fb923c10] text-[#fdba74] hover:bg-[#fb923c20]"
-                                  title="SCAN AI - Analise inteligente de imagem"
                                 >
-                                  {isScanning === index ? (
-                                    <Loader2 className="h-3 w-3 animate-spin" />
-                                  ) : (
-                                    <Scan className="h-3 w-3" />
-                                  )}
-                                </button>
-                                <button
-                                  onClick={() => removeListItem('examesImagemList', index)}
-                                  className="flex h-6 w-6 shrink-0 items-center justify-center rounded-[0.5rem] border border-[#f8717130] bg-[#f8717110] text-[#fca5a5]"
-                                >
-                                  <Trash2 className="h-3 w-3" />
-                                </button>
-                              </div>
-                              {/* linha 2: achados */}
-                              <select
-                                className={INPUT_CLASS_SM} style={INPUT_STYLE}
-                                defaultValue=""
-                                onChange={(e) => {
-                                  toggleImageFinding(index, e.target.value)
-                                  e.currentTarget.selectedIndex = 0
-                                }}
-                              >
-                                <option value="">+ Achado...</option>
-                                {IMAGE_FINDING_OPTIONS.map((o) => (
-                                  <option key={o} value={o}>{o}</option>
-                                ))}
-                              </select>
-                              {exam.achados?.length ? (
-                                <div className="flex flex-wrap gap-1.5">
-                                  {exam.achados.map((item) => (
-                                    <button
-                                      key={`${index}-${item}`}
-                                      type="button"
-                                      onClick={() => removeImageFinding(index, item)}
-                                      className="rounded-full border border-white/10 bg-white/[0.05] px-2.5 py-1 text-[8px] text-white/72"
-                                    >
-                                      {item} ×
-                                    </button>
+                                  <option value="">+ Achado...</option>
+                                  {IMAGE_FINDING_OPTIONS.map((o) => (
+                                    <option key={o} value={o}>{o}</option>
                                   ))}
-                                </div>
-                              ) : null}
-                              {exam.deviceStatus && (
-                                <div className="mt-1 flex flex-wrap gap-1">
-                                  {exam.deviceStatus.tot && (
-                                    <span className="rounded-md bg-[#60a5fa10] border border-[#60a5fa30] px-1.5 py-0.5 text-[6px] font-medium text-[#93c5fd]">
-                                      TOT: {exam.deviceStatus.tot}
-                                    </span>
-                                  )}
-                                  {exam.deviceStatus.sne && (
-                                    <span className="rounded-md bg-[#c084fc10] border border-[#c084fc30] px-1.5 py-0.5 text-[6px] font-medium text-[#e879f9]">
-                                      SNE: {exam.deviceStatus.sne}
-                                    </span>
-                                  )}
-                                  {exam.deviceStatus.central_access && (
-                                    <span className="rounded-md bg-[#2dd4bf10] border border-[#2dd4bf30] px-1.5 py-0.5 text-[6px] font-medium text-[#5eead4]">
-                                      CVC: {exam.deviceStatus.central_access}
-                                    </span>
-                                  )}
-                                </div>
-                              )}
-                              {/* linha 3: laudo */}
-                              <AutoGrowTextarea
-                                value={exam.laudo}
-                                onChange={(value) => updateListItem('examesImagemList', index, 'laudo', value)}
-                                placeholder="Laudo / observacoes..."
-                              />
-                            </div>
-                          ))
+                                </select>
+                                {exam.achados?.length ? (
+                                  <div className="flex flex-wrap gap-1.5">
+                                    {exam.achados.map((item) => (
+                                      <button
+                                        key={`${index}-${item}`}
+                                        type="button"
+                                        onClick={() => removeImageFinding(index, item)}
+                                        className="rounded-full border border-white/10 bg-white/[0.05] px-2.5 py-1 text-[8px] text-white/72"
+                                      >
+                                        {item} ×
+                                      </button>
+                                    ))}
+                                  </div>
+                                ) : null}
+
+                                {/* device status */}
+                                {exam.deviceStatus && (
+                                  <div className="mt-0.5 flex flex-wrap gap-1">
+                                    {exam.deviceStatus.tot && (
+                                      <span className="rounded-md bg-[#60a5fa10] border border-[#60a5fa30] px-1.5 py-0.5 text-[6px] font-medium text-[#93c5fd]">
+                                        TOT: {exam.deviceStatus.tot}
+                                      </span>
+                                    )}
+                                    {exam.deviceStatus.sne && (
+                                      <span className="rounded-md bg-[#c084fc10] border border-[#c084fc30] px-1.5 py-0.5 text-[6px] font-medium text-[#e879f9]">
+                                        SNE: {exam.deviceStatus.sne}
+                                      </span>
+                                    )}
+                                    {exam.deviceStatus.central_access && (
+                                      <span className="rounded-md bg-[#2dd4bf10] border border-[#2dd4bf30] px-1.5 py-0.5 text-[6px] font-medium text-[#5eead4]">
+                                        CVC: {exam.deviceStatus.central_access}
+                                      </span>
+                                    )}
+                                    {exam.deviceStatus.outros && (
+                                      <span className="rounded-md bg-white/[0.04] border border-white/12 px-1.5 py-0.5 text-[6px] font-medium text-white/50">
+                                        {exam.deviceStatus.outros}
+                                      </span>
+                                    )}
+                                  </div>
+                                )}
+
+                                {/* laudo */}
+                                <AutoGrowTextarea
+                                  value={exam.laudo}
+                                  onChange={(value) => updateListItem('examesImagemList', index, 'laudo', value)}
+                                  placeholder="Laudo / observacoes..."
+                                />
+                              </div>
+                            )
+                          })
                         ) : (
                           <div className="rounded-[0.7rem] border border-dashed border-white/12 bg-white/[0.02] px-3 py-4 text-center text-[8px] text-white/46">
                             Nenhum exame de imagem registrado.
