@@ -51,6 +51,7 @@ export type ImageExamEntry = {
   laudo: string
   achados: string[]
   fixacaoLabial?: string
+  thumbnail?: string
   measurements?: {
     tot_to_carina_cm?: number
     status?: string

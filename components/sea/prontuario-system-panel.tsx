@@ -2079,6 +2079,7 @@ export function ProntuarioSystemPanel() {
   const [workspaces, setWorkspaces] = useState<Workspace[]>([])
   const [activeWorkspaceId, setActiveWorkspaceId] = useState<string>('')
   const [isScanning, setIsScanning] = useState<number | null>(null)
+  const [lightboxSrc, setLightboxSrc] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [showWsModal, setShowWsModal] = useState(false)
   const [wsNameInput, setWsNameInput] = useState('')
@@ -3263,10 +3264,9 @@ export function ProntuarioSystemPanel() {
     const file = e.target.files?.[0]
     if (!file || isScanning === null || !currentRecord) return
     const index = isScanning
-    
+
     try {
-      // Redimensionar imagem antes de enviar (Max 1024px) para evitar Erro 400/413
-      const resizeImage = (f: File): Promise<string> => {
+      const resizeImage = (f: File, maxWidth: number, quality: number): Promise<string> => {
         return new Promise((resolve) => {
           const reader = new FileReader()
           reader.readAsDataURL(f)
@@ -3275,25 +3275,34 @@ export function ProntuarioSystemPanel() {
             img.src = ev.target?.result as string
             img.onload = () => {
               const canvas = document.createElement('canvas')
-              const MAX_WIDTH = 800
               let width = img.width
               let height = img.height
-              if (width > MAX_WIDTH) {
-                height *= MAX_WIDTH / width
-                width = MAX_WIDTH
+              if (width > maxWidth) {
+                height *= maxWidth / width
+                width = maxWidth
               }
               canvas.width = width
               canvas.height = height
               const ctx = canvas.getContext('2d')
               ctx?.drawImage(img, 0, 0, width, height)
-              const dataUrl = canvas.toDataURL('image/jpeg', 0.7)
-              resolve(dataUrl)
+              resolve(canvas.toDataURL('image/jpeg', quality))
             }
           }
         })
       }
 
-      const resizedDataUrl = await resizeImage(file)
+      // Gera thumbnail (200px, plantão-only, some com o cronômetro — LGPD)
+      const thumbnailDataUrl = await resizeImage(file, 200, 0.65)
+      // Versão maior para análise da IA
+      const resizedDataUrl = await resizeImage(file, 800, 0.7)
+
+      // Salva thumbnail imediatamente (antes da IA responder)
+      updateCurrentRecord((record) => {
+        const next = [...record.examesImagemList]
+        next[index] = { ...next[index], thumbnail: thumbnailDataUrl }
+        return { ...record, examesImagemList: next }
+      })
+
       const formData = new FormData()
       const resBlob = await (await fetch(resizedDataUrl)).blob()
       formData.append('file', resBlob, 'scan.jpg')
@@ -4658,6 +4667,29 @@ export function ProntuarioSystemPanel() {
                                         </span>
                                       </div>
                                     ) : null}
+                                  </div>
+                                )}
+
+                                {/* thumbnail do scan (plantão-only, some com cronômetro — LGPD) */}
+                                {exam.thumbnail && (
+                                  <div className="flex items-start gap-2 pt-0.5">
+                                    <button
+                                      onClick={() => setLightboxSrc(exam.thumbnail!)}
+                                      className="relative shrink-0 overflow-hidden rounded-[0.5rem] border border-white/14 bg-black/30 hover:border-white/26 transition-all"
+                                      title="Ver imagem analisada — some ao fim do plantão (LGPD)"
+                                    >
+                                      <img
+                                        src={exam.thumbnail}
+                                        alt="Scan"
+                                        className="h-14 w-14 object-cover"
+                                      />
+                                      <div className="absolute inset-0 flex items-center justify-center bg-black/0 hover:bg-black/30 transition-all">
+                                        <span className="text-[7px] text-white/0 hover:text-white/80 font-medium select-none">ampliar</span>
+                                      </div>
+                                    </button>
+                                    <span className="mt-1 text-[7px] leading-snug text-white/32 italic">
+                                      Imagem do scan.<br />Some ao encerrar o plantão.
+                                    </span>
                                   </div>
                                 )}
 
@@ -7687,6 +7719,31 @@ export function ProntuarioSystemPanel() {
         capture="environment"
         className="hidden"
       />
+
+      {/* Lightbox — imagem do scan ampliada (plantão-only, LGPD) */}
+      {lightboxSrc && (
+        <div
+          className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/90 p-4"
+          onClick={() => setLightboxSrc(null)}
+        >
+          <div className="relative max-h-full max-w-full" onClick={(e) => e.stopPropagation()}>
+            <img
+              src={lightboxSrc}
+              alt="Exame de imagem — scan do plantão"
+              className="max-h-[85dvh] max-w-[90dvw] rounded-[0.8rem] border border-white/14 object-contain"
+            />
+            <button
+              onClick={() => setLightboxSrc(null)}
+              className="absolute -right-2 -top-2 flex h-7 w-7 items-center justify-center rounded-full border border-white/20 bg-black/80 text-white/70 hover:text-white"
+            >
+              ✕
+            </button>
+            <p className="mt-2 text-center text-[8px] text-white/36 italic">
+              Imagem temporária — some ao encerrar o plantão (LGPD)
+            </p>
+          </div>
+        </div>
+      )}
       </div>
     </div>
   )
