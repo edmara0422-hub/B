@@ -2052,43 +2052,190 @@ function ScanLightbox({ data, onClose }: { data: LightboxPayload | null; onClose
   const [tipPct, setTipPct] = useState<{ x: number; y: number } | null>(null)
   const [carinaPct, setCarinaPct] = useState<{ x: number; y: number } | null>(null)
   const [rulerStep, setRulerStep] = useState<'tot' | 'carina' | 'done'>('tot')
+  const [zoom, setZoom] = useState(1)
+  const [pan, setPan] = useState({ x: 0, y: 0 })
+  const [saving, setSaving] = useState(false)
+
+  const containerRef = useRef<HTMLDivElement>(null)
+  const imgRef = useRef<HTMLImageElement>(null)
+  const pointersRef = useRef<Map<number, PointerEvent>>(new Map())
+  const dragStartRef = useRef<{ x: number; y: number; panX: number; panY: number } | null>(null)
+  const prevPinchRef = useRef<number | null>(null)
+  const didMoveRef = useRef(false)
 
   useEffect(() => {
     setTipPct(null)
     setCarinaPct(null)
     setRulerStep('tot')
+    setZoom(1)
+    setPan({ x: 0, y: 0 })
   }, [data?.src])
 
   if (!data) return null
 
-  const handlePointerDown = (e: React.PointerEvent<SVGSVGElement>) => {
-    if (rulerStep === 'done') return
-    e.preventDefault()
-    e.stopPropagation()
-    const rect = e.currentTarget.getBoundingClientRect()
-    const x = Math.min(Math.max((e.clientX - rect.left) / rect.width, 0), 1)
-    const y = Math.min(Math.max((e.clientY - rect.top) / rect.height, 0), 1)
-
-    if (rulerStep === 'tot') {
-      setTipPct({ x, y })
-      setRulerStep('carina')
-    } else {
-      setCarinaPct({ x, y })
-      setRulerStep('done')
+  const clampPan = (px: number, py: number, z: number): { x: number; y: number } => {
+    if (!containerRef.current) return { x: px, y: py }
+    const rect = containerRef.current.getBoundingClientRect()
+    const maxX = (rect.width * (z - 1)) / 2
+    const maxY = (rect.height * (z - 1)) / 2
+    return {
+      x: Math.min(Math.max(px, -maxX), maxX),
+      y: Math.min(Math.max(py, -maxY), maxY),
     }
   }
 
-  const resetRuler = () => {
-    setTipPct(null)
-    setCarinaPct(null)
-    setRulerStep('tot')
+  const screenToNorm = (clientX: number, clientY: number): { x: number; y: number } => {
+    if (!containerRef.current) return { x: 0.5, y: 0.5 }
+    const rect = containerRef.current.getBoundingClientRect()
+    const cx = clientX - rect.left - rect.width / 2
+    const cy = clientY - rect.top - rect.height / 2
+    const ix = (cx - pan.x) / zoom
+    const iy = (cy - pan.y) / zoom
+    return {
+      x: Math.min(Math.max((ix + rect.width / 2) / rect.width, 0), 1),
+      y: Math.min(Math.max((iy + rect.height / 2) / rect.height, 0), 1),
+    }
+  }
+
+  const onPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    pointersRef.current.set(e.pointerId, e.nativeEvent)
+    ;(e.currentTarget as HTMLDivElement).setPointerCapture(e.pointerId)
+    didMoveRef.current = false
+    if (pointersRef.current.size === 1) {
+      dragStartRef.current = { x: e.clientX, y: e.clientY, panX: pan.x, panY: pan.y }
+    }
+    if (pointersRef.current.size === 2) {
+      const pts = Array.from(pointersRef.current.values())
+      prevPinchRef.current = Math.hypot(pts[1].clientX - pts[0].clientX, pts[1].clientY - pts[0].clientY)
+    }
+  }
+
+  const onPointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    pointersRef.current.set(e.pointerId, e.nativeEvent)
+    if (pointersRef.current.size === 2) {
+      didMoveRef.current = true
+      const pts = Array.from(pointersRef.current.values())
+      const dist = Math.hypot(pts[1].clientX - pts[0].clientX, pts[1].clientY - pts[0].clientY)
+      if (prevPinchRef.current !== null) {
+        const ratio = dist / prevPinchRef.current
+        setZoom((z) => {
+          const nz = Math.min(Math.max(z * ratio, 1), 8)
+          setPan((p) => clampPan(p.x, p.y, nz))
+          return nz
+        })
+      }
+      prevPinchRef.current = dist
+      return
+    }
+    if (pointersRef.current.size === 1 && dragStartRef.current) {
+      const dx = e.clientX - dragStartRef.current.x
+      const dy = e.clientY - dragStartRef.current.y
+      if (Math.abs(dx) > 4 || Math.abs(dy) > 4) didMoveRef.current = true
+      if (zoom > 1 && didMoveRef.current) {
+        setPan(clampPan(dragStartRef.current.panX + dx, dragStartRef.current.panY + dy, zoom))
+      }
+    }
+  }
+
+  const onPointerUp = (e: React.PointerEvent<HTMLDivElement>) => {
+    const wasTap = !didMoveRef.current && pointersRef.current.size === 1
+    pointersRef.current.delete(e.pointerId)
+    prevPinchRef.current = null
+    if (wasTap && rulerStep !== 'done') {
+      const norm = screenToNorm(e.clientX, e.clientY)
+      if (rulerStep === 'tot') { setTipPct(norm); setRulerStep('carina') }
+      else { setCarinaPct(norm); setRulerStep('done') }
+    }
+    dragStartRef.current = null
+    didMoveRef.current = false
+  }
+
+  const onPointerCancel = (e: React.PointerEvent<HTMLDivElement>) => {
+    pointersRef.current.delete(e.pointerId)
+    dragStartRef.current = null
+    didMoveRef.current = false
+    prevPinchRef.current = null
+  }
+
+  const onWheel = (e: React.WheelEvent<HTMLDivElement>) => {
+    e.preventDefault()
+    setZoom((z) => {
+      const nz = Math.min(Math.max(z - e.deltaY * 0.002, 1), 8)
+      setPan((p) => clampPan(p.x, p.y, nz))
+      return nz
+    })
+  }
+
+  const resetRuler = () => { setTipPct(null); setCarinaPct(null); setRulerStep('tot') }
+  const resetZoom  = () => { setZoom(1); setPan({ x: 0, y: 0 }) }
+
+  const saveAnnotated = async () => {
+    if (!tipPct || !carinaPct || !imgRef.current) return
+    setSaving(true)
+    try {
+      const img = imgRef.current
+      const W = img.naturalWidth || 800
+      const H = img.naturalHeight || 600
+      const canvas = document.createElement('canvas')
+      canvas.width = W; canvas.height = H
+      const ctx = canvas.getContext('2d')!
+      ctx.drawImage(img, 0, 0, W, H)
+
+      const tipX = tipPct.x * W;   const tipY = tipPct.y * H
+      const carX = carinaPct.x * W; const carY = carinaPct.y * H
+      const r = W * 0.018
+
+      ctx.setLineDash([W * 0.014, W * 0.007])
+      ctx.strokeStyle = 'rgba(255,255,255,0.75)'; ctx.lineWidth = W * 0.004
+      ctx.beginPath(); ctx.moveTo(tipX, tipY); ctx.lineTo(carX, carY); ctx.stroke()
+      ctx.setLineDash([])
+
+      const drawMarker = (x: number, y: number, color: string, label: string, labelDy: number) => {
+        ctx.fillStyle = color.replace(')', ',0.22)').replace('rgb', 'rgba')
+        ctx.strokeStyle = color; ctx.lineWidth = W * 0.004
+        ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill(); ctx.stroke()
+        ctx.lineWidth = W * 0.003
+        ctx.beginPath(); ctx.moveTo(x - r * 1.3, y); ctx.lineTo(x + r * 1.3, y); ctx.stroke()
+        ctx.beginPath(); ctx.moveTo(x, y - r * 1.3); ctx.lineTo(x, y + r * 1.3); ctx.stroke()
+        ctx.fillStyle = color
+        ctx.font = `bold ${W * 0.024}px monospace`
+        ctx.fillText(label, x + r * 1.4, y + labelDy)
+      }
+
+      drawMarker(tipX, tipY, '#fb923c', 'TOT', -r * 0.6)
+      drawMarker(carX, carY, '#60a5fa', 'Carina', r * 2.2)
+
+      if (data.measurements?.tot_to_carina_cm) {
+        const midX = (tipX + carX) / 2; const midY = (tipY + carY) / 2
+        const bw = W * 0.22; const bh = H * 0.068
+        ctx.fillStyle = 'rgba(0,0,0,0.84)'; ctx.strokeStyle = 'rgba(255,255,255,0.2)'; ctx.lineWidth = W * 0.002
+        ctx.beginPath()
+        if (ctx.roundRect) ctx.roundRect(midX - bw / 2, midY - bh / 2, bw, bh, W * 0.01)
+        else ctx.rect(midX - bw / 2, midY - bh / 2, bw, bh)
+        ctx.fill(); ctx.stroke()
+        ctx.fillStyle = 'white'; ctx.font = `bold ${W * 0.026}px monospace`
+        ctx.textAlign = 'center'; ctx.textBaseline = 'middle'
+        ctx.fillText(`IA: ${data.measurements.tot_to_carina_cm}cm`, midX, midY)
+        ctx.textAlign = 'left'; ctx.textBaseline = 'alphabetic'
+      }
+
+      const blob = await new Promise<Blob>((res) => canvas.toBlob((b) => res(b!), 'image/jpeg', 0.92))
+      const file = new File([blob], 'regua-tot.jpg', { type: 'image/jpeg' })
+      if (navigator.share && navigator.canShare?.({ files: [file] })) {
+        await navigator.share({ files: [file], title: 'Régua TOT — SEA FISIO' })
+      } else {
+        const url = URL.createObjectURL(blob)
+        const a = document.createElement('a'); a.href = url; a.download = 'regua-tot.jpg'; a.click()
+        URL.revokeObjectURL(url)
+      }
+    } catch { /* silent */ }
+    finally { setSaving(false) }
   }
 
   const bothPlaced = tipPct && carinaPct
   const midX = bothPlaced ? (tipPct.x + carinaPct.x) / 2 : 0
   const midY = bothPlaced ? (tipPct.y + carinaPct.y) / 2 : 0
   const tick = 0.018
-
   const aiDist = data.measurements?.tot_to_carina_cm
   const aiDir  = data.measurements?.direction ?? data.measurements?.status
 
@@ -2097,94 +2244,99 @@ function ScanLightbox({ data, onClose }: { data: LightboxPayload | null; onClose
       className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-black/94 gap-3 p-4"
       onClick={onClose}
     >
-      {/* imagem + SVG interativo */}
+      {/* container com zoom/pan */}
       <div
-        className="relative select-none"
+        ref={containerRef}
+        className="relative select-none overflow-hidden"
         style={
           data.imgW && data.imgH
-            ? { aspectRatio: `${data.imgW}/${data.imgH}`, maxHeight: '78dvh', maxWidth: '92dvw' }
-            : { maxHeight: '78dvh', maxWidth: '92dvw' }
+            ? { aspectRatio: `${data.imgW}/${data.imgH}`, maxHeight: '78dvh', maxWidth: '92dvw', touchAction: 'none', cursor: rulerStep === 'done' ? (zoom > 1 ? 'grab' : 'default') : 'crosshair' }
+            : { maxHeight: '78dvh', maxWidth: '92dvw', touchAction: 'none', cursor: rulerStep === 'done' ? (zoom > 1 ? 'grab' : 'default') : 'crosshair' }
         }
         onClick={(e) => e.stopPropagation()}
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={onPointerUp}
+        onPointerCancel={onPointerCancel}
+        onWheel={onWheel}
       >
-        <img
-          src={data.src}
-          alt="Scan ICU"
-          className="h-full w-full rounded-[0.8rem] border border-white/14 object-fill"
-          draggable={false}
-        />
-
-        {/* SVG interativo — régua manual */}
-        <svg
-          className="absolute inset-0 w-full h-full rounded-[0.8rem]"
-          viewBox="0 0 1 1"
-          preserveAspectRatio="none"
-          style={{ cursor: rulerStep === 'done' ? 'default' : 'crosshair', touchAction: 'none' }}
-          onPointerDown={handlePointerDown}
+        {/* inner — transformado */}
+        <div
+          style={{
+            width: '100%', height: '100%',
+            transform: `translate(${pan.x}px,${pan.y}px) scale(${zoom})`,
+            transformOrigin: 'center center',
+            willChange: 'transform',
+          }}
         >
-          {/* marcador TOT — laranja */}
-          {tipPct && (
-            <>
-              <circle cx={tipPct.x} cy={tipPct.y} r="0.018" fill="#fb923c" fillOpacity="0.22" stroke="#fb923c" strokeWidth="0.004" />
-              <line x1={tipPct.x - 0.024} y1={tipPct.y} x2={tipPct.x + 0.024} y2={tipPct.y} stroke="#fb923c" strokeWidth="0.003" />
-              <line x1={tipPct.x} y1={tipPct.y - 0.024} x2={tipPct.x} y2={tipPct.y + 0.024} stroke="#fb923c" strokeWidth="0.003" />
-              <text x={tipPct.x + 0.024} y={tipPct.y - 0.014} fill="#fb923c" fontSize="0.024" fontFamily="sans-serif" fontWeight="bold">TOT</text>
-            </>
-          )}
+          <img
+            ref={imgRef}
+            src={data.src}
+            alt="Scan ICU"
+            className="h-full w-full rounded-[0.8rem] border border-white/14 object-fill"
+            draggable={false}
+          />
 
-          {/* marcador Carina — azul */}
-          {carinaPct && (
-            <>
-              <circle cx={carinaPct.x} cy={carinaPct.y} r="0.018" fill="#60a5fa" fillOpacity="0.22" stroke="#60a5fa" strokeWidth="0.004" />
-              <line x1={carinaPct.x - 0.024} y1={carinaPct.y} x2={carinaPct.x + 0.024} y2={carinaPct.y} stroke="#60a5fa" strokeWidth="0.003" />
-              <line x1={carinaPct.x} y1={carinaPct.y - 0.024} x2={carinaPct.x} y2={carinaPct.y + 0.024} stroke="#60a5fa" strokeWidth="0.003" />
-              <text x={carinaPct.x + 0.024} y={carinaPct.y + 0.032} fill="#60a5fa" fontSize="0.024" fontFamily="sans-serif" fontWeight="bold">Carina</text>
-            </>
-          )}
+          {/* SVG overlay — sem pointer events */}
+          <svg
+            className="absolute inset-0 w-full h-full rounded-[0.8rem]"
+            viewBox="0 0 1 1"
+            preserveAspectRatio="none"
+            style={{ pointerEvents: 'none' }}
+          >
+            {tipPct && (
+              <>
+                <circle cx={tipPct.x} cy={tipPct.y} r="0.018" fill="#fb923c" fillOpacity="0.22" stroke="#fb923c" strokeWidth="0.004" />
+                <line x1={tipPct.x - 0.024} y1={tipPct.y} x2={tipPct.x + 0.024} y2={tipPct.y} stroke="#fb923c" strokeWidth="0.003" />
+                <line x1={tipPct.x} y1={tipPct.y - 0.024} x2={tipPct.x} y2={tipPct.y + 0.024} stroke="#fb923c" strokeWidth="0.003" />
+                <text x={tipPct.x + 0.024} y={tipPct.y - 0.014} fill="#fb923c" fontSize="0.024" fontFamily="sans-serif" fontWeight="bold">TOT</text>
+              </>
+            )}
+            {carinaPct && (
+              <>
+                <circle cx={carinaPct.x} cy={carinaPct.y} r="0.018" fill="#60a5fa" fillOpacity="0.22" stroke="#60a5fa" strokeWidth="0.004" />
+                <line x1={carinaPct.x - 0.024} y1={carinaPct.y} x2={carinaPct.x + 0.024} y2={carinaPct.y} stroke="#60a5fa" strokeWidth="0.003" />
+                <line x1={carinaPct.x} y1={carinaPct.y - 0.024} x2={carinaPct.x} y2={carinaPct.y + 0.024} stroke="#60a5fa" strokeWidth="0.003" />
+                <text x={carinaPct.x + 0.024} y={carinaPct.y + 0.032} fill="#60a5fa" fontSize="0.024" fontFamily="sans-serif" fontWeight="bold">Carina</text>
+              </>
+            )}
+            {bothPlaced && (
+              <>
+                <line x1={tipPct.x - tick} y1={tipPct.y} x2={tipPct.x + tick} y2={tipPct.y} stroke="white" strokeWidth="0.003" strokeOpacity="0.7" />
+                <line x1={carinaPct.x - tick} y1={carinaPct.y} x2={carinaPct.x + tick} y2={carinaPct.y} stroke="white" strokeWidth="0.003" strokeOpacity="0.7" />
+                <line x1={tipPct.x} y1={tipPct.y} x2={carinaPct.x} y2={carinaPct.y} stroke="white" strokeWidth="0.004" strokeDasharray="0.014 0.007" strokeOpacity="0.65" />
+                <rect x={midX - 0.1} y={midY - 0.03} width="0.2" height="0.06" rx="0.01" ry="0.01" fill="rgba(0,0,0,0.82)" stroke="rgba(255,255,255,0.18)" strokeWidth="0.002" />
+                <text x={midX} y={midY + 0.01} textAnchor="middle" dominantBaseline="middle" fill="white" fontSize="0.026" fontWeight="bold" fontFamily="monospace">
+                  TOT → Carina
+                </text>
+              </>
+            )}
+          </svg>
+        </div>
 
-          {/* linha + label entre os pontos */}
-          {bothPlaced && (
-            <>
-              {/* ticks horizontais nas extremidades */}
-              <line x1={tipPct.x - tick} y1={tipPct.y} x2={tipPct.x + tick} y2={tipPct.y} stroke="white" strokeWidth="0.003" strokeOpacity="0.7" />
-              <line x1={carinaPct.x - tick} y1={carinaPct.y} x2={carinaPct.x + tick} y2={carinaPct.y} stroke="white" strokeWidth="0.003" strokeOpacity="0.7" />
-              {/* linha principal */}
-              <line
-                x1={tipPct.x} y1={tipPct.y}
-                x2={carinaPct.x} y2={carinaPct.y}
-                stroke="white" strokeWidth="0.004"
-                strokeDasharray="0.014 0.007"
-                strokeOpacity="0.65"
-              />
-              {/* label central */}
-              <rect
-                x={midX - 0.1} y={midY - 0.03}
-                width="0.2" height="0.06"
-                rx="0.01" ry="0.01"
-                fill="rgba(0,0,0,0.82)"
-                stroke="rgba(255,255,255,0.18)" strokeWidth="0.002"
-              />
-              <text
-                x={midX} y={midY + 0.01}
-                textAnchor="middle" dominantBaseline="middle"
-                fill="white" fontSize="0.026" fontWeight="bold" fontFamily="monospace"
-              >
-                TOT → Carina
-              </text>
-            </>
-          )}
-        </svg>
-
+        {/* botão fechar */}
         <button
           onClick={onClose}
+          onPointerDown={(e) => e.stopPropagation()}
           className="absolute -right-2 -top-2 z-10 flex h-7 w-7 items-center justify-center rounded-full border border-white/20 bg-black/80 text-white/70 hover:text-white"
         >
           ✕
         </button>
+
+        {/* badge zoom */}
+        {zoom > 1 && (
+          <button
+            className="absolute bottom-2 left-2 z-10 rounded-full border border-white/20 bg-black/70 px-2 py-0.5 text-[9px] text-white/60 hover:text-white"
+            onClick={(e) => { e.stopPropagation(); resetZoom() }}
+            onPointerDown={(e) => e.stopPropagation()}
+          >
+            {zoom.toFixed(1)}× · resetar
+          </button>
+        )}
       </div>
 
       {/* controles */}
-      <div className="flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
+      <div className="flex flex-wrap items-center justify-center gap-2" onClick={(e) => e.stopPropagation()}>
         {rulerStep === 'tot' && (
           <span className="rounded-full border border-[#fb923c]/50 bg-[#fb923c]/10 px-3 py-1.5 text-[9px] font-medium text-[#fb923c]">
             1 — Toque na ponta do TOT
@@ -2196,7 +2348,7 @@ function ScanLightbox({ data, onClose }: { data: LightboxPayload | null; onClose
               2 — Toque na Carina (bifurcação)
             </span>
             <button onClick={resetRuler} className="rounded-full border border-white/16 bg-white/5 px-2.5 py-1.5 text-[9px] text-white/46 hover:text-white/70">
-              Refazer
+              Apagar
             </button>
           </>
         )}
@@ -2206,13 +2358,20 @@ function ScanLightbox({ data, onClose }: { data: LightboxPayload | null; onClose
               Régua marcada
             </span>
             <button onClick={resetRuler} className="rounded-full border border-white/16 bg-white/5 px-2.5 py-1.5 text-[9px] text-white/46 hover:text-white/70">
-              Refazer
+              Apagar
+            </button>
+            <button
+              onClick={saveAnnotated}
+              disabled={saving}
+              className="rounded-full border border-white/24 bg-white/10 px-3 py-1.5 text-[9px] font-medium text-white/80 hover:text-white disabled:opacity-40"
+            >
+              {saving ? 'Salvando…' : 'Salvar imagem'}
             </button>
           </>
         )}
       </div>
 
-      {/* info IA abaixo */}
+      {/* info IA */}
       {aiDist && (
         <p className="text-[8px] text-white/40 italic" onClick={(e) => e.stopPropagation()}>
           Estimativa IA: {aiDist}cm da carina

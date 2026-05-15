@@ -200,19 +200,21 @@ export const useAuthStore = create<AuthState & AuthActions>((set, get) => ({
     const redirectTo = typeof window !== 'undefined'
       ? `${window.location.origin}/auth/callback`
       : undefined
-    const res = await withTimeout<{ error: { message: string } | null }>(
+    const res = await withTimeout<{ data: { user: unknown } | null; error: { message: string } | null }>(
       supabase.auth.signUp({ email, password, options: { data: { name }, emailRedirectTo: redirectTo } }),
       12000,
       'signUp',
     )
     set({ isLoading: false })
     if (!res) return { error: 'Servidor demorou para responder. Verifique sua conexão e tente novamente.' }
-    const { error } = res
+    const { data, error } = res
     if (error) {
       if (error.message.includes('already registered')) return { error: 'Este email ja esta cadastrado.' }
       if (error.message.includes('Password')) return { error: 'Senha deve ter no minimo 6 caracteres.' }
       return { error: error.message }
     }
+    // Supabase retorna user: null quando o email já existe (proteção anti-enumeração)
+    if (!data?.user) return { error: 'Este email ja esta cadastrado.' }
     // Limpa flag do splash — signup bem-sucedido sempre mostra splash no próximo login
     if (typeof window !== 'undefined') {
       try { sessionStorage.removeItem('sea-splash-shown') } catch { /* ignore */ }
