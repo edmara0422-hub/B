@@ -52,6 +52,7 @@ export type ImageExamEntry = {
   achados: string[]
   fixacaoLabial?: string
   thumbnail?: string
+  thumbnailUrl?: string
   measurements?: {
     tot_to_carina_cm?: number
     status?: string
@@ -60,7 +61,11 @@ export type ImageExamEntry = {
     rim_labial_cm?: number
     seletiva?: boolean
     seletiva_side?: string
+    tube_tip_pct?: { x: number; y: number }
+    carina_pct?: { x: number; y: number }
   }
+  imgW?: number
+  imgH?: number
   deviceStatus?: {
     tot?: string
     sne?: string

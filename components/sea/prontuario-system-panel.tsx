@@ -2041,6 +2041,89 @@ function getProtocolContent(id: string) {
   return null
 }
 
+type LightboxPayload = {
+  src: string
+  measurements?: ImageExamEntry['measurements']
+  imgW?: number
+  imgH?: number
+}
+
+function ScanThumbnail({
+  thumbnail,
+  thumbnailPath,
+  isAdmin,
+  measurements,
+  imgW,
+  imgH,
+  onOpen,
+}: {
+  thumbnail?: string
+  thumbnailPath?: string
+  isAdmin: boolean
+  measurements?: ImageExamEntry['measurements']
+  imgW?: number
+  imgH?: number
+  onOpen: (payload: LightboxPayload) => void
+}) {
+  const [resolvedSrc, setResolvedSrc] = useState<string | null>(thumbnail ?? null)
+  const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    if (thumbnail) { setResolvedSrc(thumbnail); return }
+    if (!thumbnailPath || !supabase) return
+    setLoading(true)
+    supabase.storage
+      .from('icu-scans')
+      .createSignedUrl(thumbnailPath, 3600)
+      .then(({ data }) => {
+        if (data?.signedUrl) setResolvedSrc(data.signedUrl)
+      })
+      .finally(() => setLoading(false))
+  }, [thumbnail, thumbnailPath])
+
+  const hasAnnotation = !!(measurements?.tube_tip_pct && measurements?.carina_pct)
+
+  return (
+    <div className="flex items-start gap-2 pt-0.5">
+      <button
+        onClick={() => resolvedSrc && onOpen({ src: resolvedSrc, measurements, imgW, imgH })}
+        disabled={!resolvedSrc}
+        className="relative shrink-0 overflow-hidden rounded-[0.5rem] border border-white/14 bg-black/30 hover:border-white/26 transition-all"
+        title={isAdmin ? 'Ver imagem — salva no Supabase Storage' : 'Ver imagem — some ao fim do plantão (LGPD)'}
+      >
+        {loading ? (
+          <div className="flex h-14 w-14 items-center justify-center">
+            <Loader2 className="h-4 w-4 animate-spin text-white/30" />
+          </div>
+        ) : resolvedSrc ? (
+          <img src={resolvedSrc} alt="Scan" className="h-14 w-14 object-cover" />
+        ) : (
+          <div className="flex h-14 w-14 items-center justify-center">
+            <Scan className="h-4 w-4 text-white/20" />
+          </div>
+        )}
+        {resolvedSrc && (
+          <div className="absolute inset-0 flex items-center justify-center bg-black/0 hover:bg-black/40 transition-all">
+            <span className="text-[7px] text-white/0 hover:text-white/90 font-medium select-none">ampliar</span>
+          </div>
+        )}
+        {hasAnnotation && (
+          <div className="absolute bottom-0.5 right-0.5 rounded bg-[#fb923c] px-0.5 py-px">
+            <Ruler className="h-2 w-2 text-black" />
+          </div>
+        )}
+      </button>
+      <span className="mt-1 text-[7px] leading-snug text-white/32 italic">
+        {isAdmin
+          ? <>Imagem salva.<br />Supabase Storage.</>
+          : <>Imagem do scan.<br />Some ao encerrar plantão.</>
+        }
+        {hasAnnotation && <><br /><span className="text-[#fb923c]/60">Régua IA disponível.</span></>}
+      </span>
+    </div>
+  )
+}
+
 export function ProntuarioSystemPanel() {
   const [view, setView] = useState<PanelView>('records')
   const [records, setRecords] = useState<ICURecord[]>([])
@@ -2079,7 +2162,12 @@ export function ProntuarioSystemPanel() {
   const [workspaces, setWorkspaces] = useState<Workspace[]>([])
   const [activeWorkspaceId, setActiveWorkspaceId] = useState<string>('')
   const [isScanning, setIsScanning] = useState<number | null>(null)
-  const [lightboxSrc, setLightboxSrc] = useState<string | null>(null)
+  const [lightboxData, setLightboxData] = useState<{
+    src: string
+    measurements?: ImageExamEntry['measurements']
+    imgW?: number
+    imgH?: number
+  } | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [showWsModal, setShowWsModal] = useState(false)
   const [wsNameInput, setWsNameInput] = useState('')
@@ -3266,7 +3354,7 @@ export function ProntuarioSystemPanel() {
     const index = isScanning
 
     try {
-      const resizeImage = (f: File, maxWidth: number, quality: number): Promise<string> => {
+      const resizeImage = (f: File, maxWidth: number, quality: number): Promise<{ dataUrl: string; w: number; h: number }> => {
         return new Promise((resolve) => {
           const reader = new FileReader()
           reader.readAsDataURL(f)
@@ -3278,30 +3366,64 @@ export function ProntuarioSystemPanel() {
               let width = img.width
               let height = img.height
               if (width > maxWidth) {
-                height *= maxWidth / width
+                height = Math.round(height * maxWidth / width)
                 width = maxWidth
               }
               canvas.width = width
               canvas.height = height
               const ctx = canvas.getContext('2d')
               ctx?.drawImage(img, 0, 0, width, height)
-              resolve(canvas.toDataURL('image/jpeg', quality))
+              resolve({ dataUrl: canvas.toDataURL('image/jpeg', quality), w: width, h: height })
             }
           }
         })
       }
 
-      // Gera thumbnail (200px, plantão-only, some com o cronômetro — LGPD)
-      const thumbnailDataUrl = await resizeImage(file, 200, 0.65)
-      // Versão maior para análise da IA
-      const resizedDataUrl = await resizeImage(file, 800, 0.7)
+      // Versão para análise da IA (800px)
+      const { dataUrl: resizedDataUrl, w: imgW, h: imgH } = await resizeImage(file, 800, 0.7)
+      // Thumbnail local (200px)
+      const { dataUrl: thumbnailDataUrl } = await resizeImage(file, 200, 0.65)
 
-      // Salva thumbnail imediatamente (antes da IA responder)
-      updateCurrentRecord((record) => {
-        const next = [...record.examesImagemList]
-        next[index] = { ...next[index], thumbnail: thumbnailDataUrl }
-        return { ...record, examesImagemList: next }
-      })
+      const isAdminNow = useAuthStore.getState().isAdmin
+
+      if (isAdminNow && supabase) {
+        // Admin: faz upload da imagem 600px para Supabase Storage (persiste)
+        try {
+          const { dataUrl: adminThumbDataUrl } = await resizeImage(file, 600, 0.75)
+          const adminBlob = await (await fetch(adminThumbDataUrl)).blob()
+          const fileName = `${currentRecord.id}_${index}_${Date.now()}.jpg`
+          const { data: uploadData, error: uploadError } = await supabase.storage
+            .from('icu-scans')
+            .upload(fileName, adminBlob, { contentType: 'image/jpeg', upsert: true })
+
+          if (!uploadError && uploadData) {
+            updateCurrentRecord((record) => {
+              const next = [...record.examesImagemList]
+              next[index] = { ...next[index], thumbnailUrl: uploadData.path, thumbnail: thumbnailDataUrl, imgW, imgH }
+              return { ...record, examesImagemList: next }
+            })
+          } else {
+            updateCurrentRecord((record) => {
+              const next = [...record.examesImagemList]
+              next[index] = { ...next[index], thumbnail: thumbnailDataUrl, imgW, imgH }
+              return { ...record, examesImagemList: next }
+            })
+          }
+        } catch {
+          updateCurrentRecord((record) => {
+            const next = [...record.examesImagemList]
+            next[index] = { ...next[index], thumbnail: thumbnailDataUrl, imgW, imgH }
+            return { ...record, examesImagemList: next }
+          })
+        }
+      } else {
+        // Usuário comum: thumbnail base64 local — some com cronômetro (LGPD)
+        updateCurrentRecord((record) => {
+          const next = [...record.examesImagemList]
+          next[index] = { ...next[index], thumbnail: thumbnailDataUrl, imgW, imgH }
+          return { ...record, examesImagemList: next }
+        })
+      }
 
       const formData = new FormData()
       const resBlob = await (await fetch(resizedDataUrl)).blob()
@@ -4670,27 +4792,17 @@ export function ProntuarioSystemPanel() {
                                   </div>
                                 )}
 
-                                {/* thumbnail do scan (plantão-only, some com cronômetro — LGPD) */}
-                                {exam.thumbnail && (
-                                  <div className="flex items-start gap-2 pt-0.5">
-                                    <button
-                                      onClick={() => setLightboxSrc(exam.thumbnail!)}
-                                      className="relative shrink-0 overflow-hidden rounded-[0.5rem] border border-white/14 bg-black/30 hover:border-white/26 transition-all"
-                                      title="Ver imagem analisada — some ao fim do plantão (LGPD)"
-                                    >
-                                      <img
-                                        src={exam.thumbnail}
-                                        alt="Scan"
-                                        className="h-14 w-14 object-cover"
-                                      />
-                                      <div className="absolute inset-0 flex items-center justify-center bg-black/0 hover:bg-black/30 transition-all">
-                                        <span className="text-[7px] text-white/0 hover:text-white/80 font-medium select-none">ampliar</span>
-                                      </div>
-                                    </button>
-                                    <span className="mt-1 text-[7px] leading-snug text-white/32 italic">
-                                      Imagem do scan.<br />Some ao encerrar o plantão.
-                                    </span>
-                                  </div>
+                                {/* thumbnail do scan */}
+                                {(exam.thumbnail || exam.thumbnailUrl) && (
+                                  <ScanThumbnail
+                                    thumbnail={exam.thumbnail}
+                                    thumbnailPath={exam.thumbnailUrl}
+                                    isAdmin={isAdmin}
+                                    measurements={exam.measurements}
+                                    imgW={exam.imgW}
+                                    imgH={exam.imgH}
+                                    onOpen={(payload) => setLightboxData(payload)}
+                                  />
                                 )}
 
                                 {/* campo fixação labial manual (apenas exames de tórax) */}
@@ -7720,27 +7832,113 @@ export function ProntuarioSystemPanel() {
         className="hidden"
       />
 
-      {/* Lightbox — imagem do scan ampliada (plantão-only, LGPD) */}
-      {lightboxSrc && (
+      {/* Lightbox com régua SVG de TOT → Carina */}
+      {lightboxData && (
         <div
-          className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/90 p-4"
-          onClick={() => setLightboxSrc(null)}
+          className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-black/92 p-4 gap-3"
+          onClick={() => setLightboxData(null)}
         >
-          <div className="relative max-h-full max-w-full" onClick={(e) => e.stopPropagation()}>
+          <div
+            className="relative"
+            style={
+              lightboxData.imgW && lightboxData.imgH
+                ? { aspectRatio: `${lightboxData.imgW}/${lightboxData.imgH}`, maxHeight: '82dvh', maxWidth: '90dvw' }
+                : { maxHeight: '82dvh', maxWidth: '90dvw' }
+            }
+            onClick={(e) => e.stopPropagation()}
+          >
             <img
-              src={lightboxSrc}
-              alt="Exame de imagem — scan do plantão"
-              className="max-h-[85dvh] max-w-[90dvw] rounded-[0.8rem] border border-white/14 object-contain"
+              src={lightboxData.src}
+              alt="Scan ICU"
+              className="h-full w-full rounded-[0.8rem] border border-white/14 object-fill"
             />
+
+            {/* Overlay SVG — régua TOT → Carina */}
+            {lightboxData.measurements?.tube_tip_pct && lightboxData.measurements?.carina_pct && (() => {
+              const tip = lightboxData.measurements!.tube_tip_pct!
+              const car = lightboxData.measurements!.carina_pct!
+              const m   = lightboxData.measurements!
+              const dist = m.tot_to_carina_cm ?? '?'
+              const dir  = m.direction ?? (m.status === 'ADEQUADO' ? 'ADEQUADO' : 'ALERTA')
+              const color = dir === 'ADEQUADO' ? '#4ade80' : dir === 'SELETIVO' ? '#f87171' : '#fb923c'
+              const midX = (tip.x + car.x) / 2
+              const midY = (tip.y + car.y) / 2
+              const tickLen = 0.018
+
+              return (
+                <svg
+                  className="absolute inset-0 w-full h-full rounded-[0.8rem]"
+                  viewBox="0 0 1 1"
+                  preserveAspectRatio="none"
+                  style={{ pointerEvents: 'none' }}
+                >
+                  {/* linha principal TOT → Carina */}
+                  <line
+                    x1={tip.x} y1={tip.y}
+                    x2={car.x} y2={car.y}
+                    stroke={color} strokeWidth="0.004"
+                    strokeDasharray="0.012 0.006"
+                    strokeLinecap="round"
+                  />
+                  {/* tick ponta TOT */}
+                  <line x1={tip.x - tickLen} y1={tip.y} x2={tip.x + tickLen} y2={tip.y} stroke={color} strokeWidth="0.004" />
+                  {/* tick carina */}
+                  <line x1={car.x - tickLen} y1={car.y} x2={car.x + tickLen} y2={car.y} stroke={color} strokeWidth="0.004" />
+                  {/* marcador ponta TOT */}
+                  <circle cx={tip.x} cy={tip.y} r="0.012" fill={color} fillOpacity="0.25" stroke={color} strokeWidth="0.003" />
+                  {/* marcador carina */}
+                  <circle cx={car.x} cy={car.y} r="0.012" fill={color} fillOpacity="0.25" stroke={color} strokeWidth="0.003" />
+
+                  {/* fundo da label central */}
+                  <rect
+                    x={midX - 0.085} y={midY - 0.028}
+                    width="0.17" height="0.056"
+                    rx="0.008" ry="0.008"
+                    fill="rgba(0,0,0,0.72)"
+                    stroke={color} strokeWidth="0.002"
+                  />
+                  {/* distância */}
+                  <text
+                    x={midX} y={midY - 0.006}
+                    textAnchor="middle" dominantBaseline="middle"
+                    fill={color} fontSize="0.028" fontWeight="bold" fontFamily="monospace"
+                  >
+                    {dist}cm
+                  </text>
+                  {/* status */}
+                  <text
+                    x={midX} y={midY + 0.018}
+                    textAnchor="middle" dominantBaseline="middle"
+                    fill={color} fontSize="0.018" fontFamily="sans-serif" opacity="0.85"
+                  >
+                    {dir === 'ADEQUADO' ? '✓ adequado' : dir === 'SUBIDO' ? '↑ subido' : dir === 'PROXIMO_CARINA' ? '↓ próx. carina' : '⚠ seletivo'}
+                  </text>
+
+                  {/* label TOT */}
+                  <text x={tip.x + 0.02} y={tip.y - 0.016} fill="white" fontSize="0.018" fontFamily="sans-serif" opacity="0.8">TOT</text>
+                  {/* label Carina */}
+                  <text x={car.x + 0.02} y={car.y + 0.024} fill="white" fontSize="0.018" fontFamily="sans-serif" opacity="0.8">Carina</text>
+                </svg>
+              )
+            })()}
+
             <button
-              onClick={() => setLightboxSrc(null)}
+              onClick={() => setLightboxData(null)}
               className="absolute -right-2 -top-2 flex h-7 w-7 items-center justify-center rounded-full border border-white/20 bg-black/80 text-white/70 hover:text-white"
             >
               ✕
             </button>
-            <p className="mt-2 text-center text-[8px] text-white/36 italic">
-              Imagem temporária — some ao encerrar o plantão (LGPD)
-            </p>
+          </div>
+
+          {/* legenda inferior */}
+          <div className="flex items-center gap-3 text-[8px] text-white/40 italic" onClick={(e) => e.stopPropagation()}>
+            <span>Posição dos marcadores estimada pela IA — não substitui avaliação radiológica</span>
+            {lightboxData.measurements?.tot_to_carina_cm && (
+              <span className="text-white/60 not-italic font-medium">
+                TOT → Carina: {lightboxData.measurements.tot_to_carina_cm}cm
+                {lightboxData.measurements.rim_labial_cm ? ` · Lábio: ${lightboxData.measurements.rim_labial_cm}cm` : ''}
+              </span>
+            )}
           </div>
         </div>
       )}

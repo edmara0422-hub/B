@@ -25,6 +25,7 @@ TAREFAS OBRIGATÓRIAS:
       - CRITICO_SELETIVO: ponta do TOT no brônquio direito ou esquerdo (abaixo da carina) → intubação seletiva. Achados: hipotransparência unilateral, colapso do pulmão contralateral.
    e. Se houver graduação visível no tubo ou inferível, estime a fixação no lábio em cm.
    f. direction deve refletir o problema: "SUBIDO" (>3cm da carina), "PROXIMO_CARINA" (<2cm), "ADEQUADO" (2-3cm), "SELETIVO" (no brônquio).
+   g. OBRIGATÓRIO: estime as coordenadas da ponta do TOT e da carina como fração da imagem (0.0 = borda esquerda/topo, 1.0 = borda direita/baixo). Use os marcos anatômicos visíveis para posicionar com a maior precisão possível.
 4. Avalie o posicionamento de TODOS os dispositivos: TOT, SNE, CVC, Swan-Ganz, drenos, marca-passos.
 5. Gere um laudo sucinto e objetivo em português.
 
@@ -41,7 +42,9 @@ RETORNE APENAS JSON válido, sem markdown, sem texto extra:
     "alert": "Descrição do problema e conduta (null se ADEQUADO)",
     "rim_labial_cm": 0,
     "seletiva": false,
-    "seletiva_side": "direita|esquerda|null"
+    "seletiva_side": "direita|esquerda|null",
+    "tube_tip_pct": { "x": 0.5, "y": 0.35 },
+    "carina_pct":   { "x": 0.5, "y": 0.55 }
   },
   "deviceStatus": {
     "tot": "descrição do posicionamento",
