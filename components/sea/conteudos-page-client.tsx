@@ -128,7 +128,7 @@ function WorkspaceSidebar({
               {/* Linha do módulo (clicável) — ativo com border dourada */}
               <button
                 onClick={() => onSelectModule(idx)}
-                className="flex w-full items-center gap-1.5 rounded-[0.8rem] px-2 py-1.5 text-left transition lg:gap-2.5 lg:rounded-[1rem] lg:px-3 lg:py-2.5"
+                className="flex w-full items-center gap-1.5 rounded-[0.8rem] px-2 py-1.5 text-left transition lg:gap-2 lg:rounded-[0.9rem] lg:px-2 lg:py-1.5"
                 style={
                   isActive
                     ? {
@@ -145,14 +145,14 @@ function WorkspaceSidebar({
                 />
                 <div className="min-w-0 flex-1">
                   <p
-                    className={`text-[7px] uppercase tracking-[0.16em] lg:text-[9px] lg:tracking-[0.22em] ${
+                    className={`text-[7px] uppercase tracking-[0.16em] lg:text-[8px] lg:tracking-[0.22em] ${
                       isActive ? 'text-[#d2af5a]/60' : 'text-white/20'
                     }`}
                   >
                     {mod.id} · {topics.length || '…'}
                   </p>
                   <p
-                    className={`truncate text-[9.5px] font-medium leading-snug lg:text-[11px] ${
+                    className={`truncate text-[9.5px] font-medium leading-snug lg:text-[10px] ${
                       isActive ? 'text-white/92' : 'text-white/55'
                     }`}
                   >
@@ -176,7 +176,7 @@ function WorkspaceSidebar({
                       <button
                         key={t.id}
                         onClick={() => onSelectTopic(idx, t.id)}
-                        className="flex w-full items-center gap-1 rounded-[0.5rem] px-1.5 py-1 text-left transition lg:gap-2 lg:rounded-[0.7rem] lg:px-2 lg:py-1.5"
+                        className="flex w-full items-center gap-1 rounded-[0.5rem] px-1.5 py-1 text-left transition lg:gap-1.5 lg:rounded-[0.6rem] lg:px-1.5 lg:py-1"
                         style={
                           isTopicActive
                             ? {
@@ -190,14 +190,14 @@ function WorkspaceSidebar({
                           className={`h-2.5 w-2.5 shrink-0 lg:h-3 lg:w-3 ${isTopicActive ? 'text-[#d2af5a]' : 'text-white/28'}`}
                         />
                         <span
-                          className={`shrink-0 font-mono text-[7px] tracking-[0.04em] lg:text-[8.5px] lg:tracking-[0.06em] ${
+                          className={`shrink-0 font-mono text-[7px] tracking-[0.04em] lg:text-[7.5px] lg:tracking-[0.06em] ${
                             isTopicActive ? 'text-[#d2af5a]/70' : 'text-white/26'
                           }`}
                         >
                           {String(ti + 1).padStart(2, '0')}
                         </span>
                         <span
-                          className={`truncate text-[8.5px] leading-snug lg:text-[10.5px] ${
+                          className={`truncate text-[8.5px] leading-snug lg:text-[9.5px] ${
                             isTopicActive ? 'text-white/90' : 'text-white/52'
                           }`}
                         >
@@ -437,7 +437,7 @@ export default function ConteudosPageClient() {
               280px largura, altura NATURAL (curta), todos os tópicos visíveis,
               página rola pra mostrar tudo. Header de busca sticky por dentro. */}
           {/* Sidebar inline lado-a-lado em mobile e desktop — mobile com colunas bem mais estreitas */}
-          <div className={sidebarOpen ? 'grid grid-cols-[110px_1fr] items-start gap-2 sm:grid-cols-[160px_1fr] sm:gap-3 lg:grid-cols-[280px_1fr] lg:gap-5' : ''}>
+          <div className={sidebarOpen ? 'grid grid-cols-[110px_1fr] items-start gap-2 sm:grid-cols-[160px_1fr] sm:gap-3 lg:grid-cols-[220px_1fr] lg:gap-4' : ''}>
             {sidebarOpen && (
               <div className="block">
                 <WorkspaceSidebar

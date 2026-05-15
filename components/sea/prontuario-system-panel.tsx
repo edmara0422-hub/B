@@ -2407,11 +2407,16 @@ export function ProntuarioSystemPanel() {
   }, [authUserId])
 
   const forceRestoreFromServer = async () => {
-    if (!supabase || !authUserId) return
+    if (!supabase) return
+    const sid = authUserId || localStorage.getItem('sea-session-id') || localStorage.getItem('sea-session-id-legacy')
+    if (!sid) {
+      alert('Nenhum ID de sessão encontrado para restaurar.')
+      return
+    }
     setSyncStatus('syncing')
-    console.log('[Supabase Sync] Iniciando resgate manual para:', authUserId)
+    console.log('[Supabase Sync] Iniciando resgate manual para:', sid)
     try {
-      const { data, error } = await supabase.from('icu_sessions').select('records,archive,updated_at').eq('session_id', authUserId).maybeSingle()
+      const { data, error } = await supabase.from('icu_sessions').select('records,archive,updated_at').eq('session_id', sid).maybeSingle()
       if (error) throw error
       
       console.log('[Supabase Sync] Dados recebidos. Última atualização:', data?.updated_at)
@@ -2755,10 +2760,14 @@ export function ProntuarioSystemPanel() {
   }, [archive, hydrated, records, workspaces])
 
   const forceSaveToServer = async () => {
-    if (!supabase || !authUserId) return
+    if (!supabase) return
+    const sid = authUserId || getOrCreateSessionId()
+    if (!sid) {
+      alert('Nenhum ID de sessão encontrado para salvar.')
+      return
+    }
     setSyncStatus('syncing')
     try {
-      const sid = authUserId
       const snapshot = workspaces.map(w =>
         w.id === activeWorkspaceId ? { ...w, records, archive } : w
       )
@@ -5090,7 +5099,7 @@ export function ProntuarioSystemPanel() {
                   </div>
                 </div>
 
-                {(currentRecord.tipoVia === 'TOT' || currentRecord.tipoVia === 'TNT' || currentRecord.tipoVia.startsWith('TQT')) && (
+                {(currentRecord.tipoVia === 'TOT' || currentRecord.tipoVia === 'TNT' || (currentRecord.tipoVia || '').startsWith('TQT')) && (
                 <div className="chrome-panel rounded-[1rem] p-1.5 md:p-2">
                   <p className="mb-2 text-[7px] font-semibold uppercase tracking-[0.14em] text-white/40">
                     Eventos de via aerea
@@ -5119,7 +5128,7 @@ export function ProntuarioSystemPanel() {
                       </>
                     )}
 
-                    {currentRecord.tipoVia.startsWith('TQT') && (
+                    {(currentRecord.tipoVia || '').startsWith('TQT') && (
                       <>
                         <FieldShell label="Data TQT">
                           <input className={INPUT_CLASS_SM} style={INPUT_STYLE} type="text" placeholder="dd/mm/aa" value={currentRecord.dataTQT} onChange={(event) => setField('dataTQT', event.target.value)} />

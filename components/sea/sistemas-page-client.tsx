@@ -105,7 +105,7 @@ function WorkspaceSidebar({
 
               <button
                 onClick={() => onSelect(idx)}
-                className="flex w-full items-center gap-1.5 rounded-[0.8rem] px-2 py-1.5 text-left transition lg:gap-2.5 lg:rounded-[1rem] lg:px-3 lg:py-2.5"
+                className="flex w-full items-center gap-1.5 rounded-[0.8rem] px-2 py-1.5 text-left transition lg:gap-2 lg:rounded-[0.9rem] lg:px-2 lg:py-1.5"
                 style={
                   isActive
                     ? {
@@ -122,14 +122,14 @@ function WorkspaceSidebar({
                 />
                 <div className="min-w-0 flex-1">
                   <p
-                    className={`text-[7px] uppercase tracking-[0.16em] lg:text-[9px] lg:tracking-[0.22em] ${
+                    className={`text-[7px] uppercase tracking-[0.16em] lg:text-[8px] lg:tracking-[0.22em] ${
                       isActive ? 'text-[#d2af5a]/60' : 'text-white/20'
                     }`}
                   >
                     {mod.id}
                   </p>
                   <p
-                    className={`truncate text-[9.5px] font-medium leading-snug lg:text-[11px] ${
+                    className={`truncate text-[9.5px] font-medium leading-snug lg:text-[10px] ${
                       isActive ? 'text-white/92' : 'text-white/55'
                     }`}
                   >
@@ -203,7 +203,7 @@ export default function SistemasPageClient() {
           </div>
 
           {/* Sidebar lado-a-lado mobile e desktop — colunas bem estreitas no mobile pra deixar mais espaço pros panels */}
-          <div className={sidebarOpen ? 'grid grid-cols-[110px_1fr] items-start gap-2 sm:grid-cols-[160px_1fr] sm:gap-3 lg:grid-cols-[280px_1fr] lg:gap-5' : ''}>
+          <div className={sidebarOpen ? 'grid grid-cols-[110px_1fr] items-start gap-2 sm:grid-cols-[160px_1fr] sm:gap-3 lg:grid-cols-[220px_1fr] lg:gap-4' : ''}>
             {/* Wrapper interno: garante que coluna direita não estoure o grid (min-w-0 permite truncar/encolher) */}
             {sidebarOpen && (
               <div className="block">
