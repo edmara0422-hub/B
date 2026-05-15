@@ -2061,6 +2061,7 @@ export function ProntuarioSystemPanel() {
   // --- ICU Master Clock & Shift Policy ---
   const [currentTime, setCurrentTime] = useState(new Date())
   const [showShiftModal, setShowShiftModal] = useState(false)
+  const pendingAddRecordRef = useRef(false)
   const [shiftStart, setShiftStart] = useState<string | null>(() => {
     if (typeof window !== 'undefined') return localStorage.getItem('sea-shift-start')
     return null
@@ -2252,9 +2253,10 @@ export function ProntuarioSystemPanel() {
       let storedWs = localStorage.getItem(sk.workspaces)
       let storedActiveId = localStorage.getItem(sk.activeWorkspace)
 
+      const isAdminUser = useAuthStore.getState().isAdmin
       // Migração legacy → user-scoped (one-shot): só se o usuário ainda não
-      // tem dados próprios, ou seja, primeira carga depois da mudança.
-      if (!storedWs) {
+      // tem dados próprios e FOR admin (para não vazar dados para novos logins).
+      if (!storedWs && isAdminUser) {
         const legWs = localStorage.getItem(LEGACY_KEYS.workspaces)
         if (legWs) {
           localStorage.setItem(sk.workspaces, legWs)
@@ -2294,19 +2296,21 @@ export function ProntuarioSystemPanel() {
           archive: (w.archive ?? []).map(r => normalizeRecord(r)),
         }))
         localActiveId = storedActiveId ?? localWs[0]?.id ?? ''
-      } else {
+      } else if (isAdminUser) {
         // Sem dados próprios nem legacy: tenta o formato MAIS antigo (records/archive)
         const legRec = localStorage.getItem(LEGACY_KEYS.records)
         const legArc = localStorage.getItem(LEGACY_KEYS.archive)
-        const legRecords: ICURecord[] = legRec
-          ? (JSON.parse(legRec) as Array<Partial<ICURecord>>).map(r => normalizeRecord(r))
-          : []
-        const legArchive: ICURecord[] = legArc
-          ? (JSON.parse(legArc) as Array<Partial<ICURecord>>).map(r => normalizeRecord(r))
-          : []
-        const ws: Workspace = { id: generateId(), name: 'UTI', records: legRecords, archive: legArchive }
-        localWs = [ws]
-        localActiveId = ws.id
+        if (legRec || legArc) {
+          const legRecords: ICURecord[] = legRec
+            ? (JSON.parse(legRec) as Array<Partial<ICURecord>>).map(r => normalizeRecord(r))
+            : []
+          const legArchive: ICURecord[] = legArc
+            ? (JSON.parse(legArc) as Array<Partial<ICURecord>>).map(r => normalizeRecord(r))
+            : []
+          const ws: Workspace = { id: generateId(), name: 'UTI', records: legRecords, archive: legArchive }
+          localWs = [ws]
+          localActiveId = ws.id
+        }
       }
     } catch {
       const ws: Workspace = { id: generateId(), name: 'UTI', records: [], archive: [] }
@@ -3698,41 +3702,51 @@ export function ProntuarioSystemPanel() {
     updateCurrentRecord((record) => ({ ...record, pronaHist: (record.pronaHist || []).filter((_, i) => i !== index) }))
   }
 
-  const addRecord = (template?: ICURecord) => {
-    // Se não for admin e não tiver turno configurado, abre o modal
-    if (!isAdmin && !shiftCutoff) {
-      setShowShiftModal(true)
-      return
-    }
+  const executeAddRecord = (template?: ICURecord) => {
     const record = template ? { ...template, id: template.id || generateId() } : createRecord()
     setRecords((prev) => [record, ...prev])
     setSelectedId(record.id)
     setActiveTab('dados')
     setView('records')
     window.scrollTo({ top: 0, behavior: 'smooth' })
-    
-    // Força update no workspacesRef para garantir persistência local imediata
     const snapshot = workspacesRef.current.map(w =>
       w.id === activeWsIdRef.current ? { ...w, records: [record, ...w.records] } : w
     )
     workspacesRef.current = snapshot
   }
 
-  const startShift = (duration: number) => {
-    const start = new Date()
-    // Corte = Início + Duração + 2h de buffer
-    const cutoff = new Date(start.getTime() + (duration + 2) * 60 * 60 * 1000)
+  const addRecord = (template?: ICURecord) => {
+    if (!isAdmin && !shiftCutoff) {
+      pendingAddRecordRef.current = true
+      setShowShiftModal(true)
+      return
+    }
+    executeAddRecord(template)
+  }
+
+  const startShiftPreset = (endHour: number, bufferHours: number) => {
+    const now = new Date()
+    let cutoff = new Date(now)
+    cutoff.setHours(endHour, 0, 0, 0)
     
-    setShiftStart(start.toISOString())
-    setShiftDuration(duration)
+    // Se o plantão termina de manhã (07h) e agora já passou do meio-dia, o término é amanhã
+    if (endHour <= 12 && now.getHours() >= 12) {
+      cutoff.setDate(cutoff.getDate() + 1)
+    }
+    
+    cutoff = new Date(cutoff.getTime() + bufferHours * 60 * 60 * 1000)
+    
+    setShiftStart(now.toISOString())
+    setShiftDuration(12) // fake value for compatibility
     setShiftCutoff(cutoff.toISOString())
-    localStorage.setItem('sea-shift-start', start.toISOString())
-    localStorage.setItem('sea-shift-duration', duration.toString())
+    localStorage.setItem('sea-shift-start', now.toISOString())
     localStorage.setItem('sea-shift-cutoff', cutoff.toISOString())
     setShowShiftModal(false)
     
-    // Após configurar, adiciona o registro
-    addRecord()
+    if (pendingAddRecordRef.current) {
+      pendingAddRecordRef.current = false
+      executeAddRecord()
+    }
   }
 
   // Import data from another device's session
@@ -3838,12 +3852,18 @@ export function ProntuarioSystemPanel() {
                   <Activity className="h-2.5 w-2.5 animate-pulse" />
                   {currentTime.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
                 </span>
-                {shiftCutoff && !isAdmin && (
-                  <span className="flex items-center gap-1 rounded-full border border-amber-500/30 bg-amber-500/10 px-2 py-0.5 text-[8px] font-bold text-amber-400">
-                    <RotateCcw className="h-2.5 w-2.5" />
-                    Sessão Expira em: {Math.max(0, Math.floor((new Date(shiftCutoff).getTime() - currentTime.getTime()) / 60000))} min
-                  </span>
-                )}
+                {shiftCutoff && !isAdmin && (() => {
+                  const timeLeftMs = Math.max(0, new Date(shiftCutoff).getTime() - currentTime.getTime())
+                  const hoursLeft = Math.floor(timeLeftMs / (1000 * 60 * 60))
+                  const minsLeft = Math.floor((timeLeftMs % (1000 * 60 * 60)) / 60000)
+                  const timeStr = hoursLeft > 0 ? `${hoursLeft}h ${minsLeft}m` : `${minsLeft}m`
+                  return (
+                    <button onClick={() => { pendingAddRecordRef.current = false; setShowShiftModal(true) }} className="flex items-center gap-1 rounded-full border border-amber-500/30 bg-amber-500/10 px-2 py-0.5 text-[8px] font-bold text-amber-400 hover:bg-amber-500/20 transition-colors">
+                      <RotateCcw className="h-2.5 w-2.5" />
+                      Expira em: {timeStr}
+                    </button>
+                  )
+                })()}
                 {isAdmin && (
                   <span className="flex items-center gap-1 rounded-full border border-green-500/30 bg-green-500/10 px-2 py-0.5 text-[8px] font-bold text-green-400">
                     <Zap className="h-2.5 w-2.5" />
@@ -3928,34 +3948,55 @@ export function ProntuarioSystemPanel() {
                 <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#60a5fa1a] border border-[#60a5fa30]">
                   <RotateCcw className="h-6 w-6 text-[#60a5fa]" />
                 </div>
-                <h3 className="text-lg font-bold text-white">Configurar Plantão</h3>
-                <p className="text-[10px] text-white/48">Defina a duração do seu turno para iniciar o prontuário.</p>
+                <h3 className="text-lg font-bold text-white">Configurar Turno</h3>
+                <p className="text-[10px] text-white/48">Selecione seu turno de trabalho para garantir a segurança dos dados.</p>
               </div>
 
-              <div className="grid grid-cols-3 gap-3">
-                {[6, 8, 12].map((h) => (
-                  <button
-                    key={h}
-                    onClick={() => startShift(h)}
-                    className="flex flex-col items-center gap-2 rounded-[1.2rem] border border-white/10 bg-white/5 p-4 hover:border-[#60a5fa/50] hover:bg-[#60a5fa/10] transition-all group"
-                  >
-                    <span className="text-xl font-bold text-white group-hover:text-[#60a5fa]">{h}h</span>
-                    <span className="text-[8px] uppercase tracking-widest text-white/40">Duração</span>
-                  </button>
-                ))}
+              <div className="grid grid-cols-2 gap-3">
+                <button
+                  onClick={() => startShiftPreset(13, 2)}
+                  className="flex flex-col items-center justify-center gap-1 rounded-[1.2rem] border border-white/10 bg-white/5 p-3 hover:border-[#60a5fa/50] hover:bg-[#60a5fa/10] transition-all group"
+                >
+                  <span className="text-sm font-bold text-white group-hover:text-[#60a5fa]">Manhã</span>
+                  <span className="text-[8px] text-white/40">07h às 13h</span>
+                </button>
+                <button
+                  onClick={() => startShiftPreset(19, 2)}
+                  className="flex flex-col items-center justify-center gap-1 rounded-[1.2rem] border border-white/10 bg-white/5 p-3 hover:border-[#60a5fa/50] hover:bg-[#60a5fa/10] transition-all group"
+                >
+                  <span className="text-sm font-bold text-white group-hover:text-[#60a5fa]">Tarde</span>
+                  <span className="text-[8px] text-white/40">13h às 19h</span>
+                </button>
+                <button
+                  onClick={() => startShiftPreset(19, 2)}
+                  className="flex flex-col items-center justify-center gap-1 rounded-[1.2rem] border border-white/10 bg-white/5 p-3 hover:border-[#60a5fa/50] hover:bg-[#60a5fa/10] transition-all group"
+                >
+                  <span className="text-sm font-bold text-white group-hover:text-[#60a5fa]">Plantão Dia</span>
+                  <span className="text-[8px] text-white/40">07h às 19h</span>
+                </button>
+                <button
+                  onClick={() => startShiftPreset(7, 2)}
+                  className="flex flex-col items-center justify-center gap-1 rounded-[1.2rem] border border-white/10 bg-white/5 p-3 hover:border-[#60a5fa/50] hover:bg-[#60a5fa/10] transition-all group"
+                >
+                  <span className="text-sm font-bold text-white group-hover:text-[#60a5fa]">Plantão Noite</span>
+                  <span className="text-[8px] text-white/40">19h às 07h</span>
+                </button>
               </div>
 
               <div className="rounded-[1rem] bg-amber-500/5 border border-amber-500/20 p-3">
                 <div className="flex gap-2">
                   <Activity className="h-3.5 w-3.5 text-amber-500 shrink-0" />
                   <p className="text-[9px] leading-relaxed text-amber-200/70">
-                    <span className="font-bold text-amber-400">Política de Segurança:</span> Os dados deste plantão serão removidos automaticamente 2 horas após o término da jornada selecionada.
+                    <span className="font-bold text-amber-400">Política de Segurança:</span> Os dados locais serão removidos 2 horas após o término do turno selecionado.
                   </p>
                 </div>
               </div>
 
               <button
-                onClick={() => setShowShiftModal(false)}
+                onClick={() => {
+                  pendingAddRecordRef.current = false
+                  setShowShiftModal(false)
+                }}
                 className="w-full rounded-[1rem] py-3 text-[10px] font-bold text-white/40 hover:text-white transition-colors"
               >
                 Cancelar
@@ -4021,7 +4062,7 @@ export function ProntuarioSystemPanel() {
           <div className="flex items-center gap-2 rounded-[0.8rem] border border-[#facc151a] bg-[#facc150a] px-3 py-1.5">
             <Zap className="h-3 w-3 text-[#fbbf24]" />
             <p className="text-[7px] font-semibold uppercase tracking-[0.1em] text-[#fbbf24]/80">
-              Política de Plantão: Os dados expiram automaticamente nos cortes de 09:00 e 21:00.
+              Política de Plantão: Os dados expiram automaticamente no fim do seu turno ({shiftCutoff ? new Date(shiftCutoff).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : 'configure o relógio'}).
             </p>
           </div>
         )}

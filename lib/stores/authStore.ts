@@ -197,8 +197,11 @@ export const useAuthStore = create<AuthState & AuthActions>((set, get) => ({
   signUp: async (email, password, name) => {
     if (!supabase) return { error: 'Supabase nao configurado.' }
     set({ isLoading: true })
+    const redirectTo = typeof window !== 'undefined'
+      ? `${window.location.origin}/auth/callback`
+      : undefined
     const res = await withTimeout<{ error: { message: string } | null }>(
-      supabase.auth.signUp({ email, password, options: { data: { name } } }),
+      supabase.auth.signUp({ email, password, options: { data: { name }, emailRedirectTo: redirectTo } }),
       12000,
       'signUp',
     )

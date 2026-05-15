@@ -1,19 +1,26 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { Eye, EyeOff, ArrowRight, User, Mail, Lock, ArrowLeft } from 'lucide-react'
 import { useAuthStore } from '@/lib/stores/authStore'
 
 export function AuthForm() {
   const router = useRouter()
+  const searchParams = useSearchParams()
   const { signIn, signUp, resetPassword, isLoading } = useAuthStore()
   const [mode, setMode] = useState<'login' | 'signup' | 'forgot'>('login')
   const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
   const [formData, setFormData] = useState({ name: '', email: '', password: '' })
+
+  useEffect(() => {
+    if (searchParams.get('confirmed') === '1') {
+      setSuccess('Email confirmado! Agora faca login com sua senha.')
+    }
+  }, [searchParams])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
