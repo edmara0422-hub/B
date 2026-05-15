@@ -3924,9 +3924,22 @@ export function ProntuarioSystemPanel() {
               </span>
             )}
             {syncStatus === 'offline' && (
-              <span className="flex items-center gap-1 rounded-full border border-[#facc1530] bg-[#facc150a] px-2 py-0.5 text-[8px] font-semibold text-[#facc15]" title="Dados salvos apenas no seu dispositivo">
-                <WifiOff className="h-2.5 w-2.5" />Modo Local
-              </span>
+              <div className="flex items-center gap-1.5 border-l border-white/10 pl-2 ml-1">
+                <span className="flex items-center gap-1 rounded-full border border-[#facc1530] bg-[#facc150a] px-2 py-0.5 text-[8px] font-semibold text-[#facc15]" title="Dados salvos apenas no seu dispositivo">
+                  <WifiOff className="h-2.5 w-2.5" />Modo Local
+                </span>
+                <button
+                  onClick={() => {
+                    if (confirm('Tem certeza que deseja forçar a limpeza dos dados locais deste login de teste? Isso apagará a lista da sua tela imediatamente.')) {
+                      setShiftCutoff(new Date().toISOString()); // Força o timer a expirar agora
+                    }
+                  }}
+                  className="flex items-center gap-1 rounded-full border border-red-500/30 bg-red-500/10 px-2 py-0.5 text-[8px] font-bold text-red-400 hover:bg-red-500/20 transition-colors"
+                  title="Apagar dados da tela"
+                >
+                  Limpar Tela
+                </button>
+              </div>
             )}
             {syncStatus === 'error' && (
               <span className="flex items-center gap-1 rounded-full border border-[#f8717130] bg-[#f871710a] px-2 py-0.5 text-[8px] font-semibold text-[#f87171]">
