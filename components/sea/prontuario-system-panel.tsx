@@ -5786,7 +5786,7 @@ export function ProntuarioSystemPanel() {
                               <input 
                                 type="checkbox" 
                                 checked={!!item.dobrada} 
-                                onChange={(e) => updateListItem('dvaList', index, 'dobrada', e.target.checked)}
+                                onChange={(e) => updateListItem('dvaList', index, 'dobrada', String(e.target.checked))}
                                 className="h-3 w-3 rounded-sm border-white/20 bg-transparent text-[#60a5fa] focus:ring-0 focus:ring-offset-0"
                               />
                               Solução Dobrada/Concentrada
