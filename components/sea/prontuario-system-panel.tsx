@@ -7355,7 +7355,7 @@ export function ProntuarioSystemPanel() {
                   const isControlled = ['VCV', 'PCV', 'PRVC', 'MMV', 'HFOV'].includes(currentRecord.modoVM)
                   const isPSV = currentRecord.modoVM === 'PSV'
                   const psVal = isPSV ? parseFloat(currentRecord.ps || '99') : 99
-                  const psvLow = isPSV && psVal <= 10          // PS <= 10 → sugerir TRE
+                  const psvLow = isPSV && psVal <= 8          // PS <= 8 → sugerir TRE
                   const psvTRE = isPSV && psVal <= 7           // PS <= 7 → já está em TRE
                   const rsbiGood = (calculations?.rsbi ?? 999) < 105
                   const suggestTRE = psvLow && rsbiGood
@@ -7604,9 +7604,9 @@ export function ProntuarioSystemPanel() {
                         <div className="mb-3 rounded-[0.8rem] border border-[#60a5fa20] bg-[#60a5fa08] p-2.5 text-[8px] text-white/60 space-y-1">
                           <p className="font-semibold text-[#60a5fa]">PSV ativo — protocolo de reducao</p>
                           <div className="flex flex-wrap gap-3">
-                            <span>PS atual: <strong className={psVal <= 10 ? 'text-[#4ade80]' : 'text-white/80'}>{currentRecord.ps || '--'} cmH₂O</strong></span>
+                            <span>PS atual: <strong className={psVal <= 8 ? 'text-[#4ade80]' : 'text-white/80'}>{currentRecord.ps || '--'} cmH₂O</strong></span>
                             {calculations?.rsbi != null && <span>RSBI: <strong className={rsbiGood ? 'text-[#4ade80]' : 'text-[#f87171]'}>{calculations.rsbi.toFixed(1)}</strong></span>}
-                            <span className={psVal <= 8 ? 'text-[#4ade80]' : 'text-white/40'}>Alvo PS ≤ 8</span>
+                            <span className={psVal <= 7 ? 'text-[#4ade80]' : 'text-white/40'}>Alvo PS ≤ 7</span>
                             <span className={rsbiGood ? 'text-[#4ade80]' : 'text-white/40'}>RSBI &lt; 105</span>
                           </div>
                           {suggestTRE && (
