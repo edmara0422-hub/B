@@ -2393,6 +2393,7 @@ function ScanLightbox({ data, onClose }: { data: LightboxPayload | null; onClose
 function ScanThumbnail({
   thumbnail,
   thumbnailPath,
+  fullSrc,
   isAdmin,
   measurements,
   imgW,
@@ -2402,6 +2403,7 @@ function ScanThumbnail({
 }: {
   thumbnail?: string
   thumbnailPath?: string
+  fullSrc?: string
   isAdmin: boolean
   measurements?: ImageExamEntry['measurements']
   imgW?: number
@@ -2409,29 +2411,33 @@ function ScanThumbnail({
   onOpen: (payload: LightboxPayload) => void
   onSave?: (annotatedDataUrl: string) => void
 }) {
-  const [resolvedSrc, setResolvedSrc] = useState<string | null>(thumbnail ?? null)
+  const [resolvedThumb, setResolvedThumb] = useState<string | null>(thumbnail ?? null)
+  const [resolvedFull, setResolvedFull] = useState<string | null>(fullSrc ?? null)
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    if (thumbnail) { setResolvedSrc(thumbnail); return }
+    if (thumbnail) { setResolvedThumb(thumbnail) }
+    if (fullSrc)   { setResolvedFull(fullSrc); return }
+    // admin: resolve signed URL from Supabase (é a imagem em maior resolução)
     if (!thumbnailPath || !supabase) return
     setLoading(true)
     supabase.storage
       .from('icu-scans')
       .createSignedUrl(thumbnailPath, 3600)
       .then(({ data }) => {
-        if (data?.signedUrl) setResolvedSrc(data.signedUrl)
+        if (data?.signedUrl) { setResolvedThumb(data.signedUrl); setResolvedFull(data.signedUrl) }
       })
       .finally(() => setLoading(false))
-  }, [thumbnail, thumbnailPath])
+  }, [thumbnail, thumbnailPath, fullSrc])
 
   const hasAnnotation = !!(measurements?.tube_tip_pct && measurements?.carina_pct)
+  const lightboxSrc = resolvedFull ?? resolvedThumb
 
   return (
     <div className="flex items-start gap-2 pt-0.5">
       <button
-        onClick={() => resolvedSrc && onOpen({ src: resolvedSrc, measurements, imgW, imgH, onSave })}
-        disabled={!resolvedSrc}
+        onClick={() => lightboxSrc && onOpen({ src: lightboxSrc, measurements, imgW, imgH, onSave })}
+        disabled={!lightboxSrc}
         className="relative shrink-0 overflow-hidden rounded-[0.5rem] border border-white/14 bg-black/30 hover:border-white/26 transition-all"
         title={isAdmin ? 'Ver imagem — salva no Supabase Storage' : 'Ver imagem — some ao fim do plantão (LGPD)'}
       >
@@ -2439,14 +2445,14 @@ function ScanThumbnail({
           <div className="flex h-14 w-14 items-center justify-center">
             <Loader2 className="h-4 w-4 animate-spin text-white/30" />
           </div>
-        ) : resolvedSrc ? (
-          <img src={resolvedSrc} alt="Scan" className="h-14 w-14 object-cover" />
+        ) : resolvedThumb ? (
+          <img src={resolvedThumb} alt="Scan" className="h-14 w-14 object-cover" />
         ) : (
           <div className="flex h-14 w-14 items-center justify-center">
             <Scan className="h-4 w-4 text-white/20" />
           </div>
         )}
-        {resolvedSrc && (
+        {resolvedThumb && (
           <div className="absolute inset-0 flex items-center justify-center bg-black/0 hover:bg-black/40 transition-all">
             <span className="text-[7px] text-white/0 hover:text-white/90 font-medium select-none">ampliar</span>
           </div>
@@ -5141,6 +5147,7 @@ export function ProntuarioSystemPanel() {
                                   <ScanThumbnail
                                     thumbnail={exam.thumbnail}
                                     thumbnailPath={exam.thumbnailUrl}
+                                    fullSrc={exam.data || undefined}
                                     isAdmin={isAdmin}
                                     measurements={exam.measurements}
                                     imgW={exam.imgW}
@@ -5148,6 +5155,7 @@ export function ProntuarioSystemPanel() {
                                     onOpen={(payload) => setLightboxData(payload)}
                                     onSave={(annotatedDataUrl) => {
                                       updateListItem('examesImagemList', index, 'thumbnail', annotatedDataUrl)
+                                      updateListItem('examesImagemList', index, 'data', annotatedDataUrl)
                                       setLightboxData(null)
                                     }}
                                   />
