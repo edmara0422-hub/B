@@ -1,9 +1,23 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { generateText } from 'ai'
+import { createGateway } from '@ai-sdk/gateway'
 
+// Vercel AI Gateway — acessa 100+ modelos com uma só key, fallback automático
+const gateway = createGateway({
+  apiKey: process.env.AI_GATEWAY_API_KEY,
+  baseURL: 'https://ai-gateway.vercel.sh/v1/ai',
+})
+
+// Cadeia de modelos: Gemini 3.1 Pro (melhor visão médica) → Gemini 2.5 Flash → Groq fallback
+const GATEWAY_MODELS = [
+  'google/gemini-2.5-flash-preview-05-20',
+  'google/gemini-2.5-pro-preview-06-05',
+  'meta-llama/llama-4-scout',
+]
+
+// Fallback direto no Groq se Gateway falhar
 const GROQ_API_KEY = process.env.GROQ_API_KEY || ''
-
-// Fallback model chain: tenta modelos em ordem até ter sucesso
-const VISION_MODELS = [
+const GROQ_MODELS = [
   'meta-llama/llama-4-scout-17b-16e-instruct',
   'meta-llama/llama-4-maverick-17b-128e-instruct',
   'llama-3.2-11b-vision-preview',
@@ -137,35 +151,6 @@ Redija laudo clínico objetivo em português com: tipo de exame, principais acha
   }
 }`
 
-async function callGroq(base64Image: string, model: string) {
-  const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-    method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${GROQ_API_KEY}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      model,
-      messages: [
-        {
-          role: 'user',
-          content: [
-            {
-              type: 'image_url',
-              image_url: { url: `data:image/jpeg;base64,${base64Image}` },
-            },
-            { type: 'text', text: prompt },
-          ],
-        },
-      ],
-      temperature: 0.1,
-      max_tokens: 1500,
-    }),
-  })
-
-  return response
-}
-
 function extractJson(content: string): string {
   const jsonMatch = content.match(/\{[\s\S]*\}/)
   if (jsonMatch) return jsonMatch[0]
@@ -174,85 +159,88 @@ function extractJson(content: string): string {
   return content.trim()
 }
 
-export async function POST(req: NextRequest) {
-  if (!GROQ_API_KEY) {
-    return NextResponse.json({ error: 'GROQ_API_KEY não configurada' }, { status: 500 })
+async function callGroqFallback(base64Image: string): Promise<Record<string, unknown>> {
+  for (const model of GROQ_MODELS) {
+    try {
+      const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${GROQ_API_KEY}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          model,
+          messages: [{
+            role: 'user',
+            content: [
+              { type: 'image_url', image_url: { url: `data:image/jpeg;base64,${base64Image}` } },
+              { type: 'text', text: prompt },
+            ],
+          }],
+          temperature: 0.1,
+          max_tokens: 2000,
+        }),
+      })
+      if (!response.ok) continue
+      const data = await response.json()
+      const raw = data.choices?.[0]?.message?.content
+      if (!raw) continue
+      return JSON.parse(extractJson(raw))
+    } catch {
+      continue
+    }
   }
+  throw new Error('Todos os modelos Groq falharam')
+}
 
+export async function POST(req: NextRequest) {
   try {
     const formData = await req.formData()
     const file = formData.get('file') as File | null
-
-    if (!file) {
-      return NextResponse.json({ error: 'Arquivo não enviado' }, { status: 400 })
-    }
+    if (!file) return NextResponse.json({ error: 'Arquivo não enviado' }, { status: 400 })
 
     const arrayBuffer = await file.arrayBuffer()
     const base64Image = Buffer.from(arrayBuffer).toString('base64').replace(/[\r\n]/g, '')
+    const mimeType = file.type || 'image/jpeg'
 
     console.log(`[Vision API] Imagem: ${file.name} (${Math.round(arrayBuffer.byteLength / 1024)} KB)`)
 
-    let lastError = ''
     let aiResult: Record<string, unknown> | null = null
 
-    for (const model of VISION_MODELS) {
-      try {
-        console.log(`[Vision API] Tentando modelo: ${model}`)
-        const response = await callGroq(base64Image, model)
-
-        if (!response.ok) {
-          const errorText = await response.text()
-          console.warn(`[Vision API] ${model} falhou (${response.status}):`, errorText.slice(0, 300))
-          lastError = `${model}: HTTP ${response.status}`
-          continue
+    // Tenta Vercel AI Gateway primeiro (Gemini 3.1 Pro → 2.5 Flash → Llama 4)
+    if (process.env.AI_GATEWAY_API_KEY) {
+      for (const modelId of GATEWAY_MODELS) {
+        try {
+          console.log(`[Vision API] Gateway tentando: ${modelId}`)
+          const { text } = await generateText({
+            model: gateway(modelId),
+            messages: [{
+              role: 'user',
+              content: [
+                { type: 'image', image: `data:${mimeType};base64,${base64Image}` },
+                { type: 'text', text: prompt },
+              ],
+            }],
+            temperature: 0.1,
+            maxTokens: 2000,
+          })
+          aiResult = JSON.parse(extractJson(text))
+          console.log(`[Vision API] Gateway sucesso: ${modelId}`)
+          break
+        } catch (err) {
+          console.warn(`[Vision API] Gateway falhou (${modelId}):`, err instanceof Error ? err.message : err)
         }
-
-        const data = await response.json()
-        const rawContent = data.choices?.[0]?.message?.content
-
-        if (!rawContent) {
-          lastError = `${model}: resposta vazia`
-          continue
-        }
-
-        const jsonStr = extractJson(rawContent)
-        aiResult = JSON.parse(jsonStr)
-        console.log(`[Vision API] Sucesso com modelo: ${model}`)
-        break
-      } catch (modelErr: unknown) {
-        const errMsg = modelErr instanceof Error ? modelErr.message : String(modelErr)
-        console.warn(`[Vision API] Erro com ${model}:`, errMsg)
-        lastError = `${model}: ${errMsg}`
       }
+    }
+
+    // Fallback: Groq direto
+    if (!aiResult && GROQ_API_KEY) {
+      console.log('[Vision API] Usando fallback Groq')
+      aiResult = await callGroqFallback(base64Image)
     }
 
     if (!aiResult) {
-      return NextResponse.json(
-        { error: 'Todos os modelos de visão falharam', details: lastError },
-        { status: 502 }
-      )
-    }
-
-    // Integração Tavily (evidência clínica)
-    if (process.env.TAVILY_API_KEY && Array.isArray(aiResult.findings) && aiResult.findings.length > 0) {
-      try {
-        const { tavilySearch } = require('@/lib/tavily')
-        const mainFinding = aiResult.findings[0]
-        const tav = await tavilySearch({
-          query: `${mainFinding} ICU clinical guidelines 2024 2025 management`,
-          searchDepth: 'basic',
-          maxResults: 2,
-        })
-        if (tav.results?.length > 0) {
-          aiResult.evidence = tav.results.map((r: { title: string; url: string; content: string }) => ({
-            title: r.title,
-            url: r.url,
-            snippet: r.content.slice(0, 200),
-          }))
-        }
-      } catch {
-        // Tavily é opcional — falha silenciosa
-      }
+      return NextResponse.json({ error: 'Todos os modelos de visão falharam' }, { status: 502 })
     }
 
     return NextResponse.json(aiResult)

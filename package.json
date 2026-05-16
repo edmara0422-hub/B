@@ -11,6 +11,7 @@
     "lint": "npm run typecheck"
   },
   "dependencies": {
+    "@ai-sdk/gateway": "^3.0.115",
     "@dimforge/rapier3d-compat": "^0.19.3",
     "@hookform/resolvers": "^5.2.2",
     "@huggingface/transformers": "^3.8.1",
@@ -52,6 +53,7 @@
     "@supabase/ssr": "^0.9.0",
     "@tanstack/react-query": "^5.91.2",
     "@vercel/analytics": "^2.0.1",
+    "ai": "^6.0.184",
     "autoprefixer": "^10.4.20",
     "bull": "^4.16.5",
     "class-variance-authority": "^0.7.1",
