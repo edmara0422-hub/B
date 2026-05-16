@@ -5899,10 +5899,10 @@ export function ProntuarioSystemPanel() {
                             </option>
                           ))}
                         </select>
-                        {(currentRecord.tipoVia === 'TOT' || currentRecord.tipoVia === 'TNT') && calculations?.daysTOT !== null && (
+                        {calculations && (currentRecord.tipoVia === 'TOT' || currentRecord.tipoVia === 'TNT') && calculations.daysTOT !== null && (
                           <span className="whitespace-nowrap text-[8px] font-bold text-[#fb923c] bg-[#fb923c10] px-1 rounded-sm border border-[#fb923c20] animate-pulse">D{calculations.daysTOT} TOT</span>
                         )}
-                        {(currentRecord.tipoVia?.startsWith('TQT')) && calculations?.daysTQT !== null && (
+                        {calculations && (currentRecord.tipoVia?.startsWith('TQT')) && calculations.daysTQT !== null && (
                           <span className="whitespace-nowrap text-[8px] font-bold text-[#a855f7] bg-[#a855f710] px-1 rounded-sm border border-[#a855f720] animate-pulse">D{calculations.daysTQT} TQT</span>
                         )}
                       </div>
@@ -6036,7 +6036,7 @@ export function ProntuarioSystemPanel() {
                         <FieldShell label="Data IOT">
                           <div className="flex flex-col gap-0.5">
                             <input className={INPUT_CLASS_SM} style={INPUT_STYLE} type="text" placeholder="dd/mm/aa" value={currentRecord.dataTOT} onChange={(event) => setField('dataTOT', event.target.value)} />
-                            {calculations?.daysTOT !== null && <span className="text-[8px] font-bold text-[#fb923c] px-1">D{calculations.daysTOT} de TOT</span>}
+                            {calculations && calculations.daysTOT !== null && <span className="text-[8px] font-bold text-[#fb923c] px-1">D{calculations.daysTOT} de TOT</span>}
                           </div>
                         </FieldShell>
                         <FieldShell label="Hora IOT">
@@ -6062,7 +6062,7 @@ export function ProntuarioSystemPanel() {
                         <FieldShell label="Data TQT">
                           <div className="flex flex-col gap-0.5">
                             <input className={INPUT_CLASS_SM} style={INPUT_STYLE} type="text" placeholder="dd/mm/aa" value={currentRecord.dataTQT} onChange={(event) => setField('dataTQT', event.target.value)} />
-                            {calculations?.daysTQT !== null && <span className="text-[8px] font-bold text-[#a855f7] px-1">D{calculations.daysTQT} de TQT</span>}
+                            {calculations && calculations.daysTQT !== null && <span className="text-[8px] font-bold text-[#a855f7] px-1">D{calculations.daysTQT} de TQT</span>}
                           </div>
                         </FieldShell>
                         <FieldShell label="Hora TQT">
