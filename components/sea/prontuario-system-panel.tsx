@@ -420,6 +420,32 @@ const SEDATIVE_OPTIONS = [
 
 const BNM_OPTIONS = ['', 'Cisatracurio', 'Rocuronio', 'Pancuronio', 'Atracurio', 'Vecuronio']
 
+const PHARMA_PROFILES: Record<string, { classe: string, funcao: string, inicio: string, meiaVida: string, retirada: string }> = {
+  // Sedativos / Analgesicos
+  'Midazolam': { classe: 'Benzodiazepínico', funcao: 'Sedação profunda, ansiólise e amnésia. Não tem efeito analgésico.', inicio: '2 - 5 min', meiaVida: '3 - 11 horas (muito prolongada na falência renal/hepática ou idosos).', retirada: 'Acúmulo em tecido adiposo. O despertar pode demorar dias após infusão prolongada. Risco alto de delirium.' },
+  'Propofol': { classe: 'Hipnótico de ação ultracurta', funcao: 'Sedação profunda, hipnose. Reduz consumo de O2 cerebral (bom para neurocríticos). Causa hipotensão.', inicio: '1 - 2 min', meiaVida: '3 - 12 horas (despertar clínico rápido por redistribuição).', retirada: 'Despertar previsível. Pode causar Síndrome da Infusão do Propofol (PRIS) em doses altas >48h.' },
+  'Dexmedetomidina': { classe: 'Agonista Alfa-2 adrenérgico central', funcao: 'Sedação consciente ("despertável"), ansiólise, leve analgesia. Não deprime o drive respiratório.', inicio: '10 - 20 min', meiaVida: '2 - 3 horas.', retirada: 'Facilita extubação precoce e reduz delirium. Pode causar bradicardia e rebote de agitação/taquicardia se retirada abrupta.' },
+  'Fentanil': { classe: 'Opioide forte (Lipofílico)', funcao: 'Analgesia potente e sedação adjuvante. Reduz drive respiratório e tosse.', inicio: '1 - 2 min', meiaVida: '2 - 4 horas (acumula no tecido adiposo em infusão contínua).', retirada: 'Despertar pode atrasar muito devido ao efeito depósito. Risco de abstinência e íleo paralítico.' },
+  'Ketamina': { classe: 'Anestésico dissociativo', funcao: 'Analgesia e sedação sem deprimir a respiração. Efeito broncodilatador (bom na asma). Mantém reflexo de tosse.', inicio: '30 seg - 1 min', meiaVida: '2 - 3 horas.', retirada: 'Pode causar agitação psicomotora, delírios e alucinações se não associada a um benzodiazepínico (Midazolam) ou Propofol.' },
+  'Remifentanil': { classe: 'Opioide de ação ultracurta', funcao: 'Analgesia intra-operatória ou sedação de curtíssimo prazo. Não acumula.', inicio: '1 min', meiaVida: '3 - 10 minutos (metabolismo por esterases no sangue, independe de rim/fígado).', retirada: 'Ação acaba abruptamente após o desligamento. Risco de hiperalgesia severa (muita dor) se não houver analgesia de transição.' },
+  'Sufentanil': { classe: 'Opioide ultrapotente', funcao: 'Analgesia 5-10x mais forte que o Fentanil.', inicio: '1 - 3 min', meiaVida: 'Prolongada (acúmulo semelhante ao Fentanil).', retirada: 'Atraso importante no despertar e no retorno do drive respiratório em infusões longas.' },
+  'Morfina': { classe: 'Opioide', funcao: 'Analgesia, venodilatação (reduz pré-carga, bom no EAP).', inicio: '5 - 10 min', meiaVida: '2 - 4 horas (metabólitos ativos acumulam na disfunção renal).', retirada: 'Menor risco de acúmulo adiposo que Fentanil, mas contraindicada na insuficiência renal severa. Causa liberação de histamina.' },
+
+  // BNM
+  'Cisatracurio': { classe: 'Bloqueador Neuromuscular Adespolarizante', funcao: 'Paralisia muscular completa. Eliminação de Hofmann (independe do rim/fígado).', inicio: '2 - 3 min', meiaVida: '20 - 30 min.', retirada: 'Recuperação previsível. Sempre requer sedação/analgesia profundas (RASS -5) concomitante!' },
+  'Rocuronio': { classe: 'Bloqueador Neuromuscular Adespolarizante', funcao: 'Paralisia rápida (usado na intubação de sequência rápida).', inicio: '1 min', meiaVida: '30 - 60 min (prolonga muito se disfunção hepática).', retirada: 'Ação reversível com Sugamadex em emergências.' },
+  'Pancuronio': { classe: 'Bloqueador Neuromuscular de Longa Ação', funcao: 'Paralisia prolongada.', inicio: '3 - 5 min', meiaVida: '2 - 3 horas.', retirada: 'Demora excessiva para recuperar força. Alto risco de miopatia do doente crítico (ICUAW).' },
+  'Atracurio': { classe: 'Bloqueador Neuromuscular Adespolarizante', funcao: 'Paralisia muscular (libera histamina, pode dar broncoespasmo).', inicio: '2 - 3 min', meiaVida: '20 - 30 min.', retirada: 'Recuperação rápida. Pode causar hipotensão pela histamina.' },
+  'Vecuronio': { classe: 'Bloqueador Neuromuscular Adespolarizante', funcao: 'Paralisia muscular sem efeitos cardiovasculares.', inicio: '2 - 3 min', meiaVida: '30 - 40 min.', retirada: 'Acúmulo grave na insuficiência renal. Evitar infusão contínua em nefropatas.' },
+
+  // DVA
+  'Noradrenalina': { classe: 'Agonista Alfa-1 predominante', funcao: 'Vasoconstritor potente (aumenta RVS e PAM). 1ª linha no choque distributivo (Sepsis).', inicio: '1 - 2 min', meiaVida: '2 - 3 min.', retirada: 'A PAM cai abruptamente se desligada de vez. Desmamar gradualmente. Doses > 1.0 mcg/kg/min causam isquemia mesentérica/periférica.' },
+  'Adrenalina': { classe: 'Agonista Alfa-1, Beta-1 e Beta-2', funcao: 'Inotrópico e vasoconstritor forte. 1ª linha na PCR e anafilaxia. 2ª linha no choque refratário.', inicio: '1 min', meiaVida: '2 - 3 min.', retirada: 'Aumenta muito o consumo de O2 miocárdico e eleva lactato por efeito metabólico beta-2 (falsa piora de perfusão tissular).' },
+  'Dobutamina': { classe: 'Agonista Beta-1 predominante', funcao: 'Inodilatador. Aumenta força de contração (Débito Cardíaco) e dilata vasos. 1ª linha no choque cardiogênico.', inicio: '1 - 2 min', meiaVida: '2 min.', retirada: 'Desmame deve ser feito com eco beira-leito. Causa taquicardia arritmogênica. Frequentemente associada à Noradrenalina se causar hipotensão.' },
+  'Vasopressina': { classe: 'Análogo do ADH (Agonista V1)', funcao: 'Vasoconstrição intensa, sem atuar no coração. "Poupa" Noradrenalina no choque séptico.', inicio: '5 - 15 min', meiaVida: '10 - 20 min.', retirada: 'Geralmente não se titula (dose fixa 0.03-0.04). No desmame do choque, desmamar primeiro a Nora e por último a Vasopressina para evitar hipotensão rebote.' },
+  'Milrinona': { classe: 'Inibidor da Fosfodiesterase III', funcao: 'Inodilatador potente (não usa receptor beta). Aumenta inotropismo e dilata artérias pulmonares.', inicio: '5 - 15 min', meiaVida: '2 - 4 horas.', retirada: 'Demora muito mais para perder o efeito que a Dobutamina. Ótima para pacientes com hipertensão pulmonar ou uso crônico de beta-bloqueador.' }
+}
+
 type DrugTrend = 'manteve' | 'reduziu' | 'aumentou' | 'desligado'
 
 function calcDrugTrend(inicio: string, atual: string): DrugTrend | null {
@@ -449,7 +475,7 @@ const DVA_DOSE_RANGES: Record<string, { low: number; mid: number; high: number; 
   'Milrinona':     { low: 0.125, mid: 0.375, high: 0.5, max: 0.75, unit: 'mcg/kg/min', tipo: 'inodilatador' },
 }
 
-function analiseDVA(inicio: string, atual: string, droga?: string): DrugAnalysis | null {
+function analiseDVA(inicio: string, atual: string, droga?: string, dobrada?: boolean): DrugAnalysis | null {
   const trend = calcDrugTrend(inicio, atual)
   if (!trend) return null
 
@@ -457,6 +483,11 @@ function analiseDVA(inicio: string, atual: string, droga?: string): DrugAnalysis
   const doseAtual = parseFloat(atual)
   const pctChange = doseInicio > 0 ? Math.round(((doseAtual - doseInicio) / doseInicio) * 100) : 0
   const range = droga ? DVA_DOSE_RANGES[droga] : null
+
+  // Alerta de Droga Dobrada (Restrição hídrica / Choque grave)
+  const dobradaAlert = dobrada 
+    ? '⚠ SOLUÇÃO DOBRADA/CONCENTRADA: Indica necessidade de restrição hídrica rigorosa ou choque refratário exigindo alto aporte com baixo volume. Risco aumentado de flebite se em acesso periférico (exigência de CVC) e isquemia. Cuidado extra na titulação (pequenas variações em mL/h causam grande impacto hemodinâmico).'
+    : ''
 
   // Classificação de dose atual
   let doseClass = ''
@@ -490,20 +521,20 @@ function analiseDVA(inicio: string, atual: string, droga?: string): DrugAnalysis
     manteve: {
       label: `DVA mantida${doseInfo}`,
       color: doseClass === 'DOSE ALTA' ? '#fb923c' : '#60a5fa',
-      indica: `Suporte vasoativo estavel${pctText}.${tipoInfo} Avaliar tolerancia a reducao e metas de PAM (65-70 mmHg). Monitorar perfusao periferica, TEC, lactato e debito urinario.${doseAlert ? ' ' + doseAlert : ''}`,
+      indica: `Suporte vasoativo estavel${pctText}.${tipoInfo} Avaliar tolerancia a reducao e metas de PAM (65-70 mmHg). Monitorar perfusao periferica, TEC, lactato e debito urinario.${doseAlert ? ' ' + doseAlert : ''}${dobradaAlert ? ' ' + dobradaAlert : ''}`,
       evolucao: 'Melhora: reducao de 10-20% a cada 30-60min guiada por PAM e lactato → desmame → suspensao. Piora: escalonamento, adicao de segunda DVA.',
     },
     reduziu: {
       label: `Desmame DVA${doseInfo}`,
       color: '#4ade80',
-      indica: `Reducao de vasoativo${pctText}.${tipoInfo} Melhora hemodinamica. Monitorar PAM, FC, lactato e sinais de hipoperfusao durante desmame. Reduzir 10-20% a cada 30-60min se PAM estavel.`,
+      indica: `Reducao de vasoativo${pctText}.${tipoInfo} Melhora hemodinamica. Monitorar PAM, FC, lactato e sinais de hipoperfusao durante desmame. Reduzir 10-20% a cada 30-60min se PAM estavel.${dobradaAlert ? ' ' + dobradaAlert : ''}`,
       evolucao: 'Melhora: suspensao da DVA com PAM >= 65, lactato normal, boa perfusao. Piora: hipotensao com reducao → pausar desmame, retitular dose anterior, reavaliar volemia.',
     },
     aumentou: {
       label: `DVA AUMENTADA${doseInfo}`,
       color: '#f87171',
-      indica: `Escalonamento vasoativo${pctText}.${tipoInfo} Instabilidade hemodinamica progressiva. Investigar causa: (1) Hipovolemia — fluid challenge 250mL cristaloide, (2) Sepse — foco nao drenado, ATB inadequado, (3) Disfuncao miocardica — avaliar eco, (4) Obstrucao — TEP, tamponamento, pneumotorax hipertensivo.${doseAlert ? ' ' + doseAlert : ''}`,
-      evolucao: 'Melhora: identificar e tratar causa, estabilizar PAM, considerar corticoide (Hidrocortisona 50mg 6/6h) em choque septico refratario. Piora: choque refratario → segunda DVA, considerar suporte mecanico circulatorio.',
+      indica: `Escalonamento vasoativo${pctText}.${tipoInfo} Instabilidade hemodinamica progressiva. Investigar causa: (1) Hipovolemia — fluid challenge, (2) Sepse — foco ativo, (3) Disfuncao miocardica, (4) Obstrucao (TEP/tamponamento).${doseAlert ? ' ' + doseAlert : ''}${dobradaAlert ? ' ' + dobradaAlert : ''}`,
+      evolucao: 'Melhora: estabilizar PAM, considerar corticoide (Hidrocortisona 50mg 6/6h) em choque septico refratario. Piora: choque refratario → segunda DVA, considerar ECMO/balao.',
     },
     desligado: {
       label: 'DVA SUSPENSA',
@@ -2186,6 +2217,8 @@ function ScanLightbox({ data, onClose }: { data: LightboxPayload | null; onClose
     setSaving(true)
     try {
       const img = imgRef.current
+      if (!img.complete || img.naturalWidth === 0) await img.decode()
+
       const W = img.naturalWidth || 800
       const H = img.naturalHeight || 600
       const canvas = document.createElement('canvas')
@@ -2193,50 +2226,68 @@ function ScanLightbox({ data, onClose }: { data: LightboxPayload | null; onClose
       const ctx = canvas.getContext('2d')!
       ctx.drawImage(img, 0, 0, W, H)
 
-      const tipX = tipPct.x * W;   const tipY = tipPct.y * H
+      const tipX = tipPct.x * W;    const tipY = tipPct.y * H
       const carX = carinaPct.x * W; const carY = carinaPct.y * H
       const r = W * 0.018
 
+      // linha tracejada
       ctx.setLineDash([W * 0.014, W * 0.007])
       ctx.strokeStyle = 'rgba(255,255,255,0.75)'; ctx.lineWidth = W * 0.004
       ctx.beginPath(); ctx.moveTo(tipX, tipY); ctx.lineTo(carX, carY); ctx.stroke()
       ctx.setLineDash([])
 
-      const drawMarker = (x: number, y: number, color: string, label: string, labelDy: number) => {
-        ctx.fillStyle = color.replace(')', ',0.22)').replace('rgb', 'rgba')
-        ctx.strokeStyle = color; ctx.lineWidth = W * 0.004
+      // ticks nas extremidades
+      const tk = W * 0.018
+      ctx.strokeStyle = 'rgba(255,255,255,0.7)'; ctx.lineWidth = W * 0.003
+      ctx.beginPath(); ctx.moveTo(tipX - tk, tipY); ctx.lineTo(tipX + tk, tipY); ctx.stroke()
+      ctx.beginPath(); ctx.moveTo(carX - tk, carY); ctx.lineTo(carX + tk, carY); ctx.stroke()
+
+      const hexRgba = (hex: string, a: number) => {
+        const n = parseInt(hex.replace('#', ''), 16)
+        return `rgba(${(n >> 16) & 255},${(n >> 8) & 255},${n & 255},${a})`
+      }
+
+      const drawMarker = (x: number, y: number, hex: string, label: string, dy: number) => {
+        ctx.fillStyle = hexRgba(hex, 0.22)
+        ctx.strokeStyle = hex; ctx.lineWidth = W * 0.004
         ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill(); ctx.stroke()
-        ctx.lineWidth = W * 0.003
+        ctx.strokeStyle = hex; ctx.lineWidth = W * 0.003
         ctx.beginPath(); ctx.moveTo(x - r * 1.3, y); ctx.lineTo(x + r * 1.3, y); ctx.stroke()
         ctx.beginPath(); ctx.moveTo(x, y - r * 1.3); ctx.lineTo(x, y + r * 1.3); ctx.stroke()
-        ctx.fillStyle = color
-        ctx.font = `bold ${W * 0.024}px monospace`
-        ctx.fillText(label, x + r * 1.4, y + labelDy)
+        ctx.fillStyle = hex
+        ctx.font = `bold ${Math.round(W * 0.026)}px sans-serif`
+        ctx.fillText(label, x + r * 1.5, y + dy)
       }
 
-      drawMarker(tipX, tipY, '#fb923c', 'TOT', -r * 0.6)
-      drawMarker(carX, carY, '#60a5fa', 'Carina', r * 2.2)
+      drawMarker(tipX, tipY, '#fb923c', 'TOT',    -r * 0.6)
+      drawMarker(carX, carY, '#60a5fa', 'Carina',  r * 2.4)
 
-      if (data.measurements?.tot_to_carina_cm) {
-        const midX = (tipX + carX) / 2; const midY = (tipY + carY) / 2
-        const bw = W * 0.22; const bh = H * 0.068
-        ctx.fillStyle = 'rgba(0,0,0,0.84)'; ctx.strokeStyle = 'rgba(255,255,255,0.2)'; ctx.lineWidth = W * 0.002
-        ctx.beginPath()
-        if (ctx.roundRect) ctx.roundRect(midX - bw / 2, midY - bh / 2, bw, bh, W * 0.01)
-        else ctx.rect(midX - bw / 2, midY - bh / 2, bw, bh)
-        ctx.fill(); ctx.stroke()
-        ctx.fillStyle = 'white'; ctx.font = `bold ${W * 0.026}px monospace`
-        ctx.textAlign = 'center'; ctx.textBaseline = 'middle'
-        ctx.fillText(`IA: ${data.measurements.tot_to_carina_cm}cm`, midX, midY)
-        ctx.textAlign = 'left'; ctx.textBaseline = 'alphabetic'
-      }
+      // label central com medida
+      const midX = (tipX + carX) / 2; const midY = (tipY + carY) / 2
+      const aiCm  = data.measurements?.tot_to_carina_cm
+      const aiDir = data.measurements?.direction ?? data.measurements?.status
+      const labelLine = aiCm
+        ? `${aiCm} cm — ${aiDir === 'ADEQUADO' ? 'ADEQUADO' : aiDir === 'SUBIDO' ? 'SUBIDO' : aiDir === 'PROXIMO_CARINA' ? 'PROX.CARINA' : aiDir === 'SELETIVO' ? 'SELETIVO' : ''}`
+        : 'TOT → Carina'
+      const fs = Math.round(W * 0.024)
+      ctx.font = `bold ${fs}px monospace`
+      const tw = ctx.measureText(labelLine).width
+      const bw = tw + W * 0.05; const bh = H * 0.072
+      ctx.fillStyle = 'rgba(0,0,0,0.88)'; ctx.strokeStyle = 'rgba(255,255,255,0.24)'; ctx.lineWidth = W * 0.002
+      ctx.beginPath()
+      if (ctx.roundRect) ctx.roundRect(midX - bw / 2, midY - bh / 2, bw, bh, W * 0.012)
+      else ctx.rect(midX - bw / 2, midY - bh / 2, bw, bh)
+      ctx.fill(); ctx.stroke()
+      ctx.fillStyle = aiCm
+        ? (aiDir === 'ADEQUADO' ? '#4ade80' : aiDir === 'SELETIVO' ? '#f87171' : '#fbbf24')
+        : 'white'
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle'
+      ctx.fillText(labelLine, midX, midY)
+      ctx.textAlign = 'left'; ctx.textBaseline = 'alphabetic'
 
-      const annotatedDataUrl = canvas.toDataURL('image/jpeg', 0.88)
-
-      // Persiste a imagem anotada de volta no card do exame
+      const annotatedDataUrl = canvas.toDataURL('image/jpeg', 0.9)
       data.onSave?.(annotatedDataUrl)
 
-      // Exporta para galeria / download
       const blob = await new Promise<Blob>((res) => canvas.toBlob((b) => res(b!), 'image/jpeg', 0.92))
       const file = new File([blob], 'regua-tot.jpg', { type: 'image/jpeg' })
       if (navigator.share && navigator.canShare?.({ files: [file] })) {
@@ -2246,8 +2297,11 @@ function ScanLightbox({ data, onClose }: { data: LightboxPayload | null; onClose
         const a = document.createElement('a'); a.href = url; a.download = 'regua-tot.jpg'; a.click()
         URL.revokeObjectURL(url)
       }
-    } catch { /* silent */ }
-    finally { setSaving(false) }
+    } catch (err) {
+      console.error('[ScanLightbox] saveAnnotated:', err)
+    } finally {
+      setSaving(false)
+    }
   }
 
   const bothPlaced = tipPct && carinaPct
@@ -2318,17 +2372,25 @@ function ScanLightbox({ data, onClose }: { data: LightboxPayload | null; onClose
                 <text x={carinaPct.x + 0.024} y={carinaPct.y + 0.032} fill="#60a5fa" fontSize="0.024" fontFamily="sans-serif" fontWeight="bold">Carina</text>
               </>
             )}
-            {bothPlaced && (
-              <>
-                <line x1={tipPct.x - tick} y1={tipPct.y} x2={tipPct.x + tick} y2={tipPct.y} stroke="white" strokeWidth="0.003" strokeOpacity="0.7" />
-                <line x1={carinaPct.x - tick} y1={carinaPct.y} x2={carinaPct.x + tick} y2={carinaPct.y} stroke="white" strokeWidth="0.003" strokeOpacity="0.7" />
-                <line x1={tipPct.x} y1={tipPct.y} x2={carinaPct.x} y2={carinaPct.y} stroke="white" strokeWidth="0.004" strokeDasharray="0.014 0.007" strokeOpacity="0.65" />
-                <rect x={midX - 0.1} y={midY - 0.03} width="0.2" height="0.06" rx="0.01" ry="0.01" fill="rgba(0,0,0,0.82)" stroke="rgba(255,255,255,0.18)" strokeWidth="0.002" />
-                <text x={midX} y={midY + 0.01} textAnchor="middle" dominantBaseline="middle" fill="white" fontSize="0.026" fontWeight="bold" fontFamily="monospace">
-                  TOT → Carina
-                </text>
-              </>
-            )}
+            {bothPlaced && (() => {
+              const svgLabel = aiDist
+                ? `${aiDist}cm — ${aiDir === 'ADEQUADO' ? 'ADEQUADO' : aiDir === 'SUBIDO' ? 'SUBIDO' : aiDir === 'PROXIMO_CARINA' ? 'PROX.CARINA' : aiDir === 'SELETIVO' ? 'SELETIVO' : ''}`
+                : 'TOT → Carina'
+              const svgFill = aiDist
+                ? (aiDir === 'ADEQUADO' ? '#4ade80' : aiDir === 'SELETIVO' ? '#f87171' : '#fbbf24')
+                : 'white'
+              return (
+                <>
+                  <line x1={tipPct.x - tick} y1={tipPct.y} x2={tipPct.x + tick} y2={tipPct.y} stroke="white" strokeWidth="0.003" strokeOpacity="0.7" />
+                  <line x1={carinaPct.x - tick} y1={carinaPct.y} x2={carinaPct.x + tick} y2={carinaPct.y} stroke="white" strokeWidth="0.003" strokeOpacity="0.7" />
+                  <line x1={tipPct.x} y1={tipPct.y} x2={carinaPct.x} y2={carinaPct.y} stroke="white" strokeWidth="0.004" strokeDasharray="0.014 0.007" strokeOpacity="0.65" />
+                  <rect x={midX - 0.18} y={midY - 0.036} width="0.36" height="0.072" rx="0.01" ry="0.01" fill="rgba(0,0,0,0.86)" stroke="rgba(255,255,255,0.22)" strokeWidth="0.002" />
+                  <text x={midX} y={midY + 0.012} textAnchor="middle" dominantBaseline="middle" fill={svgFill} fontSize="0.026" fontWeight="bold" fontFamily="monospace">
+                    {svgLabel}
+                  </text>
+                </>
+              )
+            })()}
           </svg>
         </div>
 
@@ -4495,7 +4557,8 @@ export function ProntuarioSystemPanel() {
         {/* Modal de Configuração de Plantão */}
         {showShiftModal && (
           <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
-            <div className="chrome-panel w-full max-w-sm rounded-[2rem] p-6 space-y-6 border border-white/10 shadow-2xl">
+            <div className="chrome-panel w-full max-w-sm rounded-[2rem] border border-white/10 shadow-2xl max-h-[90vh] flex flex-col">
+            <div className="overflow-y-auto flex-1 p-6 space-y-6">
               <div className="space-y-2 text-center">
                 <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#60a5fa1a] border border-[#60a5fa30]">
                   <RotateCcw className="h-6 w-6 text-[#60a5fa]" />
@@ -4608,7 +4671,8 @@ export function ProntuarioSystemPanel() {
               >
                 Cancelar
               </button>
-            </div>
+            </div>{/* fim scroll */}
+            </div>{/* fim card */}
           </div>
         )}
 
@@ -5536,6 +5600,17 @@ export function ProntuarioSystemPanel() {
                                 <p className="text-white/60"><span className="font-semibold text-white/50">Evolucao: </span>{analise.evolucao}</p>
                               </div>
                             ) : null}
+                            {item.droga && PHARMA_PROFILES[item.droga] && !isSuspended && (
+                              <div className="mt-1.5 rounded-[0.5rem] bg-white/[0.03] border border-white/5 p-1.5 text-[8px] text-white/60 leading-relaxed">
+                                <p className="mb-1 text-white/80 font-bold tracking-wide">{PHARMA_PROFILES[item.droga].classe}</p>
+                                <p className="mb-0.5"><span className="font-semibold text-white/40 uppercase tracking-widest text-[6px]">Função:</span> {PHARMA_PROFILES[item.droga].funcao}</p>
+                                <div className="grid grid-cols-2 gap-1 mb-0.5">
+                                  <p><span className="font-semibold text-white/40 uppercase tracking-widest text-[6px]">Início:</span> {PHARMA_PROFILES[item.droga].inicio}</p>
+                                  <p><span className="font-semibold text-white/40 uppercase tracking-widest text-[6px]">Meia-vida:</span> {PHARMA_PROFILES[item.droga].meiaVida}</p>
+                                </div>
+                                <p className="text-[#fb923c]/90"><span className="font-semibold text-[#fb923c]/60 uppercase tracking-widest text-[6px]">Retirada/Washout:</span> {PHARMA_PROFILES[item.droga].retirada}</p>
+                              </div>
+                            )}
                           </div>
                           )
                         })
@@ -5602,6 +5677,17 @@ export function ProntuarioSystemPanel() {
                                 <p className="text-white/60"><span className="font-semibold text-white/50">Evolucao: </span>{analise.evolucao}</p>
                               </div>
                             ) : null}
+                            {item.droga && PHARMA_PROFILES[item.droga] && !isSuspended && (
+                              <div className="mt-1.5 rounded-[0.5rem] bg-white/[0.03] border border-white/5 p-1.5 text-[8px] text-white/60 leading-relaxed">
+                                <p className="mb-1 text-white/80 font-bold tracking-wide">{PHARMA_PROFILES[item.droga].classe}</p>
+                                <p className="mb-0.5"><span className="font-semibold text-white/40 uppercase tracking-widest text-[6px]">Função:</span> {PHARMA_PROFILES[item.droga].funcao}</p>
+                                <div className="grid grid-cols-2 gap-1 mb-0.5">
+                                  <p><span className="font-semibold text-white/40 uppercase tracking-widest text-[6px]">Início:</span> {PHARMA_PROFILES[item.droga].inicio}</p>
+                                  <p><span className="font-semibold text-white/40 uppercase tracking-widest text-[6px]">Meia-vida:</span> {PHARMA_PROFILES[item.droga].meiaVida}</p>
+                                </div>
+                                <p className="text-[#fb923c]/90"><span className="font-semibold text-[#fb923c]/60 uppercase tracking-widest text-[6px]">Retirada/Washout:</span> {PHARMA_PROFILES[item.droga].retirada}</p>
+                              </div>
+                            )}
                           </div>
                           )
                         })
@@ -5665,7 +5751,7 @@ export function ProntuarioSystemPanel() {
                         const isSuspended = !!item.suspensao
                         const analise = isSuspended
                           ? { trend: 'desligado' as const, label: 'DVA SUSPENSA', color: '#22d3ee', indica: `Suspensa em ${formatDateTime(item.suspensao!)}. Monitorar PAM, FC, lactato e perfusao nas proximas 6-12h.`, evolucao: 'Se hipotensao: reavaliar volemia e reintroduzir DVA.' }
-                          : analiseDVA(item.inicio, item.dose, item.droga)
+                          : analiseDVA(item.inicio, item.dose, item.droga, item.dobrada)
                         return (
                         <div key={`dva-${index}`} className="rounded-[0.7rem] ipb-soft p-1.5" style={isSuspended ? { opacity: 0.6 } : undefined}>
                           <div className="grid gap-1 grid-cols-2 md:grid-cols-[1.3fr_1fr_1fr_1fr_auto]">
@@ -5694,7 +5780,19 @@ export function ProntuarioSystemPanel() {
                               <button onClick={() => removeListItem('dvaList', index)} className="inline-flex h-7 w-7 items-center justify-center rounded-[0.6rem] border border-[#f8717130] bg-[#f8717110] text-[#fca5a5]"><Trash2 className="h-3 w-3" /></button>
                             </div>
                           </div>
-                          {isSuspended && <p className="mt-1.5 text-[8px] text-[#22d3ee]/70">Suspensa em {formatDateTime(item.suspensao!)}</p>}
+                          
+                          <div className="mt-1 flex items-center justify-between">
+                            <label className="flex items-center gap-1.5 cursor-pointer text-[8px] text-white/50 hover:text-white/80 transition-colors">
+                              <input 
+                                type="checkbox" 
+                                checked={!!item.dobrada} 
+                                onChange={(e) => updateListItem('dvaList', index, 'dobrada', e.target.checked)}
+                                className="h-3 w-3 rounded-sm border-white/20 bg-transparent text-[#60a5fa] focus:ring-0 focus:ring-offset-0"
+                              />
+                              Solução Dobrada/Concentrada
+                            </label>
+                            {isSuspended && <p className="text-[8px] text-[#22d3ee]/70">Suspensa em {formatDateTime(item.suspensao!)}</p>}
+                          </div>
                           {analise ? (
                             <div className="mt-1.5 rounded-[0.5rem] border p-1.5 text-[8px] leading-relaxed" style={{ borderColor: `${analise.color}30`, background: `${analise.color}08` }}>
                               <p className="mb-1 font-semibold uppercase tracking-[0.12em]" style={{ color: analise.color }}>{analise.label}</p>
@@ -5702,6 +5800,17 @@ export function ProntuarioSystemPanel() {
                               <p className="text-white/60"><span className="font-semibold text-white/50">Evolucao: </span>{analise.evolucao}</p>
                             </div>
                           ) : null}
+                          {item.droga && PHARMA_PROFILES[item.droga] && !isSuspended && (
+                            <div className="mt-1.5 rounded-[0.5rem] bg-white/[0.03] border border-white/5 p-1.5 text-[8px] text-white/60 leading-relaxed">
+                              <p className="mb-1 text-white/80 font-bold tracking-wide">{PHARMA_PROFILES[item.droga].classe}</p>
+                              <p className="mb-0.5"><span className="font-semibold text-white/40 uppercase tracking-widest text-[6px]">Função:</span> {PHARMA_PROFILES[item.droga].funcao}</p>
+                              <div className="grid grid-cols-2 gap-1 mb-0.5">
+                                <p><span className="font-semibold text-white/40 uppercase tracking-widest text-[6px]">Início:</span> {PHARMA_PROFILES[item.droga].inicio}</p>
+                                <p><span className="font-semibold text-white/40 uppercase tracking-widest text-[6px]">Meia-vida:</span> {PHARMA_PROFILES[item.droga].meiaVida}</p>
+                              </div>
+                              <p className="text-[#fb923c]/90"><span className="font-semibold text-[#fb923c]/60 uppercase tracking-widest text-[6px]">Retirada/Washout:</span> {PHARMA_PROFILES[item.droga].retirada}</p>
+                            </div>
+                          )}
                         </div>
                         )
                       })

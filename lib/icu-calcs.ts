@@ -24,6 +24,7 @@ export type DVAEntry = {
   dose: string
   unidade: string
   suspensao?: string
+  dobrada?: boolean
 }
 
 export type LabExamEntry = {
