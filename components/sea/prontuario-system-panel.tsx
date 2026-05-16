@@ -1563,66 +1563,114 @@ function analyzeVMTrend(entries: VMHistoryEntry[]): TrendInsight[] {
   const prev = entries[1]
   const insights: TrendInsight[] = []
 
-  // Modo alterado
+  const curFR = parseNumber(cur.fr)
+  const prevFR = parseNumber(prev.fr)
+  const curPS = parseNumber(cur.ps)
+  const prevPS = parseNumber(prev.ps)
+  const curVE = parseNumber(cur.ve)
+  const prevVE = parseNumber(prev.ve)
+  const curFiO2 = parseNumber(cur.fio2)
+  const prevFiO2 = parseNumber(prev.fio2)
+
+  const isCtrl = (m: string) => VM_MODE_GROUPS.volume.includes(m as any) || VM_MODE_GROUPS.pressure.includes(m as any)
+  const isSpont = (m: string) => VM_MODE_GROUPS.spontaneous.includes(m as any)
+  const isSmart = (m: string) => ['ASV', 'IntelliVENT', 'SmartCare', 'VS'].includes(m)
+  const isProportional = (m: string) => ['PAV', 'NAVA'].includes(m)
+
+  // 1. Mudança de Modo (Visão Ampla)
   if (cur.modo && prev.modo && cur.modo !== prev.modo) {
-    const isProgression = (prev.modo === 'VCV' || prev.modo === 'PCV') && cur.modo === 'PSV'
-    const isRegression = prev.modo === 'PSV' && (cur.modo === 'VCV' || cur.modo === 'PCV')
-    if (isProgression) insights.push({ text: `${prev.modo} → ${cur.modo} — progressão para modo espontâneo`, color: '#4ade80' })
-    else if (isRegression) insights.push({ text: `${prev.modo} → ${cur.modo} — retorno a modo controlado`, color: '#f87171' })
-    else insights.push({ text: `Modo alterado: ${prev.modo} → ${cur.modo}`, color: '#60a5fa' })
+    const fromCtrlToSpont = isCtrl(prev.modo) && isSpont(cur.modo)
+    const fromSpontToCtrl = isSpont(prev.modo) && isCtrl(cur.modo)
+    
+    if (fromCtrlToSpont) {
+      let text = `${prev.modo} → ${cur.modo} — progressão para modo espontâneo.`
+      if (cur.modo === 'TuboT') text = `${prev.modo} → Tubo-T — Teste de Respiração Espontânea (TRE) em curso.`
+      else if (cur.modo === 'PAV' || cur.modo === 'NAVA') text = `${prev.modo} → ${cur.modo} — transição para assistência proporcional (melhor sincronia).`
+      else if (isSmart(cur.modo)) text = `${prev.modo} → ${cur.modo} — transição para modo de malha fechada (automação do desmame).`
+      
+      if (curFR > prevFR && curFR <= 28) text += " Assunção de drive satisfatória."
+      insights.push({ text, color: '#4ade80' })
+    } else if (fromSpontToCtrl) {
+      insights.push({ text: `${prev.modo} → ${cur.modo} — retorno a modo controlado. Avaliar critério de falha de desmame ou fadiga.`, color: '#f87171' })
+    } else if (cur.modo === 'APRV') {
+      insights.push({ text: `Transição para APRV — foco em recrutamento alveolar e melhora de oxigenação em pulmões de baixa complacência.`, color: '#fb923c' })
+    } else {
+      insights.push({ text: `Alteração de Modo: ${prev.modo} → ${cur.modo}`, color: '#60a5fa' })
+    }
   }
 
-  // DP
-  const dp = numDelta(cur.dp, prev.dp)
-  if (dp) {
-    if (dp.delta < -2) insights.push({ text: `DP reduziu: ${prev.dp}→${cur.dp} cmH₂O — proteção pulmonar`, color: '#4ade80' })
-    else if (dp.delta > 2) insights.push({ text: `DP aumentou: ${prev.dp}→${cur.dp} cmH₂O — risco VILI`, color: '#f87171' })
+  // 2. FiO2 (Desmame de O2)
+  if (curFiO2 && prevFiO2 && curFiO2 !== prevFiO2) {
+    const delta = curFiO2 - prevFiO2
+    if (delta <= -5) insights.push({ text: `FiO₂ reduzida: ${prevFiO2}%→${curFiO2}% — desmame de O₂ bem sucedido.`, color: '#4ade80' })
+    else if (delta >= 5) insights.push({ text: `FiO₂ aumentada: ${prevFiO2}%→${curFiO2}% — aumento da demanda de oxigenação.`, color: '#fb923c' })
   }
 
-  // FiO2
-  const fio2 = numDelta(cur.fio2, prev.fio2)
-  if (fio2) {
-    if (fio2.delta < -5) insights.push({ text: `FiO₂ reduzida: ${prev.fio2}→${cur.fio2}% — desmame de O₂`, color: '#4ade80' })
-    else if (fio2.delta > 5) insights.push({ text: `FiO₂ aumentada: ${prev.fio2}→${cur.fio2}% — piora oxigenação`, color: '#fb923c' })
+  // 3. Suporte (PS, PAV, NAVA, VS) e FR
+  const hasSpontSupport = isSpont(cur.modo) && cur.modo !== 'TuboT'
+  if (hasSpontSupport) {
+    const frDelta = curFR - prevFR
+    
+    // Se for modo proporcional ou inteligente, o suporte varia sozinho
+    if (isProportional(cur.modo)) {
+      insights.push({ text: `Modo ${cur.modo}: suporte proporcional ao esforço do paciente. Monitorar drive e P0.1.`, color: '#60a5fa' })
+    } else if (isSmart(cur.modo)) {
+      insights.push({ text: `Modo ${cur.modo}: ajuste automático de parâmetros em malha fechada.`, color: '#60a5fa' })
+    } else {
+      // PSV Clássico ou VS
+      const psDelta = curPS - prevPS
+      if (psDelta < 0) {
+        let text = `${cur.modo === 'VS' ? 'Volume Suporte' : 'PS'} reduzida: ${prevPS}→${curPS} cmH₂O — desmame de suporte.`
+        if (frDelta > 0 && curFR <= 28) text += " Aumento de FR fisiológico."
+        insights.push({ text, color: '#4ade80' })
+      } else if (psDelta > 0) {
+        insights.push({ text: `${cur.modo === 'VS' ? 'Volume Suporte' : 'PS'} aumentada: ${prevPS}→${curPS} cmH₂O. Avaliar fadiga ou drive elevado.`, color: '#fb923c' })
+      }
+    }
+
+    // FR em modo espontâneo (qualquer um)
+    if (Math.abs(frDelta) >= 4) {
+      const alreadyCovered = insights.some(i => i.text.includes("fisiológico"))
+      if (!alreadyCovered) {
+        if (frDelta > 5 && curFR > 28) insights.push({ text: `FR subiu: ${prevFR}→${curFR} — taquipneia ativa (>28 ipm). Checar dor, ansiedade ou fadiga.`, color: '#f87171' })
+        else if (frDelta < -4) insights.push({ text: `FR reduziu: ${prevFR}→${curFR} — maior conforto ou redução de drive.`, color: '#4ade80' })
+      }
+    }
   }
 
-  // PEEP
+  // 4. Volume Minuto (VE) e correlação
+  if (curVE && prevVE && Math.abs(curVE - prevVE) >= 1) {
+    const delta = curVE - prevVE
+    if (delta < 0 && curFR > prevFR) {
+      insights.push({ text: `Alerta: VE caiu (${prevVE}→${curVE}) com FR subindo. Risco de fadiga (respiração curta/rápida).`, color: '#f87171' })
+    } else if (delta < 0) {
+      insights.push({ text: `VE reduzido: ${prevVE}→${curVE} L/min.`, color: '#60a5fa' })
+    } else {
+      insights.push({ text: `VE aumentado: ${prevVE}→${curVE} L/min — aumento de demanda metabólica ou drive.`, color: '#60a5fa' })
+    }
+  }
+
+  // 5. PEEP
   const peep = numDelta(cur.peep, prev.peep)
   if (peep && Math.abs(peep.delta) >= 1) {
-    insights.push({ text: `PEEP ${peep.delta > 0 ? 'aumentada' : 'reduzida'}: ${prev.peep}→${cur.peep} cmH₂O`, color: peep.delta > 0 ? '#facc15' : '#4ade80' })
+    if (peep.delta < 0) insights.push({ text: `PEEP reduzida: ${prev.peep}→${cur.peep} cmH₂O — desmame de PEEP.`, color: '#4ade80' })
+    else insights.push({ text: `PEEP aumentada: ${prev.peep}→${cur.peep} cmH₂O — estabilização alveolar.`, color: '#facc15' })
   }
 
-  // PS (desmame PSV)
-  const ps = numDelta(cur.ps, prev.ps)
-  if (ps && Math.abs(ps.delta) >= 1) {
-    if (ps.delta < 0) insights.push({ text: `PS reduzida: ${prev.ps}→${cur.ps} cmH₂O — desmame em curso`, color: '#4ade80' })
-    else insights.push({ text: `PS aumentada: ${prev.ps}→${cur.ps} cmH₂O`, color: '#fb923c' })
+  // 6. Driving Pressure (DP)
+  const dp = numDelta(cur.dp, prev.dp)
+  if (dp && Math.abs(dp.delta) >= 2) {
+    if (dp.delta < 0) insights.push({ text: `DP reduziu: ${prev.dp}→${cur.dp} — melhora na proteção pulmonar.`, color: '#4ade80' })
+    else insights.push({ text: `DP aumentou: ${prev.dp}→${cur.dp} — piora de mecânica ou risco de VILI.`, color: '#f87171' })
   }
 
-  // FR
-  const fr = numDelta(cur.fr, prev.fr)
-  if (fr && Math.abs(fr.delta) >= 3) {
-    if (fr.delta > 5) insights.push({ text: `FR subiu: ${prev.fr}→${cur.fr} — taquipneia, avaliar causa`, color: '#f87171' })
-    else if (fr.delta < -3) insights.push({ text: `FR reduziu: ${prev.fr}→${cur.fr} — melhora do padrão`, color: '#4ade80' })
-  }
-
-  // VE
-  const ve = numDelta(cur.ve, prev.ve)
-  if (ve && Math.abs(ve.delta) >= 1) {
-    insights.push({ text: `VE ${ve.delta > 0 ? 'aumentou' : 'reduziu'}: ${prev.ve}→${cur.ve} L/min`, color: '#60a5fa' })
-  }
-
-  // Tendência geral (>= 3 registros)
+  // 7. Tendência geral (>= 3 registros)
   if (entries.length >= 3) {
     const first = entries[entries.length - 1]
     const fio2Trend = numDelta(cur.fio2, first.fio2)
-    if (fio2Trend && fio2Trend.delta < -10) {
-      insights.push({ text: `Tendência (${entries.length} reg): FiO₂ ${first.fio2}→${cur.fio2}% — desmame O₂ progressivo`, color: '#60a5fa' })
-    }
+    if (fio2Trend && fio2Trend.delta <= -10) insights.push({ text: `Tendência: FiO₂ ${first.fio2}%→${cur.fio2}% — desmame de O₂ progressivo.`, color: '#4ade80' })
     const psTrend = numDelta(cur.ps, first.ps)
-    if (psTrend && psTrend.delta < -3) {
-      insights.push({ text: `Tendência (${entries.length} reg): PS ${first.ps}→${cur.ps} — desmame PSV progressivo`, color: '#60a5fa' })
-    }
+    if (psTrend && psTrend.delta <= -3) insights.push({ text: `Tendência: Suporte ${first.ps}→${cur.ps} — desmame em progressão positiva.`, color: '#4ade80' })
   }
 
   return insights
@@ -5843,13 +5891,21 @@ export function ProntuarioSystemPanel() {
                   </p>
                   <div className="grid gap-1.5 grid-cols-2 xl:grid-cols-4">
                     <FieldShell label="Via aerea atual">
-                      <select className={INPUT_CLASS_SM} style={INPUT_STYLE} value={currentRecord.tipoVia} onChange={(event) => setField('tipoVia', event.target.value)}>
-                        {VIA_OPTIONS.map(([value, label]) => (
-                          <option key={value} value={value}>
-                            {label}
-                          </option>
-                        ))}
-                      </select>
+                      <div className="flex items-center gap-1.5">
+                        <select className={INPUT_CLASS_SM} style={INPUT_STYLE} value={currentRecord.tipoVia} onChange={(event) => setField('tipoVia', event.target.value)}>
+                          {VIA_OPTIONS.map(([value, label]) => (
+                            <option key={value} value={value}>
+                              {label}
+                            </option>
+                          ))}
+                        </select>
+                        {(currentRecord.tipoVia === 'TOT' || currentRecord.tipoVia === 'TNT') && calculations?.daysTOT !== null && (
+                          <span className="whitespace-nowrap text-[8px] font-bold text-[#fb923c] bg-[#fb923c10] px-1 rounded-sm border border-[#fb923c20] animate-pulse">D{calculations.daysTOT} TOT</span>
+                        )}
+                        {(currentRecord.tipoVia?.startsWith('TQT')) && calculations?.daysTQT !== null && (
+                          <span className="whitespace-nowrap text-[8px] font-bold text-[#a855f7] bg-[#a855f710] px-1 rounded-sm border border-[#a855f720] animate-pulse">D{calculations.daysTQT} TQT</span>
+                        )}
+                      </div>
                     </FieldShell>
                     {/* Campos de O2 conforme via aérea */}
                     {(currentRecord.tipoVia === 'RE-O2' || currentRecord.tipoVia === 'RE-MFS' || currentRecord.tipoVia === 'RE-MFR' || currentRecord.tipoVia === 'TQT-O2') && (
@@ -5978,7 +6034,10 @@ export function ProntuarioSystemPanel() {
                     {(currentRecord.tipoVia === 'TOT' || currentRecord.tipoVia === 'TNT') && (
                       <>
                         <FieldShell label="Data IOT">
-                          <input className={INPUT_CLASS_SM} style={INPUT_STYLE} type="text" placeholder="dd/mm/aa" value={currentRecord.dataTOT} onChange={(event) => setField('dataTOT', event.target.value)} />
+                          <div className="flex flex-col gap-0.5">
+                            <input className={INPUT_CLASS_SM} style={INPUT_STYLE} type="text" placeholder="dd/mm/aa" value={currentRecord.dataTOT} onChange={(event) => setField('dataTOT', event.target.value)} />
+                            {calculations?.daysTOT !== null && <span className="text-[8px] font-bold text-[#fb923c] px-1">D{calculations.daysTOT} de TOT</span>}
+                          </div>
                         </FieldShell>
                         <FieldShell label="Hora IOT">
                           <input className={INPUT_CLASS_SM} style={INPUT_STYLE} type="text" placeholder="hh:mm" value={currentRecord.horaTOT} onChange={(event) => setField('horaTOT', event.target.value)} />
@@ -6001,7 +6060,10 @@ export function ProntuarioSystemPanel() {
                     {(currentRecord.tipoVia || '').startsWith('TQT') && (
                       <>
                         <FieldShell label="Data TQT">
-                          <input className={INPUT_CLASS_SM} style={INPUT_STYLE} type="text" placeholder="dd/mm/aa" value={currentRecord.dataTQT} onChange={(event) => setField('dataTQT', event.target.value)} />
+                          <div className="flex flex-col gap-0.5">
+                            <input className={INPUT_CLASS_SM} style={INPUT_STYLE} type="text" placeholder="dd/mm/aa" value={currentRecord.dataTQT} onChange={(event) => setField('dataTQT', event.target.value)} />
+                            {calculations?.daysTQT !== null && <span className="text-[8px] font-bold text-[#a855f7] px-1">D{calculations.daysTQT} de TQT</span>}
+                          </div>
                         </FieldShell>
                         <FieldShell label="Hora TQT">
                           <input className={INPUT_CLASS_SM} style={INPUT_STYLE} type="text" placeholder="hh:mm" value={currentRecord.horaTQT} onChange={(event) => setField('horaTQT', event.target.value)} />

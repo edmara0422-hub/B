@@ -323,22 +323,31 @@ export function analisarGaso(params: {
   // PASSO 1: pH normal com distúrbio compensado oculto
   // ══════════════════════════════════════════════════
   if (pH >= 7.35 && pH <= 7.45) {
-    if (hco3 < 20 && co2 < 38) {
-      tipo = 'Acidose'
-      origem = 'Metabolica'
-      comp = 'Compensada (pH normal)'
-    } else if (hco3 > 28 && co2 > 42) {
-      tipo = 'Alcalose'
-      origem = 'Metabolica'
-      comp = 'Compensada (pH normal)'
-    } else if (co2 > 48 && hco3 > 26) {
-      tipo = 'Acidose'
-      origem = 'Respiratoria'
-      comp = 'Cronica compensada (pH normal)'
-    } else if (co2 < 32 && hco3 < 22) {
-      tipo = 'Alcalose'
-      origem = 'Respiratoria'
-      comp = 'Cronica compensada (pH normal)'
+    if (hco3 < 21 || co2 < 35 || hco3 > 27 || co2 > 45) {
+      // Determinar o distúrbio primário pela direção do pH (tendência)
+      if (pH < 7.40) { // Tendência à Acidose
+        if (hco3 < 22) {
+          tipo = 'Acidose'
+          origem = 'Metabolica'
+          const expCO2 = 1.5 * hco3 + 8
+          if (co2 < expCO2 - 2) comp = 'Compensada c/ Alcalose Resp sobreposta (pH normal)'
+          else comp = 'Totalmente Compensada (pH normal)'
+        } else if (co2 > 45) {
+          tipo = 'Acidose'
+          origem = 'Respiratoria'
+          comp = 'Cronica Totalmente Compensada (pH normal)'
+        }
+      } else { // Tendência à Alcalose (pH >= 7.40)
+        if (hco3 > 26) {
+          tipo = 'Alcalose'
+          origem = 'Metabolica'
+          comp = 'Totalmente Compensada (pH normal)'
+        } else if (co2 < 35) {
+          tipo = 'Alcalose'
+          origem = 'Respiratoria'
+          comp = 'Cronica Totalmente Compensada (pH normal)'
+        }
+      }
     }
   }
 
@@ -347,26 +356,27 @@ export function analisarGaso(params: {
   // ══════════════════════════════════════════════════
   if (tipo === 'Normal' && pH < 7.35) {
     tipo = 'Acidose'
-    const hasRespComp = co2 > 45
-    const hasMetComp = hco3 < 22
-    if (hasRespComp && hasMetComp) {
+    const hasRespDist = co2 > 45
+    const hasMetDist = hco3 < 22
+    if (hasRespDist && hasMetDist) {
       origem = 'Mista (Resp + Met)'
       comp = 'Sem compensacao — ambos os sistemas comprometidos'
-    } else if (hasRespComp) {
+    } else if (hasRespDist) {
       origem = 'Respiratoria'
       const delta = co2 - 40
       const expAcute = 24 + delta * 0.1
       const expChronic = 24 + delta * 0.35
       if (hco3 >= expChronic - 2) comp = 'Cronica compensada (rim retendo HCO3)'
-      else if (hco3 >= expAcute) comp = 'Aguda sobre cronica'
+      else if (hco3 >= expAcute - 1 && hco3 <= expAcute + 1) comp = 'Aguda'
+      else if (hco3 > expAcute + 1) comp = 'Aguda sobre cronica'
       else comp = 'Aguda nao compensada'
-    } else if (hasMetComp) {
+    } else if (hasMetDist) {
       origem = 'Metabolica'
       // Winters: PaCO2 esperado = 1.5 × HCO3 + 8 (±2)
       const expCO2 = 1.5 * hco3 + 8
       if (co2 >= expCO2 - 2 && co2 <= expCO2 + 2) comp = `Compensada (Winters: CO2 esp ${(expCO2 - 2).toFixed(0)}-${(expCO2 + 2).toFixed(0)}, medido ${co2})`
       else if (co2 < expCO2 - 2) comp = `Hipercompensada — alcalose respiratoria sobreposta (CO2 ${co2} < esperado ${(expCO2 - 2).toFixed(0)})`
-      else if (co2 > expCO2 + 2) comp = `Acidose mista — acidose respiratoria sobreposta (CO2 ${co2} > esperado ${(expCO2 + 2).toFixed(0)})`
+      else if (co2 > expCO2 + 2) comp = `Mista — acidose respiratoria sobreposta (CO2 ${co2} > esperado ${(expCO2 + 2).toFixed(0)})`
       else comp = 'Nao compensada'
     }
   }
@@ -376,25 +386,25 @@ export function analisarGaso(params: {
   // ══════════════════════════════════════════════════
   if (tipo === 'Normal' && pH > 7.45) {
     tipo = 'Alcalose'
-    const hasRespComp = co2 < 35
-    const hasMetComp = hco3 > 26
-    if (hasRespComp && hasMetComp) {
+    const hasRespDist = co2 < 35
+    const hasMetDist = hco3 > 26
+    if (hasRespDist && hasMetDist) {
       origem = 'Mista (Resp + Met)'
       comp = 'Sem compensacao'
-    } else if (hasRespComp) {
+    } else if (hasRespDist) {
       origem = 'Respiratoria'
       const delta = 40 - co2
       const expAcute = 24 - delta * 0.2
       const expChronic = 24 - delta * 0.5
-      if (hco3 <= expChronic + 2) comp = 'Cronica (rim excretando HCO3)'
+      if (hco3 <= expChronic + 2) comp = 'Cronica compensada (rim excretando HCO3)'
       else if (hco3 <= expAcute + 2) comp = 'Aguda'
-      else comp = 'Alcalose mista — alcalose metabolica associada'
-    } else if (hasMetComp) {
+      else comp = 'Mista — alcalose metabolica associada'
+    } else if (hasMetDist) {
       origem = 'Metabolica'
       const expCO2 = 40 + 0.7 * (hco3 - 24)
       if (co2 >= expCO2 - 3 && co2 <= expCO2 + 3) comp = `Compensada (CO2 esp ${(expCO2 - 3).toFixed(0)}-${(expCO2 + 3).toFixed(0)}, medido ${co2})`
-      else if (co2 > expCO2 + 3) comp = `Hipoventilacao excessiva — acidose respiratoria sobreposta (CO2 ${co2} > esperado ${(expCO2 + 3).toFixed(0)})`
-      else if (co2 < 35) comp = 'Alcalose mista — alcalose respiratoria associada'
+      else if (co2 > expCO2 + 3) comp = `Mista — acidose respiratoria sobreposta (CO2 ${co2} > esperado ${(expCO2 + 3).toFixed(0)})`
+      else if (co2 < 35) comp = 'Mista — alcalose respiratoria associada'
       else comp = 'Nao compensada'
     }
   }
@@ -424,56 +434,61 @@ export function analisarGaso(params: {
   // ══════════════════════════════════════════════════
   const insights: string[] = []
 
+  // Reminder for Anion Gap in Metabolic Acidosis
+  if (tipo === 'Acidose' && origem === 'Metabolica') {
+    insights.push(`Sempre calcular o ANION GAP (Na - [Cl + HCO3]) para diferenciar causas (AG Elevado: Sepse, Cetoacidose, IRA, Intoxicacoes; AG Normal: Perdas digestivas ou renais de HCO3).`)
+  }
+
   // 1. Gaso + Rim: Acidose metabólica + IRA
   if (hco3 < 22 && params.creat && params.creat >= 2) {
-    insights.push(`Acidose Metabolica de provavel origem RENAL. Creatinina ${params.creat} indica que o rim nao esta excretando acidos fixos (retencao de escorias nitrogenadas). ${params.creat >= 4 ? 'Avaliar indicacao de dialise IMEDIATA para correcao acido-base.' : 'Monitorar funcao renal e avaliar necessidade de dialise.'}`)
+    insights.push(`Acidose Metabolica de provavel origem RENAL. Creatinina ${params.creat} indica que o rim nao esta excretando acidos fixos. ${params.creat >= 4 ? 'Avaliar indicacao de dialise IMEDIATA para correcao acido-base.' : 'Monitorar funcao renal e avaliar necessidade de dialise.'}`)
   }
 
   // 2. Gaso + BH: Alcalose metabólica + BH negativo (contrativa)
   if (hco3 > 26 && params.bhAcumulado !== undefined && params.bhAcumulado < -1500) {
-    insights.push(`Alcalose Metabolica CONTRATIVA detectada. BH acumulado negativo (${params.bhAcumulado}mL) + HCO3 elevado (${hco3}) = perda excessiva de volume e cloro (comum com diureticos). Conduta: repor volume com SF 0.9% (rico em cloro), reavaliar diuretico.`)
+    insights.push(`Alcalose Metabolica CONTRATIVA detectada. BH acumulado negativo (${params.bhAcumulado}mL) + HCO3 elevado (${hco3}) = perda excessiva de volume e cloro (comum com diureticos). Conduta: repor volume com SF 0.9% (rico em cloro).`)
   }
 
   // 3. Gaso + BH: Acidose + sobrecarga hídrica
   if (pH < 7.35 && params.bhAcumulado !== undefined && params.bhAcumulado > 3000) {
-    insights.push(`Acidose em paciente com sobrecarga hidrica (+${params.bhAcumulado}mL). O excesso de volume pode estar diluindo o bicarbonato (acidose diluicional) e piorando troca gasosa. Considerar restricao hidrica agressiva e diuretico.`)
+    insights.push(`Acidose em paciente com sobrecarga hidrica (+${params.bhAcumulado}mL). O excesso de volume pode estar diluindo o bicarbonato (acidose diluicional). Considerar diuretico.`)
   }
 
   // 4. Gaso + Lactato + HB: Hipóxia anêmica
   if (lactato > 2 && params.hb !== undefined && params.hb < 7.5) {
-    insights.push(`Hipoxia citopática/anemica: Lactato ${lactato} + HB ${params.hb}. O lactato sobe porque nao ha hemoglobina suficiente para transportar O2 aos tecidos, MESMO que SpO2 esteja normal. Avaliar transfusao para aumentar oferta de O2 (DO2).`)
+    insights.push(`Hipoxia citopática/anemica: Lactato ${lactato} + HB ${params.hb}. O lactato sobe porque nao ha hemoglobina suficiente para transportar O2 aos tecidos. Avaliar transfusao.`)
   }
 
   // 5. Gaso + Lactato isolado (sem anemia)
   if (lactato > 4 && (!params.hb || params.hb >= 7.5)) {
-    insights.push(`Acidose lactica GRAVE (Lactato ${lactato}). Marcador de choque/hipoperfusao. Se em uso de adrenalina: diferenciar lactato por beta-2 (metabolico) vs hipoperfusao real usando perfusao clinica e ScvO2.`)
+    insights.push(`Acidose lactica GRAVE (Lactato ${lactato}). Marcador de choque/hipoperfusao. Se em uso de adrenalina: diferenciar efeito beta-2 vs hipoperfusao real usando ScvO2.`)
   } else if (lactato > 2 && lactato <= 4 && (!params.hb || params.hb >= 7.5)) {
-    insights.push(`Hiperlactatemia (Lactato ${lactato}). Sugere hipoperfusao tecidual. Monitorar clearance de lactato: queda >20% em 2h e sinal de melhora. Se subindo: reavaliar volemia e suporte vasoativo.`)
+    insights.push(`Hiperlactatemia (Lactato ${lactato}). Sugere hipoperfusao tecidual. Monitorar clearance de lactato: queda >20% em 2h e sinal de melhora.`)
   }
 
   // 6. Gaso + Neuro: Acidose resp + sedação/BNM
   if (co2 > 45 && (params.temSedativoAtivo || params.temBNMAtivo)) {
     const causa = params.temBNMAtivo ? 'BNM ativo (paralisia muscular)' : 'sedacao profunda'
-    insights.push(`Hipercapnia (CO2 ${co2}) com ${causa}. Hipoventilacao por causa farmacologica — o paciente nao tem drive respiratorio para lavar o CO2. Conduta: ajustar parametros da VM (aumentar FR ou VC), avaliar reducao de sedacao/BNM.`)
+    insights.push(`Hipercapnia (CO2 ${co2}) com ${causa}. Hipoventilacao por causa farmacologica — o paciente nao tem drive para lavar o CO2. Conduta: ajustar VM (aumentar FR ou VC).`)
   }
 
   // 7. Gaso + Neuro: Alcalose resp + agitação
   if (co2 < 30 && params.rass !== undefined && params.rass > 0) {
-    insights.push(`Hipocapnia (CO2 ${co2}) com agitacao (RASS +${params.rass}). Hiperventilacao por dor, ansiedade ou drive elevado. Avaliar: dor (escala CPOT/BPS), assincronia ventilatoria, desconforto. Tratar causa antes de sedar.`)
+    insights.push(`Hipocapnia (CO2 ${co2}) com agitacao (RASS +${params.rass}). Hiperventilacao por dor ou drive elevado. Tratar causa antes de sedar.`)
   }
 
   // 8. BE (Base Excess) interpretação
   if (be !== 0) {
-    if (be < -5) insights.push(`BE ${be}: deficit de base importante. Consumo de tampao — acidose metabolica ativa. Quanto mais negativo, maior a gravidade.`)
-    else if (be < -2) insights.push(`BE ${be}: deficit de base leve. Sugere componente metabolico acido.`)
+    if (be < -5) insights.push(`BE ${be}: deficit de base importante. Consumo de tampao — acidose metabolica ativa.`)
+    else if (be < -2) insights.push(`BE ${be}: deficit de base leve. Componente metabolico acido.`)
     else if (be > 5) insights.push(`BE +${be}: excesso de base. Alcalose metabolica ou compensacao renal cronica.`)
   }
 
   // 9. pH crítico
   if (pH < 7.10) {
-    insights.push(`⚠ pH CRITICO (${pH.toFixed(2)}): acidemia grave. Risco de arritmia, depressao miocardica e colapso cardiovascular. Tratamento imediato da causa. Se pH < 7.0: considerar bicarbonato IV (controverso, mas pode ser necessario em parada iminente).`)
+    insights.push(`⚠ pH CRITICO (${pH.toFixed(2)}): acidemia grave. Risco de arritmia e depressao miocardica. Tratamento imediato da causa.`)
   } else if (pH > 7.60) {
-    insights.push(`⚠ pH CRITICO (${pH.toFixed(2)}): alcalemia grave. Risco de arritmia, tetania e convulsoes. Investigar e tratar causa imediatamente.`)
+    insights.push(`⚠ pH CRITICO (${pH.toFixed(2)}): alcalemia grave. Risco de arritmia e convulsoes.`)
   }
 
   return {
