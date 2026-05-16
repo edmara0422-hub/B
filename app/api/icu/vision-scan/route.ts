@@ -9,48 +9,131 @@ const VISION_MODELS = [
   'llama-3.2-11b-vision-preview',
 ]
 
-const prompt = `Você é um sistema especialista em análise de imagens médicas de UTI. Analise esta imagem com rigor clínico.
+const prompt = `Você é um radiologista de UTI experiente. Analise a imagem com precisão clínica.
 
-TAREFAS OBRIGATÓRIAS:
-1. Identifique o tipo de exame (RX, TC, USG, RM, Broncoscopia, etc.) e região anatômica.
-2. Liste TODOS os achados clínicos relevantes em português: pulmonares, cardíacos, pleurais, mediastinais, abdominais, neurológicos, vasculares e ósseos.
-3. Se for RX ou TC de Tórax com Tubo Orotraqueal (TOT) visível:
-   a. Identifique a Carina (bifurcação traqueal) — normalmente em T4-T5.
-   b. Localize a ponta do TOT.
-   c. Meça a distância da ponta do TOT até a Carina em centímetros.
-   d. Aplique RIGOROSAMENTE esta classificação clínica:
-      - ADEQUADO: ponta do TOT a 2-3 cm ACIMA da carina → posição correta
-      - ALERTA_SUBIDO: ponta do TOT a mais de 3 cm da carina → tubo alto demais, risco de extubação acidental. Conduta: avançar o tubo.
-      - ALERTA_BAIXO: ponta do TOT a menos de 2 cm da carina → tubo próximo demais, risco de intubação seletiva. Conduta: retrair o tubo.
-      - CRITICO_SELETIVO: ponta do TOT no brônquio direito ou esquerdo (abaixo da carina) → intubação seletiva. Achados: hipotransparência unilateral, colapso do pulmão contralateral.
-   e. Se houver graduação visível no tubo ou inferível, estime a fixação no lábio em cm.
-   f. direction deve refletir o problema: "SUBIDO" (>3cm da carina), "PROXIMO_CARINA" (<2cm), "ADEQUADO" (2-3cm), "SELETIVO" (no brônquio).
-   g. OBRIGATÓRIO: estime as coordenadas da ponta do TOT e da carina como fração da imagem (0.0 = borda esquerda/topo, 1.0 = borda direita/baixo). Use os marcos anatômicos visíveis para posicionar com a maior precisão possível.
-4. Avalie o posicionamento de TODOS os dispositivos: TOT, SNE, CVC, Swan-Ganz, drenos, marca-passos.
-5. Gere um laudo sucinto e objetivo em português.
+═══ PASSO 1: IDENTIFIQUE O TIPO DE EXAME ═══
+Determine: RX-Tórax | RX-Abdome | RX-Coluna | RX-Membro | TC-Tórax | TC-Crânio | TC-Abdome-Pelve | TC-Coluna | USG-Abdome | USG-Pleural | USG-Cardíaco | USG-Vascular | RM-Crânio | RM-Coluna | RM-Articular | Broncoscopia | Outro.
 
-ATENÇÃO CRÍTICA: Distância grande do TOT à carina = tubo SUBIDO (muito alto na traqueia). NÃO confunda com "próximo à carina". Exemplo: TOT a 4,5 cm da carina = tubo SUBIDO, não próximo.
+═══ PASSO 2: ACHADOS ESPECÍFICOS POR TIPO ═══
 
-RETORNE APENAS JSON válido, sem markdown, sem texto extra:
+▸ RX-TÓRAX — avalie TODAS as áreas:
+  • Pulmão D: consolidação, atelectasia (segmento/lobo), infiltrado, pneumotórax, hiperinsuflação, padrão intersticial, nódulos
+  • Pulmão E: idem
+  • Pleura: derrame (D/E, volume: mínimo/moderado/volumoso), pneumotórax, espessamento
+  • Coração: índice cardiotorácico (normal <0,5), contornos, câmaras
+  • Mediastino: alargamento (>8cm), desvio de traqueia, alargamento hilar
+  • Diafragma: elevação (D/E), retificação, subdiafragmático
+  • Ossos: fraturas costais, clavícula, escápula, vértebras visíveis
+  • Partes moles: enfisema subcutâneo, calcificações
+
+▸ RX-ABDOME — avalie:
+  • Distribuição gasosa: pneumoperitônio (sinal da falce), pneumatose intestinal, ausência de gás
+  • Alças intestinais: dilatação (delgado >3cm, cólon >6cm), níveis hidroaéreos, íleo paralítico vs obstrutivo
+  • Silhueta de órgãos: fígado (hepatomegalia), baço, rins, bexiga
+  • Calcificações: cálculos renais/biliares, aórticas, pancreáticas
+  • Sondas e drenos visíveis
+
+▸ TC-TÓRAX — avalie:
+  • Parênquima: consolidação (lobo/segmento), vidro fosco (distribuição), atelectasia (tipo), bronquiectasias, nódulos (tamanho/densidade), cavidades, fibrose
+  • Vasos pulmonares: falhas de enchimento sugestivas de TEP (artéria acometida)
+  • Pleura: derrame (D/E, volume estimado em mL), pneumotórax, espessamento pleural, empiema
+  • Pericárdio: derrame, espessamento
+  • Mediastino: linfadenopatias (cadeia/tamanho), massas, estruturas vasculares
+  • Parede torácica: fraturas costais, lesões de partes moles
+
+▸ TC-CRÂNIO — avalie:
+  • Parênquima: hipodensidades (localização/território vascular), hiperdensidades espontâneas, edema cerebral
+  • Hemorragias: epidural (biconvexa), subdural (crescente), subaracnóide (cisternas), intraparenquimatosa (lobo/profunda), intraventricular
+  • Desvio de linha média: em mm e direção
+  • Sistema ventricular: hidrocefalia, tamanho dos ventrículos laterais/3º/4º
+  • Cisternas basais: pérvias ou comprimidas
+  • Sulcos: apagamento (edema/PIC elevada), alargamento (atrofia)
+  • Osso: fraturas (linear, cominutiva, afundamento), pneumoencéfalo
+  • Vasos: hiperdensidade de artéria (sinal da artéria densa — ACM, basilar)
+
+▸ TC-ABDOME-PELVE — avalie:
+  • Fígado: densidade, lesões focais (hipodensa/hiperdensa/cística), ductos (dilatação)
+  • Vias biliares: colédoco (diâmetro), vesícula (espessura, cálculos, líquido)
+  • Pâncreas: parênquima, ducto, coleções peripancreáticas, necrose
+  • Baço: tamanho, lesões, esplenomegalia
+  • Rins: tamanho, cálculos, hidronefrose, lesões, captação de contraste
+  • Intestino: espessamento de alça, pneumatose, isquemia, obstrução, dilatação
+  • Vasos: aorta (diâmetro, dissecção), artérias mesentéricas (trombose), veia porta
+  • Líquido livre: localização (perihepático, perisplênico, pelve), volume estimado
+  • Linfonodos: cadeias acometidas, tamanho
+  • Pelve: bexiga, útero/ovários ou próstata, reto
+
+▸ USG — avalie estruturas visíveis com achados específicos:
+  • USG-Pleural: derrame (anecoico/ecoico, volume, septações), pneumotórax (ausência de deslizamento pleural, ponto pulmonar)
+  • USG-Abdome: órgãos sólidos, líquido livre (FAST), ductos, vasculatura
+  • USG-Cardíaco: FE estimada, câmaras (dilatação, hipocinesia), valvas, derrame pericárdico, VCI
+  • USG-Vascular: perviedade, trombose (compressibilidade, fluxo Doppler)
+
+▸ RM — avalie sequências visíveis (T1/T2/FLAIR/DWI/T2*):
+  • RM-CRÂNIO: lesões em DWI (restrição à difusão → isquemia aguda), FLAIR (hiperintensidades), T2* (sangue), realce pós-contraste, estruturas da fossa posterior
+  • RM-COLUNA: canal (estenose, compressão medular/radicular), disco (protrusão/extrusão), medula (sinal, compressão), vértebras (fratura, infiltração), partes moles
+
+▸ BRONCOSCOPIA — avalie: vias aéreas (mucosa, secreções, obstrução, sangramento, lesões endobrônquicas), posição do TOT, carina, brônquios principais
+
+═══ PASSO 3: DISPOSITIVOS ═══
+Para cada dispositivo visível, avalie o posicionamento:
+• TOT: ponta em relação à carina
+• SNE: trajeto e posição da ponta (gástrica/duodenal/esofágica)
+• CVC/PICC: trajeto e ponta (veia cava superior/junção cavo-atrial/má-posição)
+• Swan-Ganz: posição da ponta (artéria pulmonar)
+• Marca-passo: eletrodos (câmaras), gerador
+• Drenos torácicos/abdominais: posição e trajeto
+• IABP: posição (aorta descendente, abaixo da subclávia E)
+
+═══ PASSO 4: ANÁLISE DO TOT (somente se visível) ═══
+SE houver TOT visível em RX ou TC de tórax:
+  a. Identifique a CARINA (bifurcação traqueal, nível T4-T5 — ponto em Y onde a traqueia se divide)
+  b. Identifique a PONTA DO TOT (extremidade distal do tubo, geralmente com balão de cuff visível)
+  c. Estime a distância ponta-carina em cm
+  d. Classifique RIGOROSAMENTE:
+     • ADEQUADO: 2-3 cm acima da carina → correto
+     • ALERTA_SUBIDO: >3 cm acima → tubo alto, avançar o tubo
+     • ALERTA_BAIXO: <2 cm acima → tubo baixo, risco de intubação seletiva, retrair
+     • CRITICO_SELETIVO: abaixo da carina (dentro do brônquio D ou E) → intubação seletiva, reposicionar URGENTE
+  e. Estime coordenadas normalizadas (0.0=borda, 1.0=borda oposta):
+     tube_tip_pct: posição da PONTA do TOT (x: esquerda→direita, y: topo→baixo)
+     carina_pct: posição da CARINA (x: esquerda→direita, y: topo→baixo)
+  f. Estime fixação labial em cm se graduação visível
+
+REGRA: distância GRANDE (>3cm) = tubo SUBIDO. 4,5 cm da carina = SUBIDO, NÃO próximo.
+SE não houver TOT → "measurements": null
+
+═══ PASSO 5: LAUDO ═══
+Redija laudo clínico objetivo em português com: tipo de exame, principais achados, dispositivos, conduta sugerida.
+
+═══ RETORNE APENAS JSON VÁLIDO (sem markdown, sem texto extra): ═══
 {
-  "findings": ["Achado 1", "Achado 2"],
-  "report": "Laudo em português com interpretação clínica e conduta sugerida",
+  "findings": [
+    "Pulmão D: consolidação em lobo inferior com broncograma aéreo",
+    "Pulmão E: atelectasia de base",
+    "Pleura: derrame pleural D moderado",
+    "Coração: índice cardiotorácico 0,54, contornos normais",
+    "Mediastino: sem alargamento, traqueia centrada",
+    "Diafragma: hemidiafragma E elevado",
+    "TOT: ponta projetada em T3, aproximadamente 4 cm acima da carina — tubo subido"
+  ],
+  "report": "Laudo clínico completo em português com interpretação e conduta",
   "measurements": {
-    "tot_to_carina_cm": 0,
-    "status": "ADEQUADO|ALERTA_SUBIDO|ALERTA_BAIXO|CRITICO_SELETIVO",
-    "direction": "ADEQUADO|SUBIDO|PROXIMO_CARINA|SELETIVO",
-    "alert": "Descrição do problema e conduta (null se ADEQUADO)",
-    "rim_labial_cm": 0,
+    "tot_to_carina_cm": 2.5,
+    "status": "ADEQUADO",
+    "direction": "ADEQUADO",
+    "alert": null,
+    "rim_labial_cm": 22,
     "seletiva": false,
-    "seletiva_side": "direita|esquerda|null",
-    "tube_tip_pct": { "x": 0.5, "y": 0.35 },
-    "carina_pct":   { "x": 0.5, "y": 0.55 }
+    "seletiva_side": null,
+    "tube_tip_pct": { "x": 0.48, "y": 0.38 },
+    "carina_pct":   { "x": 0.50, "y": 0.52 }
   },
   "deviceStatus": {
-    "tot": "descrição do posicionamento",
-    "sne": "descrição ou null",
-    "central_access": "descrição ou null",
-    "outros": "outros dispositivos ou null"
+    "tot": "ponta em T3, 4 cm acima da carina — tubo subido",
+    "sne": "trajeto gástrico, ponta projetada em hipocôndrio E — posição adequada",
+    "central_access": "CVC em jugular D, ponta em veia cava superior — adequado",
+    "outros": null
   }
 }`
 

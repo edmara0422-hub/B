@@ -1227,11 +1227,14 @@ function analyzeLabExam(exam: LabExamEntry) {
   }
   
   // CORREÇÃO DE ESCALA: Plaquetas unit x10³ (ex: 150)
-  const plaq = parseNumber(exam.plaq)
+  // Auto-detecta se o usuário digitou "150" ou "150000"
+  let plaq = parseNumber(exam.plaq)
   if (exam.plaq) {
+    if (plaq > 1500) plaq = plaq / 1000
+    
     if (plaq < 20) pushItem('Plaq', 'CRITICO — sangramento espontaneo', red)
-    else if (plaq < 100) pushItem('Plaq', 'Plaquetopenia moderada', orange) // Hierarquia corrigida
-    else if (plaq < 150) pushItem('Plaq', 'Plaquetopenia leve', yellow) // Hierarquia corrigida
+    else if (plaq < 100) pushItem('Plaq', 'Plaquetopenia moderada', orange) 
+    else if (plaq < 150) pushItem('Plaq', 'Plaquetopenia leve', yellow) 
     else if (plaq > 600) pushItem('Plaq', 'Trombocitose — risco trombotico', red)
     else if (plaq > 400) pushItem('Plaq', 'Trombocitose leve', yellow)
     else pushItem('Plaq', 'Normal', green)
@@ -2061,6 +2064,7 @@ function ScanLightbox({ data, onClose }: { data: LightboxPayload | null; onClose
   const imgRef = useRef<HTMLImageElement>(null)
   const pointersRef = useRef<Map<number, PointerEvent>>(new Map())
   const dragStartRef = useRef<{ x: number; y: number; panX: number; panY: number } | null>(null)
+  const tapOriginRef = useRef<{ x: number; y: number } | null>(null)
   const prevPinchRef = useRef<number | null>(null)
   const didMoveRef = useRef(false)
 
@@ -2104,8 +2108,11 @@ function ScanLightbox({ data, onClose }: { data: LightboxPayload | null; onClose
     didMoveRef.current = false
     if (pointersRef.current.size === 1) {
       dragStartRef.current = { x: e.clientX, y: e.clientY, panX: pan.x, panY: pan.y }
+      // Salva a posição normalizada NO MOMENTO do toque (mais precisa que o pointerUp)
+      tapOriginRef.current = screenToNorm(e.clientX, e.clientY)
     }
     if (pointersRef.current.size === 2) {
+      tapOriginRef.current = null
       const pts = Array.from(pointersRef.current.values())
       prevPinchRef.current = Math.hypot(pts[1].clientX - pts[0].clientX, pts[1].clientY - pts[0].clientY)
     }
@@ -2131,7 +2138,8 @@ function ScanLightbox({ data, onClose }: { data: LightboxPayload | null; onClose
     if (pointersRef.current.size === 1 && dragStartRef.current) {
       const dx = e.clientX - dragStartRef.current.x
       const dy = e.clientY - dragStartRef.current.y
-      if (Math.abs(dx) > 4 || Math.abs(dy) > 4) didMoveRef.current = true
+      // Threshold de 8px — evita falsos "arraste" em telas de alta densidade
+      if (Math.abs(dx) > 8 || Math.abs(dy) > 8) didMoveRef.current = true
       if (zoom > 1 && didMoveRef.current) {
         setPan(clampPan(dragStartRef.current.panX + dx, dragStartRef.current.panY + dy, zoom))
       }
@@ -2142,18 +2150,21 @@ function ScanLightbox({ data, onClose }: { data: LightboxPayload | null; onClose
     const wasTap = !didMoveRef.current && pointersRef.current.size === 1
     pointersRef.current.delete(e.pointerId)
     prevPinchRef.current = null
-    if (wasTap && rulerStep !== 'done') {
-      const norm = screenToNorm(e.clientX, e.clientY)
+    if (wasTap && rulerStep !== 'done' && tapOriginRef.current) {
+      // Usa a posição do pointerDown — mais precisa em touch
+      const norm = tapOriginRef.current
       if (rulerStep === 'tot') { setTipPct(norm); setRulerStep('carina') }
       else { setCarinaPct(norm); setRulerStep('done') }
     }
     dragStartRef.current = null
+    tapOriginRef.current = null
     didMoveRef.current = false
   }
 
   const onPointerCancel = (e: React.PointerEvent<HTMLDivElement>) => {
     pointersRef.current.delete(e.pointerId)
     dragStartRef.current = null
+    tapOriginRef.current = null
     didMoveRef.current = false
     prevPinchRef.current = null
   }
@@ -2494,6 +2505,8 @@ export function ProntuarioSystemPanel() {
   // --- ICU Master Clock & Shift Policy ---
   const [currentTime, setCurrentTime] = useState(new Date())
   const [showShiftModal, setShowShiftModal] = useState(false)
+  const [customShiftStart, setCustomShiftStart] = useState('07:00')
+  const [customShiftEnd, setCustomShiftEnd] = useState('19:00')
   const pendingAddRecordRef = useRef(false)
   const [shiftStart, setShiftStart] = useState<string | null>(() => {
     if (typeof window !== 'undefined') return localStorage.getItem('sea-shift-start')
@@ -4254,6 +4267,27 @@ export function ProntuarioSystemPanel() {
     }
   }
 
+  const startShiftCustom = (startTime: string, endTime: string) => {
+    const [startH, startM] = startTime.split(':').map(Number)
+    const [endH, endM] = endTime.split(':').map(Number)
+    const shiftStart = new Date()
+    shiftStart.setHours(startH, startM, 0, 0)
+    let shiftEnd = new Date()
+    shiftEnd.setHours(endH, endM, 0, 0)
+    if (shiftEnd <= shiftStart) shiftEnd.setDate(shiftEnd.getDate() + 1)
+    const cutoff = new Date(shiftEnd.getTime() + 2 * 60 * 60 * 1000)
+    setShiftStart(shiftStart.toISOString())
+    setShiftDuration(Math.round((shiftEnd.getTime() - shiftStart.getTime()) / 3600000))
+    setShiftCutoff(cutoff.toISOString())
+    localStorage.setItem('sea-shift-start', shiftStart.toISOString())
+    localStorage.setItem('sea-shift-cutoff', cutoff.toISOString())
+    setShowShiftModal(false)
+    if (pendingAddRecordRef.current) {
+      pendingAddRecordRef.current = false
+      executeAddRecord()
+    }
+  }
+
   // Import data from another device's session
   const importSession = async () => {
     const code = syncCodeInput.trim()
@@ -4517,6 +4551,42 @@ export function ProntuarioSystemPanel() {
                 >
                   <span className="text-sm font-bold text-white group-hover:text-[#60a5fa]">Plantão Noite</span>
                   <span className="text-[8px] text-white/40">Término às 07h</span>
+                </button>
+              </div>
+
+              <div className="relative flex items-center py-1">
+                <div className="flex-grow border-t border-white/10"></div>
+                <span className="flex-shrink-0 mx-4 text-white/40 text-[9px] uppercase tracking-widest">Ou defina o horário</span>
+                <div className="flex-grow border-t border-white/10"></div>
+              </div>
+
+              <div className="space-y-3">
+                <div className="flex items-center gap-2">
+                  <div className="flex-1 space-y-1">
+                    <label className="text-[8px] uppercase tracking-widest text-white/40">Início</label>
+                    <input
+                      type="time"
+                      value={customShiftStart}
+                      onChange={e => setCustomShiftStart(e.target.value)}
+                      className="w-full h-10 rounded-[0.8rem] border border-white/10 bg-white/5 px-3 text-sm font-bold text-white focus:outline-none focus:border-[#60a5fa]/50 [color-scheme:dark]"
+                    />
+                  </div>
+                  <span className="text-white/30 text-xs mt-5">às</span>
+                  <div className="flex-1 space-y-1">
+                    <label className="text-[8px] uppercase tracking-widest text-white/40">Término</label>
+                    <input
+                      type="time"
+                      value={customShiftEnd}
+                      onChange={e => setCustomShiftEnd(e.target.value)}
+                      className="w-full h-10 rounded-[0.8rem] border border-white/10 bg-white/5 px-3 text-sm font-bold text-white focus:outline-none focus:border-[#60a5fa]/50 [color-scheme:dark]"
+                    />
+                  </div>
+                </div>
+                <button
+                  onClick={() => startShiftCustom(customShiftStart, customShiftEnd)}
+                  className="w-full h-10 rounded-[1rem] border border-[#60a5fa]/30 bg-[#60a5fa]/10 text-[10px] font-bold uppercase tracking-widest text-[#60a5fa] hover:bg-[#60a5fa]/20 transition-all"
+                >
+                  Iniciar plantão personalizado
                 </button>
               </div>
 
@@ -5271,19 +5341,32 @@ export function ProntuarioSystemPanel() {
                     <FieldShell label="O">
                       <select className={INPUT_CLASS_SM} style={INPUT_STYLE} value={currentRecord.glasgowO} onChange={(e) => setField('glasgowO', e.target.value)}>
                         <option value="">--</option>
-                        {['4','3','2','1'].map((v) => <option key={v} value={v}>{v}</option>)}
+                        <option value="4">4 Espontânea</option>
+                        <option value="3">3 À voz</option>
+                        <option value="2">2 À dor</option>
+                        <option value="1">1 Ausente</option>
                       </select>
                     </FieldShell>
                     <FieldShell label="V">
                       <select className={INPUT_CLASS_SM} style={INPUT_STYLE} value={currentRecord.glasgowV} onChange={(e) => setField('glasgowV', e.target.value)}>
                         <option value="">--</option>
-                        {['5','4','3','2','1','T'].map((v) => <option key={v} value={v}>{v}</option>)}
+                        <option value="5">5 Orientada</option>
+                        <option value="4">4 Confusa</option>
+                        <option value="3">3 Palavras inapr.</option>
+                        <option value="2">2 Sons incomp.</option>
+                        <option value="1">1 Ausente</option>
+                        <option value="T">T Intubado</option>
                       </select>
                     </FieldShell>
                     <FieldShell label="M">
                       <select className={INPUT_CLASS_SM} style={INPUT_STYLE} value={currentRecord.glasgowM} onChange={(e) => setField('glasgowM', e.target.value)}>
                         <option value="">--</option>
-                        {['6','5','4','3','2','1'].map((v) => <option key={v} value={v}>{v}</option>)}
+                        <option value="6">6 Obedece comandos</option>
+                        <option value="5">5 Localiza a dor</option>
+                        <option value="4">4 Retirada (flexão)</option>
+                        <option value="3">3 Flexão anormal</option>
+                        <option value="2">2 Extensão anormal</option>
+                        <option value="1">1 Ausente</option>
                       </select>
                     </FieldShell>
                     <FieldShell label="RASS">
