@@ -222,7 +222,6 @@ export async function POST(req: NextRequest) {
               ],
             }],
             temperature: 0.1,
-            maxTokens: 2000,
           })
           aiResult = JSON.parse(extractJson(text))
           console.log(`[Vision API] Gateway sucesso: ${modelId}`)
