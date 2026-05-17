@@ -152,6 +152,7 @@
   body {
     min-height: 100%;
     margin: 0;
+    overscroll-behavior: none;
   }
 
   /* BODY com 3 camadas de detalhes radiais (BASE do fundo espacial) — IPB kit exato.
