@@ -3182,7 +3182,7 @@ export function ProntuarioSystemPanel() {
       }
 
       const summary = summaries.map((s: any, i: number) =>
-        `${i+1}. ID: ${s.session_id.slice(0,8)}... | Pacientes: ${s.record_count} | Atualizado: ${new Date(s.updated_at).toLocaleString()}`
+        `${i+1}. ${s.is_mine ? '★ SUA SESSÃO | ' : ''}ID: ${s.session_id.slice(0,8)}... | Pacientes: ${s.record_count} | Atualizado: ${new Date(s.updated_at).toLocaleString()}`
       ).join('\n')
 
       const choice = prompt(`Últimas sessões no servidor:\n\n${summary}\n\nDigite o número para restaurar esta sessão:`)
