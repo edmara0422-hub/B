@@ -3053,65 +3053,36 @@ export function ProntuarioSystemPanel() {
 
     setSyncStatus('syncing')
     try {
-      // Busca as últimas 50 sessões para procurar o paciente nelas
-      // Isso é muito mais seguro e evita erros de sintaxe do Postgres
-      const { data, error } = await supabase
-        .from('icu_sessions')
-        .select('session_id, records, updated_at')
-        .order('updated_at', { ascending: false })
-        .limit(50)
+      // Busca server-side via RPC — não baixa records completos para o cliente
+      const { data, error } = await supabase.rpc('search_patient_by_name', { search_name: name })
 
       if (error) throw error
       if (!data || data.length === 0) {
-        alert('Nenhuma sessão encontrada no servidor.')
-        setSyncStatus('saved')
-        return
-      }
-
-      console.log(`[Supabase Rescue] Analisando ${data.length} sessões em busca de "${name}"...`)
-      
-      const options: Array<{ record: ICURecord, updatedAt: string, sessionId: string }> = []
-      
-      data.forEach(session => {
-        const raw = session.records as any
-        let found: ICURecord[] = []
-        
-        if (raw?.__sea_v2) {
-          found = (raw.workspaces ?? []).flatMap((w: any) => {
-            if (!w) return []
-            return (w.records ?? []).concat(w.archive ?? [])
-              .filter((r: any) => r && (r.name || '').toLowerCase().includes(name.toLowerCase()))
-              .map((r: any) => normalizeRecord(r))
-          })
-        } else if (Array.isArray(raw)) {
-          found = raw.filter((r: any) => r && (r.name || '').toLowerCase().includes(name.toLowerCase()))
-                     .map((r: any) => normalizeRecord(r))
-        }
-        
-        found.forEach(r => {
-          options.push({ record: r, updatedAt: session.updated_at, sessionId: session.session_id })
-        })
-      })
-
-      if (options.length === 0) {
         alert(`Não encontramos nenhum paciente com o nome "${name}" nas sessões recentes.`)
         setSyncStatus('saved')
         return
       }
 
-      const listStr = options.slice(0, 10).map((opt, i) => 
+      console.log(`[Supabase Rescue] Encontrados ${data.length} resultados para "${name}"`)
+
+      const options: Array<{ record: ICURecord, updatedAt: string }> = data.slice(0, 10).map((row: any) => ({
+        record: normalizeRecord(row.patient_record),
+        updatedAt: row.updated_at,
+      }))
+
+      const listStr = options.map((opt, i) =>
         `${i+1}. ${opt.record.name} (Quarto: ${opt.record.room || '?'}) - Salvo em: ${new Date(opt.updatedAt).toLocaleString()}`
       ).join('\n')
-      
-      const choice = prompt(`Pacientes encontrados (últimos 10):\n\n${listStr}\n\nDigite o número para importar:`)
+
+      const choice = prompt(`Pacientes encontrados:\n\n${listStr}\n\nDigite o número para importar:`)
       const selected = options[parseInt(choice || '0') - 1]
 
       if (selected) {
-        const imported = { 
-          ...selected.record, 
-          id: generateId(), 
-          createdAt: new Date().toISOString(), 
-          updatedAt: new Date().toISOString() 
+        const imported = {
+          ...selected.record,
+          id: generateId(),
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
         }
         addRecord(imported)
         alert(`${selected.record.name} foi importado com sucesso!`)
@@ -3128,51 +3099,45 @@ export function ProntuarioSystemPanel() {
     if (!supabase || !isAdmin) return
     setSyncStatus('syncing')
     try {
-      const { data, error } = await supabase
-        .from('icu_sessions')
-        .select('session_id, records, updated_at')
-        .order('updated_at', { ascending: false })
-        .limit(15)
-
-      if (error) throw error
-      if (!data || data.length === 0) {
+      // RPC leve: retorna só metadados (sem baixar records completos)
+      const { data: summaries, error: sumErr } = await supabase.rpc('get_session_summaries')
+      if (sumErr) throw sumErr
+      if (!summaries || summaries.length === 0) {
         alert('Nenhum dado encontrado no servidor.')
         setSyncStatus('saved')
         return
       }
 
-      const summary = data.map((s, i) => {
-        const raw = s.records as any
-        let count = 0
-        if (raw?.__sea_v2) {
-          count = (raw.workspaces ?? []).reduce((acc: number, w: any) => acc + (w.records?.length || 0), 0)
-        } else if (Array.isArray(raw)) {
-          count = raw.length
-        }
-        return `${i+1}. ID: ${s.session_id.slice(0,8)}... | Pacientes: ${count} | Atualizado: ${new Date(s.updated_at).toLocaleString()}`
-      }).join('\n')
+      const summary = summaries.map((s: any, i: number) =>
+        `${i+1}. ID: ${s.session_id.slice(0,8)}... | Pacientes: ${s.record_count} | Atualizado: ${new Date(s.updated_at).toLocaleString()}`
+      ).join('\n')
 
-      const choice = prompt(`Últimas sessões no servidor:\n\n${summary}\n\nDigite o número para ver os detalhes desta sessão:`)
-      const selected = data[parseInt(choice || '0') - 1]
-      
-      if (selected) {
-        const raw = selected.records as any
-        let names = ''
-        if (raw?.__sea_v2) {
-          names = (raw.workspaces ?? []).flatMap((w: any) => (w.records ?? []).map((r: any) => r.name)).join(', ')
-        } else if (Array.isArray(raw)) {
-          names = raw.map((r: any) => r.name).join(', ')
-        }
-        
-        if (confirm(`Sessão selecionada contém: ${names || 'Nenhum nome'}\n\nDeseja restaurar ESTA LISTA completa?`)) {
-          // Simula o resgate desta data específica
-          const fakeData = { records: selected.records, archive: [], updated_at: selected.updated_at }
-          processRescuedData(fakeData)
-        }
+      const choice = prompt(`Últimas sessões no servidor:\n\n${summary}\n\nDigite o número para restaurar esta sessão:`)
+      const idx = parseInt(choice || '0') - 1
+      const chosen = summaries[idx]
+      if (!chosen) { setSyncStatus('saved'); return }
+
+      // Só agora busca os records completos da sessão escolhida
+      const { data, error } = await supabase
+        .from('icu_sessions')
+        .select('records, archive, updated_at')
+        .eq('session_id', chosen.session_id)
+        .maybeSingle()
+
+      if (error) throw error
+      if (!data?.records) {
+        alert('Sessão vazia ou não encontrada.')
+        setSyncStatus('saved')
+        return
+      }
+
+      if (confirm(`Sessão com ${chosen.record_count} paciente(s).\nDeseja restaurar ESTA LISTA completa?`)) {
+        processRescuedData(data)
       }
       setSyncStatus('saved')
     } catch (err: any) {
-      alert(`Erro no Raio-X: ${err.message}`)
+      console.error('[Supabase Rescue] Erro no Raio-X:', err)
+      alert(`Erro no Raio-X: ${err.message || 'Erro desconhecido'}`)
       setSyncStatus('error')
     }
   }
@@ -3320,8 +3285,14 @@ export function ProntuarioSystemPanel() {
           archive: [],
           updated_at: new Date().toISOString(),
         }, { onConflict: 'session_id' })
-        if (error) setSyncStatus('offline')
-      } catch {
+        if (error) {
+          console.error('[Auto-save] Erro Supabase:', error.message, error.code)
+          setSyncStatus('offline')
+        } else {
+          setSyncStatus('saved')
+        }
+      } catch (err: any) {
+        console.error('[Auto-save] Erro inesperado:', err?.message || err)
         setSyncStatus('offline')
       }
     }, 3000)
