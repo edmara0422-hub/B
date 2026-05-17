@@ -3891,55 +3891,57 @@ export function ProntuarioSystemPanel() {
     const index = isScanning
 
     try {
-      const resizeImage = (f: File, maxWidth: number, quality: number): Promise<{ dataUrl: string; w: number; h: number }> => {
-        return new Promise((resolve, reject) => {
-          const reader = new FileReader()
-          reader.readAsDataURL(f)
-          reader.onerror = () => reject(new Error('FileReader falhou ao ler imagem'))
-          reader.onload = (ev) => {
-            const src = ev.target?.result as string
-            if (!src || !src.startsWith('data:')) { reject(new Error('FileReader: resultado inválido')); return }
-            const img = new Image()
-            img.src = src
-            img.onerror = () => reject(new Error('Imagem inválida ou formato não suportado'))
-            img.onload = () => {
-              const w0 = img.width || img.naturalWidth
-              const h0 = img.height || img.naturalHeight
-              if (!w0 || !h0) { reject(new Error('Imagem com dimensões inválidas')); return }
-              const canvas = document.createElement('canvas')
-              let width = w0
-              let height = h0
-              if (width > maxWidth) {
-                height = Math.round(height * maxWidth / width)
-                width = maxWidth
-              }
-              canvas.width = width
-              canvas.height = height
-              const ctx = canvas.getContext('2d')
-              if (!ctx) { reject(new Error('Canvas 2D não disponível')); return }
-              ctx.drawImage(img, 0, 0, width, height)
-              const dataUrl = canvas.toDataURL('image/jpeg', quality)
-              if (!dataUrl || dataUrl === 'data:,') { reject(new Error('canvas.toDataURL retornou vazio')); return }
-              resolve({ dataUrl, w: width, h: height })
-            }
+      // Decodifica a imagem UMA vez e reutiliza para todos os tamanhos
+      // (evita iOS Safari matar a aba por excesso de memória)
+      const { img: decodedImg, w: srcW, h: srcH } = await new Promise<{ img: HTMLImageElement; w: number; h: number }>((resolve, reject) => {
+        const reader = new FileReader()
+        reader.readAsDataURL(file)
+        reader.onerror = () => reject(new Error('FileReader falhou ao ler imagem'))
+        reader.onload = (ev) => {
+          const src = ev.target?.result as string
+          if (!src || !src.startsWith('data:')) { reject(new Error('FileReader: resultado inválido')); return }
+          const img = new Image()
+          img.src = src
+          img.onerror = () => reject(new Error('Imagem inválida ou formato não suportado'))
+          img.onload = () => {
+            const w = img.width || img.naturalWidth
+            const h = img.height || img.naturalHeight
+            if (!w || !h) { reject(new Error('Imagem com dimensões inválidas')); return }
+            resolve({ img, w, h })
           }
-        })
+        }
+      })
+
+      // Redimensiona a partir da imagem já decodificada (sem re-ler arquivo)
+      const resizeFrom = (maxWidth: number, quality: number): { dataUrl: string; w: number; h: number } => {
+        let width = srcW
+        let height = srcH
+        if (width > maxWidth) { height = Math.round(height * maxWidth / width); width = maxWidth }
+        const canvas = document.createElement('canvas')
+        canvas.width = width; canvas.height = height
+        const ctx = canvas.getContext('2d')
+        if (!ctx) throw new Error('Canvas 2D não disponível')
+        ctx.drawImage(decodedImg, 0, 0, width, height)
+        const dataUrl = canvas.toDataURL('image/jpeg', quality)
+        canvas.width = 0; canvas.height = 0  // libera memória do canvas
+        if (!dataUrl || dataUrl === 'data:,') throw new Error('canvas.toDataURL retornou vazio')
+        return { dataUrl, w: width, h: height }
       }
 
-      // Versão para análise da IA (800px)
-      const { dataUrl: resizedDataUrl, w: imgW, h: imgH } = await resizeImage(file, 800, 0.7)
-      // Thumbnail local (200px) — para miniatura na lista
-      const { dataUrl: thumbnailDataUrl } = await resizeImage(file, 200, 0.65)
-      // Versão para lightbox (500px) — qualidade suficiente para medir TOT/carina
-      const { dataUrl: scanFullDataUrl } = await resizeImage(file, 500, 0.82)
+      // Gera tamanhos sequencialmente (menos pressão de memória no iOS)
+      const { dataUrl: resizedDataUrl, w: imgW, h: imgH } = resizeFrom(800, 0.7)
+      const { dataUrl: thumbnailDataUrl } = resizeFrom(200, 0.65)
+      const { dataUrl: scanFullDataUrl } = resizeFrom(500, 0.82)
 
       const isAdminNow = useAuthStore.getState().isAdmin
 
       if (isAdminNow && supabase) {
         // Admin: faz upload da imagem 600px para Supabase Storage (persiste)
         try {
-          const { dataUrl: adminThumbDataUrl } = await resizeImage(file, 600, 0.75)
-          const adminBlob = await (await fetch(adminThumbDataUrl)).blob()
+          const { dataUrl: adminThumbDataUrl } = resizeFrom(600, 0.75)
+          const adminBase64 = adminThumbDataUrl.split(',')[1]
+          const adminBytes = Uint8Array.from(atob(adminBase64), c => c.charCodeAt(0))
+          const adminBlob = new Blob([adminBytes], { type: 'image/jpeg' })
           const fileName = `${currentRecord.id}_${index}_${Date.now()}.jpg`
           const { data: uploadData, error: uploadError } = await supabase.storage
             .from('icu-scans')
@@ -3974,14 +3976,23 @@ export function ProntuarioSystemPanel() {
         })
       }
 
+      // Converte 800px para blob sem fetch (evita problemas com data URLs no iOS)
+      const aiBase64 = resizedDataUrl.split(',')[1]
+      const aiBytes = Uint8Array.from(atob(aiBase64), c => c.charCodeAt(0))
+      const aiBlob = new Blob([aiBytes], { type: 'image/jpeg' })
       const formData = new FormData()
-      const resBlob = await (await fetch(resizedDataUrl)).blob()
-      formData.append('file', resBlob, 'scan.jpg')
-      
+      formData.append('file', aiBlob, 'scan.jpg')
+
+      // Timeout de 90s — evita spinner infinito se API travar
+      const controller = new AbortController()
+      const timeoutId = setTimeout(() => controller.abort(), 90000)
+
       const res = await fetch('/api/icu/vision-scan', {
         method: 'POST',
-        body: formData
+        body: formData,
+        signal: controller.signal,
       })
+      clearTimeout(timeoutId)
       
       if (res.ok) {
         const data = await res.json()
@@ -4028,8 +4039,13 @@ export function ProntuarioSystemPanel() {
         alert(`Erro no scan de IA.\n\nDetalhe: ${errData.error || errData.details || JSON.stringify(errData)}`)
       }
     } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err)
+      if (msg.includes('abort') || msg.includes('AbortError')) {
+        alert('Scan demorou mais de 90s e foi cancelado. Tente novamente.')
+      } else {
+        alert(`Erro no scan: ${msg}`)
+      }
       console.error('Scan failed', err)
-      alert('Erro ao conectar com o serviço de IA. Verifique sua conexão.')
     } finally {
       setIsScanning(null)
       if (fileInputRef.current) fileInputRef.current.value = ''
