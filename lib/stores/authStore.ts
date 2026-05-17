@@ -210,10 +210,17 @@ export const useAuthStore = create<AuthState & AuthActions>((set, get) => ({
     if (error) {
       if (error.message.includes('already registered')) return { error: 'Este email ja esta cadastrado.' }
       if (error.message.includes('Password')) return { error: 'Senha deve ter no minimo 6 caracteres.' }
+      if (
+        error.message.includes('rate limit') ||
+        error.message.includes('over_email_send_rate_limit') ||
+        error.message.includes('security purposes')
+      ) {
+        return { error: 'Email de confirmacao ja enviado. Verifique sua caixa de entrada (e o spam) e aguarde alguns minutos antes de tentar novamente.' }
+      }
       return { error: error.message }
     }
     // Supabase retorna user: null quando o email já existe (proteção anti-enumeração)
-    if (!data?.user) return { error: 'Este email ja esta cadastrado.' }
+    if (!data?.user) return { error: 'Este email ja esta cadastrado. Se nao confirmou, verifique o email de confirmacao (inclusive spam).' }
     // Limpa flag do splash — signup bem-sucedido sempre mostra splash no próximo login
     if (typeof window !== 'undefined') {
       try { sessionStorage.removeItem('sea-splash-shown') } catch { /* ignore */ }
