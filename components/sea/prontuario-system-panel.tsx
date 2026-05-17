@@ -2125,6 +2125,7 @@ function getProtocolContent(id: string) {
 
 type LightboxPayload = {
   src: string
+  fallbackSrc?: string
   measurements?: ImageExamEntry['measurements']
   imgW?: number
   imgH?: number
@@ -2395,6 +2396,11 @@ function ScanLightbox({ data, onClose }: { data: LightboxPayload | null; onClose
             alt="Scan ICU"
             className="h-full w-full rounded-[0.8rem] border border-white/14 object-fill"
             draggable={false}
+            onError={(e) => {
+              if (data.fallbackSrc && (e.currentTarget as HTMLImageElement).src !== data.fallbackSrc) {
+                ;(e.currentTarget as HTMLImageElement).src = data.fallbackSrc
+              }
+            }}
           />
 
           {/* SVG overlay — sem pointer events */}
@@ -2559,13 +2565,13 @@ function ScanThumbnail({
   }, [thumbnail, thumbnailPath, fullSrc])
 
   const hasAnnotation = !!(measurements?.tube_tip_pct && measurements?.carina_pct)
-  // Para o lightbox: usa full (signed URL, 600px) se disponível, senão thumb (base64, 200px)
-  const lightboxSrc = resolvedFull ?? resolvedThumb
+  // Para o lightbox: prioriza base64 local (sempre disponível), signed URL como fallback
+  const lightboxSrc = resolvedThumb ?? resolvedFull
 
   return (
     <div className="flex items-start gap-2 pt-0.5">
       <button
-        onClick={() => lightboxSrc && onOpen({ src: lightboxSrc, measurements, imgW, imgH, onSave })}
+        onClick={() => lightboxSrc && onOpen({ src: lightboxSrc, fallbackSrc: resolvedFull ?? undefined, measurements, imgW, imgH, onSave })}
         disabled={!lightboxSrc}
         className="relative shrink-0 overflow-hidden rounded-[0.5rem] border border-white/14 bg-black/30 hover:border-white/26 transition-all"
         title={isAdmin ? 'Ver imagem — salva no Supabase Storage' : 'Ver imagem — some ao fim do plantão (LGPD)'}
