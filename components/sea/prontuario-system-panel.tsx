@@ -3276,7 +3276,7 @@ export function ProntuarioSystemPanel() {
           const out: any = {}
           for (const k of Object.keys(obj)) {
             const v = obj[k]
-            if (typeof v === 'string' && v.startsWith('data:') && v.length > 10000) {
+            if (typeof v === 'string' && v.startsWith('data:') && v.length > 80000) {
               out[k] = '[img]'
             } else {
               out[k] = stripImages(v)
@@ -3822,7 +3822,11 @@ export function ProntuarioSystemPanel() {
 
   const handleScanFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
-    if (!file || isScanning === null || !currentRecord) return
+    if (!file || isScanning === null || !currentRecord) {
+      setIsScanning(null)
+      if (fileInputRef.current) fileInputRef.current.value = ''
+      return
+    }
     const index = isScanning
 
     try {
