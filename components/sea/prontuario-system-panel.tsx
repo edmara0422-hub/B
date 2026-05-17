@@ -3266,33 +3266,61 @@ export function ProntuarioSystemPanel() {
         }
 
         const sessionId = getOrCreateSessionId()
+        console.log('[Auto-save] Salvando session:', sessionId)
+
+        // Remove campos com imagens base64 grandes antes de enviar ao Supabase
+        // (thumbnails e scans ficam só no localStorage)
+        const stripImages = (obj: any): any => {
+          if (!obj || typeof obj !== 'object') return obj
+          if (Array.isArray(obj)) return obj.map(stripImages)
+          const out: any = {}
+          for (const k of Object.keys(obj)) {
+            const v = obj[k]
+            if (typeof v === 'string' && v.startsWith('data:') && v.length > 10000) {
+              out[k] = '[img]'
+            } else {
+              out[k] = stripImages(v)
+            }
+          }
+          return out
+        }
 
         const getCircularReplacer = () => {
           const seen = new WeakSet()
-          return (key: string, value: any) => {
-            if (typeof value === "object" && value !== null) {
-              if (seen.has(value)) return "[Circular Reference]"
+          return (_key: string, value: any) => {
+            if (typeof value === 'object' && value !== null) {
+              if (seen.has(value)) return '[Circular]'
               seen.add(value)
             }
             return value
           }
         }
-        const safeSnapshot = JSON.parse(JSON.stringify(snapshot, getCircularReplacer()))
+        const stripped = stripImages(snapshot)
+        const safeSnapshot = JSON.parse(JSON.stringify(stripped, getCircularReplacer()))
+        const payloadKb = Math.round(JSON.stringify(safeSnapshot).length / 1024)
+        console.log(`[Auto-save] Payload: ${payloadKb} KB`)
 
-        const { error } = await supabase!.from('icu_sessions').upsert({
+        const upsertPromise = supabase!.from('icu_sessions').upsert({
           session_id: sessionId,
           records: { __sea_v2: true, workspaces: safeSnapshot, activeId: activeWsIdRef.current },
           archive: [],
           updated_at: new Date().toISOString(),
         }, { onConflict: 'session_id' })
+
+        const timeoutPromise = new Promise<never>((_, reject) =>
+          setTimeout(() => reject(new Error('Timeout: Supabase não respondeu em 10s')), 10000)
+        )
+
+        const { error } = await Promise.race([upsertPromise, timeoutPromise]) as { error: any }
         if (error) {
           console.error('[Auto-save] Erro Supabase:', error.message, error.code)
           setSyncStatus('offline')
         } else {
+          console.log('[Auto-save] Salvo com sucesso')
           setSyncStatus('saved')
         }
       } catch (err: any) {
-        console.error('[Auto-save] Erro inesperado:', err?.message || err)
+        console.error('[Auto-save] Falhou:', err?.message || err)
         setSyncStatus('offline')
       }
     }, 3000)
