@@ -8,10 +8,13 @@ const gateway = createGateway({
   baseURL: 'https://ai-gateway.vercel.sh/v1/ai',
 })
 
-// Cadeia de modelos: Gemini 3.1 Pro (melhor visão médica) → Gemini 2.5 Flash → Groq fallback
+// Cadeia de modelos com visão médica — fallback automático em caso de quota/erro
 const GATEWAY_MODELS = [
   'google/gemini-2.5-flash-preview-05-20',
   'google/gemini-2.5-pro-preview-06-05',
+  'anthropic/claude-opus-4-5',
+  'anthropic/claude-sonnet-4-5',
+  'openai/gpt-4o',
   'meta-llama/llama-4-scout',
 ]
 
