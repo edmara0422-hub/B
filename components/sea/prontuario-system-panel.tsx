@@ -2571,7 +2571,12 @@ function ScanThumbnail({
         title={isAdmin ? 'Ver imagem — salva no Supabase Storage' : 'Ver imagem — some ao fim do plantão (LGPD)'}
       >
         {resolvedThumb ? (
-          <img src={resolvedThumb} alt="Scan" className="h-14 w-14 object-cover" />
+          <img
+            src={resolvedThumb}
+            alt="Scan"
+            className="h-14 w-14 object-cover"
+            onError={() => setResolvedThumb(null)}
+          />
         ) : (
           <div className="flex h-14 w-14 items-center justify-center">
             <Scan className="h-4 w-4 text-white/20" />
@@ -3835,16 +3840,23 @@ export function ProntuarioSystemPanel() {
 
     try {
       const resizeImage = (f: File, maxWidth: number, quality: number): Promise<{ dataUrl: string; w: number; h: number }> => {
-        return new Promise((resolve) => {
+        return new Promise((resolve, reject) => {
           const reader = new FileReader()
           reader.readAsDataURL(f)
+          reader.onerror = () => reject(new Error('FileReader falhou ao ler imagem'))
           reader.onload = (ev) => {
+            const src = ev.target?.result as string
+            if (!src || !src.startsWith('data:')) { reject(new Error('FileReader: resultado inválido')); return }
             const img = new Image()
-            img.src = ev.target?.result as string
+            img.src = src
+            img.onerror = () => reject(new Error('Imagem inválida ou formato não suportado'))
             img.onload = () => {
+              const w0 = img.width || img.naturalWidth
+              const h0 = img.height || img.naturalHeight
+              if (!w0 || !h0) { reject(new Error('Imagem com dimensões inválidas')); return }
               const canvas = document.createElement('canvas')
-              let width = img.width
-              let height = img.height
+              let width = w0
+              let height = h0
               if (width > maxWidth) {
                 height = Math.round(height * maxWidth / width)
                 width = maxWidth
@@ -3852,8 +3864,11 @@ export function ProntuarioSystemPanel() {
               canvas.width = width
               canvas.height = height
               const ctx = canvas.getContext('2d')
-              ctx?.drawImage(img, 0, 0, width, height)
-              resolve({ dataUrl: canvas.toDataURL('image/jpeg', quality), w: width, h: height })
+              if (!ctx) { reject(new Error('Canvas 2D não disponível')); return }
+              ctx.drawImage(img, 0, 0, width, height)
+              const dataUrl = canvas.toDataURL('image/jpeg', quality)
+              if (!dataUrl || dataUrl === 'data:,') { reject(new Error('canvas.toDataURL retornou vazio')); return }
+              resolve({ dataUrl, w: width, h: height })
             }
           }
         })
