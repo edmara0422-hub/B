@@ -54,6 +54,7 @@ export type ImageExamEntry = {
   fixacaoLabial?: string
   thumbnail?: string
   thumbnailUrl?: string
+  scanFull?: string
   measurements?: {
     tot_to_carina_cm?: number
     status?: string

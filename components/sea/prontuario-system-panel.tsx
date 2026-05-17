@@ -2565,13 +2565,13 @@ function ScanThumbnail({
   }, [thumbnail, thumbnailPath, fullSrc])
 
   const hasAnnotation = !!(measurements?.tube_tip_pct && measurements?.carina_pct)
-  // Para o lightbox: prioriza base64 local (sempre disponível), signed URL como fallback
-  const lightboxSrc = resolvedThumb ?? resolvedFull
+  // Para o lightbox: usa versão 500px (resolvedFull) se disponível, senão thumbnail 200px
+  const lightboxSrc = resolvedFull ?? resolvedThumb
 
   return (
     <div className="flex items-start gap-2 pt-0.5">
       <button
-        onClick={() => lightboxSrc && onOpen({ src: lightboxSrc, fallbackSrc: resolvedFull ?? undefined, measurements, imgW, imgH, onSave })}
+        onClick={() => lightboxSrc && onOpen({ src: lightboxSrc, fallbackSrc: resolvedThumb ?? undefined, measurements, imgW, imgH, onSave })}
         disabled={!lightboxSrc}
         className="relative shrink-0 overflow-hidden rounded-[0.5rem] border border-white/14 bg-black/30 hover:border-white/26 transition-all"
         title={isAdmin ? 'Ver imagem — salva no Supabase Storage' : 'Ver imagem — some ao fim do plantão (LGPD)'}
@@ -3928,8 +3928,10 @@ export function ProntuarioSystemPanel() {
 
       // Versão para análise da IA (800px)
       const { dataUrl: resizedDataUrl, w: imgW, h: imgH } = await resizeImage(file, 800, 0.7)
-      // Thumbnail local (200px)
+      // Thumbnail local (200px) — para miniatura na lista
       const { dataUrl: thumbnailDataUrl } = await resizeImage(file, 200, 0.65)
+      // Versão para lightbox (500px) — qualidade suficiente para medir TOT/carina
+      const { dataUrl: scanFullDataUrl } = await resizeImage(file, 500, 0.82)
 
       const isAdminNow = useAuthStore.getState().isAdmin
 
@@ -3946,28 +3948,28 @@ export function ProntuarioSystemPanel() {
           if (!uploadError && uploadData) {
             updateCurrentRecord((record) => {
               const next = [...record.examesImagemList]
-              next[index] = { ...next[index], thumbnailUrl: uploadData.path, thumbnail: thumbnailDataUrl, imgW, imgH }
+              next[index] = { ...next[index], thumbnailUrl: uploadData.path, thumbnail: thumbnailDataUrl, scanFull: scanFullDataUrl, imgW, imgH }
               return { ...record, examesImagemList: next }
             })
           } else {
             updateCurrentRecord((record) => {
               const next = [...record.examesImagemList]
-              next[index] = { ...next[index], thumbnail: thumbnailDataUrl, imgW, imgH }
+              next[index] = { ...next[index], thumbnail: thumbnailDataUrl, scanFull: scanFullDataUrl, imgW, imgH }
               return { ...record, examesImagemList: next }
             })
           }
         } catch {
           updateCurrentRecord((record) => {
             const next = [...record.examesImagemList]
-            next[index] = { ...next[index], thumbnail: thumbnailDataUrl, imgW, imgH }
+            next[index] = { ...next[index], thumbnail: thumbnailDataUrl, scanFull: scanFullDataUrl, imgW, imgH }
             return { ...record, examesImagemList: next }
           })
         }
       } else {
-        // Usuário comum: thumbnail base64 local — some com cronômetro (LGPD)
+        // Usuário comum: base64 local — some com cronômetro (LGPD)
         updateCurrentRecord((record) => {
           const next = [...record.examesImagemList]
-          next[index] = { ...next[index], thumbnail: thumbnailDataUrl, imgW, imgH }
+          next[index] = { ...next[index], thumbnail: thumbnailDataUrl, scanFull: scanFullDataUrl, imgW, imgH }
           return { ...record, examesImagemList: next }
         })
       }
@@ -5401,7 +5403,7 @@ export function ProntuarioSystemPanel() {
                                   <ScanThumbnail
                                     thumbnail={exam.thumbnail}
                                     thumbnailPath={exam.thumbnailUrl}
-                                    fullSrc={exam.data || undefined}
+                                    fullSrc={exam.scanFull || exam.data || undefined}
                                     isAdmin={isAdmin}
                                     measurements={exam.measurements}
                                     imgW={exam.imgW}
