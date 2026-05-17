@@ -8,7 +8,7 @@ import { useAuthStore } from '@/lib/stores/authStore'
 
 export function AuthForm() {
   const router = useRouter()
-  const { signIn, signUp, resetPassword, isLoading } = useAuthStore()
+  const { signIn, signUp, resetPassword, signInAsGuest, isLoading } = useAuthStore()
   const [mode, setMode] = useState<'login' | 'signup' | 'forgot'>('login')
   const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState('')
@@ -48,6 +48,14 @@ export function AuthForm() {
       if (result.error) { setError(result.error); return }
       setSuccess('Conta criada com sucesso. Verifique seu email para confirmar.')
     }
+  }
+
+  const handleGuestLogin = () => {
+    const name = prompt('Digite seu nome para acessar o Modo Local:')
+    if (name === null) return // Clicou em Cancelar
+    const finalName = name.trim() || 'Convidado'
+    signInAsGuest(finalName)
+    router.push('/sea')
   }
 
   return (
@@ -190,6 +198,25 @@ export function AuthForm() {
                 </>
               )}
             </button>
+
+            {/* Guest Login */}
+            {mode === 'login' && (
+              <>
+                <div className="relative flex py-2 items-center">
+                  <div className="flex-grow border-t border-white/5"></div>
+                  <span className="flex-shrink mx-4 text-[7px] text-white/20 uppercase tracking-[0.1em]">ou</span>
+                  <div className="flex-grow border-t border-white/5"></div>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={handleGuestLogin}
+                  className="w-full h-10 glass rounded-lg flex items-center justify-center gap-1.5 text-[8px] font-semibold uppercase tracking-[0.14em] text-white/70 hover:text-white hover:bg-white/5 transition-all"
+                >
+                  Acessar como Convidado (Modo Local)
+                </button>
+              </>
+            )}
           </form>
         </div>
       </motion.div>

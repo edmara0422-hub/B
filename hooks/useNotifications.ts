@@ -19,7 +19,7 @@ export function useNotifications() {
   const [notifications, setNotifications] = useState<AppNotification[]>([])
 
   const fetchAll = useCallback(async () => {
-    if (!supabase || !user || !enabled) return
+    if (!supabase || !user || user.id === 'guest' || !enabled) return
     const { data } = await supabase
       .from('notifications')
       .select('*')
@@ -32,7 +32,7 @@ export function useNotifications() {
   useEffect(() => {
     if (!enabled) { setNotifications([]); return }
     fetchAll()
-    if (!supabase || !user) return
+    if (!supabase || !user || user.id === 'guest') return
 
     const channel = supabase
       .channel(`notifications:${user.id}`)
@@ -47,7 +47,7 @@ export function useNotifications() {
   }, [fetchAll, user, enabled])
 
   const markAllRead = useCallback(async () => {
-    if (!supabase || !user) return
+    if (!supabase || !user || user.id === 'guest') return
     await supabase
       .from('notifications')
       .update({ read: true })

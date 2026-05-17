@@ -26,7 +26,7 @@ export function usePresenceHeartbeat() {
   const userId = useAuthStore((s) => s.user?.id ?? null)
 
   useEffect(() => {
-    if (!userId || !supabase) return
+    if (!userId || userId === 'guest' || !supabase) return
     if (typeof window === 'undefined') return
 
     const fp = getDeviceFingerprint()
