@@ -4316,7 +4316,6 @@ export function ProntuarioSystemPanel() {
     setSelectedId(record.id)
     setActiveTab('dados')
     setView('records')
-    window.scrollTo({ top: 0, behavior: 'smooth' })
     const snapshot = workspacesRef.current.map(w =>
       w.id === activeWsIdRef.current ? { ...w, records: [record, ...w.records] } : w
     )
@@ -4429,7 +4428,6 @@ export function ProntuarioSystemPanel() {
     setSelectedId(id)
     setActiveTab('dados')
     setView('records')
-    window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
   const archiveRecord = (id: string) => {
