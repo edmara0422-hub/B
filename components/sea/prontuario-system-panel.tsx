@@ -2854,8 +2854,8 @@ export function ProntuarioSystemPanel() {
         localWs = parsed.map(w => ({
           id: w.id,
           name: w.name,
-          records: (w.records ?? []).map(r => normalizeRecord(r)),
-          archive: (w.archive ?? []).map(r => normalizeRecord(r)),
+          records: (Array.isArray(w.records) ? w.records : []).map(r => normalizeRecord(r)),
+          archive: (Array.isArray(w.archive) ? w.archive : []).map(r => normalizeRecord(r)),
         }))
         localActiveId = storedActiveId ?? localWs[0]?.id ?? ''
       } else if (isAdminUser) {
@@ -2964,8 +2964,8 @@ export function ProntuarioSystemPanel() {
       setWorkspaces(newWs)
       setActiveWorkspaceId(newActiveId)
       const active = newWs.find(w => w.id === newActiveId)!
-      setRecords(active.records)
-      setArchive(active.archive)
+      setRecords(Array.isArray(active.records) ? active.records : [])
+      setArchive(Array.isArray(active.archive) ? active.archive : [])
       try {
         localStorage.setItem(sk.workspaces, JSON.stringify(newWs))
         localStorage.setItem(sk.activeWorkspace, newActiveId)
@@ -3001,29 +3001,29 @@ export function ProntuarioSystemPanel() {
       let newActiveId = ''
       
       if (raw?.__sea_v2) {
-        newWs = (raw.workspaces ?? []).map((w: any) => ({
-          id: w.id,
-          name: w.name,
-          records: (w.records ?? []).map((r: any) => normalizeRecord(r)),
-          archive: (w.archive ?? []).map((r: any) => normalizeRecord(r)),
+        newWs = (Array.isArray(raw.workspaces) ? raw.workspaces : []).map((w: any) => ({
+          id: w.id || generateId(),
+          name: w.name || 'UTI',
+          records: (Array.isArray(w.records) ? w.records : []).map((r: any) => normalizeRecord(r)),
+          archive: (Array.isArray(w.archive) ? w.archive : []).map((r: any) => normalizeRecord(r)),
         }))
         newActiveId = raw.activeId || newWs[0]?.id || ''
         console.log(`[Supabase Sync] Restaurando ${newWs.length} workspaces (formato v2)`)
       } else {
-        const remoteRec = (data.records as any[]).map(r => normalizeRecord(r))
-        const remoteArc = ((data.archive ?? []) as any[]).map(r => normalizeRecord(r))
+        const remoteRec = (Array.isArray(data.records) ? data.records : []).map((r: any) => normalizeRecord(r))
+        const remoteArc = (Array.isArray(data.archive) ? data.archive : []).map((r: any) => normalizeRecord(r))
         newWs = [{ id: generateId(), name: 'UTI', records: remoteRec, archive: remoteArc }]
         newActiveId = newWs[0].id
         console.log('[Supabase Sync] Restaurando formato legacy')
       }
-      
+
       setWorkspaces(newWs)
       setActiveWorkspaceId(newActiveId)
-      
+
       const active = newWs.find(w => w.id === newActiveId) || newWs[0]
       if (active) {
-        setRecords(active.records || [])
-        setArchive(active.archive || [])
+        setRecords(Array.isArray(active.records) ? active.records : [])
+        setArchive(Array.isArray(active.archive) ? active.archive : [])
         // Sincroniza as REFs internas para evitar que o auto-save sobrescreva com dados vazios
         workspacesRef.current = newWs
         activeWsIdRef.current = newActiveId
@@ -3148,11 +3148,11 @@ export function ProntuarioSystemPanel() {
     let newActiveId = ''
     
     if (raw?.__sea_v2) {
-      newWs = (raw.workspaces ?? []).map((w: any) => ({
-        id: w.id,
-        name: w.name,
-        records: (w.records ?? []).map((r: any) => normalizeRecord(r)),
-        archive: (w.archive ?? []).map((r: any) => normalizeRecord(r)),
+      newWs = (Array.isArray(raw.workspaces) ? raw.workspaces : []).map((w: any) => ({
+        id: w.id || generateId(),
+        name: w.name || 'UTI',
+        records: (Array.isArray(w.records) ? w.records : []).map((r: any) => normalizeRecord(r)),
+        archive: (Array.isArray(w.archive) ? w.archive : []).map((r: any) => normalizeRecord(r)),
       }))
       newActiveId = raw.activeId || newWs[0]?.id || ''
     } else {
