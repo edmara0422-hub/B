@@ -2984,6 +2984,64 @@ export function ProntuarioSystemPanel() {
     })
   }, [authUserId])
 
+  // Remove TODOS os base64 (data:...) antes de enviar ao Supabase.
+  // Thumbnails são exibição local; Supabase só precisa de thumbnailPath.
+  const stripBase64 = (obj: any): any => {
+    if (!obj || typeof obj !== 'object') return obj
+    if (Array.isArray(obj)) return obj.map(stripBase64)
+    const out: any = {}
+    for (const k of Object.keys(obj)) {
+      const v = obj[k]
+      if (typeof v === 'string' && v.startsWith('data:')) {
+        out[k] = '[img]'
+      } else {
+        out[k] = stripBase64(v)
+      }
+    }
+    return out
+  }
+
+  // Força salvar dados LOCAIS → Supabase agora (sem debounce).
+  // Útil quando o row do Supabase ficou corrompido ou muito grande.
+  const forceSaveLocalToSupabase = async () => {
+    if (!supabase || !isAdmin) return
+    const sessionId = getOrCreateSessionId()
+    const currentWs = workspacesRef.current
+    const hasData = currentWs.some(w => w.records.length > 0 || w.archive.length > 0)
+    if (!hasData) {
+      alert('Sem dados locais para salvar no Supabase.')
+      return
+    }
+    setSyncStatus('syncing')
+    try {
+      const getCirc = () => {
+        const seen = new WeakSet()
+        return (_k: string, v: any) => {
+          if (typeof v === 'object' && v !== null) {
+            if (seen.has(v)) return '[Circular]'
+            seen.add(v)
+          }
+          return v
+        }
+      }
+      const safe = JSON.parse(JSON.stringify(stripBase64(currentWs), getCirc()))
+      const { error } = await supabase.from('icu_sessions').upsert({
+        session_id: sessionId,
+        records: { __sea_v2: true, workspaces: safe, activeId: activeWsIdRef.current },
+        archive: [],
+        updated_at: new Date().toISOString(),
+      }, { onConflict: 'session_id' })
+      if (error) throw error
+      setSyncStatus('saved')
+      const count = currentWs.reduce((acc, w) => acc + w.records.length, 0)
+      alert(`Sincronizado! ${count} paciente(s) salvos no Supabase (compactado, sem imagens base64).`)
+    } catch (err: any) {
+      console.error('[Force Save] Erro:', err)
+      setSyncStatus('error')
+      alert(`Falha ao salvar: ${err.message}`)
+    }
+  }
+
   const forceRestoreFromServer = async () => {
     if (!supabase) return
     const sid = authUserId || localStorage.getItem('sea-session-id') || localStorage.getItem('sea-session-id-legacy')
@@ -3166,7 +3224,8 @@ export function ProntuarioSystemPanel() {
       newActiveId = raw.activeId || newWs[0]?.id || ''
     } else {
       const remoteRec = (Array.isArray(data.records) ? data.records : []).map((r: any) => normalizeRecord(r))
-      newWs = [{ id: generateId(), name: 'UTI', records: remoteRec, archive: [] }]
+      const remoteArc = (Array.isArray(data.archive) ? data.archive : []).map((r: any) => normalizeRecord(r))
+      newWs = [{ id: generateId(), name: 'UTI', records: remoteRec, archive: remoteArc }]
       newActiveId = newWs[0].id
     }
 
@@ -3193,9 +3252,11 @@ export function ProntuarioSystemPanel() {
 
   const handleUnifiedRescue = async () => {
     if (!supabase || !isAdmin) return
-    const mode = prompt('Resgate de Dados:\n1. Resgatar minha ÚLTIMA LISTA\n2. Buscar PACIENTE por nome\n3. Raio-X (Ver sessões recentes)\n4. Digitar ID de Sessão manualmente\n5. Resgatar dados de ANTES do login (Legacy)\n\nDigite 1, 2, 3, 4 ou 5:')
-    
-    if (mode === '1') {
+    const mode = prompt('Resgate de Dados:\n0. SALVAR local → Supabase (compactar/destravar)\n1. Resgatar minha ÚLTIMA LISTA\n2. Buscar PACIENTE por nome\n3. Raio-X (Ver sessões recentes)\n4. Digitar ID de Sessão manualmente\n5. Resgatar dados de ANTES do login (Legacy)\n\nDigite 0, 1, 2, 3, 4 ou 5:')
+
+    if (mode === '0') {
+      if (confirm('Salvar dados locais atuais no Supabase agora?\n(Remove imagens base64, mantém todos os dados de pacientes)')) forceSaveLocalToSupabase()
+    } else if (mode === '1') {
       if (confirm('Restaurar sua última lista?')) forceRestoreFromServer()
     } else if (mode === '2') {
       rescuePatientByName()
@@ -3279,21 +3340,6 @@ export function ProntuarioSystemPanel() {
 
         // Remove campos com imagens base64 grandes antes de enviar ao Supabase
         // (thumbnails e scans ficam só no localStorage)
-        const stripImages = (obj: any): any => {
-          if (!obj || typeof obj !== 'object') return obj
-          if (Array.isArray(obj)) return obj.map(stripImages)
-          const out: any = {}
-          for (const k of Object.keys(obj)) {
-            const v = obj[k]
-            if (typeof v === 'string' && v.startsWith('data:') && v.length > 80000) {
-              out[k] = '[img]'
-            } else {
-              out[k] = stripImages(v)
-            }
-          }
-          return out
-        }
-
         const getCircularReplacer = () => {
           const seen = new WeakSet()
           return (_key: string, value: any) => {
@@ -3304,7 +3350,7 @@ export function ProntuarioSystemPanel() {
             return value
           }
         }
-        const stripped = stripImages(snapshot)
+        const stripped = stripBase64(snapshot)
         const safeSnapshot = JSON.parse(JSON.stringify(stripped, getCircularReplacer()))
         const payloadKb = Math.round(JSON.stringify(safeSnapshot).length / 1024)
         console.log(`[Auto-save] Payload: ${payloadKb} KB`)
