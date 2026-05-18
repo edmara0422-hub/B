@@ -5117,18 +5117,6 @@ export function ProntuarioSystemPanel() {
                     </span>
                   </div>
 
-                  {/* Nome */}
-                  <div className="mb-1">
-                    <FieldShell label="Nome">
-                      <input
-                        className={INPUT_CLASS_SM} style={INPUT_STYLE}
-                        value={currentRecord.nome}
-                        onChange={(event) => setField('nome', event.target.value)}
-                        placeholder="Nome do paciente"
-                      />
-                    </FieldShell>
-                  </div>
-
                   <div className="grid grid-cols-5 gap-1">
                     <FieldShell label="Lt">
                       <input
