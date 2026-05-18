@@ -8,6 +8,7 @@ import {
   ArrowLeft,
   BookOpen,
   Brain,
+  Camera,
   Copy,
   Eye,
   CheckCircle2,
@@ -2739,6 +2740,11 @@ export function ProntuarioSystemPanel() {
   const [showWsModal, setShowWsModal] = useState(false)
   const [wsNameInput, setWsNameInput] = useState('')
   const [editingWsId, setEditingWsId] = useState<string | null>(null)
+  const [bhScanOpen, setBhScanOpen] = useState(false)
+  const [bhScanPhotos, setBhScanPhotos] = useState<{ file: File; preview: string }[]>([])
+  const [bhScanLoading, setBhScanLoading] = useState(false)
+  const [bhScanResult, setBhScanResult] = useState<{ bh24_ml: number | null; bhac_ml: number | null; bh24_raw?: string; bhac_raw?: string; confidence?: string; notes?: string } | null>(null)
+  const [bhScanError, setBhScanError] = useState<string | null>(null)
   const workspacesRef = useRef<Workspace[]>([])
   const activeWsIdRef = useRef<string>('')
   useEffect(() => { workspacesRef.current = workspaces }, [workspaces])
@@ -5201,22 +5207,37 @@ export function ProntuarioSystemPanel() {
                         {calculations?.pesoIdeal ? `${calculations.pesoIdeal.toFixed(1)} kg` : '--'}
                       </div>
                     </FieldShell>
-                    <FieldShell label="BH24">
-                      <input
-                        className={INPUT_CLASS_SM} style={INPUT_STYLE}
-                        value={currentRecord.balanco24h}
-                        onChange={(event) => setField('balanco24h', event.target.value)}
-                        placeholder="+500"
-                      />
-                    </FieldShell>
-                    <FieldShell label="BHAc">
-                      <input
-                        className={INPUT_CLASS_SM} style={INPUT_STYLE}
-                        value={currentRecord.balancoAcumulado}
-                        onChange={(event) => setField('balancoAcumulado', event.target.value)}
-                        placeholder="+2500"
-                      />
-                    </FieldShell>
+                  </div>
+
+                  {/* Scan BH */}
+                  <div className="mt-1.5">
+                    <button
+                      onClick={() => { setBhScanOpen(true); setBhScanResult(null); setBhScanError(null); setBhScanPhotos([]) }}
+                      className="flex w-full items-center justify-between gap-2 rounded-[0.65rem] px-2.5 py-1.5 text-left transition"
+                      style={{
+                        background: (currentRecord.balanco24h || currentRecord.balancoAcumulado)
+                          ? 'linear-gradient(135deg, rgba(34,211,238,0.10), rgba(34,211,238,0.05))'
+                          : 'rgba(255,255,255,0.04)',
+                        border: (currentRecord.balanco24h || currentRecord.balancoAcumulado)
+                          ? '1px solid rgba(34,211,238,0.28)'
+                          : '1px solid rgba(255,255,255,0.10)',
+                      }}
+                    >
+                      <div className="flex items-center gap-1.5">
+                        <Camera className="h-3 w-3 shrink-0" style={{ color: (currentRecord.balanco24h || currentRecord.balancoAcumulado) ? '#22d3ee' : 'rgba(255,255,255,0.36)' }} />
+                        <span className="text-[9px] font-semibold uppercase tracking-[0.14em]" style={{ color: (currentRecord.balanco24h || currentRecord.balancoAcumulado) ? '#22d3ee' : 'rgba(255,255,255,0.44)' }}>
+                          Scan BH
+                        </span>
+                      </div>
+                      {(currentRecord.balanco24h || currentRecord.balancoAcumulado) ? (
+                        <div className="flex items-center gap-1.5 text-[8px] text-white/60">
+                          {currentRecord.balanco24h && <span>24h: <span className="text-white/88">{currentRecord.balanco24h}mL</span></span>}
+                          {currentRecord.balancoAcumulado && <span>Ac: <span className="text-white/88">{currentRecord.balancoAcumulado}mL</span></span>}
+                        </div>
+                      ) : (
+                        <span className="text-[8px] text-white/28">Foto da folha → IA lê</span>
+                      )}
+                    </button>
                   </div>
 
                   <div className="mt-2 space-y-1.5">
@@ -8625,6 +8646,168 @@ export function ProntuarioSystemPanel() {
       />
 
       <ScanLightbox data={lightboxData} onClose={() => setLightboxData(null)} />
+
+      {/* ── BH Scan Modal ─────────────────────────────────────────── */}
+      {bhScanOpen && (
+        <div
+          className="fixed inset-0 z-50 flex items-end justify-center sm:items-center"
+          style={{ background: 'rgba(0,0,0,0.72)', backdropFilter: 'blur(6px)' }}
+          onClick={(e) => { if (e.target === e.currentTarget) setBhScanOpen(false) }}
+        >
+          <div
+            className="w-full max-w-sm rounded-t-[1.6rem] sm:rounded-[1.6rem] p-4 flex flex-col gap-3"
+            style={{ background: 'linear-gradient(160deg,#1a1a24,#111118)', border: '1px solid rgba(255,255,255,0.10)' }}
+          >
+            {/* Header */}
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Camera className="h-4 w-4 text-[#22d3ee]" />
+                <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-white/80">Scan Balanço Hídrico</span>
+              </div>
+              <button onClick={() => setBhScanOpen(false)} className="flex h-6 w-6 items-center justify-center rounded-full text-white/40 hover:text-white/70 transition">
+                <X className="h-3.5 w-3.5" />
+              </button>
+            </div>
+
+            {/* Photo grid */}
+            <div className="grid grid-cols-3 gap-2">
+              {bhScanPhotos.map((p, i) => (
+                <div key={i} className="relative aspect-square overflow-hidden rounded-[0.8rem]" style={{ border: '1px solid rgba(255,255,255,0.12)' }}>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={p.preview} alt="" className="h-full w-full object-cover" />
+                  <button
+                    onClick={() => setBhScanPhotos(prev => { URL.revokeObjectURL(prev[i].preview); return prev.filter((_, j) => j !== i) })}
+                    className="absolute right-1 top-1 flex h-5 w-5 items-center justify-center rounded-full bg-black/70 text-white/80 hover:bg-black/90 transition"
+                  >
+                    <X className="h-3 w-3" />
+                  </button>
+                </div>
+              ))}
+              {bhScanPhotos.length < 5 && !bhScanLoading && (
+                <label
+                  className="flex aspect-square cursor-pointer flex-col items-center justify-center gap-1 rounded-[0.8rem] transition hover:bg-white/[0.06]"
+                  style={{ border: '1.5px dashed rgba(255,255,255,0.18)' }}
+                >
+                  <Plus className="h-4 w-4 text-white/36" />
+                  <span className="text-[8px] text-white/28">Foto</span>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    capture="environment"
+                    multiple
+                    className="hidden"
+                    onChange={(e) => {
+                      const files = Array.from(e.target.files ?? []).slice(0, 5 - bhScanPhotos.length)
+                      const newPhotos = files.map(f => ({ file: f, preview: URL.createObjectURL(f) }))
+                      setBhScanPhotos(prev => [...prev, ...newPhotos])
+                      e.target.value = ''
+                    }}
+                  />
+                </label>
+              )}
+            </div>
+
+            <p className="text-[8px] text-white/30 text-center -mt-1">
+              Até 5 fotos — diferentes páginas ou ângulos da mesma folha
+            </p>
+
+            {/* Error */}
+            {bhScanError && (
+              <div className="rounded-[0.65rem] px-3 py-2 text-[9px] text-red-400" style={{ background: 'rgba(239,68,68,0.10)', border: '1px solid rgba(239,68,68,0.20)' }}>
+                {bhScanError}
+              </div>
+            )}
+
+            {/* Result */}
+            {bhScanResult && !bhScanLoading && (
+              <div className="rounded-[0.8rem] px-3 py-2.5 space-y-1.5" style={{ background: 'rgba(34,211,238,0.08)', border: '1px solid rgba(34,211,238,0.22)' }}>
+                <p className="text-[8px] uppercase tracking-[0.18em] text-[#22d3ee]/60 mb-1">Valores detectados</p>
+                <div className="flex gap-3">
+                  <div>
+                    <p className="text-[7px] text-white/36 uppercase tracking-[0.1em]">BH 24h</p>
+                    <p className="text-[13px] font-semibold text-white/92">
+                      {bhScanResult.bh24_ml != null ? `${bhScanResult.bh24_ml > 0 ? '+' : ''}${bhScanResult.bh24_ml} mL` : '—'}
+                    </p>
+                    {bhScanResult.bh24_raw && <p className="text-[7px] text-white/30 italic">{bhScanResult.bh24_raw}</p>}
+                  </div>
+                  <div>
+                    <p className="text-[7px] text-white/36 uppercase tracking-[0.1em]">BH Acumulado</p>
+                    <p className="text-[13px] font-semibold text-white/92">
+                      {bhScanResult.bhac_ml != null ? `${bhScanResult.bhac_ml > 0 ? '+' : ''}${bhScanResult.bhac_ml} mL` : '—'}
+                    </p>
+                    {bhScanResult.bhac_raw && <p className="text-[7px] text-white/30 italic">{bhScanResult.bhac_raw}</p>}
+                  </div>
+                  {bhScanResult.confidence && (
+                    <div className="ml-auto self-start">
+                      <span className="rounded-full px-1.5 py-0.5 text-[7px] font-semibold uppercase"
+                        style={{
+                          background: bhScanResult.confidence === 'alta' ? 'rgba(74,222,128,0.14)' : bhScanResult.confidence === 'media' ? 'rgba(251,191,36,0.14)' : 'rgba(248,113,113,0.14)',
+                          color: bhScanResult.confidence === 'alta' ? '#4ade80' : bhScanResult.confidence === 'media' ? '#fbbf24' : '#f87171',
+                          border: `1px solid ${bhScanResult.confidence === 'alta' ? 'rgba(74,222,128,0.30)' : bhScanResult.confidence === 'media' ? 'rgba(251,191,36,0.30)' : 'rgba(248,113,113,0.30)'}`,
+                        }}>
+                        {bhScanResult.confidence}
+                      </span>
+                    </div>
+                  )}
+                </div>
+                {bhScanResult.notes && <p className="text-[7px] text-white/36 italic">{bhScanResult.notes}</p>}
+              </div>
+            )}
+
+            {/* Actions */}
+            <div className="flex gap-2">
+              {!bhScanResult ? (
+                <button
+                  onClick={async () => {
+                    if (!bhScanPhotos.length) return
+                    setBhScanLoading(true)
+                    setBhScanError(null)
+                    try {
+                      const fd = new FormData()
+                      bhScanPhotos.forEach(p => fd.append('files', p.file))
+                      const res = await fetch('/api/icu/bh-scan', { method: 'POST', body: fd })
+                      const json = await res.json()
+                      if (!res.ok) throw new Error(json.error ?? 'Erro na análise')
+                      setBhScanResult(json)
+                    } catch (err) {
+                      setBhScanError(err instanceof Error ? err.message : 'Falha ao analisar imagens')
+                    } finally {
+                      setBhScanLoading(false)
+                    }
+                  }}
+                  disabled={bhScanPhotos.length === 0 || bhScanLoading}
+                  className="flex flex-1 items-center justify-center gap-2 rounded-[0.85rem] py-2.5 text-[10px] font-semibold uppercase tracking-[0.14em] transition disabled:opacity-40"
+                  style={{ background: 'rgba(34,211,238,0.18)', border: '1px solid rgba(34,211,238,0.32)', color: '#22d3ee' }}
+                >
+                  {bhScanLoading ? <><Loader2 className="h-3.5 w-3.5 animate-spin" /> Analisando...</> : <><Scan className="h-3.5 w-3.5" /> Analisar BH</>}
+                </button>
+              ) : (
+                <>
+                  <button
+                    onClick={() => { setBhScanResult(null); setBhScanError(null) }}
+                    className="flex items-center justify-center gap-1.5 rounded-[0.85rem] px-3 py-2.5 text-[10px] text-white/50 transition hover:text-white/70"
+                    style={{ border: '1px solid rgba(255,255,255,0.10)' }}
+                  >
+                    <Camera className="h-3 w-3" /> Rescan
+                  </button>
+                  <button
+                    onClick={() => {
+                      if (bhScanResult.bh24_ml != null) setField('balanco24h', String(bhScanResult.bh24_ml))
+                      if (bhScanResult.bhac_ml != null) setField('balancoAcumulado', String(bhScanResult.bhac_ml))
+                      setBhScanOpen(false)
+                    }}
+                    className="flex flex-1 items-center justify-center gap-2 rounded-[0.85rem] py-2.5 text-[10px] font-semibold uppercase tracking-[0.14em] transition"
+                    style={{ background: 'rgba(74,222,128,0.18)', border: '1px solid rgba(74,222,128,0.32)', color: '#4ade80' }}
+                  >
+                    <CheckCircle2 className="h-3.5 w-3.5" /> Confirmar
+                  </button>
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
       </div>
     </div>
   )
