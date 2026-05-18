@@ -2752,6 +2752,12 @@ export function ProntuarioSystemPanel() {
   const [gasoScanLoading, setGasoScanLoading] = useState(false)
   const [gasoScanResult, setGasoScanResult] = useState<{ ph: number | null; paco2: number | null; pao2: number | null; hco3: number | null; be: number | null; sao2: number | null; lactato: number | null; fio2: number | null; type?: 'arterial' | 'venosa' | 'indefinido'; confidence?: string; notes?: string } | null>(null)
   const [gasoScanError, setGasoScanError] = useState<string | null>(null)
+  const [vmInputMode, setVmInputMode] = useState<'digite' | 'scan' | null>(null)
+  const [vmScanOpen, setVmScanOpen] = useState(false)
+  const [vmScanPhotos, setVmScanPhotos] = useState<{ file: File; preview: string }[]>([])
+  const [vmScanLoading, setVmScanLoading] = useState(false)
+  const [vmScanResult, setVmScanResult] = useState<{ mode: string | null; brand?: string; params: Record<string, number | string | null>; confidence?: string; notes?: string } | null>(null)
+  const [vmScanError, setVmScanError] = useState<string | null>(null)
   const workspacesRef = useRef<Workspace[]>([])
   const activeWsIdRef = useRef<string>('')
   useEffect(() => { workspacesRef.current = workspaces }, [workspaces])
@@ -6617,8 +6623,38 @@ export function ProntuarioSystemPanel() {
                     </FieldShell>
                   </div>
 
+                  {/* Toggle Digite / Scan — só aparece quando um modo está selecionado */}
+                  {currentRecord.modoVM && currentRecord.modoVM !== '' && !currentRecord.modoVM.startsWith('---') && (
+                    <div className="mt-2 grid grid-cols-2 gap-1.5">
+                      <button
+                        onClick={() => setVmInputMode(vmInputMode === 'digite' ? null : 'digite')}
+                        className="flex items-center justify-center gap-1.5 rounded-[0.65rem] px-2 py-2 text-[9px] font-semibold uppercase tracking-[0.14em] transition"
+                        style={{
+                          background: vmInputMode === 'digite' ? 'rgba(210,175,90,0.14)' : 'rgba(255,255,255,0.04)',
+                          border: vmInputMode === 'digite' ? '1px solid rgba(210,175,90,0.40)' : '1px solid rgba(255,255,255,0.10)',
+                          color: vmInputMode === 'digite' ? '#d2af5a' : 'rgba(255,255,255,0.55)',
+                        }}
+                      >
+                        <PencilLine className="h-3 w-3" />
+                        Digite
+                      </button>
+                      <button
+                        onClick={() => { setVmInputMode('scan'); setVmScanOpen(true); setVmScanResult(null); setVmScanError(null); setVmScanPhotos([]) }}
+                        className="flex items-center justify-center gap-1.5 rounded-[0.65rem] px-2 py-2 text-[9px] font-semibold uppercase tracking-[0.14em] transition"
+                        style={{
+                          background: vmInputMode === 'scan' ? 'rgba(34,211,238,0.12)' : 'rgba(255,255,255,0.04)',
+                          border: vmInputMode === 'scan' ? '1px solid rgba(34,211,238,0.34)' : '1px solid rgba(255,255,255,0.10)',
+                          color: vmInputMode === 'scan' ? '#22d3ee' : 'rgba(255,255,255,0.55)',
+                        }}
+                      >
+                        <Camera className="h-3 w-3" />
+                        Scan VM
+                      </button>
+                    </div>
+                  )}
+
                   {/* ── VCV / PRVC ── */}
-                  {(currentRecord.modoVM === 'VCV' || currentRecord.modoVM === 'PRVC') && (
+                  {vmInputMode === 'digite' && (currentRecord.modoVM === 'VCV' || currentRecord.modoVM === 'PRVC') && (
                     <div className="mt-2 space-y-1.5">
                       <div className="grid gap-1 grid-cols-3 xl:grid-cols-6">
                         <FieldShell label="VT (mL)">
@@ -6690,7 +6726,7 @@ export function ProntuarioSystemPanel() {
                   )}
 
                   {/* ── PCV ── */}
-                  {currentRecord.modoVM === 'PCV' && (
+                  {vmInputMode === 'digite' && currentRecord.modoVM === 'PCV' && (
                     <div className="mt-2 space-y-1.5">
                       <div className="grid gap-1 grid-cols-3 xl:grid-cols-6">
                         <FieldShell label="PC (cmH2O)">
@@ -6739,7 +6775,7 @@ export function ProntuarioSystemPanel() {
                   )}
 
                   {/* ── PSV ── */}
-                  {currentRecord.modoVM === 'PSV' && (
+                  {vmInputMode === 'digite' && currentRecord.modoVM === 'PSV' && (
                     <div className="mt-2 space-y-1.5">
                       <div className="grid gap-1 grid-cols-3 xl:grid-cols-6">
                         <FieldShell label="PS (cmH2O)">
@@ -6808,7 +6844,7 @@ export function ProntuarioSystemPanel() {
                   )}
 
                   {/* ── Tubo-T ── */}
-                  {currentRecord.modoVM === 'TuboT' && (
+                  {vmInputMode === 'digite' && currentRecord.modoVM === 'TuboT' && (
                     <div className="mt-2">
                       <FieldShell label="Observacoes Tubo-T" span="col-span-full">
                         <AutoGrowTextarea value={currentRecord.vmObs ?? ''} onChange={(v) => setField('vmObs', v)} placeholder="Tempo, tolerancia, SatO2, FR..." />
@@ -6817,7 +6853,7 @@ export function ProntuarioSystemPanel() {
                   )}
 
                   {/* ── CPAP ── */}
-                  {currentRecord.modoVM === 'CPAP' && (
+                  {vmInputMode === 'digite' && currentRecord.modoVM === 'CPAP' && (
                     <div className="mt-2">
                       <div className="grid gap-1 grid-cols-3 xl:grid-cols-6">
                         <FieldShell label="CPAP / PEEP">
@@ -6840,7 +6876,7 @@ export function ProntuarioSystemPanel() {
                   )}
 
                   {/* ── BIPAP ── */}
-                  {currentRecord.modoVM === 'BIPAP' && (
+                  {vmInputMode === 'digite' && currentRecord.modoVM === 'BIPAP' && (
                     <div className="mt-2">
                       <div className="grid gap-1 grid-cols-3 xl:grid-cols-6">
                         <FieldShell label="IPAP">
@@ -6866,7 +6902,7 @@ export function ProntuarioSystemPanel() {
                   )}
 
                   {/* ── APRV ── */}
-                  {currentRecord.modoVM === 'APRV' && (
+                  {vmInputMode === 'digite' && currentRecord.modoVM === 'APRV' && (
                     <div className="mt-2 space-y-1.5">
                       <div className="grid gap-1 grid-cols-3 xl:grid-cols-5">
                         <FieldShell label="P-High (cmH2O)">
@@ -6906,7 +6942,7 @@ export function ProntuarioSystemPanel() {
                   )}
 
                   {/* ── VS / ASV / IntelliVENT ── */}
-                  {(currentRecord.modoVM === 'VS' || currentRecord.modoVM === 'ASV' || currentRecord.modoVM === 'IntelliVENT') && (
+                  {vmInputMode === 'digite' && (currentRecord.modoVM === 'VS' || currentRecord.modoVM === 'ASV' || currentRecord.modoVM === 'IntelliVENT') && (
                     <div className="mt-2 space-y-1.5">
                       <div className="grid gap-1 grid-cols-3 xl:grid-cols-5">
                         <FieldShell label="VC (mL)">
@@ -6943,7 +6979,7 @@ export function ProntuarioSystemPanel() {
                   )}
 
                   {/* ── SmartCare/PS ── */}
-                  {currentRecord.modoVM === 'SmartCare' && (
+                  {vmInputMode === 'digite' && currentRecord.modoVM === 'SmartCare' && (
                     <div className="mt-2 space-y-1.5">
                       <div className="grid gap-1 grid-cols-3 xl:grid-cols-6">
                         <FieldShell label="VC (mL)">
@@ -6972,7 +7008,7 @@ export function ProntuarioSystemPanel() {
                   )}
 
                   {/* ── PAV+ ── */}
-                  {currentRecord.modoVM === 'PAV' && (
+                  {vmInputMode === 'digite' && currentRecord.modoVM === 'PAV' && (
                     <div className="mt-2 space-y-1.5">
                       <div className="grid gap-1 grid-cols-3 xl:grid-cols-5">
                         <FieldShell label="VC (mL)">
@@ -7009,7 +7045,7 @@ export function ProntuarioSystemPanel() {
                   )}
 
                   {/* ── NAVA ── */}
-                  {currentRecord.modoVM === 'NAVA' && (
+                  {vmInputMode === 'digite' && currentRecord.modoVM === 'NAVA' && (
                     <div className="mt-2 space-y-1.5">
                       <div className="grid gap-1 grid-cols-3 xl:grid-cols-6">
                         <FieldShell label="PS / NAVA level">
@@ -7043,7 +7079,7 @@ export function ProntuarioSystemPanel() {
                   )}
 
                   {/* ── HFOV ── */}
-                  {currentRecord.modoVM === 'HFOV' && (
+                  {vmInputMode === 'digite' && currentRecord.modoVM === 'HFOV' && (
                     <div className="mt-2 space-y-1.5">
                       <div className="grid gap-1 grid-cols-3 xl:grid-cols-5">
                         <FieldShell label="mPaw (cmH2O)">
@@ -7080,7 +7116,7 @@ export function ProntuarioSystemPanel() {
                   )}
 
                   {/* ── MMV ── */}
-                  {currentRecord.modoVM === 'MMV' && (
+                  {vmInputMode === 'digite' && currentRecord.modoVM === 'MMV' && (
                     <div className="mt-2 space-y-1.5">
                       <div className="grid gap-1 grid-cols-3 xl:grid-cols-5">
                         <FieldShell label="VC (mL)">
@@ -9084,6 +9120,231 @@ export function ProntuarioSystemPanel() {
                       setGasoScanOpen(false)
                       setGasoScanResult(null)
                       setGasoScanPhotos([])
+                    }}
+                    className="flex flex-1 items-center justify-center gap-2 rounded-[0.85rem] py-3 text-[12px] font-bold uppercase tracking-[0.14em] transition"
+                    style={{ background: 'rgba(74,222,128,0.28)', border: '1px solid rgba(74,222,128,0.55)', color: '#86efac' }}
+                  >
+                    <CheckCircle2 className="h-4 w-4" /> Confirmar
+                  </button>
+                </>
+              )}
+            </div>
+          </div>
+        </div>,
+        document.body
+      )}
+
+      {/* ── VM Scan Modal — Portal ────────────────────────────── */}
+      {vmScanOpen && typeof window !== 'undefined' && createPortal(
+        <div
+          className="fixed inset-0 z-[100] flex items-center justify-center p-3"
+          style={{ background: 'rgba(0,0,0,0.72)', backdropFilter: 'blur(6px)' }}
+          onClick={(e) => { if (e.target === e.currentTarget) setVmScanOpen(false) }}
+        >
+          <div
+            className="w-full max-w-sm rounded-[1.4rem] flex flex-col overscroll-contain"
+            style={{
+              background: 'linear-gradient(160deg,#1a1a24,#111118)',
+              border: '1px solid rgba(255,255,255,0.10)',
+              maxHeight: 'min(85vh, 720px)',
+            }}
+          >
+            {/* Header */}
+            <div className="shrink-0 flex items-center justify-between px-4 pt-4 pb-3" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+              <div className="flex items-center gap-2">
+                <Camera className="h-4 w-4 text-[#22d3ee]" />
+                <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-white/80">Scan Ventilador</span>
+              </div>
+              <button onClick={() => setVmScanOpen(false)} className="flex h-6 w-6 items-center justify-center rounded-full text-white/40 hover:text-white/70 transition">
+                <X className="h-3.5 w-3.5" />
+              </button>
+            </div>
+
+            {/* Conteúdo scrollável */}
+            <div className="flex-1 overflow-y-auto px-4 py-3 flex flex-col gap-3">
+              <div className="grid grid-cols-3 gap-2">
+                {vmScanPhotos.map((p, i) => (
+                  <div key={i} className="relative aspect-square overflow-hidden rounded-[0.8rem]" style={{ border: '1px solid rgba(255,255,255,0.12)' }}>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={p.preview} alt="" className="h-full w-full object-cover" />
+                    <button
+                      onClick={() => setVmScanPhotos(prev => { URL.revokeObjectURL(prev[i].preview); return prev.filter((_, j) => j !== i) })}
+                      className="absolute right-1 top-1 flex h-5 w-5 items-center justify-center rounded-full bg-black/70 text-white/80 hover:bg-black/90 transition"
+                    >
+                      <X className="h-3 w-3" />
+                    </button>
+                  </div>
+                ))}
+                {vmScanPhotos.length < 5 && !vmScanLoading && (
+                  <label
+                    className="flex aspect-square cursor-pointer flex-col items-center justify-center gap-1 rounded-[0.8rem] transition hover:bg-white/[0.06]"
+                    style={{ border: '1.5px dashed rgba(255,255,255,0.18)' }}
+                  >
+                    <Plus className="h-4 w-4 text-white/36" />
+                    <span className="text-[8px] text-white/28">Foto</span>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      capture="environment"
+                      multiple
+                      className="hidden"
+                      onChange={(e) => {
+                        const files = Array.from(e.target.files ?? []).slice(0, 5 - vmScanPhotos.length)
+                        const newPhotos = files.map(f => ({ file: f, preview: URL.createObjectURL(f) }))
+                        setVmScanPhotos(prev => [...prev, ...newPhotos])
+                        e.target.value = ''
+                      }}
+                    />
+                  </label>
+                )}
+              </div>
+
+              <p className="text-[8px] text-white/30 text-center -mt-1">
+                Até 5 fotos · Hamilton, Drager, Servo, GE, antigos · IA detecta modo + parâmetros
+              </p>
+
+              {vmScanError && (
+                <div className="rounded-[0.65rem] px-3 py-2 text-[9px] text-red-400" style={{ background: 'rgba(239,68,68,0.10)', border: '1px solid rgba(239,68,68,0.20)' }}>
+                  {vmScanError}
+                </div>
+              )}
+
+              {vmScanResult && !vmScanLoading && (() => {
+                const r = vmScanResult
+                const p = r.params ?? {}
+                const modeMismatch = r.mode && currentRecord.modoVM && r.mode !== currentRecord.modoVM
+                const entries = Object.entries(p).filter(([, v]) => v != null && v !== '')
+                return (
+                  <div className="rounded-[0.8rem] px-3 py-2.5 space-y-2" style={{ background: 'rgba(34,211,238,0.08)', border: '1px solid rgba(34,211,238,0.22)' }}>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-1.5">
+                        <p className="text-[8px] uppercase tracking-[0.18em] text-[#22d3ee]/70">Modo</p>
+                        <span className="text-[11px] font-bold text-white/92">{r.mode ?? '—'}</span>
+                        {r.brand && <span className="text-[8px] text-white/40 italic">({r.brand})</span>}
+                      </div>
+                      {r.confidence && (
+                        <span className="rounded-full px-1.5 py-0.5 text-[7px] font-semibold uppercase"
+                          style={{
+                            background: r.confidence === 'alta' ? 'rgba(74,222,128,0.14)' : r.confidence === 'media' ? 'rgba(251,191,36,0.14)' : 'rgba(248,113,113,0.14)',
+                            color: r.confidence === 'alta' ? '#4ade80' : r.confidence === 'media' ? '#fbbf24' : '#f87171',
+                            border: `1px solid ${r.confidence === 'alta' ? 'rgba(74,222,128,0.30)' : r.confidence === 'media' ? 'rgba(251,191,36,0.30)' : 'rgba(248,113,113,0.30)'}`,
+                          }}>
+                          {r.confidence}
+                        </span>
+                      )}
+                    </div>
+                    {modeMismatch && (
+                      <p className="text-[8px] text-amber-300/80">⚠ Modo detectado ({r.mode}) difere do selecionado ({currentRecord.modoVM}). Ao confirmar, será atualizado.</p>
+                    )}
+                    {entries.length ? (
+                      <div className="grid grid-cols-2 gap-x-3 gap-y-0.5 text-[9.5px] tabular-nums">
+                        {entries.map(([key, val]) => (
+                          <div key={key} className="flex items-baseline gap-1">
+                            <span className="text-white/40 uppercase tracking-[0.08em]">{key}</span>
+                            <span className="font-semibold text-white/90">{String(val)}</span>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <p className="text-[9px] text-white/40 italic">Nenhum parâmetro extraído.</p>
+                    )}
+                    {r.notes && <p className="text-[7px] text-white/36 italic">{r.notes}</p>}
+                  </div>
+                )
+              })()}
+            </div>
+
+            {/* Actions */}
+            <div className="shrink-0 flex gap-2 px-4 py-3" style={{ borderTop: '1px solid rgba(255,255,255,0.06)', background: 'rgba(0,0,0,0.20)' }}>
+              {!vmScanResult ? (
+                <button
+                  onClick={async () => {
+                    if (!vmScanPhotos.length) return
+                    setVmScanLoading(true)
+                    setVmScanError(null)
+                    try {
+                      const fd = new FormData()
+                      vmScanPhotos.forEach(p => fd.append('files', p.file))
+                      const res = await fetch('/api/icu/vm-scan', { method: 'POST', body: fd })
+                      const json = await res.json()
+                      if (!res.ok) throw new Error(json.error ?? 'Erro na análise')
+                      setVmScanResult(json)
+                    } catch (err) {
+                      setVmScanError(err instanceof Error ? err.message : 'Falha ao analisar imagens')
+                    } finally {
+                      setVmScanLoading(false)
+                    }
+                  }}
+                  disabled={vmScanPhotos.length === 0 || vmScanLoading}
+                  className="flex flex-1 items-center justify-center gap-2 rounded-[0.85rem] py-3 text-[12px] font-semibold uppercase tracking-[0.14em] transition disabled:opacity-40"
+                  style={{ background: 'rgba(34,211,238,0.18)', border: '1px solid rgba(34,211,238,0.32)', color: '#22d3ee' }}
+                >
+                  {vmScanLoading ? <><Loader2 className="h-3.5 w-3.5 animate-spin" /> Analisando...</> : <><Scan className="h-3.5 w-3.5" /> Analisar VM</>}
+                </button>
+              ) : (
+                <>
+                  <button
+                    onClick={() => { setVmScanResult(null); setVmScanError(null) }}
+                    className="flex items-center justify-center gap-1.5 rounded-[0.85rem] px-4 py-3 text-[11px] text-white/60 transition hover:text-white/80"
+                    style={{ border: '1px solid rgba(255,255,255,0.10)' }}
+                  >
+                    <Camera className="h-3.5 w-3.5" /> Rescan
+                  </button>
+                  <button
+                    onClick={() => {
+                      const r = vmScanResult
+                      const id = selectedId
+                      if (!id) {
+                        setVmScanError('Nenhum paciente selecionado — não foi possível aplicar.')
+                        return
+                      }
+                      const p = r.params ?? {}
+                      const set = (k: string, v: unknown) => v != null && v !== '' ? String(v) : undefined
+                      updateCurrentRecord((record) => {
+                        const next: Record<string, unknown> = { ...record }
+                        const mode = r.mode ?? currentRecord.modoVM
+                        if (r.mode) next.modoVM = r.mode
+
+                        // Mapeamento base — campos comuns
+                        const baseMap: Record<string, string> = {
+                          vt: 'vt', vc: 'vc', ve: 've', fr: 'fr', peep: 'peep', fio2: 'fio2',
+                          ppico: 'ppico', pplato: 'pplato', pmean: 'pmean', ie: 'ie', ti: 'ti',
+                          fluxo: 'fluxo', trigger: 'trigger', ps: 'ps',
+                          ipap: 'ipap', epap: 'epap',
+                        }
+                        for (const [scanKey, recordKey] of Object.entries(baseMap)) {
+                          const v = set(scanKey, p[scanKey])
+                          if (v !== undefined) next[recordKey] = v
+                        }
+
+                        // APRV: phigh→ppico, thigh→ti, plow→peep, tlow→trigger
+                        if (mode === 'APRV') {
+                          const phigh = set('phigh', p['phigh']); if (phigh) next.ppico = phigh
+                          const thigh = set('thigh', p['thigh']); if (thigh) next.ti = thigh
+                          const plow = set('plow', p['plow']); if (plow) next.peep = plow
+                          const tlow = set('tlow', p['tlow']); if (tlow) next.trigger = tlow
+                        }
+                        // HFOV: mpaw→ppico, amplitude→pplato, hz→hfovHz, biasflow→hfovBiasFlow
+                        if (mode === 'HFOV') {
+                          const mpaw = set('mpaw', p['mpaw']); if (mpaw) next.ppico = mpaw
+                          const amp = set('amplitude', p['amplitude']); if (amp) next.pplato = amp
+                          const hz = set('hz', p['hz']); if (hz) next.hfovHz = hz
+                          const bf = set('biasflow', p['biasflow']); if (bf) next.hfovBiasFlow = bf
+                        }
+                        // PAV: pav_percent → ps
+                        if (mode === 'PAV') {
+                          const pav = set('pav_percent', p['pav_percent']); if (pav) next.ps = pav
+                        }
+                        // NAVA: nava_level → ps
+                        if (mode === 'NAVA') {
+                          const nava = set('nava_level', p['nava_level']); if (nava) next.ps = nava
+                        }
+
+                        return next as typeof record
+                      })
+                      setVmScanOpen(false)
+                      setVmScanResult(null)
+                      setVmScanPhotos([])
                     }}
                     className="flex flex-1 items-center justify-center gap-2 rounded-[0.85rem] py-3 text-[12px] font-bold uppercase tracking-[0.14em] transition"
                     style={{ background: 'rgba(74,222,128,0.28)', border: '1px solid rgba(74,222,128,0.55)', color: '#86efac' }}
