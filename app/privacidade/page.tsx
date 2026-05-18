@@ -30,10 +30,26 @@ export default function PrivacidadePage() {
           <ul className="list-disc pl-4 space-y-0.5">
             <li>Eventos de interacao (funcionalidades acessadas, tempo de uso) vinculados ao ID de usuario. Utilizados para melhoria do app. Nao incluem conteudo clinico.</li>
           </ul>
+
+          <p className="text-white/70 mt-2 mb-0.5">O que o SEA Fisio NAO coleta sobre o paciente</p>
+          <ul className="list-disc pl-4 space-y-0.5">
+            <li>Nome, CPF, RG, data de nascimento ou qualquer identificador direto do paciente.</li>
+            <li>Hospital, clinica, instituicao ou unidade onde o paciente esta internado.</li>
+            <li>Cidade, estado ou qualquer localizacao geografica do atendimento.</li>
+            <li>Numero de prontuario externo, registro institucional ou prontuario eletronico.</li>
+            <li>Foto, contato ou dados de familiares do paciente.</li>
+          </ul>
         </section>
 
         <section>
-          <h2 className="text-[9px] font-semibold text-white/80 mb-1">2. Base Legal para Tratamento (LGPD Art. 7 e Art. 11)</h2>
+          <h2 className="text-[9px] font-semibold text-white/80 mb-1">2. Anonimizacao por Design (LGPD Art. 12)</h2>
+          <p>O SEA Fisio foi arquitetado com o principio de privacidade por padrao: o paciente nunca e identificado no sistema. A estrutura tecnica do app impede a coleta de dados que vinculem os parametros clinicos a um individuo especifico, ao hospital ou a localizacao.</p>
+          <p className="mt-1">Cada registro contem apenas: numero do leito (sem vinculo institucional), parametros antropometricos (idade, sexo, peso, altura — necessarios para calculos clinicos), historia clinica e diagnostico descritos pelo profissional. Conforme a LGPD Art. 12, dados anonimizados deixam de ser considerados dados pessoais.</p>
+          <p className="mt-1">Mesmo no servidor da administradora (Supabase, AWS Sao Paulo), nao ha como identificar de qual hospital, cidade ou instituicao os dados clinicos foram inseridos — apenas o usuario que os inseriu.</p>
+        </section>
+
+        <section>
+          <h2 className="text-[9px] font-semibold text-white/80 mb-1">3. Base Legal para Tratamento (LGPD Art. 7 e Art. 11)</h2>
           <ul className="list-disc pl-4 space-y-0.5">
             <li><span className="text-white/70">Dados de conta e acesso:</span> execucao de contrato e legitimo interesse de seguranca (Art. 7, V).</li>
             <li><span className="text-white/70">Dados clinicos (dados sensiveis de saude):</span> consentimento explicito do titular (Art. 11, I), coletado no momento do cadastro.</li>
@@ -43,7 +59,7 @@ export default function PrivacidadePage() {
         </section>
 
         <section>
-          <h2 className="text-[9px] font-semibold text-white/80 mb-1">3. Armazenamento, Seguranca e Retencao</h2>
+          <h2 className="text-[9px] font-semibold text-white/80 mb-1">4. Armazenamento, Seguranca e Retencao</h2>
           <ul className="list-disc pl-4 space-y-0.5">
             <li>Dados armazenados no Supabase (infraestrutura AWS, regiao sa-east-1 — Sao Paulo) com criptografia em repouso e TLS 1.3 em transito.</li>
             <li>Acesso ao banco de dados protegido por politicas de seguranca em nivel de linha (RLS): cada usuario acessa apenas seus proprios dados.</li>
@@ -56,7 +72,7 @@ export default function PrivacidadePage() {
         </section>
 
         <section>
-          <h2 className="text-[9px] font-semibold text-white/80 mb-1">4. Protecao de Dados Clinicos no Dispositivo</h2>
+          <h2 className="text-[9px] font-semibold text-white/80 mb-1">5. Protecao de Dados Clinicos no Dispositivo</h2>
           <p>O app implementa medidas tecnicas para proteger dados clinicos no dispositivo:</p>
           <ul className="list-disc pl-4 mt-1 space-y-0.5">
             <li>Temporizador de plantao: dados apagados automaticamente ao fim do turno configurado.</li>
@@ -68,7 +84,7 @@ export default function PrivacidadePage() {
         </section>
 
         <section>
-          <h2 className="text-[9px] font-semibold text-white/80 mb-1">5. Compartilhamento de Dados</h2>
+          <h2 className="text-[9px] font-semibold text-white/80 mb-1">6. Compartilhamento de Dados</h2>
           <p>NAO vendemos, alugamos ou compartilhamos dados pessoais com terceiros para fins comerciais. Utilizamos os seguintes prestadores de servico essenciais:</p>
           <ul className="list-disc pl-4 mt-1 space-y-0.5">
             <li>Supabase (banco de dados e autenticacao) — politica em supabase.com/privacy.</li>
@@ -78,7 +94,7 @@ export default function PrivacidadePage() {
         </section>
 
         <section>
-          <h2 className="text-[9px] font-semibold text-white/80 mb-1">6. Seus Direitos (LGPD Art. 18)</h2>
+          <h2 className="text-[9px] font-semibold text-white/80 mb-1">7. Seus Direitos (LGPD Art. 18)</h2>
           <p>Voce tem direito a:</p>
           <ul className="list-disc pl-4 mt-1 space-y-0.5">
             <li>Confirmar a existencia de tratamento dos seus dados.</li>
@@ -94,27 +110,27 @@ export default function PrivacidadePage() {
         </section>
 
         <section>
-          <h2 className="text-[9px] font-semibold text-white/80 mb-1">7. Notificacao de Incidentes</h2>
+          <h2 className="text-[9px] font-semibold text-white/80 mb-1">8. Notificacao de Incidentes</h2>
           <p>Em caso de incidente de seguranca que possa acarretar risco ou dano relevante aos titulares, comunicaremos a Autoridade Nacional de Protecao de Dados (ANPD) e os usuarios afetados no prazo de ate 2 dias uteis apos a ciencia do evento, conforme LGPD Art. 48. A comunicacao incluira: natureza dos dados afetados, usuarios envolvidos, medidas tecnicas adotadas e contato do Encarregado.</p>
         </section>
 
         <section>
-          <h2 className="text-[9px] font-semibold text-white/80 mb-1">8. Cookies e Armazenamento Local</h2>
+          <h2 className="text-[9px] font-semibold text-white/80 mb-1">9. Cookies e Armazenamento Local</h2>
           <p>O app utiliza localStorage do navegador para manter dados clinicos temporarios e preferencias de sessao. Nao utilizamos cookies de rastreamento de terceiros para publicidade. O armazenamento local e apagado automaticamente ao fim do plantao (dados clinicos) ou ao excluir a conta.</p>
         </section>
 
         <section>
-          <h2 className="text-[9px] font-semibold text-white/80 mb-1">9. Menores de Idade</h2>
+          <h2 className="text-[9px] font-semibold text-white/80 mb-1">10. Menores de Idade</h2>
           <p>O app e destinado exclusivamente a profissionais de saude maiores de 18 anos. Nao coletamos intencionalmente dados de menores.</p>
         </section>
 
         <section>
-          <h2 className="text-[9px] font-semibold text-white/80 mb-1">10. Alteracoes nesta Politica</h2>
+          <h2 className="text-[9px] font-semibold text-white/80 mb-1">11. Alteracoes nesta Politica</h2>
           <p>Podemos atualizar esta politica periodicamente. Notificaremos sobre mudancas significativas via app ou email com antecedencia minima de 15 dias.</p>
         </section>
 
         <section>
-          <h2 className="text-[9px] font-semibold text-white/80 mb-1">11. Encarregado de Protecao de Dados (DPO)</h2>
+          <h2 className="text-[9px] font-semibold text-white/80 mb-1">12. Encarregado de Protecao de Dados (DPO)</h2>
           <p>Responsavel pelo tratamento de dados: <span className="text-white/70">Edmara Rocha</span></p>
           <p>Email: <span className="text-white/70">edmararbusiness1@gmail.com</span></p>
           <p className="mt-0.5 text-white/40">SEA Fisio — Plataforma educacional para profissionais de fisioterapia.</p>
