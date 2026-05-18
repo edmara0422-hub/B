@@ -30,7 +30,6 @@ import {
   X,
   Zap,
 } from 'lucide-react'
-import { ICUSystemPanel } from '@/components/sea/icu-system-panel'
 import { supabase } from '@/lib/supabase'
 import { useAuthStore } from '@/lib/stores/authStore'
 import {
@@ -69,7 +68,7 @@ import {
   type VMHistoryEntry,
 } from '@/lib/icu-calcs'
 
-type PanelView = 'records' | 'reference' | 'archive'
+type PanelView = 'records' | 'archive'
 type FormTab = 'dados' | 'neuro' | 'cardio' | 'resp' | 'motora' | 'percepcao'
 type ListFieldKey = 'sedativos' | 'bnmList' | 'dvaList' | 'examesLabList' | 'examesImagemList'
 
@@ -4700,7 +4699,7 @@ export function ProntuarioSystemPanel() {
                   </span>
                 )}
               </div>
-              <h3 className="text-[1rem] font-semibold text-white/92">Pacientes e referencia clinica</h3>
+              <h3 className="text-[1rem] font-semibold text-white/92">Pacientes</h3>
               <div className="mt-2 flex flex-wrap gap-1.5">
                 {Object.entries(recordBadges.viaCounts).map(([key, count]) =>
                   count > 0 ? (
@@ -4776,7 +4775,6 @@ export function ProntuarioSystemPanel() {
               </div>
             )}
             <ActionButton icon={Archive} label="Arquivo" badge={archive.length} active={view === 'archive'} onClick={() => setView(view === 'archive' ? 'records' : 'archive')} />
-            <ActionButton icon={BookOpen} label="Ref." active={view === 'reference'} onClick={() => setView(view === 'reference' ? 'records' : 'reference')} />
             <ActionButton icon={Plus} label="Adicionar" onClick={addRecord} />
           </div>
         </div>
@@ -4966,9 +4964,7 @@ export function ProntuarioSystemPanel() {
           </div>
         )}
 
-        {view === 'reference' ? (
-          <ICUSystemPanel />
-        ) : view === 'archive' ? (
+        {view === 'archive' ? (
           <div className="space-y-4">
             {archive.length ? (
               archive.map((record) => (

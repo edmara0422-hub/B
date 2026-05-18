@@ -2,11 +2,12 @@
 
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ArrowLeft, Calculator, FileText, PanelLeftClose, PanelLeftOpen, Search } from 'lucide-react'
+import { ArrowLeft, BookOpen, Calculator, FileText, PanelLeftClose, PanelLeftOpen, Search } from 'lucide-react'
 import Link from 'next/link'
 import type { LucideIcon } from 'lucide-react'
 import { ProntuarioSystemPanel } from '@/components/sea/prontuario-system-panel'
 import { VMSystemPanel } from '@/components/sea/vm-system-panel'
+import { ICUSystemPanel } from '@/components/sea/icu-system-panel'
 
 // ── Módulos de Sistemas ────────────────────────────────────────────────────────
 
@@ -36,6 +37,14 @@ const SYSTEMS: SystemModule[] = [
     overview: 'Mecânica respiratória, complacência, RSBI, P/F, HACOR, SOFA, escalas funcionais e VM.',
     panel: () => <VMSystemPanel />,
   },
+  {
+    id: 'S3',
+    title: 'Referência Clínica',
+    short: 'PTS',
+    icon: BookOpen,
+    overview: 'Protocolos, condutas e fluxos clínicos organizados por sistema — referência rápida à beira do leito.',
+    panel: () => <ICUSystemPanel />,
+  },
 ]
 
 const ease = [0.16, 1, 0.3, 1] as const
@@ -59,15 +68,18 @@ function WorkspaceSidebar({
   return (
     <div className="ipb-soft flex flex-col overflow-hidden rounded-[1.2rem] h-full lg:rounded-[1.65rem]">
 
-      {/* ── Mobile: nav compacta (sem busca — só 2 itens) ─────────── */}
-      <div className="lg:hidden relative flex flex-col gap-1.5 px-1.5 py-2">
-        {/* botão fechar — topo direito */}
-        <button
-          onClick={onClose}
-          className="absolute right-1.5 top-1.5 flex h-5 w-5 items-center justify-center rounded-[0.4rem] text-white/30 hover:text-white/60"
-        >
-          <PanelLeftClose className="h-2.5 w-2.5" />
-        </button>
+      {/* ── Mobile: nav compacta (sem busca) ─────────────────────── */}
+      <div className="lg:hidden flex flex-col px-1.5 py-2">
+        {/* header com botão fechar */}
+        <div className="flex items-center justify-between mb-1.5 px-0.5">
+          <p className="text-[7px] uppercase tracking-[0.22em] text-white/36">Sistemas</p>
+          <button
+            onClick={onClose}
+            className="flex h-6 w-6 items-center justify-center rounded-[0.5rem] text-white/40 hover:bg-white/[0.08] hover:text-white/70 transition"
+          >
+            <PanelLeftClose className="h-3.5 w-3.5" />
+          </button>
+        </div>
 
         {modules.map((mod, idx) => {
           const isActive = activeIndex === idx
