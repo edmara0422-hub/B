@@ -11,6 +11,7 @@ import type { User, Session } from '@supabase/supabase-js'
 // continua funcionando via painel (altera role no banco).
 const ADMIN_EMAILS = new Set<string>([
   'edmararbusiness1@gmail.com',
+  'edmara0422@gmail.com',
 ])
 
 const ADMIN_CACHE_KEY = 'sea_is_admin'

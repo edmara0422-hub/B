@@ -26,7 +26,7 @@ export async function POST(request: Request) {
 
   // Fallback de segurança: garante que a Edmara sempre passa, mesmo se a role
   // dela no banco for zerada por erro. Outros admins precisam ter role='admin'.
-  const ALWAYS_ADMIN_EMAILS = new Set<string>(['edmararbusiness1@gmail.com'])
+  const ALWAYS_ADMIN_EMAILS = new Set<string>(['edmararbusiness1@gmail.com', 'edmara0422@gmail.com'])
 
   // 1. Verify the caller is an admin (role='admin' no banco OU Edmara por fallback)
   let callerId: string
