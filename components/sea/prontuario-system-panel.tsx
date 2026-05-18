@@ -6351,7 +6351,7 @@ export function ProntuarioSystemPanel() {
                     <FieldShell label="SpO2 S/F">
                       <input className={INPUT_CLASS_SM} style={INPUT_STYLE} type="number" value={currentRecord.sfSpO2} onChange={(event) => setField('sfSpO2', event.target.value)} placeholder="96" />
                     </FieldShell>
-                    <FieldShell label="FiO2 S/F">
+                    <FieldShell label="FiO2 (%)">
                       <input className={INPUT_CLASS_SM} style={INPUT_STYLE} type="number" value={currentRecord.sfFiO2} onChange={(event) => setField('sfFiO2', event.target.value)} placeholder="40" />
                     </FieldShell>
                     <FieldShell label="Gaso">
