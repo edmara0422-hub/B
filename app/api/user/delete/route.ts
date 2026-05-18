@@ -31,10 +31,19 @@ export async function DELETE(_request: NextRequest) {
     { cookies: { getAll: () => [], setAll: () => {} } }
   )
 
-  const { error } = await admin.from('profiles').delete().eq('id', user.id)
+  // 1. Delete user clinical data from icu_sessions
+  await admin.from('icu_sessions').delete().eq('session_id', user.id)
 
-  if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 })
+  // 2. Delete user database profile row
+  const { error: profileError } = await admin.from('profiles').delete().eq('id', user.id)
+  if (profileError) {
+    return NextResponse.json({ error: profileError.message }, { status: 500 })
+  }
+
+  // 3. Delete the user from Supabase Auth completely
+  const { error: authDeleteError } = await admin.auth.admin.deleteUser(user.id)
+  if (authDeleteError) {
+    console.warn('[DeleteAccount] Auth delete warning (could be deleted by database trigger):', authDeleteError.message)
   }
 
   return NextResponse.json({ success: true })
