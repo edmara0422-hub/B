@@ -6179,7 +6179,7 @@ export function ProntuarioSystemPanel() {
                         const active = hasTags(field).includes(tag)
                         return (
                           <button key={tag} type="button" onClick={() => toggleTag(field, tag)}
-                            className="rounded-full border px-2 py-0.5 text-[8px] font-semibold transition-all"
+                            className="rounded-full border px-1.5 py-0.5 text-[7px] font-semibold transition-all"
                             style={active
                               ? { borderColor: 'rgba(96,165,250,0.4)', background: 'rgba(96,165,250,0.15)', color: '#93c5fd' }
                               : { borderColor: 'rgba(255,255,255,0.10)', background: 'rgba(255,255,255,0.03)', color: 'rgba(255,255,255,0.45)' }
@@ -6188,44 +6188,38 @@ export function ProntuarioSystemPanel() {
                       }
                       return (
                         <>
-                          <div className="col-span-2 xl:col-span-4">
-                            <div className="flex flex-wrap items-start justify-center gap-x-5 gap-y-2">
-                              <div>
-                                <p className="mb-1 text-[8px] font-semibold uppercase tracking-[0.14em] text-white/40 text-center">Cor</p>
-                                <div className="flex flex-wrap justify-center gap-1">
-                                  {chip('secrecao', 'Transparente', 'Transparente')}
-                                  {chip('secrecao', 'Branca', 'Branca')}
-                                  {chip('secrecao', 'Amarela', 'Amarela')}
-                                  {chip('secrecao', 'Verde', 'Verde')}
-                                  {chip('secrecao', 'Marrom', 'Marrom')}
-                                  {chip('secrecao', 'Rosada', 'Rosada/Sangue')}
-                                  {chip('secrecao', 'Mucopurulenta', 'Mucopurulenta')}
-                                  {chip('secrecao', 'Ausente', 'Ausente')}
-                                </div>
+                          <div className="col-span-2 xl:col-span-4 space-y-1.5">
+                            {/* Linha 1: Cor (label inline com chips) */}
+                            <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+                              <p className="text-[7px] font-semibold uppercase tracking-[0.14em] text-white/40 shrink-0">Cor</p>
+                              {chip('secrecao', 'Transparente', 'Transp')}
+                              {chip('secrecao', 'Branca', 'Branca')}
+                              {chip('secrecao', 'Amarela', 'Amar')}
+                              {chip('secrecao', 'Verde', 'Verde')}
+                              {chip('secrecao', 'Marrom', 'Marrom')}
+                              {chip('secrecao', 'Rosada', 'Sangue')}
+                              {chip('secrecao', 'Mucopurulenta', 'Muco')}
+                              {chip('secrecao', 'Ausente', 'Aus')}
+                            </div>
+                            {/* Linha 2: Consist + Qtd + Evol (inline, todos na mesma linha) */}
+                            <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+                              <div className="flex items-center gap-1.5">
+                                <p className="text-[7px] font-semibold uppercase tracking-[0.14em] text-white/40 shrink-0">Cons</p>
+                                {chip('secrecaoConsist', 'Fluida', 'Fluida')}
+                                {chip('secrecaoConsist', 'Espessa', 'Espessa')}
+                                {chip('secrecaoConsist', 'Rolha', 'Rolha')}
                               </div>
-                              <div>
-                                <p className="mb-1 text-[8px] font-semibold uppercase tracking-[0.14em] text-white/40 text-center">Consistencia</p>
-                                <div className="flex flex-wrap justify-center gap-1">
-                                  {chip('secrecaoConsist', 'Fluida', 'Fluida')}
-                                  {chip('secrecaoConsist', 'Espessa', 'Espessa')}
-                                  {chip('secrecaoConsist', 'Rolha', 'Rolha')}
-                                </div>
+                              <div className="flex items-center gap-1.5">
+                                <p className="text-[7px] font-semibold uppercase tracking-[0.14em] text-white/40 shrink-0">Qtd</p>
+                                {chip('secrecaoQtd', 'Pequena', 'Peq')}
+                                {chip('secrecaoQtd', 'Media', 'Med')}
+                                {chip('secrecaoQtd', 'Grande', 'Gde')}
                               </div>
-                              <div>
-                                <p className="mb-1 text-[8px] font-semibold uppercase tracking-[0.14em] text-white/40 text-center">Quantidade</p>
-                                <div className="flex flex-wrap justify-center gap-1">
-                                  {chip('secrecaoQtd', 'Pequena', 'Peq')}
-                                  {chip('secrecaoQtd', 'Media', 'Med')}
-                                  {chip('secrecaoQtd', 'Grande', 'Gde')}
-                                </div>
-                              </div>
-                              <div>
-                                <p className="mb-1 text-[8px] font-semibold uppercase tracking-[0.14em] text-white/40 text-center">Evolucao</p>
-                                <div className="flex flex-wrap justify-center gap-1">
-                                  {chip('secrecaoEvolucao', 'Melhora', '↑')}
-                                  {chip('secrecaoEvolucao', 'Estavel', '=')}
-                                  {chip('secrecaoEvolucao', 'Piora', '↓')}
-                                </div>
+                              <div className="flex items-center gap-1.5">
+                                <p className="text-[7px] font-semibold uppercase tracking-[0.14em] text-white/40 shrink-0">Evol</p>
+                                {chip('secrecaoEvolucao', 'Melhora', '↑')}
+                                {chip('secrecaoEvolucao', 'Estavel', '=')}
+                                {chip('secrecaoEvolucao', 'Piora', '↓')}
                               </div>
                             </div>
                           </div>
