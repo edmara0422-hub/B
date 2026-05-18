@@ -5180,10 +5180,10 @@ export function ProntuarioSystemPanel() {
                   </div>
 
                   {/* Scan BH */}
-                  <div className="mt-1.5">
+                  <div className="mt-1.5 flex gap-1.5">
                     <button
                       onClick={() => { setBhScanOpen(true); setBhScanResult(null); setBhScanError(null); setBhScanPhotos([]) }}
-                      className="flex w-full items-center justify-between gap-2 rounded-[0.65rem] px-2.5 py-1.5 text-left transition"
+                      className="flex flex-1 min-w-0 items-center justify-between gap-2 rounded-[0.65rem] px-2.5 py-1.5 text-left transition"
                       style={{
                         background: (currentRecord.balanco24h || currentRecord.balancoAcumulado)
                           ? 'linear-gradient(135deg, rgba(34,211,238,0.10), rgba(34,211,238,0.05))'
@@ -5193,21 +5193,31 @@ export function ProntuarioSystemPanel() {
                           : '1px solid rgba(255,255,255,0.10)',
                       }}
                     >
-                      <div className="flex items-center gap-1.5">
+                      <div className="flex items-center gap-1.5 shrink-0">
                         <Camera className="h-3 w-3 shrink-0" style={{ color: (currentRecord.balanco24h || currentRecord.balancoAcumulado) ? '#22d3ee' : 'rgba(255,255,255,0.36)' }} />
                         <span className="text-[9px] font-semibold uppercase tracking-[0.14em]" style={{ color: (currentRecord.balanco24h || currentRecord.balancoAcumulado) ? '#22d3ee' : 'rgba(255,255,255,0.44)' }}>
                           Scan BH
                         </span>
                       </div>
                       {(currentRecord.balanco24h || currentRecord.balancoAcumulado) ? (
-                        <div className="flex items-center gap-1.5 text-[8px] text-white/60">
-                          {currentRecord.balanco24h && <span>24h: <span className="text-white/88">{currentRecord.balanco24h}mL</span></span>}
-                          {currentRecord.balancoAcumulado && <span>Ac: <span className="text-white/88">{currentRecord.balancoAcumulado}mL</span></span>}
+                        <div className="flex items-center gap-1.5 text-[8px] text-white/60 min-w-0 truncate">
+                          {currentRecord.balanco24h && <span className="shrink-0">24h: <span className="text-white/88">{currentRecord.balanco24h}mL</span></span>}
+                          {currentRecord.balancoAcumulado && <span className="shrink-0">Ac: <span className="text-white/88">{currentRecord.balancoAcumulado}mL</span></span>}
                         </div>
                       ) : (
                         <span className="text-[8px] text-white/28">Foto da folha → IA lê</span>
                       )}
                     </button>
+                    {(currentRecord.balanco24h || currentRecord.balancoAcumulado) && (
+                      <button
+                        onClick={() => updateCurrentRecord((record) => ({ ...record, balanco24h: '', balancoAcumulado: '' }))}
+                        title="Limpar BH"
+                        className="flex h-7 w-7 shrink-0 items-center justify-center rounded-[0.65rem] text-white/40 transition hover:text-red-300 hover:bg-red-500/10"
+                        style={{ border: '1px solid rgba(255,255,255,0.10)' }}
+                      >
+                        <Trash2 className="h-3 w-3" />
+                      </button>
+                    )}
                   </div>
 
                   <div className="mt-2 space-y-1.5">
@@ -8774,8 +8784,11 @@ export function ProntuarioSystemPanel() {
                   </button>
                   <button
                     onClick={() => {
-                      if (bhScanResult.bh24_ml != null) setField('balanco24h', String(bhScanResult.bh24_ml))
-                      if (bhScanResult.bhac_ml != null) setField('balancoAcumulado', String(bhScanResult.bhac_ml))
+                      updateCurrentRecord((record) => ({
+                        ...record,
+                        balanco24h: bhScanResult.bh24_ml != null ? String(bhScanResult.bh24_ml) : record.balanco24h,
+                        balancoAcumulado: bhScanResult.bhac_ml != null ? String(bhScanResult.bhac_ml) : record.balancoAcumulado,
+                      }))
                       setBhScanOpen(false)
                     }}
                     className="flex flex-1 items-center justify-center gap-2 rounded-[0.85rem] py-3 text-[12px] font-bold uppercase tracking-[0.14em] transition"
