@@ -3001,7 +3001,7 @@ export function ProntuarioSystemPanel() {
     }).catch((err) => { 
       console.error('[Supabase Sync] Erro no fetch inicial:', err)
     })
-  }, [authUserId])
+  }, [authUserId, isAdmin])
 
   // Remove TODOS os base64 (data:...) antes de enviar ao Supabase.
   // Thumbnails são exibição local; Supabase só precisa de thumbnailPath.
@@ -3399,7 +3399,7 @@ export function ProntuarioSystemPanel() {
       }
     }, 3000)
     return () => clearTimeout(timer)
-  }, [archive, hydrated, records, workspaces])
+  }, [archive, hydrated, records, workspaces, isAdmin, authUserId])
 
   const forceSaveToServer = async () => {
     if (!supabase) return
@@ -3995,6 +3995,9 @@ export function ProntuarioSystemPanel() {
       const aiBlob = new Blob([aiBytes], { type: 'image/jpeg' })
       const formData = new FormData()
       formData.append('file', aiBlob, 'scan.jpg')
+      // Passa o tipo de exame selecionado pelo usuário para a IA focar na análise correta
+      const examTipo = currentRecord.examesImagemList[index]?.tipo || ''
+      if (examTipo) formData.append('examType', examTipo)
 
       // Timeout de 90s — evita spinner infinito se API travar
       const controller = new AbortController()
