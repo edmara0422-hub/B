@@ -9200,7 +9200,7 @@ export function ProntuarioSystemPanel() {
               </div>
 
               <p className="text-[8px] text-white/30 text-center -mt-1">
-                Até 5 fotos · Hamilton, Drager, Servo, GE, antigos · IA detecta modo + parâmetros
+                Até 5 fotos · Hamilton, Drager, Servo, GE, Newport, Leistung, Magnamed, Mindray, antigos · IA detecta modo + parâmetros
               </p>
 
               {vmScanError && (
@@ -9212,7 +9212,7 @@ export function ProntuarioSystemPanel() {
               {vmScanResult && !vmScanLoading && (() => {
                 const r = vmScanResult
                 const p = r.params ?? {}
-                const modeMismatch = r.mode && currentRecord.modoVM && r.mode !== currentRecord.modoVM
+                const modeMismatch = r.mode && currentRecord?.modoVM && r.mode !== currentRecord.modoVM
                 const entries = Object.entries(p).filter(([, v]) => v != null && v !== '')
                 return (
                   <div className="rounded-[0.8rem] px-3 py-2.5 space-y-2" style={{ background: 'rgba(34,211,238,0.08)', border: '1px solid rgba(34,211,238,0.22)' }}>
@@ -9234,7 +9234,7 @@ export function ProntuarioSystemPanel() {
                       )}
                     </div>
                     {modeMismatch && (
-                      <p className="text-[8px] text-amber-300/80">⚠ Modo detectado ({r.mode}) difere do selecionado ({currentRecord.modoVM}). Ao confirmar, será atualizado.</p>
+                      <p className="text-[8px] text-amber-300/80">⚠ Modo detectado ({r.mode}) difere do selecionado ({currentRecord?.modoVM}). Ao confirmar, será atualizado.</p>
                     )}
                     {entries.length ? (
                       <div className="grid grid-cols-2 gap-x-3 gap-y-0.5 text-[9.5px] tabular-nums">
@@ -9302,7 +9302,7 @@ export function ProntuarioSystemPanel() {
                       const set = (k: string, v: unknown) => v != null && v !== '' ? String(v) : undefined
                       updateCurrentRecord((record) => {
                         const next: Record<string, unknown> = { ...record }
-                        const mode = r.mode ?? currentRecord.modoVM
+                        const mode = r.mode ?? currentRecord?.modoVM
                         if (r.mode) next.modoVM = r.mode
 
                         // Mapeamento base — campos comuns
