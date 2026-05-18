@@ -3811,26 +3811,29 @@ export function ProntuarioSystemPanel() {
   }, [currentRecord, calculations])
 
   const updateCurrentRecord = (updater: (record: ICURecord) => ICURecord) => {
-    if (!selectedId) return
-
-    const inRecords = records.some((r) => r.id === selectedId)
-    const inArchive = !inRecords && archive.some((r) => r.id === selectedId)
-
-    if (inRecords) {
-      setRecords((prev) =>
-        prev.map((record) => {
-          if (record.id !== selectedId) return record
-          return updater({ ...record, updatedAt: nowIso() })
-        }),
-      )
-    } else if (inArchive) {
-      setArchive((prev) =>
-        prev.map((record) => {
-          if (record.id !== selectedId) return record
-          return updater({ ...record, updatedAt: nowIso() })
-        }),
-      )
+    const id = selectedId
+    if (!id) {
+      console.warn('[updateCurrentRecord] sem selectedId — update ignorado')
+      return
     }
+
+    // Tenta atualizar em records — se o registro existir lá, aplica.
+    // Se não existir em records (ex: registro arquivado), tenta no archive.
+    setRecords((prev) => {
+      const idx = prev.findIndex((r) => r.id === id)
+      if (idx === -1) return prev
+      const next = [...prev]
+      next[idx] = updater({ ...prev[idx], updatedAt: nowIso() })
+      return next
+    })
+
+    setArchive((prev) => {
+      const idx = prev.findIndex((r) => r.id === id)
+      if (idx === -1) return prev
+      const next = [...prev]
+      next[idx] = updater({ ...prev[idx], updatedAt: nowIso() })
+      return next
+    })
   }
 
   const setField = (field: keyof PatientData, value: string) => {
@@ -6084,8 +6087,11 @@ export function ProntuarioSystemPanel() {
               <div className="space-y-1.5">
                 <TabAlerts alerts={tabAlerts.resp} />
                 <div className="chrome-panel rounded-[1rem] p-1.5 md:p-2">
-                  <p className="mb-2 text-[7px] font-semibold uppercase tracking-[0.14em] text-white/40">
+                  <p className="mb-1 text-[7px] font-semibold uppercase tracking-[0.14em] text-white/40">
                     Via aerea / avaliacao pulmonar / secrecao
+                  </p>
+                  <p className="mb-2 text-[7px] text-white/35 leading-tight">
+                    Use apenas descricao clinica. Nao inclua nome, CPF ou identificadores do paciente nos campos de texto livre.
                   </p>
                   <div className="grid gap-1.5 grid-cols-2 xl:grid-cols-4">
                     <FieldShell label="Via aerea atual">
@@ -6148,7 +6154,7 @@ export function ProntuarioSystemPanel() {
                       <AutoGrowTextarea
                         value={currentRecord.pulmonar}
                         onChange={(value) => setField('pulmonar', value)}
-                        placeholder="Ausculta, complacencia, infiltrado, expansao..."
+                        placeholder="Ausculta, complacencia, infiltrado, expansao (sem identificadores)..."
                       />
                     </FieldShell>
                     {/* Secrecao — multi-select chips */}
