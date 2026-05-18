@@ -17,8 +17,14 @@ export default function TermosPage() {
           <p>Voce e responsavel por manter a confidencialidade da sua senha e por todas as atividades realizadas na sua conta. Notifique-nos imediatamente em caso de uso nao autorizado.</p>
         </section>
         <section>
-          <h2 className="text-[9px] font-semibold text-white/80 mb-1">4. Uso Adequado</h2>
-          <p>O conteudo do app e para fins educacionais. Nao utilize as analises automaticas como unica base para decisoes clinicas. Sempre correlacione com a avaliacao presencial do paciente.</p>
+          <h2 className="text-[9px] font-semibold text-white/80 mb-1">4. Uso Adequado e Analises Automatizadas (LGPD Art. 20)</h2>
+          <p>O conteudo do app e para fins educacionais e de apoio a decisao clinica. O SEA Fisio realiza analises automatizadas (calculo de escores, interpretacao de exames, alertas, recomendacoes, deteccao de TOT em imagens). Estas analises:</p>
+          <ul className="list-disc pl-4 mt-1 space-y-0.5">
+            <li>Sao ferramentas de apoio — NAO substituem o julgamento clinico.</li>
+            <li>NAO devem ser utilizadas como unica base para decisoes clinicas — sempre correlacione com a avaliacao presencial do paciente.</li>
+            <li>Sao baseadas em diretrizes clinicas publicas (com excecao da analise de imagem por IA).</li>
+          </ul>
+          <p className="mt-1">Conforme a LGPD Art. 20, voce tem direito a solicitar revisao das decisoes automatizadas e informacoes sobre os criterios utilizados, entrando em contato com o Encarregado pelo email indicado na Politica de Privacidade.</p>
         </section>
         <section>
           <h2 className="text-[9px] font-semibold text-white/80 mb-1">5. Responsabilidade do Usuario quanto a Dados do Paciente</h2>

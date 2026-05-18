@@ -84,7 +84,28 @@ export default function PrivacidadePage() {
         </section>
 
         <section>
-          <h2 className="text-[9px] font-semibold text-white/80 mb-1">6. Compartilhamento de Dados</h2>
+          <h2 className="text-[9px] font-semibold text-white/80 mb-1">6. Analises Automatizadas (LGPD Art. 20)</h2>
+          <p>O SEA Fisio realiza analises automatizadas sobre os dados clinicos inseridos para apoiar a tomada de decisao profissional. Estas analises incluem:</p>
+          <ul className="list-disc pl-4 mt-1 space-y-0.5">
+            <li>Calculo de escores clinicos (Glasgow, RASS, RSBI, NRS, BPS, P/F, HACOR, SOFA e outros).</li>
+            <li>Interpretacao de parametros laboratoriais com alertas coloridos por gravidade.</li>
+            <li>Analise de tendencia de drogas vasoativas (DVA): subida, descida, suspensao, washout.</li>
+            <li>Analise de balanco hidrico e estimativa de perdas insensiveis.</li>
+            <li>Deteccao automatizada de posicionamento de tubo orotraqueal e intubacao seletiva via analise de imagem (IA).</li>
+            <li>Recomendacoes clinicas baseadas em diretrizes (sedacao, desmame, balanco, alvos ventilatorios).</li>
+          </ul>
+          <p className="mt-2">Conforme a LGPD Art. 20, voce tem direito a:</p>
+          <ul className="list-disc pl-4 mt-1 space-y-0.5">
+            <li>Solicitar informacoes sobre os criterios e procedimentos utilizados nas analises automatizadas.</li>
+            <li>Solicitar revisao dessas analises por agente humano (a propria desenvolvedora).</li>
+            <li>Ser informado quando uma analise automatica contribuiu para uma decisao clinica.</li>
+          </ul>
+          <p className="mt-2 text-white/72">Importante: as analises automatizadas sao <span className="text-white/85">ferramentas de apoio</span>. A decisao clinica final e sempre do profissional de saude usuario — o app NAO substitui o julgamento clinico. Os criterios usados sao baseados em diretrizes clinicas publicas (SCCM, ATS, Sociedade Brasileira de Pneumologia, etc.) e nao em modelos opacos de aprendizado de maquina (com excecao da analise de imagem de RX/TC de torax, que utiliza modelos de IA — neste caso, as medidas sao sempre apresentadas com a possibilidade de revisao manual).</p>
+          <p className="mt-1">Para exercer o direito de revisao: <span className="text-white/70">edmararbusiness1@gmail.com</span></p>
+        </section>
+
+        <section>
+          <h2 className="text-[9px] font-semibold text-white/80 mb-1">7. Compartilhamento de Dados</h2>
           <p>NAO vendemos, alugamos ou compartilhamos dados pessoais com terceiros para fins comerciais. Utilizamos os seguintes prestadores de servico essenciais:</p>
           <ul className="list-disc pl-4 mt-1 space-y-0.5">
             <li>Supabase (banco de dados e autenticacao) — politica em supabase.com/privacy.</li>
@@ -94,7 +115,7 @@ export default function PrivacidadePage() {
         </section>
 
         <section>
-          <h2 className="text-[9px] font-semibold text-white/80 mb-1">7. Seus Direitos (LGPD Art. 18)</h2>
+          <h2 className="text-[9px] font-semibold text-white/80 mb-1">8. Seus Direitos (LGPD Art. 18)</h2>
           <p>Voce tem direito a:</p>
           <ul className="list-disc pl-4 mt-1 space-y-0.5">
             <li>Confirmar a existencia de tratamento dos seus dados.</li>
@@ -110,27 +131,27 @@ export default function PrivacidadePage() {
         </section>
 
         <section>
-          <h2 className="text-[9px] font-semibold text-white/80 mb-1">8. Notificacao de Incidentes</h2>
+          <h2 className="text-[9px] font-semibold text-white/80 mb-1">9. Notificacao de Incidentes</h2>
           <p>Em caso de incidente de seguranca que possa acarretar risco ou dano relevante aos titulares, comunicaremos a Autoridade Nacional de Protecao de Dados (ANPD) e os usuarios afetados no prazo de ate 2 dias uteis apos a ciencia do evento, conforme LGPD Art. 48. A comunicacao incluira: natureza dos dados afetados, usuarios envolvidos, medidas tecnicas adotadas e contato do Encarregado.</p>
         </section>
 
         <section>
-          <h2 className="text-[9px] font-semibold text-white/80 mb-1">9. Cookies e Armazenamento Local</h2>
+          <h2 className="text-[9px] font-semibold text-white/80 mb-1">10. Cookies e Armazenamento Local</h2>
           <p>O app utiliza localStorage do navegador para manter dados clinicos temporarios e preferencias de sessao. Nao utilizamos cookies de rastreamento de terceiros para publicidade. O armazenamento local e apagado automaticamente ao fim do plantao (dados clinicos) ou ao excluir a conta.</p>
         </section>
 
         <section>
-          <h2 className="text-[9px] font-semibold text-white/80 mb-1">10. Menores de Idade</h2>
+          <h2 className="text-[9px] font-semibold text-white/80 mb-1">11. Menores de Idade</h2>
           <p>O app e destinado exclusivamente a profissionais de saude maiores de 18 anos. Nao coletamos intencionalmente dados de menores.</p>
         </section>
 
         <section>
-          <h2 className="text-[9px] font-semibold text-white/80 mb-1">11. Alteracoes nesta Politica</h2>
+          <h2 className="text-[9px] font-semibold text-white/80 mb-1">12. Alteracoes nesta Politica</h2>
           <p>Podemos atualizar esta politica periodicamente. Notificaremos sobre mudancas significativas via app ou email com antecedencia minima de 15 dias.</p>
         </section>
 
         <section>
-          <h2 className="text-[9px] font-semibold text-white/80 mb-1">12. Encarregado de Protecao de Dados (DPO)</h2>
+          <h2 className="text-[9px] font-semibold text-white/80 mb-1">13. Encarregado de Protecao de Dados (DPO)</h2>
           <p>Responsavel pelo tratamento de dados: <span className="text-white/70">Edmara Rocha</span></p>
           <p>Email: <span className="text-white/70">edmararbusiness1@gmail.com</span></p>
           <p className="mt-0.5 text-white/40">SEA Fisio — Plataforma educacional para profissionais de fisioterapia.</p>

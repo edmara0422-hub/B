@@ -3813,15 +3813,24 @@ export function ProntuarioSystemPanel() {
   const updateCurrentRecord = (updater: (record: ICURecord) => ICURecord) => {
     if (!selectedId) return
 
-    setRecords((prev) =>
-      prev.map((record) => {
-        if (record.id !== selectedId) return record
-        return updater({
-          ...record,
-          updatedAt: nowIso(),
-        })
-      }),
-    )
+    const inRecords = records.some((r) => r.id === selectedId)
+    const inArchive = !inRecords && archive.some((r) => r.id === selectedId)
+
+    if (inRecords) {
+      setRecords((prev) =>
+        prev.map((record) => {
+          if (record.id !== selectedId) return record
+          return updater({ ...record, updatedAt: nowIso() })
+        }),
+      )
+    } else if (inArchive) {
+      setArchive((prev) =>
+        prev.map((record) => {
+          if (record.id !== selectedId) return record
+          return updater({ ...record, updatedAt: nowIso() })
+        }),
+      )
+    }
   }
 
   const setField = (field: keyof PatientData, value: string) => {
@@ -6167,23 +6176,23 @@ export function ProntuarioSystemPanel() {
                       }
                       return (
                         <>
-                          <div className="col-span-2 xl:col-span-4 space-y-2 text-center">
-                            <div>
-                              <p className="mb-1 text-[8px] font-semibold uppercase tracking-[0.14em] text-white/40">Cor</p>
-                              <div className="flex flex-wrap justify-center gap-1">
-                                {chip('secrecao', 'Transparente', 'Transparente')}
-                                {chip('secrecao', 'Branca', 'Branca')}
-                                {chip('secrecao', 'Amarela', 'Amarela')}
-                                {chip('secrecao', 'Verde', 'Verde')}
-                                {chip('secrecao', 'Marrom', 'Marrom')}
-                                {chip('secrecao', 'Rosada', 'Rosada/Sangue')}
-                                {chip('secrecao', 'Mucopurulenta', 'Mucopurulenta')}
-                                {chip('secrecao', 'Ausente', 'Ausente')}
-                              </div>
-                            </div>
-                            <div className="flex justify-center gap-6">
+                          <div className="col-span-2 xl:col-span-4">
+                            <div className="flex flex-wrap items-start justify-center gap-x-5 gap-y-2">
                               <div>
-                                <p className="mb-1 text-[8px] font-semibold uppercase tracking-[0.14em] text-white/40">Consistencia</p>
+                                <p className="mb-1 text-[8px] font-semibold uppercase tracking-[0.14em] text-white/40 text-center">Cor</p>
+                                <div className="flex flex-wrap justify-center gap-1">
+                                  {chip('secrecao', 'Transparente', 'Transparente')}
+                                  {chip('secrecao', 'Branca', 'Branca')}
+                                  {chip('secrecao', 'Amarela', 'Amarela')}
+                                  {chip('secrecao', 'Verde', 'Verde')}
+                                  {chip('secrecao', 'Marrom', 'Marrom')}
+                                  {chip('secrecao', 'Rosada', 'Rosada/Sangue')}
+                                  {chip('secrecao', 'Mucopurulenta', 'Mucopurulenta')}
+                                  {chip('secrecao', 'Ausente', 'Ausente')}
+                                </div>
+                              </div>
+                              <div>
+                                <p className="mb-1 text-[8px] font-semibold uppercase tracking-[0.14em] text-white/40 text-center">Consistencia</p>
                                 <div className="flex flex-wrap justify-center gap-1">
                                   {chip('secrecaoConsist', 'Fluida', 'Fluida')}
                                   {chip('secrecaoConsist', 'Espessa', 'Espessa')}
@@ -6191,7 +6200,7 @@ export function ProntuarioSystemPanel() {
                                 </div>
                               </div>
                               <div>
-                                <p className="mb-1 text-[8px] font-semibold uppercase tracking-[0.14em] text-white/40">Quantidade</p>
+                                <p className="mb-1 text-[8px] font-semibold uppercase tracking-[0.14em] text-white/40 text-center">Quantidade</p>
                                 <div className="flex flex-wrap justify-center gap-1">
                                   {chip('secrecaoQtd', 'Pequena', 'Peq')}
                                   {chip('secrecaoQtd', 'Media', 'Med')}
@@ -6199,7 +6208,7 @@ export function ProntuarioSystemPanel() {
                                 </div>
                               </div>
                               <div>
-                                <p className="mb-1 text-[8px] font-semibold uppercase tracking-[0.14em] text-white/40">Evolucao</p>
+                                <p className="mb-1 text-[8px] font-semibold uppercase tracking-[0.14em] text-white/40 text-center">Evolucao</p>
                                 <div className="flex flex-wrap justify-center gap-1">
                                   {chip('secrecaoEvolucao', 'Melhora', '↑')}
                                   {chip('secrecaoEvolucao', 'Estavel', '=')}
