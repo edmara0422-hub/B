@@ -2497,18 +2497,22 @@ function ScanLightbox({ data, onClose }: { data: LightboxPayload | null; onClose
         )}
         {rulerStep === 'done' && (
           <>
-            <span className="rounded-full border border-white/16 bg-white/5 px-3 py-1.5 text-[9px] text-white/60">
-              Régua marcada
-            </span>
             <button onClick={resetRuler} className="rounded-full border border-white/16 bg-white/5 px-2.5 py-1.5 text-[9px] text-white/46 hover:text-white/70">
               Apagar
             </button>
             <button
-              onClick={saveAnnotated}
+              onClick={saveToRecord}
               disabled={saving}
-              className="rounded-full border border-white/24 bg-white/10 px-3 py-1.5 text-[9px] font-medium text-white/80 hover:text-white disabled:opacity-40"
+              className="rounded-full border border-white/30 bg-white/14 px-3 py-1.5 text-[9px] font-semibold text-white disabled:opacity-40"
             >
-              {saving ? 'Salvando…' : 'Salvar imagem'}
+              {saving ? 'Salvando…' : '✓ Salvar no prontuário'}
+            </button>
+            <button
+              onClick={saveToGallery}
+              disabled={saving}
+              className="rounded-full border border-white/16 bg-white/5 px-2.5 py-1.5 text-[9px] text-white/50 hover:text-white/80 disabled:opacity-40"
+            >
+              ↓ Galeria
             </button>
           </>
         )}
@@ -5434,9 +5438,18 @@ export function ProntuarioSystemPanel() {
                                     imgW={exam.imgW}
                                     imgH={exam.imgH}
                                     onOpen={(payload) => setLightboxData(payload)}
-                                    onSave={(annotatedDataUrl) => {
+                                    onSave={(annotatedDataUrl, laudoText) => {
                                       updateListItem('examesImagemList', index, 'thumbnail', annotatedDataUrl)
-                                      updateListItem('examesImagemList', index, 'data', annotatedDataUrl)
+                                      updateListItem('examesImagemList', index, 'scanFull', annotatedDataUrl)
+                                      if (laudoText) {
+                                        updateCurrentRecord((rec) => {
+                                          const next = [...rec.examesImagemList]
+                                          const item = { ...next[index] }
+                                          item.laudo = item.laudo ? item.laudo + '\n\n' + laudoText : laudoText
+                                          next[index] = item
+                                          return { ...rec, examesImagemList: next }
+                                        })
+                                      }
                                       setLightboxData(null)
                                     }}
                                   />
