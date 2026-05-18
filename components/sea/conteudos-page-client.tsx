@@ -13,6 +13,7 @@ import { loadModuleContent } from '@/data/caderno-content-loader'
 type Module = {
   id: string
   title: string
+  short: string
   icon: LucideIcon
   overview: string
 }
@@ -21,18 +22,21 @@ const MODULES: Module[] = [
   {
     id: 'M1',
     title: 'Neuro',
+    short: 'Neuro',
     icon: Brain,
     overview: 'Plasticidade neural, mapas funcionais e correlações clínicas. Avaliação neurológica e reabilitação pós-AVC.',
   },
   {
     id: 'M2',
     title: 'Pneumo / VM',
+    short: 'Pneumo',
     icon: Wind,
     overview: 'Ventilação mecânica protetora, mecânica pulmonar, parâmetros ventilatórios e desmame.',
   },
   {
     id: 'M3',
     title: 'Cardio',
+    short: 'Cardio',
     icon: Heart,
     overview: 'ECG, hemodinâmica e reabilitação cardiovascular. Exercício supervisionado e protocolo cardíaco.',
   },
@@ -70,32 +74,76 @@ function WorkspaceSidebar({
     <div
       className="ipb-soft flex flex-col overflow-hidden rounded-[1.2rem] h-full lg:rounded-[1.65rem]"
     >
-      {/* Header: label + busca + close — fixo no topo da sidebar (compacto mobile, normal desktop) */}
+      {/* ── Mobile: nav compacta (sem busca, sem tópicos) ─────────── */}
+      <div className="lg:hidden flex flex-col px-1.5 py-2">
+        <div className="flex items-center justify-between mb-1.5 px-0.5">
+          <p className="text-[7px] uppercase tracking-[0.22em] text-white/36">Trilha</p>
+          <button
+            onClick={onClose}
+            className="flex h-5 w-5 items-center justify-center rounded-[0.4rem] text-white/36 transition hover:bg-white/[0.08] hover:text-white/64"
+          >
+            <PanelLeftClose className="h-3 w-3" />
+          </button>
+        </div>
+
+        {modules.map((mod, idx) => {
+          const isActive = activeIndex === idx
+          const ModIcon = mod.icon
+          return (
+            <button
+              key={mod.id}
+              onClick={() => onSelectModule(idx)}
+              className="flex flex-col items-center gap-0.5 rounded-[0.8rem] px-1 py-2.5 w-full text-center transition"
+              style={
+                isActive
+                  ? {
+                      background: 'linear-gradient(135deg, rgba(255,255,255,0.09), rgba(255,255,255,0.04))',
+                      border: '1px solid rgba(210,175,90,0.22)',
+                      boxShadow: 'inset 0 1px 0 rgba(210,175,90,0.14)',
+                    }
+                  : { border: '1px solid transparent' }
+              }
+            >
+              <ModIcon className={`h-3.5 w-3.5 mb-0.5 ${isActive ? 'text-[#d2af5a]' : 'text-white/36'}`} />
+              <span className={`text-[7px] font-bold uppercase tracking-[0.1em] leading-none ${isActive ? 'text-[#d2af5a]' : 'text-white/30'}`}>
+                {mod.id}
+              </span>
+              <span className={`text-[8.5px] font-medium leading-tight mt-0.5 ${isActive ? 'text-white/90' : 'text-white/50'}`}>
+                {mod.short}
+              </span>
+            </button>
+          )
+        })}
+      </div>
+
+      {/* ── Desktop: sidebar completa com busca + árvore ──────────── */}
+      <div className="hidden lg:flex flex-col flex-1 overflow-hidden">
+      {/* Header: label + busca + close */}
       <div
-        className="shrink-0 rounded-t-[1.65rem] px-2 pb-2 pt-2.5 lg:px-4 lg:pb-3 lg:pt-4"
+        className="shrink-0 rounded-t-[1.65rem] px-4 pb-3 pt-4"
         style={{ borderBottom: '1px solid rgba(210,175,90,0.12)' }}
       >
-        <div className="mb-2 flex items-center justify-between lg:mb-3">
-          <p className="text-[7px] uppercase tracking-[0.22em] text-white/40 lg:text-[9px] lg:tracking-[0.44em]">Trilha</p>
+        <div className="mb-3 flex items-center justify-between">
+          <p className="text-[9px] uppercase tracking-[0.44em] text-white/40">Trilha</p>
           <button
             onClick={onClose}
             title="Fechar sidebar"
-            className="flex h-5 w-5 items-center justify-center rounded-[0.4rem] text-white/36 transition hover:bg-white/[0.08] hover:text-white/64 lg:h-6 lg:w-6 lg:rounded-[0.5rem]"
+            className="flex h-6 w-6 items-center justify-center rounded-[0.5rem] text-white/36 transition hover:bg-white/[0.08] hover:text-white/64"
           >
-            <PanelLeftClose className="h-3 w-3 lg:h-3.5 lg:w-3.5" />
+            <PanelLeftClose className="h-3.5 w-3.5" />
           </button>
         </div>
         {/* Busca */}
         <div
-          className="flex items-center gap-1.5 rounded-[0.6rem] px-2 py-1.5 lg:gap-2 lg:rounded-[0.85rem] lg:px-3 lg:py-2"
+          className="flex items-center gap-2 rounded-[0.85rem] px-3 py-2"
           style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.10)' }}
         >
-          <Search className="h-2.5 w-2.5 shrink-0 text-white/30 lg:h-3 lg:w-3" />
+          <Search className="h-3 w-3 shrink-0 text-white/30" />
           <input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Buscar..."
-            className="flex-1 bg-transparent text-[9px] text-white/70 outline-none placeholder:text-white/25 lg:text-[11px]"
+            className="flex-1 bg-transparent text-[11px] text-white/70 outline-none placeholder:text-white/25"
           />
         </div>
       </div>
@@ -232,6 +280,8 @@ function WorkspaceSidebar({
           <p className="mt-4 px-3 text-[10px] text-white/30">Nenhum módulo ou tópico encontrado.</p>
         )}
       </div>
+      </div>
+      {/* /Desktop sidebar */}
     </div>
   )
 }
