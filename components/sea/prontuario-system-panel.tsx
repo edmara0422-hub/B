@@ -2747,6 +2747,11 @@ export function ProntuarioSystemPanel() {
   const [bhScanLoading, setBhScanLoading] = useState(false)
   const [bhScanResult, setBhScanResult] = useState<{ bh24_ml: number | null; bhac_ml: number | null; bh24_raw?: string; bhac_raw?: string; confidence?: string; notes?: string } | null>(null)
   const [bhScanError, setBhScanError] = useState<string | null>(null)
+  const [gasoScanOpen, setGasoScanOpen] = useState(false)
+  const [gasoScanPhotos, setGasoScanPhotos] = useState<{ file: File; preview: string }[]>([])
+  const [gasoScanLoading, setGasoScanLoading] = useState(false)
+  const [gasoScanResult, setGasoScanResult] = useState<{ ph: number | null; paco2: number | null; pao2: number | null; hco3: number | null; be: number | null; sao2: number | null; lactato: number | null; type?: 'arterial' | 'venosa' | 'indefinido'; confidence?: string; notes?: string } | null>(null)
+  const [gasoScanError, setGasoScanError] = useState<string | null>(null)
   const workspacesRef = useRef<Workspace[]>([])
   const activeWsIdRef = useRef<string>('')
   useEffect(() => { workspacesRef.current = workspaces }, [workspaces])
@@ -6297,38 +6302,60 @@ export function ProntuarioSystemPanel() {
                       />
                     </div>
                   </div>
-                  <div className="grid gap-2 grid-cols-5">
+                  <div className="grid gap-2 grid-cols-3">
                     <FieldShell label="SpO2 S/F">
                       <input className={INPUT_CLASS_SM} style={INPUT_STYLE} type="number" value={currentRecord.sfSpO2} onChange={(event) => setField('sfSpO2', event.target.value)} placeholder="96" />
                     </FieldShell>
                     <FieldShell label="FiO2 S/F">
                       <input className={INPUT_CLASS_SM} style={INPUT_STYLE} type="number" value={currentRecord.sfFiO2} onChange={(event) => setField('sfFiO2', event.target.value)} placeholder="40" />
                     </FieldShell>
-                    <FieldShell label="pH">
-                      <input className={INPUT_CLASS_SM} style={INPUT_STYLE} type="number" value={currentRecord.gasoPH} onChange={(event) => setField('gasoPH', event.target.value)} placeholder="7.36" />
-                    </FieldShell>
-                    <FieldShell label="PaCO2">
-                      <input className={INPUT_CLASS_SM} style={INPUT_STYLE} type="number" value={currentRecord.gasoPaCO2} onChange={(event) => setField('gasoPaCO2', event.target.value)} placeholder="45" />
-                    </FieldShell>
-                    <FieldShell label="PaO2">
-                      <input className={INPUT_CLASS_SM} style={INPUT_STYLE} type="number" value={currentRecord.gasoPaO2} onChange={(event) => setField('gasoPaO2', event.target.value)} placeholder="80" />
-                    </FieldShell>
-                    <FieldShell label="HCO3">
-                      <input className={INPUT_CLASS_SM} style={INPUT_STYLE} type="number" value={currentRecord.gasoHCO3} onChange={(event) => setField('gasoHCO3', event.target.value)} placeholder="24" />
-                    </FieldShell>
-                    <FieldShell label="BE">
-                      <input className={INPUT_CLASS_SM} style={INPUT_STYLE} type="number" value={currentRecord.gasoBE} onChange={(event) => setField('gasoBE', event.target.value)} placeholder="0" />
-                    </FieldShell>
-                    <FieldShell label="SaO2">
-                      <input className={INPUT_CLASS_SM} style={INPUT_STYLE} type="number" value={currentRecord.gasoSaO2} onChange={(event) => setField('gasoSaO2', event.target.value)} placeholder="96" />
-                    </FieldShell>
-                    <FieldShell label="Lac">
-                      <input className={INPUT_CLASS_SM} style={INPUT_STYLE} type="number" value={currentRecord.gasoLactato} onChange={(event) => setField('gasoLactato', event.target.value)} placeholder="1.5" />
-                    </FieldShell>
-                    <FieldShell label="FiO2">
-                      <input className={INPUT_CLASS_SM} style={INPUT_STYLE} type="number" value={currentRecord.gasoFiO2} onChange={(event) => setField('gasoFiO2', event.target.value)} placeholder="40" />
+                    <FieldShell label="Gaso">
+                      <button
+                        onClick={() => { setGasoScanOpen(true); setGasoScanResult(null); setGasoScanError(null); setGasoScanPhotos([]) }}
+                        className={`${INPUT_CLASS_SM} flex items-center justify-center gap-1`}
+                        style={{
+                          ...INPUT_STYLE,
+                          background: (currentRecord.gasoPH || currentRecord.gasoPaO2 || currentRecord.gasoPaCO2)
+                            ? 'rgba(34,211,238,0.10)'
+                            : undefined,
+                          borderColor: (currentRecord.gasoPH || currentRecord.gasoPaO2 || currentRecord.gasoPaCO2)
+                            ? 'rgba(34,211,238,0.28)'
+                            : undefined,
+                          color: (currentRecord.gasoPH || currentRecord.gasoPaO2 || currentRecord.gasoPaCO2) ? '#22d3ee' : 'rgba(255,255,255,0.55)',
+                        }}
+                      >
+                        <Camera className="h-2.5 w-2.5" />
+                        <span className="text-[9px] font-semibold uppercase tracking-[0.10em]">
+                          {(currentRecord.gasoPH || currentRecord.gasoPaO2 || currentRecord.gasoPaCO2) ? '✓ Lido' : 'Scan'}
+                        </span>
+                      </button>
                     </FieldShell>
                   </div>
+
+                  {/* Resumo dos valores escaneados — só aparece quando há dados */}
+                  {(currentRecord.gasoPH || currentRecord.gasoPaCO2 || currentRecord.gasoPaO2 || currentRecord.gasoHCO3 || currentRecord.gasoBE || currentRecord.gasoSaO2 || currentRecord.gasoLactato) && (
+                    <div className="mt-1.5 flex items-center gap-1.5 rounded-[0.6rem] px-2 py-1" style={{ background: 'rgba(34,211,238,0.06)', border: '1px solid rgba(34,211,238,0.18)' }}>
+                      <div className="flex flex-1 flex-wrap items-center gap-x-2 gap-y-0.5 text-[8.5px] text-white/70 tabular-nums">
+                        {currentRecord.gasoPH && <span>pH <span className="text-white/92">{currentRecord.gasoPH}</span></span>}
+                        {currentRecord.gasoPaCO2 && <span>PaCO2 <span className="text-white/92">{currentRecord.gasoPaCO2}</span></span>}
+                        {currentRecord.gasoPaO2 && <span>PaO2 <span className="text-white/92">{currentRecord.gasoPaO2}</span></span>}
+                        {currentRecord.gasoHCO3 && <span>HCO3 <span className="text-white/92">{currentRecord.gasoHCO3}</span></span>}
+                        {currentRecord.gasoBE && <span>BE <span className="text-white/92">{currentRecord.gasoBE}</span></span>}
+                        {currentRecord.gasoSaO2 && <span>SaO2 <span className="text-white/92">{currentRecord.gasoSaO2}</span></span>}
+                        {currentRecord.gasoLactato && <span>Lac <span className="text-white/92">{currentRecord.gasoLactato}</span></span>}
+                      </div>
+                      <button
+                        onClick={() => updateCurrentRecord((record) => ({
+                          ...record,
+                          gasoPH: '', gasoPaCO2: '', gasoPaO2: '', gasoHCO3: '', gasoBE: '', gasoSaO2: '', gasoLactato: '', gasoFiO2: '',
+                        }))}
+                        title="Limpar gasometria"
+                        className="flex h-5 w-5 shrink-0 items-center justify-center rounded-[0.4rem] text-white/40 transition hover:text-red-300 hover:bg-red-500/10"
+                      >
+                        <Trash2 className="h-2.5 w-2.5" />
+                      </button>
+                    </div>
+                  )}
 
                   <div className="mt-2">
                     <FieldShell label="Obs. gasometricas">
@@ -8788,6 +8815,196 @@ export function ProntuarioSystemPanel() {
                         balancoAcumulado: bhScanResult.bhac_ml != null ? String(bhScanResult.bhac_ml) : record.balancoAcumulado,
                       }))
                       setBhScanOpen(false)
+                    }}
+                    className="flex flex-1 items-center justify-center gap-2 rounded-[0.85rem] py-3 text-[12px] font-bold uppercase tracking-[0.14em] transition"
+                    style={{ background: 'rgba(74,222,128,0.28)', border: '1px solid rgba(74,222,128,0.55)', color: '#86efac' }}
+                  >
+                    <CheckCircle2 className="h-4 w-4" /> Confirmar
+                  </button>
+                </>
+              )}
+            </div>
+          </div>
+        </div>,
+        document.body
+      )}
+
+      {/* ── Gaso Scan Modal — Portal ────────────────────────────── */}
+      {gasoScanOpen && typeof window !== 'undefined' && createPortal(
+        <div
+          className="fixed inset-0 z-[100] flex items-center justify-center p-3"
+          style={{ background: 'rgba(0,0,0,0.72)', backdropFilter: 'blur(6px)' }}
+          onClick={(e) => { if (e.target === e.currentTarget) setGasoScanOpen(false) }}
+        >
+          <div
+            className="w-full max-w-sm rounded-[1.4rem] flex flex-col overscroll-contain"
+            style={{
+              background: 'linear-gradient(160deg,#1a1a24,#111118)',
+              border: '1px solid rgba(255,255,255,0.10)',
+              maxHeight: 'min(85vh, 640px)',
+            }}
+          >
+            {/* Header */}
+            <div className="shrink-0 flex items-center justify-between px-4 pt-4 pb-3" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+              <div className="flex items-center gap-2">
+                <Camera className="h-4 w-4 text-[#22d3ee]" />
+                <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-white/80">Scan Gasometria</span>
+              </div>
+              <button onClick={() => setGasoScanOpen(false)} className="flex h-6 w-6 items-center justify-center rounded-full text-white/40 hover:text-white/70 transition">
+                <X className="h-3.5 w-3.5" />
+              </button>
+            </div>
+
+            {/* Conteúdo scrollável */}
+            <div className="flex-1 overflow-y-auto px-4 py-3 flex flex-col gap-3">
+              {/* Photo grid */}
+              <div className="grid grid-cols-3 gap-2">
+                {gasoScanPhotos.map((p, i) => (
+                  <div key={i} className="relative aspect-square overflow-hidden rounded-[0.8rem]" style={{ border: '1px solid rgba(255,255,255,0.12)' }}>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={p.preview} alt="" className="h-full w-full object-cover" />
+                    <button
+                      onClick={() => setGasoScanPhotos(prev => { URL.revokeObjectURL(prev[i].preview); return prev.filter((_, j) => j !== i) })}
+                      className="absolute right-1 top-1 flex h-5 w-5 items-center justify-center rounded-full bg-black/70 text-white/80 hover:bg-black/90 transition"
+                    >
+                      <X className="h-3 w-3" />
+                    </button>
+                  </div>
+                ))}
+                {gasoScanPhotos.length < 5 && !gasoScanLoading && (
+                  <label
+                    className="flex aspect-square cursor-pointer flex-col items-center justify-center gap-1 rounded-[0.8rem] transition hover:bg-white/[0.06]"
+                    style={{ border: '1.5px dashed rgba(255,255,255,0.18)' }}
+                  >
+                    <Plus className="h-4 w-4 text-white/36" />
+                    <span className="text-[8px] text-white/28">Foto</span>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      capture="environment"
+                      multiple
+                      className="hidden"
+                      onChange={(e) => {
+                        const files = Array.from(e.target.files ?? []).slice(0, 5 - gasoScanPhotos.length)
+                        const newPhotos = files.map(f => ({ file: f, preview: URL.createObjectURL(f) }))
+                        setGasoScanPhotos(prev => [...prev, ...newPhotos])
+                        e.target.value = ''
+                      }}
+                    />
+                  </label>
+                )}
+              </div>
+
+              <p className="text-[8px] text-white/30 text-center -mt-1">
+                Até 5 fotos · Arterial ou venosa · IA detecta o tipo
+              </p>
+
+              {/* Error */}
+              {gasoScanError && (
+                <div className="rounded-[0.65rem] px-3 py-2 text-[9px] text-red-400" style={{ background: 'rgba(239,68,68,0.10)', border: '1px solid rgba(239,68,68,0.20)' }}>
+                  {gasoScanError}
+                </div>
+              )}
+
+              {/* Result */}
+              {gasoScanResult && !gasoScanLoading && (
+                <div className="rounded-[0.8rem] px-3 py-2.5 space-y-2" style={{ background: 'rgba(34,211,238,0.08)', border: '1px solid rgba(34,211,238,0.22)' }}>
+                  <div className="flex items-center justify-between">
+                    <p className="text-[8px] uppercase tracking-[0.18em] text-[#22d3ee]/70">Valores detectados</p>
+                    <div className="flex items-center gap-1">
+                      {gasoScanResult.type && (
+                        <span className="rounded-full px-1.5 py-0.5 text-[7px] font-bold uppercase"
+                          style={{
+                            background: gasoScanResult.type === 'arterial' ? 'rgba(248,113,113,0.14)' : gasoScanResult.type === 'venosa' ? 'rgba(96,165,250,0.14)' : 'rgba(255,255,255,0.06)',
+                            color: gasoScanResult.type === 'arterial' ? '#f87171' : gasoScanResult.type === 'venosa' ? '#60a5fa' : 'rgba(255,255,255,0.5)',
+                            border: `1px solid ${gasoScanResult.type === 'arterial' ? 'rgba(248,113,113,0.30)' : gasoScanResult.type === 'venosa' ? 'rgba(96,165,250,0.30)' : 'rgba(255,255,255,0.10)'}`,
+                          }}>
+                          {gasoScanResult.type}
+                        </span>
+                      )}
+                      {gasoScanResult.confidence && (
+                        <span className="rounded-full px-1.5 py-0.5 text-[7px] font-semibold uppercase"
+                          style={{
+                            background: gasoScanResult.confidence === 'alta' ? 'rgba(74,222,128,0.14)' : gasoScanResult.confidence === 'media' ? 'rgba(251,191,36,0.14)' : 'rgba(248,113,113,0.14)',
+                            color: gasoScanResult.confidence === 'alta' ? '#4ade80' : gasoScanResult.confidence === 'media' ? '#fbbf24' : '#f87171',
+                            border: `1px solid ${gasoScanResult.confidence === 'alta' ? 'rgba(74,222,128,0.30)' : gasoScanResult.confidence === 'media' ? 'rgba(251,191,36,0.30)' : 'rgba(248,113,113,0.30)'}`,
+                          }}>
+                          {gasoScanResult.confidence}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-x-3 gap-y-1 text-[10px] tabular-nums">
+                    {[
+                      { label: 'pH', value: gasoScanResult.ph },
+                      { label: 'PaCO2', value: gasoScanResult.paco2 },
+                      { label: 'PaO2', value: gasoScanResult.pao2 },
+                      { label: 'HCO3', value: gasoScanResult.hco3 },
+                      { label: 'BE', value: gasoScanResult.be },
+                      { label: 'SaO2', value: gasoScanResult.sao2 },
+                      { label: 'Lactato', value: gasoScanResult.lactato },
+                    ].map(item => (
+                      <div key={item.label} className="flex items-baseline gap-1">
+                        <span className="text-white/40">{item.label}</span>
+                        <span className="font-semibold text-white/90">{item.value != null ? item.value : '—'}</span>
+                      </div>
+                    ))}
+                  </div>
+                  {gasoScanResult.notes && <p className="text-[7px] text-white/36 italic">{gasoScanResult.notes}</p>}
+                </div>
+              )}
+            </div>
+
+            {/* Actions — fixo no rodapé */}
+            <div className="shrink-0 flex gap-2 px-4 py-3" style={{ borderTop: '1px solid rgba(255,255,255,0.06)', background: 'rgba(0,0,0,0.20)' }}>
+              {!gasoScanResult ? (
+                <button
+                  onClick={async () => {
+                    if (!gasoScanPhotos.length) return
+                    setGasoScanLoading(true)
+                    setGasoScanError(null)
+                    try {
+                      const fd = new FormData()
+                      gasoScanPhotos.forEach(p => fd.append('files', p.file))
+                      const res = await fetch('/api/icu/gaso-scan', { method: 'POST', body: fd })
+                      const json = await res.json()
+                      if (!res.ok) throw new Error(json.error ?? 'Erro na análise')
+                      setGasoScanResult(json)
+                    } catch (err) {
+                      setGasoScanError(err instanceof Error ? err.message : 'Falha ao analisar imagens')
+                    } finally {
+                      setGasoScanLoading(false)
+                    }
+                  }}
+                  disabled={gasoScanPhotos.length === 0 || gasoScanLoading}
+                  className="flex flex-1 items-center justify-center gap-2 rounded-[0.85rem] py-3 text-[12px] font-semibold uppercase tracking-[0.14em] transition disabled:opacity-40"
+                  style={{ background: 'rgba(34,211,238,0.18)', border: '1px solid rgba(34,211,238,0.32)', color: '#22d3ee' }}
+                >
+                  {gasoScanLoading ? <><Loader2 className="h-3.5 w-3.5 animate-spin" /> Analisando...</> : <><Scan className="h-3.5 w-3.5" /> Analisar Gaso</>}
+                </button>
+              ) : (
+                <>
+                  <button
+                    onClick={() => { setGasoScanResult(null); setGasoScanError(null) }}
+                    className="flex items-center justify-center gap-1.5 rounded-[0.85rem] px-4 py-3 text-[11px] text-white/60 transition hover:text-white/80"
+                    style={{ border: '1px solid rgba(255,255,255,0.10)' }}
+                  >
+                    <Camera className="h-3.5 w-3.5" /> Rescan
+                  </button>
+                  <button
+                    onClick={() => {
+                      const r = gasoScanResult
+                      updateCurrentRecord((record) => ({
+                        ...record,
+                        gasoPH: r.ph != null ? String(r.ph) : record.gasoPH,
+                        gasoPaCO2: r.paco2 != null ? String(r.paco2) : record.gasoPaCO2,
+                        gasoPaO2: r.pao2 != null ? String(r.pao2) : record.gasoPaO2,
+                        gasoHCO3: r.hco3 != null ? String(r.hco3) : record.gasoHCO3,
+                        gasoBE: r.be != null ? String(r.be) : record.gasoBE,
+                        gasoSaO2: r.sao2 != null ? String(r.sao2) : record.gasoSaO2,
+                        gasoLactato: r.lactato != null ? String(r.lactato) : record.gasoLactato,
+                      }))
+                      setGasoScanOpen(false)
                     }}
                     className="flex flex-1 items-center justify-center gap-2 rounded-[0.85rem] py-3 text-[12px] font-bold uppercase tracking-[0.14em] transition"
                     style={{ background: 'rgba(74,222,128,0.28)', border: '1px solid rgba(74,222,128,0.55)', color: '#86efac' }}
