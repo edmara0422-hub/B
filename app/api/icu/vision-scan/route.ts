@@ -25,20 +25,21 @@ const GROQ_MODELS = [
 
 function buildPrompt(examType?: string): string {
   const examHint = examType
-    ? `\n⚠ ATENÇÃO: O CLÍNICO CLASSIFICOU ESTE EXAME COMO "${examType}". Priorize a análise específica para este tipo. Se a imagem claramente contradizer essa classificação, indique no laudo, mas analise conforme o tipo informado.\n`
+    ? `\n🔒 TIPO DE EXAME CONFIRMADO PELO CLÍNICO: "${examType}"
+REGRA ABSOLUTA: Analise a imagem EXCLUSIVAMENTE como "${examType}". NÃO reclassifique o exame.
+IMPORTANTE: A imagem pode ser uma foto de monitor/tela/PACS — isso NÃO muda o tipo de exame. Artefatos de tela são normais em ambientes clínicos. Analise o CONTEÚDO radiológico, não o suporte físico da imagem.
+Se houver anotações didáticas ou texto sobrepostos na imagem, IGNORE-OS e analise a imagem radiológica subjacente.\n`
     : ''
 
   return `Você é um radiologista e ultrassonografista de UTI com 20 anos de experiência. Analise a imagem com máxima precisão clínica.
 ${examHint}
 ═══ PASSO 1: IDENTIFIQUE O TIPO DE EXAME ═══
-Determine com base VISUAL na imagem:
+${examType ? `Tipo confirmado pelo clínico: "${examType}" — use este tipo para toda a análise.` : `Determine com base VISUAL na imagem:
 RX-Tórax | RX-Abdome | RX-Coluna-Cervical | RX-Coluna-Lombar | RX-Bacia | RX-MMSS | RX-MMII | RX-Crânio |
 TC-Tórax | TC-Crânio | TC-Abdome-Pelve | TC-Coluna | TC-Face | AngioTC-Pulmonar | AngioTC-Coronária |
 USG-Pleural | USG-Cardíaco | USG-Abdome | USG-Vias-Biliares | USG-Renal | USG-Vascular | USG-Obstetrico | USG-Tireoide | USG-Partes-Moles | USG-FAST |
 RM-Crânio | RM-Coluna | RM-Abdome | RM-Articular | RM-Mama |
-Broncoscopia | Endoscopia | Fluoroscopia | Cintilografia | PET-CT | Outro.
-
-SE o tipo informado pelo clínico divergir do que você vê: analise como o tipo informado E mencione a discrepância no laudo.
+Broncoscopia | Endoscopia | Fluoroscopia | Cintilografia | PET-CT | Outro.`}
 
 ═══ PASSO 2: ACHADOS POR TIPO DE EXAME ═══
 

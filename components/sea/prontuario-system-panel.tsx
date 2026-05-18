@@ -2320,12 +2320,27 @@ function ScanLightbox({ data, onClose }: { data: LightboxPayload | null; onClose
     const annotatedDataUrl = canvas.toDataURL('image/jpeg', 0.9)
     const blob = await new Promise<Blob>((res) => canvas.toBlob((b) => res(b!), 'image/jpeg', 0.92))
     canvas.width = 0; canvas.height = 0
+
+    // Monta texto do laudo da régua manual
     const parts: string[] = []
-    if (aiCm) parts.push(`${aiCm}cm da carina`)
-    if (aiDir) parts.push(aiDir === 'ADEQUADO' ? 'posição adequada' : aiDir === 'SUBIDO' ? 'tubo SUBIDO — avançar' : aiDir === 'PROXIMO_CARINA' ? 'próximo à carina — retrair' : 'INTUBAÇÃO SELETIVA — reposicionar URGENTE')
+    if (aiCm) {
+      parts.push(`${aiCm}cm da carina`)
+      if (aiDir) parts.push(
+        aiDir === 'ADEQUADO' ? '✓ posição adequada (2–5cm)' :
+        aiDir === 'ALERTA_BAIXO' ? '⚠ próximo à carina (1–2cm) — verificar flexão' :
+        aiDir === 'CRITICO_BAIXO' ? '🔴 CRÍTICO: <1cm da carina — retrair urgente' :
+        aiDir === 'ALERTA_SUBIDO' ? '⚠ tubo alto (5–7cm) — avançar' :
+        aiDir === 'CRITICO_SUBIDO' ? '🔴 CRÍTICO: >7cm — risco extubação' :
+        aiDir === 'SELETIVO' || aiDir === 'CRITICO_SELETIVO' ? '🔴 INTUBAÇÃO SELETIVA — reposicionar URGENTE' : aiDir
+      )
+    }
     if (rimCm) parts.push(`fixação labial: ${rimCm}cm`)
     if (data.measurements?.seletiva) parts.push(`⚠ SELETIVA ${data.measurements.seletiva_side ?? ''}`)
-    const laudoText = `[RÉGUA MANUAL]: Marcação confirmada. ${parts.join(' | ')}`
+
+    const laudoText = aiCm
+      ? `[RÉGUA MANUAL]: TOT e carina marcados pelo usuário. ${parts.join(' | ')}.`
+      : `[RÉGUA MANUAL]: TOT e carina identificados visualmente pelo usuário (marcação confirmada na imagem). Mensuração precisa em cm requer RX de tórax — USG não permite avaliação confiável da distância tubo-carina.`
+
     return { annotatedDataUrl, blob, laudoText }
   }
 
@@ -3426,7 +3441,7 @@ export function ProntuarioSystemPanel() {
         }
       }
       
-      const safeSnapshot = JSON.parse(JSON.stringify(snapshot, getCircularReplacer()))
+      const safeSnapshot = JSON.parse(JSON.stringify(stripBase64(snapshot), getCircularReplacer()))
 
       const { error } = await supabase.from('icu_sessions').upsert({
         session_id: sid,
