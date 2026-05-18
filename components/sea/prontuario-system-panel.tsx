@@ -2549,7 +2549,7 @@ function ScanThumbnail({
   imgW?: number
   imgH?: number
   onOpen: (payload: LightboxPayload) => void
-  onSave?: (annotatedDataUrl: string) => void
+  onSave?: (annotatedDataUrl: string, laudoText?: string) => void
 }) {
   // resolvedThumb: sempre base64 local para exibição imediata sem depender de rede
   const [resolvedThumb, setResolvedThumb] = useState<string | null>(
