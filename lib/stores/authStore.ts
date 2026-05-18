@@ -184,7 +184,7 @@ export const useAuthStore = create<AuthState & AuthActions>((set, get) => ({
       const profile = data as Profile
       // Admin se: role='admin' no banco OU é a Edmara (fallback de segurança).
       // Isso permite que admins promovidos/transferidos via painel funcionem.
-      const isAdmin = profile.role === 'admin' || isAdminByEmail(profile.email)
+      const isAdmin = profile.role === 'admin' || isAdminByEmail(profile.email) || isAdminByEmail(get().user?.email)
       set({ profile, isAdmin })
       writeCachedAdmin(isAdmin)
     }

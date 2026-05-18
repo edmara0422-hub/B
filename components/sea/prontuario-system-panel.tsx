@@ -2129,7 +2129,7 @@ type LightboxPayload = {
   measurements?: ImageExamEntry['measurements']
   imgW?: number
   imgH?: number
-  onSave?: (annotatedDataUrl: string) => void
+  onSave?: (annotatedDataUrl: string, laudoText?: string) => void
 }
 
 function ScanLightbox({ data, onClose }: { data: LightboxPayload | null; onClose: () => void }) {
@@ -2261,93 +2261,102 @@ function ScanLightbox({ data, onClose }: { data: LightboxPayload | null; onClose
   const resetRuler = () => { setTipPct(null); setCarinaPct(null); setRulerStep('tot') }
   const resetZoom  = () => { setZoom(1); setPan({ x: 0, y: 0 }) }
 
-  const saveAnnotated = async () => {
-    if (!tipPct || !carinaPct || !imgRef.current) return
+  const buildAnnotated = async (): Promise<{ annotatedDataUrl: string; blob: Blob; laudoText: string } | null> => {
+    if (!tipPct || !carinaPct || !imgRef.current) return null
+    const img = imgRef.current
+    if (!img.complete || img.naturalWidth === 0) await img.decode()
+    const W = img.naturalWidth || 800
+    const H = img.naturalHeight || 600
+    const canvas = document.createElement('canvas')
+    canvas.width = W; canvas.height = H
+    const ctx = canvas.getContext('2d')!
+    ctx.drawImage(img, 0, 0, W, H)
+    const tipX = tipPct.x * W; const tipY = tipPct.y * H
+    const carX = carinaPct.x * W; const carY = carinaPct.y * H
+    const r = W * 0.018
+    ctx.setLineDash([W * 0.014, W * 0.007])
+    ctx.strokeStyle = 'rgba(255,255,255,0.75)'; ctx.lineWidth = W * 0.004
+    ctx.beginPath(); ctx.moveTo(tipX, tipY); ctx.lineTo(carX, carY); ctx.stroke()
+    ctx.setLineDash([])
+    const tk = W * 0.018
+    ctx.strokeStyle = 'rgba(255,255,255,0.7)'; ctx.lineWidth = W * 0.003
+    ctx.beginPath(); ctx.moveTo(tipX - tk, tipY); ctx.lineTo(tipX + tk, tipY); ctx.stroke()
+    ctx.beginPath(); ctx.moveTo(carX - tk, carY); ctx.lineTo(carX + tk, carY); ctx.stroke()
+    const hexRgba = (hex: string, a: number) => {
+      const n = parseInt(hex.replace('#', ''), 16)
+      return `rgba(${(n >> 16) & 255},${(n >> 8) & 255},${n & 255},${a})`
+    }
+    const drawMarker = (x: number, y: number, hex: string, label: string, dy: number) => {
+      ctx.fillStyle = hexRgba(hex, 0.22); ctx.strokeStyle = hex; ctx.lineWidth = W * 0.004
+      ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill(); ctx.stroke()
+      ctx.strokeStyle = hex; ctx.lineWidth = W * 0.003
+      ctx.beginPath(); ctx.moveTo(x - r * 1.3, y); ctx.lineTo(x + r * 1.3, y); ctx.stroke()
+      ctx.beginPath(); ctx.moveTo(x, y - r * 1.3); ctx.lineTo(x, y + r * 1.3); ctx.stroke()
+      ctx.fillStyle = hex; ctx.font = `bold ${Math.round(W * 0.026)}px sans-serif`
+      ctx.fillText(label, x + r * 1.5, y + dy)
+    }
+    drawMarker(tipX, tipY, '#fb923c', 'TOT', -r * 0.6)
+    drawMarker(carX, carY, '#60a5fa', 'Carina', r * 2.4)
+    const midX = (tipX + carX) / 2; const midY = (tipY + carY) / 2
+    const aiCm  = data.measurements?.tot_to_carina_cm
+    const aiDir = data.measurements?.direction ?? data.measurements?.status
+    const rimCm = data.measurements?.rim_labial_cm
+    const labelLine = aiCm
+      ? `${aiCm} cm — ${aiDir === 'ADEQUADO' ? 'ADEQUADO' : aiDir === 'SUBIDO' ? 'SUBIDO' : aiDir === 'PROXIMO_CARINA' ? 'PROX.CARINA' : aiDir === 'SELETIVO' ? 'SELETIVO' : ''}`
+      : 'TOT → Carina'
+    const fs = Math.round(W * 0.024)
+    ctx.font = `bold ${fs}px monospace`
+    const tw = ctx.measureText(labelLine).width
+    const bw = tw + W * 0.05; const bh = H * 0.072
+    ctx.fillStyle = 'rgba(0,0,0,0.88)'; ctx.strokeStyle = 'rgba(255,255,255,0.24)'; ctx.lineWidth = W * 0.002
+    ctx.beginPath()
+    if (ctx.roundRect) ctx.roundRect(midX - bw / 2, midY - bh / 2, bw, bh, W * 0.012)
+    else ctx.rect(midX - bw / 2, midY - bh / 2, bw, bh)
+    ctx.fill(); ctx.stroke()
+    ctx.fillStyle = aiCm ? (aiDir === 'ADEQUADO' ? '#4ade80' : aiDir === 'SELETIVO' ? '#f87171' : '#fbbf24') : 'white'
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle'
+    ctx.fillText(labelLine, midX, midY)
+    ctx.textAlign = 'left'; ctx.textBaseline = 'alphabetic'
+    const annotatedDataUrl = canvas.toDataURL('image/jpeg', 0.9)
+    const blob = await new Promise<Blob>((res) => canvas.toBlob((b) => res(b!), 'image/jpeg', 0.92))
+    canvas.width = 0; canvas.height = 0
+    const parts: string[] = []
+    if (aiCm) parts.push(`${aiCm}cm da carina`)
+    if (aiDir) parts.push(aiDir === 'ADEQUADO' ? 'posição adequada' : aiDir === 'SUBIDO' ? 'tubo SUBIDO — avançar' : aiDir === 'PROXIMO_CARINA' ? 'próximo à carina — retrair' : 'INTUBAÇÃO SELETIVA — reposicionar URGENTE')
+    if (rimCm) parts.push(`fixação labial: ${rimCm}cm`)
+    if (data.measurements?.seletiva) parts.push(`⚠ SELETIVA ${data.measurements.seletiva_side ?? ''}`)
+    const laudoText = `[RÉGUA MANUAL]: Marcação confirmada. ${parts.join(' | ')}`
+    return { annotatedDataUrl, blob, laudoText }
+  }
+
+  const saveToRecord = async () => {
     setSaving(true)
     try {
-      const img = imgRef.current
-      if (!img.complete || img.naturalWidth === 0) await img.decode()
+      const result = await buildAnnotated()
+      if (!result) return
+      data.onSave?.(result.annotatedDataUrl, result.laudoText)
+    } catch (err) {
+      console.error('[ScanLightbox] saveToRecord:', err)
+    } finally {
+      setSaving(false)
+    }
+  }
 
-      const W = img.naturalWidth || 800
-      const H = img.naturalHeight || 600
-      const canvas = document.createElement('canvas')
-      canvas.width = W; canvas.height = H
-      const ctx = canvas.getContext('2d')!
-      ctx.drawImage(img, 0, 0, W, H)
-
-      const tipX = tipPct.x * W;    const tipY = tipPct.y * H
-      const carX = carinaPct.x * W; const carY = carinaPct.y * H
-      const r = W * 0.018
-
-      // linha tracejada
-      ctx.setLineDash([W * 0.014, W * 0.007])
-      ctx.strokeStyle = 'rgba(255,255,255,0.75)'; ctx.lineWidth = W * 0.004
-      ctx.beginPath(); ctx.moveTo(tipX, tipY); ctx.lineTo(carX, carY); ctx.stroke()
-      ctx.setLineDash([])
-
-      // ticks nas extremidades
-      const tk = W * 0.018
-      ctx.strokeStyle = 'rgba(255,255,255,0.7)'; ctx.lineWidth = W * 0.003
-      ctx.beginPath(); ctx.moveTo(tipX - tk, tipY); ctx.lineTo(tipX + tk, tipY); ctx.stroke()
-      ctx.beginPath(); ctx.moveTo(carX - tk, carY); ctx.lineTo(carX + tk, carY); ctx.stroke()
-
-      const hexRgba = (hex: string, a: number) => {
-        const n = parseInt(hex.replace('#', ''), 16)
-        return `rgba(${(n >> 16) & 255},${(n >> 8) & 255},${n & 255},${a})`
-      }
-
-      const drawMarker = (x: number, y: number, hex: string, label: string, dy: number) => {
-        ctx.fillStyle = hexRgba(hex, 0.22)
-        ctx.strokeStyle = hex; ctx.lineWidth = W * 0.004
-        ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill(); ctx.stroke()
-        ctx.strokeStyle = hex; ctx.lineWidth = W * 0.003
-        ctx.beginPath(); ctx.moveTo(x - r * 1.3, y); ctx.lineTo(x + r * 1.3, y); ctx.stroke()
-        ctx.beginPath(); ctx.moveTo(x, y - r * 1.3); ctx.lineTo(x, y + r * 1.3); ctx.stroke()
-        ctx.fillStyle = hex
-        ctx.font = `bold ${Math.round(W * 0.026)}px sans-serif`
-        ctx.fillText(label, x + r * 1.5, y + dy)
-      }
-
-      drawMarker(tipX, tipY, '#fb923c', 'TOT',    -r * 0.6)
-      drawMarker(carX, carY, '#60a5fa', 'Carina',  r * 2.4)
-
-      // label central com medida
-      const midX = (tipX + carX) / 2; const midY = (tipY + carY) / 2
-      const aiCm  = data.measurements?.tot_to_carina_cm
-      const aiDir = data.measurements?.direction ?? data.measurements?.status
-      const labelLine = aiCm
-        ? `${aiCm} cm — ${aiDir === 'ADEQUADO' ? 'ADEQUADO' : aiDir === 'SUBIDO' ? 'SUBIDO' : aiDir === 'PROXIMO_CARINA' ? 'PROX.CARINA' : aiDir === 'SELETIVO' ? 'SELETIVO' : ''}`
-        : 'TOT → Carina'
-      const fs = Math.round(W * 0.024)
-      ctx.font = `bold ${fs}px monospace`
-      const tw = ctx.measureText(labelLine).width
-      const bw = tw + W * 0.05; const bh = H * 0.072
-      ctx.fillStyle = 'rgba(0,0,0,0.88)'; ctx.strokeStyle = 'rgba(255,255,255,0.24)'; ctx.lineWidth = W * 0.002
-      ctx.beginPath()
-      if (ctx.roundRect) ctx.roundRect(midX - bw / 2, midY - bh / 2, bw, bh, W * 0.012)
-      else ctx.rect(midX - bw / 2, midY - bh / 2, bw, bh)
-      ctx.fill(); ctx.stroke()
-      ctx.fillStyle = aiCm
-        ? (aiDir === 'ADEQUADO' ? '#4ade80' : aiDir === 'SELETIVO' ? '#f87171' : '#fbbf24')
-        : 'white'
-      ctx.textAlign = 'center'; ctx.textBaseline = 'middle'
-      ctx.fillText(labelLine, midX, midY)
-      ctx.textAlign = 'left'; ctx.textBaseline = 'alphabetic'
-
-      const annotatedDataUrl = canvas.toDataURL('image/jpeg', 0.9)
-      data.onSave?.(annotatedDataUrl)
-
-      const blob = await new Promise<Blob>((res) => canvas.toBlob((b) => res(b!), 'image/jpeg', 0.92))
-      const file = new File([blob], 'regua-tot.jpg', { type: 'image/jpeg' })
-      if (navigator.share && navigator.canShare?.({ files: [file] })) {
-        await navigator.share({ files: [file], title: 'Régua TOT — SEA FISIO' })
+  const saveToGallery = async () => {
+    setSaving(true)
+    try {
+      const result = await buildAnnotated()
+      if (!result) return
+      const imgFile = new File([result.blob], 'regua-tot.jpg', { type: 'image/jpeg' })
+      if (navigator.share && navigator.canShare?.({ files: [imgFile] })) {
+        await navigator.share({ files: [imgFile], title: 'Régua TOT — SEA FISIO' })
       } else {
-        const url = URL.createObjectURL(blob)
+        const url = URL.createObjectURL(result.blob)
         const a = document.createElement('a'); a.href = url; a.download = 'regua-tot.jpg'; a.click()
         URL.revokeObjectURL(url)
       }
     } catch (err) {
-      console.error('[ScanLightbox] saveAnnotated:', err)
+      console.error('[ScanLightbox] saveToGallery:', err)
     } finally {
       setSaving(false)
     }
