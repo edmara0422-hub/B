@@ -3443,7 +3443,7 @@ export function ProntuarioSystemPanel() {
         }, { onConflict: 'session_id' })
 
         const timeoutPromise = new Promise<never>((_, reject) =>
-          setTimeout(() => reject(new Error('Timeout: Supabase não respondeu em 10s')), 10000)
+          setTimeout(() => reject(new Error('Timeout: Supabase não respondeu em 30s')), 30000)
         )
 
         const { error } = await Promise.race([upsertPromise, timeoutPromise]) as { error: any }
