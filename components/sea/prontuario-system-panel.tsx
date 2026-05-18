@@ -3603,20 +3603,26 @@ export function ProntuarioSystemPanel() {
     const pplatoVal = currentRecord.pplato ? parseNumber(currentRecord.pplato) : 0
     const peepVal = currentRecord.peep ? parseNumber(currentRecord.peep) : 0
     const vtEfetivo = (currentRecord.vt ? parseNumber(currentRecord.vt) : 0) || (currentRecord.vc ? parseNumber(currentRecord.vc) : 0)
-    // DP e Cest: VCV, PRVC e PCV (todos têm pausa inspiratória)
-    // Cdyn, Raw, MP, SI, P1-P2: somente VCV/PRVC
+    const ppicoVal = currentRecord.ppico ? parseNumber(currentRecord.ppico) : 0
+    // VCV/PRVC: DP/Cest precisam de Pplato (manobra). Cdyn/Raw/MP só nesses.
+    // PCV: PIP ≈ Pplato (com Ti adequado). DP/Cest podem usar PIP-PEEP se Pplato ausente.
+    // PSV/TuboT/BIPAP/CPAP/APRV/HFOV/etc: cálculos de oxigenação/desmame, não mecânica.
     const isVCV = ['VCV', 'PRVC'].includes(currentRecord.modoVM)
-    const hasPplato = ['VCV', 'PRVC', 'PCV'].includes(currentRecord.modoVM)
-    const dp = hasPplato && pplatoVal && peepVal ? calcDP(pplatoVal, peepVal) : null
-    const cest = hasPplato && dp && vtEfetivo ? calcCest(vtEfetivo, dp) : null
-    const cdyn = isVCV ? calcCdyn(vtEfetivo, currentRecord.ppico ? parseNumber(currentRecord.ppico) : 0, peepVal) : null
-    const mechanicalPower = isVCV ? calcMechanicalPower(parseNumber(currentRecord.fr), parseNumber(currentRecord.vt), parseNumber(currentRecord.ppico), parseNumber(currentRecord.peep)) : null
+    const isPCV = currentRecord.modoVM === 'PCV'
+    const isSpontaneous = ['PSV', 'TuboT'].includes(currentRecord.modoVM)
+    // Para PCV, usa PIP como Pplato proxy se manobra não foi feita
+    const pplatoEffective = pplatoVal || (isPCV && ppicoVal ? ppicoVal : 0)
+    const dp = (isVCV || isPCV) && pplatoEffective && peepVal ? calcDP(pplatoEffective, peepVal) : null
+    const cest = (isVCV || isPCV) && dp && vtEfetivo ? calcCest(vtEfetivo, dp) : null
+    const cdyn = isVCV ? calcCdyn(vtEfetivo, ppicoVal, peepVal) : null
+    const mechanicalPower = (isVCV || isPCV) ? calcMechanicalPower(parseNumber(currentRecord.fr), vtEfetivo, ppicoVal, peepVal) : null
     const glasgow = calcGlasgow(
       parseNumber(currentRecord.glasgowO),
       currentRecord.glasgowV || '',
       parseNumber(currentRecord.glasgowM),
     )
-    const rsbi = calcRSBI(parseNumber(currentRecord.fr), parseNumber(currentRecord.vc))
+    // RSBI só faz sentido em modos espontâneos (PSV/TuboT). Em VCV/PCV a FR é setada.
+    const rsbi = isSpontaneous ? calcRSBI(parseNumber(currentRecord.fr), vtEfetivo) : null
     const rsbiInterp = rsbi ? interpRSBI(rsbi) : null
     const raw = isVCV ? calcResist(currentRecord.ppico, currentRecord.pplato, currentRecord.fluxo) : null
     const lastLab = currentRecord.examesLabList?.length ? currentRecord.examesLabList[currentRecord.examesLabList.length - 1] : null
@@ -6733,10 +6739,10 @@ export function ProntuarioSystemPanel() {
                                 <input className={INPUT_CLASS_SM} style={INPUT_STYLE} value={currentRecord.pocc ?? ''} onChange={(e) => setField('pocc', e.target.value)} placeholder="8" />
                               </FieldShell>
                               <FieldShell label="PImax">
-                                <input className={INPUT_CLASS_SM} style={INPUT_STYLE} value={currentRecord.pimax ?? ''} onChange={(e) => setField('pimax', e.target.value)} placeholder="-30" />
+                                <input className={INPUT_CLASS_SM} style={INPUT_STYLE} value={currentRecord.dPimax ?? ''} onChange={(e) => setField('dPimax', e.target.value)} placeholder="-30" />
                               </FieldShell>
                               <FieldShell label="PEmax">
-                                <input className={INPUT_CLASS_SM} style={INPUT_STYLE} value={currentRecord.pemax ?? ''} onChange={(e) => setField('pemax', e.target.value)} placeholder="60" />
+                                <input className={INPUT_CLASS_SM} style={INPUT_STYLE} value={currentRecord.dPemax ?? ''} onChange={(e) => setField('dPemax', e.target.value)} placeholder="60" />
                               </FieldShell>
                             </>
                           )}
