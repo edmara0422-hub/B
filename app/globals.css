@@ -595,3 +595,24 @@ body.sea-splash-active [data-sea-bottom-nav='true'] {
 .ipb-thinscroll::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.20);
 }
+
+/* ── Bloqueio de impressão (LGPD) ── */
+@media print {
+  body { visibility: hidden !important; }
+  body::before {
+    content: 'Impressao de dados clinicos nao e permitida — SEA Fisio';
+    visibility: visible !important;
+    display: block;
+    padding: 60px;
+    text-align: center;
+    font-size: 16px;
+    color: #333;
+    font-family: sans-serif;
+  }
+}
+
+/* ── Dados clínicos: bloqueia seleção de texto ── */
+.clinical-no-select {
+  user-select: none;
+  -webkit-user-select: none;
+}
