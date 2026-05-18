@@ -3592,7 +3592,7 @@ export function ProntuarioSystemPanel() {
     const pesoIdeal = currentRecord.altura
       ? calcPesoIdeal(parseNumber(currentRecord.altura), currentRecord.sexo || 'M')
       : 0
-    const pf = calcPF(parseNumber(currentRecord.gasoPaO2), parseNumber(currentRecord.gasoFiO2) || parseNumber(currentRecord.fio2))
+    const pf = calcPF(parseNumber(currentRecord.gasoPaO2), parseNumber(currentRecord.sfFiO2) || parseNumber(currentRecord.gasoFiO2) || parseNumber(currentRecord.fio2))
     const pfInterp = pf ? interpPF(pf) : null
     const pplatoVal = currentRecord.pplato ? parseNumber(currentRecord.pplato) : 0
     const peepVal = currentRecord.peep ? parseNumber(currentRecord.peep) : 0
