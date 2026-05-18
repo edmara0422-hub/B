@@ -1083,11 +1083,12 @@ function formatDateTime(value: string) {
 }
 
 function recordTitle(record: ICURecord) {
-  return record.nome?.trim() || 'Paciente sem nome'
+  return record.diagnostico?.trim() || 'Sem diagnostico informado'
 }
 
-function recordSubtitle(record: ICURecord) {
-  return record.diagnostico || 'Sem diagnostico informado'
+function recordSubtitle(_record: ICURecord) {
+  // Paciente anonimizado: identificacao apenas pelo Leito (mostrado em badge separado).
+  return ''
 }
 
 function compactTone(text?: string | null) {
@@ -4707,13 +4708,14 @@ export function ProntuarioSystemPanel() {
                   count > 0 ? (
                     <span
                       key={key}
-                      className="rounded-full border px-1.5 py-0.5 text-[7px] font-semibold uppercase tracking-[0.12em]"
+                      className="inline-flex items-center gap-1 rounded-full border px-1.5 py-0.5 text-[7px] font-semibold uppercase tracking-[0.12em]"
                       style={{
                         borderColor: VIA_BADGE_STYLES[key]?.border ?? 'rgba(255,255,255,0.12)',
                         background: VIA_BADGE_STYLES[key]?.background ?? 'rgba(255,255,255,0.05)',
                         color: VIA_BADGE_STYLES[key]?.color ?? 'rgba(255,255,255,0.72)',
                       }}
                     >
+                      <span className="tabular-nums">{count}</span>
                       {VIA_BADGE_STYLES[key]?.label ?? key}
                     </span>
                   ) : null,
@@ -4980,7 +4982,6 @@ export function ProntuarioSystemPanel() {
                     </div>
                     <div className="min-w-0">
                       <p className="text-[8px] font-semibold text-white/88">{recordTitle(record)}</p>
-                      <p className="mt-1 text-[8px] text-white/58">{recordSubtitle(record)}</p>
                       <p className="mt-2 text-xs text-white/38">Arquivado em {formatDateTime(record.updatedAt)}</p>
                     </div>
                   </div>
@@ -5030,7 +5031,6 @@ export function ProntuarioSystemPanel() {
                   <div>
                     <p className="text-[8px] uppercase tracking-[0.14em] text-white/38">Leito {currentRecord.leito || '--'}</p>
                     <h4 className="text-[8px] font-semibold text-white/92">{recordTitle(currentRecord)}</h4>
-                    <p className={`mt-0.5 text-[8px] ${compactTone(recordSubtitle(currentRecord))}`}>{recordSubtitle(currentRecord)}</p>
                   </div>
                 </div>
 
@@ -8523,10 +8523,10 @@ export function ProntuarioSystemPanel() {
                 return (
                   <div
                     key={record.id}
-                    className="chrome-panel flex items-center gap-2 rounded-[1rem] px-2 py-1.5"
+                    className="chrome-panel flex items-center gap-1.5 rounded-[0.85rem] px-2 py-1"
                   >
                     {/* Ícone leito */}
-                    <div className="chrome-subtle flex h-9 w-9 shrink-0 flex-col items-center justify-center rounded-[0.8rem]">
+                    <div className="chrome-subtle flex h-8 w-8 shrink-0 flex-col items-center justify-center rounded-[0.7rem]">
                       {record.leito ? (
                         <>
                           <span className="text-[7px] uppercase tracking-[0.12em] text-white/38">Lt</span>
@@ -8537,17 +8537,16 @@ export function ProntuarioSystemPanel() {
                       )}
                     </div>
 
-                    {/* Nome + diagnóstico — texto escondido quando container < 320px (sidebar aberta no mobile)
+                    {/* Diagnóstico — texto escondido quando container < 320px (sidebar aberta no mobile)
                         Mantém flex-1 pra badges/botões ficarem à direita mesmo sem texto */}
                     <div className="min-w-0 flex-1 overflow-hidden">
                       <div className="hidden @[320px]:block">
                         <p className="truncate text-[8px] font-semibold text-white/90">{recordTitle(record)}</p>
-                        <p className="truncate text-[8px] text-white/48">{recordSubtitle(record)}</p>
                       </div>
                     </div>
 
-                    {/* Badges afastados do nome */}
-                    <div className="flex shrink-0 flex-col items-center gap-1">
+                    {/* Badges em linha horizontal */}
+                    <div className="flex shrink-0 flex-wrap items-center justify-end gap-1">
                       {cardStatus ? (
                         <span
                           className="rounded-full border px-1 py-px text-[6px] font-semibold uppercase tracking-[0.08em]"
