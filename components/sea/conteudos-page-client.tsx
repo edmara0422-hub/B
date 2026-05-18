@@ -68,7 +68,7 @@ function WorkspaceSidebar({
 
   return (
     <div
-      className="ipb-soft flex flex-col overflow-hidden rounded-[1.65rem] h-[calc(100vh-9rem)]"
+      className="ipb-soft flex flex-col overflow-hidden rounded-[1.2rem] h-full lg:rounded-[1.65rem]"
     >
       {/* Header: label + busca + close — fixo no topo da sidebar (compacto mobile, normal desktop) */}
       <div
@@ -437,9 +437,9 @@ export default function ConteudosPageClient() {
               280px largura, altura NATURAL (curta), todos os tópicos visíveis,
               página rola pra mostrar tudo. Header de busca sticky por dentro. */}
           {/* Sidebar inline lado-a-lado em mobile e desktop — mobile com colunas bem mais estreitas */}
-          <div className={sidebarOpen ? 'grid grid-cols-[86px_1fr] items-start gap-2 sm:grid-cols-[140px_1fr] sm:gap-3 lg:grid-cols-[220px_1fr] lg:gap-4' : ''}>
+          <div className={sidebarOpen ? 'grid grid-cols-[86px_1fr] items-stretch gap-2 sm:grid-cols-[140px_1fr] sm:gap-3 lg:grid-cols-[220px_1fr] lg:gap-4' : ''}>
             {sidebarOpen && (
-              <div className="block">
+              <div className="sticky top-4 h-full">
                 <WorkspaceSidebar
                   modules={MODULES}
                   activeIndex={activeIndex}

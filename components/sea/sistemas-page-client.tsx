@@ -57,7 +57,7 @@ function WorkspaceSidebar({
   const q = search.toLowerCase().trim()
 
   return (
-    <div className="ipb-soft flex flex-col overflow-hidden rounded-[1.2rem] h-full lg:rounded-[1.65rem] lg:h-[calc(100vh-9rem)]">
+    <div className="ipb-soft flex flex-col overflow-hidden rounded-[1.2rem] h-full lg:rounded-[1.65rem]">
 
       {/* ── Mobile: nav compacta (sem busca — só 2 itens) ─────────── */}
       <div className="lg:hidden relative flex flex-col gap-1.5 px-1.5 py-2">
