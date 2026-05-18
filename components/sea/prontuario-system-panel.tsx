@@ -5647,8 +5647,11 @@ export function ProntuarioSystemPanel() {
               <div className="space-y-1.5">
                 <TabAlerts alerts={tabAlerts.neuro} />
                 <div className="chrome-panel rounded-[1rem] p-1.5 md:p-2">
-                  <p className="mb-2 text-[7px] font-semibold uppercase tracking-[0.14em] text-white/40">
+                  <p className="mb-1 text-[7px] font-semibold uppercase tracking-[0.14em] text-white/40">
                     Avaliacao neurologica
+                  </p>
+                  <p className="mb-2 text-[7px] text-white/35 leading-tight">
+                    Use apenas descricao clinica do caso. Nao inclua nome, CPF ou identificadores do paciente.
                   </p>
                   <div className="grid gap-1 grid-cols-5">
                     <FieldShell label="O">
@@ -5983,7 +5986,7 @@ export function ProntuarioSystemPanel() {
                 })()}
 
                 <div className="chrome-panel rounded-[1rem] p-1.5 md:p-2">
-                  <div className="mb-2 flex items-center justify-between gap-2">
+                  <div className="mb-1 flex items-center justify-between gap-2">
                     <p className="text-[7px] font-semibold uppercase tracking-[0.14em] text-white/40">Drogas vasoativas</p>
                     <button
                       onClick={() => addListItem('dvaList')}
@@ -5993,6 +5996,9 @@ export function ProntuarioSystemPanel() {
                       DVA
                     </button>
                   </div>
+                  <p className="mb-2 text-[7px] text-white/35 leading-tight">
+                    Use apenas descricao clinica do caso. Nao inclua nome, CPF ou identificadores do paciente.
+                  </p>
 
                   <div className="space-y-1.5">
                     {currentRecord.dvaList?.length ? (
