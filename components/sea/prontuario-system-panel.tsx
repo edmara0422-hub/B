@@ -2301,8 +2301,27 @@ function ScanLightbox({ data, onClose }: { data: LightboxPayload | null; onClose
     const aiCm  = data.measurements?.tot_to_carina_cm
     const aiDir = data.measurements?.direction ?? data.measurements?.status
     const rimCm = data.measurements?.rim_labial_cm
-    const labelLine = aiCm
-      ? `${aiCm} cm — ${aiDir === 'ADEQUADO' ? 'ADEQUADO' : aiDir === 'SUBIDO' ? 'SUBIDO' : aiDir === 'PROXIMO_CARINA' ? 'PROX.CARINA' : aiDir === 'SELETIVO' ? 'SELETIVO' : ''}`
+
+    // Compute manual cm (same calibration logic as SVG overlay)
+    const manualCmCanvas = (() => {
+      const mW = data.imgW || W; const mH = data.imgH || H
+      const uDx = (tipPct.x - carinaPct.x) * mW; const uDy = (tipPct.y - carinaPct.y) * mH
+      const uDist = Math.sqrt(uDx * uDx + uDy * uDy)
+      const m = data.measurements
+      if (m?.tot_to_carina_cm && m?.tube_tip_pct && m?.carina_pct) {
+        const aDx = (m.tube_tip_pct.x - m.carina_pct.x) * mW; const aDy = (m.tube_tip_pct.y - m.carina_pct.y) * mH
+        const aDist = Math.sqrt(aDx * aDx + aDy * aDy)
+        if (aDist > 1) return Math.round(uDist * m.tot_to_carina_cm / aDist * 10) / 10
+      }
+      return null
+    })()
+
+    const displayCanvasCm = manualCmCanvas ?? aiCm
+    const canvasDir = displayCanvasCm
+      ? (displayCanvasCm < 1 ? 'CRÍTICO' : displayCanvasCm <= 2 ? 'BAIXO' : displayCanvasCm <= 5 ? 'ADEQUADO' : displayCanvasCm <= 7 ? 'ALTO' : 'CRÍTICO')
+      : null
+    const labelLine = displayCanvasCm
+      ? `${displayCanvasCm} cm — ${canvasDir}`
       : 'TOT → Carina'
     const fs = Math.round(W * 0.024)
     ctx.font = `bold ${fs}px monospace`
@@ -2313,7 +2332,7 @@ function ScanLightbox({ data, onClose }: { data: LightboxPayload | null; onClose
     if (ctx.roundRect) ctx.roundRect(midX - bw / 2, midY - bh / 2, bw, bh, W * 0.012)
     else ctx.rect(midX - bw / 2, midY - bh / 2, bw, bh)
     ctx.fill(); ctx.stroke()
-    ctx.fillStyle = aiCm ? (aiDir === 'ADEQUADO' ? '#4ade80' : aiDir === 'SELETIVO' ? '#f87171' : '#fbbf24') : 'white'
+    ctx.fillStyle = displayCanvasCm ? (canvasDir === 'ADEQUADO' ? '#4ade80' : canvasDir === 'CRÍTICO' ? '#f87171' : '#fbbf24') : 'white'
     ctx.textAlign = 'center'; ctx.textBaseline = 'middle'
     ctx.fillText(labelLine, midX, midY)
     ctx.textAlign = 'left'; ctx.textBaseline = 'alphabetic'
@@ -2323,23 +2342,22 @@ function ScanLightbox({ data, onClose }: { data: LightboxPayload | null; onClose
 
     // Monta texto do laudo da régua manual
     const parts: string[] = []
-    if (aiCm) {
-      parts.push(`${aiCm}cm da carina`)
-      if (aiDir) parts.push(
-        aiDir === 'ADEQUADO' ? '✓ posição adequada (2–5cm)' :
-        aiDir === 'ALERTA_BAIXO' ? '⚠ próximo à carina (1–2cm) — verificar flexão' :
-        aiDir === 'CRITICO_BAIXO' ? '🔴 CRÍTICO: <1cm da carina — retrair urgente' :
-        aiDir === 'ALERTA_SUBIDO' ? '⚠ tubo alto (5–7cm) — avançar' :
-        aiDir === 'CRITICO_SUBIDO' ? '🔴 CRÍTICO: >7cm — risco extubação' :
-        aiDir === 'SELETIVO' || aiDir === 'CRITICO_SELETIVO' ? '🔴 INTUBAÇÃO SELETIVA — reposicionar URGENTE' : aiDir
+    if (displayCanvasCm) {
+      parts.push(`${displayCanvasCm}cm da carina`)
+      parts.push(
+        canvasDir === 'ADEQUADO' ? '✓ posição adequada (2–5cm)' :
+        canvasDir === 'BAIXO'    ? '⚠ próximo à carina — verificar flexão' :
+        canvasDir === 'ALTO'     ? '⚠ tubo alto — avançar' :
+                                   '🔴 CRÍTICO — reposicionar urgente'
       )
+      if (manualCmCanvas && !aiCm) parts.push('(estimativa por escala proporcional)')
     }
     if (rimCm) parts.push(`fixação labial: ${rimCm}cm`)
     if (data.measurements?.seletiva) parts.push(`⚠ SELETIVA ${data.measurements.seletiva_side ?? ''}`)
 
-    const laudoText = aiCm
-      ? `[RÉGUA MANUAL]: TOT e carina marcados pelo usuário. ${parts.join(' | ')}.`
-      : `[RÉGUA MANUAL]: TOT e carina identificados visualmente pelo usuário (marcação confirmada na imagem). Mensuração precisa em cm requer RX de tórax — USG não permite avaliação confiável da distância tubo-carina.`
+    const laudoText = displayCanvasCm
+      ? `[RÉGUA MANUAL]: ${parts.join(' | ')}.`
+      : `[RÉGUA MANUAL]: TOT e carina identificados visualmente. Mensuração em cm requer calibração — escanear RX de tórax para obter referência.`
 
     return { annotatedDataUrl, blob, laudoText }
   }
@@ -2383,6 +2401,36 @@ function ScanLightbox({ data, onClose }: { data: LightboxPayload | null; onClose
   const tick = 0.018
   const aiDist = data.measurements?.tot_to_carina_cm
   const aiDir  = data.measurements?.direction ?? data.measurements?.status
+
+  // Calcula cm manual a partir dos pontos marcados, calibrado pela IA quando disponível
+  const computeManualCm = (): number | null => {
+    if (!tipPct || !carinaPct) return null
+    const W = data.imgW || 500
+    const H = data.imgH || 500
+    const userDx = (tipPct.x - carinaPct.x) * W
+    const userDy = (tipPct.y - carinaPct.y) * H
+    const userDist = Math.sqrt(userDx * userDx + userDy * userDy)
+    const m = data.measurements
+    if (m?.tot_to_carina_cm && m?.tube_tip_pct && m?.carina_pct) {
+      const aiDx = (m.tube_tip_pct.x - m.carina_pct.x) * W
+      const aiDy = (m.tube_tip_pct.y - m.carina_pct.y) * H
+      const aiPixelDist = Math.sqrt(aiDx * aiDx + aiDy * aiDy)
+      if (aiPixelDist > 1) return Math.round(userDist * m.tot_to_carina_cm / aiPixelDist * 10) / 10
+    }
+    return null
+  }
+
+  const classifyByCm = (cm: number): { status: string; color: string } => {
+    if (cm < 1)  return { status: 'CRÍTICO <1cm — retrair urgente', color: '#f87171' }
+    if (cm <= 2) return { status: `${cm}cm BAIXO — verificar`, color: '#fbbf24' }
+    if (cm <= 5) return { status: 'ADEQUADO', color: '#4ade80' }
+    if (cm <= 7) return { status: `${cm}cm ALTO — avançar`, color: '#fbbf24' }
+    return { status: 'CRÍTICO >7cm — avançar urgente', color: '#f87171' }
+  }
+
+  const manualCm = bothPlaced ? computeManualCm() : null
+  const displayCm = manualCm ?? aiDist
+  const displayClass = displayCm ? classifyByCm(displayCm) : null
 
   return (
     <div
@@ -2451,12 +2499,10 @@ function ScanLightbox({ data, onClose }: { data: LightboxPayload | null; onClose
               </>
             )}
             {bothPlaced && (() => {
-              const svgLabel = aiDist
-                ? `${aiDist}cm — ${aiDir === 'ADEQUADO' ? 'ADEQUADO' : aiDir === 'SUBIDO' ? 'SUBIDO' : aiDir === 'PROXIMO_CARINA' ? 'PROX.CARINA' : aiDir === 'SELETIVO' ? 'SELETIVO' : ''}`
+              const svgLabel = displayCm
+                ? `${displayCm}cm — ${displayClass?.status ?? ''}`
                 : 'TOT → Carina'
-              const svgFill = aiDist
-                ? (aiDir === 'ADEQUADO' ? '#4ade80' : aiDir === 'SELETIVO' ? '#f87171' : '#fbbf24')
-                : 'white'
+              const svgFill = displayClass?.color ?? 'white'
               return (
                 <>
                   <line x1={tipPct.x - tick} y1={tipPct.y} x2={tipPct.x + tick} y2={tipPct.y} stroke="white" strokeWidth="0.003" strokeOpacity="0.7" />

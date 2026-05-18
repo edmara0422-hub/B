@@ -25,21 +25,29 @@ const GROQ_MODELS = [
 
 function buildPrompt(examType?: string): string {
   const examHint = examType
-    ? `\n🔒 TIPO DE EXAME CONFIRMADO PELO CLÍNICO: "${examType}"
-REGRA ABSOLUTA: Analise a imagem EXCLUSIVAMENTE como "${examType}". NÃO reclassifique o exame.
-IMPORTANTE: A imagem pode ser uma foto de monitor/tela/PACS — isso NÃO muda o tipo de exame. Artefatos de tela são normais em ambientes clínicos. Analise o CONTEÚDO radiológico, não o suporte físico da imagem.
-Se houver anotações didáticas ou texto sobrepostos na imagem, IGNORE-OS e analise a imagem radiológica subjacente.\n`
+    ? `\nDica do clínico: este exame foi classificado como "${examType}". Use como referência, mas analise o que REALMENTE está visível na imagem.\n`
     : ''
 
-  return `Você é um radiologista e ultrassonografista de UTI com 20 anos de experiência. Analise a imagem com máxima precisão clínica.
+  return `Você é um radiologista e ultrassonografista de UTI com 20 anos de experiência.
+
+REGRA FUNDAMENTAL: Analise o CONTEÚDO RADIOLÓGICO REAL da imagem.
+- A imagem pode ser foto de monitor/PACS/negatoscópio — artefatos de tela são normais, ignore-os
+- IGNORE textos sobrepostos, anotações didáticas, marcações, setas ou labels na imagem
+- IGNORE qualquer texto que descreva o exame — olhe apenas para as estruturas radiológicas
+- Identifique o tipo de exame pelo que você VÊ (padrão visual, não pelo texto)
 ${examHint}
 ═══ PASSO 1: IDENTIFIQUE O TIPO DE EXAME ═══
-${examType ? `Tipo confirmado pelo clínico: "${examType}" — use este tipo para toda a análise.` : `Determine com base VISUAL na imagem:
+Determine pelo padrão visual radiológico:
 RX-Tórax | RX-Abdome | RX-Coluna-Cervical | RX-Coluna-Lombar | RX-Bacia | RX-MMSS | RX-MMII | RX-Crânio |
 TC-Tórax | TC-Crânio | TC-Abdome-Pelve | TC-Coluna | TC-Face | AngioTC-Pulmonar | AngioTC-Coronária |
 USG-Pleural | USG-Cardíaco | USG-Abdome | USG-Vias-Biliares | USG-Renal | USG-Vascular | USG-Obstetrico | USG-Tireoide | USG-Partes-Moles | USG-FAST |
 RM-Crânio | RM-Coluna | RM-Abdome | RM-Articular | RM-Mama |
-Broncoscopia | Endoscopia | Fluoroscopia | Cintilografia | PET-CT | Outro.`}
+Broncoscopia | Endoscopia | Fluoroscopia | Cintilografia | PET-CT | Outro.
+
+RX tem: aspecto filme/digital, gradações de cinza sem escala de cor, estruturas ósseas em branco, ar em preto
+USG tem: cone acústico, sombras posteriores, textura granulada específica, escala de cinza com ganho
+TC tem: corte axial/sagital/coronal com Hounsfield, janelas diferentes, escala de cinza específica
+RM tem: múltiplas sequências, contraste diferente de TC, sem osso cortical proeminente em branco
 
 ═══ PASSO 2: ACHADOS POR TIPO DE EXAME ═══
 
