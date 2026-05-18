@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
+import { createPortal } from 'react-dom'
 import type { LucideIcon } from 'lucide-react'
 import {
   Activity,
@@ -8633,16 +8634,20 @@ export function ProntuarioSystemPanel() {
 
       <ScanLightbox data={lightboxData} onClose={() => setLightboxData(null)} />
 
-      {/* ── BH Scan Modal ─────────────────────────────────────────── */}
-      {bhScanOpen && (
+      {/* ── BH Scan Modal — Portal para escapar de transforms do framer-motion ── */}
+      {bhScanOpen && typeof window !== 'undefined' && createPortal(
         <div
-          className="fixed inset-0 z-50 flex items-end justify-center sm:items-center"
+          className="fixed inset-0 z-[100] flex items-center justify-center p-3"
           style={{ background: 'rgba(0,0,0,0.72)', backdropFilter: 'blur(6px)' }}
           onClick={(e) => { if (e.target === e.currentTarget) setBhScanOpen(false) }}
         >
           <div
-            className="w-full max-w-sm rounded-t-[1.6rem] sm:rounded-[1.6rem] flex flex-col max-h-[92vh] overscroll-contain"
-            style={{ background: 'linear-gradient(160deg,#1a1a24,#111118)', border: '1px solid rgba(255,255,255,0.10)' }}
+            className="w-full max-w-sm rounded-[1.4rem] flex flex-col overscroll-contain"
+            style={{
+              background: 'linear-gradient(160deg,#1a1a24,#111118)',
+              border: '1px solid rgba(255,255,255,0.10)',
+              maxHeight: 'min(85vh, 640px)',
+            }}
           >
             {/* Header — fixo no topo */}
             <div className="shrink-0 flex items-center justify-between px-4 pt-4 pb-3" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
@@ -8768,7 +8773,7 @@ export function ProntuarioSystemPanel() {
                     }
                   }}
                   disabled={bhScanPhotos.length === 0 || bhScanLoading}
-                  className="flex flex-1 items-center justify-center gap-2 rounded-[0.85rem] py-2.5 text-[10px] font-semibold uppercase tracking-[0.14em] transition disabled:opacity-40"
+                  className="flex flex-1 items-center justify-center gap-2 rounded-[0.85rem] py-3 text-[12px] font-semibold uppercase tracking-[0.14em] transition disabled:opacity-40"
                   style={{ background: 'rgba(34,211,238,0.18)', border: '1px solid rgba(34,211,238,0.32)', color: '#22d3ee' }}
                 >
                   {bhScanLoading ? <><Loader2 className="h-3.5 w-3.5 animate-spin" /> Analisando...</> : <><Scan className="h-3.5 w-3.5" /> Analisar BH</>}
@@ -8777,10 +8782,10 @@ export function ProntuarioSystemPanel() {
                 <>
                   <button
                     onClick={() => { setBhScanResult(null); setBhScanError(null) }}
-                    className="flex items-center justify-center gap-1.5 rounded-[0.85rem] px-3 py-2.5 text-[10px] text-white/50 transition hover:text-white/70"
+                    className="flex items-center justify-center gap-1.5 rounded-[0.85rem] px-4 py-3 text-[11px] text-white/60 transition hover:text-white/80"
                     style={{ border: '1px solid rgba(255,255,255,0.10)' }}
                   >
-                    <Camera className="h-3 w-3" /> Rescan
+                    <Camera className="h-3.5 w-3.5" /> Rescan
                   </button>
                   <button
                     onClick={() => {
@@ -8788,16 +8793,17 @@ export function ProntuarioSystemPanel() {
                       if (bhScanResult.bhac_ml != null) setField('balancoAcumulado', String(bhScanResult.bhac_ml))
                       setBhScanOpen(false)
                     }}
-                    className="flex flex-1 items-center justify-center gap-2 rounded-[0.85rem] py-2.5 text-[10px] font-semibold uppercase tracking-[0.14em] transition"
-                    style={{ background: 'rgba(74,222,128,0.18)', border: '1px solid rgba(74,222,128,0.32)', color: '#4ade80' }}
+                    className="flex flex-1 items-center justify-center gap-2 rounded-[0.85rem] py-3 text-[12px] font-bold uppercase tracking-[0.14em] transition"
+                    style={{ background: 'rgba(74,222,128,0.28)', border: '1px solid rgba(74,222,128,0.55)', color: '#86efac' }}
                   >
-                    <CheckCircle2 className="h-3.5 w-3.5" /> Confirmar
+                    <CheckCircle2 className="h-4 w-4" /> Confirmar
                   </button>
                 </>
               )}
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
 
       </div>
