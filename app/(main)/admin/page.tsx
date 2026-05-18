@@ -26,7 +26,7 @@ const COLORS = ['#4ade80', '#facc15', '#fb923c', '#f87171', '#60a5fa', '#a78bfa'
 export default function AdminPage() {
   const router = useRouter()
   const { isAdmin, initialized, user } = useAuthStore()
-  const [tab, setTab] = useState<AdminTab>('estrategia')
+  const [tab, setTab] = useState<AdminTab>('users')
   const [loading, setLoading] = useState(false)
   const [msg, setMsg] = useState('')
 
