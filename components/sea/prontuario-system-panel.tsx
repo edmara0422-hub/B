@@ -5647,11 +5647,8 @@ export function ProntuarioSystemPanel() {
               <div className="space-y-1.5">
                 <TabAlerts alerts={tabAlerts.neuro} />
                 <div className="chrome-panel rounded-[1rem] p-1.5 md:p-2">
-                  <p className="mb-1 text-[7px] font-semibold uppercase tracking-[0.14em] text-white/40">
+                  <p className="mb-2 text-[7px] font-semibold uppercase tracking-[0.14em] text-white/40">
                     Avaliacao neurologica
-                  </p>
-                  <p className="mb-2 text-[7px] text-white/35 leading-tight">
-                    Use apenas descricao clinica do caso. Nao inclua nome, CPF ou identificadores do paciente.
                   </p>
                   <div className="grid gap-1 grid-cols-5">
                     <FieldShell label="O">
@@ -5953,11 +5950,14 @@ export function ProntuarioSystemPanel() {
                 </div>
 
                 <div className="chrome-panel rounded-[1rem] p-1.5 md:p-2">
+                  <p className="mb-1 text-[7px] text-white/35 leading-tight">
+                    Use apenas descricao clinica do caso. Nao inclua nome, CPF ou identificadores do paciente.
+                  </p>
                   <FieldShell label="Observacoes neurologicas">
                     <AutoGrowTextarea
                       value={currentRecord.neurologico}
                       onChange={(value) => setField('neurologico', value)}
-                      placeholder="Leitura neuro, sedacao, delirium, BNM..."
+                      placeholder="Leitura neuro, sedacao, delirium, BNM (sem identificadores)..."
                     />
                   </FieldShell>
                 </div>
@@ -5986,7 +5986,7 @@ export function ProntuarioSystemPanel() {
                 })()}
 
                 <div className="chrome-panel rounded-[1rem] p-1.5 md:p-2">
-                  <div className="mb-1 flex items-center justify-between gap-2">
+                  <div className="mb-2 flex items-center justify-between gap-2">
                     <p className="text-[7px] font-semibold uppercase tracking-[0.14em] text-white/40">Drogas vasoativas</p>
                     <button
                       onClick={() => addListItem('dvaList')}
@@ -5996,9 +5996,6 @@ export function ProntuarioSystemPanel() {
                       DVA
                     </button>
                   </div>
-                  <p className="mb-2 text-[7px] text-white/35 leading-tight">
-                    Use apenas descricao clinica do caso. Nao inclua nome, CPF ou identificadores do paciente.
-                  </p>
 
                   <div className="space-y-1.5">
                     {currentRecord.dvaList?.length ? (
@@ -6078,11 +6075,14 @@ export function ProntuarioSystemPanel() {
                 </div>
 
                 <div className="chrome-panel rounded-[1rem] p-1.5 md:p-2">
+                  <p className="mb-1 text-[7px] text-white/35 leading-tight">
+                    Use apenas descricao clinica do caso. Nao inclua nome, CPF ou identificadores do paciente.
+                  </p>
                   <FieldShell label="Avaliacao cardiovascular">
                     <AutoGrowTextarea
                       value={currentRecord.cardiovascular}
                       onChange={(value) => setField('cardiovascular', value)}
-                      placeholder="Perfusao, edema, resposta vasoativa, ritmos, metas..."
+                      placeholder="Perfusao, edema, resposta vasoativa, ritmos, metas (sem identificadores)..."
                     />
                   </FieldShell>
                 </div>
@@ -6186,36 +6186,61 @@ export function ProntuarioSystemPanel() {
                             }>{label}</button>
                         )
                       }
+                      // Chip de cor de secrecao: usa a cor real da secrecao em vez de azul generico
+                      type SecColor = { border: string; bg: string; bgActive: string; text: string; textActive: string }
+                      const SEC_COLORS: Record<string, SecColor> = {
+                        Transparente:   { border: 'rgba(255,255,255,0.25)', bg: 'rgba(255,255,255,0.04)', bgActive: 'rgba(255,255,255,0.15)', text: 'rgba(255,255,255,0.55)', textActive: '#ffffff' },
+                        Branca:         { border: 'rgba(229,231,235,0.45)', bg: 'rgba(229,231,235,0.06)', bgActive: 'rgba(229,231,235,0.25)', text: 'rgba(229,231,235,0.60)', textActive: '#f9fafb' },
+                        Amarela:        { border: 'rgba(250,204,21,0.45)', bg: 'rgba(250,204,21,0.06)', bgActive: 'rgba(250,204,21,0.22)', text: 'rgba(253,224,71,0.65)', textActive: '#fde047' },
+                        Verde:          { border: 'rgba(74,222,128,0.45)', bg: 'rgba(74,222,128,0.06)', bgActive: 'rgba(74,222,128,0.22)', text: 'rgba(134,239,172,0.65)', textActive: '#86efac' },
+                        Marrom:         { border: 'rgba(180,83,9,0.55)', bg: 'rgba(180,83,9,0.08)', bgActive: 'rgba(180,83,9,0.28)', text: 'rgba(253,186,116,0.65)', textActive: '#fdba74' },
+                        Rosada:         { border: 'rgba(239,68,68,0.45)', bg: 'rgba(239,68,68,0.06)', bgActive: 'rgba(239,68,68,0.22)', text: 'rgba(252,165,165,0.65)', textActive: '#fca5a5' },
+                        Mucopurulenta:  { border: 'rgba(163,230,53,0.45)', bg: 'rgba(163,230,53,0.06)', bgActive: 'rgba(163,230,53,0.22)', text: 'rgba(190,242,100,0.65)', textActive: '#bef264' },
+                        Ausente:        { border: 'rgba(255,255,255,0.10)', bg: 'rgba(255,255,255,0.02)', bgActive: 'rgba(255,255,255,0.08)', text: 'rgba(255,255,255,0.35)', textActive: 'rgba(255,255,255,0.75)' },
+                      }
+                      const colorChip = (tag: string, label: string) => {
+                        const active = hasTags('secrecao').includes(tag)
+                        const c = SEC_COLORS[tag]
+                        return (
+                          <button key={tag} type="button" onClick={() => toggleTag('secrecao', tag)}
+                            className="rounded-full border px-1.5 py-0.5 text-[7px] font-semibold transition-all whitespace-nowrap"
+                            style={{
+                              borderColor: c.border,
+                              background: active ? c.bgActive : c.bg,
+                              color: active ? c.textActive : c.text,
+                            }}>{label}</button>
+                        )
+                      }
                       return (
                         <>
                           <div className="col-span-2 xl:col-span-4 space-y-1.5">
-                            {/* Linha 1: Cor (label inline com chips) */}
-                            <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+                            {/* Linha 1: Cor — sempre uma linha (scroll horizontal no mobile se nao couber) */}
+                            <div className="scrollbar-hide flex flex-nowrap items-center gap-x-2 overflow-x-auto">
                               <p className="text-[7px] font-semibold uppercase tracking-[0.14em] text-white/40 shrink-0">Cor</p>
-                              {chip('secrecao', 'Transparente', 'Transp')}
-                              {chip('secrecao', 'Branca', 'Branca')}
-                              {chip('secrecao', 'Amarela', 'Amar')}
-                              {chip('secrecao', 'Verde', 'Verde')}
-                              {chip('secrecao', 'Marrom', 'Marrom')}
-                              {chip('secrecao', 'Rosada', 'Sangue')}
-                              {chip('secrecao', 'Mucopurulenta', 'Muco')}
-                              {chip('secrecao', 'Ausente', 'Aus')}
+                              {colorChip('Transparente', 'Transp')}
+                              {colorChip('Branca', 'Branca')}
+                              {colorChip('Amarela', 'Amar')}
+                              {colorChip('Verde', 'Verde')}
+                              {colorChip('Marrom', 'Marrom')}
+                              {colorChip('Rosada', 'Sangue')}
+                              {colorChip('Mucopurulenta', 'Muco')}
+                              {colorChip('Ausente', 'Aus')}
                             </div>
-                            {/* Linha 2: Consist + Qtd + Evol (inline, todos na mesma linha) */}
-                            <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-                              <div className="flex items-center gap-1.5">
+                            {/* Linha 2: Consist + Qtd + Evol — sempre uma linha (scroll horizontal no mobile se nao couber) */}
+                            <div className="scrollbar-hide flex flex-nowrap items-center gap-x-3 overflow-x-auto">
+                              <div className="flex shrink-0 items-center gap-1.5">
                                 <p className="text-[7px] font-semibold uppercase tracking-[0.14em] text-white/40 shrink-0">Cons</p>
                                 {chip('secrecaoConsist', 'Fluida', 'Fluida')}
                                 {chip('secrecaoConsist', 'Espessa', 'Espessa')}
                                 {chip('secrecaoConsist', 'Rolha', 'Rolha')}
                               </div>
-                              <div className="flex items-center gap-1.5">
+                              <div className="flex shrink-0 items-center gap-1.5">
                                 <p className="text-[7px] font-semibold uppercase tracking-[0.14em] text-white/40 shrink-0">Qtd</p>
-                                {chip('secrecaoQtd', 'Pequena', 'Peq')}
-                                {chip('secrecaoQtd', 'Media', 'Med')}
-                                {chip('secrecaoQtd', 'Grande', 'Gde')}
+                                {chip('secrecaoQtd', 'Pequena', 'P')}
+                                {chip('secrecaoQtd', 'Media', 'M')}
+                                {chip('secrecaoQtd', 'Grande', 'G')}
                               </div>
-                              <div className="flex items-center gap-1.5">
+                              <div className="flex shrink-0 items-center gap-1.5">
                                 <p className="text-[7px] font-semibold uppercase tracking-[0.14em] text-white/40 shrink-0">Evol</p>
                                 {chip('secrecaoEvolucao', 'Melhora', '↑')}
                                 {chip('secrecaoEvolucao', 'Estavel', '=')}
@@ -8203,11 +8228,14 @@ export function ProntuarioSystemPanel() {
               <div className="space-y-1.5">
                 <TabAlerts alerts={tabAlerts.motora} />
                 <div className="chrome-panel rounded-[1rem] p-1.5 md:p-2">
+                  <p className="mb-1 text-[7px] text-white/35 leading-tight">
+                    Use apenas descricao clinica do caso. Nao inclua nome, CPF ou identificadores do paciente.
+                  </p>
                   <FieldShell label="Avaliacao motora / funcional">
                     <AutoGrowTextarea
                       value={currentRecord.motora}
                       onChange={(value) => setField('motora', value)}
-                      placeholder="Forca, mobilidade, barreiras, evolucao funcional..."
+                      placeholder="Forca, mobilidade, barreiras, evolucao funcional (sem identificadores)..."
                     />
                   </FieldShell>
                 </div>
@@ -8392,26 +8420,29 @@ export function ProntuarioSystemPanel() {
             {activeTab === 'percepcao' ? (
               <div className="space-y-1.5">
                 <div className="chrome-panel rounded-[1rem] p-1.5 md:p-2">
+                  <p className="mb-2 text-[7px] text-white/35 leading-tight">
+                    Use apenas descricao clinica do caso. Nao inclua nome, CPF ou identificadores do paciente.
+                  </p>
                   <div className="space-y-4">
                     <FieldShell label="Percepcao do plantao">
                       <AutoGrowTextarea
                         value={currentRecord.percepcao}
                         onChange={(value) => setField('percepcao', value)}
-                        placeholder="Leitura global do turno..."
+                        placeholder="Leitura global do turno (sem identificadores)..."
                       />
                     </FieldShell>
                     <FieldShell label="Pendencias">
                       <AutoGrowTextarea
                         value={currentRecord.pendencias}
                         onChange={(value) => setField('pendencias', value)}
-                        placeholder="Pendencias, prioridades, exames..."
+                        placeholder="Pendencias, prioridades, exames (sem identificadores)..."
                       />
                     </FieldShell>
                     <FieldShell label="Condutas">
                       <AutoGrowTextarea
                         value={currentRecord.condutas}
                         onChange={(value) => setField('condutas', value)}
-                        placeholder="Plano e condutas do plantao..."
+                        placeholder="Plano e condutas do plantao (sem identificadores)..."
                       />
                     </FieldShell>
                   </div>
@@ -8824,12 +8855,25 @@ export function ProntuarioSystemPanel() {
                   </button>
                   <button
                     onClick={() => {
+                      const r = bhScanResult
+                      const id = selectedId
+                      console.log('[BH Confirmar] selectedId:', id, 'result:', r)
+                      if (!id) {
+                        setBhScanError('Nenhum paciente selecionado — não foi possível aplicar.')
+                        return
+                      }
+                      if (r.bh24_ml == null && r.bhac_ml == null) {
+                        setBhScanError('IA não detectou valores válidos. Tire fotos mais nítidas.')
+                        return
+                      }
                       updateCurrentRecord((record) => ({
                         ...record,
-                        balanco24h: bhScanResult.bh24_ml != null ? String(bhScanResult.bh24_ml) : record.balanco24h,
-                        balancoAcumulado: bhScanResult.bhac_ml != null ? String(bhScanResult.bhac_ml) : record.balancoAcumulado,
+                        balanco24h: r.bh24_ml != null ? String(r.bh24_ml) : record.balanco24h,
+                        balancoAcumulado: r.bhac_ml != null ? String(r.bhac_ml) : record.balancoAcumulado,
                       }))
                       setBhScanOpen(false)
+                      setBhScanResult(null)
+                      setBhScanPhotos([])
                     }}
                     className="flex flex-1 items-center justify-center gap-2 rounded-[0.85rem] py-3 text-[12px] font-bold uppercase tracking-[0.14em] transition"
                     style={{ background: 'rgba(74,222,128,0.28)', border: '1px solid rgba(74,222,128,0.55)', color: '#86efac' }}
