@@ -13,6 +13,7 @@ import { VMSystemPanel } from '@/components/sea/vm-system-panel'
 type SystemModule = {
   id: string
   title: string
+  short: string
   icon: LucideIcon
   overview: string
   panel: () => React.ReactNode
@@ -22,6 +23,7 @@ const SYSTEMS: SystemModule[] = [
   {
     id: 'S1',
     title: 'Prontuário ICU',
+    short: 'ICU',
     icon: FileText,
     overview: 'Registros clínicos, balanços, evolução, indicadores e exportação à beira do leito.',
     panel: () => <ProntuarioSystemPanel />,
@@ -29,6 +31,7 @@ const SYSTEMS: SystemModule[] = [
   {
     id: 'S2',
     title: 'Calculadoras',
+    short: 'Calcs',
     icon: Calculator,
     overview: 'Mecânica respiratória, complacência, RSBI, P/F, HACOR, SOFA, escalas funcionais e VM.',
     panel: () => <VMSystemPanel />,
@@ -54,106 +57,123 @@ function WorkspaceSidebar({
   const q = search.toLowerCase().trim()
 
   return (
-    <div
-      className="ipb-soft flex flex-col overflow-hidden rounded-[1.65rem] h-[calc(100vh-9rem)]"
-    >
-      {/* Header — compacto no mobile, normal no desktop */}
-      <div
-        className="shrink-0 rounded-t-[1.65rem] px-2 pb-2 pt-2.5 lg:px-4 lg:pb-3 lg:pt-4"
-        style={{ borderBottom: '1px solid rgba(210,175,90,0.12)' }}
-      >
-        <div className="mb-2 flex items-center justify-between lg:mb-3">
-          <p className="text-[7px] uppercase tracking-[0.22em] text-white/40 lg:text-[9px] lg:tracking-[0.44em]">Sistemas</p>
-          <button
-            onClick={onClose}
-            title="Fechar sidebar"
-            className="flex h-5 w-5 items-center justify-center rounded-[0.4rem] text-white/36 transition hover:bg-white/[0.08] hover:text-white/64 lg:h-6 lg:w-6 lg:rounded-[0.5rem]"
-          >
-            <PanelLeftClose className="h-3 w-3 lg:h-3.5 lg:w-3.5" />
-          </button>
-        </div>
-        {/* Busca */}
-        <div
-          className="flex items-center gap-1.5 rounded-[0.6rem] px-2 py-1.5 lg:gap-2 lg:rounded-[0.85rem] lg:px-3 lg:py-2"
-          style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.10)' }}
-        >
-          <Search className="h-2.5 w-2.5 shrink-0 text-white/30 lg:h-3 lg:w-3" />
-          <input
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Buscar..."
-            className="flex-1 bg-transparent text-[9px] text-white/70 outline-none placeholder:text-white/25 lg:text-[11px]"
-          />
-        </div>
-      </div>
+    <div className="ipb-soft flex flex-col overflow-hidden rounded-[1.2rem] h-full lg:rounded-[1.65rem] lg:h-[calc(100vh-9rem)]">
 
-      {/* Lista de sistemas — scroll interno (estilo Business) */}
-      <div className="ipb-thinscroll flex-1 overflow-y-auto px-2 py-2">
+      {/* ── Mobile: nav compacta (sem busca — só 2 itens) ─────────── */}
+      <div className="lg:hidden relative flex flex-col gap-1.5 px-1.5 py-2">
+        {/* botão fechar — topo direito */}
+        <button
+          onClick={onClose}
+          className="absolute right-1.5 top-1.5 flex h-5 w-5 items-center justify-center rounded-[0.4rem] text-white/30 hover:text-white/60"
+        >
+          <PanelLeftClose className="h-2.5 w-2.5" />
+        </button>
+
         {modules.map((mod, idx) => {
           const isActive = activeIndex === idx
           const ModIcon = mod.icon
-          const matches =
-            !q ||
-            mod.title.toLowerCase().includes(q) ||
-            mod.overview.toLowerCase().includes(q) ||
-            mod.id.toLowerCase().includes(q)
-          if (q && !matches) return null
-
           return (
-            <div key={mod.id}>
-              {idx > 0 && <div className="mx-3 my-2 h-px bg-white/[0.06]" />}
-
-              <button
-                onClick={() => onSelect(idx)}
-                className="flex w-full items-center gap-1.5 rounded-[0.8rem] px-2 py-1.5 text-left transition lg:gap-2 lg:rounded-[0.9rem] lg:px-2 lg:py-1.5"
-                style={
-                  isActive
-                    ? {
-                        background:
-                          'linear-gradient(135deg, rgba(255,255,255,0.09), rgba(255,255,255,0.04))',
-                        border: '1px solid rgba(210,175,90,0.22)',
-                        boxShadow: 'inset 0 1px 0 rgba(210,175,90,0.14)',
-                      }
-                    : { border: '1px solid transparent' }
-                }
-              >
-                <ModIcon
-                  className={`h-3 w-3 shrink-0 lg:h-3.5 lg:w-3.5 ${isActive ? 'text-[#d2af5a]' : 'text-white/32'}`}
-                />
-                <div className="min-w-0 flex-1">
-                  <p
-                    className={`text-[7px] uppercase tracking-[0.16em] lg:text-[8px] lg:tracking-[0.22em] ${
-                      isActive ? 'text-[#d2af5a]/60' : 'text-white/20'
-                    }`}
-                  >
-                    {mod.id}
-                  </p>
-                  <p
-                    className={`truncate text-[9.5px] font-medium leading-snug lg:text-[10px] ${
-                      isActive ? 'text-white/92' : 'text-white/55'
-                    }`}
-                  >
-                    {mod.title}
-                  </p>
-                </div>
-                <div
-                  className={`h-1 w-1 shrink-0 rounded-full transition lg:h-1.5 lg:w-1.5 ${
-                    isActive ? 'bg-[#d2af5a]' : 'bg-white/16'
-                  }`}
-                />
-              </button>
-            </div>
+            <button
+              key={mod.id}
+              onClick={() => onSelect(idx)}
+              className="flex flex-col items-center gap-0.5 rounded-[0.8rem] px-1 py-2.5 w-full text-center transition"
+              style={
+                isActive
+                  ? {
+                      background: 'linear-gradient(135deg, rgba(255,255,255,0.09), rgba(255,255,255,0.04))',
+                      border: '1px solid rgba(210,175,90,0.22)',
+                      boxShadow: 'inset 0 1px 0 rgba(210,175,90,0.14)',
+                    }
+                  : { border: '1px solid transparent' }
+              }
+            >
+              <ModIcon className={`h-3.5 w-3.5 mb-0.5 ${isActive ? 'text-[#d2af5a]' : 'text-white/36'}`} />
+              <span className={`text-[7px] font-bold uppercase tracking-[0.1em] leading-none ${isActive ? 'text-[#d2af5a]' : 'text-white/30'}`}>
+                {mod.id}
+              </span>
+              <span className={`text-[8.5px] font-medium leading-tight mt-0.5 ${isActive ? 'text-white/90' : 'text-white/50'}`}>
+                {mod.short}
+              </span>
+            </button>
           )
         })}
-        {q &&
-          modules.every(
-            (m) =>
-              !m.title.toLowerCase().includes(q) &&
-              !m.overview.toLowerCase().includes(q) &&
-              !m.id.toLowerCase().includes(q),
+      </div>
+
+      {/* ── Desktop: sidebar completa com busca ───────────────────── */}
+      <div className="hidden lg:flex flex-col flex-1 overflow-hidden">
+        <div
+          className="shrink-0 rounded-t-[1.65rem] px-4 pb-3 pt-4"
+          style={{ borderBottom: '1px solid rgba(210,175,90,0.12)' }}
+        >
+          <div className="mb-3 flex items-center justify-between">
+            <p className="text-[9px] uppercase tracking-[0.44em] text-white/40">Sistemas</p>
+            <button
+              onClick={onClose}
+              title="Fechar sidebar"
+              className="flex h-6 w-6 items-center justify-center rounded-[0.5rem] text-white/36 transition hover:bg-white/[0.08] hover:text-white/64"
+            >
+              <PanelLeftClose className="h-3.5 w-3.5" />
+            </button>
+          </div>
+          <div
+            className="flex items-center gap-2 rounded-[0.85rem] px-3 py-2"
+            style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.10)' }}
+          >
+            <Search className="h-3 w-3 shrink-0 text-white/30" />
+            <input
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Buscar..."
+              className="flex-1 bg-transparent text-[11px] text-white/70 outline-none placeholder:text-white/25"
+            />
+          </div>
+        </div>
+
+        <div className="ipb-thinscroll flex-1 overflow-y-auto px-2 py-2">
+          {modules.map((mod, idx) => {
+            const isActive = activeIndex === idx
+            const ModIcon = mod.icon
+            const matches =
+              !q ||
+              mod.title.toLowerCase().includes(q) ||
+              mod.overview.toLowerCase().includes(q) ||
+              mod.id.toLowerCase().includes(q)
+            if (q && !matches) return null
+
+            return (
+              <div key={mod.id}>
+                {idx > 0 && <div className="mx-3 my-2 h-px bg-white/[0.06]" />}
+                <button
+                  onClick={() => onSelect(idx)}
+                  className="flex w-full items-center gap-2 rounded-[0.9rem] px-2 py-1.5 text-left transition"
+                  style={
+                    isActive
+                      ? {
+                          background: 'linear-gradient(135deg, rgba(255,255,255,0.09), rgba(255,255,255,0.04))',
+                          border: '1px solid rgba(210,175,90,0.22)',
+                          boxShadow: 'inset 0 1px 0 rgba(210,175,90,0.14)',
+                        }
+                      : { border: '1px solid transparent' }
+                  }
+                >
+                  <ModIcon className={`h-3.5 w-3.5 shrink-0 ${isActive ? 'text-[#d2af5a]' : 'text-white/32'}`} />
+                  <div className="min-w-0 flex-1">
+                    <p className={`text-[8px] uppercase tracking-[0.22em] ${isActive ? 'text-[#d2af5a]/60' : 'text-white/20'}`}>{mod.id}</p>
+                    <p className={`truncate text-[10px] font-medium leading-snug ${isActive ? 'text-white/92' : 'text-white/55'}`}>{mod.title}</p>
+                  </div>
+                  <div className={`h-1.5 w-1.5 shrink-0 rounded-full transition ${isActive ? 'bg-[#d2af5a]' : 'bg-white/16'}`} />
+                </button>
+              </div>
+            )
+          })}
+          {q && modules.every(m =>
+            !m.title.toLowerCase().includes(q) &&
+            !m.overview.toLowerCase().includes(q) &&
+            !m.id.toLowerCase().includes(q)
           ) && (
             <p className="mt-4 px-3 text-[10px] text-white/30">Nenhum sistema encontrado.</p>
           )}
+        </div>
       </div>
     </div>
   )
@@ -203,10 +223,10 @@ export default function SistemasPageClient() {
           </div>
 
           {/* Sidebar lado-a-lado mobile e desktop — colunas bem estreitas no mobile pra deixar mais espaço pros panels */}
-          <div className={sidebarOpen ? 'grid grid-cols-[86px_1fr] items-start gap-2 sm:grid-cols-[140px_1fr] sm:gap-3 lg:grid-cols-[220px_1fr] lg:gap-4' : ''}>
+          <div className={sidebarOpen ? 'grid grid-cols-[86px_1fr] items-stretch gap-2 sm:grid-cols-[140px_1fr] sm:gap-3 lg:grid-cols-[220px_1fr] lg:gap-4' : ''}>
             {/* Wrapper interno: garante que coluna direita não estoure o grid (min-w-0 permite truncar/encolher) */}
             {sidebarOpen && (
-              <div className="block">
+              <div className="sticky top-4 h-full">
                 <WorkspaceSidebar
                   modules={SYSTEMS}
                   activeIndex={activeIndex}
