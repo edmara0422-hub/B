@@ -2,67 +2,124 @@ export default function PrivacidadePage() {
   return (
     <div className="min-h-screen bg-[#010101] text-white px-6 py-12 max-w-2xl mx-auto">
       <h1 className="text-[12px] font-bold mb-4">Politica de Privacidade — SEA Fisio</h1>
-      <p className="text-[8px] text-white/40 mb-6">Ultima atualizacao: 13 de abril de 2026.</p>
+      <p className="text-[8px] text-white/40 mb-6">Ultima atualizacao: 18 de maio de 2026.</p>
       <div className="space-y-4 text-[8px] leading-relaxed text-white/60">
+
         <section>
           <h2 className="text-[9px] font-semibold text-white/80 mb-1">1. Dados que Coletamos</h2>
-          <p>Coletamos apenas os dados necessarios para o funcionamento do app:</p>
-          <ul className="list-disc pl-4 mt-1 space-y-0.5">
-            <li>Dados de conta: nome, email, foto de perfil.</li>
-            <li>Dados de uso: funcionalidades acessadas, tempo de uso, eventos de interacao (anonimizados).</li>
-            <li>Dados clinicos do prontuario: armazenados localmente no dispositivo e sincronizados via Supabase com criptografia em transito.</li>
-          </ul>
-        </section>
-        <section>
-          <h2 className="text-[9px] font-semibold text-white/80 mb-1">2. Como Usamos os Dados</h2>
+          <p className="mb-1">Coletamos apenas os dados necessarios para o funcionamento do app, organizados por categoria:</p>
+
+          <p className="text-white/70 mt-1 mb-0.5">a) Dados de conta</p>
           <ul className="list-disc pl-4 space-y-0.5">
-            <li>Autenticacao e gerenciamento de conta.</li>
-            <li>Sincronizacao de dados entre dispositivos.</li>
-            <li>Melhoria do app com base em analytics anonimizados.</li>
-            <li>Envio de notificacoes sobre atualizacoes e recursos.</li>
+            <li>Nome, email e foto de perfil fornecidos no cadastro.</li>
+          </ul>
+
+          <p className="text-white/70 mt-1 mb-0.5">b) Dados de acesso e seguranca</p>
+          <ul className="list-disc pl-4 space-y-0.5">
+            <li>Registro de login: data, hora, endereco IP e informacoes do dispositivo (user agent). Finalidade: auditoria de seguranca e deteccao de acessos nao autorizados.</li>
+            <li>Cache de geolocalizacao de IP: pais, regiao e cidade estimados a partir do IP de acesso. Dados mantidos em cache por ate 30 dias para reducao de chamadas externas. Acesso bloqueado a usuarios.</li>
+          </ul>
+
+          <p className="text-white/70 mt-1 mb-0.5">c) Dados clinicos do prontuario (dados sensiveis de saude)</p>
+          <ul className="list-disc pl-4 space-y-0.5">
+            <li>Para usuarios comuns: armazenados exclusivamente no dispositivo (localStorage). Nunca enviados ao servidor. Apagados automaticamente ao fim do plantao pelo temporizador de conformidade LGPD.</li>
+            <li>Para a administradora: sincronizados com servidor seguro (Supabase/AWS) com criptografia em transito (TLS 1.3) e em repouso.</li>
+          </ul>
+
+          <p className="text-white/70 mt-1 mb-0.5">d) Dados de uso anonimizados</p>
+          <ul className="list-disc pl-4 space-y-0.5">
+            <li>Eventos de interacao (funcionalidades acessadas, tempo de uso) vinculados ao ID de usuario. Utilizados para melhoria do app. Nao incluem conteudo clinico.</li>
           </ul>
         </section>
+
         <section>
-          <h2 className="text-[9px] font-semibold text-white/80 mb-1">3. Armazenamento e Seguranca</h2>
-          <p>Os dados sao armazenados no Supabase (infraestrutura AWS) com criptografia em repouso e em transito (TLS 1.3). Dados clinicos do prontuario sao salvos localmente no dispositivo e sincronizados com autenticacao por token JWT.</p>
+          <h2 className="text-[9px] font-semibold text-white/80 mb-1">2. Base Legal para Tratamento (LGPD Art. 7 e Art. 11)</h2>
+          <ul className="list-disc pl-4 space-y-0.5">
+            <li><span className="text-white/70">Dados de conta e acesso:</span> execucao de contrato e legitimo interesse de seguranca (Art. 7, V).</li>
+            <li><span className="text-white/70">Dados clinicos (dados sensiveis de saude):</span> consentimento explicito do titular (Art. 11, I), coletado no momento do cadastro.</li>
+            <li><span className="text-white/70">Analytics:</span> legitimo interesse para melhoria do servico (Art. 7, IX), com dados anonimizados sempre que possivel.</li>
+            <li><span className="text-white/70">Registros de login e IP:</span> legitimo interesse de seguranca e prevencao a fraudes (Art. 7, IX).</li>
+          </ul>
         </section>
+
         <section>
-          <h2 className="text-[9px] font-semibold text-white/80 mb-1">4. Compartilhamento de Dados</h2>
-          <p>NAO vendemos, alugamos ou compartilhamos seus dados pessoais com terceiros. Dados de analytics sao agregados e anonimizados.</p>
+          <h2 className="text-[9px] font-semibold text-white/80 mb-1">3. Armazenamento, Seguranca e Retencao</h2>
+          <ul className="list-disc pl-4 space-y-0.5">
+            <li>Dados armazenados no Supabase (infraestrutura AWS, regiao sa-east-1 — Sao Paulo) com criptografia em repouso e TLS 1.3 em transito.</li>
+            <li>Acesso ao banco de dados protegido por politicas de seguranca em nivel de linha (RLS): cada usuario acessa apenas seus proprios dados.</li>
+            <li><span className="text-white/70">Retencao de registros de login:</span> apagados automaticamente apos 90 dias via rotina do banco de dados.</li>
+            <li><span className="text-white/70">Retencao de cache de geolocalizacao:</span> apagado automaticamente apos 30 dias.</li>
+            <li><span className="text-white/70">Retencao de analytics:</span> apagados automaticamente apos 1 ano.</li>
+            <li><span className="text-white/70">Dados clinicos (usuarios comuns):</span> apagados automaticamente no dispositivo ao fim de cada plantao — nunca chegam ao servidor.</li>
+            <li><span className="text-white/70">Apos exclusao de conta:</span> todos os dados pessoais removidos permanentemente em ate 7 dias uteis.</li>
+          </ul>
         </section>
+
         <section>
-          <h2 className="text-[9px] font-semibold text-white/80 mb-1">5. Seus Direitos (LGPD)</h2>
-          <p>Conforme a Lei Geral de Protecao de Dados (Lei 13.709/2018), voce tem direito a:</p>
+          <h2 className="text-[9px] font-semibold text-white/80 mb-1">4. Protecao de Dados Clinicos no Dispositivo</h2>
+          <p>O app implementa medidas tecnicas para proteger dados clinicos no dispositivo:</p>
           <ul className="list-disc pl-4 mt-1 space-y-0.5">
+            <li>Temporizador de plantao: dados apagados automaticamente ao fim do turno configurado.</li>
+            <li>Verificacao no inicio de cada sessao: se o horario de corte ja passou, os dados sao apagados antes de qualquer renderizacao.</li>
+            <li>Impressao bloqueada: o app impede a impressao de dados clinicos pelo navegador.</li>
+            <li>Marca d agua de rastreabilidade: identificador do usuario sobreposto a tela para rastreamento de capturas de tela.</li>
+            <li>Bloqueio de tela ao trocar de aplicativo: conteudo ocultado automaticamente quando o app perde o foco.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2 className="text-[9px] font-semibold text-white/80 mb-1">5. Compartilhamento de Dados</h2>
+          <p>NAO vendemos, alugamos ou compartilhamos dados pessoais com terceiros para fins comerciais. Utilizamos os seguintes prestadores de servico essenciais:</p>
+          <ul className="list-disc pl-4 mt-1 space-y-0.5">
+            <li>Supabase (banco de dados e autenticacao) — politica em supabase.com/privacy.</li>
+            <li>Vercel (hospedagem do app) — politica em vercel.com/legal/privacy-policy.</li>
+            <li>Resend (envio de emails transacionais) — politica em resend.com/legal/privacy-policy.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2 className="text-[9px] font-semibold text-white/80 mb-1">6. Seus Direitos (LGPD Art. 18)</h2>
+          <p>Voce tem direito a:</p>
+          <ul className="list-disc pl-4 mt-1 space-y-0.5">
+            <li>Confirmar a existencia de tratamento dos seus dados.</li>
             <li>Acessar seus dados pessoais.</li>
             <li>Corrigir dados incorretos ou incompletos.</li>
-            <li>Solicitar a exclusao dos seus dados.</li>
-            <li>Revogar o consentimento a qualquer momento.</li>
+            <li>Anonimizar, bloquear ou eliminar dados desnecessarios.</li>
             <li>Solicitar a portabilidade dos dados.</li>
+            <li>Revogar o consentimento a qualquer momento (sem prejuizo da legalidade do tratamento anterior).</li>
+            <li>Excluir sua conta e todos os dados associados (Perfil → Excluir minha conta).</li>
           </ul>
-          <p className="mt-1">Para exercer seus direitos, entre em contato: edmararbusiness1@gmail.com</p>
+          <p className="mt-1">Para exercer seus direitos: <span className="text-white/70">edmararbusiness1@gmail.com</span></p>
+          <p className="mt-0.5">Prazo de resposta: ate 15 dias uteis conforme LGPD Art. 18, §5.</p>
         </section>
+
         <section>
-          <h2 className="text-[9px] font-semibold text-white/80 mb-1">6. Exclusao de Conta</h2>
-          <p>Voce pode excluir sua conta a qualquer momento pelo app (Perfil → Excluir minha conta). Ao excluir, todos os dados pessoais, prontuarios, historico e preferencias sao removidos permanentemente dos nossos servidores em ate 30 dias.</p>
+          <h2 className="text-[9px] font-semibold text-white/80 mb-1">7. Notificacao de Incidentes</h2>
+          <p>Em caso de incidente de seguranca que possa acarretar risco ou dano relevante aos titulares, comunicaremos a Autoridade Nacional de Protecao de Dados (ANPD) e os usuarios afetados no prazo de ate 2 dias uteis apos a ciencia do evento, conforme LGPD Art. 48. A comunicacao incluira: natureza dos dados afetados, usuarios envolvidos, medidas tecnicas adotadas e contato do Encarregado.</p>
         </section>
+
         <section>
-          <h2 className="text-[9px] font-semibold text-white/80 mb-1">7. Cookies e Rastreamento</h2>
-          <p>O app utiliza localStorage para manter a sessao e preferencias. Nao utilizamos cookies de terceiros para publicidade. Analytics sao processados internamente.</p>
+          <h2 className="text-[9px] font-semibold text-white/80 mb-1">8. Cookies e Armazenamento Local</h2>
+          <p>O app utiliza localStorage do navegador para manter dados clinicos temporarios e preferencias de sessao. Nao utilizamos cookies de rastreamento de terceiros para publicidade. O armazenamento local e apagado automaticamente ao fim do plantao (dados clinicos) ou ao excluir a conta.</p>
         </section>
+
         <section>
-          <h2 className="text-[9px] font-semibold text-white/80 mb-1">8. Menores de Idade</h2>
-          <p>O app e destinado a profissionais de saude. Nao coletamos intencionalmente dados de menores de 18 anos.</p>
+          <h2 className="text-[9px] font-semibold text-white/80 mb-1">9. Menores de Idade</h2>
+          <p>O app e destinado exclusivamente a profissionais de saude maiores de 18 anos. Nao coletamos intencionalmente dados de menores.</p>
         </section>
+
         <section>
-          <h2 className="text-[9px] font-semibold text-white/80 mb-1">9. Alteracoes nesta Politica</h2>
-          <p>Podemos atualizar esta politica periodicamente. Notificaremos sobre mudancas significativas via app ou email.</p>
+          <h2 className="text-[9px] font-semibold text-white/80 mb-1">10. Alteracoes nesta Politica</h2>
+          <p>Podemos atualizar esta politica periodicamente. Notificaremos sobre mudancas significativas via app ou email com antecedencia minima de 15 dias.</p>
         </section>
+
         <section>
-          <h2 className="text-[9px] font-semibold text-white/80 mb-1">10. Contato</h2>
-          <p>Responsavel pelo tratamento de dados: Edmara Rocha.</p>
-          <p>Email: edmararbusiness1@gmail.com</p>
+          <h2 className="text-[9px] font-semibold text-white/80 mb-1">11. Encarregado de Protecao de Dados (DPO)</h2>
+          <p>Responsavel pelo tratamento de dados: <span className="text-white/70">Edmara Rocha</span></p>
+          <p>Email: <span className="text-white/70">edmararbusiness1@gmail.com</span></p>
+          <p className="mt-0.5 text-white/40">SEA Fisio — Plataforma educacional para profissionais de fisioterapia.</p>
         </section>
+
       </div>
     </div>
   )

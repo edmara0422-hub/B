@@ -4677,7 +4677,7 @@ export function ProntuarioSystemPanel() {
             <div>
               <div className="mb-2 flex flex-wrap items-center gap-2">
                 <span className="rounded-full border border-white/10 px-1.5 py-0.5 text-[8px] uppercase tracking-[0.14em] text-white/52">
-                  Prontuario ICU
+                  SEA ICU
                 </span>
                 <span className="flex items-center gap-1 rounded-full border border-white/12 bg-white/5 px-2 py-0.5 text-[9px] font-mono font-bold text-[#60a5fa]">
                   <Activity className="h-2.5 w-2.5 animate-pulse" />
@@ -8629,7 +8629,7 @@ export function ProntuarioSystemPanel() {
               <div className="chrome-panel rounded-[1rem] p-4 text-center">
                 <p className="text-[8px] text-white/58">Nenhum paciente ativo.</p>
                 <p className="mt-2 text-xs text-white/38">
-                  Use <span className="text-white/68">Adicionar</span> para abrir um novo prontuario ICU.
+                  Use <span className="text-white/68">Adicionar</span> para abrir uma nova ficha SEA ICU.
                 </p>
               </div>
             )}
