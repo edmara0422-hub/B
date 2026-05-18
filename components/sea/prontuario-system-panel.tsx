@@ -5118,7 +5118,7 @@ export function ProntuarioSystemPanel() {
                     </span>
                   </div>
 
-                  <div className="grid grid-cols-8 gap-1">
+                  <div className="grid grid-cols-6 gap-1">
                     <FieldShell label="Lt">
                       <input
                         className={INPUT_CLASS_SM} style={INPUT_STYLE}
@@ -5163,30 +5163,12 @@ export function ProntuarioSystemPanel() {
                         <option value="F">F</option>
                       </select>
                     </FieldShell>
-                    <FieldShell label="Peso">
-                      <input
-                        className={INPUT_CLASS_SM} style={INPUT_STYLE}
-                        value={currentRecord.peso}
-                        onChange={(event) => setField('peso', event.target.value)}
-                        placeholder="70"
-                        type="number"
-                      />
-                    </FieldShell>
                     <FieldShell label="Alt">
                       <input
                         className={INPUT_CLASS_SM} style={INPUT_STYLE}
                         value={currentRecord.altura}
                         onChange={(event) => setField('altura', event.target.value)}
                         placeholder="170"
-                        type="number"
-                      />
-                    </FieldShell>
-                    <FieldShell label="PsAt">
-                      <input
-                        className={INPUT_CLASS_SM} style={INPUT_STYLE}
-                        value={currentRecord.pesoAtual}
-                        onChange={(event) => setField('pesoAtual', event.target.value)}
-                        placeholder="68"
                         type="number"
                       />
                     </FieldShell>
