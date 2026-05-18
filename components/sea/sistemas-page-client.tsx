@@ -203,7 +203,7 @@ export default function SistemasPageClient() {
           </div>
 
           {/* Sidebar lado-a-lado mobile e desktop — colunas bem estreitas no mobile pra deixar mais espaço pros panels */}
-          <div className={sidebarOpen ? 'grid grid-cols-[110px_1fr] items-start gap-2 sm:grid-cols-[160px_1fr] sm:gap-3 lg:grid-cols-[220px_1fr] lg:gap-4' : ''}>
+          <div className={sidebarOpen ? 'grid grid-cols-[86px_1fr] items-start gap-2 sm:grid-cols-[140px_1fr] sm:gap-3 lg:grid-cols-[220px_1fr] lg:gap-4' : ''}>
             {/* Wrapper interno: garante que coluna direita não estoure o grid (min-w-0 permite truncar/encolher) */}
             {sidebarOpen && (
               <div className="block">

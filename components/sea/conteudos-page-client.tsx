@@ -437,7 +437,7 @@ export default function ConteudosPageClient() {
               280px largura, altura NATURAL (curta), todos os tópicos visíveis,
               página rola pra mostrar tudo. Header de busca sticky por dentro. */}
           {/* Sidebar inline lado-a-lado em mobile e desktop — mobile com colunas bem mais estreitas */}
-          <div className={sidebarOpen ? 'grid grid-cols-[110px_1fr] items-start gap-2 sm:grid-cols-[160px_1fr] sm:gap-3 lg:grid-cols-[220px_1fr] lg:gap-4' : ''}>
+          <div className={sidebarOpen ? 'grid grid-cols-[86px_1fr] items-start gap-2 sm:grid-cols-[140px_1fr] sm:gap-3 lg:grid-cols-[220px_1fr] lg:gap-4' : ''}>
             {sidebarOpen && (
               <div className="block">
                 <WorkspaceSidebar
@@ -453,7 +453,7 @@ export default function ConteudosPageClient() {
             )}
 
             {/* Coluna direita: rail + conteúdo */}
-            <div className="space-y-6">
+            <div className="min-w-0 space-y-6">
               {/* Rail (com bolas) */}
               <ModuleRail modules={MODULES} activeIndex={activeIndex} onSelect={handleSelectModule} />
 

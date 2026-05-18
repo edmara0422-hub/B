@@ -2308,7 +2308,7 @@ function ScanLightbox({ data, onClose }: { data: LightboxPayload | null; onClose
       const uDx = (tipPct.x - carinaPct.x) * mW; const uDy = (tipPct.y - carinaPct.y) * mH
       const uDist = Math.sqrt(uDx * uDx + uDy * uDy)
       const m = data.measurements
-      if (m?.tot_to_carina_cm && m?.tube_tip_pct && m?.carina_pct) {
+      if (m && m.tot_to_carina_cm != null && m.tube_tip_pct && m.carina_pct) {
         const aDx = (m.tube_tip_pct.x - m.carina_pct.x) * mW; const aDy = (m.tube_tip_pct.y - m.carina_pct.y) * mH
         const aDist = Math.sqrt(aDx * aDx + aDy * aDy)
         if (aDist > 1) return Math.round(uDist * m.tot_to_carina_cm / aDist * 10) / 10
@@ -2320,9 +2320,9 @@ function ScanLightbox({ data, onClose }: { data: LightboxPayload | null; onClose
     const canvasDir = displayCanvasCm
       ? (displayCanvasCm < 1 ? 'CRÍTICO' : displayCanvasCm <= 2 ? 'BAIXO' : displayCanvasCm <= 5 ? 'ADEQUADO' : displayCanvasCm <= 7 ? 'ALTO' : 'CRÍTICO')
       : null
-    const labelLine = displayCanvasCm
+    const labelLine = displayCanvasCm != null
       ? `${displayCanvasCm} cm — ${canvasDir}`
-      : 'TOT → Carina'
+      : aiDir ? `✓ TOT e Carina · IA: ${aiDir}` : '✓ TOT e Carina marcados'
     const fs = Math.round(W * 0.024)
     ctx.font = `bold ${fs}px monospace`
     const tw = ctx.measureText(labelLine).width
@@ -2332,7 +2332,7 @@ function ScanLightbox({ data, onClose }: { data: LightboxPayload | null; onClose
     if (ctx.roundRect) ctx.roundRect(midX - bw / 2, midY - bh / 2, bw, bh, W * 0.012)
     else ctx.rect(midX - bw / 2, midY - bh / 2, bw, bh)
     ctx.fill(); ctx.stroke()
-    ctx.fillStyle = displayCanvasCm ? (canvasDir === 'ADEQUADO' ? '#4ade80' : canvasDir === 'CRÍTICO' ? '#f87171' : '#fbbf24') : 'white'
+    ctx.fillStyle = displayCanvasCm != null ? (canvasDir === 'ADEQUADO' ? '#4ade80' : canvasDir === 'CRÍTICO' ? '#f87171' : '#fbbf24') : (aiDir ? '#fbbf24' : 'rgba(255,255,255,0.8)')
     ctx.textAlign = 'center'; ctx.textBaseline = 'middle'
     ctx.fillText(labelLine, midX, midY)
     ctx.textAlign = 'left'; ctx.textBaseline = 'alphabetic'
@@ -2355,9 +2355,11 @@ function ScanLightbox({ data, onClose }: { data: LightboxPayload | null; onClose
     if (rimCm) parts.push(`fixação labial: ${rimCm}cm`)
     if (data.measurements?.seletiva) parts.push(`⚠ SELETIVA ${data.measurements.seletiva_side ?? ''}`)
 
-    const laudoText = displayCanvasCm
+    const laudoText = displayCanvasCm != null
       ? `[RÉGUA MANUAL]: ${parts.join(' | ')}.`
-      : `[RÉGUA MANUAL]: TOT e carina identificados visualmente. Mensuração em cm requer calibração — escanear RX de tórax para obter referência.`
+      : aiDir
+        ? `[RÉGUA MANUAL]: TOT e carina marcados manualmente. IA identificou: ${aiDir}. Mensuração em cm requer coordenadas de calibração — refaça o scan.`
+        : `[RÉGUA MANUAL]: TOT e carina marcados manualmente. Sem referência de cm disponível — faça scan da imagem para calibração automática.`
 
     return { annotatedDataUrl, blob, laudoText }
   }
@@ -2411,7 +2413,7 @@ function ScanLightbox({ data, onClose }: { data: LightboxPayload | null; onClose
     const userDy = (tipPct.y - carinaPct.y) * H
     const userDist = Math.sqrt(userDx * userDx + userDy * userDy)
     const m = data.measurements
-    if (m?.tot_to_carina_cm && m?.tube_tip_pct && m?.carina_pct) {
+    if (m && m.tot_to_carina_cm != null && m.tube_tip_pct && m.carina_pct) {
       const aiDx = (m.tube_tip_pct.x - m.carina_pct.x) * W
       const aiDy = (m.tube_tip_pct.y - m.carina_pct.y) * H
       const aiPixelDist = Math.sqrt(aiDx * aiDx + aiDy * aiDy)
@@ -2421,11 +2423,11 @@ function ScanLightbox({ data, onClose }: { data: LightboxPayload | null; onClose
   }
 
   const classifyByCm = (cm: number): { status: string; color: string } => {
-    if (cm < 1)  return { status: 'CRÍTICO <1cm — retrair urgente', color: '#f87171' }
-    if (cm <= 2) return { status: `${cm}cm BAIXO — verificar`, color: '#fbbf24' }
+    if (cm < 1)  return { status: 'CRÍTICO — retrair urgente', color: '#f87171' }
+    if (cm <= 2) return { status: 'BAIXO — verificar', color: '#fbbf24' }
     if (cm <= 5) return { status: 'ADEQUADO', color: '#4ade80' }
-    if (cm <= 7) return { status: `${cm}cm ALTO — avançar`, color: '#fbbf24' }
-    return { status: 'CRÍTICO >7cm — avançar urgente', color: '#f87171' }
+    if (cm <= 7) return { status: 'ALTO — avançar', color: '#fbbf24' }
+    return { status: 'CRÍTICO — avançar urgente', color: '#f87171' }
   }
 
   const manualCm = bothPlaced ? computeManualCm() : null
@@ -2499,10 +2501,10 @@ function ScanLightbox({ data, onClose }: { data: LightboxPayload | null; onClose
               </>
             )}
             {bothPlaced && (() => {
-              const svgLabel = displayCm
+              const svgLabel = displayCm != null
                 ? `${displayCm}cm — ${displayClass?.status ?? ''}`
-                : 'TOT → Carina'
-              const svgFill = displayClass?.color ?? 'white'
+                : aiDir ? `✓ Marcados · IA: ${aiDir}` : '✓ Marcados — scan IA para cm'
+              const svgFill = displayCm != null ? (displayClass?.color ?? 'white') : (aiDir ? '#fbbf24' : 'rgba(255,255,255,0.6)')
               return (
                 <>
                   <line x1={tipPct.x - tick} y1={tipPct.y} x2={tipPct.x + tick} y2={tipPct.y} stroke="white" strokeWidth="0.003" strokeOpacity="0.7" />
@@ -2580,13 +2582,17 @@ function ScanLightbox({ data, onClose }: { data: LightboxPayload | null; onClose
       </div>
 
       {/* info IA */}
-      {aiDist && (
+      {aiDist != null ? (
         <p className="text-[8px] text-white/40 italic" onClick={(e) => e.stopPropagation()}>
           Estimativa IA: {aiDist}cm da carina
           {aiDir ? ` — ${aiDir === 'ADEQUADO' ? '✓ adequado' : aiDir === 'SUBIDO' ? '↑ tubo subido' : aiDir === 'PROXIMO_CARINA' ? '↓ próximo carina' : '⚠ seletivo'}` : ''}
           {' · '}Régua manual para confirmar
         </p>
-      )}
+      ) : bothPlaced ? (
+        <p className="text-[8px] text-white/32 italic" onClick={(e) => e.stopPropagation()}>
+          Marcação registrada · IA não mediu cm — faça novo scan para calibração automática
+        </p>
+      ) : null}
     </div>
   )
 }
@@ -3435,24 +3441,31 @@ export function ProntuarioSystemPanel() {
         const payloadKb = Math.round(JSON.stringify(safeSnapshot).length / 1024)
         console.log(`[Auto-save] Payload: ${payloadKb} KB`)
 
-        const upsertPromise = supabase!.from('icu_sessions').upsert({
+        const upsertPayload = {
           session_id: sessionId,
           records: { __sea_v2: true, workspaces: safeSnapshot, activeId: activeWsIdRef.current },
           archive: [],
           updated_at: new Date().toISOString(),
-        }, { onConflict: 'session_id' })
-
-        const timeoutPromise = new Promise<never>((_, reject) =>
-          setTimeout(() => reject(new Error('Timeout: Supabase não respondeu em 30s')), 30000)
-        )
-
-        const { error } = await Promise.race([upsertPromise, timeoutPromise]) as { error: any }
-        if (error) {
-          console.error('[Auto-save] Erro Supabase:', error.message, error.code)
-          setSyncStatus('offline')
-        } else {
+        }
+        let saved = false
+        for (let attempt = 0; attempt < 3; attempt++) {
+          if (attempt > 0) await new Promise<void>(r => setTimeout(r, attempt * 5000))
+          try {
+            const { error } = await Promise.race([
+              supabase!.from('icu_sessions').upsert(upsertPayload, { onConflict: 'session_id' }),
+              new Promise<never>((_, reject) => setTimeout(() => reject(new Error('Timeout')), 15000))
+            ]) as { error: any }
+            if (!error) { saved = true; break }
+            console.warn(`[Auto-save] Tentativa ${attempt + 1} falhou:`, error.message)
+          } catch (e: any) {
+            console.warn(`[Auto-save] Tentativa ${attempt + 1} erro:`, e?.message)
+          }
+        }
+        if (saved) {
           console.log('[Auto-save] Salvo com sucesso')
           setSyncStatus('saved')
+        } else {
+          setSyncStatus('offline')
         }
       } catch (err: any) {
         console.error('[Auto-save] Falhou:', err?.message || err)
