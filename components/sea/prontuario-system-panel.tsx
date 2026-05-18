@@ -5117,7 +5117,7 @@ export function ProntuarioSystemPanel() {
                     </span>
                   </div>
 
-                  <div className="grid grid-cols-5 gap-1">
+                  <div className="grid grid-cols-8 gap-1">
                     <FieldShell label="Lt">
                       <input
                         className={INPUT_CLASS_SM} style={INPUT_STYLE}
@@ -8641,11 +8641,11 @@ export function ProntuarioSystemPanel() {
           onClick={(e) => { if (e.target === e.currentTarget) setBhScanOpen(false) }}
         >
           <div
-            className="w-full max-w-sm rounded-t-[1.6rem] sm:rounded-[1.6rem] p-4 flex flex-col gap-3"
+            className="w-full max-w-sm rounded-t-[1.6rem] sm:rounded-[1.6rem] flex flex-col max-h-[92vh] overscroll-contain"
             style={{ background: 'linear-gradient(160deg,#1a1a24,#111118)', border: '1px solid rgba(255,255,255,0.10)' }}
           >
-            {/* Header */}
-            <div className="flex items-center justify-between">
+            {/* Header — fixo no topo */}
+            <div className="shrink-0 flex items-center justify-between px-4 pt-4 pb-3" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
               <div className="flex items-center gap-2">
                 <Camera className="h-4 w-4 text-[#22d3ee]" />
                 <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-white/80">Scan Balanço Hídrico</span>
@@ -8654,6 +8654,9 @@ export function ProntuarioSystemPanel() {
                 <X className="h-3.5 w-3.5" />
               </button>
             </div>
+
+            {/* Conteúdo scrollável */}
+            <div className="flex-1 overflow-y-auto px-4 py-3 flex flex-col gap-3">
 
             {/* Photo grid */}
             <div className="grid grid-cols-3 gap-2">
@@ -8740,8 +8743,11 @@ export function ProntuarioSystemPanel() {
               </div>
             )}
 
-            {/* Actions */}
-            <div className="flex gap-2">
+            </div>
+            {/* /Conteúdo scrollável */}
+
+            {/* Actions — fixo no rodapé */}
+            <div className="shrink-0 flex gap-2 px-4 py-3" style={{ borderTop: '1px solid rgba(255,255,255,0.06)', background: 'rgba(0,0,0,0.20)' }}>
               {!bhScanResult ? (
                 <button
                   onClick={async () => {
