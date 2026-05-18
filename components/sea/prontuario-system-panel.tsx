@@ -4668,9 +4668,6 @@ export function ProntuarioSystemPanel() {
       <div className="chrome-board rounded-[1.8rem] p-3 md:p-6">
         <div className="mb-5 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div className="flex items-center gap-4">
-            <div className="chrome-subtle flex h-10 w-10 items-center justify-center rounded-[1rem]">
-              <FileText className="h-6 w-6 text-white" />
-            </div>
             <div>
               <div className="mb-2 flex flex-wrap items-center gap-2">
                 <span className="rounded-full border border-white/10 px-1.5 py-0.5 text-[8px] uppercase tracking-[0.14em] text-white/52">
