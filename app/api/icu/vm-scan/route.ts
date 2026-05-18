@@ -47,14 +47,35 @@ MODOS POSSÍVEIS (use exatamente um destes valores):
 VCV | PCV | PSV | TuboT | CPAP | BIPAP | PRVC | HFOV | MMV | APRV | VS | ASV | IntelliVENT | SmartCare | PAV | NAVA
 
 Mapeamento de nomes alternativos:
-- VCV ↔ "Volume Control", "VC", "IPPV", "CMV", "AC-VC", "A/C Volume"
-- PCV ↔ "Pressure Control", "PC", "AC-PC", "A/C Pressure"
-- PSV ↔ "Pressure Support", "PS", "ASB", "SPONT"
-- PRVC ↔ "Pressure Regulated Volume Control", "VC+", "AutoFlow", "VG", "VC AutoFlow"
-- BIPAP ↔ "BiLevel", "DuoPAP", "BiVent", "BIPAP Vision"
-- APRV ↔ "Bi-Vent APRV"
+- VCV ↔ "Volume Control", "VC", "IPPV", "CMV", "AC-VC", "A/C Volume", "VC-AC"
+- PCV ↔ "Pressure Control", "PC", "AC-PC", "A/C Pressure", "PC-AC"
+- PSV ↔ "Pressure Support", "PS", "ASB", "SPONT", "CPAP+PS", "PSV/CPAP"
+- PRVC ↔ "Pressure Regulated Volume Control", "VC+", "AutoFlow", "VG", "VC AutoFlow", "VCRP", "PCV-VG"
+- BIPAP ↔ "BiLevel", "DuoPAP", "BiVent", "BIPAP Vision", "Bi-Level"
+- APRV ↔ "Bi-Vent APRV", "Bilevel APRV"
 - VS ↔ "Volume Support", "VSV"
 - ASV ↔ "Adaptive Support Ventilation"
+
+═══ CRÍTICO — PCV (P_insp / PC / Pcontrol) ═══
+Em PCV, o valor de PC pode ter 2 convenções dependendo do ventilador:
+- **Acima do PEEP** (Drager Evita, alguns Servo antigos, Maquet): "Pinsp" ou "PC" = valor ADICIONADO ao PEEP. PIP total = PEEP + PC.
+- **Absoluto** (Hamilton, Servo i/u, Newport, GE Carescape): "Pinsp" ou "Pcontrol" = pressão total absoluta. PIP = Pinsp.
+
+REGRAS DE RETORNO:
+- "ppico" deve ser SEMPRE a pressão de pico TOTAL (absoluta) — o que aparece no manômetro/display como PIP/Peak
+- Se o display mostra PC acima do PEEP (Drager), calcule ppico = peep + pc e coloque em "ppico"
+- Se o display já mostra Pinsp absoluto, use diretamente
+- Em "notes", indique qual convenção foi usada (ex: "Drager — PC acima do PEEP, PIP calculado")
+
+═══ POR MODO — onde focar ═══
+- VCV/PRVC: VT (set + medido), Flow (fluxo), PEEP, FiO2, FR, I:E ou TI, Trigger, P.Pico medido. Pause/Pplato só se aparecer (geralmente exige manobra)
+- PCV: Pinsp/PC (com regra acima), PEEP, FiO2, FR, TI, Trigger, VT medido (resultante)
+- PSV: PS/ASB (suporte), PEEP, FiO2, Trigger, VT medido, FR espontânea
+- BIPAP: IPAP, EPAP, FR, FiO2, Trigger
+- APRV: P-High, T-High, P-Low, T-Low, FiO2
+- HFOV: mPaw, ΔP (amplitude), Hz, TI%, Bias Flow, FiO2
+- NAVA: NAVA level (μV), Trigger Edi (μV), PEEP, FiO2
+- PAV: % Suporte, PEEP, FiO2, Trigger
 
 PASSO 2 — EXTRAIR PARÂMETROS (use null se não estiver visível):
 

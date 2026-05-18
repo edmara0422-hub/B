@@ -6653,6 +6653,115 @@ export function ProntuarioSystemPanel() {
                     </div>
                   )}
 
+                  {/* ── Resultado do Scan VM — inline com complementos manuais ── */}
+                  {vmInputMode === 'scan' && currentRecord.modoVM && !currentRecord.modoVM.startsWith('---') && (
+                    <div className="mt-2 space-y-1.5">
+                      {/* Badge com valores escaneados */}
+                      <div className="rounded-[0.7rem] px-2.5 py-2" style={{ background: 'rgba(34,211,238,0.06)', border: '1px solid rgba(34,211,238,0.20)' }}>
+                        <div className="flex items-center justify-between mb-1">
+                          <div className="flex items-center gap-1.5">
+                            <Camera className="h-2.5 w-2.5 text-[#22d3ee]" />
+                            <span className="text-[8px] uppercase tracking-[0.18em] text-[#22d3ee]/70">Scaneado · {currentRecord.modoVM}</span>
+                          </div>
+                          <button
+                            onClick={() => updateCurrentRecord((record) => ({
+                              ...record,
+                              vt: '', vc: '', ve: '', fr: '', peep: '', fio2: '',
+                              ppico: '', pplato: '', pmean: '', ie: '', ti: '',
+                              fluxo: '', trigger: '', ps: '', ipap: '', epap: '',
+                              hfovHz: '', hfovBiasFlow: '',
+                            }))}
+                            title="Limpar valores escaneados"
+                            className="flex h-4 w-4 items-center justify-center rounded text-white/40 transition hover:text-red-300 hover:bg-red-500/10"
+                          >
+                            <Trash2 className="h-2.5 w-2.5" />
+                          </button>
+                        </div>
+                        <div className="flex flex-wrap gap-x-2.5 gap-y-0.5 text-[9px] text-white/70 tabular-nums">
+                          {currentRecord.vt && <span>VT <span className="text-white/92">{currentRecord.vt}</span></span>}
+                          {currentRecord.vc && <span>VC <span className="text-white/92">{currentRecord.vc}</span></span>}
+                          {currentRecord.ve && <span>VE <span className="text-white/92">{currentRecord.ve}</span></span>}
+                          {currentRecord.fr && <span>FR <span className="text-white/92">{currentRecord.fr}</span></span>}
+                          {currentRecord.peep && <span>PEEP <span className="text-white/92">{currentRecord.peep}</span></span>}
+                          {currentRecord.fio2 && <span>FiO2 <span className="text-white/92">{currentRecord.fio2}</span></span>}
+                          {currentRecord.ppico && <span>PIP <span className="text-white/92">{currentRecord.ppico}</span></span>}
+                          {currentRecord.pmean && <span>Pmean <span className="text-white/92">{currentRecord.pmean}</span></span>}
+                          {currentRecord.ie && <span>I:E <span className="text-white/92">{currentRecord.ie}</span></span>}
+                          {currentRecord.ti && <span>TI <span className="text-white/92">{currentRecord.ti}</span></span>}
+                          {currentRecord.fluxo && <span>Fluxo <span className="text-white/92">{currentRecord.fluxo}</span></span>}
+                          {currentRecord.trigger && <span>Trig <span className="text-white/92">{currentRecord.trigger}</span></span>}
+                          {currentRecord.ps && <span>PS <span className="text-white/92">{currentRecord.ps}</span></span>}
+                          {currentRecord.ipap && <span>IPAP <span className="text-white/92">{currentRecord.ipap}</span></span>}
+                          {currentRecord.epap && <span>EPAP <span className="text-white/92">{currentRecord.epap}</span></span>}
+                          {currentRecord.hfovHz && <span>Hz <span className="text-white/92">{currentRecord.hfovHz}</span></span>}
+                          {currentRecord.hfovBiasFlow && <span>Bias <span className="text-white/92">{currentRecord.hfovBiasFlow}</span></span>}
+                        </div>
+                      </div>
+
+                      {/* Complemento manual — campos que precisam de manobra (não dão pra escanear) */}
+                      <div className="rounded-[0.7rem] px-2 py-2" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)' }}>
+                        <p className="mb-1.5 text-[8px] uppercase tracking-[0.18em] text-white/40">Complemento manual (manobras)</p>
+                        <div className="grid gap-1 grid-cols-3 xl:grid-cols-6">
+                          {/* VCV / PRVC / PCV — Pplato + SI */}
+                          {(currentRecord.modoVM === 'VCV' || currentRecord.modoVM === 'PRVC' || currentRecord.modoVM === 'PCV') && (
+                            <>
+                              <FieldShell label="P. Plato">
+                                <input className={INPUT_CLASS_SM} style={INPUT_STYLE} value={currentRecord.pplato} onChange={(e) => setField('pplato', e.target.value)} placeholder="25" />
+                              </FieldShell>
+                              <FieldShell label="SI (P1-P2)">
+                                <input className={INPUT_CLASS_SM} style={INPUT_STYLE} value={currentRecord.si ?? ''} onChange={(e) => setField('si', e.target.value)} placeholder="1.0" />
+                              </FieldShell>
+                              <FieldShell label="P1-P2">
+                                <div className="flex gap-1">
+                                  <button type="button" onClick={() => setField('p1', currentRecord.p1 === '=' ? '' : '=')}
+                                    className={`flex-1 rounded-lg border py-1 text-[8px] font-bold transition ${currentRecord.p1 === '=' ? 'border-white/25 bg-white/15 text-white' : 'border-white/8 bg-white/[0.03] text-white/40'}`}
+                                  >=</button>
+                                  <button type="button" onClick={() => setField('p1', currentRecord.p1 === '≠' ? '' : '≠')}
+                                    className={`flex-1 rounded-lg border py-1 text-[8px] font-bold transition ${currentRecord.p1 === '≠' ? 'border-white/25 bg-white/15 text-white' : 'border-white/8 bg-white/[0.03] text-white/40'}`}
+                                  >≠</button>
+                                </div>
+                              </FieldShell>
+                            </>
+                          )}
+                          {/* PSV / TuboT — RSBI / Drive */}
+                          {(currentRecord.modoVM === 'PSV' || currentRecord.modoVM === 'TuboT') && (
+                            <>
+                              <FieldShell label="P0.1">
+                                <input className={INPUT_CLASS_SM} style={INPUT_STYLE} value={currentRecord.p01 ?? ''} onChange={(e) => setField('p01', e.target.value)} placeholder="2.5" />
+                              </FieldShell>
+                              <FieldShell label="Pocc">
+                                <input className={INPUT_CLASS_SM} style={INPUT_STYLE} value={currentRecord.pocc ?? ''} onChange={(e) => setField('pocc', e.target.value)} placeholder="8" />
+                              </FieldShell>
+                              <FieldShell label="PImax">
+                                <input className={INPUT_CLASS_SM} style={INPUT_STYLE} value={currentRecord.pimax ?? ''} onChange={(e) => setField('pimax', e.target.value)} placeholder="-30" />
+                              </FieldShell>
+                              <FieldShell label="PEmax">
+                                <input className={INPUT_CLASS_SM} style={INPUT_STYLE} value={currentRecord.pemax ?? ''} onChange={(e) => setField('pemax', e.target.value)} placeholder="60" />
+                              </FieldShell>
+                            </>
+                          )}
+                          {/* PAV — WOB */}
+                          {currentRecord.modoVM === 'PAV' && (
+                            <>
+                              <FieldShell label="WOB (J/L)">
+                                <input className={INPUT_CLASS_SM} style={INPUT_STYLE} value={currentRecord.wob ?? ''} onChange={(e) => setField('wob', e.target.value)} placeholder="0.8" />
+                              </FieldShell>
+                              <FieldShell label="Pocc">
+                                <input className={INPUT_CLASS_SM} style={INPUT_STYLE} value={currentRecord.pocc ?? ''} onChange={(e) => setField('pocc', e.target.value)} placeholder="8" />
+                              </FieldShell>
+                            </>
+                          )}
+                        </div>
+                        {/* Observações */}
+                        <div className="mt-1.5">
+                          <FieldShell label="Observacoes">
+                            <AutoGrowTextarea value={currentRecord.vmObs ?? ''} onChange={(v) => setField('vmObs', v)} placeholder="Tolerância, sincronia, secreção..." />
+                          </FieldShell>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
                   {/* ── VCV / PRVC ── */}
                   {vmInputMode === 'digite' && (currentRecord.modoVM === 'VCV' || currentRecord.modoVM === 'PRVC') && (
                     <div className="mt-2 space-y-1.5">
