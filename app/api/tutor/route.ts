@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { tavilySearch, type TavilyResult } from '@/lib/tavily'
+import { rateLimit } from '@/lib/rate-limit'
+
+const limiter = rateLimit({ limit: 15, windowMs: 60_000 })
 
 const GROQ_API_KEY = process.env.GROQ_API_KEY ?? ''
 const GROQ_URL = 'https://api.groq.com/openai/v1/chat/completions'
@@ -109,6 +112,9 @@ export async function OPTIONS() {
 }
 
 export async function POST(req: NextRequest) {
+  const limited = limiter(req)
+  if (limited) return limited
+
   try {
     const { selectedText, question, topicTitle, moduleId, history = [], forceEvidence = false } = await req.json()
 

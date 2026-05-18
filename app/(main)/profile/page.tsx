@@ -98,9 +98,14 @@ export default function ProfilePage() {
   const handleDeleteAccount = async () => {
     if (!confirm('Tem certeza que deseja excluir sua conta? Todos os seus dados serao apagados permanentemente. Essa acao nao pode ser desfeita.')) return
     if (!confirm('ULTIMA CONFIRMACAO: Sua conta e todos os dados serao excluidos. Deseja continuar?')) return
-    if (!supabase || !user) return
-    // Delete profile (cascade removes subscriptions, devices, notifications)
-    await supabase.from('profiles').delete().eq('id', user.id)
+    setSaving(true)
+    const res = await fetch('/api/user/delete', { method: 'DELETE' })
+    if (!res.ok) {
+      const body = await res.json() as { error?: string }
+      flashErr(body.error ?? 'Erro ao excluir conta.')
+      setSaving(false)
+      return
+    }
     await signOut()
     window.location.href = '/auth'
   }

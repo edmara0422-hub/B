@@ -14,6 +14,7 @@ export function AuthForm() {
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
   const [formData, setFormData] = useState({ name: '', email: '', password: '' })
+  const [consent, setConsent] = useState(false)
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
@@ -22,7 +23,7 @@ export function AuthForm() {
     }
   }, [])
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setError('')
     setSuccess('')
@@ -44,6 +45,7 @@ export function AuthForm() {
     } else {
       if (!formData.name) { setError('Informe seu nome.'); return }
       if (formData.password.length < 6) { setError('Senha deve ter no minimo 6 caracteres.'); return }
+      if (!consent) { setError('Aceite os termos de uso e politica de privacidade para continuar.'); return }
       const result = await signUp(formData.email, formData.password, formData.name)
       if (result.error) { setError(result.error); return }
       setSuccess('Conta criada com sucesso. Verifique seu email para confirmar.')
@@ -173,6 +175,24 @@ export function AuthForm() {
                   Esqueceu a senha?
                 </button>
               </div>
+            )}
+
+            {/* Consent (signup only) */}
+            {mode === 'signup' && (
+              <label className="flex items-start gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={consent}
+                  onChange={(e) => setConsent(e.target.checked)}
+                  className="mt-0.5 accent-white"
+                />
+                <span className="text-[7px] text-white/40 leading-relaxed">
+                  Li e aceito os{' '}
+                  <a href="/termos" target="_blank" className="text-white/60 underline hover:text-white/80">Termos de Uso</a>
+                  {' '}e a{' '}
+                  <a href="/privacidade" target="_blank" className="text-white/60 underline hover:text-white/80">Política de Privacidade</a>
+                </span>
+              </label>
             )}
 
             {/* Submit */}
