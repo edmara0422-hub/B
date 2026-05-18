@@ -4702,7 +4702,6 @@ export function ProntuarioSystemPanel() {
                   </span>
                 )}
               </div>
-              <h3 className="text-[1rem] font-semibold text-white/92">Pacientes</h3>
               <div className="mt-2 flex flex-wrap gap-1.5">
                 {Object.entries(recordBadges.viaCounts).map(([key, count]) =>
                   count > 0 ? (

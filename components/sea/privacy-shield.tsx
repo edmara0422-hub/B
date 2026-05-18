@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation'
 import { useAuthStore } from '@/lib/stores/authStore'
 
 // Rotas clínicas onde a marca d'água aparece
-const CLINICAL_ROUTES = ['/sistemas', '/area']
+const CLINICAL_ROUTES = ['/explore/sistemas', '/sistemas', '/area']
 
 export function PrivacyShield() {
   const pathname = usePathname()
