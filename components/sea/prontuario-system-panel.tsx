@@ -5269,30 +5269,30 @@ export function ProntuarioSystemPanel() {
                   </div>
                 </div>
 
-                <div className="grid gap-1.5 xl:grid-cols-[1.1fr_0.9fr]">
-                  <div className="space-y-1.5">
-                    <div className="chrome-panel rounded-[1rem] p-1.5 md:p-2">
-                      <p className="mb-1 text-[7px] text-white/35 leading-tight">
-                        Use apenas descricao clinica do caso. Nao inclua nome, CPF, prontuario ou identificadores do paciente.
-                      </p>
-                      <div className="space-y-1">
-                        <FieldShell label="Historia clinica">
-                          <AutoGrowTextarea
-                            value={currentRecord.historia}
-                            onChange={(value) => setField('historia', value)}
-                            placeholder="Resumo clinico (sem identificadores)..."
-                          />
-                        </FieldShell>
-                        <FieldShell label="Diagnostico">
-                          <AutoGrowTextarea
-                            value={currentRecord.diagnostico}
-                            onChange={(value) => setField('diagnostico', value)}
-                            placeholder="Diagnostico medico e foco atual..."
-                          />
-                        </FieldShell>
-                      </div>
+                <div className="space-y-1.5">
+                  <div className="chrome-panel rounded-[1rem] p-1.5 md:p-2">
+                    <p className="mb-1 text-[7px] text-white/35 leading-tight">
+                      Use apenas descricao clinica do caso. Nao inclua nome, CPF, prontuario ou identificadores do paciente.
+                    </p>
+                    <div className="space-y-1 xl:grid xl:grid-cols-2 xl:gap-2 xl:space-y-0">
+                      <FieldShell label="Historia clinica">
+                        <AutoGrowTextarea
+                          value={currentRecord.historia}
+                          onChange={(value) => setField('historia', value)}
+                          placeholder="Resumo clinico (sem identificadores)..."
+                        />
+                      </FieldShell>
+                      <FieldShell label="Diagnostico">
+                        <AutoGrowTextarea
+                          value={currentRecord.diagnostico}
+                          onChange={(value) => setField('diagnostico', value)}
+                          placeholder="Diagnostico medico e foco atual..."
+                        />
+                      </FieldShell>
                     </div>
+                  </div>
 
+                  <div className="grid gap-1.5 xl:grid-cols-2">
                     <div className="chrome-panel rounded-[1rem] p-1.5 md:p-2">
                       <div className="mb-2 flex items-center justify-between gap-2">
                         <p className="text-[7px] font-semibold uppercase tracking-[0.14em] text-white/40">Laboratorio</p>
@@ -5383,9 +5383,7 @@ export function ProntuarioSystemPanel() {
                         )}
                       </div>
                     </div>
-                  </div>
 
-                  <div className="space-y-1.5">
                     <div className="chrome-panel rounded-[1rem] p-1.5 md:p-2">
                       <div className="mb-1 flex items-center justify-between gap-1">
                         <p className="text-[7px] font-semibold uppercase tracking-[0.14em] text-white/40">Exames de imagem</p>
