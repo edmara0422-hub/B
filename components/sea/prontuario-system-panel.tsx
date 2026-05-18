@@ -2750,7 +2750,7 @@ export function ProntuarioSystemPanel() {
   const [gasoScanOpen, setGasoScanOpen] = useState(false)
   const [gasoScanPhotos, setGasoScanPhotos] = useState<{ file: File; preview: string }[]>([])
   const [gasoScanLoading, setGasoScanLoading] = useState(false)
-  const [gasoScanResult, setGasoScanResult] = useState<{ ph: number | null; paco2: number | null; pao2: number | null; hco3: number | null; be: number | null; sao2: number | null; lactato: number | null; type?: 'arterial' | 'venosa' | 'indefinido'; confidence?: string; notes?: string } | null>(null)
+  const [gasoScanResult, setGasoScanResult] = useState<{ ph: number | null; paco2: number | null; pao2: number | null; hco3: number | null; be: number | null; sao2: number | null; lactato: number | null; fio2: number | null; type?: 'arterial' | 'venosa' | 'indefinido'; confidence?: string; notes?: string } | null>(null)
   const [gasoScanError, setGasoScanError] = useState<string | null>(null)
   const workspacesRef = useRef<Workspace[]>([])
   const activeWsIdRef = useRef<string>('')
@@ -3592,7 +3592,7 @@ export function ProntuarioSystemPanel() {
     const pesoIdeal = currentRecord.altura
       ? calcPesoIdeal(parseNumber(currentRecord.altura), currentRecord.sexo || 'M')
       : 0
-    const pf = calcPF(parseNumber(currentRecord.gasoPaO2), parseNumber(currentRecord.sfFiO2) || parseNumber(currentRecord.gasoFiO2) || parseNumber(currentRecord.fio2))
+    const pf = calcPF(parseNumber(currentRecord.gasoPaO2), parseNumber(currentRecord.gasoFiO2) || parseNumber(currentRecord.fio2))
     const pfInterp = pf ? interpPF(pf) : null
     const pplatoVal = currentRecord.pplato ? parseNumber(currentRecord.pplato) : 0
     const peepVal = currentRecord.peep ? parseNumber(currentRecord.peep) : 0
@@ -6351,7 +6351,7 @@ export function ProntuarioSystemPanel() {
                     <FieldShell label="SpO2 S/F">
                       <input className={INPUT_CLASS_SM} style={INPUT_STYLE} type="number" value={currentRecord.sfSpO2} onChange={(event) => setField('sfSpO2', event.target.value)} placeholder="96" />
                     </FieldShell>
-                    <FieldShell label="FiO2 (%)">
+                    <FieldShell label="FiO2 S/F">
                       <input className={INPUT_CLASS_SM} style={INPUT_STYLE} type="number" value={currentRecord.sfFiO2} onChange={(event) => setField('sfFiO2', event.target.value)} placeholder="40" />
                     </FieldShell>
                     <FieldShell label="Gaso">
@@ -6378,7 +6378,7 @@ export function ProntuarioSystemPanel() {
                   </div>
 
                   {/* Resumo dos valores escaneados — só aparece quando há dados */}
-                  {(currentRecord.gasoPH || currentRecord.gasoPaCO2 || currentRecord.gasoPaO2 || currentRecord.gasoHCO3 || currentRecord.gasoBE || currentRecord.gasoSaO2 || currentRecord.gasoLactato) && (
+                  {(currentRecord.gasoPH || currentRecord.gasoPaCO2 || currentRecord.gasoPaO2 || currentRecord.gasoHCO3 || currentRecord.gasoBE || currentRecord.gasoSaO2 || currentRecord.gasoLactato || currentRecord.gasoFiO2) && (
                     <div className="mt-1.5 flex items-center gap-1.5 rounded-[0.6rem] px-2 py-1" style={{ background: 'rgba(34,211,238,0.06)', border: '1px solid rgba(34,211,238,0.18)' }}>
                       <div className="flex flex-1 flex-wrap items-center gap-x-2 gap-y-0.5 text-[8.5px] text-white/70 tabular-nums">
                         {currentRecord.gasoPH && <span>pH <span className="text-white/92">{currentRecord.gasoPH}</span></span>}
@@ -6388,6 +6388,7 @@ export function ProntuarioSystemPanel() {
                         {currentRecord.gasoBE && <span>BE <span className="text-white/92">{currentRecord.gasoBE}</span></span>}
                         {currentRecord.gasoSaO2 && <span>SaO2 <span className="text-white/92">{currentRecord.gasoSaO2}</span></span>}
                         {currentRecord.gasoLactato && <span>Lac <span className="text-white/92">{currentRecord.gasoLactato}</span></span>}
+                        {currentRecord.gasoFiO2 && <span>FiO2 <span className="text-white/92">{currentRecord.gasoFiO2}%</span></span>}
                       </div>
                       <button
                         onClick={() => updateCurrentRecord((record) => ({
@@ -9007,6 +9008,7 @@ export function ProntuarioSystemPanel() {
                       { label: 'BE', value: gasoScanResult.be },
                       { label: 'SaO2', value: gasoScanResult.sao2 },
                       { label: 'Lactato', value: gasoScanResult.lactato },
+                      { label: 'FiO2 (%)', value: gasoScanResult.fio2 },
                     ].map(item => (
                       <div key={item.label} className="flex items-baseline gap-1">
                         <span className="text-white/40">{item.label}</span>
@@ -9058,6 +9060,16 @@ export function ProntuarioSystemPanel() {
                   <button
                     onClick={() => {
                       const r = gasoScanResult
+                      const id = selectedId
+                      if (!id) {
+                        setGasoScanError('Nenhum paciente selecionado — não foi possível aplicar.')
+                        return
+                      }
+                      const allNull = r.ph == null && r.paco2 == null && r.pao2 == null && r.hco3 == null && r.be == null && r.sao2 == null && r.lactato == null && r.fio2 == null
+                      if (allNull) {
+                        setGasoScanError('IA não detectou valores válidos. Tire fotos mais nítidas.')
+                        return
+                      }
                       updateCurrentRecord((record) => ({
                         ...record,
                         gasoPH: r.ph != null ? String(r.ph) : record.gasoPH,
@@ -9067,8 +9079,11 @@ export function ProntuarioSystemPanel() {
                         gasoBE: r.be != null ? String(r.be) : record.gasoBE,
                         gasoSaO2: r.sao2 != null ? String(r.sao2) : record.gasoSaO2,
                         gasoLactato: r.lactato != null ? String(r.lactato) : record.gasoLactato,
+                        gasoFiO2: r.fio2 != null ? String(r.fio2) : record.gasoFiO2,
                       }))
                       setGasoScanOpen(false)
+                      setGasoScanResult(null)
+                      setGasoScanPhotos([])
                     }}
                     className="flex flex-1 items-center justify-center gap-2 rounded-[0.85rem] py-3 text-[12px] font-bold uppercase tracking-[0.14em] transition"
                     style={{ background: 'rgba(74,222,128,0.28)', border: '1px solid rgba(74,222,128,0.55)', color: '#86efac' }}

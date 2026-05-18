@@ -24,7 +24,7 @@ const GASO_PROMPT = `Você é um intensivista lendo laudo de gasometria (arteria
 
 Podem ser enviadas múltiplas imagens (frente/verso do laudo, fotos de partes diferentes). Analise todas juntas.
 
-OBJETIVO: Extrair os 7 valores essenciais E classificar se é arterial ou venosa.
+OBJETIVO: Extrair os 8 valores essenciais E classificar se é arterial ou venosa.
 
 VALORES A EXTRAIR:
 1. pH (ex: 7.36)
@@ -34,6 +34,7 @@ VALORES A EXTRAIR:
 5. BE / Base Excess (mEq/L, pode ser negativo, ex: -2 ou +3)
 6. SaO2 / SatO2 / SO2 (%, ex: 96 arterial / 65-75 venosa)
 7. Lactato (mmol/L ou mg/dL — se em mg/dL, converter dividindo por 9 para mmol/L)
+8. FiO2 (% — valor da fração inspirada de O2 no momento da coleta. Procure por "FiO2", "FIO2", "FIO₂", "O2 insp", "ar ambiente=21%". Aceita formato 0.40 → converter para 40)
 
 CLASSIFICAÇÃO ARTERIAL vs VENOSA:
 - ARTERIAL: PaO2 normalmente 70-100 mmHg, SaO2 >90%, pH 7.35-7.45
@@ -45,6 +46,7 @@ REGRAS:
 - Se um valor estiver ausente ou ilegível, retorne null
 - Lactato: aceitar formatos "1.5 mmol/L", "13.5 mg/dL" (converter), "Lac 2.0"
 - BE: pode aparecer como "BE", "EB", "Base Excess" — pode ser positivo ou negativo
+- FiO2: se ar ambiente, retorne 21. Se vier como 0.21–1.00, converta para 21–100
 - Ignore valores duplicados (alguns laudos repetem ABG e VBG)
 
 RETORNE APENAS JSON VÁLIDO (sem markdown, sem texto fora do JSON):
@@ -56,6 +58,7 @@ RETORNE APENAS JSON VÁLIDO (sem markdown, sem texto fora do JSON):
   "be": -2,
   "sao2": 96,
   "lactato": 1.5,
+  "fio2": 40,
   "type": "arterial" | "venosa" | "indefinido",
   "confidence": "alta" | "media" | "baixa",
   "notes": "observação breve, ex: lactato convertido de mg/dL, valor ilegível, etc"
