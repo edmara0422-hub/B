@@ -453,7 +453,7 @@ export default function ConteudosPageClient() {
             )}
 
             {/* Coluna direita: rail + conteúdo */}
-            <div className="min-w-0 space-y-6">
+            <div className="min-w-0 flex flex-col gap-6">
               {/* Rail (com bolas) */}
               <ModuleRail modules={MODULES} activeIndex={activeIndex} onSelect={handleSelectModule} />
 
@@ -508,7 +508,7 @@ export default function ConteudosPageClient() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -18 }}
                 transition={{ duration: 0.28, ease }}
-                className="flex items-center justify-center rounded-[1.8rem] border border-white/[0.06] py-16"
+                className="flex flex-1 items-center justify-center rounded-[1.8rem] border border-white/[0.06] min-h-[220px]"
                 style={{ background: 'rgba(255,255,255,0.01)' }}
               >
                 <div className="flex flex-col items-center gap-4 text-center">
