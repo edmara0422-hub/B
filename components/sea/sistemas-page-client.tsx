@@ -75,9 +75,9 @@ function WorkspaceSidebar({
           <p className="text-[7px] uppercase tracking-[0.22em] text-white/36">Sistemas</p>
           <button
             onClick={onClose}
-            className="flex h-6 w-6 items-center justify-center rounded-[0.5rem] text-white/40 hover:bg-white/[0.08] hover:text-white/70 transition"
+            className="flex h-5 w-5 items-center justify-center rounded-[0.4rem] text-white/36 transition hover:bg-white/[0.08] hover:text-white/64"
           >
-            <PanelLeftClose className="h-3.5 w-3.5" />
+            <PanelLeftClose className="h-3 w-3" />
           </button>
         </div>
 
