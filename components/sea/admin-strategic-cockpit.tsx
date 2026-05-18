@@ -7,7 +7,7 @@ import {
   FileText, Flag, Gauge, Goal, Heart, Hospital, LayoutGrid, 
   Map as MapIcon, Network, RefreshCw, Rocket, Square, Target, 
   TrendingUp, Trophy, Users, Users2, Zap, Shield, ChevronRight, 
-  MessageSquare, Layers, Search, MousePointer2, Clock, Globe, ArrowUpRight
+  MessageSquare, Layers, Search, MousePointer2, Clock, Globe, ArrowUpRight, HelpCircle
 } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { AdminTelemetry } from './admin-telemetry'
@@ -113,144 +113,127 @@ export function AdminStrategicCockpit() {
   if (loading && !data) return (
     <div className="flex flex-col items-center justify-center py-32 space-y-6">
       <div className="relative flex items-center justify-center">
-        <div className="h-16 w-16 animate-spin rounded-full border-t-2 border-b-2 border-indigo-500" />
-        <div className="absolute h-10 w-10 animate-ping rounded-full border-2 border-indigo-500/25 opacity-75" />
-        <Brain className="absolute h-6 w-6 text-indigo-400 animate-pulse" />
+        <div className="h-16 w-16 animate-spin rounded-full border-4 border-[#a78bfa]/10 border-t-[#a78bfa] shadow-[0_0_20px_rgba(167,139,250,0.15)]" />
+        <Brain className="absolute h-6 w-6 text-[#a78bfa] animate-pulse" />
       </div>
-      <div className="text-center space-y-1">
-        <p className="text-[11px] font-black uppercase tracking-[0.25em] bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
-          Sincronizando Rede Neural SEA...
-        </p>
-        <p className="text-[9px] text-white/35 font-mono">Carregando métricas e modelos de decisão autonômos</p>
+      <div className="text-center space-y-1.5">
+        <p className="text-sm font-semibold tracking-[0.2em] text-[#a78bfa] uppercase">Sincronizando Cockpit de IA</p>
+        <p className="text-xs text-white/40">Carregando telemetria e dados de maturidade clínica...</p>
       </div>
     </div>
   )
 
   if (error && !data) return (
-    <div className="rounded-[2.5rem] border border-red-500/25 bg-red-500/5 p-12 text-center backdrop-blur-2xl max-w-lg mx-auto shadow-[0_0_50px_rgba(239,68,68,0.1)]">
-      <div className="mx-auto mb-6 h-16 w-16 rounded-2xl bg-red-500/10 flex items-center justify-center border border-red-500/20">
-        <AlertTriangle className="h-8 w-8 text-red-400" />
+    <div className="rounded-3xl border border-red-500/20 bg-red-500/5 p-12 text-center backdrop-blur-2xl max-w-lg mx-auto shadow-2xl">
+      <div className="mx-auto mb-4 h-16 w-16 rounded-full bg-red-500/10 flex items-center justify-center border border-red-500/20">
+        <AlertTriangle className="h-8 w-8 text-red-500" />
       </div>
-      <h3 className="text-[15px] font-black text-white uppercase tracking-wider mb-2">Erro de Rede Neural</h3>
-      <p className="text-[12px] text-white/50 leading-relaxed font-mono mb-6">{error}</p>
-      <button 
-        onClick={fetchData} 
-        className="px-8 py-3 rounded-xl bg-red-500/20 border border-red-500/40 text-[10px] font-black text-red-300 hover:bg-red-500/35 transition-all duration-300 uppercase tracking-widest"
-      >
-        Reconectar Cockpit
-      </button>
+      <h3 className="text-lg font-bold text-white mb-2">Falha na Sincronização</h3>
+      <p className="text-sm text-red-400 mb-6 leading-relaxed">{error}</p>
+      <button onClick={fetchData} className="px-6 py-2.5 rounded-xl bg-red-500/10 border border-red-500/20 text-xs font-bold text-red-400 hover:bg-red-500/20 transition-all uppercase tracking-wider">Tentar Reconexão</button>
     </div>
   )
 
   if (!data) return null
 
   return (
-    <div className="space-y-8 max-w-7xl mx-auto pb-32 px-4 select-none">
-      {/* 🚀 HEADER PREMIUM: DESIGN NASA / SCI-FI */}
-      <header className="relative overflow-hidden rounded-[2.5rem] border border-white/5 bg-gradient-to-br from-white/[0.03] via-white/[0.01] to-transparent p-8 shadow-2xl backdrop-blur-3xl">
-        {/* Decorative Grid and Ambient Glows */}
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.015)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.015)_1px,transparent_1px)] bg-[size:24px_24px] [mask-image:radial-gradient(ellipse_at_center,white,transparent_75%)] pointer-events-none opacity-50" />
-        <div className="absolute top-0 right-1/4 w-96 h-96 bg-indigo-500/10 rounded-full blur-[100px] pointer-events-none" />
-        <div className="absolute -bottom-20 -left-20 w-80 h-80 bg-purple-500/10 rounded-full blur-[90px] pointer-events-none" />
+    <div className="space-y-8 max-w-6xl mx-auto pb-32">
+      {/* 🚀 HEADER PREMIUM: STATUS DO SISTEMA */}
+      <header className="relative overflow-hidden rounded-[2.5rem] border border-white/10 bg-slate-900/40 p-6 md:p-8 backdrop-blur-3xl shadow-[0_20px_50px_rgba(0,0,0,0.3)]">
+        <div className="absolute top-0 right-0 p-8 opacity-[0.03] pointer-events-none">
+          <Zap className="h-64 w-64 text-[#a78bfa]" />
+        </div>
         
         <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-8">
           <div className="flex items-center gap-5">
-            <div className="h-16 w-16 rounded-2xl bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 p-[1px] shadow-[0_0_30px_rgba(99,102,241,0.25)] hover:scale-105 transition-all duration-500">
-              <div className="h-full w-full rounded-2xl bg-[#09090e] flex items-center justify-center">
-                <Rocket className="h-7 w-7 text-indigo-400 animate-pulse" />
-              </div>
+            <div className="h-16 w-16 rounded-2xl bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center shadow-[0_8px_30px_rgba(124,58,237,0.3)] border border-violet-400/20">
+              <Rocket className="h-8 w-8 text-white" />
             </div>
             <div>
-              <div className="flex items-center gap-2.5">
-                <h1 className="text-[22px] font-black text-white tracking-tight uppercase">SEA COCKPIT ESTRATÉGICO</h1>
-                <span className="px-2 py-0.5 rounded bg-white/5 border border-white/10 text-[8px] font-mono text-white/50 tracking-wider">v3.0.4</span>
-              </div>
-              <div className="flex items-center gap-3 mt-1.5">
-                <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-[9px] font-bold text-emerald-400 uppercase tracking-wider">
-                  <span className="relative flex h-1.5 w-1.5">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                    <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500" />
-                  </span>
-                  DIAGNÓSTICO EM TEMPO REAL
+              <h1 className="text-2xl font-extrabold text-white tracking-tight bg-gradient-to-r from-white via-white to-white/70 bg-clip-text text-transparent">
+                SEA FISIO COCKPIT ESTRATÉGICO
+              </h1>
+              <div className="flex items-center flex-wrap gap-2 mt-1.5">
+                <span className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-[10px] font-black text-emerald-400 uppercase tracking-wider">
+                  <div className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                  Live Diagnostic
                 </span>
-                <span className="text-[9px] text-white/30 uppercase font-black tracking-widest hidden sm:inline">PROCESSO DECISÓRIO AUTÔNOMO</span>
+                <span className="text-[10px] text-white/40 uppercase font-black tracking-widest bg-white/5 border border-white/10 px-2 py-0.5 rounded">v2.5 Autonomous</span>
               </div>
             </div>
           </div>
           
-          <div className="grid grid-cols-2 gap-4 sm:w-auto w-full">
-             <div className="px-5 py-3 rounded-2xl bg-white/[0.02] border border-white/5 hover:border-white/10 transition-colors">
-                <p className="text-[8px] font-black text-white/40 uppercase tracking-widest mb-1.5">Maturidade TRL</p>
+          <div className="grid grid-cols-2 gap-4 w-full lg:w-auto">
+             <div className="px-5 py-3 rounded-2xl bg-white/[0.03] border border-white/5 flex flex-col justify-between min-w-[140px] hover:border-white/10 transition-all">
+                <p className="text-[9px] font-black text-white/30 uppercase tracking-widest mb-1.5">Maturidade TRL</p>
                 <div className="flex items-center gap-3">
-                  <span className="text-[20px] font-black text-white leading-none font-mono">{data.state.trl?.level || 7}</span>
-                  <div className="h-1.5 w-24 bg-white/5 rounded-full overflow-hidden relative">
-                    <div className="h-full bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full" style={{ width: `${((data.state.trl?.level || 7)/9)*100}%` }} />
+                  <span className="text-2xl font-black text-white">{data.state.trl?.level || 7}</span>
+                  <div className="flex-1">
+                    <div className="h-1.5 w-full bg-white/10 rounded-full overflow-hidden">
+                      <div className="h-full bg-gradient-to-r from-[#a78bfa] to-[#8b5cf6] rounded-full shadow-[0_0_10px_rgba(167,139,250,0.5)]" style={{ width: `${((data.state.trl?.level || 7)/9)*100}%` }} />
+                    </div>
+                    <span className="text-[8px] text-white/40 mt-1 block uppercase">Nível {data.state.trl?.level || 7}/9</span>
                   </div>
                 </div>
              </div>
-             <div className="px-5 py-3 rounded-2xl bg-white/[0.02] border border-white/5 hover:border-white/10 transition-colors">
-                <p className="text-[8px] font-black text-white/40 uppercase tracking-widest mb-1.5">Fase da Startup</p>
+             <div className="px-5 py-3 rounded-2xl bg-white/[0.03] border border-white/5 flex flex-col justify-between min-w-[140px] hover:border-white/10 transition-all">
+                <p className="text-[9px] font-black text-white/30 uppercase tracking-widest mb-1.5">Fase do Negócio</p>
                 <div className="flex items-center gap-2">
-                  <div className="p-1 rounded bg-amber-500/15 border border-amber-500/20">
-                    <Target className="h-3.5 w-3.5 text-amber-400" />
+                  <div className="h-8 w-8 rounded-lg bg-amber-500/10 border border-amber-500/20 flex items-center justify-center shrink-0">
+                    <Target className="h-4.5 w-4.5 text-amber-400" />
                   </div>
-                  <span className="text-[13px] font-black text-white uppercase tracking-wider">{data.state.phase?.label || 'Validação'}</span>
+                  <div>
+                    <span className="text-xs font-black text-white uppercase tracking-wider block">{data.state.phase?.label || 'Validação'}</span>
+                    <span className="text-[8px] text-white/40 block uppercase">Alvo: {data.state.phase?.goal_users || 10} Fisios</span>
+                  </div>
                 </div>
              </div>
           </div>
         </div>
 
-        <div className="mt-8 pt-6 border-t border-white/5">
+        <div className="mt-8 border-t border-white/5 pt-6">
            <CompactTrails data={data} />
         </div>
       </header>
 
-      {/* 🧭 NAVEGAÇÃO DE ALTA PERFORMANCE (Sci-Fi Deck style) */}
-      <nav className="flex p-1.5 bg-[#09090e]/80 border border-white/5 rounded-2.5xl sticky top-4 z-50 backdrop-blur-3xl shadow-2xl">
+      {/* 🧭 NAVEGAÇÃO DE ALTA PERFORMANCE */}
+      <nav className="flex p-1.5 bg-slate-950/70 border border-white/10 rounded-2xl sticky top-4 z-40 backdrop-blur-3xl shadow-[0_8px_32px_rgba(0,0,0,0.5)]">
         {[
-          { id: 'guia', label: 'PLANO DE HOJE', icon: Brain, color: '#6366f1', desc: 'Diretrizes Estratégicas' },
-          { id: 'metricas', label: 'COCKPIT COMERCIAL', icon: DollarSign, color: '#10b981', desc: 'Métricas & Telemetria' },
-          { id: 'inovacao', label: 'RADAR DE INOVAÇÃO', icon: LayoutGrid, color: '#3b82f6', desc: '3 Horizontes & Funil' },
-          { id: 'lideranca', label: 'LIDERANÇA & EXECUÇÃO', icon: Users2, color: '#f59e0b', desc: 'OKRs & Gestão de Pessoas' },
+          { id: 'guia', label: 'PLANO DE AÇÃO', icon: Brain, color: '#a78bfa' },
+          { id: 'metricas', label: 'FINANÇAS & TRAÇÃO', icon: DollarSign, color: '#10B981' },
+          { id: 'inovacao', label: 'ROADMAP & INOVAÇÃO', icon: LayoutGrid, color: '#38bdf8' },
+          { id: 'lideranca', label: 'EXECUÇÃO & OKRs', icon: Users2, color: '#fbbf24' },
         ].map((tab) => (
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id as any)}
-            className="flex flex-1 flex-col items-center justify-center py-3.5 px-4 rounded-xl transition-all duration-300 relative overflow-hidden group"
+            className={`flex flex-1 items-center justify-center gap-2.5 py-3 px-3 rounded-xl text-xs font-black transition-all duration-300 relative overflow-hidden ${
+              activeTab === tab.id 
+                ? 'text-white' 
+                : 'text-white/40 hover:text-white/70 hover:bg-white/5'
+            }`}
           >
-            {activeTab === tab.id ? (
-              <motion.div 
-                layoutId="activeTabGlow" 
-                className="absolute inset-0 z-0 bg-gradient-to-br from-white/[0.04] to-transparent border border-white/10 rounded-xl"
-              />
-            ) : (
-              <div className="absolute inset-0 z-0 opacity-0 group-hover:opacity-100 bg-white/[0.01] transition-opacity duration-300 rounded-xl" />
-            )}
-            
-            {/* Top Indicator Accent */}
             {activeTab === tab.id && (
               <motion.div 
-                layoutId="activeTabLine"
-                className="absolute top-0 left-1/4 right-1/4 h-[2px] rounded-full shadow-[0_0_12px_rgba(99,102,241,1)]"
+                layoutId="activeTab" 
+                className="absolute inset-0 z-0 bg-gradient-to-br opacity-[0.08]" 
                 style={{ backgroundColor: tab.color }}
               />
             )}
-
-            <div className="flex items-center gap-2.5 relative z-10">
-              <tab.icon className={`h-4.5 w-4.5 transition-transform duration-300 group-hover:scale-110 ${activeTab === tab.id ? '' : 'opacity-40'}`} style={{ color: activeTab === tab.id ? tab.color : undefined }} />
-              <span className={`text-[12px] font-black uppercase tracking-wider transition-colors duration-300 ${activeTab === tab.id ? 'text-white' : 'text-white/40'}`}>
-                {tab.label}
-              </span>
-            </div>
-            <span className="text-[8px] font-mono text-white/20 uppercase tracking-widest mt-1 hidden lg:block relative z-10">
-              {tab.desc}
-            </span>
+            {activeTab === tab.id && (
+              <div 
+                className="absolute bottom-0 left-1/2 -translate-x-1/2 w-12 h-1 rounded-t-full shadow-[0_0_15px_currentColor]" 
+                style={{ color: tab.color, backgroundColor: 'currentColor' }}
+              />
+            )}
+            <tab.icon className={`h-4.5 w-4.5 relative z-10 transition-all duration-300 ${activeTab === tab.id ? 'scale-110' : 'opacity-50'}`} style={{ color: activeTab === tab.id ? tab.color : undefined }} />
+            <span className="relative z-10 hidden md:inline tracking-wider uppercase">{tab.label}</span>
           </button>
         ))}
       </nav>
 
-      {/* 🎭 PALCO DINÂMICO (ABAS COM TRANSIÇÕES SUAVES) */}
-      <main className="min-h-[600px] relative">
+      {/* 🎭 PALCO DINÂMICO (ABAS) */}
+      <div className="min-h-[500px]">
         <AnimatePresence mode="wait">
           {activeTab === 'guia' && (
             <motion.div 
@@ -258,110 +241,102 @@ export function AdminStrategicCockpit() {
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -15 }}
-              transition={{ duration: 0.3 }}
-              className="space-y-8"
+              transition={{ duration: 0.25 }}
+              className="space-y-6"
             >
               {/* ALERTA CRÍTICO: FLASH DESIGN */}
               {alerts.filter(a => !a.read && a.level === 'critical').map(alert => (
-                <div key={alert.id} className="relative overflow-hidden rounded-[2rem] bg-red-500/[0.03] border border-red-500/25 p-6 shadow-[0_0_50px_rgba(239,68,68,0.06)] backdrop-blur-md">
-                  <div className="absolute top-0 left-0 w-[3px] h-full bg-gradient-to-b from-red-500 to-pink-500" />
+                <div key={alert.id} className="relative overflow-hidden rounded-3xl bg-red-500/10 border-2 border-red-500/20 p-6 shadow-[0_0_40px_rgba(239,68,68,0.15)] animate-pulse">
+                  <div className="absolute top-0 left-0 w-1.5 h-full bg-red-500" />
                   <div className="flex gap-6 items-start">
-                    <div className="p-3 bg-red-500/10 rounded-2xl border border-red-500/20 shadow-lg animate-pulse shrink-0">
-                      <AlertTriangle className="h-6 w-6 text-red-400" />
+                    <div className="p-3 bg-red-500 rounded-2xl shadow-lg shadow-red-500/30 shrink-0">
+                      <AlertTriangle className="h-6 w-6 text-white" />
                     </div>
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className="h-1.5 w-1.5 rounded-full bg-red-400 animate-ping" />
-                        <h3 className="text-[9px] font-black text-red-400 uppercase tracking-[0.25em] font-mono">{alert.title}</h3>
-                      </div>
-                      <p className="text-[15px] text-white/95 font-medium leading-relaxed">{alert.message}</p>
+                    <div className="flex-1 min-w-0">
+                      <h3 className="text-xs font-black text-red-400 uppercase tracking-[0.2em] mb-1.5">{alert.title}</h3>
+                      <p className="text-[15px] text-white font-semibold leading-relaxed">{alert.message}</p>
                       {alert.action && (
-                        <div className="mt-4 inline-flex items-center gap-2.5 px-3.5 py-1.5 bg-red-500/10 rounded-xl border border-red-500/20">
+                        <div className="mt-4.5 inline-flex items-center gap-2 px-3 py-1.5 bg-red-500/20 rounded-xl border border-red-500/30">
                           <Zap className="h-3.5 w-3.5 text-red-400" />
-                          <span className="text-[11px] font-mono font-bold text-white/80">{alert.action}</span>
+                          <span className="text-xs font-bold text-white">{alert.action}</span>
                         </div>
                       )}
                     </div>
-                    <button 
-                      onClick={() => dismissAlert(alert.id)} 
-                      className="p-1.5 hover:bg-white/5 rounded-full transition text-white/20 hover:text-white"
-                      title="Dispensar Alerta"
-                    >
-                      ✕
-                    </button>
+                    <button onClick={() => dismissAlert(alert.id)} className="p-1.5 hover:bg-white/10 rounded-full transition text-white/30 hover:text-white shrink-0">✕</button>
                   </div>
                 </div>
               ))}
 
-              {/* IA BRIEFING: THE NEURAL BRAIN DECK */}
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <div className="lg:col-span-2 relative overflow-hidden rounded-[2.5rem] bg-gradient-to-br from-indigo-500/[0.04] via-purple-500/[0.01] to-transparent border border-indigo-500/20 p-8 shadow-xl">
-                  {/* Glowing background meshes */}
-                  <div className="absolute top-0 right-0 w-80 h-80 bg-indigo-500/5 rounded-full blur-[100px] pointer-events-none" />
-                  <div className="absolute -top-20 -right-20 p-8 opacity-[0.02] pointer-events-none">
-                    <Brain className="h-72 w-72 text-indigo-400" />
+              {/* IA BRIEFING: THE BRAIN */}
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div className="lg:col-span-2 relative overflow-hidden rounded-[2.5rem] bg-gradient-to-br from-violet-950/40 to-slate-900/60 border border-violet-500/20 p-6 md:p-8 shadow-[0_15px_40px_rgba(139,92,246,0.05)]">
+                  <div className="absolute top-0 right-0 p-8 opacity-[0.02] pointer-events-none">
+                    <Brain className="h-72 w-72 text-[#a78bfa]" />
                   </div>
                   
-                  <div className="relative z-10">
-                    <div className="flex items-center justify-between mb-8">
-                      <div className="flex items-center gap-4">
-                        <div className="h-12 w-12 rounded-2xl bg-indigo-500/10 flex items-center justify-center border border-indigo-500/20 shadow-lg shadow-indigo-500/10">
-                          <Brain className="h-6 w-6 text-indigo-400" />
+                  <div className="relative z-10 space-y-6">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <div className="h-12 w-12 rounded-2xl bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-violet-500/20 border border-violet-400/20">
+                          <Brain className="h-6 w-6 text-white" />
                         </div>
                         <div>
-                          <h2 className="text-[16px] font-black text-white uppercase tracking-tight">IA CO-PILOTO ESTRATÉGICO</h2>
-                          <p className="text-[9px] text-indigo-400 uppercase font-mono tracking-widest">DIAGNÓSTICO E PRESCRIÇÃO NEURAL</p>
+                          <h2 className="text-base font-extrabold text-white tracking-tight">AI Diagnostic Panel</h2>
+                          <p className="text-[9px] text-violet-400 uppercase font-black tracking-widest">Processamento Neural Ativo</p>
                         </div>
                       </div>
-                      
-                      <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-500/5 border border-indigo-500/15 text-[8px] font-mono text-indigo-300">
-                        <span className="relative flex h-1.5 w-1.5">
-                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75" />
-                          <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-indigo-500" />
-                        </span>
-                        DECISION MODEL V3
+                      <div className="flex items-center gap-1 bg-violet-500/10 border border-violet-500/20 px-2 py-0.5 rounded text-[8px] font-black text-violet-400 uppercase tracking-widest">
+                        <div className="h-1 w-1 rounded-full bg-violet-400 animate-ping" />
+                        Online
                       </div>
                     </div>
 
                     {brief ? (
-                      <div className="space-y-8">
+                      <div className="space-y-6">
+                        <div className="space-y-2">
+                          <div className="flex items-center gap-2">
+                             <MessageSquare className="h-3.5 w-3.5 text-violet-400" />
+                             <span className="text-[10px] font-black text-violet-400 uppercase tracking-widest">Pergunta Estratégica do Fundador</span>
+                          </div>
+                          <div className="bg-slate-950/40 rounded-2xl border border-white/5 p-5">
+                            <p className="text-lg md:text-xl font-bold text-white leading-relaxed italic">
+                              "{brief.question}"
+                            </p>
+                          </div>
+                        </div>
+                        
                         <div className="space-y-3">
                           <div className="flex items-center gap-2">
-                             <MessageSquare className="h-3.5 w-3.5 text-indigo-400/60" />
-                             <span className="text-[9px] font-black text-indigo-400 uppercase tracking-widest">Questionamento Provocativo para o Fundador</span>
-                          </div>
-                          <blockquote className="text-[20px] md:text-[23px] font-bold text-white/95 leading-snug italic tracking-tight border-l-2 border-indigo-500/30 pl-4 py-1">
-                            "{brief.question}"
-                          </blockquote>
-                        </div>
-                        
-                        <div className="space-y-4 pt-6 border-t border-white/5">
-                          <div className="flex items-center gap-2">
                              <Zap className="h-3.5 w-3.5 text-amber-400" />
-                             <span className="text-[9px] font-black text-amber-400 uppercase tracking-widest">Prescrição Tática Recomendada</span>
+                             <span className="text-[10px] font-black text-amber-400 uppercase tracking-widest">Plano de Execução Imediata</span>
                           </div>
-                          <div className="bg-gradient-to-r from-indigo-500/[0.08] via-indigo-500/[0.01] to-transparent border-l-4 border-indigo-500 p-6 rounded-r-2xl">
-                            <p className="text-[16px] font-bold text-white leading-relaxed">{brief.action}</p>
+                          <div className="bg-gradient-to-r from-violet-500/10 to-transparent border-l-4 border-[#a78bfa] p-5 rounded-r-2xl">
+                            <p className="text-sm font-semibold text-white leading-relaxed">{brief.action}</p>
                           </div>
                         </div>
                         
-                        <button 
-                          onClick={fetchBrief}
-                          disabled={briefLoading}
-                          className="flex items-center gap-2 px-5 py-3 rounded-xl bg-white/[0.03] border border-white/10 hover:border-white/20 text-[10px] font-black text-indigo-300 hover:text-indigo-200 transition-all duration-300 disabled:opacity-30 uppercase tracking-widest"
-                        >
-                          <RefreshCw className={`h-3.5 w-3.5 ${briefLoading ? 'animate-spin' : ''}`} />
-                          Atualizar Diagnóstico de IA
-                        </button>
+                        <div className="flex pt-2">
+                          <button 
+                            onClick={fetchBrief}
+                            disabled={briefLoading}
+                            className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-[10px] font-black text-violet-300 hover:bg-white/10 transition-all disabled:opacity-30 uppercase tracking-widest"
+                          >
+                            <RefreshCw className={`h-3.5 w-3.5 ${briefLoading ? 'animate-spin' : ''}`} />
+                            Atualizar Diagnóstico
+                          </button>
+                        </div>
                       </div>
                     ) : (
-                      <div className="py-20 text-center space-y-6">
-                        <p className="text-white/40 text-[11px] uppercase font-black tracking-widest">Briefing aguardando processamento neural</p>
-                        <button 
-                          onClick={fetchBrief} 
-                          className="px-8 py-4 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-500 text-white font-black text-[11px] uppercase tracking-[0.2em] shadow-lg shadow-indigo-500/20 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300"
-                        >
-                          Gerar Briefing Estratégico
+                      <div className="py-16 text-center space-y-6 border border-dashed border-white/10 rounded-2xl bg-white/[0.01]">
+                        <div className="h-12 w-12 rounded-full bg-white/5 flex items-center justify-center mx-auto border border-white/10">
+                          <HelpCircle className="h-6 w-6 text-white/30" />
+                        </div>
+                        <div className="space-y-1">
+                          <p className="text-white/60 text-sm font-bold">Briefing aguardando sincronização</p>
+                          <p className="text-xs text-white/40">A IA está pronta para consolidar as métricas mais recentes e gerar a recomendação.</p>
+                        </div>
+                        <button onClick={fetchBrief} className="px-6 py-2.5 rounded-xl bg-[#a78bfa] text-slate-950 font-black text-xs uppercase tracking-widest hover:bg-[#b59dfb] transition-all">
+                          Gerar Diretriz Estratégica
                         </button>
                       </div>
                     )}
@@ -374,24 +349,20 @@ export function AdminStrategicCockpit() {
                 </div>
               </div>
 
-              {/* ALERTAS SECUNDÁRIOS & COMPLIANCE */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {/* ALERTAS SECUNDÁRIOS */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <AlertsList alerts={alerts.filter(a => !a.read && a.level !== 'critical')} onDismiss={dismissAlert} onRun={runAnalysis} loading={alertsLoading} />
-                <div className="rounded-[2.5rem] border border-white/5 bg-gradient-to-br from-white/[0.015] to-transparent p-8 flex flex-col justify-center items-center text-center space-y-5 relative overflow-hidden">
-                  <div className="absolute -bottom-24 -right-24 w-48 h-48 bg-indigo-500/[0.02] rounded-full blur-3xl pointer-events-none" />
-                  <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/5">
-                    <Shield className="h-8 w-8 text-white/20" />
+                <div className="rounded-3xl border border-white/10 bg-slate-900/20 p-6 flex flex-col justify-center items-center text-center space-y-4 hover:border-white/20 transition-all shadow-lg">
+                  <div className="h-12 w-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center">
+                    <Shield className="h-6 w-6 text-emerald-400" />
                   </div>
-                  <div className="space-y-2">
-                    <p className="text-[10px] font-black text-white/30 uppercase tracking-[0.25em] font-mono">COMPLIANCE GUARD ATIVO</p>
-                    <p className="text-[12px] text-white/50 leading-relaxed max-w-xs">
-                      O SEA monitora vulnerabilidades, logs e políticas regulatórias de forma automatizada 24 horas por dia.
+                  <div className="space-y-1">
+                    <p className="text-[10px] font-black text-emerald-400 uppercase tracking-[0.2em]">Compliance Guard Ativo</p>
+                    <p className="text-xs text-white/60 px-6 leading-relaxed">
+                      Auditor automático ativado. O sistema monitora mudanças regulatórias e segurança na nuvem 24 horas por dia.
                     </p>
                   </div>
-                  <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-[9px] font-mono text-emerald-400">
-                    <div className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                    INTEGRIDADE ASSEGURADA
-                  </div>
+                  <span className="text-[9px] font-bold text-white/30 uppercase bg-white/5 border border-white/10 px-2 py-0.5 rounded">LGPD / RLS Check</span>
                 </div>
               </div>
             </motion.div>
@@ -400,30 +371,27 @@ export function AdminStrategicCockpit() {
           {activeTab === 'metricas' && (
             <motion.div 
               key="metricas"
-              initial={{ opacity: 0, scale: 0.99 }}
+              initial={{ opacity: 0, scale: 0.98 }}
               animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.99 }}
-              transition={{ duration: 0.3 }}
-              className="space-y-8"
+              exit={{ opacity: 0, scale: 0.98 }}
+              transition={{ duration: 0.25 }}
+              className="space-y-6"
             >
               <FinancialCockpitCard cockpit={data.cockpit} />
               
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <DDDMMaturityCard state={data.state.maturity_dddm} onReload={() => reloadRef.current?.()} />
                 <ComplianceTrackerCard compliance={data.cockpit.compliance} onReload={() => reloadRef.current?.()} />
               </div>
 
-              {/* TELEMETRIA AO VIVO */}
-              <div className="rounded-[2.5rem] border border-white/5 bg-gradient-to-br from-white/[0.015] to-transparent p-8 shadow-xl">
-                 <div className="flex items-center justify-between mb-8">
-                    <div className="flex items-center gap-3">
-                      <div className="h-10 w-10 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center">
-                        <Activity className="h-5 w-5 text-indigo-400" />
-                      </div>
-                      <div>
-                        <h3 className="text-[15px] font-black text-white uppercase tracking-tight">Painel de Telemetria Operacional</h3>
-                        <p className="text-[9px] text-white/30 uppercase font-mono tracking-widest">Monitoramento Clínico de Eventos</p>
-                      </div>
+              <div className="rounded-[2rem] border border-white/10 bg-slate-900/30 p-6 md:p-8 backdrop-blur-3xl shadow-xl">
+                 <div className="flex items-center gap-3 mb-6">
+                    <div className="h-10 w-10 rounded-xl bg-sky-500/10 border border-sky-500/20 flex items-center justify-center">
+                      <Activity className="h-5 w-5 text-sky-400" />
+                    </div>
+                    <div>
+                      <h3 className="text-sm font-extrabold text-white uppercase tracking-wider">Telemetria e Atividade em Tempo Real</h3>
+                      <p className="text-[9px] text-white/40 uppercase font-black tracking-widest">Atividade real dos fisioterapeutas no sistema</p>
                     </div>
                  </div>
                  <AdminTelemetry />
@@ -439,10 +407,10 @@ export function AdminStrategicCockpit() {
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -15 }}
-              transition={{ duration: 0.3 }}
-              className="space-y-8"
+              transition={{ duration: 0.25 }}
+              className="space-y-6"
             >
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <InnovationHorizonsCard state={data.state.innovation_horizons} onReload={() => reloadRef.current?.()} />
                 <MaturityExecutionCard state={data.state.maturity_sgi} onReload={() => reloadRef.current?.()} />
               </div>
@@ -456,42 +424,46 @@ export function AdminStrategicCockpit() {
           {activeTab === 'lideranca' && (
             <motion.div 
               key="lideranca"
-              initial={{ opacity: 0, scale: 0.99 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.99 }}
-              transition={{ duration: 0.3 }}
-              className="space-y-8"
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -15 }}
+              transition={{ duration: 0.25 }}
+              className="space-y-6"
             >
               <LeadershipProcessCard state={data.state.leadership_process} />
               
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                  <div className="lg:col-span-2">
                     <OKRGeneratorCard />
                  </div>
-                 <div className="rounded-[2.5rem] border border-white/5 bg-gradient-to-br from-white/[0.015] to-transparent p-8 flex flex-col items-center justify-center text-center space-y-6 relative overflow-hidden">
-                    <div className="absolute -bottom-24 -left-24 w-48 h-48 bg-amber-500/[0.02] rounded-full blur-3xl pointer-events-none" />
-                    <div className="p-4 rounded-2xl bg-amber-500/5 border border-amber-500/10">
-                      <Users className="h-10 w-10 text-amber-400" />
-                    </div>
-                    <div className="space-y-2">
-                      <h4 className="text-[14px] font-black text-white uppercase tracking-wider">Cultura de Execução</h4>
-                      <p className="text-[12px] text-white/40 leading-relaxed">
-                        "Estratégia é 1%. Execução pura é 99%." Mantenha os alinhamentos semanais e rituais táticos de time para consolidar a cultura.
+                 <div className="rounded-[2rem] border border-white/10 bg-gradient-to-br from-slate-900/40 to-slate-950/60 p-6 md:p-8 flex flex-col items-center justify-between text-center space-y-6 shadow-xl">
+                    <div className="space-y-4 w-full flex flex-col items-center">
+                      <div className="h-14 w-14 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center">
+                        <Users className="h-7 w-7 text-amber-400" />
+                      </div>
+                      <h4 className="text-sm font-extrabold text-white uppercase tracking-widest">Cultura de Execução</h4>
+                      <p className="text-xs text-white/50 leading-relaxed max-w-[240px]">
+                        "Estratégia sem execução é apenas uma alucinação." Mantenha rituais semanais ativos para garantir o foco estratégico.
                       </p>
                     </div>
                     
-                    <div className="w-full space-y-2 pt-2">
-                      <div className="h-2 w-full bg-white/5 rounded-full overflow-hidden">
-                         <div className="h-full bg-amber-500 rounded-full" style={{ width: '65%' }} />
+                    <div className="w-full space-y-2">
+                      <div className="flex justify-between items-center text-[10px] uppercase font-bold text-white/40 tracking-wider">
+                        <span>Saúde do Time</span>
+                        <span className="text-amber-400 font-extrabold">65%</span>
                       </div>
-                      <span className="text-[9px] font-mono font-bold text-amber-400 uppercase tracking-widest">Saúde de Performance do Time: 65%</span>
+                      <div className="w-full h-2 bg-white/5 rounded-full overflow-hidden">
+                         <div className="h-full bg-gradient-to-r from-amber-500 to-orange-500 rounded-full" style={{ width: '65%' }} />
+                      </div>
                     </div>
+                    
+                    <span className="text-[9px] font-black text-amber-400 uppercase tracking-widest bg-amber-400/10 border border-amber-400/20 px-3 py-1 rounded-full">Alinhamento Ativo</span>
                  </div>
               </div>
             </motion.div>
           )}
         </AnimatePresence>
-      </main>
+      </div>
     </div>
   )
 }
@@ -504,37 +476,38 @@ function CompactTrails({ data }: { data: CockpitData }) {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <div className="px-5 py-4 rounded-2xl bg-white/[0.01] border border-white/5 hover:border-white/10 transition-colors">
-        <div className="flex items-center justify-between mb-3">
-          <div className="flex items-center gap-2">
-            <span className="h-1.5 w-1.5 rounded-full bg-indigo-400" />
-            <p className="text-[9px] font-black text-white/40 uppercase tracking-widest font-mono">ROADMAP OPERACIONAL DA EMPRESA</p>
+      <div className="space-y-2">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-1.5">
+            <Building2 className="h-4 w-4 text-violet-400" />
+            <p className="text-[10px] font-black text-white/60 uppercase tracking-wider">Roadmap do Produto (Clínico)</p>
           </div>
-          <span className="px-2 py-0.5 rounded bg-indigo-500/10 border border-indigo-500/20 text-[9px] font-black text-indigo-400">FASE {company.current_stage}</span>
+          <span className="text-xs font-black text-violet-400 uppercase tracking-widest">Fase {company.current_stage}</span>
         </div>
-        <div className="flex gap-2">
+        <div className="flex gap-1.5">
           {[1, 2, 3, 4, 5, 6].map(s => (
-            <div key={s} className="flex-1 space-y-1">
-              <div className={`h-2 rounded-full transition-all duration-1000 ${s <= company.current_stage ? 'bg-gradient-to-r from-indigo-500 to-purple-500 shadow-[0_0_12px_rgba(99,102,241,0.35)]' : 'bg-white/5'}`} />
-              <p className="text-[6.5px] font-mono text-center text-white/15">S0{s}</p>
+            <div key={s} className="h-2 flex-1 rounded-full relative overflow-hidden bg-white/5">
+              {s <= company.current_stage && (
+                <div className="absolute inset-0 bg-gradient-to-r from-violet-500 to-indigo-500 shadow-[0_0_10px_rgba(167,139,250,0.5)]" />
+              )}
             </div>
           ))}
         </div>
       </div>
-      
-      <div className="px-5 py-4 rounded-2xl bg-white/[0.01] border border-white/5 hover:border-white/10 transition-colors">
-        <div className="flex items-center justify-between mb-3">
-          <div className="flex items-center gap-2">
-            <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
-            <p className="text-[9px] font-black text-white/40 uppercase tracking-widest font-mono">ADOÇÃO CLÍNICA DE MERCADO</p>
+      <div className="space-y-2">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-1.5">
+            <MapIcon className="h-4 w-4 text-sky-400" />
+            <p className="text-[10px] font-black text-white/60 uppercase tracking-wider">Adoção Comercial (Hospitais)</p>
           </div>
-          <span className="px-2 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/20 text-[9px] font-black text-emerald-400">FASE {market.current_stage}</span>
+          <span className="text-xs font-black text-sky-400 uppercase tracking-widest">Fase {market.current_stage}</span>
         </div>
-        <div className="flex gap-2">
+        <div className="flex gap-1.5">
           {[1, 2, 3, 4, 5, 6].map(s => (
-            <div key={s} className="flex-1 space-y-1">
-              <div className={`h-2 rounded-full transition-all duration-1000 ${s <= market.current_stage ? 'bg-gradient-to-r from-emerald-500 to-teal-500 shadow-[0_0_12px_rgba(16,185,129,0.35)]' : 'bg-white/5'}`} />
-              <p className="text-[6.5px] font-mono text-center text-white/15">S0{s}</p>
+            <div key={s} className="h-2 flex-1 rounded-full relative overflow-hidden bg-white/5">
+              {s <= market.current_stage && (
+                <div className="absolute inset-0 bg-gradient-to-r from-sky-400 to-blue-500 shadow-[0_0_10px_rgba(56,189,248,0.5)]" />
+              )}
             </div>
           ))}
         </div>
@@ -546,8 +519,9 @@ function CompactTrails({ data }: { data: CockpitData }) {
 function PositionSynthesisCard({ data, onReload }: { data: CockpitData; onReload: () => void }) {
   const trl = data.state.trl ?? { level: 7, label: 'Produção', max: 9 }
   const hype = data.state.hype_cycle ?? { position: 'encosta_iluminacao', label: 'Encosta da Iluminação', stage_num: 4 }
-  const maturity = data.state.maturity_sgi ?? { projects: 0, processes: 0, culture: 0, results: 0 }
-  const structuralReadiness = (maturity.projects + maturity.processes) / 6
+  const phase = data.state.phase ?? { current: 'validacao', label: 'Validação', goal_users: 10 }
+  const maturity = data.state.maturity_sgi ?? { projects: 1, processes: 1, culture: 0, results: 1 }
+  const structuralReadiness = (maturity.projects + maturity.processes) / 6 // 0 a 1
   const hasStructuralBlocker = data.state.compliance?.technical_blocker === true
   const mrr = data.cockpit.financials.mrr
   
@@ -555,13 +529,15 @@ function PositionSynthesisCard({ data, onReload }: { data: CockpitData; onReload
   const isRevenueGap = mrr === 0 && trl.level >= 7
   const isStructuralGap = structuralReadiness < 0.5 || hasStructuralBlocker
 
-  const status = isRevenueGap && !isStructuralGap ? 'ATENÇÃO COMERCIAL' : isStructuralGap ? 'ESTRUTURA FRÁGIL' : windowOpen ? 'OPORTUNIDADE' : 'TRAÇÃO'
-  const statusColor = isRevenueGap && !isStructuralGap ? '#ef4444' : isStructuralGap ? '#f59e0b' : windowOpen ? '#3b82f6' : '#10b981'
+  const status = isRevenueGap && !isStructuralGap ? 'ALERTA TRAÇÃO' : isStructuralGap ? 'ESTRUTURA FRÁGIL' : windowOpen ? 'OPORTUNIDADE' : 'EVOLUÇÃO'
+  const statusColor = isRevenueGap && !isStructuralGap ? '#ef4444' : isStructuralGap ? '#f97316' : windowOpen ? '#eab308' : '#6b7280'
+  const statusBg = isRevenueGap && !isStructuralGap ? 'bg-red-500/10 border-red-500/20' : isStructuralGap ? 'bg-orange-500/10 border-orange-500/20' : windowOpen ? 'bg-amber-500/10 border-amber-500/20' : 'bg-slate-500/10 border-slate-500/20'
 
   const toggleBlocker = async () => {
     try {
       await fetch('/api/admin/strategy/update', {
         method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ key: 'compliance', value: { ...data.state.compliance, technical_blocker: !hasStructuralBlocker } })
       })
       onReload()
@@ -569,111 +545,118 @@ function PositionSynthesisCard({ data, onReload }: { data: CockpitData; onReload
   }
 
   return (
-    <div className="rounded-[2.5rem] border border-white/5 bg-gradient-to-br from-white/[0.01] to-transparent p-6 space-y-6 relative overflow-hidden">
+    <div className="rounded-3xl border border-white/10 bg-slate-900/30 p-6 space-y-5 shadow-xl hover:border-white/15 transition-all">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <Gauge className="h-4 w-4 text-white/30" />
-          <h3 className="text-[10px] font-black text-white/55 uppercase tracking-widest font-mono">SÍNTESE DE POSIÇÃO</h3>
+          <Gauge className="h-4.5 w-4.5 text-white/40" />
+          <h3 className="text-xs font-black text-white/70 uppercase tracking-widest">SÍNTESE DE POSIÇÃO</h3>
         </div>
         <div className="flex items-center gap-2">
           <button 
             onClick={toggleBlocker}
-            className={`px-2 py-0.5 rounded text-[8px] font-mono border transition-all ${hasStructuralBlocker ? 'bg-red-500/20 border-red-500/40 text-red-300' : 'border-white/10 text-white/30 hover:border-white/20'}`}
+            className={`px-2.5 py-1 rounded-lg text-[9px] font-black border transition-all ${
+              hasStructuralBlocker 
+                ? 'bg-orange-500/20 border-orange-500 text-orange-400' 
+                : 'border-white/10 text-white/30 hover:text-white/50 hover:bg-white/5'
+            }`}
           >
-            {hasStructuralBlocker ? 'BLOQUEIO DETECTADO' : 'SINALIZAR ERROS'}
+            {hasStructuralBlocker ? '🛠️ ERRO SINALIZADO' : 'SINALIZAR INSTABILIDADE'}
           </button>
-          <span className="px-2 py-0.5 rounded text-[8px] font-mono border" style={{ color: statusColor, borderColor: `${statusColor}40`, backgroundColor: `${statusColor}10` }}>
+          <span className={`px-2.5 py-1 rounded-lg text-[9px] font-black border uppercase tracking-wider ${statusBg}`} style={{ color: statusColor }}>
             {status}
           </span>
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
-        <div className="p-4 rounded-xl bg-white/[0.015] border border-white/5 text-center">
-          <p className="text-[8px] font-black text-white/35 uppercase tracking-widest mb-1 font-mono">MRR REAL</p>
-          <p className={`text-[20px] font-black font-mono tracking-tighter ${mrr === 0 ? 'text-red-400' : 'text-emerald-400'}`}>
-            R$ {mrr.toLocaleString('pt-BR')}
-          </p>
+      <div className="grid grid-cols-2 gap-3.5">
+        <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/5 text-center flex flex-col justify-center">
+          <p className="text-[9px] font-black text-white/30 uppercase tracking-wider mb-1">MRR Atual</p>
+          <p className={`text-xl font-black tabular-nums tracking-tighter ${mrr === 0 ? 'text-red-400' : 'text-emerald-400'}`}>R${mrr}</p>
         </div>
-        <div className="p-4 rounded-xl bg-white/[0.015] border border-white/5 text-center relative group">
-          <p className="text-[8px] font-black text-white/35 uppercase tracking-widest mb-1 font-mono">PRONTIDÃO ESTRUTURAL</p>
-          <p className={`text-[12px] font-black uppercase tracking-wider ${isStructuralGap ? 'text-amber-400' : 'text-emerald-400'}`}>
+        <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/5 text-center relative group flex flex-col justify-center cursor-help">
+          <p className="text-[9px] font-black text-white/30 uppercase tracking-wider mb-1">Prontidão Técnica</p>
+          <p className={`text-sm font-black uppercase ${isStructuralGap ? 'text-orange-400' : 'text-sky-400'}`}>
             {isStructuralGap ? 'Instável' : 'Sólida'}
           </p>
-          <div className="mt-2 h-1 w-full bg-white/5 rounded-full overflow-hidden">
-            <div className="h-full bg-current rounded-full" style={{ width: `${structuralReadiness * 100}%`, color: isStructuralGap ? '#f59e0b' : '#10b981' }} />
+          <div className="mt-2 h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
+            <div className="h-full bg-current rounded-full" style={{ width: `${structuralReadiness * 100}%`, color: isStructuralGap ? '#f97316' : '#38bdf8' }} />
           </div>
-          
-          <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 w-56 p-3 bg-[#0c0d14] border border-white/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-50 shadow-2xl">
-            <p className="text-[9px] text-white/60 leading-relaxed text-left font-mono">
-              Baseado na <span className="text-white font-bold">Maturidade SGI</span> (Projetos + Processos). Se for inferior a 50%, a IA prioriza <span className="text-amber-400 font-bold">Estabilidade interna</span> antes de tração.
+          {/* Tooltip explicativo */}
+          <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3.5 w-52 p-4 bg-slate-950 border border-white/10 rounded-2xl opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none z-50 shadow-2xl text-left">
+            <p className="text-[10px] text-white/60 leading-relaxed">
+              Calculado via <span className="text-white font-bold">Maturidade SGI</span> (Projetos + Processos). Se {'<'} 50% ou com Bloqueio ativo, a IA prioriza <span className="text-orange-400 font-bold">Estabilidade</span> sobre Vendas.
             </p>
           </div>
         </div>
       </div>
 
-      <div className="p-4 rounded-xl border bg-white/[0.01]" style={{ borderColor: `${statusColor}20` }}>
-         <p className="text-[12px] font-semibold leading-relaxed" style={{ color: statusColor }}>
+      <div className={`p-4 rounded-2xl border ${
+        isRevenueGap && !isStructuralGap ? 'bg-red-500/5 border-red-500/20' :
+        isStructuralGap ? 'bg-orange-500/5 border-orange-500/20' :
+        windowOpen ? 'bg-amber-500/5 border-amber-500/20' : 'bg-slate-500/5 border-slate-500/20'
+      }`}>
+         <p className="text-[11px] font-bold leading-relaxed" style={{ color: statusColor }}>
            {isRevenueGap && !isStructuralGap 
-             ? "⚠️ ALERTA DE MERCADO: TRL alto e infraestrutura estável atingidos, mas MRR é nulo. Evite perfeccionismo. Foco prioritário em fechamentos comerciais."
+             ? "⚠️ ALERTA CRÍTICO: O produto está maduro (TRL 7 Clínico) e com estrutura estável, mas o faturamento é nulo. Ação comercial imediata requerida!"
              : isStructuralGap
-             ? "🛠️ AJUSTE INTERNO: Maturidade técnica instável. Evite escalar tráfego comercial até que os bugs e processos críticos sejam estabilizados."
+             ? "🛠️ AJUSTE DE RUTA: A fundação operacional e os processos clínicos precisam ser consolidados antes de acelerar aquisição em larga escala."
              : windowOpen 
-             ? "🚀 ACELERAÇÃO: Maturidade e mercado perfeitamente alinhados. Tração comercial máxima recomendada."
-             : "🏗️ ESTRUTURAÇÃO: Continue refinando e validando hipóteses clínicas com grupos piloto para elevar o TRL."}
+             ? "🚀 JANELA DE MERCADO: O SEA FISIO atingiu a maturação ideal e o público de fisioterapeutas intensivistas está receptivo. Foco total em tracionar planos pagos."
+             : "🏗️ ESTÁGIO DE VALIDAÇÃO: Continue coletando feedbacks clínicos dos fisioterapeutas ativos para otimizar as calculadoras e simulações."}
          </p>
       </div>
     </div>
   )
 }
 
+
 function InnovationHorizonsCard({ state, onReload }: { state?: CockpitData['state']['innovation_horizons']; onReload: () => void }) {
   const h = state ?? { h1: 60, h2: 30, h3: 10 }
   
   return (
-    <div className="rounded-[2.5rem] border border-white/5 bg-gradient-to-br from-white/[0.015] to-transparent p-8">
-      <div className="flex items-center gap-3.5 mb-8">
-        <div className="h-10 w-10 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center shadow-lg shadow-blue-500/5">
-          <Layers className="h-5 w-5 text-blue-400" />
+    <div className="rounded-[2rem] border border-white/10 bg-slate-900/30 p-6 md:p-8 shadow-xl">
+      <div className="flex items-center gap-3 mb-8">
+        <div className="h-12 w-12 rounded-2xl bg-sky-500/10 flex items-center justify-center">
+          <Layers className="h-6 w-6 text-sky-400" />
         </div>
         <div>
-          <h3 className="text-[15px] font-black text-white uppercase tracking-tight">Os Três Horizontes de Inovação</h3>
-          <p className="text-[9px] text-white/30 uppercase font-mono tracking-widest">Alocação de Energia de Desenvolvimento</p>
+          <h3 className="text-base font-extrabold text-white tracking-tight">Três Horizontes de Inovação</h3>
+          <p className="text-[10px] text-white/40 uppercase font-black tracking-widest">Alocação de Energia e Recursos</p>
         </div>
       </div>
 
       <div className="space-y-6">
         {[
-          { id: 'h1', label: 'H1 · PRODUTO CORE', desc: 'Melhorias incrementais no SEA principal', val: h.h1, color: '#3b82f6', target: '60%' },
-          { id: 'h2', label: 'H2 · EXPANSÃO ADJACENTE', desc: 'Novas features premium e modelos paralelos', val: h.h2, color: '#8b5cf6', target: '30%' },
-          { id: 'h3', label: 'H3 · DESCOBERTA DISRUPTIVA', desc: 'Pesquisa e IA clínica avançada', val: h.h3, color: '#f59e0b', target: '10%' },
+          { id: 'h1', label: 'Horizonte 1 · core do produto', desc: 'Melhorias nas Calculadoras de UTI e Prontuários (hoje)', val: h.h1, color: '#38bdf8', target: '60%' },
+          { id: 'h2', label: 'Horizonte 2 · adjacências de valor', desc: 'Módulos de Escalas de Sedação e Simulações Avançadas (amanhã)', val: h.h2, color: '#a78bfa', target: '30%' },
+          { id: 'h3', label: 'Horizonte 3 · disruptivo e futuro', desc: 'Integração de IA Generativa de Diagnóstico e Assistentes por Voz (depois)', val: h.h3, color: '#fbbf24', target: '10%' },
         ].map(item => (
           <div key={item.id} className="space-y-2">
-            <div className="flex justify-between items-end">
-               <div>
-                 <p className="text-[11px] font-black text-white/90">{item.label}</p>
-                 <p className="text-[8px] text-white/35 font-mono uppercase">{item.desc}</p>
+            <div className="flex justify-between items-end gap-4">
+               <div className="min-w-0">
+                 <p className="text-xs font-extrabold text-white/90 truncate uppercase tracking-wider">{item.label}</p>
+                 <p className="text-[9px] text-white/40 leading-relaxed">{item.desc}</p>
                </div>
-               <div className="text-right">
-                 <span className="text-[13px] font-mono font-black" style={{ color: item.color }}>{item.val}%</span>
-                 <p className="text-[8px] text-white/20 font-mono">Alvo: {item.target}</p>
+               <div className="text-right shrink-0">
+                 <span className="text-base font-black tracking-tight" style={{ color: item.color }}>{item.val}%</span>
+                 <p className="text-[8px] text-white/30 uppercase font-bold">Meta: {item.target}</p>
                </div>
             </div>
-            <div className="h-2 w-full bg-white/5 rounded-full overflow-hidden relative">
+            <div className="h-2.5 w-full bg-white/5 rounded-full overflow-hidden border border-white/5 relative">
                <motion.div 
                  initial={{ width: 0 }}
                  animate={{ width: `${item.val}%` }}
-                 className="h-full rounded-full shadow-lg"
-                 style={{ backgroundColor: item.color, boxShadow: `0 0 10px ${item.color}35` }}
+                 className="h-full rounded-full shadow-[0_0_15px_rgba(0,0,0,0.5)]"
+                 style={{ backgroundColor: item.color }}
                />
             </div>
           </div>
         ))}
       </div>
 
-      <div className="mt-8 p-4 rounded-xl bg-white/[0.01] border border-white/5">
-         <p className="text-[10px] text-white/40 leading-relaxed font-mono">
-           O balanço clássico 60/30/10 protege a empresa de obsolescência futura mantendo a eficiência operacional imediata.
+      <div className="mt-8 p-4 rounded-2xl bg-white/[0.01] border border-white/5">
+         <p className="text-[10px] text-white/40 leading-relaxed italic text-center">
+           O equilíbrio 60/30/10 garante que o core clinical (H1) funcione de forma exceptional enquanto pavimentamos o caminho da liderança de mercado (H2/H3).
          </p>
       </div>
     </div>
@@ -683,45 +666,48 @@ function InnovationHorizonsCard({ state, onReload }: { state?: CockpitData['stat
 function InnovationFunnelCard({ data, onReload }: { data: CockpitData; onReload: () => void }) {
   const funnel = data.state.innovation_funnel ?? { stage: 1, items: {} }
   const stages = [
-    { id: 1, label: 'Ideação', desc: 'Brainstorm' },
-    { id: 2, label: 'Triagem', desc: 'Stage Gate 1' },
-    { id: 3, label: 'Protótipo', desc: 'Desenvolvimento' },
-    { id: 4, label: 'Decisão', desc: 'Stage Gate 2' },
-    { id: 5, label: 'Escala', desc: 'Lançamento' },
+    { id: 1, label: 'Ideação', desc: 'Levantamento de Necessidades na UTI' },
+    { id: 2, label: 'Triagem', desc: 'Feedback e Usabilidade de Fisios' },
+    { id: 3, label: 'Protótipo', desc: 'Desenvolvimento e Teste do Algoritmo' },
+    { id: 4, label: 'Validação', desc: 'Homologação com Mentores de UTI' },
+    { id: 5, label: 'Escala', desc: 'Publicação no Painel SEA FISIO' },
   ]
 
   return (
-    <div className="rounded-[2.5rem] border border-white/5 bg-[#09090e]/60 p-8 shadow-xl">
-      <div className="flex items-center gap-3.5 mb-10">
-        <div className="h-10 w-10 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center shadow-lg shadow-purple-500/5">
-          <Target className="h-5 w-5 text-purple-400" />
+    <div className="rounded-[2rem] border border-white/10 bg-slate-900/30 p-6 md:p-8 shadow-xl">
+      <div className="flex items-center gap-3 mb-10">
+        <div className="h-12 w-12 rounded-2xl bg-sky-500/10 border border-sky-500/20 flex items-center justify-center">
+          <Target className="h-6 w-6 text-sky-400" />
         </div>
         <div>
-          <h3 className="text-[15px] font-black text-white uppercase tracking-tight">Funil de Maturidade de Inovação</h3>
-          <p className="text-[9px] text-white/30 uppercase font-mono tracking-widest">Fluxo Sistemático de Ideias e Patentes</p>
+          <h3 className="text-base font-extrabold text-white tracking-tight">Funil de Maturidade de Funcionalidades</h3>
+          <p className="text-[10px] text-white/40 uppercase font-black tracking-widest">Pipelines de Evolução de Ferramentas</p>
         </div>
       </div>
 
-      <div className="flex flex-col md:flex-row gap-6 items-center justify-between relative px-4">
-        {/* Connection Line */}
-        <div className="absolute top-1/2 left-0 w-full h-[1px] bg-white/5 -z-0 hidden md:block" />
+      <div className="flex flex-col lg:flex-row gap-6 items-center justify-between relative px-2">
+        {/* Linha conectora */}
+        <div className="absolute top-1/2 left-0 w-full h-0.5 bg-white/5 -z-0 hidden lg:block" />
         
         {stages.map((s, idx) => {
           const isCurrent = s.id === funnel.stage
           const isPast = s.id < funnel.stage
           return (
-            <div key={s.id} className="relative z-10 flex flex-col items-center gap-3 w-full md:w-auto">
-               <div className={`h-12 w-12 rounded-full border-2 flex items-center justify-center transition-all duration-500 font-mono ${
-                 isCurrent ? 'bg-gradient-to-br from-purple-500 to-indigo-600 border-purple-400 text-white shadow-[0_0_20px_rgba(139,92,246,0.4)] scale-110' : 
-                 isPast ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400' : 
-                 'bg-white/[0.02] border-white/10 text-white/20'
-               }`}>
-                  {isPast ? <CheckSquare className="h-4.5 w-4.5" /> : <span className="text-[14px] font-black">{s.id}</span>}
+            <div key={s.id} className="relative z-10 flex flex-col lg:flex-row items-center gap-4 w-full lg:w-auto">
+               <div className="flex flex-col items-center gap-2">
+                 <div className={`h-12 w-12 rounded-2xl border-2 flex items-center justify-center transition-all duration-500 shrink-0 ${
+                   isCurrent ? 'bg-sky-500 border-sky-400 text-slate-950 shadow-[0_0_25px_rgba(56,189,248,0.4)] scale-110' : 
+                   isPast ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400' : 
+                   'bg-white/5 border-white/10 text-white/20'
+                 }`}>
+                    {isPast ? <CheckSquare className="h-5 w-5" /> : <span className="text-sm font-extrabold">{s.id}</span>}
+                 </div>
+                 <div className="text-center lg:w-32">
+                   <p className={`text-[11px] font-black uppercase tracking-wider ${isCurrent ? 'text-white' : 'text-white/40'}`}>{s.label}</p>
+                   <p className="text-[8px] text-white/25 mt-0.5 leading-snug">{s.desc}</p>
+                 </div>
                </div>
-               <div className="text-center">
-                 <p className={`text-[11px] font-black uppercase tracking-wider ${isCurrent ? 'text-white font-bold' : 'text-white/40'}`}>{s.label}</p>
-                 <p className="text-[8px] text-white/20 font-mono uppercase">{s.desc}</p>
-               </div>
+               {idx < stages.length - 1 && <ChevronRight className="hidden lg:block h-5 w-5 text-white/10 shrink-0" />}
             </div>
           )
         })}
@@ -734,37 +720,39 @@ function LeadershipProcessCard({ state }: { state?: CockpitData['state']['leader
   const p = state ?? { clarity: 0, alignment: 0, training: 0, execution: 0, results: 0 }
   
   return (
-    <div className="rounded-[2.5rem] border border-white/5 bg-gradient-to-br from-[#f59e0b]/[0.02] to-transparent p-8">
-      <div className="flex items-center gap-3.5 mb-10">
-        <div className="h-12 w-12 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center shadow-xl shadow-amber-500/5">
+    <div className="rounded-[2.5rem] border border-white/10 bg-slate-900/30 p-6 md:p-8 shadow-xl">
+      <div className="flex items-center gap-3 mb-8">
+        <div className="h-12 w-12 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center">
           <Users2 className="h-6 w-6 text-amber-400" />
         </div>
         <div>
-          <h3 className="text-[16px] font-black text-white uppercase tracking-tight">Processo Sistemático de Liderança</h3>
-          <p className="text-[10px] text-amber-400 uppercase font-mono tracking-widest font-bold">Motor de Escala Humana e Processos</p>
+          <h3 className="text-base font-extrabold text-white tracking-tight">Ritmo de Gestão e Liderança</h3>
+          <p className="text-[10px] text-white/40 uppercase font-black tracking-widest">Ritual e Engajamento da Equipe Fundadora</p>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
         {[
-          { id: 'clarity', label: 'Clareza', sub: 'Métrica + KPIs', val: p.clarity, icon: Eye },
-          { id: 'alignment', label: 'Alinhamento', sub: 'Pactos & Acordos', val: p.alignment, icon: Network },
-          { id: 'training', label: 'Capacitação', sub: 'Treinos e PDIs', val: p.training, icon: Rocket },
-          { id: 'execution', label: 'Execução', sub: 'Rituais Ágeis', val: p.execution, icon: Activity },
-          { id: 'results', label: 'Resultado', sub: 'Performance Real', val: p.results, icon: Trophy },
+          { id: 'clarity', label: 'Clareza', sub: 'Visão, Metas e KPIs Clínicos', val: p.clarity, icon: Eye },
+          { id: 'alignment', label: 'Alinhamento', sub: '1:1s e Acordos de Operação', val: p.alignment, icon: Network },
+          { id: 'training', label: 'Capacitação', sub: 'Treinamento e PDI do Time', val: p.training, icon: Rocket },
+          { id: 'execution', label: 'Execução', sub: 'Rituais e Reuniões de Sprints', val: p.execution, icon: Activity },
+          { id: 'results', label: 'Resultados', sub: 'Performance e Impacto Real', val: p.results, icon: Trophy },
         ].map(item => (
-          <div key={item.id} className="relative p-6 rounded-2xl bg-white/[0.015] border border-white/5 flex flex-col items-center text-center space-y-4 hover:bg-white/[0.03] transition-all duration-300 group">
-             <div className="p-3 rounded-xl bg-white/5 group-hover:bg-amber-500/10 transition-colors duration-300">
-               <item.icon className={`h-5 w-5 ${item.val > 50 ? 'text-amber-400' : 'text-white/20'}`} />
+          <div key={item.id} className="relative p-5 rounded-2xl bg-white/[0.02] border border-white/5 flex flex-col justify-between items-center text-center space-y-4 hover:bg-white/[0.04] transition-all group">
+             <div className="p-3 rounded-xl bg-white/5 group-hover:bg-amber-400/10 transition-all">
+               <item.icon className={`h-6 w-6 transition-all duration-300 ${item.val > 50 ? 'text-amber-400 scale-110' : 'text-white/20'}`} />
              </div>
              <div>
-               <p className="text-[11px] font-black text-white uppercase tracking-wider">{item.label}</p>
-               <p className="text-[8px] text-white/35 font-mono uppercase">{item.sub}</p>
+               <p className="text-xs font-black text-white uppercase tracking-wider">{item.label}</p>
+               <p className="text-[9px] text-white/30 leading-snug mt-1">{item.sub}</p>
              </div>
-             <div className="w-full h-1.5 bg-white/5 rounded-full overflow-hidden mt-1 relative">
-                <div className="h-full bg-amber-500 rounded-full transition-all duration-1000" style={{ width: `${item.val}%` }} />
+             <div className="w-full space-y-1.5">
+               <div className="h-1.5 w-full bg-white/5 rounded-full overflow-hidden relative">
+                  <div className="h-full bg-gradient-to-r from-amber-500 to-orange-500 transition-all duration-1000 rounded-full" style={{ width: `${item.val}%` }} />
+               </div>
+               <span className="text-[10px] font-black text-amber-400 block">{item.val}%</span>
              </div>
-             <span className="text-[11px] font-mono font-black text-amber-400">{item.val}%</span>
           </div>
         ))}
       </div>
@@ -775,79 +763,95 @@ function LeadershipProcessCard({ state }: { state?: CockpitData['state']['leader
 function FinancialCockpitCard({ cockpit }: { cockpit: CockpitData['cockpit'] }) {
   const { financials, users, engagement } = cockpit
   return (
-    <div className="rounded-[2.5rem] border border-white/5 bg-gradient-to-br from-emerald-500/[0.03] via-transparent to-transparent p-8">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
-        <div className="flex items-center gap-3.5">
-          <div className="h-10 w-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center shadow-lg shadow-emerald-500/5">
-            <DollarSign className="h-5 w-5 text-emerald-400" />
+    <div className="rounded-[2.5rem] border border-white/10 bg-gradient-to-br from-slate-900/40 via-slate-900/20 to-slate-950/60 p-6 md:p-8 shadow-xl">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8 border-b border-white/5 pb-6">
+        <div className="flex items-center gap-3">
+          <div className="h-12 w-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center shadow-lg shadow-emerald-500/10">
+            <DollarSign className="h-6 w-6 text-emerald-400" />
           </div>
           <div>
-            <h3 className="text-[15px] font-black text-white uppercase tracking-tight">Cockpit Financeiro & Conversão</h3>
-            <p className="text-[9px] text-white/30 uppercase font-mono tracking-widest">Indicadores Comercial & SaaS em Tempo Real</p>
+            <h3 className="text-base font-extrabold text-white tracking-tight">Indicadores de Finanças e Tração</h3>
+            <p className="text-[10px] text-white/40 uppercase font-black tracking-widest">Real-time Performance Metrics</p>
           </div>
         </div>
-        <div className="text-left sm:text-right">
-           <p className="text-[8px] font-black text-white/35 uppercase tracking-widest font-mono">Runway Estimado</p>
-           <p className="text-[18px] font-black text-white tracking-tighter font-mono">{financials.runway_months === Infinity ? '∞ MESES' : `${financials.runway_months} Meses`}</p>
+        <div className="flex items-center gap-3 bg-white/[0.02] border border-white/5 p-3 rounded-2xl">
+           <div className="text-left">
+              <p className="text-[9px] font-bold text-white/40 uppercase tracking-widest">Runway Estimado</p>
+              <p className="text-lg font-black text-white tracking-tighter tabular-nums">
+                {financials.runway_months === Infinity || financials.runway_months === 0 ? '∞ ilimitado' : `${financials.runway_months} Meses`}
+              </p>
+           </div>
         </div>
       </div>
 
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
-        <KpiBox label="MRR Estimado" value={`R$ ${financials.mrr.toLocaleString('pt-BR')}`} color={financials.mrr > 0 ? '#10b981' : '#ef4444'} icon={TrendingUp} />
-        <KpiBox label="ARR Projetado" value={`R$ ${financials.arr.toLocaleString('pt-BR')}`} color="#10b981" icon={Globe} />
-        <KpiBox label="Ticket Médio" value={`R$ ${financials.pricing.toLocaleString('pt-BR')}`} color="#94a3b8" icon={DollarSign} />
-        <KpiBox label="Assinantes Ativos" value={financials.active_subs} color="#3b82f6" icon={Users} />
-        <KpiBox label="Churn Rate" value={`${financials.churn_rate_pct}%`} color={financials.churn_rate_pct > 10 ? '#ef4444' : '#94a3b8'} icon={Activity} />
-        <KpiBox label="NPS Geral" value={engagement.nps_net === null ? '—' : `${engagement.nps_net > 0 ? '+' : ''}${engagement.nps_net}`} color={engagement.nps_net !== null && engagement.nps_net > 0 ? '#10b981' : '#94a3b8'} icon={Heart} />
+        <KpiBox label="MRR (Mensal)" value={`R$${financials.mrr}`} color={financials.mrr > 0 ? '#34d399' : '#f87171'} icon={TrendingUp} sub="Faturamento Recorrente" />
+        <KpiBox label="ARR (Anual)" value={`R$${financials.arr}`} color="#34d399" icon={Globe} sub="Projeção Anualizada" />
+        <KpiBox label="Mensalidade" value={`R$${financials.pricing}`} color="#94a3b8" icon={TagIconCustom} sub="Preço de Referência" />
+        <KpiBox label="Assinantes Ativos" value={financials.active_subs} color="#38bdf8" icon={Users} sub={`${financials.trial_subs} Contas Teste`} />
+        <KpiBox label="Taxa de Churn" value={`${financials.churn_rate_pct}%`} color={financials.churn_rate_pct > 15 ? '#f87171' : '#94a3b8'} icon={Activity} sub="Perda de Assinantes" />
+        <KpiBox label="NPS Geral" value={engagement.nps_net === null ? '—' : engagement.nps_net} color={engagement.nps_net !== null && engagement.nps_net >= 50 ? '#34d399' : '#94a3b8'} icon={Heart} sub={`${engagement.feedbacks} Feedbacks`} />
       </div>
     </div>
   )
 }
 
-function KpiBox({ label, value, color, icon: Icon }: { label: string; value: string | number; color: string; icon: any }) {
+function KpiBox({ label, value, color, icon: Icon, sub }: { label: string; value: string | number; color: string; icon: any; sub?: string }) {
   return (
-    <div className="p-5 rounded-2xl bg-white/[0.015] border border-white/5 flex flex-col items-center text-center group hover:bg-white/[0.03] transition-all duration-300 hover:scale-[1.02]">
-      <div className="p-2.5 rounded-xl bg-white/5 mb-3 group-hover:scale-110 transition-transform duration-300">
-        <Icon className="h-4 w-4" style={{ color }} />
+    <div className="p-5 rounded-2xl bg-white/[0.02] border border-white/5 flex flex-col justify-between items-center text-center group hover:bg-white/[0.04] hover:border-white/10 transition-all duration-300 shadow-md">
+      <div className="flex flex-col items-center">
+        <div className="p-2.5 rounded-xl bg-white/5 mb-3.5 group-hover:scale-110 transition-all duration-300">
+          <Icon className="h-4.5 w-4.5" style={{ color }} />
+        </div>
+        <p className="text-[9px] font-black text-white/30 uppercase tracking-widest mb-1">{label}</p>
+        <p className="text-xl font-black tabular-nums tracking-tight" style={{ color }}>{value}</p>
       </div>
-      <p className="text-[8px] font-black text-white/35 uppercase tracking-widest mb-1.5 font-mono">{label}</p>
-      <p className="text-[16px] font-black tabular-nums font-mono tracking-tighter" style={{ color }}>{value}</p>
+      {sub && <p className="text-[9px] text-white/40 mt-2 font-medium">{sub}</p>}
     </div>
   )
 }
+
+function TagIconCustom(props: any) {
+  return <DollarSign {...props} />
+}
+
+// ───────────────────────────── COMPONENTS FROM OLD FILE (KEEPING LOGIC, UPDATING UI) ─────────────────────────────
 
 function DDDMMaturityCard({ state, onReload }: { state?: CockpitData['state']['maturity_dddm']; onReload: () => void }) {
   const current = state ?? { collection: 1, analysis: 1, visualization: 1, integration: 0 }
   const items = [
-    { key: 'collection', label: 'Coleta de Dados', icon: Database },
-    { key: 'analysis', label: 'Modelos de Análise', icon: Brain },
-    { key: 'visualization', label: 'Dashboard & Visuals', icon: BarChart3 },
-    { key: 'integration', label: 'Integração de APIs', icon: Network },
+    { key: 'collection', label: 'Coleta de Dados', icon: Database, desc: 'Registros clínicos na UTI' },
+    { key: 'analysis', label: 'Análise Estruturada', icon: Brain, desc: 'Processamento de fórmulas' },
+    { key: 'visualization', label: 'Visualização UI', icon: BarChart3, desc: 'Painéis e telemetria claros' },
+    { key: 'integration', label: 'Integração de APIs', icon: Network, desc: 'Supabase Realtime e BD' },
   ] as const
 
   return (
-    <div className="rounded-[2.5rem] border border-white/5 bg-gradient-to-br from-white/[0.015] to-transparent p-8 shadow-xl">
-       <div className="flex items-center gap-3.5 mb-8">
-          <div className="h-10 w-10 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center shadow-lg shadow-indigo-500/5">
-            <Database className="h-5 w-5 text-indigo-400" />
+    <div className="rounded-[2rem] border border-white/10 bg-slate-900/30 p-6 md:p-8 shadow-xl">
+       <div className="flex items-center gap-3 mb-6">
+          <div className="h-10 w-10 rounded-xl bg-violet-500/10 border border-violet-500/20 flex items-center justify-center">
+            <Database className="h-5 w-5 text-violet-400" />
           </div>
           <div>
-            <h3 className="text-[14px] font-black text-white uppercase tracking-tight">DDDM · Maturidade Analítica</h3>
-            <p className="text-[9px] text-white/30 uppercase font-mono tracking-widest">Nível de Decisão Baseada em Dados (Data-Driven)</p>
+            <h3 className="text-sm font-extrabold text-white uppercase tracking-wider">DDDM · Maturidade de Dados</h3>
+            <p className="text-[9px] text-white/40 uppercase font-black tracking-widest">Data-Driven Decision Making</p>
           </div>
        </div>
 
        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {items.map(item => (
-            <div key={item.key} className="p-4 rounded-xl bg-white/[0.01] border border-white/5 space-y-2">
-               <div className="flex items-center justify-between">
-                  <item.icon className="h-4.5 w-4.5 text-white/30" />
-                  <span className="text-[10px] font-mono font-bold text-white/80">{current[item.key]}/3</span>
+            <div key={item.key} className="p-4 rounded-xl bg-white/[0.02] border border-white/5 space-y-2 hover:border-white/10 transition-all flex flex-col justify-between">
+               <div>
+                 <div className="flex items-center justify-between mb-1">
+                    <item.icon className="h-4.5 w-4.5 text-white/30" />
+                    <span className="text-[10px] font-black text-violet-400 bg-violet-400/5 px-2 py-0.5 rounded border border-violet-400/10">Nível {current[item.key]}/3</span>
+                 </div>
+                 <p className="text-xs font-black text-white/80 uppercase tracking-wide">{item.label}</p>
+                 <p className="text-[9px] text-white/40 leading-snug">{item.desc}</p>
                </div>
-               <p className="text-[11px] font-black text-white/60 uppercase tracking-wide">{item.label}</p>
-               <div className="flex gap-1.5 pt-1">
+               <div className="flex gap-1 pt-2">
                   {[1, 2, 3].map(step => (
-                    <div key={step} className={`h-1.5 flex-1 rounded-full ${step <= current[item.key] ? 'bg-indigo-500 shadow-[0_0_8px_rgba(99,102,241,0.5)]' : 'bg-white/5'}`} />
+                    <div key={step} className={`h-1.5 flex-1 rounded-full ${step <= current[item.key] ? 'bg-gradient-to-r from-violet-500 to-indigo-500' : 'bg-white/5'}`} />
                   ))}
                </div>
             </div>
@@ -859,31 +863,31 @@ function DDDMMaturityCard({ state, onReload }: { state?: CockpitData['state']['m
 
 function ComplianceTrackerCard({ compliance, onReload }: { compliance: Compliance; onReload: () => void }) {
   return (
-    <div className="rounded-[2.5rem] border border-white/5 bg-gradient-to-br from-white/[0.015] to-transparent p-8 shadow-xl">
-       <div className="flex items-center justify-between mb-8">
-          <div className="flex items-center gap-3.5">
-            <div className="h-10 w-10 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center shadow-lg shadow-amber-500/5">
-              <Shield className="h-5 w-5 text-amber-400" />
+    <div className="rounded-[2rem] border border-white/10 bg-slate-900/30 p-6 md:p-8 shadow-xl">
+       <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center gap-3">
+            <div className="h-10 w-10 rounded-xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center">
+              <Shield className="h-5 w-5 text-orange-400" />
             </div>
             <div>
-              <h3 className="text-[14px] font-black text-white uppercase tracking-tight">Compliance & Segurança</h3>
-              <p className="text-[9px] text-white/30 uppercase font-mono tracking-widest">Requisitos LGPD Clínicos & Segurança</p>
+              <h3 className="text-sm font-extrabold text-white uppercase tracking-wider">Mapeamento de Regulação (LGPD)</h3>
+              <p className="text-[9px] text-white/40 uppercase font-black tracking-widest">Segurança de Prontuários e Dados Clínicos</p>
             </div>
           </div>
           <div className="text-right">
-             <span className="px-2.5 py-1 rounded bg-amber-500/10 border border-amber-500/20 text-[11px] font-mono font-bold text-amber-400">
-               {Math.round((compliance.score / compliance.max) * 100)}%
+             <span className="text-sm font-black text-orange-400 bg-orange-400/5 border border-orange-400/10 px-3 py-1 rounded-xl">
+               {Math.round((compliance.score / compliance.max) * 100)}% Coberto
              </span>
           </div>
        </div>
 
-       <div className="space-y-2 max-h-[180px] overflow-y-auto pr-2 custom-scrollbar scrollbar-hide">
+       <div className="space-y-2 max-h-[180px] overflow-y-auto pr-1 scrollbar-hide">
           {Object.entries(compliance.items).map(([label, active]) => (
-            <div key={label} className="flex items-center gap-3.5 p-3.5 rounded-xl bg-white/[0.01] border border-white/5 hover:border-white/10 transition-colors">
-               <div className={`h-4.5 w-4.5 rounded border flex items-center justify-center transition-all ${active ? 'bg-emerald-500 border-emerald-400 text-white' : 'border-white/15 bg-white/5'}`}>
+            <div key={label} className="flex items-center justify-between p-3 rounded-xl bg-white/[0.02] border border-white/5 hover:border-white/10 transition-all">
+               <span className="text-xs font-semibold text-white/80">{label}</span>
+               <div className={`h-5 w-5 rounded-lg border flex items-center justify-center shrink-0 ${active ? 'bg-emerald-500 border-emerald-400 text-slate-950 shadow-md shadow-emerald-500/10' : 'border-white/10 bg-white/5'}`}>
                  {active && <CheckSquare className="h-3.5 w-3.5" />}
                </div>
-               <span className={`text-[11px] font-bold ${active ? 'text-white/90' : 'text-white/35 font-mono'}`}>{label}</span>
             </div>
           ))}
        </div>
@@ -892,37 +896,37 @@ function ComplianceTrackerCard({ compliance, onReload }: { compliance: Complianc
 }
 
 function AdoptionTrailCard({ state, onReload }: { state?: CockpitData['state']['adoption_trail']; onReload: () => void }) {
-  const current = state ?? { current_stage: 1, stages: ['Validação', 'Piloto', 'Multi-centro', 'Comercial B2C', 'Comercial B2B'] }
+  const current = state ?? { current_stage: 1, stages: ['Validação Técnica', 'Piloto UTI', 'Multi-centro', 'Escala B2C', 'Venda Hospitalar B2B'] }
   
   return (
-    <div className="rounded-[2.5rem] border border-white/5 bg-gradient-to-br from-indigo-500/[0.02] to-transparent p-8 shadow-xl">
-       <div className="flex items-center gap-3.5 mb-10">
-          <div className="h-10 w-10 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center shadow-lg shadow-indigo-500/5">
-            <MapIcon className="h-5 w-5 text-indigo-400" />
+    <div className="rounded-[2.5rem] border border-white/10 bg-slate-900/30 p-6 md:p-8 mt-6 shadow-xl">
+       <div className="flex items-center gap-3 mb-10">
+          <div className="h-10 w-10 rounded-xl bg-sky-500/10 border border-sky-500/20 flex items-center justify-center">
+            <MapIcon className="h-5 w-5 text-sky-400" />
           </div>
           <div>
-            <h3 className="text-[15px] font-black text-white uppercase tracking-tight">Trilho de Adoção Clínica</h3>
-            <p className="text-[9px] text-white/30 uppercase font-mono tracking-widest">Progresso de Validação Científica & Comercial</p>
+            <h3 className="text-sm font-extrabold text-white uppercase tracking-wider">Trilho de Adoção Setorial</h3>
+            <p className="text-[9px] text-white/40 uppercase font-black tracking-widest">Roadmap de Entrada no Mercado de Fisioterapia</p>
           </div>
        </div>
 
-       <div className="flex flex-col md:flex-row items-center justify-between relative px-4 gap-6 md:gap-4">
-          <div className="absolute top-1/2 left-0 w-full h-[1px] bg-white/5 -z-0 hidden md:block" />
+       <div className="flex flex-col lg:flex-row items-center justify-between relative px-2 gap-6 lg:gap-0">
+          <div className="absolute top-1/2 left-0 w-full h-0.5 bg-white/5 -z-0 hidden lg:block" />
           {current.stages.map((label, i) => {
             const isDone = i + 1 < current.current_stage
             const isCurrent = i + 1 === current.current_stage
             return (
-              <div key={label} className="relative z-10 flex flex-col items-center gap-3 w-full md:w-auto">
-                 <div className={`h-11 w-11 rounded-full border-2 flex items-center justify-center transition-all duration-500 font-mono ${
-                   isCurrent ? 'bg-gradient-to-br from-indigo-500 to-purple-600 border-indigo-400 text-white shadow-[0_0_20px_rgba(99,102,241,0.45)] scale-110' : 
+              <div key={label} className="relative z-10 flex flex-col items-center gap-3">
+                 <div className={`h-11 w-11 rounded-2xl border-2 flex items-center justify-center transition-all duration-700 shrink-0 ${
+                   isCurrent ? 'bg-sky-500 border-sky-400 text-slate-950 shadow-[0_0_20px_rgba(56,189,248,0.4)] scale-110' : 
                    isDone ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400' : 
-                   'bg-white/[0.02] border-white/10 text-white/20'
+                   'bg-white/5 border-white/10 text-white/20'
                  }`}>
-                   {isDone ? <CheckSquare className="h-4.5 w-4.5" /> : <span className="text-[12px] font-black">{i + 1}</span>}
+                   {isDone ? <CheckSquare className="h-5 w-5" /> : <span className="text-xs font-black">{i + 1}</span>}
                  </div>
-                 <div className="text-center">
-                    <p className={`text-[10px] font-black uppercase tracking-wider ${isCurrent ? 'text-white font-bold' : 'text-white/35'}`}>{label}</p>
-                    {isCurrent && <span className="text-[7.5px] font-mono font-black text-indigo-400 uppercase tracking-widest block mt-0.5 animate-pulse">ESTÁGIO ATUAL</span>}
+                 <div className="text-center lg:w-32">
+                    <p className={`text-[10px] font-black uppercase tracking-wider ${isCurrent ? 'text-white' : 'text-white/30'}`}>{label}</p>
+                    {isCurrent && <span className="text-[8px] font-black text-sky-400 uppercase tracking-widest bg-sky-400/5 px-2 py-0.5 rounded border border-sky-400/10 mt-1 inline-block">Ativo</span>}
                  </div>
               </div>
             )
@@ -936,10 +940,10 @@ function MaturityExecutionCard({ state, onReload }: { state?: CockpitData['state
   const [updating, setUpdating] = useState<string | null>(null)
   const current = state ?? { projects: 1, processes: 1, culture: 0, results: 1 }
   const items = [
-    { key: 'projects', label: 'Maturidade de Projetos', icon: Briefcase },
-    { key: 'processes', label: 'Eficiência de Processos', icon: Activity },
-    { key: 'culture', label: 'Cultura & Alinhamento', icon: Heart },
-    { key: 'results', label: 'Métricas de Resultados', icon: Trophy },
+    { key: 'projects', label: 'Projetos de UTI', icon: Briefcase, desc: 'Testes clínicos' },
+    { key: 'processes', label: 'Processos Internos', icon: Activity, desc: 'Garantia de qualidade' },
+    { key: 'culture', label: 'Cultura Médica', icon: Heart, desc: 'Comunidade engajada' },
+    { key: 'results', label: 'Métricas de Resultados', icon: Trophy, desc: 'Conversão e engajamento' },
   ] as const
 
   const updateLevel = async (key: string, val: number) => {
@@ -947,6 +951,7 @@ function MaturityExecutionCard({ state, onReload }: { state?: CockpitData['state
     try {
       await fetch('/api/admin/strategy/update', {
         method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ key: 'maturity_sgi', value: { ...current, [key]: val } })
       })
       onReload()
@@ -954,32 +959,39 @@ function MaturityExecutionCard({ state, onReload }: { state?: CockpitData['state
   }
 
   return (
-    <div className="rounded-[2.5rem] border border-white/5 bg-gradient-to-br from-white/[0.015] to-transparent p-8 shadow-xl">
-       <div className="flex items-center gap-3.5 mb-8">
-          <div className="h-10 w-10 rounded-xl bg-pink-500/10 border border-pink-500/20 flex items-center justify-center shadow-lg shadow-pink-500/5">
-            <Rocket className="h-5 w-5 text-pink-400" />
+    <div className="rounded-[2rem] border border-white/10 bg-slate-900/30 p-6 md:p-8 shadow-xl">
+       <div className="flex items-center gap-3 mb-8">
+          <div className="h-12 w-12 rounded-2xl bg-pink-500/10 border border-pink-500/20 flex items-center justify-center animate-pulse">
+            <Rocket className="h-6 w-6 text-pink-400" />
           </div>
           <div>
-            <h3 className="text-[14px] font-black text-white uppercase tracking-tight">Maturidade de Gestão Interna</h3>
-            <p className="text-[9px] text-white/30 uppercase font-mono tracking-widest">Interaja para atualizar a telemetria em tempo real</p>
+            <h3 className="text-base font-extrabold text-white tracking-tight">Maturidade Operacional</h3>
+            <p className="text-[10px] text-white/40 uppercase font-black tracking-widest">Níveis operacionais reais do SEA FISIO</p>
           </div>
        </div>
 
        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {items.map(item => (
-            <div key={item.key} className={`p-5 rounded-xl bg-white/[0.01] border border-white/5 space-y-3 transition-all duration-300 ${updating === item.key ? 'opacity-40 scale-[0.98]' : ''}`}>
-               <div className="flex items-center justify-between">
-                  <item.icon className="h-4.5 w-4.5 text-white/30" />
-                  <span className="text-[10px] font-mono font-bold text-white/80">{current[item.key as keyof typeof current]}/3</span>
+            <div key={item.key} className={`p-4 rounded-xl bg-white/[0.02] border border-white/5 space-y-3 transition-all flex flex-col justify-between ${updating === item.key ? 'opacity-50 scale-[0.98]' : ''}`}>
+               <div>
+                 <div className="flex items-center justify-between mb-1">
+                    <item.icon className="h-4.5 w-4.5 text-white/30" />
+                    <span className="text-[10px] font-black text-pink-400 bg-pink-400/5 px-2 py-0.5 rounded border border-pink-400/10">Maturidade {current[item.key as keyof typeof current]}/3</span>
+                 </div>
+                 <p className="text-xs font-black text-white/80 uppercase tracking-wide">{item.label}</p>
+                 <p className="text-[9px] text-white/40 leading-snug">{item.desc}</p>
                </div>
-               <p className="text-[11px] font-black text-white/60 uppercase tracking-wide">{item.label}</p>
-               <div className="flex gap-1.5 pt-1">
+               <div className="flex gap-1.5 pt-2">
                   {[0, 1, 2, 3].map(step => (
                     <button 
                       key={step} 
                       disabled={updating !== null}
                       onClick={() => updateLevel(item.key, step)}
-                      className={`h-2 flex-1 rounded-full transition-all duration-300 hover:scale-y-150 ${step <= current[item.key as keyof typeof current] ? 'bg-pink-500 shadow-[0_0_8px_rgba(236,72,153,0.5)]' : 'bg-white/5'}`} 
+                      className={`h-2 flex-1 rounded-full transition-all hover:scale-y-125 ${
+                        step <= current[item.key as keyof typeof current] 
+                          ? 'bg-pink-500 shadow-[0_0_8px_rgba(236,72,153,0.3)]' 
+                          : 'bg-white/5 hover:bg-white/10'
+                      }`} 
                     />
                   ))}
                </div>
@@ -995,25 +1007,23 @@ function SprintAlphaCard({ state, onReload }: { state?: CockpitData['state']['sp
   if (!s.started_at) return null
 
   return (
-    <div className="rounded-2xl border border-white/5 bg-white/[0.01] p-6 space-y-4 shadow-xl">
+    <div className="rounded-3xl border border-white/10 bg-slate-900/30 p-6 space-y-4 shadow-xl">
        <div className="flex items-center gap-3">
-          <div className="p-1 rounded bg-indigo-500/10 border border-indigo-500/20">
-            <Clock className="h-3.5 w-3.5 text-indigo-400" />
-          </div>
-          <h3 className="text-[10px] font-black text-white/55 uppercase tracking-widest font-mono">Sprint Alpha · Desafio 21 Dias</h3>
+          <Clock className="h-4.5 w-4.5 text-[#a78bfa]" />
+          <h3 className="text-xs font-black text-white/70 uppercase tracking-widest">Sprint Alpha · 21 Dias</h3>
        </div>
-       <div className="grid grid-cols-7 gap-2">
+       <div className="flex flex-wrap gap-1.5">
           {Array.from({ length: 21 }).map((_, i) => {
             const day = i + 1
             const done = s.completed_days.includes(day)
-            const isCurrent = day === s.current_day
+            const current = day === s.current_day
             return (
               <div 
                 key={day} 
-                className={`h-7 w-7 rounded-lg flex items-center justify-center text-[10px] font-bold border font-mono transition-all duration-300 hover:scale-105 ${
-                  done ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400' : 
-                  isCurrent ? 'bg-indigo-500 border-indigo-400 text-white shadow-[0_0_12px_rgba(99,102,241,0.45)]' : 
-                  'bg-white/5 border-white/10 text-white/25'
+                className={`h-6 w-6 rounded-lg flex items-center justify-center text-[10px] font-black border transition-all ${
+                  done ? 'bg-emerald-500/20 border-emerald-500/40 text-emerald-400' : 
+                  current ? 'bg-gradient-to-br from-violet-500 to-indigo-600 border-violet-400 text-white shadow-[0_0_12px_rgba(139,92,246,0.4)] scale-110' : 
+                  'bg-white/5 border-white/10 text-white/30'
                 }`}
               >
                 {day}
@@ -1027,45 +1037,34 @@ function SprintAlphaCard({ state, onReload }: { state?: CockpitData['state']['sp
 
 function AlertsList({ alerts, onDismiss, onRun, loading }: { alerts: StrategicAlert[], onDismiss: (id: string) => void, onRun: () => void, loading: boolean }) {
   return (
-    <div className="rounded-[2.5rem] border border-white/5 bg-gradient-to-br from-white/[0.015] to-transparent p-6 flex flex-col h-full shadow-xl">
-      <div className="flex items-center justify-between mb-6">
+    <div className="rounded-3xl border border-white/10 bg-slate-900/30 p-6 flex flex-col h-full shadow-xl">
+      <div className="flex items-center justify-between mb-6 border-b border-white/5 pb-4">
         <div className="flex items-center gap-2">
-          <AlertTriangle className="h-4 w-4 text-white/30" />
-          <h4 className="text-[10px] font-black text-white/55 uppercase tracking-widest font-mono">ALERTAS ESTRATÉGICOS</h4>
+          <AlertTriangle className="h-4.5 w-4.5 text-[#a78bfa]" />
+          <h4 className="text-xs font-black text-white/80 uppercase tracking-widest">Alertas Estratégicos</h4>
         </div>
-        <button 
-          onClick={onRun} 
-          disabled={loading} 
-          className="p-2 hover:bg-white/5 rounded-xl transition text-indigo-400 disabled:opacity-30"
-          title="Executar Auditoria de IA"
-        >
+        <button onClick={onRun} disabled={loading} className="p-2 bg-white/5 border border-white/10 hover:bg-white/10 rounded-xl transition text-[#a78bfa] disabled:opacity-30">
           <RefreshCw className={`h-3.5 w-3.5 ${loading ? 'animate-spin' : ''}`} />
         </button>
       </div>
-      
-      <div className="space-y-3.5 flex-1 overflow-y-auto max-h-[300px] pr-2 custom-scrollbar">
+      <div className="space-y-3 flex-1 overflow-y-auto max-h-[300px] pr-2 custom-scrollbar">
         {alerts.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-20 text-center space-y-3 opacity-25">
-             <div className="p-3.5 rounded-full border border-white/10 bg-white/5">
-              <Shield className="h-6 w-6" />
+          <div className="flex flex-col items-center justify-center py-16 text-center space-y-3 opacity-30 border border-dashed border-white/10 rounded-2xl bg-white/[0.01]">
+             <Shield className="h-10 w-10 text-white/50" />
+             <div className="space-y-1">
+               <p className="text-xs font-black uppercase tracking-wider text-white">Nenhum Alerta Pendente</p>
+               <p className="text-[10px] text-white/50 px-6">O sistema está estável e operando dentro de conformidades normativas.</p>
              </div>
-             <p className="text-[10px] font-black uppercase tracking-widest font-mono">Nenhuma Anomalia Detectada</p>
           </div>
         ) : (
           alerts.map(a => (
-            <div key={a.id} className="p-4 bg-white/[0.01] border border-white/5 rounded-xl flex items-start gap-4 group hover:border-indigo-500/30 hover:bg-white/[0.02] transition-all duration-300">
-              <div className={`h-2 w-2 rounded-full mt-2 shrink-0 animate-pulse ${a.level === 'warning' ? 'bg-amber-400' : 'bg-indigo-400'}`} />
-              <div className="flex-1">
-                <p className="text-[12px] font-bold text-white/90 leading-tight mb-1">{a.title}</p>
-                <p className="text-[10px] text-white/45 leading-relaxed font-mono">{a.message}</p>
+            <div key={a.id} className="p-4 bg-white/[0.01] border border-white/5 hover:border-[#a78bfa]/35 rounded-2xl flex items-start gap-4 group transition-all duration-300">
+              <div className={`h-2.5 w-2.5 rounded-full mt-1.5 shrink-0 ${a.level === 'warning' ? 'bg-amber-400 shadow-[0_0_8px_rgba(245,158,11,0.5)]' : 'bg-sky-400 shadow-[0_0_8px_rgba(56,189,248,0.5)]'}`} />
+              <div className="flex-1 min-w-0">
+                <p className="text-xs font-extrabold text-white leading-tight mb-1">{a.title}</p>
+                <p className="text-[10px] text-white/50 leading-relaxed">{a.message}</p>
               </div>
-              <button 
-                onClick={() => onDismiss(a.id)} 
-                className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-white/20 hover:text-white"
-                title="Ignorar"
-              >
-                ✕
-              </button>
+              <button onClick={() => onDismiss(a.id)} className="opacity-0 group-hover:opacity-100 transition-all text-white/20 hover:text-white shrink-0 p-1 hover:bg-white/5 rounded">✕</button>
             </div>
           ))
         )}
@@ -1088,51 +1087,49 @@ function OKRGeneratorCard() {
   }
 
   return (
-    <div className="rounded-[2.5rem] border border-white/5 bg-gradient-to-br from-white/[0.015] to-transparent p-8 shadow-xl">
-       <div className="flex items-center justify-between mb-8">
-          <div className="flex items-center gap-3.5">
-            <div className="h-10 w-10 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center shadow-lg shadow-amber-500/5">
+    <div className="rounded-[2rem] border border-white/10 bg-slate-900/30 p-6 md:p-8 shadow-xl">
+       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+          <div className="flex items-center gap-3">
+            <div className="h-10 w-10 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center">
               <Goal className="h-5 w-5 text-amber-400" />
             </div>
             <div>
-              <h3 className="text-[14px] font-black text-white uppercase tracking-tight">OKR Generator · Inteligência SEA</h3>
-              <p className="text-[9px] text-white/30 uppercase font-mono tracking-widest">Alinhamento e Desdobramento Trimestral</p>
+              <h3 className="text-sm font-extrabold text-white uppercase tracking-wider">OKR Generator Inteligente</h3>
+              <p className="text-[9px] text-white/40 uppercase font-black tracking-widest">Alinhamento Estratégico do Próximo Ciclo</p>
             </div>
           </div>
           {!okrs && (
-            <button 
-              onClick={generate} 
-              disabled={loading} 
-              className="px-6 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-[#09090e] text-[10px] font-black uppercase tracking-widest hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 disabled:opacity-30 shadow-lg shadow-amber-500/15"
-            >
-              {loading ? 'Processando...' : 'Gerar OKRs'}
+            <button onClick={generate} disabled={loading} className="px-6 py-2.5 rounded-xl bg-amber-400 text-slate-950 text-xs font-black uppercase tracking-widest hover:bg-amber-300 transition-all hover:scale-105 active:scale-95 disabled:opacity-30 shadow-lg shadow-amber-400/10 shrink-0">
+              {loading ? 'Processando...' : 'Gerar Proposta OKR'}
             </button>
           )}
        </div>
 
        {okrs ? (
-         <div className="space-y-6">
+         <div className="space-y-5">
             {okrs.map((o: any, i: number) => (
-               <div key={i} className="p-5 rounded-xl bg-white/[0.01] border border-white/5 space-y-4">
+               <div key={i} className="p-5 rounded-2xl bg-white/[0.01] border border-white/5 space-y-4 hover:border-white/10 transition-all">
                   <div className="flex items-center gap-3">
-                     <span className="px-2 py-0.5 rounded bg-amber-500/10 border border-amber-500/20 text-[9px] font-mono font-bold text-amber-400">OBJ {i+1}</span>
-                     <p className="text-[14px] font-bold text-white">{o.objective}</p>
+                     <span className="text-xs font-black text-amber-400 bg-amber-400/5 border border-amber-400/10 px-2 py-0.5 rounded">OBJETIVO {i+1}</span>
+                     <p className="text-sm font-bold text-white">{o.objective}</p>
                   </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pl-4 border-l-2 border-white/5">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pl-4 border-l-2 border-white/10">
                      {o.key_results.map((kr: string, j: number) => (
-                       <div key={j} className="flex gap-2">
-                          <div className="h-1.5 w-1.5 rounded-full bg-amber-500/40 mt-2 shrink-0" />
-                          <p className="text-[11px] text-white/50 leading-relaxed">{kr}</p>
+                       <div key={j} className="flex gap-2.5">
+                          <div className="h-1.5 w-1.5 rounded-full bg-amber-400/40 mt-1.5 shrink-0" />
+                          <p className="text-xs text-white/60 leading-relaxed">{kr}</p>
                        </div>
                      ))}
                   </div>
                </div>
             ))}
-            <button onClick={() => setOkrs(null)} className="text-[9px] font-black text-white/35 uppercase hover:text-white transition tracking-widest font-mono">Reiniciar Diagnóstico de OKRs</button>
+            <button onClick={() => setOkrs(null)} className="text-[9px] font-black text-white/30 uppercase hover:text-white transition-all tracking-widest">Recomeçar Processo</button>
          </div>
        ) : (
-         <div className="py-16 text-center border border-dashed border-white/5 rounded-2xl bg-white/[0.005]">
-            <p className="text-[10px] text-white/30 uppercase font-black tracking-[0.25em] font-mono">Pressione o botão para a IA propor seus OKRs do trimestre</p>
+         <div className="py-16 text-center border border-dashed border-white/10 rounded-2xl bg-white/[0.01] opacity-50">
+            <p className="text-xs uppercase font-bold tracking-[0.2em] text-white/50 px-6">
+              A IA analisará a fase atual e proporá Objetivos e Resultados-Chave personalizados para o SEA FISIO.
+            </p>
          </div>
        )}
     </div>
@@ -1153,62 +1150,50 @@ function TargetsRadarCard() {
   }
 
   return (
-    <div className="rounded-[2.5rem] border border-white/5 bg-[#09090e]/60 p-8 shadow-xl relative overflow-hidden">
-       {/* Visual Scan Animation in background */}
-       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(99,102,241,0.015)_0%,transparent_60%)] pointer-events-none" />
-       
-       <div className="flex items-center justify-between mb-8 relative z-10">
-          <div className="flex items-center gap-3.5">
-            <div className="h-10 w-10 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center shadow-lg shadow-indigo-500/5">
-              <Search className="h-5 w-5 text-indigo-400" />
+    <div className="rounded-[2rem] border border-white/10 bg-slate-900/30 p-6 md:p-8 shadow-xl">
+       <div className="flex items-center justify-between mb-8 border-b border-white/5 pb-4">
+          <div className="flex items-center gap-3">
+            <div className="h-10 w-10 rounded-xl bg-sky-500/10 border border-sky-500/20 flex items-center justify-center">
+              <Search className="h-5 w-5 text-sky-400" />
             </div>
             <div>
-              <h3 className="text-[14px] font-black text-white uppercase tracking-tight">Radar Analítico do Mercado</h3>
-              <p className="text-[9px] text-white/30 uppercase font-mono tracking-widest">Monitor de Hospitais Alvo · VCs · Concorrentes</p>
+              <h3 className="text-sm font-extrabold text-white uppercase tracking-wider">Radar de Parceiros Clínicos e Hospitais</h3>
+              <p className="text-[9px] text-white/40 uppercase font-black tracking-widest">Grandes Centros Médicos e Oportunidades Acadêmicas</p>
             </div>
           </div>
           {!data ? (
-            <button 
-              onClick={() => fetchTargets()} 
-              disabled={loading} 
-              className="px-6 py-2.5 rounded-xl border border-indigo-500/20 bg-indigo-500/5 hover:bg-indigo-500/10 text-indigo-300 text-[10px] font-black uppercase tracking-widest hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 disabled:opacity-30"
-            >
-              {loading ? 'Varrendo mercado...' : 'Ativar Varredura'}
+            <button onClick={() => fetchTargets()} disabled={loading} className="px-5 py-2 rounded-xl border border-sky-500/20 text-sky-400 text-xs font-black uppercase tracking-widest hover:bg-sky-500/10 transition-all disabled:opacity-30 shadow-md">
+              {loading ? 'Pesquisando...' : 'Ativar Radar'}
             </button>
           ) : (
-            <button 
-              onClick={() => fetchTargets(true)} 
-              disabled={loading} 
-              className="p-2 hover:bg-white/5 rounded-xl transition text-white/35 hover:text-white"
-            >
+            <button onClick={() => fetchTargets(true)} disabled={loading} className="p-2 hover:bg-white/5 border border-white/10 rounded-xl transition text-white/30 hover:text-white">
                <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
             </button>
           )}
        </div>
 
        {data && (
-         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 relative z-10">
-            {['HOSPITAIS ALVO', 'INVESTIDORES (VCs)', 'CONCORRENTES DIRECT'].map((category, idx) => {
+         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {['Hospitais de UTI Alvo', 'Centros e Parceiros Acadêmicos', 'Benchmark Setorial'].map((category, idx) => {
               const keys = ['hospitals', 'vcs', 'competitors'] as const
               const items = data[keys[idx]] || []
               return (
                 <div key={category} className="space-y-4">
-                   <div className="flex items-center gap-2 border-b border-white/5 pb-2">
-                     <span className="h-1.5 w-1.5 rounded-full bg-indigo-400" />
-                     <p className="text-[9px] font-black text-white/40 uppercase tracking-widest font-mono">{category}</p>
-                   </div>
-                   <div className="space-y-3 max-h-[360px] overflow-y-auto pr-1 scrollbar-hide">
+                   <p className="text-[10px] font-black text-white/30 uppercase tracking-[0.2em]">{category}</p>
+                   <div className="space-y-3">
                       {items.map((it: any, i: number) => (
-                        <div key={i} className="p-4 rounded-xl bg-white/[0.01] border border-white/5 hover:border-indigo-500/20 hover:bg-white/[0.02] transition-all duration-300 group">
-                           <div className="flex items-center justify-between mb-1.5">
-                              <p className="text-[11px] font-black text-white">{it.name}</p>
-                              <ArrowUpRight className="h-3.5 w-3.5 text-white/0 group-hover:text-white/35 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-300" />
+                        <div key={i} className="p-4 rounded-2xl bg-white/[0.01] border border-white/5 hover:border-sky-500/20 transition-all duration-300 group flex flex-col justify-between h-full">
+                           <div>
+                             <div className="flex items-center justify-between mb-1.5 gap-2">
+                                <p className="text-xs font-extrabold text-white group-hover:text-sky-400 transition-all leading-tight">{it.name}</p>
+                                <ExternalLink className="h-3.5 w-3.5 text-white/0 group-hover:text-white/30 transition-all shrink-0" />
+                             </div>
+                             <p className="text-[10px] text-white/45 leading-relaxed">{it.relevance || it.description}</p>
                            </div>
-                           <p className="text-[10px] text-white/45 leading-relaxed font-mono">{it.relevance || it.description}</p>
                         </div>
                       ))}
                       {items.length === 0 && (
-                        <p className="text-[10px] text-white/20 italic font-mono">Nenhum nó de dados mapeado.</p>
+                        <p className="text-[10px] text-white/30 italic">Radar buscando novos registros...</p>
                       )}
                    </div>
                 </div>
