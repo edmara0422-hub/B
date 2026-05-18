@@ -55,7 +55,6 @@ function getSGI(m: Metrics): CheckItem[] {
     { label: 'IA Tutora (Groq/LLaMA)', ok: true, fonte: 'Groq API', detalhe: 'llama-3.3-70b-versatile em /api/tutor' },
     { label: 'Banco de dados estruturado', ok: true, fonte: 'Supabase Postgres', detalhe: 'Profiles, subscriptions, feedback, app_config' },
     { label: 'App mobile (iOS/Android)', ok: true, fonte: 'Capacitor', detalhe: 'Build nativo via capacitor.config.ts' },
-    { label: 'CRM integrado (leads/deals/pipeline)', ok: true, fonte: 'Zoho CRM API', detalhe: 'OAuth flow + /api/zoho/ endpoints' },
     { label: 'Sistema de assinaturas', ok: m.subsActive > 0, fonte: 'Supabase subscriptions', detalhe: m.subsActive > 0 ? `${m.subsActive} ativa(s)` : 'Tabela criada, sem assinantes ativos' },
     { label: 'NPS e feedback estruturado', ok: m.nps !== null, fonte: 'sea_feedback table', detalhe: m.nps !== null ? `NPS atual: ${m.nps}` : 'Tabela criada, aguardando respostas' },
   ]
@@ -293,11 +292,6 @@ function getMonitor(m: Metrics, phase: PhaseId): { label: string; status: 'ok' |
       label: 'Assinaturas ativas',
       status: m.subsActive >= 1 ? 'ok' : phase === 'f1' || phase === 'f2' ? 'atencao' : 'critico',
       valor: `${m.subsActive} ativa(s)`,
-    },
-    {
-      label: 'CRM conectado',
-      status: 'ok',
-      valor: 'Zoho CRM via API',
     },
     {
       label: 'IA tutora',

@@ -1,4 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { rateLimit } from '@/lib/rate-limit'
+
+const limiter = rateLimit({ limit: 20, windowMs: 60_000 })
 
 type ClinicalContext = 'ecg' | 'vm' | 'neuro' | 'clinical'
 
@@ -56,6 +59,9 @@ function buildResponse(query: string, context: ClinicalContext) {
 }
 
 export async function POST(request: NextRequest) {
+    const limited = limiter(request)
+    if (limited) return limited
+
     try {
         const body = await request.json()
         const query = normalizeQuery(body?.query)

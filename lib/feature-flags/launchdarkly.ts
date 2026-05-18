@@ -48,7 +48,6 @@ export const FEATURE_FLAGS = {
   advancedReports: 'advanced-reports',
   betaFeatures: 'beta-features-enabled',
   experimentalUI: 'experimental-ui',
-  graphqlAPI: 'graphql-api-enabled',
   edgeFunctions: 'edge-functions-enabled',
   darkMode: 'dark-mode',
 } as const
@@ -105,6 +104,4 @@ export const features = {
     isFeatureEnabled('betaFeatures', userId),
   experimentalUIEnabled: async (userId: string) =>
     isFeatureEnabled('experimentalUI', userId),
-  graphqlAPIEnabled: async (userId: string) =>
-    isFeatureEnabled('graphqlAPI', userId),
 }
