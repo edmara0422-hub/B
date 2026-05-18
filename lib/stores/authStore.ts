@@ -73,7 +73,6 @@ type AuthActions = {
   initialize: () => Promise<void>
   signIn: (email: string, password: string) => Promise<{ error: string | null }>
   signUp: (email: string, password: string, name: string) => Promise<{ error: string | null }>
-  signInAsGuest: (name: string) => void
   signOut: () => Promise<void>
   resetPassword: (email: string) => Promise<{ error: string | null }>
   fetchProfile: (userId: string) => Promise<void>
@@ -93,26 +92,6 @@ export const useAuthStore = create<AuthState & AuthActions>((set, get) => ({
 
   initialize: async () => {
     if (get().initialized) return
-
-    // 1. Prioridade absoluta para o usuário Convidado (Modo Local)
-    if (typeof window !== 'undefined') {
-      try {
-        const cachedUser = localStorage.getItem('sea_user')
-        const cachedProfile = localStorage.getItem('sea_profile')
-        if (cachedUser && JSON.parse(cachedUser).id === 'guest') {
-          const user = JSON.parse(cachedUser)
-          const profile = cachedProfile ? JSON.parse(cachedProfile) : null
-          set({
-            user,
-            session: { access_token: 'guest-token', user } as any,
-            profile,
-            isAdmin: false,
-            initialized: true,
-          })
-          return
-        }
-      } catch { /* ignore */ }
-    }
 
     if (!supabase) return
     // Hydrate isAdmin instantly from localStorage cache so the admin panel
@@ -148,9 +127,6 @@ export const useAuthStore = create<AuthState & AuthActions>((set, get) => ({
 
     // Listen for auth changes
     supabase.auth.onAuthStateChange((_event, session) => {
-      // Se for convidado, não escuta mudanças do Supabase
-      if (get().user?.id === 'guest') return
-
       set({ user: session?.user ?? null, session })
       if (session?.user) {
         if (isAdminByEmail(session.user.email)) {
@@ -166,7 +142,7 @@ export const useAuthStore = create<AuthState & AuthActions>((set, get) => ({
   },
 
   fetchProfile: async (userId: string) => {
-    if (!supabase || userId === 'guest') return
+    if (!supabase) return
     const res = await withTimeout<{ data: Profile | null; error: { message: string } | null }>(
       supabase.from('profiles').select('*').eq('id', userId).single(),
       8000,
@@ -255,40 +231,7 @@ export const useAuthStore = create<AuthState & AuthActions>((set, get) => ({
     return { error: null }
   },
 
-  signInAsGuest: (name: string) => {
-    const dummyUser: any = {
-      id: 'guest',
-      email: 'guest@sea.local',
-      user_metadata: { name },
-    }
-    const dummyProfile: Profile = {
-      id: 'guest',
-      name: name || 'Convidado',
-      email: 'guest@sea.local',
-      photo_url: null,
-      role: 'user',
-      notifications_enabled: false,
-      theme: 'dark',
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
-    }
-    set({
-      user: dummyUser,
-      session: { access_token: 'guest-token', user: dummyUser } as any,
-      profile: dummyProfile,
-      isAdmin: false,
-      initialized: true,
-    })
-    if (typeof window !== 'undefined') {
-      try {
-        localStorage.setItem('sea_user', JSON.stringify(dummyUser))
-        localStorage.setItem('sea_profile', JSON.stringify(dummyProfile))
-      } catch { /* ignore */ }
-    }
-  },
-
   signOut: async () => {
-    const isGuest = get().user?.id === 'guest'
     // Limpa estado local IMEDIATO — UI reage na hora, sem esperar Supabase.
     set({ user: null, session: null, profile: null, isAdmin: false, initialized: false })
     if (typeof window !== 'undefined') {
@@ -298,7 +241,7 @@ export const useAuthStore = create<AuthState & AuthActions>((set, get) => ({
     }
     writeCachedAdmin(false)
     // Supabase em background (fire-and-forget com timeout 3s) — não bloqueia logout.
-    if (supabase && !isGuest) {
+    if (supabase) {
       withTimeout(supabase.auth.signOut(), 3000, 'signOut').catch(() => { /* ignore */ })
     }
   },
@@ -316,18 +259,6 @@ export const useAuthStore = create<AuthState & AuthActions>((set, get) => ({
     if (!supabase) return { error: 'Supabase nao configurado.' }
     const user = get().user
     if (!user) return { error: 'Nao autenticado.' }
-    if (user.id === 'guest') {
-      // Para convidado, atualiza apenas em memória e no cache local
-      const currentProfile = get().profile
-      if (currentProfile) {
-        const next = { ...currentProfile, ...data, updated_at: new Date().toISOString() }
-        set({ profile: next })
-        if (typeof window !== 'undefined') {
-          try { localStorage.setItem('sea_profile', JSON.stringify(next)) } catch { /* ignore */ }
-        }
-      }
-      return { error: null }
-    }
     const updateData = { ...data, updated_at: new Date().toISOString() }
     const { error } = await supabase
       .from('profiles')
