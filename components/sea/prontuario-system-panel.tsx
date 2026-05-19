@@ -56,6 +56,7 @@ import {
   type DesmHistEntry,
   type DVAEntry,
   type GasometryHistoryEntry,
+  type BHHistoryEntry,
   type ImageExamEntry,
   type ImsHistEntry,
   type LabExamEntry,
@@ -1059,6 +1060,7 @@ function normalizeRecord(raw: Partial<ICURecord> | null | undefined): ICURecord 
     dvaList: Array.isArray(raw?.dvaList) ? raw.dvaList : [],
     gasometrias: Array.isArray(raw?.gasometrias) ? raw.gasometrias : [],
     vmHist: Array.isArray(raw?.vmHist) ? raw.vmHist : [],
+    bhHist: Array.isArray(raw?.bhHist) ? raw.bhHist : [],
     peepOpt: ensurePeepOptRows(raw?.peepOpt as PeepOptEntry[] | undefined),
     curvaPxT: Array.isArray(raw?.curvaPxT) ? raw.curvaPxT : [],
     curvaFxT: Array.isArray(raw?.curvaFxT) ? raw.curvaFxT : [],
@@ -4399,6 +4401,28 @@ export function ProntuarioSystemPanel() {
     }))
   }
 
+  const saveBH = () => {
+    if (!currentRecord) return
+    if (!currentRecord.balanco24h && !currentRecord.balancoAcumulado) return
+    const entry: BHHistoryEntry = {
+      ts: nowIso(),
+      balanco24h: currentRecord.balanco24h,
+      balancoAcumulado: currentRecord.balancoAcumulado,
+      analise: calculations?.balance?.text ?? '',
+    }
+    updateCurrentRecord((record) => ({
+      ...record,
+      bhHist: [entry, ...(record.bhHist ?? [])],
+    }))
+  }
+
+  const deleteBH = (index: number) => {
+    updateCurrentRecord((record) => ({
+      ...record,
+      bhHist: (record.bhHist ?? []).filter((_, i) => i !== index),
+    }))
+  }
+
   const ensureMraRows = (rows: MraRow[]): MraRow[] => {
     const result = [...rows]
     while (result.length < 8) result.push({ plato: '', peep: '', cest: '', sat: '', pam: '', best: false })
@@ -5269,16 +5293,48 @@ export function ProntuarioSystemPanel() {
                       )}
                     </button>
                     {(currentRecord.balanco24h || currentRecord.balancoAcumulado) && (
-                      <button
-                        onClick={() => updateCurrentRecord((record) => ({ ...record, balanco24h: '', balancoAcumulado: '' }))}
-                        title="Limpar BH"
-                        className="flex h-7 w-7 shrink-0 items-center justify-center rounded-[0.65rem] text-white/40 transition hover:text-red-300 hover:bg-red-500/10"
-                        style={{ border: '1px solid rgba(255,255,255,0.10)' }}
-                      >
-                        <Trash2 className="h-3 w-3" />
-                      </button>
+                      <>
+                        <button
+                          onClick={saveBH}
+                          title="Salvar BH no histórico"
+                          className="flex h-7 w-7 shrink-0 items-center justify-center rounded-[0.65rem] text-white/55 transition hover:text-[#22d3ee] hover:bg-cyan-500/10"
+                          style={{ border: '1px solid rgba(255,255,255,0.10)' }}
+                        >
+                          <Save className="h-3 w-3" />
+                        </button>
+                        <button
+                          onClick={() => updateCurrentRecord((record) => ({ ...record, balanco24h: '', balancoAcumulado: '' }))}
+                          title="Limpar BH"
+                          className="flex h-7 w-7 shrink-0 items-center justify-center rounded-[0.65rem] text-white/40 transition hover:text-red-300 hover:bg-red-500/10"
+                          style={{ border: '1px solid rgba(255,255,255,0.10)' }}
+                        >
+                          <Trash2 className="h-3 w-3" />
+                        </button>
+                      </>
                     )}
                   </div>
+
+                  {/* Histórico de BH — comparar com análises anteriores */}
+                  {currentRecord.bhHist?.length ? (
+                    <div className="mt-2 rounded-[0.7rem] px-2 py-1.5" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)' }}>
+                      <p className="mb-1 text-[8px] uppercase tracking-[0.18em] text-white/40">Histórico BH · {currentRecord.bhHist.length}</p>
+                      <div className="space-y-1">
+                        {currentRecord.bhHist.slice(0, 5).map((entry, i) => (
+                          <div key={i} className="flex items-center gap-2 text-[8.5px] tabular-nums">
+                            <span className="text-white/40 shrink-0">{new Date(entry.ts).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' })}</span>
+                            <div className="flex flex-1 flex-wrap gap-x-2 text-white/65">
+                              {entry.balanco24h && <span>24h: <span className="text-white/90">{entry.balanco24h}</span></span>}
+                              {entry.balancoAcumulado && <span>Ac: <span className="text-white/90">{entry.balancoAcumulado}</span></span>}
+                              {entry.analise && <span className="text-white/50 italic truncate">{entry.analise}</span>}
+                            </div>
+                            <button onClick={() => deleteBH(i)} className="shrink-0 text-white/30 hover:text-red-300 transition">
+                              <X className="h-2.5 w-2.5" />
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  ) : null}
 
                   <div className="mt-2 space-y-1.5">
                     <div className="rounded-[0.7rem] border border-white/10 bg-white/[0.04] px-2 py-1">

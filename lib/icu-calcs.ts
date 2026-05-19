@@ -76,6 +76,13 @@ export type ImageExamEntry = {
   }
 }
 
+export type BHHistoryEntry = {
+  ts: string
+  balanco24h: string
+  balancoAcumulado: string
+  analise: string
+}
+
 export type GasometryHistoryEntry = {
   ts: string
   data: string
@@ -652,6 +659,7 @@ export type PatientData = {
   sfFiO2: string
   gasometrias: GasometryHistoryEntry[]
   vmHist: VMHistoryEntry[]
+  bhHist: BHHistoryEntry[]
   peepOpt: PeepOptEntry[]
   curvaPxT: string[]
   curvaFxT: string[]
@@ -838,6 +846,7 @@ export function emptyPatient(): PatientData {
     sfSpO2: '',
     sfFiO2: '',
     gasometrias: [],
+    bhHist: [],
     vmHist: [],
     peepOpt: [
       { peep: '', plato: '', si: '' },
