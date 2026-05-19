@@ -90,8 +90,8 @@ type Workspace = {
 // Compressão client-side de imagens — reduz fotos do celular (8-12 MB)
 // para ~200-400 KB com qualidade preservada o suficiente para OCR/IA.
 // Evita estourar limite de token na API de visão (60 MB → 2-3 MB total).
-async function compressImage(file: File, maxDim = 1600, quality = 0.85): Promise<File> {
-  if (file.size < 800 * 1024) return file // já pequeno (<800KB), não comprime
+async function compressImage(file: File, maxDim = 2400, quality = 0.92): Promise<File> {
+  if (file.size < 1500 * 1024) return file // já pequeno (<1.5MB), não comprime — preserva qualidade máxima
   return new Promise((resolve) => {
     const img = new Image()
     img.onload = () => {
@@ -4239,9 +4239,11 @@ export function ProntuarioSystemPanel() {
   }
 
   const clearRespFields = () => {
+    setVmInputMode(null)
     updateCurrentRecord((record) => ({
       ...record,
       modoVM: '',
+      perfilVM: '',
       vt: '',
       vc: '',
       ve: '',
@@ -8965,7 +8967,7 @@ export function ProntuarioSystemPanel() {
                   </button>
                 </div>
               ))}
-              {bhScanPhotos.length < 5 && !bhScanLoading && (
+              {bhScanPhotos.length < 10 && !bhScanLoading && (
                 <label
                   className="flex aspect-square cursor-pointer flex-col items-center justify-center gap-1 rounded-[0.8rem] transition hover:bg-white/[0.06]"
                   style={{ border: '1.5px dashed rgba(255,255,255,0.18)' }}
@@ -8979,7 +8981,7 @@ export function ProntuarioSystemPanel() {
                     multiple
                     className="hidden"
                     onChange={async (e) => {
-                      const files = Array.from(e.target.files ?? []).slice(0, 5 - bhScanPhotos.length)
+                      const files = Array.from(e.target.files ?? []).slice(0, 10 - bhScanPhotos.length)
                       const compressed = await Promise.all(files.map(f => compressImage(f)))
                       const newPhotos = compressed.map(f => ({ file: f, preview: URL.createObjectURL(f) }))
                       setBhScanPhotos(prev => [...prev, ...newPhotos])
@@ -8991,7 +8993,7 @@ export function ProntuarioSystemPanel() {
             </div>
 
             <p className="text-[8px] text-white/30 text-center -mt-1">
-              Até 5 fotos — diferentes páginas ou ângulos da mesma folha
+              Até 10 fotos — diferentes páginas ou ângulos da mesma folha
             </p>
 
             {/* Error */}
@@ -9153,7 +9155,7 @@ export function ProntuarioSystemPanel() {
                     </button>
                   </div>
                 ))}
-                {gasoScanPhotos.length < 5 && !gasoScanLoading && (
+                {gasoScanPhotos.length < 10 && !gasoScanLoading && (
                   <label
                     className="flex aspect-square cursor-pointer flex-col items-center justify-center gap-1 rounded-[0.8rem] transition hover:bg-white/[0.06]"
                     style={{ border: '1.5px dashed rgba(255,255,255,0.18)' }}
@@ -9167,7 +9169,7 @@ export function ProntuarioSystemPanel() {
                       multiple
                       className="hidden"
                       onChange={async (e) => {
-                        const files = Array.from(e.target.files ?? []).slice(0, 5 - gasoScanPhotos.length)
+                        const files = Array.from(e.target.files ?? []).slice(0, 10 - gasoScanPhotos.length)
                         const compressed = await Promise.all(files.map(f => compressImage(f)))
                         const newPhotos = compressed.map(f => ({ file: f, preview: URL.createObjectURL(f) }))
                         setGasoScanPhotos(prev => [...prev, ...newPhotos])
@@ -9179,7 +9181,7 @@ export function ProntuarioSystemPanel() {
               </div>
 
               <p className="text-[8px] text-white/30 text-center -mt-1">
-                Até 5 fotos · Arterial ou venosa · IA detecta o tipo
+                Até 10 fotos · Arterial ou venosa · IA detecta o tipo
               </p>
 
               {/* Error */}
@@ -9357,7 +9359,7 @@ export function ProntuarioSystemPanel() {
                     </button>
                   </div>
                 ))}
-                {vmScanPhotos.length < 5 && !vmScanLoading && (
+                {vmScanPhotos.length < 10 && !vmScanLoading && (
                   <label
                     className="flex aspect-square cursor-pointer flex-col items-center justify-center gap-1 rounded-[0.8rem] transition hover:bg-white/[0.06]"
                     style={{ border: '1.5px dashed rgba(255,255,255,0.18)' }}
@@ -9371,7 +9373,7 @@ export function ProntuarioSystemPanel() {
                       multiple
                       className="hidden"
                       onChange={async (e) => {
-                        const files = Array.from(e.target.files ?? []).slice(0, 5 - vmScanPhotos.length)
+                        const files = Array.from(e.target.files ?? []).slice(0, 10 - vmScanPhotos.length)
                         const compressed = await Promise.all(files.map(f => compressImage(f)))
                         const newPhotos = compressed.map(f => ({ file: f, preview: URL.createObjectURL(f) }))
                         setVmScanPhotos(prev => [...prev, ...newPhotos])
@@ -9383,7 +9385,7 @@ export function ProntuarioSystemPanel() {
               </div>
 
               <p className="text-[8px] text-white/30 text-center -mt-1">
-                Até 5 fotos · Hamilton, Drager, Servo, GE, Newport, Leistung, Magnamed, Mindray, antigos · IA detecta modo + parâmetros
+                Até 10 fotos · IA detecta modo + parâmetros em qualquer ventilador
               </p>
 
               {vmScanError && (

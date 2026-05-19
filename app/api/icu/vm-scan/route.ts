@@ -105,13 +105,16 @@ EM MODO PCV, EXTRAIA SOMENTE:
   • Se o display mostra "Pinsp 25" e PEEP 10 → ppico = 25 - 10 = 15 (delta)
   • Se o display mostra "PC above PEEP 15" → ppico = 15 (já é delta)
 
-PROIBIDO em PCV:
-- NÃO retorne Pmean (pressão média) — pmean = null
-- NÃO retorne Ppico/Ppeak MEDIDO (valor da curva ou painel de monitorização) — confunde com PC setado
+PROIBIDO em PCV e PSV:
+- NÃO retorne Pmean (pressão média) — pmean = null em ambos
+- NÃO retorne Ppico/Ppeak MEDIDO (valor da curva ou painel de monitorização) — confunde com valor setado
 - NÃO retorne Pplato medido — exige manobra, deixe null
-- Se você só consegue ver Ppico medido (sem PC setado visível), retorne ppico = null e mencione em notes
+- Em PCV: se você só consegue ver Ppico medido (sem PC setado visível), retorne ppico = null
+- Em PSV: ppico = null SEMPRE (PSV não tem pressão de pico setada, só PS). Use o campo "ps".
 
-Em resumo: em PCV ppico = SOMENTE o PC seteado como delta (valor típico 10-25 cmH2O adulto).
+Em resumo:
+- PCV: ppico = SOMENTE o PC seteado como delta (valor típico 10-25 cmH2O adulto)
+- PSV: ppico = null. ps = valor de pressão suporte (5-20 típico)
 
 REGRAS DE RETORNO POR MODO:
 
