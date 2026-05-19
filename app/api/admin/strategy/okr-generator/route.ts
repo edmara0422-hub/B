@@ -3,14 +3,22 @@ import { getSupabaseServerClient, getSupabaseAdminClient } from '@/lib/supabase-
 
 export const runtime = 'nodejs'
 
-const ALWAYS_ADMIN_EMAILS = new Set<string>(['edmararbusiness1@gmail.com'])
+const ALWAYS_ADMIN_EMAILS = new Set<string>(['edmararbusiness1@gmail.com', 'edmara0422@gmail.com'])
 const GROQ_API = 'https://api.groq.com/openai/v1/chat/completions'
 const MODEL = 'llama-3.1-8b-instant'
 
 let cache: { data: unknown; expiresAt: number } | null = null
 const CACHE_TTL_MS = 60 * 60 * 1000
 
+export async function POST(request: Request) {
+  return handleRequest(request)
+}
+
 export async function GET(request: Request) {
+  return handleRequest(request)
+}
+
+async function handleRequest(request: Request) {
   try {
     const supa = await getSupabaseServerClient()
     const { data: { user }, error: userErr } = await supa.auth.getUser()
@@ -24,7 +32,7 @@ export async function GET(request: Request) {
   }
 
   const url = new URL(request.url)
-  const force = url.searchParams.get('refresh') === '1'
+  const force = url.searchParams.get('refresh') === '1' || request.method === 'POST'
   if (!force && cache && cache.expiresAt > Date.now()) {
     return NextResponse.json({ ...cache.data as Record<string, unknown>, cached: true })
   }
@@ -56,23 +64,27 @@ export async function GET(request: Request) {
     mrr: ((state.financials as Record<string, unknown> | undefined)?.mrr ?? 0),
   }
 
-  const systemPrompt = `Você é um Chief of Staff de healthtech early-stage no Brasil. Sua função: gerar OKRs trimestrais ambiciosos e mensuráveis pro SEA FISIO (SaaS clínico pra fisioterapeutas intensivistas).
+  const systemPrompt = `Você é um Consultor Estratégico especialista em Edtechs de Saúde e Plataformas Clínicas Médicas no Brasil. Sua função: gerar OKRs trimestrais ambiciosos, práticos e mensuráveis pro SEA FISIO (Plataforma de Estudo Avançado e Suporte a Decisão em Fisioterapia Intensiva e UTI).
+
+Seu foco estratégico deve ser:
+1. VALIDAÇÃO CLÍNICA: Adoção das calculadoras (RSBI, complacência de vias aéreas, gasometria) e simuladores (ECG Cardiovascular, Ventilação Mecânica) por fisioterapeutas intensivistas na rotina diária de plantão na UTI.
+2. ADESÃO E CRESCIMENTO: Conversão de profissionais de saúde da fase de teste gratuito (trial) para planos individuais Premium e atração de novas contas.
+3. PARCERIAS INSTITUCIONAIS: Prospecção de universidades (para estudantes de fisioterapia) e hospitais/UTIs (para treinamento de equipes).
 
 REGRAS:
-- 2 Objetivos no máximo (aspiracional, qualitativo, ≤ 12 palavras)
-- 3 KRs por objetivo (mensurável, com número e prazo, ≤ 20 palavras)
-- KRs devem ser AMBICIOSOS (70% de execução já é sucesso)
-- Adapte ao TRL/fase atual — em validação foque em PRIMEIROS CLIENTES, não em escala
-- Tom: consultor sênior, sem rodeios
+- 2 Objetivos no máximo (qualitativo, aspiracional, com tom forte de crescimento clínico, ≤ 12 palavras)
+- 3 Resultados-Chave (KRs) por objetivo (mensurável, com número claro e prazo, ≤ 20 palavras)
+- KRs devem ser focados em métricas de uso clínico real (cálculos efetuados, simuladores rodados, feedbacks coletados, novas assinaturas)
+- Tom: Fundador sênior, pragmático e focado em excelência clínica.
 
-RETORNE JSON (sem markdown):
+RETORNE APENAS JSON (sem markdown, sem blocos de código):
 {
-  "horizon": "Q3 2026",
-  "rationale": "1 frase explicando porque esses OKRs fazem sentido NA FASE ATUAL (máx 80 chars)",
+  "horizon": "Próximo Ciclo",
+  "rationale": "Uma frase explicando o foco estratégico na fase de validação/crescimento clínico (máx 80 caracteres)",
   "objectives": [
     {
       "id": 1,
-      "title": "objetivo 1 (qualitativo, aspiracional)",
+      "title": "objetivo 1 (qualitativo, focado em adesão/qualidade clínica)",
       "key_results": [
         { "id": 1, "kr": "KR 1 com número e prazo" },
         { "id": 2, "kr": "KR 2 com número e prazo" },
@@ -84,14 +96,13 @@ RETORNE JSON (sem markdown):
 }`
 
   const userPrompt = `Estado SEA FISIO hoje:
-- TRL: ${(ctx.trl as { level?: number })?.level ?? '?'} / 9 (${(ctx.trl as { label?: string })?.label ?? '?'})
-- Hype Cycle: ${(ctx.hype_cycle as { label?: string })?.label ?? '?'}
-- Fase: ${(ctx.phase as { label?: string })?.label ?? '?'}
-- Usuários (excl. admin): ${ctx.users}
-- Assinaturas ativas: ${ctx.active_subs}
-- MRR atual: R$${ctx.mrr}
+- Maturidade do Sistema (TRL): ${(ctx.trl as { level?: number })?.level ?? 7} / 9 (${(ctx.trl as { label?: string })?.label ?? 'Produção real'})
+- Fase Atual: ${(ctx.phase as { label?: string })?.label ?? 'Validação Alpha'}
+- Fisioterapeutas Cadastrados: ${ctx.users}
+- Assinantes Premium Ativos: ${ctx.active_subs}
+- Receita Mensal Recorrente (MRR): R$${ctx.mrr}
 
-Gere OKRs realistas pra próximo trimestre. Foque em onde DÓI mais.`
+Gere OKRs realistas e focados em tração clínica e pedagógica para o próximo trimestre.`
 
   let aiData: Record<string, unknown>
   try {

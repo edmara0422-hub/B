@@ -113,19 +113,19 @@ export function AdminStrategicCockpit() {
   if (loading && !data) return (
     <div className="flex flex-col items-center justify-center py-32 space-y-6">
       <div className="relative flex items-center justify-center">
-        <div className="h-16 w-16 animate-spin rounded-full border-4 border-[#a78bfa]/10 border-t-[#a78bfa] shadow-[0_0_20px_rgba(167,139,250,0.15)]" />
-        <Brain className="absolute h-6 w-6 text-[#a78bfa] animate-pulse" />
+        <div className="h-16 w-16 animate-spin rounded-full border-4 border-violet-500/10 border-t-violet-500 shadow-[0_0_20px_rgba(139,92,246,0.15)]" />
+        <Brain className="absolute h-6 w-6 text-violet-400 animate-pulse" />
       </div>
       <div className="text-center space-y-1.5">
-        <p className="text-sm font-semibold tracking-[0.2em] text-[#a78bfa] uppercase">Sincronizando Cockpit de IA</p>
-        <p className="text-xs text-white/40">Carregando telemetria e dados de maturidade clínica...</p>
+        <p className="text-xs font-black tracking-[0.2em] text-violet-400 uppercase">Sincronizando Diagnóstico Clínico</p>
+        <p className="text-[10px] text-white/40">Carregando telemetria e maturidade estratégica do SEA FISIO...</p>
       </div>
     </div>
   )
 
   if (error && !data) return (
-    <div className="rounded-3xl border border-red-500/20 bg-red-500/5 p-12 text-center backdrop-blur-2xl max-w-lg mx-auto shadow-2xl">
-      <div className="mx-auto mb-4 h-16 w-16 rounded-full bg-red-500/10 flex items-center justify-center border border-red-500/20">
+    <div className="rounded-[2.5rem] border border-red-500/20 bg-red-500/5 p-12 text-center backdrop-blur-2xl max-w-lg mx-auto shadow-2xl">
+      <div className="mx-auto mb-4 h-16 w-16 rounded-3xl bg-red-500/10 flex items-center justify-center border border-red-500/20">
         <AlertTriangle className="h-8 w-8 text-red-500" />
       </div>
       <h3 className="text-lg font-bold text-white mb-2">Falha na Sincronização</h3>
@@ -141,7 +141,7 @@ export function AdminStrategicCockpit() {
       {/* 🚀 HEADER PREMIUM: STATUS DO SISTEMA */}
       <header className="relative overflow-hidden rounded-[2.5rem] border border-white/10 bg-slate-900/40 p-6 md:p-8 backdrop-blur-3xl shadow-[0_20px_50px_rgba(0,0,0,0.3)]">
         <div className="absolute top-0 right-0 p-8 opacity-[0.03] pointer-events-none">
-          <Zap className="h-64 w-64 text-[#a78bfa]" />
+          <Zap className="h-64 w-64 text-violet-400" />
         </div>
         
         <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-8">
@@ -151,12 +151,12 @@ export function AdminStrategicCockpit() {
             </div>
             <div>
               <h1 className="text-2xl font-extrabold text-white tracking-tight bg-gradient-to-r from-white via-white to-white/70 bg-clip-text text-transparent">
-                SEA FISIO COCKPIT ESTRATÉGICO
+                SEA FISIO · COCKPIT ESTRATÉGICO
               </h1>
               <div className="flex items-center flex-wrap gap-2 mt-1.5">
                 <span className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-[10px] font-black text-emerald-400 uppercase tracking-wider">
                   <div className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                  Live Diagnostic
+                  Diagnóstico Clínico Ativo
                 </span>
                 <span className="text-[10px] text-white/40 uppercase font-black tracking-widest bg-white/5 border border-white/10 px-2 py-0.5 rounded">v2.5 Autonomous</span>
               </div>
@@ -164,27 +164,27 @@ export function AdminStrategicCockpit() {
           </div>
           
           <div className="grid grid-cols-2 gap-4 w-full lg:w-auto">
-             <div className="px-5 py-3 rounded-2xl bg-white/[0.03] border border-white/5 flex flex-col justify-between min-w-[140px] hover:border-white/10 transition-all">
-                <p className="text-[9px] font-black text-white/30 uppercase tracking-widest mb-1.5">Maturidade TRL</p>
+             <div className="px-5 py-3 rounded-2xl bg-white/[0.03] border border-white/5 flex flex-col justify-between min-w-[160px] hover:border-white/10 transition-all">
+                <p className="text-[9px] font-black text-white/30 uppercase tracking-widest mb-1.5">Maturidade do Sistema</p>
                 <div className="flex items-center gap-3">
                   <span className="text-2xl font-black text-white">{data.state.trl?.level || 7}</span>
                   <div className="flex-1">
                     <div className="h-1.5 w-full bg-white/10 rounded-full overflow-hidden">
-                      <div className="h-full bg-gradient-to-r from-[#a78bfa] to-[#8b5cf6] rounded-full shadow-[0_0_10px_rgba(167,139,250,0.5)]" style={{ width: `${((data.state.trl?.level || 7)/9)*100}%` }} />
+                      <div className="h-full bg-gradient-to-r from-violet-500 to-indigo-500 rounded-full shadow-[0_0_10px_rgba(139,92,246,0.5)]" style={{ width: `${((data.state.trl?.level || 7)/9)*100}%` }} />
                     </div>
-                    <span className="text-[8px] text-white/40 mt-1 block uppercase">Nível {data.state.trl?.level || 7}/9</span>
+                    <span className="text-[8px] text-white/40 mt-1 block uppercase">TRL {data.state.trl?.level || 7}/9 (Rotina UTI)</span>
                   </div>
                 </div>
              </div>
-             <div className="px-5 py-3 rounded-2xl bg-white/[0.03] border border-white/5 flex flex-col justify-between min-w-[140px] hover:border-white/10 transition-all">
-                <p className="text-[9px] font-black text-white/30 uppercase tracking-widest mb-1.5">Fase do Negócio</p>
+             <div className="px-5 py-3 rounded-2xl bg-white/[0.03] border border-white/5 flex flex-col justify-between min-w-[160px] hover:border-white/10 transition-all">
+                <p className="text-[9px] font-black text-white/30 uppercase tracking-widest mb-1.5">Fase de Adoção</p>
                 <div className="flex items-center gap-2">
                   <div className="h-8 w-8 rounded-lg bg-amber-500/10 border border-amber-500/20 flex items-center justify-center shrink-0">
                     <Target className="h-4.5 w-4.5 text-amber-400" />
                   </div>
                   <div>
-                    <span className="text-xs font-black text-white uppercase tracking-wider block">{data.state.phase?.label || 'Validação'}</span>
-                    <span className="text-[8px] text-white/40 block uppercase">Alvo: {data.state.phase?.goal_users || 10} Fisios</span>
+                    <span className="text-xs font-black text-white uppercase tracking-wider block">{data.state.phase?.label === 'Validação Alpha' ? 'Validação Clínica' : (data.state.phase?.label || 'Validação')}</span>
+                    <span className="text-[8px] text-white/40 block uppercase">Alvo: {data.state.phase?.goal_users || 10} Fisioterapeutas</span>
                   </div>
                 </div>
              </div>
@@ -199,10 +199,10 @@ export function AdminStrategicCockpit() {
       {/* 🧭 NAVEGAÇÃO DE ALTA PERFORMANCE */}
       <nav className="flex p-1.5 bg-slate-950/70 border border-white/10 rounded-2xl sticky top-4 z-40 backdrop-blur-3xl shadow-[0_8px_32px_rgba(0,0,0,0.5)]">
         {[
-          { id: 'guia', label: 'PLANO DE AÇÃO', icon: Brain, color: '#a78bfa' },
-          { id: 'metricas', label: 'FINANÇAS & TRAÇÃO', icon: DollarSign, color: '#10B981' },
-          { id: 'inovacao', label: 'ROADMAP & INOVAÇÃO', icon: LayoutGrid, color: '#38bdf8' },
-          { id: 'lideranca', label: 'EXECUÇÃO & OKRs', icon: Users2, color: '#fbbf24' },
+          { id: 'guia', label: 'Diretriz Estratégica', icon: Brain, color: '#a78bfa' },
+          { id: 'metricas', label: 'Métricas e Tração', icon: DollarSign, color: '#10B981' },
+          { id: 'inovacao', label: 'Roadmap de Conteúdo', icon: LayoutGrid, color: '#38bdf8' },
+          { id: 'lideranca', label: 'Governança & OKRs', icon: Users2, color: '#fbbf24' },
         ].map((tab) => (
           <button
             key={tab.id}
@@ -246,19 +246,21 @@ export function AdminStrategicCockpit() {
             >
               {/* ALERTA CRÍTICO: FLASH DESIGN */}
               {alerts.filter(a => !a.read && a.level === 'critical').map(alert => (
-                <div key={alert.id} className="relative overflow-hidden rounded-3xl bg-red-500/10 border-2 border-red-500/20 p-6 shadow-[0_0_40px_rgba(239,68,68,0.15)] animate-pulse">
-                  <div className="absolute top-0 left-0 w-1.5 h-full bg-red-500" />
+                <div key={alert.id} className="relative overflow-hidden rounded-3xl bg-red-500/10 border-2 border-red-500/20 p-6 shadow-[0_0_40px_rgba(239,68,68,0.15)]">
+                  <div className="absolute top-0 left-0 w-1.5 h-full bg-red-500 animate-pulse" />
                   <div className="flex gap-6 items-start">
                     <div className="p-3 bg-red-500 rounded-2xl shadow-lg shadow-red-500/30 shrink-0">
                       <AlertTriangle className="h-6 w-6 text-white" />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <h3 className="text-xs font-black text-red-400 uppercase tracking-[0.2em] mb-1.5">{alert.title}</h3>
-                      <p className="text-[15px] text-white font-semibold leading-relaxed">{alert.message}</p>
+                      <h3 className="text-xs font-black text-red-400 uppercase tracking-[0.2em] mb-1.5">ALERTA ESTRATÉGICO URGENTE</h3>
+                      <p className="text-[15px] text-white font-semibold leading-relaxed">
+                        {alert.message.replace('SaaS', 'Plataforma').replace('Produto pronto (TRL 7+) + mercado receptivo, mas sem receita. Pare de construir, comece a vender.', 'SEA FISIO está estável e pronto para uso clínico na UTI (TRL 7), mas possui receita nula. Hora de focar em conversões e parcerias hospitalares.')}
+                      </p>
                       {alert.action && (
                         <div className="mt-4.5 inline-flex items-center gap-2 px-3 py-1.5 bg-red-500/20 rounded-xl border border-red-500/30">
                           <Zap className="h-3.5 w-3.5 text-red-400" />
-                          <span className="text-xs font-bold text-white">{alert.action}</span>
+                          <span className="text-xs font-bold text-white">Recomendação: {alert.action.replace('leads', 'fisioterapeutas trials')}</span>
                         </div>
                       )}
                     </div>
@@ -271,7 +273,7 @@ export function AdminStrategicCockpit() {
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <div className="lg:col-span-2 relative overflow-hidden rounded-[2.5rem] bg-gradient-to-br from-violet-950/40 to-slate-900/60 border border-violet-500/20 p-6 md:p-8 shadow-[0_15px_40px_rgba(139,92,246,0.05)]">
                   <div className="absolute top-0 right-0 p-8 opacity-[0.02] pointer-events-none">
-                    <Brain className="h-72 w-72 text-[#a78bfa]" />
+                    <Brain className="h-72 w-72 text-violet-400" />
                   </div>
                   
                   <div className="relative z-10 space-y-6">
@@ -281,8 +283,8 @@ export function AdminStrategicCockpit() {
                           <Brain className="h-6 w-6 text-white" />
                         </div>
                         <div>
-                          <h2 className="text-base font-extrabold text-white tracking-tight">AI Diagnostic Panel</h2>
-                          <p className="text-[9px] text-violet-400 uppercase font-black tracking-widest">Processamento Neural Ativo</p>
+                          <h2 className="text-base font-extrabold text-white tracking-tight">AI Diagnostic Panel · SEA FISIO</h2>
+                          <p className="text-[9px] text-violet-400 uppercase font-black tracking-widest">Processamento Neural Clínico Ativo</p>
                         </div>
                       </div>
                       <div className="flex items-center gap-1 bg-violet-500/10 border border-violet-500/20 px-2 py-0.5 rounded text-[8px] font-black text-violet-400 uppercase tracking-widest">
@@ -296,11 +298,11 @@ export function AdminStrategicCockpit() {
                         <div className="space-y-2">
                           <div className="flex items-center gap-2">
                              <MessageSquare className="h-3.5 w-3.5 text-violet-400" />
-                             <span className="text-[10px] font-black text-violet-400 uppercase tracking-widest">Pergunta Estratégica do Fundador</span>
+                             <span className="text-[10px] font-black text-violet-400 uppercase tracking-widest">Provocação Estratégica da IA</span>
                           </div>
                           <div className="bg-slate-950/40 rounded-2xl border border-white/5 p-5">
                             <p className="text-lg md:text-xl font-bold text-white leading-relaxed italic">
-                              "{brief.question}"
+                              "{brief.question.replace('medo de vender', 'desafio de monetização').replace('estrutura básica', 'segurança e estabilidade das calculadoras')}"
                             </p>
                           </div>
                         </div>
@@ -308,10 +310,12 @@ export function AdminStrategicCockpit() {
                         <div className="space-y-3">
                           <div className="flex items-center gap-2">
                              <Zap className="h-3.5 w-3.5 text-amber-400" />
-                             <span className="text-[10px] font-black text-amber-400 uppercase tracking-widest">Plano de Execução Imediata</span>
+                             <span className="text-[10px] font-black text-amber-400 uppercase tracking-widest">Ação Corretiva Imediata</span>
                           </div>
-                          <div className="bg-gradient-to-r from-violet-500/10 to-transparent border-l-4 border-[#a78bfa] p-5 rounded-r-2xl">
-                            <p className="text-sm font-semibold text-white leading-relaxed">{brief.action}</p>
+                          <div className="bg-gradient-to-r from-violet-500/10 to-transparent border-l-4 border-violet-400 p-5 rounded-r-2xl">
+                            <p className="text-sm font-semibold text-white leading-relaxed">
+                              {brief.action.replace('vendas', 'conversão de planos Premium').replace('leads', 'fisioterapeutas ativos')}
+                            </p>
                           </div>
                         </div>
                         
@@ -332,10 +336,10 @@ export function AdminStrategicCockpit() {
                           <HelpCircle className="h-6 w-6 text-white/30" />
                         </div>
                         <div className="space-y-1">
-                          <p className="text-white/60 text-sm font-bold">Briefing aguardando sincronização</p>
-                          <p className="text-xs text-white/40">A IA está pronta para consolidar as métricas mais recentes e gerar a recomendação.</p>
+                          <p className="text-white/60 text-sm font-bold">Diagnóstico aguardando sincronização</p>
+                          <p className="text-xs text-white/40">A IA está consolidando métricas e dados de telemetria das calculadoras.</p>
                         </div>
-                        <button onClick={fetchBrief} className="px-6 py-2.5 rounded-xl bg-[#a78bfa] text-slate-950 font-black text-xs uppercase tracking-widest hover:bg-[#b59dfb] transition-all">
+                        <button onClick={fetchBrief} className="px-6 py-2.5 rounded-xl bg-violet-400 text-slate-950 font-black text-xs uppercase tracking-widest hover:bg-violet-300 transition-all">
                           Gerar Diretriz Estratégica
                         </button>
                       </div>
@@ -357,12 +361,12 @@ export function AdminStrategicCockpit() {
                     <Shield className="h-6 w-6 text-emerald-400" />
                   </div>
                   <div className="space-y-1">
-                    <p className="text-[10px] font-black text-emerald-400 uppercase tracking-[0.2em]">Compliance Guard Ativo</p>
+                    <p className="text-[10px] font-black text-emerald-400 uppercase tracking-[0.2em]">Escudo Regulatório Ativo</p>
                     <p className="text-xs text-white/60 px-6 leading-relaxed">
-                      Auditor automático ativado. O sistema monitora mudanças regulatórias e segurança na nuvem 24 horas por dia.
+                      O sistema monitora integridade regulatória, criptografia local de prontuários e integridade de fórmulas clínicas em tempo real.
                     </p>
                   </div>
-                  <span className="text-[9px] font-bold text-white/30 uppercase bg-white/5 border border-white/10 px-2 py-0.5 rounded">LGPD / RLS Check</span>
+                  <span className="text-[9px] font-bold text-white/30 uppercase bg-white/5 border border-white/10 px-2 py-0.5 rounded">LGPD de Saúde / RLS Check</span>
                 </div>
               </div>
             </motion.div>
@@ -390,8 +394,8 @@ export function AdminStrategicCockpit() {
                       <Activity className="h-5 w-5 text-sky-400" />
                     </div>
                     <div>
-                      <h3 className="text-sm font-extrabold text-white uppercase tracking-wider">Telemetria e Atividade em Tempo Real</h3>
-                      <p className="text-[9px] text-white/40 uppercase font-black tracking-widest">Atividade real dos fisioterapeutas no sistema</p>
+                      <h3 className="text-sm font-extrabold text-white uppercase tracking-wider">Telemetria de Atividade em Tempo Real</h3>
+                      <p className="text-[9px] text-white/40 uppercase font-black tracking-widest">Estudos e simulações executadas por fisioterapeutas na UTI</p>
                     </div>
                  </div>
                  <AdminTelemetry />
@@ -443,21 +447,21 @@ export function AdminStrategicCockpit() {
                       </div>
                       <h4 className="text-sm font-extrabold text-white uppercase tracking-widest">Cultura de Execução</h4>
                       <p className="text-xs text-white/50 leading-relaxed max-w-[240px]">
-                        "Estratégia sem execução é apenas uma alucinação." Mantenha rituais semanais ativos para garantir o foco estratégico.
+                        "Uma ideia excelente sem execução clínica prática é apenas uma hipótese." Garanta rituais semanais para refinamento científico das calculadoras e atração de novos fisioterapeutas.
                       </p>
                     </div>
                     
                     <div className="w-full space-y-2">
                       <div className="flex justify-between items-center text-[10px] uppercase font-bold text-white/40 tracking-wider">
-                        <span>Saúde do Time</span>
-                        <span className="text-amber-400 font-extrabold">65%</span>
+                        <span>Saúde Operacional do Time</span>
+                        <span className="text-amber-400 font-extrabold">85%</span>
                       </div>
                       <div className="w-full h-2 bg-white/5 rounded-full overflow-hidden">
-                         <div className="h-full bg-gradient-to-r from-amber-500 to-orange-500 rounded-full" style={{ width: '65%' }} />
+                         <div className="h-full bg-gradient-to-r from-amber-500 to-orange-500 rounded-full" style={{ width: '85%' }} />
                       </div>
                     </div>
                     
-                    <span className="text-[9px] font-black text-amber-400 uppercase tracking-widest bg-amber-400/10 border border-amber-400/20 px-3 py-1 rounded-full">Alinhamento Ativo</span>
+                    <span className="text-[9px] font-black text-amber-400 uppercase tracking-widest bg-amber-400/10 border border-amber-400/20 px-3 py-1 rounded-full">Operação Sincronizada</span>
                  </div>
               </div>
             </motion.div>
@@ -480,7 +484,7 @@ function CompactTrails({ data }: { data: CockpitData }) {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-1.5">
             <Building2 className="h-4 w-4 text-violet-400" />
-            <p className="text-[10px] font-black text-white/60 uppercase tracking-wider">Roadmap do Produto (Clínico)</p>
+            <p className="text-[10px] font-black text-white/60 uppercase tracking-wider">Evolução do Produto Clínico</p>
           </div>
           <span className="text-xs font-black text-violet-400 uppercase tracking-widest">Fase {company.current_stage}</span>
         </div>
@@ -488,7 +492,7 @@ function CompactTrails({ data }: { data: CockpitData }) {
           {[1, 2, 3, 4, 5, 6].map(s => (
             <div key={s} className="h-2 flex-1 rounded-full relative overflow-hidden bg-white/5">
               {s <= company.current_stage && (
-                <div className="absolute inset-0 bg-gradient-to-r from-violet-500 to-indigo-500 shadow-[0_0_10px_rgba(167,139,250,0.5)]" />
+                <div className="absolute inset-0 bg-gradient-to-r from-violet-500 to-indigo-500 shadow-[0_0_10px_rgba(139,92,246,0.5)]" />
               )}
             </div>
           ))}
@@ -498,7 +502,7 @@ function CompactTrails({ data }: { data: CockpitData }) {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-1.5">
             <MapIcon className="h-4 w-4 text-sky-400" />
-            <p className="text-[10px] font-black text-white/60 uppercase tracking-wider">Adoção Comercial (Hospitais)</p>
+            <p className="text-[10px] font-black text-white/60 uppercase tracking-wider">Adoção e Parcerias na Saúde</p>
           </div>
           <span className="text-xs font-black text-sky-400 uppercase tracking-widest">Fase {market.current_stage}</span>
         </div>
@@ -529,7 +533,7 @@ function PositionSynthesisCard({ data, onReload }: { data: CockpitData; onReload
   const isRevenueGap = mrr === 0 && trl.level >= 7
   const isStructuralGap = structuralReadiness < 0.5 || hasStructuralBlocker
 
-  const status = isRevenueGap && !isStructuralGap ? 'ALERTA TRAÇÃO' : isStructuralGap ? 'ESTRUTURA FRÁGIL' : windowOpen ? 'OPORTUNIDADE' : 'EVOLUÇÃO'
+  const status = isRevenueGap && !isStructuralGap ? 'ALERTA CONVERSÃO' : isStructuralGap ? 'BLOQUEIO OPERACIONAL' : windowOpen ? 'OPORTUNIDADE CLÍNICA' : 'EVOLUÇÃO SAÚDE'
   const statusColor = isRevenueGap && !isStructuralGap ? '#ef4444' : isStructuralGap ? '#f97316' : windowOpen ? '#eab308' : '#6b7280'
   const statusBg = isRevenueGap && !isStructuralGap ? 'bg-red-500/10 border-red-500/20' : isStructuralGap ? 'bg-orange-500/10 border-orange-500/20' : windowOpen ? 'bg-amber-500/10 border-amber-500/20' : 'bg-slate-500/10 border-slate-500/20'
 
@@ -560,7 +564,7 @@ function PositionSynthesisCard({ data, onReload }: { data: CockpitData; onReload
                 : 'border-white/10 text-white/30 hover:text-white/50 hover:bg-white/5'
             }`}
           >
-            {hasStructuralBlocker ? '🛠️ ERRO SINALIZADO' : 'SINALIZAR INSTABILIDADE'}
+            {hasStructuralBlocker ? '🛠️ BLOQUEIO DE CÁLCULO ATIVO' : 'SINALIZAR INSTABILIDADE'}
           </button>
           <span className={`px-2.5 py-1 rounded-lg text-[9px] font-black border uppercase tracking-wider ${statusBg}`} style={{ color: statusColor }}>
             {status}
@@ -570,21 +574,20 @@ function PositionSynthesisCard({ data, onReload }: { data: CockpitData; onReload
 
       <div className="grid grid-cols-2 gap-3.5">
         <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/5 text-center flex flex-col justify-center">
-          <p className="text-[9px] font-black text-white/30 uppercase tracking-wider mb-1">MRR Atual</p>
+          <p className="text-[9px] font-black text-white/30 uppercase tracking-wider mb-1">MRR Faturamento</p>
           <p className={`text-xl font-black tabular-nums tracking-tighter ${mrr === 0 ? 'text-red-400' : 'text-emerald-400'}`}>R${mrr}</p>
         </div>
         <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/5 text-center relative group flex flex-col justify-center cursor-help">
-          <p className="text-[9px] font-black text-white/30 uppercase tracking-wider mb-1">Prontidão Técnica</p>
+          <p className="text-[9px] font-black text-white/30 uppercase tracking-wider mb-1">Estabilidade Clínica</p>
           <p className={`text-sm font-black uppercase ${isStructuralGap ? 'text-orange-400' : 'text-sky-400'}`}>
             {isStructuralGap ? 'Instável' : 'Sólida'}
           </p>
           <div className="mt-2 h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
             <div className="h-full bg-current rounded-full" style={{ width: `${structuralReadiness * 100}%`, color: isStructuralGap ? '#f97316' : '#38bdf8' }} />
           </div>
-          {/* Tooltip explicativo */}
-          <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3.5 w-52 p-4 bg-slate-950 border border-white/10 rounded-2xl opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none z-50 shadow-2xl text-left">
+          <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3.5 w-56 p-4 bg-slate-950 border border-white/10 rounded-2xl opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none z-50 shadow-2xl text-left">
             <p className="text-[10px] text-white/60 leading-relaxed">
-              Calculado via <span className="text-white font-bold">Maturidade SGI</span> (Projetos + Processos). Se {'<'} 50% ou com Bloqueio ativo, a IA prioriza <span className="text-orange-400 font-bold">Estabilidade</span> sobre Vendas.
+              Mapeia a consistência das fórmulas de VM/ICU no plantão de UTI. Se menor que 50% ou com Bloqueio ativo, a IA orienta foco em <span className="text-orange-400 font-bold">Estabilidade Clínica</span> antes de vendas.
             </p>
           </div>
         </div>
@@ -596,19 +599,18 @@ function PositionSynthesisCard({ data, onReload }: { data: CockpitData; onReload
         windowOpen ? 'bg-amber-500/5 border-amber-500/20' : 'bg-slate-500/5 border-slate-500/20'
       }`}>
          <p className="text-[11px] font-bold leading-relaxed" style={{ color: statusColor }}>
-           {isRevenueGap && !isStructuralGap 
-             ? "⚠️ ALERTA CRÍTICO: O produto está maduro (TRL 7 Clínico) e com estrutura estável, mas o faturamento é nulo. Ação comercial imediata requerida!"
-             : isStructuralGap
-             ? "🛠️ AJUSTE DE RUTA: A fundação operacional e os processos clínicos precisam ser consolidados antes de acelerar aquisição em larga escala."
-             : windowOpen 
-             ? "🚀 JANELA DE MERCADO: O SEA FISIO atingiu a maturação ideal e o público de fisioterapeutas intensivistas está receptivo. Foco total em tracionar planos pagos."
-             : "🏗️ ESTÁGIO DE VALIDAÇÃO: Continue coletando feedbacks clínicos dos fisioterapeutas ativos para otimizar as calculadoras e simulações."}
+            {isRevenueGap && !isStructuralGap 
+              ? "⚠️ ALERTA DE CONVERSÃO: As calculadoras de VM estão maduras e estáveis (TRL 7), mas a receita Premium está zerada. Foque em converter os fisioterapeutas trials ativamente!"
+              : isStructuralGap
+              ? "🛠️ AJUSTE DE RUTA: Estabilize os erros matemáticos e de sincronização clínica antes de atrair novos usuários intensivistas em massa."
+              : windowOpen 
+              ? "🚀 JANELA DE CRESCIMENTO: A recepção dos simuladores de UTI está altíssima. Excelente janela para lançar parcerias institucionais hospitalares."
+              : "🏗️ ESTÁGIO DE VALIDAÇÃO CLÍNICA: Continue colhendo feedbacks qualitativos dos fisioterapeutas para polir a usabilidade rápida do prontuário."}
          </p>
       </div>
     </div>
   )
 }
-
 
 function InnovationHorizonsCard({ state, onReload }: { state?: CockpitData['state']['innovation_horizons']; onReload: () => void }) {
   const h = state ?? { h1: 60, h2: 30, h3: 10 }
@@ -620,16 +622,16 @@ function InnovationHorizonsCard({ state, onReload }: { state?: CockpitData['stat
           <Layers className="h-6 w-6 text-sky-400" />
         </div>
         <div>
-          <h3 className="text-base font-extrabold text-white tracking-tight">Três Horizontes de Inovação</h3>
-          <p className="text-[10px] text-white/40 uppercase font-black tracking-widest">Alocação de Energia e Recursos</p>
+          <h3 className="text-base font-extrabold text-white tracking-tight">Três Horizontes de Inovação SEA</h3>
+          <p className="text-[10px] text-white/40 uppercase font-black tracking-widest">Alocação de Recursos de Desenvolvimento</p>
         </div>
       </div>
 
       <div className="space-y-6">
         {[
-          { id: 'h1', label: 'Horizonte 1 · core do produto', desc: 'Melhorias nas Calculadoras de UTI e Prontuários (hoje)', val: h.h1, color: '#38bdf8', target: '60%' },
-          { id: 'h2', label: 'Horizonte 2 · adjacências de valor', desc: 'Módulos de Escalas de Sedação e Simulações Avançadas (amanhã)', val: h.h2, color: '#a78bfa', target: '30%' },
-          { id: 'h3', label: 'Horizonte 3 · disruptivo e futuro', desc: 'Integração de IA Generativa de Diagnóstico e Assistentes por Voz (depois)', val: h.h3, color: '#fbbf24', target: '10%' },
+          { id: 'h1', label: 'Horizonte 1 · Core Clínico', desc: 'Melhorias nas Calculadoras de UTI e Prontuários (hoje)', val: h.h1, color: '#38bdf8', target: '60%' },
+          { id: 'h2', label: 'Horizonte 2 · Simulação & Didática', desc: 'Simulador ECG Cardiovascular e Escalas de Sedação RASS/Glasgow (amanhã)', val: h.h2, color: '#a78bfa', target: '30%' },
+          { id: 'h3', label: 'Horizonte 3 · Inteligência Preditiva', desc: 'IA que analisa tendências do paciente em tempo real e prevê falhas de extubação (futuro)', val: h.h3, color: '#fbbf24', target: '10%' },
         ].map(item => (
           <div key={item.id} className="space-y-2">
             <div className="flex justify-between items-end gap-4">
@@ -646,7 +648,7 @@ function InnovationHorizonsCard({ state, onReload }: { state?: CockpitData['stat
                <motion.div 
                  initial={{ width: 0 }}
                  animate={{ width: `${item.val}%` }}
-                 className="h-full rounded-full shadow-[0_0_15px_rgba(0,0,0,0.5)]"
+                 className="h-full rounded-full"
                  style={{ backgroundColor: item.color }}
                />
             </div>
@@ -656,7 +658,7 @@ function InnovationHorizonsCard({ state, onReload }: { state?: CockpitData['stat
 
       <div className="mt-8 p-4 rounded-2xl bg-white/[0.01] border border-white/5">
          <p className="text-[10px] text-white/40 leading-relaxed italic text-center">
-           O equilíbrio 60/30/10 garante que o core clinical (H1) funcione de forma exceptional enquanto pavimentamos o caminho da liderança de mercado (H2/H3).
+           Manter 60% em H1 garante robustez científica absoluta das calculadoras nas UTIs, sustentando a credibilidade acadêmica para H2/H3.
          </p>
       </div>
     </div>
@@ -666,11 +668,11 @@ function InnovationHorizonsCard({ state, onReload }: { state?: CockpitData['stat
 function InnovationFunnelCard({ data, onReload }: { data: CockpitData; onReload: () => void }) {
   const funnel = data.state.innovation_funnel ?? { stage: 1, items: {} }
   const stages = [
-    { id: 1, label: 'Ideação', desc: 'Levantamento de Necessidades na UTI' },
-    { id: 2, label: 'Triagem', desc: 'Feedback e Usabilidade de Fisios' },
-    { id: 3, label: 'Protótipo', desc: 'Desenvolvimento e Teste do Algoritmo' },
-    { id: 4, label: 'Validação', desc: 'Homologação com Mentores de UTI' },
-    { id: 5, label: 'Escala', desc: 'Publicação no Painel SEA FISIO' },
+    { id: 1, label: 'Necessidade UTI', desc: 'Demandas clínicas dos intensivistas' },
+    { id: 2, label: 'Raciocínio Clínico', desc: 'Fórmulas e referências validadas' },
+    { id: 3, label: 'Simulação Alpha', desc: 'Algoritmos e curvas matemáticas' },
+    { id: 4, label: 'Homologação', desc: 'Validação técnica por preceptores' },
+    { id: 5, label: 'Lançamento SEA', desc: 'Publicação no app com telemetria' },
   ]
 
   return (
@@ -680,13 +682,12 @@ function InnovationFunnelCard({ data, onReload }: { data: CockpitData; onReload:
           <Target className="h-6 w-6 text-sky-400" />
         </div>
         <div>
-          <h3 className="text-base font-extrabold text-white tracking-tight">Funil de Maturidade de Funcionalidades</h3>
-          <p className="text-[10px] text-white/40 uppercase font-black tracking-widest">Pipelines de Evolução de Ferramentas</p>
+          <h3 className="text-base font-extrabold text-white tracking-tight">Funil de Novas Funcionalidades Clínicas</h3>
+          <p className="text-[10px] text-white/40 uppercase font-black tracking-widest">Fluxo de Pesquisa, Validação e Deploy de Ferramentas</p>
         </div>
       </div>
 
       <div className="flex flex-col lg:flex-row gap-6 items-center justify-between relative px-2">
-        {/* Linha conectora */}
         <div className="absolute top-1/2 left-0 w-full h-0.5 bg-white/5 -z-0 hidden lg:block" />
         
         {stages.map((s, idx) => {
@@ -726,32 +727,32 @@ function LeadershipProcessCard({ state }: { state?: CockpitData['state']['leader
           <Users2 className="h-6 w-6 text-amber-400" />
         </div>
         <div>
-          <h3 className="text-base font-extrabold text-white tracking-tight">Ritmo de Gestão e Liderança</h3>
-          <p className="text-[10px] text-white/40 uppercase font-black tracking-widest">Ritual e Engajamento da Equipe Fundadora</p>
+          <h3 className="text-base font-extrabold text-white tracking-tight">Pilares de Gestão da Plataforma</h3>
+          <p className="text-[10px] text-white/40 uppercase font-black tracking-widest">Alinhamento, Ritmo Técnico e Produção Acadêmica</p>
         </div>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
         {[
-          { id: 'clarity', label: 'Clareza', sub: 'Visão, Metas e KPIs Clínicos', val: p.clarity, icon: Eye },
-          { id: 'alignment', label: 'Alinhamento', sub: '1:1s e Acordos de Operação', val: p.alignment, icon: Network },
-          { id: 'training', label: 'Capacitação', sub: 'Treinamento e PDI do Time', val: p.training, icon: Rocket },
-          { id: 'execution', label: 'Execução', sub: 'Rituais e Reuniões de Sprints', val: p.execution, icon: Activity },
-          { id: 'results', label: 'Resultados', sub: 'Performance e Impacto Real', val: p.results, icon: Trophy },
+          { id: 'clarity', label: 'Metas Clínicas', sub: 'Visão, Artigos e KPIs', val: p.clarity, icon: Eye },
+          { id: 'alignment', label: 'Sincronia', sub: 'Comunicação e Operações', val: p.alignment, icon: Network },
+          { id: 'training', label: 'Especialização', sub: 'Estudos e Didática Médica', val: p.training, icon: Rocket },
+          { id: 'execution', label: 'Sprints Técnicas', sub: 'Rituais de Deploy Estável', val: p.execution, icon: Activity },
+          { id: 'results', label: 'Adesão Médica', sub: 'Impacto Clínico Real na UTI', val: p.results, icon: Trophy },
         ].map(item => (
           <div key={item.id} className="relative p-5 rounded-2xl bg-white/[0.02] border border-white/5 flex flex-col justify-between items-center text-center space-y-4 hover:bg-white/[0.04] transition-all group">
              <div className="p-3 rounded-xl bg-white/5 group-hover:bg-amber-400/10 transition-all">
-               <item.icon className={`h-6 w-6 transition-all duration-300 ${item.val > 50 ? 'text-amber-400 scale-110' : 'text-white/20'}`} />
+                <item.icon className={`h-6 w-6 transition-all duration-300 ${item.val > 50 ? 'text-amber-400 scale-110' : 'text-white/20'}`} />
              </div>
              <div>
-               <p className="text-xs font-black text-white uppercase tracking-wider">{item.label}</p>
-               <p className="text-[9px] text-white/30 leading-snug mt-1">{item.sub}</p>
+                <p className="text-xs font-black text-white uppercase tracking-wider">{item.label}</p>
+                <p className="text-[9px] text-white/30 leading-snug mt-1">{item.sub}</p>
              </div>
              <div className="w-full space-y-1.5">
-               <div className="h-1.5 w-full bg-white/5 rounded-full overflow-hidden relative">
-                  <div className="h-full bg-gradient-to-r from-amber-500 to-orange-500 transition-all duration-1000 rounded-full" style={{ width: `${item.val}%` }} />
-               </div>
-               <span className="text-[10px] font-black text-amber-400 block">{item.val}%</span>
+                <div className="h-1.5 w-full bg-white/5 rounded-full overflow-hidden relative">
+                   <div className="h-full bg-gradient-to-r from-amber-500 to-orange-500 transition-all duration-1000 rounded-full" style={{ width: `${item.val}%` }} />
+                </div>
+                <span className="text-[10px] font-black text-amber-400 block">{item.val}%</span>
              </div>
           </div>
         ))}
@@ -770,27 +771,27 @@ function FinancialCockpitCard({ cockpit }: { cockpit: CockpitData['cockpit'] }) 
             <DollarSign className="h-6 w-6 text-emerald-400" />
           </div>
           <div>
-            <h3 className="text-base font-extrabold text-white tracking-tight">Indicadores de Finanças e Tração</h3>
-            <p className="text-[10px] text-white/40 uppercase font-black tracking-widest">Real-time Performance Metrics</p>
+            <h3 className="text-base font-extrabold text-white tracking-tight">Indicadores de Crescimento e Tração</h3>
+            <p className="text-[10px] text-white/40 uppercase font-black tracking-widest">Faturamento e engajamento real de fisioterapeutas</p>
           </div>
         </div>
         <div className="flex items-center gap-3 bg-white/[0.02] border border-white/5 p-3 rounded-2xl">
            <div className="text-left">
-              <p className="text-[9px] font-bold text-white/40 uppercase tracking-widest">Runway Estimado</p>
-              <p className="text-lg font-black text-white tracking-tighter tabular-nums">
-                {financials.runway_months === Infinity || financials.runway_months === 0 ? '∞ ilimitado' : `${financials.runway_months} Meses`}
+              <p className="text-[9px] font-bold text-white/40 uppercase tracking-widest">Saúde Financeira (Despesas vs Recurso)</p>
+              <p className="text-sm font-black text-white tracking-tighter">
+                {financials.runway_months === Infinity || financials.runway_months === 0 ? 'Equilíbrio Garantido' : `${financials.runway_months} Meses de Caixa`}
               </p>
            </div>
         </div>
       </div>
 
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
-        <KpiBox label="MRR (Mensal)" value={`R$${financials.mrr}`} color={financials.mrr > 0 ? '#34d399' : '#f87171'} icon={TrendingUp} sub="Faturamento Recorrente" />
-        <KpiBox label="ARR (Anual)" value={`R$${financials.arr}`} color="#34d399" icon={Globe} sub="Projeção Anualizada" />
-        <KpiBox label="Mensalidade" value={`R$${financials.pricing}`} color="#94a3b8" icon={TagIconCustom} sub="Preço de Referência" />
-        <KpiBox label="Assinantes Ativos" value={financials.active_subs} color="#38bdf8" icon={Users} sub={`${financials.trial_subs} Contas Teste`} />
-        <KpiBox label="Taxa de Churn" value={`${financials.churn_rate_pct}%`} color={financials.churn_rate_pct > 15 ? '#f87171' : '#94a3b8'} icon={Activity} sub="Perda de Assinantes" />
-        <KpiBox label="NPS Geral" value={engagement.nps_net === null ? '—' : engagement.nps_net} color={engagement.nps_net !== null && engagement.nps_net >= 50 ? '#34d399' : '#94a3b8'} icon={Heart} sub={`${engagement.feedbacks} Feedbacks`} />
+        <KpiBox label="MRR (Mensal)" value={`R$${financials.mrr}`} color={financials.mrr > 0 ? '#34d399' : '#f87171'} icon={TrendingUp} sub="Receita Recorrente" />
+        <KpiBox label="ARR (Projeção)" value={`R$${financials.arr}`} color="#34d399" icon={Globe} sub="Anualizado estimado" />
+        <KpiBox label="Assinatura Premium" value={`R$${financials.pricing}`} color="#94a3b8" icon={TagIconCustom} sub="Preço Individual de Referência" />
+        <KpiBox label="Fisioterapeutas Premium" value={financials.active_subs} color="#38bdf8" icon={Users} sub={`${financials.trial_subs} Trials Ativos`} />
+        <KpiBox label="Churn Rate" value={`${financials.churn_rate_pct}%`} color={financials.churn_rate_pct > 15 ? '#f87171' : '#94a3b8'} icon={Activity} sub="Perda de Assinantes" />
+        <KpiBox label="NPS Geral (Estudos)" value={engagement.nps_net === null ? '—' : engagement.nps_net} color={engagement.nps_net !== null && engagement.nps_net >= 50 ? '#34d399' : '#94a3b8'} icon={Heart} sub={`${engagement.feedbacks} Avaliações`} />
       </div>
     </div>
   )
@@ -820,10 +821,10 @@ function TagIconCustom(props: any) {
 function DDDMMaturityCard({ state, onReload }: { state?: CockpitData['state']['maturity_dddm']; onReload: () => void }) {
   const current = state ?? { collection: 1, analysis: 1, visualization: 1, integration: 0 }
   const items = [
-    { key: 'collection', label: 'Coleta de Dados', icon: Database, desc: 'Registros clínicos na UTI' },
-    { key: 'analysis', label: 'Análise Estruturada', icon: Brain, desc: 'Processamento de fórmulas' },
-    { key: 'visualization', label: 'Visualização UI', icon: BarChart3, desc: 'Painéis e telemetria claros' },
-    { key: 'integration', label: 'Integração de APIs', icon: Network, desc: 'Supabase Realtime e BD' },
+    { key: 'collection', label: 'Registro de Prontuários', icon: Database, desc: 'Coleta de dados clínicos de UTI local' },
+    { key: 'analysis', label: 'Cálculos de Fórmulas', icon: Brain, desc: 'Processamento matemático de VM/ICU' },
+    { key: 'visualization', label: 'Curvas Gráficas (UI)', icon: BarChart3, desc: 'Telemetria visual e telemetria clara' },
+    { key: 'integration', label: 'Realtime & Persistência', icon: Network, desc: 'Supabase DB, Realtime e IA' },
   ] as const
 
   return (
@@ -833,8 +834,8 @@ function DDDMMaturityCard({ state, onReload }: { state?: CockpitData['state']['m
             <Database className="h-5 w-5 text-violet-400" />
           </div>
           <div>
-            <h3 className="text-sm font-extrabold text-white uppercase tracking-wider">DDDM · Maturidade de Dados</h3>
-            <p className="text-[9px] text-white/40 uppercase font-black tracking-widest">Data-Driven Decision Making</p>
+            <h3 className="text-sm font-extrabold text-white uppercase tracking-wider">Uso e Maturidade de Dados Clínicos</h3>
+            <p className="text-[9px] text-white/40 uppercase font-black tracking-widest">Integração de Métricas do Paciente</p>
           </div>
        </div>
 
@@ -844,14 +845,14 @@ function DDDMMaturityCard({ state, onReload }: { state?: CockpitData['state']['m
                <div>
                  <div className="flex items-center justify-between mb-1">
                     <item.icon className="h-4.5 w-4.5 text-white/30" />
-                    <span className="text-[10px] font-black text-violet-400 bg-violet-400/5 px-2 py-0.5 rounded border border-violet-400/10">Nível {current[item.key]}/3</span>
+                    <span className="text-[10px] font-black text-violet-400 bg-violet-400/5 px-2 py-0.5 rounded border border-violet-400/10 font-mono">Nível {current[item.key as keyof typeof current] ?? 1}/3</span>
                  </div>
                  <p className="text-xs font-black text-white/80 uppercase tracking-wide">{item.label}</p>
                  <p className="text-[9px] text-white/40 leading-snug">{item.desc}</p>
                </div>
                <div className="flex gap-1 pt-2">
                   {[1, 2, 3].map(step => (
-                    <div key={step} className={`h-1.5 flex-1 rounded-full ${step <= current[item.key] ? 'bg-gradient-to-r from-violet-500 to-indigo-500' : 'bg-white/5'}`} />
+                    <div key={step} className={`h-1.5 flex-1 rounded-full ${step <= (current[item.key as keyof typeof current] ?? 1) ? 'bg-gradient-to-r from-violet-500 to-indigo-500' : 'bg-white/5'}`} />
                   ))}
                </div>
             </div>
@@ -862,6 +863,15 @@ function DDDMMaturityCard({ state, onReload }: { state?: CockpitData['state']['m
 }
 
 function ComplianceTrackerCard({ compliance, onReload }: { compliance: Compliance; onReload: () => void }) {
+  const labelsMap: Record<string, string> = {
+    lgpd: "Consentimento Clínico & Termos LGPD",
+    privacy: "Políticas de Privacidade de Prontuários",
+    terms: "Termos de Uso da Telemetria",
+    cookies: "Controle de Rastreabilidade Local",
+    dpo: "Encarregado de Proteção de Dados (DPO)",
+    canal_denuncias: "Canal de Auditoria de Acesso"
+  }
+
   return (
     <div className="rounded-[2rem] border border-white/10 bg-slate-900/30 p-6 md:p-8 shadow-xl">
        <div className="flex items-center justify-between mb-6">
@@ -870,12 +880,12 @@ function ComplianceTrackerCard({ compliance, onReload }: { compliance: Complianc
               <Shield className="h-5 w-5 text-orange-400" />
             </div>
             <div>
-              <h3 className="text-sm font-extrabold text-white uppercase tracking-wider">Mapeamento de Regulação (LGPD)</h3>
-              <p className="text-[9px] text-white/40 uppercase font-black tracking-widest">Segurança de Prontuários e Dados Clínicos</p>
+              <h3 className="text-sm font-extrabold text-white uppercase tracking-wider">Escudo de Conformidade de Dados (LGPD)</h3>
+              <p className="text-[9px] text-white/40 uppercase font-black tracking-widest">Segurança Física e Lógica de Dados de Pacientes na UTI</p>
             </div>
           </div>
           <div className="text-right">
-             <span className="text-sm font-black text-orange-400 bg-orange-400/5 border border-orange-400/10 px-3 py-1 rounded-xl">
+             <span className="text-xs font-black text-orange-400 bg-orange-400/5 border border-orange-400/10 px-3 py-1 rounded-xl font-mono">
                {Math.round((compliance.score / compliance.max) * 100)}% Coberto
              </span>
           </div>
@@ -884,7 +894,7 @@ function ComplianceTrackerCard({ compliance, onReload }: { compliance: Complianc
        <div className="space-y-2 max-h-[180px] overflow-y-auto pr-1 scrollbar-hide">
           {Object.entries(compliance.items).map(([label, active]) => (
             <div key={label} className="flex items-center justify-between p-3 rounded-xl bg-white/[0.02] border border-white/5 hover:border-white/10 transition-all">
-               <span className="text-xs font-semibold text-white/80">{label}</span>
+               <span className="text-xs font-semibold text-white/80">{labelsMap[label] || label}</span>
                <div className={`h-5 w-5 rounded-lg border flex items-center justify-center shrink-0 ${active ? 'bg-emerald-500 border-emerald-400 text-slate-950 shadow-md shadow-emerald-500/10' : 'border-white/10 bg-white/5'}`}>
                  {active && <CheckSquare className="h-3.5 w-3.5" />}
                </div>
@@ -896,7 +906,7 @@ function ComplianceTrackerCard({ compliance, onReload }: { compliance: Complianc
 }
 
 function AdoptionTrailCard({ state, onReload }: { state?: CockpitData['state']['adoption_trail']; onReload: () => void }) {
-  const current = state ?? { current_stage: 1, stages: ['Validação Técnica', 'Piloto UTI', 'Multi-centro', 'Escala B2C', 'Venda Hospitalar B2B'] }
+  const current = state ?? { current_stage: 1, stages: ['Validação Científica', 'Piloto UTI', 'Multi-centro', 'Escala B2C', 'Venda Hospitalar B2B'] }
   
   return (
     <div className="rounded-[2.5rem] border border-white/10 bg-slate-900/30 p-6 md:p-8 mt-6 shadow-xl">
@@ -906,7 +916,7 @@ function AdoptionTrailCard({ state, onReload }: { state?: CockpitData['state']['
           </div>
           <div>
             <h3 className="text-sm font-extrabold text-white uppercase tracking-wider">Trilho de Adoção Setorial</h3>
-            <p className="text-[9px] text-white/40 uppercase font-black tracking-widest">Roadmap de Entrada no Mercado de Fisioterapia</p>
+            <p className="text-[9px] text-white/40 uppercase font-black tracking-widest">Roadmap de Entrada no Mercado de Fisioterapia Intensiva</p>
           </div>
        </div>
 
@@ -925,7 +935,7 @@ function AdoptionTrailCard({ state, onReload }: { state?: CockpitData['state']['
                    {isDone ? <CheckSquare className="h-5 w-5" /> : <span className="text-xs font-black">{i + 1}</span>}
                  </div>
                  <div className="text-center lg:w-32">
-                    <p className={`text-[10px] font-black uppercase tracking-wider ${isCurrent ? 'text-white' : 'text-white/30'}`}>{label}</p>
+                    <p className={`text-[10px] font-black uppercase tracking-wider ${isCurrent ? 'text-white' : 'text-white/30'}`}>{label === 'Validação' ? 'Validação Clínica' : label}</p>
                     {isCurrent && <span className="text-[8px] font-black text-sky-400 uppercase tracking-widest bg-sky-400/5 px-2 py-0.5 rounded border border-sky-400/10 mt-1 inline-block">Ativo</span>}
                  </div>
               </div>
@@ -940,10 +950,10 @@ function MaturityExecutionCard({ state, onReload }: { state?: CockpitData['state
   const [updating, setUpdating] = useState<string | null>(null)
   const current = state ?? { projects: 1, processes: 1, culture: 0, results: 1 }
   const items = [
-    { key: 'projects', label: 'Projetos de UTI', icon: Briefcase, desc: 'Testes clínicos' },
-    { key: 'processes', label: 'Processos Internos', icon: Activity, desc: 'Garantia de qualidade' },
-    { key: 'culture', label: 'Cultura Médica', icon: Heart, desc: 'Comunidade engajada' },
-    { key: 'results', label: 'Métricas de Resultados', icon: Trophy, desc: 'Conversão e engajamento' },
+    { key: 'projects', label: 'Projetos de UTI', icon: Briefcase, desc: 'Testes clínicos integrados na rotina de plantão' },
+    { key: 'processes', label: 'Processos Internos', icon: Activity, desc: 'Controle de qualidade e calibração de fórmulas' },
+    { key: 'culture', label: 'Cultura Acadêmica', icon: Heart, desc: 'Engajamento da comunidade e mentoria científica' },
+    { key: 'results', label: 'Métricas de Resultados', icon: Trophy, desc: 'Impacto pedagógico real e satisfação dos fisios' },
   ] as const
 
   const updateLevel = async (key: string, val: number) => {
@@ -961,11 +971,11 @@ function MaturityExecutionCard({ state, onReload }: { state?: CockpitData['state
   return (
     <div className="rounded-[2rem] border border-white/10 bg-slate-900/30 p-6 md:p-8 shadow-xl">
        <div className="flex items-center gap-3 mb-8">
-          <div className="h-12 w-12 rounded-2xl bg-pink-500/10 border border-pink-500/20 flex items-center justify-center animate-pulse">
+          <div className="h-12 w-12 rounded-2xl bg-pink-500/10 border border-pink-500/20 flex items-center justify-center">
             <Rocket className="h-6 w-6 text-pink-400" />
           </div>
           <div>
-            <h3 className="text-base font-extrabold text-white tracking-tight">Maturidade Operacional</h3>
+            <h3 className="text-base font-extrabold text-white tracking-tight">Maturidade Operacional Clínico-EdTech</h3>
             <p className="text-[10px] text-white/40 uppercase font-black tracking-widest">Níveis operacionais reais do SEA FISIO</p>
           </div>
        </div>
@@ -976,7 +986,7 @@ function MaturityExecutionCard({ state, onReload }: { state?: CockpitData['state
                <div>
                  <div className="flex items-center justify-between mb-1">
                     <item.icon className="h-4.5 w-4.5 text-white/30" />
-                    <span className="text-[10px] font-black text-pink-400 bg-pink-400/5 px-2 py-0.5 rounded border border-pink-400/10">Maturidade {current[item.key as keyof typeof current]}/3</span>
+                    <span className="text-[10px] font-black text-pink-400 bg-pink-400/5 px-2 py-0.5 rounded border border-pink-400/10 font-mono">Nível {current[item.key as keyof typeof current] ?? 1}/3</span>
                  </div>
                  <p className="text-xs font-black text-white/80 uppercase tracking-wide">{item.label}</p>
                  <p className="text-[9px] text-white/40 leading-snug">{item.desc}</p>
@@ -988,7 +998,7 @@ function MaturityExecutionCard({ state, onReload }: { state?: CockpitData['state
                       disabled={updating !== null}
                       onClick={() => updateLevel(item.key, step)}
                       className={`h-2 flex-1 rounded-full transition-all hover:scale-y-125 ${
-                        step <= current[item.key as keyof typeof current] 
+                        step <= (current[item.key as keyof typeof current] ?? 1) 
                           ? 'bg-pink-500 shadow-[0_0_8px_rgba(236,72,153,0.3)]' 
                           : 'bg-white/5 hover:bg-white/10'
                       }`} 
@@ -1010,7 +1020,7 @@ function SprintAlphaCard({ state, onReload }: { state?: CockpitData['state']['sp
     <div className="rounded-3xl border border-white/10 bg-slate-900/30 p-6 space-y-4 shadow-xl">
        <div className="flex items-center gap-3">
           <Clock className="h-4.5 w-4.5 text-[#a78bfa]" />
-          <h3 className="text-xs font-black text-white/70 uppercase tracking-widest">Sprint Alpha · 21 Dias</h3>
+          <h3 className="text-xs font-black text-white/70 uppercase tracking-widest">Sprint de Validação · 21 Dias</h3>
        </div>
        <div className="flex flex-wrap gap-1.5">
           {Array.from({ length: 21 }).map((_, i) => {
@@ -1040,10 +1050,10 @@ function AlertsList({ alerts, onDismiss, onRun, loading }: { alerts: StrategicAl
     <div className="rounded-3xl border border-white/10 bg-slate-900/30 p-6 flex flex-col h-full shadow-xl">
       <div className="flex items-center justify-between mb-6 border-b border-white/5 pb-4">
         <div className="flex items-center gap-2">
-          <AlertTriangle className="h-4.5 w-4.5 text-[#a78bfa]" />
-          <h4 className="text-xs font-black text-white/80 uppercase tracking-widest">Alertas Estratégicos</h4>
+          <AlertTriangle className="h-4.5 w-4.5 text-violet-400" />
+          <h4 className="text-xs font-black text-white/80 uppercase tracking-widest font-mono">Alertas Operacionais</h4>
         </div>
-        <button onClick={onRun} disabled={loading} className="p-2 bg-white/5 border border-white/10 hover:bg-white/10 rounded-xl transition text-[#a78bfa] disabled:opacity-30">
+        <button onClick={onRun} disabled={loading} className="p-2 bg-white/5 border border-white/10 hover:bg-white/10 rounded-xl transition text-violet-400 disabled:opacity-30">
           <RefreshCw className={`h-3.5 w-3.5 ${loading ? 'animate-spin' : ''}`} />
         </button>
       </div>
@@ -1053,16 +1063,17 @@ function AlertsList({ alerts, onDismiss, onRun, loading }: { alerts: StrategicAl
              <Shield className="h-10 w-10 text-white/50" />
              <div className="space-y-1">
                <p className="text-xs font-black uppercase tracking-wider text-white">Nenhum Alerta Pendente</p>
-               <p className="text-[10px] text-white/50 px-6">O sistema está estável e operando dentro de conformidades normativas.</p>
+               <p className="text-[10px] text-white/50 px-6">O sistema está 100% calibrado cientificamente.</p>
              </div>
           </div>
         ) : (
           alerts.map(a => (
-            <div key={a.id} className="p-4 bg-white/[0.01] border border-white/5 hover:border-[#a78bfa]/35 rounded-2xl flex items-start gap-4 group transition-all duration-300">
+            <div key={a.id} className="p-4 bg-white/[0.01] border border-white/5 hover:border-violet-500/35 rounded-2xl flex items-start gap-4 group transition-all duration-300">
               <div className={`h-2.5 w-2.5 rounded-full mt-1.5 shrink-0 ${a.level === 'warning' ? 'bg-amber-400 shadow-[0_0_8px_rgba(245,158,11,0.5)]' : 'bg-sky-400 shadow-[0_0_8px_rgba(56,189,248,0.5)]'}`} />
               <div className="flex-1 min-w-0">
-                <p className="text-xs font-extrabold text-white leading-tight mb-1">{a.title}</p>
-                <p className="text-[10px] text-white/50 leading-relaxed">{a.message}</p>
+                <p className="text-xs font-extrabold text-white leading-tight mb-1">{a.title.replace('SaaS', 'Plataforma').replace('Foco', 'Foco Clínico')}</p>
+                <p className="text-[10px] text-white/50 leading-relaxed">{a.message.replace('SaaS', 'Plataforma').replace('leads', 'fisioterapeutas')}</p>
+                {a.action && <p className="text-[9px] text-violet-400 mt-2 font-bold font-mono">⚡ AÇÃO: {a.action}</p>}
               </div>
               <button onClick={() => onDismiss(a.id)} className="opacity-0 group-hover:opacity-100 transition-all text-white/20 hover:text-white shrink-0 p-1 hover:bg-white/5 rounded">✕</button>
             </div>
@@ -1076,13 +1087,19 @@ function AlertsList({ alerts, onDismiss, onRun, loading }: { alerts: StrategicAl
 function OKRGeneratorCard() {
   const [loading, setLoading] = useState(false)
   const [okrs, setOkrs] = useState<any[] | null>(null)
+  const [horizon, setHorizon] = useState<string>('')
+  const [rationale, setRationale] = useState<string>('')
 
   const generate = async () => {
     setLoading(true)
     try {
       const res = await fetch('/api/admin/strategy/okr-generator', { method: 'POST' })
       const json = await res.json()
-      setOkrs(json.okrs)
+      if (json.objectives) {
+        setOkrs(json.objectives)
+        setHorizon(json.horizon ?? 'Próximo Ciclo')
+        setRationale(json.rationale ?? '')
+      }
     } catch { /* ... */ } finally { setLoading(false) }
   }
 
@@ -1094,41 +1111,45 @@ function OKRGeneratorCard() {
               <Goal className="h-5 w-5 text-amber-400" />
             </div>
             <div>
-              <h3 className="text-sm font-extrabold text-white uppercase tracking-wider">OKR Generator Inteligente</h3>
-              <p className="text-[9px] text-white/40 uppercase font-black tracking-widest">Alinhamento Estratégico do Próximo Ciclo</p>
+              <h3 className="text-sm font-extrabold text-white uppercase tracking-wider">Gerador de Diretrizes de Operação (OKR)</h3>
+              <p className="text-[9px] text-white/40 uppercase font-black tracking-widest">Alinhamento trimestral assistido por IA</p>
             </div>
           </div>
           {!okrs && (
             <button onClick={generate} disabled={loading} className="px-6 py-2.5 rounded-xl bg-amber-400 text-slate-950 text-xs font-black uppercase tracking-widest hover:bg-amber-300 transition-all hover:scale-105 active:scale-95 disabled:opacity-30 shadow-lg shadow-amber-400/10 shrink-0">
-              {loading ? 'Processando...' : 'Gerar Proposta OKR'}
+              {loading ? 'Consultando IA...' : 'Gerar Proposta OKR Trimestral'}
             </button>
           )}
        </div>
 
        {okrs ? (
          <div className="space-y-5">
+            <div className="p-4 rounded-xl bg-amber-500/5 border border-amber-500/10">
+               <span className="text-[8px] font-black text-amber-400 uppercase tracking-widest">Ciclo: {horizon}</span>
+               <p className="text-xs font-semibold text-white/90 mt-1">"{rationale}"</p>
+            </div>
             {okrs.map((o: any, i: number) => (
                <div key={i} className="p-5 rounded-2xl bg-white/[0.01] border border-white/5 space-y-4 hover:border-white/10 transition-all">
                   <div className="flex items-center gap-3">
-                     <span className="text-xs font-black text-amber-400 bg-amber-400/5 border border-amber-400/10 px-2 py-0.5 rounded">OBJETIVO {i+1}</span>
-                     <p className="text-sm font-bold text-white">{o.objective}</p>
+                     <span className="text-xs font-black text-amber-400 bg-amber-400/5 border border-amber-400/10 px-2 py-0.5 rounded font-mono">OBJETIVO {i+1}</span>
+                     <p className="text-sm font-bold text-white">{o.title ?? o.objective}</p>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pl-4 border-l-2 border-white/10">
-                     {o.key_results.map((kr: string, j: number) => (
+                     {(o.key_results ?? []).map((krObj: any, j: number) => (
                        <div key={j} className="flex gap-2.5">
                           <div className="h-1.5 w-1.5 rounded-full bg-amber-400/40 mt-1.5 shrink-0" />
-                          <p className="text-xs text-white/60 leading-relaxed">{kr}</p>
+                          <p className="text-xs text-white/60 leading-relaxed">{typeof krObj === 'string' ? krObj : (krObj.kr ?? krObj.description)}</p>
                        </div>
                      ))}
                   </div>
                </div>
             ))}
-            <button onClick={() => setOkrs(null)} className="text-[9px] font-black text-white/30 uppercase hover:text-white transition-all tracking-widest">Recomeçar Processo</button>
+            <button onClick={() => setOkrs(null)} className="text-[9px] font-black text-white/30 uppercase hover:text-white transition-all tracking-widest">Recomeçar Sugestão</button>
          </div>
        ) : (
          <div className="py-16 text-center border border-dashed border-white/10 rounded-2xl bg-white/[0.01] opacity-50">
             <p className="text-xs uppercase font-bold tracking-[0.2em] text-white/50 px-6">
-              A IA analisará a fase atual e proporá Objetivos e Resultados-Chave personalizados para o SEA FISIO.
+              A IA analisará o estágio clínico atual e proporá Objetivos e Resultados-Chave focados em validação nas UTIs e conversão Premium.
             </p>
          </div>
        )}
@@ -1157,13 +1178,13 @@ function TargetsRadarCard() {
               <Search className="h-5 w-5 text-sky-400" />
             </div>
             <div>
-              <h3 className="text-sm font-extrabold text-white uppercase tracking-wider">Radar de Parceiros Clínicos e Hospitais</h3>
-              <p className="text-[9px] text-white/40 uppercase font-black tracking-widest">Grandes Centros Médicos e Oportunidades Acadêmicas</p>
+              <h3 className="text-sm font-extrabold text-white uppercase tracking-wider">Radar de Hospitais Alvo & Parcerias</h3>
+              <p className="text-[9px] text-white/40 uppercase font-black tracking-widest">Centros Médicos Terciários, Faculdades e Referências no Brasil</p>
             </div>
           </div>
           {!data ? (
             <button onClick={() => fetchTargets()} disabled={loading} className="px-5 py-2 rounded-xl border border-sky-500/20 text-sky-400 text-xs font-black uppercase tracking-widest hover:bg-sky-500/10 transition-all disabled:opacity-30 shadow-md">
-              {loading ? 'Pesquisando...' : 'Ativar Radar'}
+              {loading ? 'Ativando Radar...' : 'Ativar Prospecção'}
             </button>
           ) : (
             <button onClick={() => fetchTargets(true)} disabled={loading} className="p-2 hover:bg-white/5 border border-white/10 rounded-xl transition text-white/30 hover:text-white">
@@ -1174,8 +1195,8 @@ function TargetsRadarCard() {
 
        {data && (
          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {['Hospitais de UTI Alvo', 'Centros e Parceiros Acadêmicos', 'Benchmark Setorial'].map((category, idx) => {
-              const keys = ['hospitals', 'vcs', 'competitors'] as const
+            {['Hospitais de UTI Alvo', 'Parceiros Acadêmicos & Faculdades', 'Benchmarks do Setor'].map((category, idx) => {
+              const keys = ['hospitals', 'investors', 'competitors'] as const
               const items = data[keys[idx]] || []
               return (
                 <div key={category} className="space-y-4">
@@ -1185,15 +1206,20 @@ function TargetsRadarCard() {
                         <div key={i} className="p-4 rounded-2xl bg-white/[0.01] border border-white/5 hover:border-sky-500/20 transition-all duration-300 group flex flex-col justify-between h-full">
                            <div>
                              <div className="flex items-center justify-between mb-1.5 gap-2">
-                                <p className="text-xs font-extrabold text-white group-hover:text-sky-400 transition-all leading-tight">{it.name}</p>
+                                <p className="text-xs font-extrabold text-white group-hover:text-sky-400 transition-all leading-tight">
+                                  {it.name.replace('VC', 'Parceiro').replace('Fund', 'Faculdade')}
+                                </p>
                                 <ExternalLink className="h-3.5 w-3.5 text-white/0 group-hover:text-white/30 transition-all shrink-0" />
                              </div>
-                             <p className="text-[10px] text-white/45 leading-relaxed">{it.relevance || it.description}</p>
+                             <p className="text-[10px] text-white/45 leading-relaxed">
+                               {it.why || it.relevance || it.focus || it.positioning || it.description}
+                             </p>
+                             {it.city && <span className="text-[8px] font-mono text-sky-400/70 mt-2 block uppercase">{it.city}</span>}
                            </div>
                         </div>
                       ))}
                       {items.length === 0 && (
-                        <p className="text-[10px] text-white/30 italic">Radar buscando novos registros...</p>
+                        <p className="text-[10px] text-white/30 italic">Radar prospectando...</p>
                       )}
                    </div>
                 </div>
