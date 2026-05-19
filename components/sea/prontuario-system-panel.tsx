@@ -87,6 +87,33 @@ type Workspace = {
   archive: ICURecord[]
 }
 
+// Compressão client-side de imagens — reduz fotos do celular (8-12 MB)
+// para ~200-400 KB com qualidade preservada o suficiente para OCR/IA.
+// Evita estourar limite de token na API de visão (60 MB → 2-3 MB total).
+async function compressImage(file: File, maxDim = 1600, quality = 0.85): Promise<File> {
+  if (file.size < 800 * 1024) return file // já pequeno (<800KB), não comprime
+  return new Promise((resolve) => {
+    const img = new Image()
+    img.onload = () => {
+      const scale = Math.min(1, maxDim / Math.max(img.width, img.height))
+      const w = Math.round(img.width * scale)
+      const h = Math.round(img.height * scale)
+      const canvas = document.createElement('canvas')
+      canvas.width = w
+      canvas.height = h
+      const ctx = canvas.getContext('2d')
+      if (!ctx) { resolve(file); return }
+      ctx.drawImage(img, 0, 0, w, h)
+      canvas.toBlob((blob) => {
+        if (!blob) { resolve(file); return }
+        resolve(new File([blob], file.name.replace(/\.\w+$/, '.jpg'), { type: 'image/jpeg' }))
+      }, 'image/jpeg', quality)
+    }
+    img.onerror = () => resolve(file)
+    img.src = URL.createObjectURL(file)
+  })
+}
+
 // Constrói chaves de localStorage namespaced por usuário. Sem usuário
 // (não autenticado) cai nas chaves legacy — usado só para migração.
 function keysFor(userId: string | null) {
@@ -8951,9 +8978,10 @@ export function ProntuarioSystemPanel() {
                     capture="environment"
                     multiple
                     className="hidden"
-                    onChange={(e) => {
+                    onChange={async (e) => {
                       const files = Array.from(e.target.files ?? []).slice(0, 5 - bhScanPhotos.length)
-                      const newPhotos = files.map(f => ({ file: f, preview: URL.createObjectURL(f) }))
+                      const compressed = await Promise.all(files.map(f => compressImage(f)))
+                      const newPhotos = compressed.map(f => ({ file: f, preview: URL.createObjectURL(f) }))
                       setBhScanPhotos(prev => [...prev, ...newPhotos])
                       e.target.value = ''
                     }}
@@ -9138,9 +9166,10 @@ export function ProntuarioSystemPanel() {
                       capture="environment"
                       multiple
                       className="hidden"
-                      onChange={(e) => {
+                      onChange={async (e) => {
                         const files = Array.from(e.target.files ?? []).slice(0, 5 - gasoScanPhotos.length)
-                        const newPhotos = files.map(f => ({ file: f, preview: URL.createObjectURL(f) }))
+                        const compressed = await Promise.all(files.map(f => compressImage(f)))
+                        const newPhotos = compressed.map(f => ({ file: f, preview: URL.createObjectURL(f) }))
                         setGasoScanPhotos(prev => [...prev, ...newPhotos])
                         e.target.value = ''
                       }}
@@ -9341,9 +9370,10 @@ export function ProntuarioSystemPanel() {
                       capture="environment"
                       multiple
                       className="hidden"
-                      onChange={(e) => {
+                      onChange={async (e) => {
                         const files = Array.from(e.target.files ?? []).slice(0, 5 - vmScanPhotos.length)
-                        const newPhotos = files.map(f => ({ file: f, preview: URL.createObjectURL(f) }))
+                        const compressed = await Promise.all(files.map(f => compressImage(f)))
+                        const newPhotos = compressed.map(f => ({ file: f, preview: URL.createObjectURL(f) }))
                         setVmScanPhotos(prev => [...prev, ...newPhotos])
                         e.target.value = ''
                       }}
