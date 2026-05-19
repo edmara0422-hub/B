@@ -2900,7 +2900,8 @@ export function ProntuarioSystemPanel() {
   const [eitScanOpen, setEitScanOpen] = useState(false)
   const [eitScanPhotos, setEitScanPhotos] = useState<{ file: File; preview: string }[]>([])
   const [eitScanLoading, setEitScanLoading] = useState(false)
-  const [eitScanResult, setEitScanResult] = useState<{ freq_corr?: number | null; tv_global_pct?: number | null; rois?: { roi1_pct?: number | null; roi2_pct?: number | null; roi3_pct?: number | null; roi4_pct?: number | null }; cov?: number | null; razao_ant_post?: number | null; distribuicao?: string; atelectasia_dorsal?: boolean; hiperdistensao_ventral?: boolean; silent_spaces?: string; padroes?: string[]; condutas_sugeridas?: string[]; confidence?: string; notes?: string } | null>(null)
+  const [eitScanMode, setEitScanMode] = useState<'simples' | 'titulacao'>('simples')
+  const [eitScanResult, setEitScanResult] = useState<{ modo_analise?: string; freq_corr?: number | null; tv_global_pct?: number | null; rois?: { roi1_pct?: number | null; roi2_pct?: number | null; roi3_pct?: number | null; roi4_pct?: number | null }; cov?: number | null; razao_ant_post?: number | null; distribuicao?: string; atelectasia_dorsal?: boolean; hiperdistensao_ventral?: boolean; silent_spaces?: string; padroes?: string[]; condutas_sugeridas?: string[]; degraus?: Array<{ letra: string; peep?: number | null; colapso_pct?: number | null; hiperdistensao_pct?: number | null; soma?: number | null }>; peep_ideal_teorica?: number | null; peep_recomendada?: number | null; letra_ideal?: string; tolerancia_clinica?: string; interpretacao?: string; alertas?: string[]; confidence?: string; notes?: string } | null>(null)
   const [eitScanError, setEitScanError] = useState<string | null>(null)
   const workspacesRef = useRef<Workspace[]>([])
   const activeWsIdRef = useRef<string>('')
@@ -9970,7 +9971,7 @@ export function ProntuarioSystemPanel() {
             <div className="shrink-0 flex items-center justify-between px-4 pt-4 pb-3" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
               <div className="flex items-center gap-2">
                 <Camera className="h-4 w-4 text-[#22d3ee]" />
-                <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-white/80">Scan EIT / Bioimpedância</span>
+                <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-white/80">Scan TIE / EIT</span>
               </div>
               <button onClick={() => setEitScanOpen(false)} className="flex h-6 w-6 items-center justify-center rounded-full text-white/40 hover:text-white/70 transition">
                 <X className="h-3.5 w-3.5" />
@@ -9978,6 +9979,34 @@ export function ProntuarioSystemPanel() {
             </div>
 
             <div className="flex-1 overflow-y-auto px-4 py-3 flex flex-col gap-3">
+              {/* Modo de análise */}
+              <div className="grid grid-cols-2 gap-1.5">
+                <button
+                  type="button"
+                  onClick={() => { setEitScanMode('simples'); setEitScanResult(null) }}
+                  className="rounded-[0.65rem] px-2 py-2 text-[9px] font-semibold uppercase tracking-[0.12em] transition"
+                  style={{
+                    background: eitScanMode === 'simples' ? 'rgba(34,211,238,0.14)' : 'rgba(255,255,255,0.04)',
+                    border: eitScanMode === 'simples' ? '1px solid rgba(34,211,238,0.36)' : '1px solid rgba(255,255,255,0.10)',
+                    color: eitScanMode === 'simples' ? '#22d3ee' : 'rgba(255,255,255,0.55)',
+                  }}
+                >
+                  Análise simples (ROIs)
+                </button>
+                <button
+                  type="button"
+                  onClick={() => { setEitScanMode('titulacao'); setEitScanResult(null) }}
+                  className="rounded-[0.65rem] px-2 py-2 text-[9px] font-semibold uppercase tracking-[0.12em] transition"
+                  style={{
+                    background: eitScanMode === 'titulacao' ? 'rgba(167,139,250,0.14)' : 'rgba(255,255,255,0.04)',
+                    border: eitScanMode === 'titulacao' ? '1px solid rgba(167,139,250,0.36)' : '1px solid rgba(255,255,255,0.10)',
+                    color: eitScanMode === 'titulacao' ? '#a78bfa' : 'rgba(255,255,255,0.55)',
+                  }}
+                >
+                  Titulação PEEP + Recrut.
+                </button>
+              </div>
+
               <div className="grid grid-cols-3 gap-2">
                 {eitScanPhotos.map((p, i) => (
                   <div key={i} className="relative aspect-square overflow-hidden rounded-[0.8rem]" style={{ border: '1px solid rgba(255,255,255,0.12)' }}>
@@ -10014,7 +10043,7 @@ export function ProntuarioSystemPanel() {
               </div>
 
               <p className="text-[8px] text-white/30 text-center -mt-1">
-                Até 10 fotos · PulmoVista (Drager), Sentec, Timpel, Swisstom · ROIs + CoV + recrutamento
+                Até 10 fotos · PulmoVista, Sentec, Timpel, Swisstom · {eitScanMode === 'titulacao' ? 'Letras A-F + colapso/hiperdistensão = PEEP ideal' : 'ROIs + CoV + recrutamento'}
               </p>
 
               {eitScanError && (
@@ -10025,6 +10054,85 @@ export function ProntuarioSystemPanel() {
 
               {eitScanResult && !eitScanLoading && (() => {
                 const r = eitScanResult
+                const isTitulacao = r.modo_analise === 'titulacao_peep' || (r.degraus && r.degraus.length > 0)
+                if (isTitulacao) {
+                  const degraus = r.degraus ?? []
+                  return (
+                    <div className="rounded-[0.8rem] px-3 py-2.5 space-y-2.5" style={{ background: 'rgba(167,139,250,0.08)', border: '1px solid rgba(167,139,250,0.28)' }}>
+                      <div className="flex items-center justify-between">
+                        <p className="text-[8px] uppercase tracking-[0.18em] text-[#a78bfa]">Titulação PEEP · {degraus.length} degraus</p>
+                        {r.confidence && (
+                          <span className="rounded-full px-1.5 py-0.5 text-[7px] font-semibold uppercase"
+                            style={{
+                              background: r.confidence === 'alta' ? 'rgba(74,222,128,0.14)' : r.confidence === 'media' ? 'rgba(251,191,36,0.14)' : 'rgba(248,113,113,0.14)',
+                              color: r.confidence === 'alta' ? '#4ade80' : r.confidence === 'media' ? '#fbbf24' : '#f87171',
+                              border: `1px solid ${r.confidence === 'alta' ? 'rgba(74,222,128,0.30)' : r.confidence === 'media' ? 'rgba(251,191,36,0.30)' : 'rgba(248,113,113,0.30)'}`,
+                            }}>
+                            {r.confidence}
+                          </span>
+                        )}
+                      </div>
+
+                      {/* PEEP recomendada — destaque */}
+                      {r.peep_recomendada != null && (
+                        <div className="rounded-[0.6rem] px-3 py-2" style={{ background: 'rgba(74,222,128,0.10)', border: '1px solid rgba(74,222,128,0.32)' }}>
+                          <p className="text-[7px] uppercase tracking-[0.16em] text-[#86efac]/80">PEEP Recomendada</p>
+                          <p className="text-[18px] font-bold text-[#86efac]">{r.peep_recomendada} cmH₂O</p>
+                          {r.peep_ideal_teorica != null && (
+                            <p className="text-[8px] text-white/55">Ideal teórica: {r.peep_ideal_teorica} cmH₂O · Letra {r.letra_ideal} · margem +2</p>
+                          )}
+                        </div>
+                      )}
+
+                      {/* Tabela de degraus */}
+                      {degraus.length > 0 && (
+                        <div>
+                          <p className="mb-1 text-[7px] uppercase tracking-[0.12em] text-white/40">Degraus da titulação</p>
+                          <div className="rounded-[0.5rem] overflow-hidden" style={{ background: 'rgba(255,255,255,0.03)' }}>
+                            <div className="grid grid-cols-[28px_50px_60px_60px_50px] gap-1 px-2 py-1 text-[7px] uppercase tracking-[0.08em] text-white/40 font-semibold" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+                              <span>Letra</span>
+                              <span>PEEP</span>
+                              <span className="text-[#fbbf24]">Hiperdist%</span>
+                              <span className="text-white/60">Colapso%</span>
+                              <span>Soma</span>
+                            </div>
+                            {degraus.map((d, i) => {
+                              const isIdeal = d.letra === r.letra_ideal
+                              return (
+                                <div key={i} className="grid grid-cols-[28px_50px_60px_60px_50px] gap-1 px-2 py-1 text-[9px] tabular-nums"
+                                  style={{ background: isIdeal ? 'rgba(74,222,128,0.08)' : 'transparent', borderTop: i > 0 ? '1px solid rgba(255,255,255,0.04)' : 'none' }}>
+                                  <span className={isIdeal ? 'font-bold text-[#86efac]' : 'text-white/70'}>{d.letra}</span>
+                                  <span className={isIdeal ? 'font-bold text-[#86efac]' : 'text-white/90'}>{d.peep != null ? d.peep : '—'}</span>
+                                  <span className="text-[#fbbf24]/90">{d.hiperdistensao_pct != null ? `${d.hiperdistensao_pct}%` : '—'}</span>
+                                  <span className="text-white/65">{d.colapso_pct != null ? `${d.colapso_pct}%` : '—'}</span>
+                                  <span className={isIdeal ? 'font-bold text-[#86efac]' : 'text-white/90'}>{d.soma != null ? `${d.soma}%` : '—'}</span>
+                                </div>
+                              )
+                            })}
+                          </div>
+                        </div>
+                      )}
+
+                      {r.interpretacao && (
+                        <div className="rounded-[0.5rem] px-2 py-1.5 text-[9px] text-white/80" style={{ background: 'rgba(255,255,255,0.04)' }}>
+                          {r.interpretacao}
+                        </div>
+                      )}
+
+                      {r.alertas && r.alertas.length > 0 && (
+                        <div>
+                          <p className="mb-0.5 text-[7px] uppercase tracking-[0.12em] text-white/40">Alertas</p>
+                          <ul className="ml-3 list-disc space-y-0.5 text-[9px] text-white/75 marker:text-white/30">
+                            {r.alertas.map((a, i) => <li key={i}>{a}</li>)}
+                          </ul>
+                        </div>
+                      )}
+
+                      {r.tolerancia_clinica && <p className="text-[8px] text-white/50 italic">Tolerância: {r.tolerancia_clinica}</p>}
+                      {r.notes && <p className="text-[7px] text-white/36 italic">{r.notes}</p>}
+                    </div>
+                  )
+                }
                 return (
                   <div className="rounded-[0.8rem] px-3 py-2.5 space-y-2.5" style={{ background: 'rgba(34,211,238,0.08)', border: '1px solid rgba(34,211,238,0.22)' }}>
                     <div className="flex items-center justify-between">
@@ -10118,6 +10226,7 @@ export function ProntuarioSystemPanel() {
                     try {
                       const fd = new FormData()
                       eitScanPhotos.forEach(p => fd.append('files', p.file))
+                      fd.append('mode', eitScanMode)
                       const res = await fetch('/api/icu/eit-scan', { method: 'POST', body: fd })
                       const text = await res.text()
                       let json: Record<string, unknown>

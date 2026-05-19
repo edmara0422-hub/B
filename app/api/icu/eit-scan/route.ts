@@ -20,7 +20,11 @@ const GROQ_MODELS = [
   'llama-3.2-11b-vision-preview',
 ]
 
-const EIT_PROMPT = `Você é um intensivista lendo um monitor de Tomografia por Bioimpedância Elétrica (EIT/PulmoVista) do pulmão.
+function buildEitPrompt(mode: 'simples' | 'titulacao'): string {
+  return mode === 'titulacao' ? EIT_TITULACAO_PROMPT : EIT_BASE_PROMPT
+}
+
+const EIT_BASE_PROMPT = `Você é um intensivista lendo um monitor de Tomografia por Impedância Elétrica (TIE/EIT) do pulmão.
 
 Equipamentos típicos: Drager PulmoVista 500 (Infinity C500), Sentec LuMon, Timpel Enlight, Swisstom BB². O cinto eletrodos divide o tórax em ROIs (regiões de interesse) — geralmente 4 ROIs (anterior superior → posterior inferior, isto é, ROI 1 = ventral, ROI 4 = dorsal em decúbito dorsal).
 
@@ -117,7 +121,91 @@ Retorne APENAS JSON válido:
 REGRAS:
 - Se a foto não mostra os valores das ROIs claramente, retorne null nos campos numéricos
 - Não invente valores — só retorne o que conseguir ler
-- Em "padroes" e "condutas_sugeridas", retorne strings descritivas curtas em pt-BR`
+- Em "padroes" e "condutas_sugeridas", retorne strings descritivas curtas em pt-BR
+
+═══ ORIENTAÇÃO ANATÔMICA ═══
+- PULMÃO DIREITO = lado ESQUERDO da tela (convenção radiológica universal — todos os fabricantes)
+- VENTRAL/anterior = TOPO da imagem (decúbito dorsal)
+- DORSAL/posterior = BASE da imagem (decúbito dorsal)
+- ROI 1 (topo/ventral) → ROI 4 (base/dorsal) em decúbito dorsal padrão
+
+═══ ALERTAS A IDENTIFICAR (técnicos e clínicos) ═══
+- "Baixa qualidade do sinal" / "Eletrodos fora de faixa" → impedância pele >100-200 Ohm
+- "Filtro de artefatos ativado" → ruído cardíaco/tremor sendo filtrado
+- "Assimetria de ventilação" → intubação seletiva ou pneumotórax
+- "Hiperdistensão detectada" → PEEP excessiva nas zonas ventrais
+- "Volume corrente baixo" → desconexão ou obstrução maciça
+
+═══ VALORES DE REFERÊNCIA EM DECÚBITO DORSAL SAUDÁVEL ═══
+- Ventral (ROI 1 + ROI 2): 35-40% do volume total
+- Dorsal (ROI 3 + ROI 4): 60-65% do volume total
+- Dorsal ABAIXO de 60% = atelectasia/colapso (necessita PEEP)
+- Dorsal ACIMA de 65% = superdistensão dorsal ou pendelluft
+- Ventral ABAIXO de 35% = hipoventilação anterior
+- Ventral ACIMA de 40% = hiperdistensão compensatória → risco VILI`
+
+const EIT_TITULACAO_PROMPT = `Você é um intensivista analisando uma manobra de TITULAÇÃO DECREMENTAL DE PEEP em monitor de TIE/EIT (Drager PulmoVista, Sentec LuMon, Timpel Enlight, Swisstom).
+
+A imagem geralmente mostra MÚLTIPLAS letras (A, B, C, D, E, F...) marcadas durante a titulação decremental, com:
+- 1ª FILEIRA: imagens dinâmicas/tidal de cada degrau
+- 2ª FILEIRA: mapa de COLAPSO POR ALTA PRESSÃO (C loss HP) — cor LARANJA = hiperdistensão (zonas ventrais)
+- 3ª FILEIRA: mapa de COLAPSO POR BAIXA PRESSÃO (C loss LP) — cor BRANCA/AZUL CLARO = atelectasia (zonas dorsais)
+- GRÁFICO DE LINHAS no rodapé: linha amarela = hiperdistensão %, linha branca = colapso %, cruzam-se no PEEP ideal
+
+═══ INTERPRETAÇÃO ═══
+
+▸ **Hiperdistensão (laranja, ventral)**: alvéolos ventrais esticados demais pela PEEP alta. Em PEEPs altas (letras iniciais A, B) é máxima e decresce com a redução da PEEP.
+
+▸ **Colapso (branco, dorsal)**: alvéolos dorsais fechando por PEEP insuficiente. Em PEEPs altas é zero e aumenta progressivamente nas PEEPs baixas (letras finais).
+
+▸ **PEEP IDEAL**: ponto exato onde a SOMA (colapso% + hiperdistensão%) é MÍNIMA. Visualmente: onde as duas linhas do gráfico se cruzam ou ficam mais próximas.
+
+▸ **Margem de segurança**: somar +2 cmH₂O ao valor da PEEP ideal teórica antes de programar no ventilador (previne fechamento tardio).
+
+▸ **Tolerância clínica máxima**: 5-10% de cada (colapso E hiperdistensão simultaneamente).
+
+═══ O QUE EXTRAIR ═══
+
+Para cada letra marcada (A, B, C...), tente extrair:
+- PEEP correspondente (se visível)
+- % Colapso (C loss LP) — branco/azul
+- % Hiperdistensão (C loss HP) — laranja
+
+Calcular:
+- Soma colapso + hiperdistensão por degrau
+- Letra/PEEP com soma mínima = PEEP IDEAL TEÓRICA
+- PEEP recomendada = ideal + 2 cmH₂O
+
+═══ RETORNO ═══
+
+Retorne APENAS JSON válido:
+{
+  "modo_analise": "titulacao_peep",
+  "degraus": [
+    { "letra": "A", "peep": 24, "colapso_pct": 0, "hiperdistensao_pct": 25, "soma": 25 },
+    { "letra": "B", "peep": 22, "colapso_pct": 0, "hiperdistensao_pct": 18, "soma": 18 },
+    { "letra": "C", "peep": 20, "colapso_pct": 2, "hiperdistensao_pct": 12, "soma": 14 },
+    { "letra": "D", "peep": 18, "colapso_pct": 5, "hiperdistensao_pct": 6, "soma": 11 },
+    { "letra": "E", "peep": 16, "colapso_pct": 8, "hiperdistensao_pct": 3, "soma": 11 },
+    { "letra": "F", "peep": 14, "colapso_pct": 15, "hiperdistensao_pct": 1, "soma": 16 }
+  ],
+  "peep_ideal_teorica": 18,
+  "peep_recomendada": 20,
+  "letra_ideal": "D",
+  "tolerancia_clinica": "5-10% de cada (colapso + hiperdistensão)",
+  "interpretacao": "PEEP ideal entre 16-18 cmH₂O (letras D-E). Recomenda-se 20 cmH₂O para segurança (+2 cmH₂O margem).",
+  "alertas": [
+    "Sinal de boa qualidade",
+    "Pulmão recrutável: bases responderam à pressão alta"
+  ],
+  "confidence": "alta" | "media" | "baixa",
+  "notes": "Observações clínicas adicionais"
+}
+
+REGRAS:
+- Se não conseguir ler valores de algum degrau, retorne null nos campos numéricos
+- Se a imagem não é de titulação (apenas tela normal), retorne degraus = [] e indique em notes
+- Universal para Drager (C loss HP/LP), Sentec, Timpel — todos têm o mesmo conceito visual`
 
 function extractJson(content: string): string {
   const m = content.match(/\{[\s\S]*\}/)
@@ -129,7 +217,7 @@ function extractJson(content: string): string {
 
 type ContentBlock = { type: 'image'; image: string } | { type: 'text'; text: string }
 
-async function callGroqFallback(images: { base64: string; mime: string }[]): Promise<Record<string, unknown>> {
+async function callGroqFallback(images: { base64: string; mime: string }[], prompt: string): Promise<Record<string, unknown>> {
   const imageBlocks = images.map(img => ({
     type: 'image_url' as const,
     image_url: { url: `data:${img.mime};base64,${img.base64}` },
@@ -141,9 +229,9 @@ async function callGroqFallback(images: { base64: string; mime: string }[]): Pro
         headers: { Authorization: `Bearer ${GROQ_API_KEY}`, 'Content-Type': 'application/json' },
         body: JSON.stringify({
           model,
-          messages: [{ role: 'user', content: [...imageBlocks, { type: 'text', text: EIT_PROMPT }] }],
+          messages: [{ role: 'user', content: [...imageBlocks, { type: 'text', text: prompt }] }],
           temperature: 0.1,
-          max_tokens: 1200,
+          max_tokens: 1800,
         }),
       })
       if (!response.ok) continue
@@ -164,6 +252,10 @@ export async function POST(req: NextRequest) {
     const files = formData.getAll('files') as File[]
     if (!files.length) return NextResponse.json({ error: 'Nenhuma imagem enviada' }, { status: 400 })
 
+    const modeParam = (formData.get('mode') as string | null) ?? 'simples'
+    const mode: 'simples' | 'titulacao' = modeParam === 'titulacao' ? 'titulacao' : 'simples'
+    const prompt = buildEitPrompt(mode)
+
     const images = await Promise.all(
       files.map(async (file) => {
         const ab = await file.arrayBuffer()
@@ -171,7 +263,7 @@ export async function POST(req: NextRequest) {
       })
     )
 
-    console.log(`[EIT Scan] ${images.length} imagem(ns) recebida(s)`)
+    console.log(`[EIT Scan] ${images.length} imagem(ns) · modo=${mode}`)
     let aiResult: Record<string, unknown> | null = null
 
     if (process.env.AI_GATEWAY_API_KEY) {
@@ -179,7 +271,7 @@ export async function POST(req: NextRequest) {
         try {
           const contentBlocks: ContentBlock[] = [
             ...images.map(img => ({ type: 'image' as const, image: `data:${img.mime};base64,${img.base64}` })),
-            { type: 'text', text: EIT_PROMPT },
+            { type: 'text', text: prompt },
           ]
           const { text } = await generateText({
             model: gateway(modelId),
@@ -195,7 +287,7 @@ export async function POST(req: NextRequest) {
     }
 
     if (!aiResult && GROQ_API_KEY) {
-      aiResult = await callGroqFallback(images)
+      aiResult = await callGroqFallback(images, prompt)
     }
 
     if (!aiResult) return NextResponse.json({ error: 'Todos os modelos de visão falharam' }, { status: 502 })
