@@ -2792,6 +2792,11 @@ export function ProntuarioSystemPanel() {
   const [curvesScanLoading, setCurvesScanLoading] = useState(false)
   const [curvesScanResult, setCurvesScanResult] = useState<{ mode?: string | null; curvaPxT?: string[]; curvaFxT?: string[]; curvaVxT?: string[]; loopPV?: string[]; loopFV?: string[]; assincronia?: string[]; confidence?: string; notes?: string } | null>(null)
   const [curvesScanError, setCurvesScanError] = useState<string | null>(null)
+  const [eitScanOpen, setEitScanOpen] = useState(false)
+  const [eitScanPhotos, setEitScanPhotos] = useState<{ file: File; preview: string }[]>([])
+  const [eitScanLoading, setEitScanLoading] = useState(false)
+  const [eitScanResult, setEitScanResult] = useState<{ freq_corr?: number | null; tv_global_pct?: number | null; rois?: { roi1_pct?: number | null; roi2_pct?: number | null; roi3_pct?: number | null; roi4_pct?: number | null }; cov?: number | null; razao_ant_post?: number | null; distribuicao?: string; atelectasia_dorsal?: boolean; hiperdistensao_ventral?: boolean; silent_spaces?: string; padroes?: string[]; condutas_sugeridas?: string[]; confidence?: string; notes?: string } | null>(null)
+  const [eitScanError, setEitScanError] = useState<string | null>(null)
   const workspacesRef = useRef<Workspace[]>([])
   const activeWsIdRef = useRef<string>('')
   useEffect(() => { workspacesRef.current = workspaces }, [workspaces])
@@ -8323,6 +8328,15 @@ export function ProntuarioSystemPanel() {
                             Limpar Prona
                           </button>
                         )}
+                        <button
+                          type="button"
+                          onClick={() => { setEitScanOpen(true); setEitScanResult(null); setEitScanError(null); setEitScanPhotos([]) }}
+                          className="inline-flex items-center gap-1 rounded-[0.6rem] px-2 py-1 text-[8px] font-semibold uppercase tracking-[0.12em] transition"
+                          style={{ background: 'rgba(34,211,238,0.10)', border: '1px solid rgba(34,211,238,0.30)', color: '#22d3ee' }}
+                        >
+                          <Camera className="h-3 w-3" />
+                          Scan EIT
+                        </button>
                       </div>
 
                       {proneActive && (
@@ -9797,6 +9811,201 @@ export function ProntuarioSystemPanel() {
                     <CheckCircle2 className="h-4 w-4" /> Confirmar
                   </button>
                 </>
+              )}
+            </div>
+          </div>
+        </div>,
+        document.body
+      )}
+
+      {/* ── EIT Scan Modal — Portal ────────────────────────── */}
+      {eitScanOpen && typeof window !== 'undefined' && createPortal(
+        <div
+          className="fixed inset-0 z-[100] flex items-center justify-center p-3"
+          style={{ background: 'rgba(0,0,0,0.72)', backdropFilter: 'blur(6px)' }}
+          onClick={(e) => { if (e.target === e.currentTarget) setEitScanOpen(false) }}
+        >
+          <div
+            className="w-full max-w-sm rounded-[1.4rem] flex flex-col overscroll-contain"
+            style={{ background: 'linear-gradient(160deg,#1a1a24,#111118)', border: '1px solid rgba(255,255,255,0.10)', maxHeight: 'min(90vh, 760px)' }}
+          >
+            <div className="shrink-0 flex items-center justify-between px-4 pt-4 pb-3" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+              <div className="flex items-center gap-2">
+                <Camera className="h-4 w-4 text-[#22d3ee]" />
+                <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-white/80">Scan EIT / Bioimpedância</span>
+              </div>
+              <button onClick={() => setEitScanOpen(false)} className="flex h-6 w-6 items-center justify-center rounded-full text-white/40 hover:text-white/70 transition">
+                <X className="h-3.5 w-3.5" />
+              </button>
+            </div>
+
+            <div className="flex-1 overflow-y-auto px-4 py-3 flex flex-col gap-3">
+              <div className="grid grid-cols-3 gap-2">
+                {eitScanPhotos.map((p, i) => (
+                  <div key={i} className="relative aspect-square overflow-hidden rounded-[0.8rem]" style={{ border: '1px solid rgba(255,255,255,0.12)' }}>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={p.preview} alt="" className="h-full w-full object-cover" />
+                    <button
+                      onClick={() => setEitScanPhotos(prev => { URL.revokeObjectURL(prev[i].preview); return prev.filter((_, j) => j !== i) })}
+                      className="absolute right-1 top-1 flex h-5 w-5 items-center justify-center rounded-full bg-black/70 text-white/80 hover:bg-black/90 transition"
+                    >
+                      <X className="h-3 w-3" />
+                    </button>
+                  </div>
+                ))}
+                {eitScanPhotos.length < 10 && !eitScanLoading && (
+                  <label className="flex aspect-square cursor-pointer flex-col items-center justify-center gap-1 rounded-[0.8rem] transition hover:bg-white/[0.06]" style={{ border: '1.5px dashed rgba(255,255,255,0.18)' }}>
+                    <Plus className="h-4 w-4 text-white/36" />
+                    <span className="text-[8px] text-white/28">Foto</span>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      capture="environment"
+                      multiple
+                      className="hidden"
+                      onChange={async (e) => {
+                        const files = Array.from(e.target.files ?? []).slice(0, 10 - eitScanPhotos.length)
+                        const compressed = await Promise.all(files.map(f => compressImage(f)))
+                        const newPhotos = compressed.map(f => ({ file: f, preview: URL.createObjectURL(f) }))
+                        setEitScanPhotos(prev => [...prev, ...newPhotos])
+                        e.target.value = ''
+                      }}
+                    />
+                  </label>
+                )}
+              </div>
+
+              <p className="text-[8px] text-white/30 text-center -mt-1">
+                Até 10 fotos · PulmoVista (Drager), Sentec, Timpel, Swisstom · ROIs + CoV + recrutamento
+              </p>
+
+              {eitScanError && (
+                <div className="rounded-[0.65rem] px-3 py-2 text-[9px] text-red-400" style={{ background: 'rgba(239,68,68,0.10)', border: '1px solid rgba(239,68,68,0.20)' }}>
+                  {eitScanError}
+                </div>
+              )}
+
+              {eitScanResult && !eitScanLoading && (() => {
+                const r = eitScanResult
+                return (
+                  <div className="rounded-[0.8rem] px-3 py-2.5 space-y-2.5" style={{ background: 'rgba(34,211,238,0.08)', border: '1px solid rgba(34,211,238,0.22)' }}>
+                    <div className="flex items-center justify-between">
+                      <p className="text-[8px] uppercase tracking-[0.18em] text-[#22d3ee]/70">Análise EIT {r.freq_corr ? `· FR ${r.freq_corr}` : ''}</p>
+                      {r.confidence && (
+                        <span className="rounded-full px-1.5 py-0.5 text-[7px] font-semibold uppercase"
+                          style={{
+                            background: r.confidence === 'alta' ? 'rgba(74,222,128,0.14)' : r.confidence === 'media' ? 'rgba(251,191,36,0.14)' : 'rgba(248,113,113,0.14)',
+                            color: r.confidence === 'alta' ? '#4ade80' : r.confidence === 'media' ? '#fbbf24' : '#f87171',
+                            border: `1px solid ${r.confidence === 'alta' ? 'rgba(74,222,128,0.30)' : r.confidence === 'media' ? 'rgba(251,191,36,0.30)' : 'rgba(248,113,113,0.30)'}`,
+                          }}>
+                          {r.confidence}
+                        </span>
+                      )}
+                    </div>
+
+                    {/* ROIs */}
+                    {r.rois && (
+                      <div>
+                        <p className="mb-1 text-[7px] uppercase tracking-[0.12em] text-white/40">Distribuição por ROI</p>
+                        <div className="space-y-0.5">
+                          {[
+                            { label: 'ROI 1 (ventral)', val: r.rois.roi1_pct, color: '#60a5fa' },
+                            { label: 'ROI 2', val: r.rois.roi2_pct, color: '#22d3ee' },
+                            { label: 'ROI 3', val: r.rois.roi3_pct, color: '#facc15' },
+                            { label: 'ROI 4 (dorsal)', val: r.rois.roi4_pct, color: '#fb923c' },
+                          ].map(roi => (
+                            <div key={roi.label} className="flex items-center gap-2 text-[9px]">
+                              <span className="w-20 shrink-0 text-white/55">{roi.label}</span>
+                              <div className="flex-1 h-2 rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.06)' }}>
+                                <div className="h-full transition-all" style={{ width: `${roi.val ?? 0}%`, background: roi.color }} />
+                              </div>
+                              <span className="w-8 text-right font-semibold text-white/92 tabular-nums">{roi.val != null ? `${roi.val}%` : '—'}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Métricas calculadas */}
+                    <div className="grid grid-cols-2 gap-2 text-[9px] tabular-nums">
+                      {r.cov != null && (
+                        <div className="rounded-[0.5rem] px-2 py-1.5" style={{ background: 'rgba(255,255,255,0.04)' }}>
+                          <p className="text-[7px] uppercase text-white/40">CoV</p>
+                          <p className="font-semibold text-white/92">{r.cov.toFixed(2)}</p>
+                          <p className="text-[7px] text-white/50">{r.cov < 0.45 ? 'Ventral predominante' : r.cov > 0.55 ? 'Dorsal predominante' : 'Equilibrado'}</p>
+                        </div>
+                      )}
+                      {r.razao_ant_post != null && (
+                        <div className="rounded-[0.5rem] px-2 py-1.5" style={{ background: 'rgba(255,255,255,0.04)' }}>
+                          <p className="text-[7px] uppercase text-white/40">Ant/Post</p>
+                          <p className="font-semibold text-white/92">{r.razao_ant_post.toFixed(1)}</p>
+                          <p className="text-[7px] text-white/50">{r.razao_ant_post > 2 ? 'Atelectasia dorsal crítica' : r.razao_ant_post > 1.5 ? 'Heterogeneidade' : 'Normal'}</p>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Padrões */}
+                    {r.padroes && r.padroes.length > 0 && (
+                      <div>
+                        <p className="mb-0.5 text-[7px] uppercase tracking-[0.12em] text-white/40">Padrões detectados</p>
+                        <ul className="ml-3 list-disc space-y-0.5 text-[9px] text-white/85 marker:text-white/30">
+                          {r.padroes.map((p, i) => <li key={i}>{p}</li>)}
+                        </ul>
+                      </div>
+                    )}
+
+                    {/* Condutas */}
+                    {r.condutas_sugeridas && r.condutas_sugeridas.length > 0 && (
+                      <div className="rounded-[0.5rem] px-2 py-1.5" style={{ background: 'rgba(74,222,128,0.06)', border: '1px solid rgba(74,222,128,0.18)' }}>
+                        <p className="mb-0.5 text-[7px] uppercase tracking-[0.12em] text-[#86efac]">Condutas sugeridas</p>
+                        <ul className="ml-3 list-disc space-y-0.5 text-[9px] text-white/85 marker:text-[#86efac]">
+                          {r.condutas_sugeridas.map((c, i) => <li key={i}>{c}</li>)}
+                        </ul>
+                      </div>
+                    )}
+
+                    {r.notes && <p className="text-[7px] text-white/36 italic">{r.notes}</p>}
+                  </div>
+                )
+              })()}
+            </div>
+
+            <div className="shrink-0 flex gap-2 px-4 py-3" style={{ borderTop: '1px solid rgba(255,255,255,0.06)', background: 'rgba(0,0,0,0.20)' }}>
+              {!eitScanResult ? (
+                <button
+                  onClick={async () => {
+                    if (!eitScanPhotos.length) return
+                    setEitScanLoading(true)
+                    setEitScanError(null)
+                    try {
+                      const fd = new FormData()
+                      eitScanPhotos.forEach(p => fd.append('files', p.file))
+                      const res = await fetch('/api/icu/eit-scan', { method: 'POST', body: fd })
+                      const text = await res.text()
+                      let json: Record<string, unknown>
+                      try { json = JSON.parse(text) } catch { throw new Error('Resposta inválida da IA. Tente foto mais nítida.') }
+                      if (!res.ok) throw new Error((json.error as string) ?? 'Erro na análise')
+                      setEitScanResult(json as never)
+                    } catch (err) {
+                      setEitScanError(err instanceof Error ? err.message : 'Falha ao analisar imagens')
+                    } finally {
+                      setEitScanLoading(false)
+                    }
+                  }}
+                  disabled={eitScanPhotos.length === 0 || eitScanLoading}
+                  className="flex flex-1 items-center justify-center gap-2 rounded-[0.85rem] py-3 text-[12px] font-semibold uppercase tracking-[0.14em] transition disabled:opacity-40"
+                  style={{ background: 'rgba(34,211,238,0.18)', border: '1px solid rgba(34,211,238,0.32)', color: '#22d3ee' }}
+                >
+                  {eitScanLoading ? <><Loader2 className="h-3.5 w-3.5 animate-spin" /> Analisando...</> : <><Scan className="h-3.5 w-3.5" /> Analisar EIT</>}
+                </button>
+              ) : (
+                <button
+                  onClick={() => { setEitScanResult(null); setEitScanError(null); setEitScanPhotos([]) }}
+                  className="flex flex-1 items-center justify-center gap-1.5 rounded-[0.85rem] py-3 text-[11px] text-white/60 transition hover:text-white/80"
+                  style={{ border: '1px solid rgba(255,255,255,0.10)' }}
+                >
+                  <Camera className="h-3.5 w-3.5" /> Novo scan
+                </button>
               )}
             </div>
           </div>
