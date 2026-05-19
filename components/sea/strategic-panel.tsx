@@ -441,6 +441,7 @@ export function StrategicPanel() {
   const [aiDirective, setAiDirective] = useState<Directive | null>(null)
   const [loadingAI, setLoadingAI] = useState(false)
   const [aiError, setAiError]     = useState(false)
+  const [activeCard, setActiveCard] = useState<string | null>(null)
 
   const [open, setOpen] = useState<Record<string, boolean>>({
     diretiva: true, acoes: true, td: false, sgi: false, dddm: false,
@@ -592,18 +593,35 @@ export function StrategicPanel() {
             <p className="text-[7.5px] md:text-[9px] font-bold uppercase tracking-[0.15em] text-[#d2af5a] mb-4 border-b border-white/5 pb-2">Clinical & Business Metrics</p>
             
             <div className="space-y-4">
-              {/* Card 1: Users */}
-              <div className="chrome-subtle rounded-[1rem] p-4 transition-all hover:border-[#d2af5a]/30">
-                <div className="flex justify-between items-start">
+              {/* Card 1: Users (Futuristic Card) */}
+              <div 
+                onClick={() => setActiveCard(activeCard === 'patients' ? null : 'patients')}
+                className={`rounded-[1rem] p-4 transition-all duration-300 cursor-pointer ${
+                  activeCard === 'patients' ? 'ipb-card-gold' : 'ipb-card-silver'
+                }`}
+              >
+                <div className="flex items-center justify-between">
+                  <span className="font-mono text-[7px] md:text-[8px] tracking-wider text-white/30 uppercase">
+                    TELEMETRY_NODE_PATIENTS
+                  </span>
+                  <span 
+                    className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${
+                      activeCard === 'patients' ? 'bg-[#d2af5a] animate-pulse shadow-[0_0_8px_#d2af5a]' : 'bg-white/20'
+                    }`} 
+                  />
+                </div>
+                <div className="mt-2 flex justify-between items-start">
                   <div>
-                    <p className="text-[7.5px] md:text-[8px] font-mono tracking-wider text-white/30 uppercase">Total Patients</p>
-                    <p className="text-[24px] font-bold text-white tracking-tight mt-1 font-mono">{metrics.totalUsers}</p>
+                    <p className={`text-[7.5px] md:text-[8px] font-mono tracking-wider uppercase transition-colors ${activeCard === 'patients' ? 'text-[#d2af5a]/80' : 'text-white/30'}`}>Total Patients</p>
+                    <p className={`text-[24px] font-bold tracking-tight mt-1 font-mono transition-colors ${activeCard === 'patients' ? 'text-[#d2af5a]' : 'text-white'}`}>{metrics.totalUsers}</p>
                   </div>
-                  <span className="text-[8px] font-mono font-bold text-[#d2af5a] px-2 py-0.5 rounded-full bg-[#d2af5a]/5 border border-[#d2af5a]/20">Active</span>
+                  <span className={`text-[8px] font-mono font-bold px-2 py-0.5 rounded-full transition-colors ${
+                    activeCard === 'patients' ? 'bg-[#d2af5a]/10 text-[#d2af5a] border border-[#d2af5a]/30' : 'bg-white/5 text-white/40 border border-white/10'
+                  }`}>Active</span>
                 </div>
                 {/* Decorative sparkline */}
                 <div className="h-10 mt-3 flex items-end">
-                  <svg className="w-full h-full text-[#d2af5a]/50" viewBox="0 0 100 30" preserveAspectRatio="none">
+                  <svg className={`w-full h-full transition-colors ${activeCard === 'patients' ? 'text-[#d2af5a]' : 'text-[#d2af5a]/50'}`} viewBox="0 0 100 30" preserveAspectRatio="none">
                     <path d="M0,25 Q15,10 30,20 T60,5 T90,12 T100,2" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
                     <path d="M0,25 Q15,10 30,20 T60,5 T90,12 T100,2 L100,30 L0,30 Z" fill="url(#goldGrad)" opacity="0.06" />
                     <defs>
@@ -616,29 +634,61 @@ export function StrategicPanel() {
                 </div>
               </div>
 
-              {/* Card 2: Weekly Activity */}
-              <div className="chrome-subtle rounded-[1rem] p-4 transition-all hover:border-[#d2af5a]/30">
-                <div className="flex justify-between items-start">
+              {/* Card 2: Weekly Activity (Futuristic Card) */}
+              <div 
+                onClick={() => setActiveCard(activeCard === 'activity' ? null : 'activity')}
+                className={`rounded-[1rem] p-4 transition-all duration-300 cursor-pointer ${
+                  activeCard === 'activity' ? 'ipb-card-gold' : 'ipb-card-silver'
+                }`}
+              >
+                <div className="flex items-center justify-between">
+                  <span className="font-mono text-[7px] md:text-[8px] tracking-wider text-white/30 uppercase">
+                    TELEMETRY_NODE_ACTIVITY
+                  </span>
+                  <span 
+                    className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${
+                      activeCard === 'activity' ? 'bg-[#d2af5a] animate-pulse shadow-[0_0_8px_#d2af5a]' : 'bg-white/20'
+                    }`} 
+                  />
+                </div>
+                <div className="mt-2 flex justify-between items-start">
                   <div>
-                    <p className="text-[7.5px] md:text-[8px] font-mono tracking-wider text-white/30 uppercase">Weekly Activity</p>
-                    <p className="text-[24px] font-bold text-white tracking-tight mt-1 font-mono">{metrics.activeWeek}</p>
+                    <p className={`text-[7.5px] md:text-[8px] font-mono tracking-wider uppercase transition-colors ${activeCard === 'activity' ? 'text-[#d2af5a]/80' : 'text-white/30'}`}>Weekly Activity</p>
+                    <p className={`text-[24px] font-bold tracking-tight mt-1 font-mono transition-colors ${activeCard === 'activity' ? 'text-[#d2af5a]' : 'text-white'}`}>{metrics.activeWeek}</p>
                   </div>
-                  <span className="text-[8px] font-mono font-bold text-white/50 px-2 py-0.5 rounded-full bg-white/5 border border-white/10">Sessions</span>
+                  <span className={`text-[8px] font-mono font-bold px-2 py-0.5 rounded-full transition-colors ${
+                    activeCard === 'activity' ? 'bg-[#d2af5a]/10 text-[#d2af5a] border border-[#d2af5a]/30' : 'bg-white/5 text-white/40 border border-white/10'
+                  }`}>Sessions</span>
                 </div>
                 {/* Simple mini-bar chart */}
                 <div className="h-8 mt-4 flex items-end gap-1 px-1">
                   {[20, 35, 25, 45, 60, 40, 55, 70, 50, 65, 80].map((h, i) => (
-                    <div key={i} className="flex-1 rounded-sm bg-[#d2af5a]/20 hover:bg-[#d2af5a] transition-all" style={{ height: `${h}%` }} />
+                    <div key={i} className={`flex-1 rounded-sm transition-all ${activeCard === 'activity' ? 'bg-[#d2af5a]/40 hover:bg-[#d2af5a]' : 'bg-[#d2af5a]/20 hover:bg-[#d2af5a]'}`} style={{ height: `${h}%` }} />
                   ))}
                 </div>
               </div>
 
-              {/* Card 3: 7d Retention */}
-              <div className="chrome-subtle rounded-[1rem] p-4 transition-all hover:border-[#d2af5a]/30">
+              {/* Card 3: 7d Retention (Futuristic Card) */}
+              <div 
+                onClick={() => setActiveCard(activeCard === 'retention' ? null : 'retention')}
+                className={`rounded-[1rem] p-4 transition-all duration-300 cursor-pointer ${
+                  activeCard === 'retention' ? 'ipb-card-gold' : 'ipb-card-silver'
+                }`}
+              >
                 <div className="flex items-center justify-between">
+                  <span className="font-mono text-[7px] md:text-[8px] tracking-wider text-white/30 uppercase">
+                    TELEMETRY_NODE_RETENTION
+                  </span>
+                  <span 
+                    className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${
+                      activeCard === 'retention' ? 'bg-[#d2af5a] animate-pulse shadow-[0_0_8px_#d2af5a]' : 'bg-white/20'
+                    }`} 
+                  />
+                </div>
+                <div className="mt-2 flex items-center justify-between">
                   <div className="space-y-1">
-                    <p className="text-[7.5px] md:text-[8px] font-mono tracking-wider text-white/30 uppercase">7d Retention</p>
-                    <p className="text-[24px] font-bold text-white tracking-tight font-mono">{metrics.retention7d}%</p>
+                    <p className={`text-[7.5px] md:text-[8px] font-mono tracking-wider uppercase transition-colors ${activeCard === 'retention' ? 'text-[#d2af5a]/80' : 'text-white/30'}`}>7d Retention</p>
+                    <p className={`text-[24px] font-bold tracking-tight font-mono transition-colors ${activeCard === 'retention' ? 'text-[#d2af5a]' : 'text-white'}`}>{metrics.retention7d}%</p>
                     <p className="text-[7px] text-white/20 font-mono">Target: &gt; 40%</p>
                   </div>
                   <div className="relative h-12 w-12 shrink-0">
@@ -653,18 +703,35 @@ export function StrategicPanel() {
                 </div>
               </div>
 
-              {/* Card 4: NPS & Subscriptions */}
-              <div className="chrome-subtle rounded-[1rem] p-4 transition-all hover:border-[#d2af5a]/30">
-                <div className="grid grid-cols-2 gap-2 divide-x divide-white/5">
+              {/* Card 4: NPS & Subscriptions (Futuristic Card) */}
+              <div 
+                onClick={() => setActiveCard(activeCard === 'nps' ? null : 'nps')}
+                className={`rounded-[1rem] p-4 transition-all duration-300 cursor-pointer ${
+                  activeCard === 'nps' ? 'ipb-card-gold' : 'ipb-card-silver'
+                }`}
+              >
+                <div className="flex items-center justify-between">
+                  <span className="font-mono text-[7px] md:text-[8px] tracking-wider text-white/30 uppercase">
+                    TELEMETRY_NODE_SATISFACTION
+                  </span>
+                  <span 
+                    className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${
+                      activeCard === 'nps' ? 'bg-[#d2af5a] animate-pulse shadow-[0_0_8px_#d2af5a]' : 'bg-white/20'
+                    }`} 
+                  />
+                </div>
+                <div className="mt-2 grid grid-cols-2 gap-2 divide-x divide-white/5">
                   <div className="pr-2">
-                    <p className="text-[7.5px] md:text-[8px] font-mono tracking-wider text-white/30 uppercase">NPS Score</p>
-                    <p className={`text-[18px] font-bold tracking-tight mt-1 font-mono ${metrics.nps === null ? 'text-white/30' : metrics.nps >= 30 ? 'text-[#d2af5a]' : 'text-white/70'}`}>
+                    <p className={`text-[7.5px] md:text-[8px] font-mono tracking-wider uppercase transition-colors ${activeCard === 'nps' ? 'text-[#d2af5a]/80' : 'text-white/30'}`}>NPS Score</p>
+                    <p className={`text-[18px] font-bold tracking-tight mt-1 font-mono transition-colors ${
+                      metrics.nps === null ? 'text-white/30' : metrics.nps >= 30 || activeCard === 'nps' ? 'text-[#d2af5a]' : 'text-white/70'
+                    }`}>
                       {metrics.nps ?? 'N/A'}
                     </p>
                   </div>
                   <div className="pl-4">
-                    <p className="text-[7.5px] md:text-[8px] font-mono tracking-wider text-white/30 uppercase">Active Subs</p>
-                    <p className="text-[18px] font-bold text-white tracking-tight mt-1 font-mono">{metrics.subsActive}</p>
+                    <p className={`text-[7.5px] md:text-[8px] font-mono tracking-wider uppercase transition-colors ${activeCard === 'nps' ? 'text-[#d2af5a]/80' : 'text-white/30'}`}>Active Subs</p>
+                    <p className={`text-[18px] font-bold tracking-tight mt-1 font-mono transition-colors ${activeCard === 'nps' ? 'text-[#d2af5a]' : 'text-white'}`}>{metrics.subsActive}</p>
                   </div>
                 </div>
               </div>
