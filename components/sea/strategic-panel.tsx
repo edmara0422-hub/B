@@ -537,24 +537,24 @@ export function StrategicPanel() {
 
   return (
     <div className="space-y-6 text-white font-sans p-2">
-      {/* ── TOP NAV: TIMELINE DE FASES DE CRESCIMENTO ── */}
-      <div className="flex flex-col gap-4 border border-[#D4AF37]/15 bg-[#0C0C0C] rounded-[1.2rem] p-5 shadow-[0_0_30px_rgba(212,175,55,0.03)]">
+      {/* ── TOP NAV: TIMELINE DE FASES DE CRESCIMENTO (IPB Soft style) ── */}
+      <div className="ipb-soft rounded-[1.2rem] p-5">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="h-2 w-2 rounded-full bg-[#D4AF37] animate-pulse" />
-            <span className="text-[10px] uppercase tracking-[0.25em] font-mono font-bold text-white/90">SEA FISIO STRATEGIC COCKPIT</span>
+            <span className="h-1.5 w-1.5 rounded-full bg-[#d2af5a] animate-pulse" />
+            <span className="text-[7.5px] md:text-[9px] uppercase tracking-[0.25em] font-mono font-bold text-white/50">SEA FISIO STRATEGIC COCKPIT</span>
           </div>
-          <div className="flex items-center gap-1.5 rounded-full border border-[#D4AF37]/35 bg-[#D4AF37]/5 px-3 py-1 text-[8px] font-mono font-bold text-[#D4AF37]">
+          <div className="flex items-center gap-1.5 rounded-full border border-[#d2af5a]/35 bg-[#d2af5a]/5 px-2.5 py-0.5 text-[8px] font-mono font-bold text-[#d2af5a]">
             {phase.toUpperCase()} ATIVA
           </div>
         </div>
         
-        <div className="relative flex items-center justify-between mt-3 px-4">
+        <div className="relative flex items-center justify-between mt-4 px-4">
           {/* Background Line */}
-          <div className="absolute left-6 right-6 top-1/2 h-[2px] -translate-y-1/2 bg-white/5" />
+          <div className="absolute left-6 right-6 top-1/2 h-[1px] -translate-y-1/2 bg-white/5" />
           {/* Active Highlight Line */}
           <div 
-            className="absolute left-6 top-1/2 h-[2px] -translate-y-1/2 bg-[#D4AF37] shadow-[0_0_8px_rgba(212,175,55,0.6)] transition-all duration-500" 
+            className="absolute left-6 top-1/2 h-[1px] -translate-y-1/2 bg-[#d2af5a] shadow-[0_0_8px_rgba(210,175,90,0.6)] transition-all duration-500" 
             style={{ width: `${(phaseIdx / (PHASES.length - 1)) * 100}%` }}
           />
           
@@ -566,15 +566,15 @@ export function StrategicPanel() {
                 <div 
                   className={`flex h-7 w-7 items-center justify-center rounded-full border transition-all duration-300 font-mono text-[9px] font-bold ${
                     isActive 
-                      ? 'border-[#D4AF37] bg-[#0A0A0A] text-[#D4AF37] shadow-[0_0_12px_rgba(212,175,55,0.4)] scale-110' 
+                      ? 'border-[#d2af5a] bg-[#0c0c0c] text-[#d2af5a] shadow-[0_0_12px_rgba(210,175,90,0.4)] scale-110' 
                       : isPast 
-                        ? 'border-[#C0C0C0] bg-[#C0C0C0] text-[#0A0A0A]' 
-                        : 'border-white/10 bg-[#0c0c0c] text-white/30'
+                        ? 'border-white/40 bg-white/20 text-white/90' 
+                        : 'border-white/10 bg-[#030303] text-white/20'
                   }`}
                 >
                   {ph.label}
                 </div>
-                <span className={`text-[7.5px] mt-1 font-mono tracking-wider transition-colors ${isActive ? 'text-[#D4AF37] font-bold' : 'text-white/30'}`}>
+                <span className={`text-[7.5px] mt-1 font-mono tracking-wider transition-colors ${isActive ? 'text-[#d2af5a] font-bold' : 'text-white/20'}`}>
                   {ph.sublabel}
                 </span>
               </div>
@@ -586,30 +586,30 @@ export function StrategicPanel() {
       {/* ── CENTRAL GRID: 3 COLUMNS ── */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         
-        {/* COLUNA 1: METRICAS E SAUDE COMERCIAL */}
-        <div className="border border-white/5 rounded-[1.2rem] bg-[#0A0A0A] p-5 shadow-[0_4px_25px_rgba(0,0,0,0.5)] flex flex-col justify-between">
+        {/* COLUNA 1: METRICAS E SAUDE CLINICA (IPB Soft) */}
+        <div className="ipb-soft rounded-[1.2rem] p-5 flex flex-col justify-between">
           <div>
-            <p className="text-[9px] font-bold uppercase tracking-[0.15em] text-[#D4AF37] mb-4 border-b border-white/5 pb-2">Clinical & Business Metrics</p>
+            <p className="text-[7.5px] md:text-[9px] font-bold uppercase tracking-[0.15em] text-[#d2af5a] mb-4 border-b border-white/5 pb-2">Clinical & Business Metrics</p>
             
             <div className="space-y-4">
               {/* Card 1: Users */}
-              <div className="relative overflow-hidden rounded-[1rem] border border-white/5 bg-white/[0.02] p-4 transition-all hover:border-[#D4AF37]/35 shadow-[0_0_15px_rgba(0,0,0,0.2)]">
+              <div className="chrome-subtle rounded-[1rem] p-4 transition-all hover:border-[#d2af5a]/30">
                 <div className="flex justify-between items-start">
                   <div>
-                    <p className="text-[8px] font-mono tracking-wider text-white/35 uppercase">Total Patients</p>
-                    <p className="text-[26px] font-bold text-white tracking-tight mt-1 font-mono">{metrics.totalUsers}</p>
+                    <p className="text-[7.5px] md:text-[8px] font-mono tracking-wider text-white/30 uppercase">Total Patients</p>
+                    <p className="text-[24px] font-bold text-white tracking-tight mt-1 font-mono">{metrics.totalUsers}</p>
                   </div>
-                  <span className="text-[8.5px] font-mono font-bold text-[#D4AF37] px-2 py-0.5 rounded-full bg-[#D4AF37]/5 border border-[#D4AF37]/20">Active</span>
+                  <span className="text-[8px] font-mono font-bold text-[#d2af5a] px-2 py-0.5 rounded-full bg-[#d2af5a]/5 border border-[#d2af5a]/20">Active</span>
                 </div>
                 {/* Decorative sparkline */}
                 <div className="h-10 mt-3 flex items-end">
-                  <svg className="w-full h-full text-[#D4AF37]/60" viewBox="0 0 100 30" preserveAspectRatio="none">
+                  <svg className="w-full h-full text-[#d2af5a]/50" viewBox="0 0 100 30" preserveAspectRatio="none">
                     <path d="M0,25 Q15,10 30,20 T60,5 T90,12 T100,2" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                    <path d="M0,25 Q15,10 30,20 T60,5 T90,12 T100,2 L100,30 L0,30 Z" fill="url(#goldGrad)" opacity="0.08" />
+                    <path d="M0,25 Q15,10 30,20 T60,5 T90,12 T100,2 L100,30 L0,30 Z" fill="url(#goldGrad)" opacity="0.06" />
                     <defs>
                       <linearGradient id="goldGrad" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stopColor="#D4AF37" />
-                        <stop offset="100%" stopColor="#D4AF37" stopOpacity="0" />
+                        <stop offset="0%" stopColor="#d2af5a" />
+                        <stop offset="100%" stopColor="#d2af5a" stopOpacity="0" />
                       </linearGradient>
                     </defs>
                   </svg>
@@ -617,36 +617,36 @@ export function StrategicPanel() {
               </div>
 
               {/* Card 2: Weekly Activity */}
-              <div className="relative overflow-hidden rounded-[1rem] border border-white/5 bg-white/[0.02] p-4 transition-all hover:border-[#D4AF37]/35 shadow-[0_0_15px_rgba(0,0,0,0.2)]">
+              <div className="chrome-subtle rounded-[1rem] p-4 transition-all hover:border-[#d2af5a]/30">
                 <div className="flex justify-between items-start">
                   <div>
-                    <p className="text-[8px] font-mono tracking-wider text-white/35 uppercase">Weekly Activity</p>
-                    <p className="text-[26px] font-bold text-white tracking-tight mt-1 font-mono">{metrics.activeWeek}</p>
+                    <p className="text-[7.5px] md:text-[8px] font-mono tracking-wider text-white/30 uppercase">Weekly Activity</p>
+                    <p className="text-[24px] font-bold text-white tracking-tight mt-1 font-mono">{metrics.activeWeek}</p>
                   </div>
-                  <span className="text-[8.5px] font-mono font-bold text-white/50 px-2 py-0.5 rounded-full bg-white/5 border border-white/10">Sessions</span>
+                  <span className="text-[8px] font-mono font-bold text-white/50 px-2 py-0.5 rounded-full bg-white/5 border border-white/10">Sessions</span>
                 </div>
                 {/* Simple mini-bar chart */}
                 <div className="h-8 mt-4 flex items-end gap-1 px-1">
                   {[20, 35, 25, 45, 60, 40, 55, 70, 50, 65, 80].map((h, i) => (
-                    <div key={i} className="flex-1 rounded-sm bg-[#D4AF37]/25 hover:bg-[#D4AF37] transition-all" style={{ height: `${h}%` }} />
+                    <div key={i} className="flex-1 rounded-sm bg-[#d2af5a]/20 hover:bg-[#d2af5a] transition-all" style={{ height: `${h}%` }} />
                   ))}
                 </div>
               </div>
 
               {/* Card 3: 7d Retention */}
-              <div className="relative overflow-hidden rounded-[1rem] border border-white/5 bg-white/[0.02] p-4 transition-all hover:border-[#D4AF37]/35 shadow-[0_0_15px_rgba(0,0,0,0.2)]">
+              <div className="chrome-subtle rounded-[1rem] p-4 transition-all hover:border-[#d2af5a]/30">
                 <div className="flex items-center justify-between">
                   <div className="space-y-1">
-                    <p className="text-[8px] font-mono tracking-wider text-white/35 uppercase">7d Retention</p>
-                    <p className="text-[26px] font-bold text-white tracking-tight font-mono">{metrics.retention7d}%</p>
-                    <p className="text-[7.5px] text-white/30 font-mono">Target: &gt; 40%</p>
+                    <p className="text-[7.5px] md:text-[8px] font-mono tracking-wider text-white/30 uppercase">7d Retention</p>
+                    <p className="text-[24px] font-bold text-white tracking-tight font-mono">{metrics.retention7d}%</p>
+                    <p className="text-[7px] text-white/20 font-mono">Target: &gt; 40%</p>
                   </div>
-                  <div className="relative h-14 w-14 shrink-0">
+                  <div className="relative h-12 w-12 shrink-0">
                     <svg className="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
                       <path className="text-white/5" stroke="currentColor" strokeWidth="2.5" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                      <path className="text-[#D4AF37] transition-all duration-1000" strokeDasharray={`${metrics.retention7d}, 100`} stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                      <path className="text-[#d2af5a] transition-all duration-1000" strokeDasharray={`${metrics.retention7d}, 100`} stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
                     </svg>
-                    <div className="absolute inset-0 flex items-center justify-center text-[8.5px] font-mono font-bold text-[#D4AF37]">
+                    <div className="absolute inset-0 flex items-center justify-center text-[8.5px] font-mono font-bold text-[#d2af5a]">
                       {metrics.retention7d}%
                     </div>
                   </div>
@@ -654,17 +654,17 @@ export function StrategicPanel() {
               </div>
 
               {/* Card 4: NPS & Subscriptions */}
-              <div className="relative overflow-hidden rounded-[1rem] border border-white/5 bg-white/[0.02] p-4 transition-all hover:border-[#D4AF37]/35 shadow-[0_0_15px_rgba(0,0,0,0.2)]">
+              <div className="chrome-subtle rounded-[1rem] p-4 transition-all hover:border-[#d2af5a]/30">
                 <div className="grid grid-cols-2 gap-2 divide-x divide-white/5">
                   <div className="pr-2">
-                    <p className="text-[8px] font-mono tracking-wider text-white/35 uppercase">NPS Score</p>
-                    <p className={`text-[20px] font-bold tracking-tight mt-1 font-mono ${metrics.nps === null ? 'text-white/40' : metrics.nps >= 30 ? 'text-[#D4AF37]' : 'text-white/70'}`}>
+                    <p className="text-[7.5px] md:text-[8px] font-mono tracking-wider text-white/30 uppercase">NPS Score</p>
+                    <p className={`text-[18px] font-bold tracking-tight mt-1 font-mono ${metrics.nps === null ? 'text-white/30' : metrics.nps >= 30 ? 'text-[#d2af5a]' : 'text-white/70'}`}>
                       {metrics.nps ?? 'N/A'}
                     </p>
                   </div>
                   <div className="pl-4">
-                    <p className="text-[8px] font-mono tracking-wider text-white/35 uppercase">Active Subs</p>
-                    <p className="text-[20px] font-bold text-white tracking-tight mt-1 font-mono">{metrics.subsActive}</p>
+                    <p className="text-[7.5px] md:text-[8px] font-mono tracking-wider text-white/30 uppercase">Active Subs</p>
+                    <p className="text-[18px] font-bold text-white tracking-tight mt-1 font-mono">{metrics.subsActive}</p>
                   </div>
                 </div>
               </div>
@@ -675,55 +675,55 @@ export function StrategicPanel() {
           )}
         </div>
 
-        {/* COLUNA 2: LLaMA AI ADVISOR */}
-        <div className="border border-white/5 rounded-[1.2rem] bg-[#0A0A0A] p-5 shadow-[0_4px_25px_rgba(0,0,0,0.5)] flex flex-col justify-between">
+        {/* COLUNA 2: LLaMA AI ADVISOR (IPB Soft) */}
+        <div className="ipb-soft rounded-[1.2rem] p-5 flex flex-col justify-between">
           <div>
             <div className="flex items-center justify-between border-b border-white/5 pb-2 mb-4">
               <div className="flex flex-col">
-                <p className="text-[9px] font-bold uppercase tracking-[0.15em] text-[#D4AF37]">LLaMA AI Advisor</p>
-                <span className="text-[7.5px] font-mono text-white/35">Groq • LLaMA 70b</span>
+                <p className="text-[7.5px] md:text-[9px] font-bold uppercase tracking-[0.15em] text-[#d2af5a]">LLaMA AI Advisor</p>
+                <span className="text-[7px] font-mono text-white/30">Groq • LLaMA 70b</span>
               </div>
               <button onClick={() => fetchAI(metrics, phase)} disabled={loadingAI}
-                className="flex items-center gap-1.5 rounded border border-[#D4AF37]/35 bg-[#D4AF37]/5 px-2.5 py-1 text-[8px] font-mono font-bold text-[#D4AF37] hover:bg-[#D4AF37]/15 transition-all disabled:opacity-30">
+                className="flex items-center gap-1.5 rounded border border-[#d2af5a]/35 bg-[#d2af5a]/5 px-2.5 py-1 text-[8px] font-mono font-bold text-[#d2af5a] hover:bg-[#d2af5a]/15 transition-all disabled:opacity-30">
                 <Sparkles className="h-2.5 w-2.5 animate-pulse" />{loadingAI ? '...' : 'REGENERAR'}
               </button>
             </div>
 
             {/* AI Focus Block */}
-            <div className="relative overflow-hidden rounded-[1rem] border border-[#D4AF37]/20 bg-[#D4AF37]/5 p-4 mb-4 shadow-[0_0_15px_rgba(212,175,55,0.03)]">
-              <p className="text-[8px] font-mono tracking-wider text-[#D4AF37] uppercase">Current Focus</p>
-              <p className="text-[12px] font-semibold leading-snug text-white mt-1.5">{directive.foco}</p>
+            <div className="relative overflow-hidden rounded-[1rem] border border-[#d2af5a]/20 bg-[#d2af5a]/5 p-4 mb-4 shadow-[0_0_15px_rgba(210,175,90,0.03)]">
+              <p className="text-[7.5px] md:text-[8px] font-mono tracking-wider text-[#d2af5a] uppercase">Current Focus</p>
+              <p className="text-[11px] md:text-[12px] font-semibold leading-snug text-white mt-1.5">{directive.foco}</p>
             </div>
 
             {/* Strategic Directives */}
-            <div className="rounded-[1rem] border border-white/5 bg-white/[0.015] p-4 mb-4">
-              <p className="text-[8px] font-mono tracking-wider text-white/35 uppercase mb-2">Directives</p>
-              <p className="text-[9.5px] leading-relaxed text-white/80 font-sans">{directive.diretiva}</p>
+            <div className="chrome-subtle rounded-[1rem] p-4 mb-4">
+              <p className="text-[7.5px] md:text-[8px] font-mono tracking-wider text-white/30 uppercase mb-2">Directives</p>
+              <p className="text-[9px] md:text-[10px] leading-relaxed text-white/70">{directive.diretiva}</p>
             </div>
           </div>
 
           {/* Blockages & Signals */}
           <div className="grid grid-cols-1 gap-3 pt-3 border-t border-white/5">
-            <div className="rounded-[0.8rem] bg-white/[0.01] border border-white/5 p-3">
-              <p className="text-[8px] font-mono font-semibold uppercase tracking-[0.12em] text-[#C0C0C0] mb-1">Bloqueio Crítico</p>
-              <p className="text-[8.5px] leading-relaxed text-white/50 italic font-sans">{directive.bloqueio}</p>
+            <div className="chrome-subtle rounded-[0.8rem] p-3">
+              <p className="text-[7.5px] md:text-[8px] font-mono font-semibold uppercase tracking-[0.12em] text-[#C0C0C0] mb-1">Bloqueio Crítico</p>
+              <p className="text-[8.5px] leading-relaxed text-white/40 italic">{directive.bloqueio}</p>
             </div>
-            <div className="rounded-[0.8rem] bg-[#D4AF37]/5 border border-[#D4AF37]/10 p-3">
-              <p className="text-[8px] font-mono font-semibold uppercase tracking-[0.12em] text-[#D4AF37] mb-1">Sinal de Avanço</p>
-              <p className="text-[8.5px] leading-relaxed text-white/75 font-sans">{directive.sinal}</p>
+            <div className="rounded-[0.8rem] bg-[#d2af5a]/5 border border-[#d2af5a]/10 p-3">
+              <p className="text-[7.5px] md:text-[8px] font-mono font-semibold uppercase tracking-[0.12em] text-[#d2af5a] mb-1">Sinal de Avanço</p>
+              <p className="text-[8.5px] leading-relaxed text-white/70">{directive.sinal}</p>
             </div>
           </div>
         </div>
 
-        {/* COLUNA 3: CHECKLIST & OKRs */}
-        <div className="border border-white/5 rounded-[1.2rem] bg-[#0A0A0A] p-5 shadow-[0_4px_25px_rgba(0,0,0,0.5)] flex flex-col justify-between">
+        {/* COLUNA 3: CHECKLIST & OKRs (IPB Soft) */}
+        <div className="ipb-soft rounded-[1.2rem] p-5 flex flex-col justify-between">
           <div>
             <div className="flex items-center justify-between border-b border-white/5 pb-2 mb-4">
               <div className="flex flex-col">
-                <p className="text-[9px] font-bold uppercase tracking-[0.15em] text-[#D4AF37]">Weekly Checklist</p>
-                <span className="text-[7.5px] font-mono text-white/35">Tasks (Week {phaseIdx + 1})</span>
+                <p className="text-[7.5px] md:text-[9px] font-bold uppercase tracking-[0.15em] text-[#d2af5a]">Weekly Checklist</p>
+                <span className="text-[7px] font-mono text-white/30">Tasks (Week {phaseIdx + 1})</span>
               </div>
-              <div className="flex items-center gap-1 text-[#D4AF37] font-mono text-[9px] font-bold">
+              <div className="flex items-center gap-1 text-[#d2af5a] font-mono text-[9px] font-bold">
                 {Math.round((weekDone.length / directive.acoes.length) * 100)}%
               </div>
             </div>
@@ -734,13 +734,13 @@ export function StrategicPanel() {
                 const done = weekDone.includes(`w${i}`)
                 return (
                   <button key={i} onClick={() => toggleWeek(i)}
-                    className={`flex w-full items-start gap-3 rounded-[0.8rem] border p-3 text-left transition-all ${done ? 'border-[#D4AF37]/20 bg-[#D4AF37]/5 hover:bg-[#D4AF37]/10' : 'border-white/5 bg-white/[0.015] hover:bg-white/[0.03]'}`}>
+                    className={`flex w-full items-start gap-3 rounded-[0.8rem] border p-3 text-left transition-all ${done ? 'border-[#d2af5a]/22 bg-[#d2af5a]/5 hover:bg-[#d2af5a]/10' : 'border-white/5 bg-white/[0.01] hover:bg-white/[0.03]'}`}>
                     {done
-                      ? <CheckSquare className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#D4AF37]" />
+                      ? <CheckSquare className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#d2af5a]" />
                       : <Square      className="mt-0.5 h-3.5 w-3.5 shrink-0 text-white/20" />
                     }
                     <div className="flex-1 min-w-0">
-                      <span className={`text-[8.5px] leading-relaxed font-sans ${done ? 'text-white/30 line-through' : 'text-white/70'}`}>
+                      <span className={`text-[8.5px] leading-relaxed ${done ? 'text-white/30 line-through' : 'text-white/70'}`}>
                         {acao}
                       </span>
                     </div>
@@ -752,21 +752,21 @@ export function StrategicPanel() {
 
           {/* OKRs */}
           <div className="border-t border-white/5 pt-4">
-            <p className="text-[9px] font-bold uppercase tracking-[0.15em] text-[#D4AF37] mb-3">Cycle OKRs ({phase.toUpperCase()})</p>
+            <p className="text-[7.5px] md:text-[9px] font-bold uppercase tracking-[0.15em] text-[#d2af5a] mb-3">Cycle OKRs ({phase.toUpperCase()})</p>
             <div className="space-y-3">
               {okrs.map((okr, oi) => (
-                <div key={oi} className="rounded-[0.8rem] border border-white/5 bg-white/[0.005] p-3 space-y-2.5">
+                <div key={oi} className="chrome-subtle rounded-[0.8rem] p-3 space-y-2.5">
                   <p className="text-[8.5px] font-bold text-white/80 leading-snug">O{oi + 1}. {okr.objetivo}</p>
                   {okr.krs.map((kr, ki) => (
                     <div key={ki} className="flex items-start gap-2 pt-1.5 border-t border-white/5">
-                      <span className="text-[7.5px] font-mono text-white/30 shrink-0 mt-0.5">KR{ki + 1}</span>
+                      <span className="text-[7px] font-mono text-white/30 shrink-0 mt-0.5">KR{ki + 1}</span>
                       <div className="flex-1">
                         <p className="text-[8px] text-white/50 leading-snug mb-1">{kr.descricao}</p>
                         <div className="flex items-center gap-2">
                           <div className="flex-1 h-1 bg-white/5 rounded-full overflow-hidden">
-                            <div className="h-full bg-[#D4AF37] rounded-full transition-all duration-500" style={{ width: `${kr.progresso}%` }} />
+                            <div className="h-full bg-[#d2af5a] rounded-full transition-all duration-500" style={{ width: `${kr.progresso}%` }} />
                           </div>
-                          <span className="text-[7.5px] font-mono text-white/40 w-6 text-right">{kr.progresso}%</span>
+                          <span className="text-[7px] font-mono text-white/30 w-6 text-right">{kr.progresso}%</span>
                         </div>
                       </div>
                     </div>
@@ -779,79 +779,79 @@ export function StrategicPanel() {
 
       </div>
 
-      {/* ── NORTE ESTRATÉGICO COMPACTO ── */}
-      <div className="border border-white/5 bg-[#0C0C0C] rounded-[1.2rem] p-5 shadow-[0_0_20px_rgba(0,0,0,0.3)]">
-        <p className="text-[9px] font-bold uppercase tracking-[0.2em] font-mono text-[#D4AF37] mb-3">Norte Estratégico</p>
+      {/* ── NORTE ESTRATÉGICO COMPACTO (IPB Soft) ── */}
+      <div className="ipb-soft rounded-[1.2rem] p-5">
+        <p className="text-[7.5px] md:text-[9px] font-bold uppercase tracking-[0.2em] font-mono text-[#d2af5a] mb-3">Norte Estratégico</p>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 divide-y md:divide-y-0 md:divide-x divide-white/5">
           <div className="pb-3 md:pb-0">
-            <p className="text-[7.5px] font-semibold font-mono uppercase tracking-[0.15em] text-white/30 mb-1">Situação Atual</p>
-            <p className="text-[8.5px] leading-relaxed text-white/60">{norte.onde}</p>
+            <p className="text-[7px] font-semibold font-mono uppercase tracking-[0.15em] text-white/20 mb-1">Situação Atual</p>
+            <p className="text-[8.5px] leading-relaxed text-white/50">{norte.onde}</p>
           </div>
           <div className="pt-3 md:pt-0 md:pl-4">
-            <p className="text-[7.5px] font-semibold font-mono uppercase tracking-[0.15em] text-white/30 mb-1">Próximo Objetivo</p>
-            <p className="text-[8.5px] leading-relaxed text-white/65">{norte.proximo}</p>
+            <p className="text-[7px] font-semibold font-mono uppercase tracking-[0.15em] text-white/20 mb-1">Próximo Objetivo</p>
+            <p className="text-[8.5px] leading-relaxed text-white/50">{norte.proximo}</p>
           </div>
           <div className="pt-3 md:pt-0 md:pl-4">
-            <p className="text-[7.5px] font-semibold font-mono uppercase tracking-[0.15em] text-[#D4AF37]/75 mb-1">Aposta Estratégica</p>
-            <p className="text-[8.5px] leading-relaxed text-white/80 font-medium">{norte.aposta}</p>
+            <p className="text-[7px] font-semibold font-mono uppercase tracking-[0.15em] text-[#d2af5a]/75 mb-1">Aposta Estratégica</p>
+            <p className="text-[8.5px] leading-relaxed text-white/70 font-medium">{norte.aposta}</p>
           </div>
         </div>
       </div>
 
-      {/* ── ADVANCED PANEL: GOVERNANÇA E CONTROLE (GAVETA COLAPSÁVEL) ── */}
+      {/* ── ADVANCED PANEL: GOVERNANÇA E CONTROLE (GAVETA COLAPSÁVEL COM IPB-SOFT) ── */}
       <div className="border-t border-white/5 pt-6 mt-6">
         <div className="flex justify-between items-center mb-4">
-          <p className="text-[10px] font-bold uppercase tracking-[0.25em] font-mono text-[#D4AF37]">Governance & Advanced Architecture</p>
+          <p className="text-[8px] md:text-[10px] font-bold uppercase tracking-[0.25em] font-mono text-[#d2af5a]">Governance & Advanced Architecture</p>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {/* SGI */}
           <Sec label="Digital Integration Map (SGI)" badge={`${sgiOk}/${sgi.length}`} open={open.sgi} toggle={() => tog('sgi')}>
-            <div className="space-y-1 bg-[#0A0A0A] p-2.5 rounded-[0.8rem] border border-white/5">
+            <div className="space-y-1 ipb-soft p-2.5 rounded-[0.8rem]">
               {sgi.map((item, i) => <CheckRow key={i} item={item} />)}
             </div>
           </Sec>
 
           {/* DDDM */}
           <Sec label="Data-Driven Strategy (DDDM)" badge={`${dddmOk}/${dddm.length}`} open={open.dddm} toggle={() => tog('dddm')}>
-            <div className="space-y-1 bg-[#0A0A0A] p-2.5 rounded-[0.8rem] border border-white/5">
+            <div className="space-y-1 ipb-soft p-2.5 rounded-[0.8rem]">
               {dddm.map((item, i) => <CheckRow key={i} item={item} />)}
             </div>
           </Sec>
 
           {/* Trends */}
           <Sec label="Market Trends" badge={`${tendOk}/${tend.length}`} open={open.tend} toggle={() => tog('tend')}>
-            <div className="space-y-1 bg-[#0A0A0A] p-2.5 rounded-[0.8rem] border border-white/5">
+            <div className="space-y-1 ipb-soft p-2.5 rounded-[0.8rem]">
               {tend.map((item, i) => <CheckRow key={i} item={item} />)}
             </div>
           </Sec>
 
           {/* Sustentabilidade */}
           <Sec label="Sustentabilidade" badge={`${sustOk}/${sust.length}`} open={open.sust} toggle={() => tog('sust')}>
-            <div className="space-y-1 bg-[#0A0A0A] p-2.5 rounded-[0.8rem] border border-white/5">
+            <div className="space-y-1 ipb-soft p-2.5 rounded-[0.8rem]">
               {sust.map((item, i) => <CheckRow key={i} item={item} />)}
             </div>
           </Sec>
 
           {/* Governança */}
           <Sec label="Corporate Governance" open={open.gov} toggle={() => tog('gov')}>
-            <div className="space-y-2 bg-[#0A0A0A] p-2.5 rounded-[0.8rem] border border-white/5">
+            <div className="space-y-2 ipb-soft p-2.5 rounded-[0.8rem]">
               {gov.map((pilar, pi) => {
                 const okCount = pilar.items.filter(i => i.ok).length
                 return (
                   <div key={pi} className="rounded-[0.6rem] border border-white/5 p-2.5 space-y-1 bg-white/[0.005]">
                     <div className="flex items-center justify-between mb-1">
-                      <p className="text-[8px] font-mono font-bold text-white/50">{pilar.pilar}</p>
-                      <span className="text-[7px] font-mono text-white/30">{okCount}/{pilar.items.length}</span>
+                      <p className="text-[8px] font-mono font-bold text-white/40">{pilar.pilar}</p>
+                      <span className="text-[7px] font-mono text-white/20">{okCount}/{pilar.items.length}</span>
                     </div>
                     {pilar.items.map((item, ii) => (
                       <div key={ii} className="flex items-start gap-1">
                         {item.ok
-                          ? <CheckCircle2 className="mt-0.5 h-2.5 w-2.5 shrink-0 text-[#D4AF37]/80" />
+                          ? <CheckCircle2 className="mt-0.5 h-2.5 w-2.5 shrink-0 text-[#d2af5a]/80" />
                           : <AlertCircle className="mt-0.5 h-2.5 w-2.5 shrink-0 text-white/20" />
                         }
                         <div className="flex-1 min-w-0">
-                          <p className={`text-[7.5px] font-mono leading-tight ${item.ok ? 'text-white/70' : 'text-white/30'}`}>{item.label}</p>
+                          <p className={`text-[7.5px] font-mono leading-tight ${item.ok ? 'text-white/60' : 'text-white/25'}`}>{item.label}</p>
                         </div>
                       </div>
                     ))}
@@ -863,14 +863,14 @@ export function StrategicPanel() {
 
           {/* Monitor */}
           <Sec label="Strategic Telemetry Monitor" open={open.monitor} toggle={() => tog('monitor')}>
-            <div className="space-y-2 bg-[#0A0A0A] p-2.5 rounded-[0.8rem] border border-white/5">
+            <div className="space-y-2 ipb-soft p-2.5 rounded-[0.8rem]">
               <div className="grid grid-cols-2 gap-1.5">
                 {monitor.map((item, i) => (
-                  <div key={i} className="flex items-center gap-1.5 rounded-[0.5rem] border border-white/5 px-2 py-1.5">
+                  <div key={i} className="flex items-center gap-1.5 rounded-[0.5rem] border border-white/5 px-2 py-1.5 bg-white/[0.01]">
                     <MonitorDot status={item.status} />
                     <div className="min-w-0">
-                      <p className="text-[7.5px] font-mono text-white/40 truncate">{item.label}</p>
-                      <p className="text-[7.5px] font-mono font-bold text-white/80">{item.valor}</p>
+                      <p className="text-[7px] font-mono text-white/30 truncate">{item.label}</p>
+                      <p className="text-[7px] font-mono font-bold text-white/70">{item.valor}</p>
                     </div>
                   </div>
                 ))}
