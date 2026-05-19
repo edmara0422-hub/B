@@ -418,6 +418,8 @@ const PROTOCOL_OPTIONS = [
   { id: 'tep', label: 'TEP', color: '#a78bfa' },
   { id: 'obeso', label: 'Obeso (IMC > 30)', color: '#facc15' },
   { id: 'me', label: 'Morte Encefalica (Doador)', color: '#94a3b8' },
+  { id: 'vm-neo', label: 'VM Neonatal (todas as idades)', color: '#fb7185' },
+  { id: 'vm-pedi', label: 'VM Pediatrica (todas as idades)', color: '#a78bfa' },
 ] as const
 
 const TRE_TYPE_OPTIONS = [
@@ -2149,6 +2151,109 @@ function getProtocolContent(id: string) {
       <ProtoSection title="Pre-requisitos ME (CFM 2.173/2017):" />
       <ProtoNote text="• Causa conhecida e irreversivel | Temp ≥ 35°C | PAS ≥ 100 mmHg" />
       <ProtoNote text="• Ausencia de drogas depressoras SNC | Observacao ≥ 6 horas" />
+    </div>
+  )
+  if (id === 'vm-neo') return (
+    <div>
+      <ProtoSection title="VM Neonatal Completo (RN pré-termo, termo e até 28 dias)" color="#fb7185" />
+      <ProtoSection title="INDICACOES DE IOT:" />
+      <ProtoNote text="• Falencia de VNI/CPAP com FiO2 > 40-50%" />
+      <ProtoNote text="• Apneia grave/recorrente refratária a xantinas e VNI" />
+      <ProtoNote text="• Instabilidade hemodinâmica grave ou PCR" />
+      <ProtoNote text="• Acidose grave: pH < 7,20 com PaCO₂ > 60-65 mmHg" />
+      <ProtoSection title="MODO VENTILATORIO PADRAO-OURO:" />
+      <ProtoNote text="• A/C ou SIMV + Volume Garantido (VG) — reduz volutrauma" />
+      <ProtoNote text="• Alternativa: PCV ciclada por tempo + limite de pressão (TCPL)" />
+      <ProtoSection title="PARAMETROS INICIAIS:" />
+      <ProtoRow label="Volume Alvo (VG)" value="< 28 sem: 5-6 mL/kg" obs="28-36 sem: 4,5-5,5 | Termo: 5-6" />
+      <ProtoRow label="PIP Limite" value="20-25 cmH₂O" obs="PCV puro: 16-22 inicial" />
+      <ProtoRow label="PEEP" value="5 cmH₂O (normal)" obs="SDR/Atelectasia/Mecônio: 6-7" />
+      <ProtoRow label="FR" value="40-60 rpm" />
+      <ProtoRow label="Ti < 1000g" value="0,28-0,32 s" />
+      <ProtoRow label="Ti 1000-2500g" value="0,32-0,35 s" />
+      <ProtoRow label="Ti > 2500g (termo)" value="0,35-0,40 s" />
+      <ProtoRow label="Fluxo" value="6-8 L/min" />
+      <ProtoRow label="Trigger" value="0,2-0,5 L/min" obs="Ultra-sensivel (evita auto-disparo)" />
+      <ProtoRow label="FiO₂ inicial" value="21-30%" obs="100% se PCR/reanimação" />
+      <ProtoSection title="METAS GASOMETRICAS:" />
+      <ProtoNote text="• SpO₂ 90-95% (alarmes: min 89% / max 95%)" />
+      <ProtoNote text="• pH 7,25-7,35 | PaCO₂ 45-55 mmHg" />
+      <ProtoNote text="• Hipercapnia permissiva se pH ≥ 7,22 (NÃO em HPPN — manter PaCO₂ 35-45)" />
+      <ProtoBox text="EVITAR HIPEROXIA — risco de ROP (retinopatia da prematuridade) e DBP (displasia broncopulmonar). Sempre titular FiO₂ ao mínimo necessário." />
+      <ProtoSection title="VNI NEONATAL (1a LINHA):" />
+      <ProtoNote text="• CPAP nasal: 5-6 cmH₂O (máx 8) — Prongas binasais curtas" />
+      <ProtoNote text="• NIPPV: PEEP 5-6 + PIP 15-22 + FR 20-40 + Ti 0,35-0,45s" />
+      <ProtoNote text="• Falha VNI (intubar): FiO₂ > 40% com CPAP 6-7 | Apneias > 2-3/h | pH < 7,20" />
+      <ProtoSection title="DESMAME NEONATAL:" />
+      <ProtoNote text="• Reduzir FR em passos de 5 rpm até 20-25 rpm" />
+      <ProtoNote text="• Migrar para PSV: PS 8-10 + PEEP 5 por 1-2h" />
+      <ProtoNote text="• Extubação DIRETA para CPAP de Bolhas 5-6 cmH₂O ou NIPPV (prematuro extremo)" />
+      <ProtoBox text="Todos prematuros < 32 sem ou < 1.500g devem ser extubados OBRIGATORIAMENTE para CPAP de bolhas ou NIPPV. Nunca para O₂ livre." />
+      <ProtoSection title="ALARMES OBRIGATORIOS:" />
+      <ProtoNote text="• PIP máx: 5 cmH₂O acima do habitual | VM mín: 20% abaixo do medido" />
+      <ProtoNote text="• Apneia: disparar após 10 segundos" />
+    </div>
+  )
+  if (id === 'vm-pedi') return (
+    <div>
+      <ProtoSection title="VM Pediátrica Completo (29 dias a 18 anos)" color="#a78bfa" />
+      <ProtoSection title="PARAMETROS POR FAIXA ETARIA:" />
+      <ProtoSection title="Lactentes (29d a 2a):" />
+      <ProtoRow label="Modo" value="PCV ou PRVC" />
+      <ProtoRow label="Vt" value="5-7 mL/kg" />
+      <ProtoRow label="FR" value="25-35 rpm" />
+      <ProtoRow label="Ti" value="0,5-0,7 s" />
+      <ProtoRow label="PEEP" value="5-6 cmH₂O" />
+      <ProtoRow label="Trigger" value="0,5-1,0 L/min" />
+      <ProtoRow label="PIP máx" value="< 25 cmH₂O" />
+      <ProtoSection title="Crianças (2-12a):" />
+      <ProtoRow label="Modo" value="PCV / VCV / PRVC" />
+      <ProtoRow label="Vt" value="6-8 mL/kg" />
+      <ProtoRow label="FR" value="18-25 rpm" />
+      <ProtoRow label="Ti" value="0,7-0,9 s" />
+      <ProtoRow label="PEEP" value="5-7 cmH₂O" />
+      <ProtoRow label="Trigger" value="1,0-1,5 L/min" />
+      <ProtoRow label="PIP máx" value="< 28 cmH₂O" />
+      <ProtoSection title="Adolescentes (> 12a):" />
+      <ProtoRow label="Modo" value="VCV ou PRVC" />
+      <ProtoRow label="Vt" value="6-8 mL/kg (peso ideal)" />
+      <ProtoRow label="FR" value="12-20 rpm" />
+      <ProtoRow label="Ti" value="0,9-1,2 s" />
+      <ProtoRow label="PEEP" value="5-8 cmH₂O" />
+      <ProtoRow label="Trigger" value="1,5-2,0 L/min" />
+      <ProtoRow label="PIP máx" value="< 30 cmH₂O" />
+      <ProtoSection title="PROTECAO PULMONAR (PALICC-2):" />
+      <ProtoNote text="• Pplato OBRIGATORIO ≤ 28 cmH₂O (≤ 32 se complacência de parede reduzida)" />
+      <ProtoNote text="• Driving Pressure (ΔP = Pplato − PEEP): < 15 cmH₂O" />
+      <ProtoNote text="• Pressão de Pico (PIP): < 30 cmH₂O" />
+      <ProtoSection title="PARDS (SDRA Pediátrica):" />
+      <ProtoNote text="• Vt: 4-6 mL/kg | PEEP escalonada 8-14 cmH₂O" />
+      <ProtoNote text="• SpO₂ 88-92% se PEEP otimizada | Hipercapnia permissiva pH ≥ 7,20" />
+      <ProtoSection title="Asma / Bronquiolite (Obstrutivo):" />
+      <ProtoNote text="• Diminuir FR + encurtar Ti → I:E 1:3 a 1:4 (evita auto-PEEP)" />
+      <ProtoNote text="• PEEP ≈ 80% da Auto-PEEP medida (4-5 cmH₂O típico)" />
+      <ProtoSection title="VNI PEDIATRICA:" />
+      <ProtoSection title="CNAF (Cateter Alto Fluxo):" />
+      <ProtoNote text="• Lactente < 10kg: 2 L/kg/min" />
+      <ProtoNote text="• Criança > 10kg: 2 L/kg/min nos primeiros 10kg + 0,5 L/kg/min por kg adicional (máx 50-60 L/min)" />
+      <ProtoNote text="• FiO₂ inicial 50% → meta SpO₂ 94-98% (88-92% se PARDS)" />
+      <ProtoBox text="Escala ROX = (SpO₂/FiO₂) / FR — ROX < 4,88 às 2/6/12h = alto risco de falha → IOT" />
+      <ProtoSection title="BiPAP/CPAP por Faixa:" />
+      <ProtoRow label="Lactente: EPAP 5 / IPAP" value="10-14 cmH₂O" obs="Delta 5-8" />
+      <ProtoRow label="Criança: EPAP 5-6 / IPAP" value="12-16 cmH₂O" obs="Delta 6-10" />
+      <ProtoRow label="Adolescente: EPAP 5-7 / IPAP" value="14-18 cmH₂O" obs="Delta 8-12" />
+      <ProtoSection title="DESMAME PEDIATRICO (TRE):" />
+      <ProtoNote text="• Configurar PSV: PS 6-10 cmH₂O (compensa resistência TOT) + PEEP 5" />
+      <ProtoNote text="• Duração: 30-60 minutos" />
+      <ProtoNote text="• Critérios falha: FR Lactente > 60 / Criança > 45 / Adol > 30 rpm" />
+      <ProtoNote text="• SpO₂ < 90% | FiO₂ necessária > 40% | Sudorese, agitação, RNC" />
+      <ProtoSection title="PRE-EXTUBACAO:" />
+      <ProtoNote text="• Jejum 4-6h | Cuff-leak test | Dexametasona 0,25-0,5 mg/kg 4-12h antes (risco estridor)" />
+      <ProtoNote text="• Suporte pos-extubação: CNAF ou VNI (BiPAP) por 4-6h se risco de falha" />
+      <ProtoSection title="ALARMES OBRIGATORIOS:" />
+      <ProtoNote text="• PIP máx: 5 cmH₂O acima do habitual" />
+      <ProtoNote text="• VM mínimo: 20% abaixo do medido" />
+      <ProtoNote text="• Apneia: disparar após 15 segundos" />
     </div>
   )
   return null
@@ -7684,6 +7789,41 @@ export function ProntuarioSystemPanel() {
                   </div>
                   {!collapsedDesmame && (
                     <>
+                      {/* Perfil etário do desmame */}
+                      <div className="mt-1.5 mb-1.5">
+                        <FieldShell label="Perfil do paciente (parâmetros específicos por idade)">
+                          <select className={INPUT_CLASS_SM} style={INPUT_STYLE} value={currentRecord.perfilVM ?? ''} onChange={(event) => setField('perfilVM', event.target.value)}>
+                            <option value="">-- Selecionar --</option>
+                            <option value="adulto">Adulto (FR &gt; 35 = falha · CV ≥ 15 mL/kg · RSBI &lt; 80)</option>
+                            <option value="pediatrico">Pediátrico (Lact FR &gt; 60 · Cri FR &gt; 45 · Esc FR &gt; 35 · Adol FR &gt; 30)</option>
+                            <option value="neonatal">Neonatal (PSV 8-10 + PEEP 5 · extubar p/ CPAP Bolhas 5-6)</option>
+                          </select>
+                        </FieldShell>
+                      </div>
+
+                      {/* Guia rápido por perfil */}
+                      {currentRecord.perfilVM === 'adulto' && (
+                        <div className="mb-1.5 rounded-[0.6rem] px-2 py-1.5 text-[8.5px] text-white/70" style={{ background: 'rgba(96,165,250,0.06)', border: '1px solid rgba(96,165,250,0.18)' }}>
+                          <p className="font-semibold text-[#93c5fd]">TRE Adulto:</p>
+                          <p>PSV 5-8 + PEEP 5 por 30-120 min · Sucesso: FR &lt; 35 · SpO₂ &gt; 90% · FC &lt; 140 · PAS 90-180 · sem desconforto</p>
+                        </div>
+                      )}
+                      {currentRecord.perfilVM === 'pediatrico' && (
+                        <div className="mb-1.5 rounded-[0.6rem] px-2 py-1.5 text-[8.5px] text-white/70" style={{ background: 'rgba(167,139,250,0.06)', border: '1px solid rgba(167,139,250,0.18)' }}>
+                          <p className="font-semibold text-[#a78bfa]">TRE Pediátrico:</p>
+                          <p>PSV 6-10 + PEEP 5 por 30-60 min · Falha: Lactente &gt; 60 / Criança &gt; 45 / Escolar &gt; 35 / Adolescente &gt; 30 rpm · SpO₂ &lt; 90% ou FiO₂ &gt; 40%</p>
+                          <p className="mt-0.5">Pré-extubação: Cuff-leak test · Dexametasona 0,25-0,5 mg/kg 4-12h antes se risco estridor</p>
+                        </div>
+                      )}
+                      {currentRecord.perfilVM === 'neonatal' && (
+                        <div className="mb-1.5 rounded-[0.6rem] px-2 py-1.5 text-[8.5px] text-white/70" style={{ background: 'rgba(251,113,133,0.06)', border: '1px solid rgba(251,113,133,0.18)' }}>
+                          <p className="font-semibold text-[#fb7185]">Desmame Neonatal:</p>
+                          <p>Reduzir FR em passos de 5 rpm até 20-25 rpm · Migrar para PSV 8-10 + PEEP 5 por 1-2h</p>
+                          <p className="mt-0.5">Extubação DIRETA para CPAP de Bolhas 5-6 cmH₂O (prematuro &lt; 32 sem ou &lt; 1500g obrigatório) ou NIPPV</p>
+                          <p className="mt-0.5 text-[#fb7185]">⚠ Tubo-T PROIBIDO em neonato (resistência alta do tubo neo causa fadiga)</p>
+                        </div>
+                      )}
+
                       {/* Inputs em 1 linha */}
                       <div className="mt-1.5 grid gap-0.5 grid-cols-5">
                         <FieldShell label="PImax">
