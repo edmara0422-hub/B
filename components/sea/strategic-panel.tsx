@@ -536,199 +536,349 @@ export function StrategicPanel() {
   )
 
   return (
-    <div className="space-y-0 divide-y divide-white/5">
-
-      {/* ── POSIÇÃO ───────────────────────────────────────────────────────── */}
-      <div className="pb-4">
-        <div className="mb-3 flex items-center justify-between">
-          <div className="flex items-center gap-1.5 flex-wrap">
-            {PHASES.map((ph, i) => (
-              <React.Fragment key={ph.id}>
-                {i > 0 && <span className="text-white/15 text-[9px]">›</span>}
-                <span className={`text-[9px] font-bold ${i === phaseIdx ? 'text-white/90' : i < phaseIdx ? 'text-white/35' : 'text-white/15'}`}>
-                  {ph.label}
-                  {i === phaseIdx && <span className="ml-0.5 text-[8px] font-normal text-white/50"> {ph.sublabel}</span>}
-                </span>
-              </React.Fragment>
-            ))}
+    <div className="space-y-6 text-white font-sans p-2">
+      {/* ── TOP NAV: TIMELINE DE FASES DE CRESCIMENTO ── */}
+      <div className="flex flex-col gap-4 border border-[#D4AF37]/15 bg-[#0C0C0C] rounded-[1.2rem] p-5 shadow-[0_0_30px_rgba(212,175,55,0.03)]">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <div className="h-2 w-2 rounded-full bg-[#D4AF37] animate-pulse" />
+            <span className="text-[10px] uppercase tracking-[0.25em] font-mono font-bold text-white/90">SEA FISIO STRATEGIC COCKPIT</span>
           </div>
-          <button onClick={loadMetrics} className="text-white/20 hover:text-white/45">
-            <RefreshCw className="h-3.5 w-3.5" />
-          </button>
+          <div className="flex items-center gap-1.5 rounded-full border border-[#D4AF37]/35 bg-[#D4AF37]/5 px-3 py-1 text-[8px] font-mono font-bold text-[#D4AF37]">
+            {phase.toUpperCase()} ATIVA
+          </div>
         </div>
-
-        <div className="flex items-end gap-5">
-          {[
-            { l: 'Usuários',   v: metrics.totalUsers },
-            { l: 'Ativos/sem', v: metrics.activeWeek },
-            { l: 'Ret 7d',     v: `${metrics.retention7d}%` },
-            { l: 'NPS',        v: metrics.nps ?? '--' },
-            { l: 'Assin.',     v: metrics.subsActive },
-          ].map(m => (
-            <div key={m.l}>
-              <p className="text-[14px] font-bold tabular-nums text-white/80">{m.v}</p>
-              <p className="text-[8px] text-white/32">{m.l}</p>
-            </div>
-          ))}
-          {metrics.loadedAt && <p className="ml-auto text-[7px] text-white/20 pb-1">{metrics.loadedAt}</p>}
+        
+        <div className="relative flex items-center justify-between mt-3 px-4">
+          {/* Background Line */}
+          <div className="absolute left-6 right-6 top-1/2 h-[2px] -translate-y-1/2 bg-white/5" />
+          {/* Active Highlight Line */}
+          <div 
+            className="absolute left-6 top-1/2 h-[2px] -translate-y-1/2 bg-[#D4AF37] shadow-[0_0_8px_rgba(212,175,55,0.6)] transition-all duration-500" 
+            style={{ width: `${(phaseIdx / (PHASES.length - 1)) * 100}%` }}
+          />
+          
+          {PHASES.map((ph, i) => {
+            const isActive = i === phaseIdx
+            const isPast = i < phaseIdx
+            return (
+              <div key={ph.id} className="relative z-10 flex flex-col items-center">
+                <div 
+                  className={`flex h-7 w-7 items-center justify-center rounded-full border transition-all duration-300 font-mono text-[9px] font-bold ${
+                    isActive 
+                      ? 'border-[#D4AF37] bg-[#0A0A0A] text-[#D4AF37] shadow-[0_0_12px_rgba(212,175,55,0.4)] scale-110' 
+                      : isPast 
+                        ? 'border-[#C0C0C0] bg-[#C0C0C0] text-[#0A0A0A]' 
+                        : 'border-white/10 bg-[#0c0c0c] text-white/30'
+                  }`}
+                >
+                  {ph.label}
+                </div>
+                <span className={`text-[7.5px] mt-1 font-mono tracking-wider transition-colors ${isActive ? 'text-[#D4AF37] font-bold' : 'text-white/30'}`}>
+                  {ph.sublabel}
+                </span>
+              </div>
+            )
+          })}
         </div>
       </div>
 
-      {/* ── DIRETIVA ─────────────────────────────────────────────────────── */}
-      <Sec label="Diretiva" open={open.diretiva} toggle={() => tog('diretiva')}>
-        <div className="flex items-center justify-between mb-2">
-          <div className="flex items-center gap-1.5">
-            {loadingAI
-              ? <><div className="h-1.5 w-1.5 animate-pulse rounded-full bg-white/35" /><span className="text-[8px] text-white/30">Groq gerando análise...</span></>
-              : aiError
-                ? <><div className="h-1.5 w-1.5 rounded-full bg-white/15" /><span className="text-[8px] text-white/25">análise local</span></>
-                : aiDirective
-                  ? <><div className="h-1.5 w-1.5 rounded-full bg-white/50" /><span className="text-[8px] text-white/35">Groq · LLaMA 70b</span></>
-                  : null
-            }
-          </div>
-          <button onClick={() => fetchAI(metrics, phase)} disabled={loadingAI}
-            className="flex items-center gap-1 rounded border border-white/8 px-2 py-1 text-[8px] text-white/28 hover:text-white/55 disabled:opacity-30">
-            <Sparkles className="h-2.5 w-2.5" />{loadingAI ? '...' : 'Regenerar'}
-          </button>
-        </div>
-
-        <p className="text-[12px] font-medium leading-snug text-white/85 mb-3">{directive.foco}</p>
-        <div className="rounded-[0.7rem] border border-white/8 bg-white/[0.02] p-3 mb-3">
-          <p className="text-[9px] leading-relaxed text-white/65">{directive.diretiva}</p>
-        </div>
-        <div className="flex gap-3">
-          <div className="flex-1">
-            <p className="text-[8px] font-semibold uppercase tracking-[0.1em] text-white/25 mb-1">Bloqueio</p>
-            <p className="text-[8px] leading-relaxed text-white/42 italic">{directive.bloqueio}</p>
-          </div>
-          <div className="flex-1">
-            <p className="text-[8px] font-semibold uppercase tracking-[0.1em] text-white/25 mb-1">Sinal de avanço</p>
-            <p className="text-[8px] leading-relaxed text-white/48">{directive.sinal}</p>
-          </div>
-        </div>
-      </Sec>
-
-      {/* ── AÇÕES DESTA SEMANA ────────────────────────────────────────────── */}
-      <Sec label="Esta semana" badge={`${weekDone.length}/3`} open={open.acoes} toggle={() => tog('acoes')}>
-        {directive.acoes.map((acao, i) => {
-          const done = weekDone.includes(`w${i}`)
-          return (
-            <button key={i} onClick={() => toggleWeek(i)}
-              className={`flex w-full items-start gap-2.5 rounded-[0.7rem] border px-3 py-2 text-left transition-all ${done ? 'border-white/8 bg-white/[0.025]' : 'border-white/5 hover:bg-white/[0.01]'}`}>
-              {done
-                ? <CheckSquare className="mt-0.5 h-3.5 w-3.5 shrink-0 text-white/45" />
-                : <Square      className="mt-0.5 h-3.5 w-3.5 shrink-0 text-white/18" />
-              }
-              <span className={`text-[9px] leading-relaxed ${done ? 'text-white/28 line-through' : 'text-white/65'}`}>
-                <span className="mr-1 text-[8px] font-bold text-white/30">{i + 1}.</span>{acao}
-              </span>
-            </button>
-          )
-        })}
-      </Sec>
-
-      {/* ── NORTE ────────────────────────────────────────────────────────── */}
-      <Sec label="Norte estratégico" open={open.norte} toggle={() => tog('norte')}>
-        <div className="rounded-[0.8rem] border border-white/8 bg-white/[0.02] p-3 space-y-3">
+      {/* ── CENTRAL GRID: 3 COLUMNS ── */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        {/* COLUNA 1: METRICAS E SAUDE COMERCIAL */}
+        <div className="border border-white/5 rounded-[1.2rem] bg-[#0A0A0A] p-5 shadow-[0_4px_25px_rgba(0,0,0,0.5)] flex flex-col justify-between">
           <div>
-            <p className="text-[8px] font-semibold uppercase tracking-[0.12em] text-white/28 mb-1">Onde o SEA está</p>
-            <p className="text-[9px] leading-relaxed text-white/65">{norte.onde}</p>
-          </div>
-          <div>
-            <p className="text-[8px] font-semibold uppercase tracking-[0.12em] text-white/28 mb-1">Próxima fase exige</p>
-            <p className="text-[9px] leading-relaxed text-white/55">{norte.proximo}</p>
-          </div>
-          <div>
-            <p className="text-[8px] font-semibold uppercase tracking-[0.12em] text-white/28 mb-1">Aposta estratégica</p>
-            <p className="text-[9px] leading-relaxed text-white/72 font-medium">{norte.aposta}</p>
-          </div>
-        </div>
-      </Sec>
+            <p className="text-[9px] font-bold uppercase tracking-[0.15em] text-[#D4AF37] mb-4 border-b border-white/5 pb-2">Clinical & Business Metrics</p>
+            
+            <div className="space-y-4">
+              {/* Card 1: Users */}
+              <div className="relative overflow-hidden rounded-[1rem] border border-white/5 bg-white/[0.02] p-4 transition-all hover:border-[#D4AF37]/35 shadow-[0_0_15px_rgba(0,0,0,0.2)]">
+                <div className="flex justify-between items-start">
+                  <div>
+                    <p className="text-[8px] font-mono tracking-wider text-white/35 uppercase">Total Patients</p>
+                    <p className="text-[26px] font-bold text-white tracking-tight mt-1 font-mono">{metrics.totalUsers}</p>
+                  </div>
+                  <span className="text-[8.5px] font-mono font-bold text-[#D4AF37] px-2 py-0.5 rounded-full bg-[#D4AF37]/5 border border-[#D4AF37]/20">Active</span>
+                </div>
+                {/* Decorative sparkline */}
+                <div className="h-10 mt-3 flex items-end">
+                  <svg className="w-full h-full text-[#D4AF37]/60" viewBox="0 0 100 30" preserveAspectRatio="none">
+                    <path d="M0,25 Q15,10 30,20 T60,5 T90,12 T100,2" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                    <path d="M0,25 Q15,10 30,20 T60,5 T90,12 T100,2 L100,30 L0,30 Z" fill="url(#goldGrad)" opacity="0.08" />
+                    <defs>
+                      <linearGradient id="goldGrad" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stopColor="#D4AF37" />
+                        <stop offset="100%" stopColor="#D4AF37" stopOpacity="0" />
+                      </linearGradient>
+                    </defs>
+                  </svg>
+                </div>
+              </div>
 
-      {/* ── OKRs ─────────────────────────────────────────────────────────── */}
-      <Sec label="OKRs do ciclo" badge={`${phase.toUpperCase()} · ${PHASES[phaseIdx]?.sublabel}`} open={open.okrs} toggle={() => tog('okrs')}>
-        {okrs.map((okr, oi) => (
-          <div key={oi} className="rounded-[0.8rem] border border-white/7 bg-white/[0.015] p-3 space-y-2.5">
-            <p className="text-[9px] font-semibold text-white/72 leading-snug">O{oi + 1}. {okr.objetivo}</p>
-            {okr.krs.map((kr, ki) => (
-              <div key={ki} className="flex items-start gap-2">
-                <span className="text-[8px] text-white/25 shrink-0 mt-0.5">KR{ki + 1}</span>
-                <div className="flex-1">
-                  <p className="text-[8.5px] text-white/52 leading-snug mb-1.5">{kr.descricao}</p>
-                  <div className="flex items-center gap-2">
-                    <div className="flex-1 h-0.5 bg-white/8 rounded-full overflow-hidden">
-                      <div className="h-full bg-white/35 rounded-full transition-all" style={{ width: `${kr.progresso}%` }} />
+              {/* Card 2: Weekly Activity */}
+              <div className="relative overflow-hidden rounded-[1rem] border border-white/5 bg-white/[0.02] p-4 transition-all hover:border-[#D4AF37]/35 shadow-[0_0_15px_rgba(0,0,0,0.2)]">
+                <div className="flex justify-between items-start">
+                  <div>
+                    <p className="text-[8px] font-mono tracking-wider text-white/35 uppercase">Weekly Activity</p>
+                    <p className="text-[26px] font-bold text-white tracking-tight mt-1 font-mono">{metrics.activeWeek}</p>
+                  </div>
+                  <span className="text-[8.5px] font-mono font-bold text-white/50 px-2 py-0.5 rounded-full bg-white/5 border border-white/10">Sessions</span>
+                </div>
+                {/* Simple mini-bar chart */}
+                <div className="h-8 mt-4 flex items-end gap-1 px-1">
+                  {[20, 35, 25, 45, 60, 40, 55, 70, 50, 65, 80].map((h, i) => (
+                    <div key={i} className="flex-1 rounded-sm bg-[#D4AF37]/25 hover:bg-[#D4AF37] transition-all" style={{ height: `${h}%` }} />
+                  ))}
+                </div>
+              </div>
+
+              {/* Card 3: 7d Retention */}
+              <div className="relative overflow-hidden rounded-[1rem] border border-white/5 bg-white/[0.02] p-4 transition-all hover:border-[#D4AF37]/35 shadow-[0_0_15px_rgba(0,0,0,0.2)]">
+                <div className="flex items-center justify-between">
+                  <div className="space-y-1">
+                    <p className="text-[8px] font-mono tracking-wider text-white/35 uppercase">7d Retention</p>
+                    <p className="text-[26px] font-bold text-white tracking-tight font-mono">{metrics.retention7d}%</p>
+                    <p className="text-[7.5px] text-white/30 font-mono">Target: &gt; 40%</p>
+                  </div>
+                  <div className="relative h-14 w-14 shrink-0">
+                    <svg className="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
+                      <path className="text-white/5" stroke="currentColor" strokeWidth="2.5" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                      <path className="text-[#D4AF37] transition-all duration-1000" strokeDasharray={`${metrics.retention7d}, 100`} stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                    </svg>
+                    <div className="absolute inset-0 flex items-center justify-center text-[8.5px] font-mono font-bold text-[#D4AF37]">
+                      {metrics.retention7d}%
                     </div>
-                    <span className="text-[8px] text-white/32 w-7 text-right">{kr.progresso}%</span>
                   </div>
                 </div>
               </div>
-            ))}
-          </div>
-        ))}
-      </Sec>
 
-      {/* ── TD: TRANSFORMAÇÃO DIGITAL ─────────────────────────────────────── */}
-      <Sec label="Transformação Digital" badge={`SGI ${sgiOk}/${sgi.length} · DDDM ${dddmOk}/${dddm.length}`} open={open.td} toggle={() => tog('td')}>
-
-        <p className="text-[8px] font-semibold uppercase tracking-[0.12em] text-white/28 pt-1">SGI — Sistemas Integrados · {sgiOk}/{sgi.length}</p>
-        {sgi.map((item, i) => <CheckRow key={i} item={item} />)}
-
-        <p className="text-[8px] font-semibold uppercase tracking-[0.12em] text-white/28 pt-2">DDDM — Decisão por Dados · {dddmOk}/{dddm.length}</p>
-        {dddm.map((item, i) => <CheckRow key={i} item={item} />)}
-
-        <p className="text-[8px] font-semibold uppercase tracking-[0.12em] text-white/28 pt-2">Tendências · {tendOk}/{tend.length}</p>
-        {tend.map((item, i) => <CheckRow key={i} item={item} />)}
-
-        <p className="text-[8px] font-semibold uppercase tracking-[0.12em] text-white/28 pt-2">Sustentabilidade · {sustOk}/{sust.length}</p>
-        {sust.map((item, i) => <CheckRow key={i} item={item} />)}
-
-      </Sec>
-
-      {/* ── GOVERNANÇA ───────────────────────────────────────────────────── */}
-      <Sec label="Governança" open={open.gov} toggle={() => tog('gov')}>
-        {gov.map((pilar, pi) => {
-          const okCount = pilar.items.filter(i => i.ok).length
-          return (
-            <div key={pi} className="rounded-[0.7rem] border border-white/6 p-3 space-y-1.5">
-              <div className="flex items-center justify-between mb-2">
-                <p className="text-[9px] font-semibold text-white/58">{pilar.pilar}</p>
-                <span className="text-[8px] text-white/28">{okCount}/{pilar.items.length}</span>
-              </div>
-              {pilar.items.map((item, ii) => (
-                <div key={ii} className="flex items-start gap-2">
-                  {item.ok
-                    ? <CheckCircle2 className="mt-0.5 h-3 w-3 shrink-0 text-white/42" />
-                    : <AlertCircle  className="mt-0.5 h-3 w-3 shrink-0 text-white/18" />
-                  }
-                  <div className="flex-1 min-w-0">
-                    <p className={`text-[8.5px] leading-snug ${item.ok ? 'text-white/62' : 'text-white/30'}`}>{item.label}</p>
-                    <p className="text-[7.5px] text-white/22 leading-none mt-0.5">{item.fonte}</p>
+              {/* Card 4: NPS & Subscriptions */}
+              <div className="relative overflow-hidden rounded-[1rem] border border-white/5 bg-white/[0.02] p-4 transition-all hover:border-[#D4AF37]/35 shadow-[0_0_15px_rgba(0,0,0,0.2)]">
+                <div className="grid grid-cols-2 gap-2 divide-x divide-white/5">
+                  <div className="pr-2">
+                    <p className="text-[8px] font-mono tracking-wider text-white/35 uppercase">NPS Score</p>
+                    <p className={`text-[20px] font-bold tracking-tight mt-1 font-mono ${metrics.nps === null ? 'text-white/40' : metrics.nps >= 30 ? 'text-[#D4AF37]' : 'text-white/70'}`}>
+                      {metrics.nps ?? 'N/A'}
+                    </p>
                   </div>
+                  <div className="pl-4">
+                    <p className="text-[8px] font-mono tracking-wider text-white/35 uppercase">Active Subs</p>
+                    <p className="text-[20px] font-bold text-white tracking-tight mt-1 font-mono">{metrics.subsActive}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          {metrics.loadedAt && (
+            <p className="text-[7px] text-white/20 mt-4 text-right">Telemetria sync: {metrics.loadedAt}</p>
+          )}
+        </div>
+
+        {/* COLUNA 2: LLaMA AI ADVISOR */}
+        <div className="border border-white/5 rounded-[1.2rem] bg-[#0A0A0A] p-5 shadow-[0_4px_25px_rgba(0,0,0,0.5)] flex flex-col justify-between">
+          <div>
+            <div className="flex items-center justify-between border-b border-white/5 pb-2 mb-4">
+              <div className="flex flex-col">
+                <p className="text-[9px] font-bold uppercase tracking-[0.15em] text-[#D4AF37]">LLaMA AI Advisor</p>
+                <span className="text-[7.5px] font-mono text-white/35">Groq • LLaMA 70b</span>
+              </div>
+              <button onClick={() => fetchAI(metrics, phase)} disabled={loadingAI}
+                className="flex items-center gap-1.5 rounded border border-[#D4AF37]/35 bg-[#D4AF37]/5 px-2.5 py-1 text-[8px] font-mono font-bold text-[#D4AF37] hover:bg-[#D4AF37]/15 transition-all disabled:opacity-30">
+                <Sparkles className="h-2.5 w-2.5 animate-pulse" />{loadingAI ? '...' : 'REGENERAR'}
+              </button>
+            </div>
+
+            {/* AI Focus Block */}
+            <div className="relative overflow-hidden rounded-[1rem] border border-[#D4AF37]/20 bg-[#D4AF37]/5 p-4 mb-4 shadow-[0_0_15px_rgba(212,175,55,0.03)]">
+              <p className="text-[8px] font-mono tracking-wider text-[#D4AF37] uppercase">Current Focus</p>
+              <p className="text-[12px] font-semibold leading-snug text-white mt-1.5">{directive.foco}</p>
+            </div>
+
+            {/* Strategic Directives */}
+            <div className="rounded-[1rem] border border-white/5 bg-white/[0.015] p-4 mb-4">
+              <p className="text-[8px] font-mono tracking-wider text-white/35 uppercase mb-2">Directives</p>
+              <p className="text-[9.5px] leading-relaxed text-white/80 font-sans">{directive.diretiva}</p>
+            </div>
+          </div>
+
+          {/* Blockages & Signals */}
+          <div className="grid grid-cols-1 gap-3 pt-3 border-t border-white/5">
+            <div className="rounded-[0.8rem] bg-white/[0.01] border border-white/5 p-3">
+              <p className="text-[8px] font-mono font-semibold uppercase tracking-[0.12em] text-[#C0C0C0] mb-1">Bloqueio Crítico</p>
+              <p className="text-[8.5px] leading-relaxed text-white/50 italic font-sans">{directive.bloqueio}</p>
+            </div>
+            <div className="rounded-[0.8rem] bg-[#D4AF37]/5 border border-[#D4AF37]/10 p-3">
+              <p className="text-[8px] font-mono font-semibold uppercase tracking-[0.12em] text-[#D4AF37] mb-1">Sinal de Avanço</p>
+              <p className="text-[8.5px] leading-relaxed text-white/75 font-sans">{directive.sinal}</p>
+            </div>
+          </div>
+        </div>
+
+        {/* COLUNA 3: CHECKLIST & OKRs */}
+        <div className="border border-white/5 rounded-[1.2rem] bg-[#0A0A0A] p-5 shadow-[0_4px_25px_rgba(0,0,0,0.5)] flex flex-col justify-between">
+          <div>
+            <div className="flex items-center justify-between border-b border-white/5 pb-2 mb-4">
+              <div className="flex flex-col">
+                <p className="text-[9px] font-bold uppercase tracking-[0.15em] text-[#D4AF37]">Weekly Checklist</p>
+                <span className="text-[7.5px] font-mono text-white/35">Tasks (Week {phaseIdx + 1})</span>
+              </div>
+              <div className="flex items-center gap-1 text-[#D4AF37] font-mono text-[9px] font-bold">
+                {Math.round((weekDone.length / directive.acoes.length) * 100)}%
+              </div>
+            </div>
+
+            {/* Checklist cards */}
+            <div className="space-y-2 mb-4">
+              {directive.acoes.map((acao, i) => {
+                const done = weekDone.includes(`w${i}`)
+                return (
+                  <button key={i} onClick={() => toggleWeek(i)}
+                    className={`flex w-full items-start gap-3 rounded-[0.8rem] border p-3 text-left transition-all ${done ? 'border-[#D4AF37]/20 bg-[#D4AF37]/5 hover:bg-[#D4AF37]/10' : 'border-white/5 bg-white/[0.015] hover:bg-white/[0.03]'}`}>
+                    {done
+                      ? <CheckSquare className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#D4AF37]" />
+                      : <Square      className="mt-0.5 h-3.5 w-3.5 shrink-0 text-white/20" />
+                    }
+                    <div className="flex-1 min-w-0">
+                      <span className={`text-[8.5px] leading-relaxed font-sans ${done ? 'text-white/30 line-through' : 'text-white/70'}`}>
+                        {acao}
+                      </span>
+                    </div>
+                  </button>
+                )
+              })}
+            </div>
+          </div>
+
+          {/* OKRs */}
+          <div className="border-t border-white/5 pt-4">
+            <p className="text-[9px] font-bold uppercase tracking-[0.15em] text-[#D4AF37] mb-3">Cycle OKRs ({phase.toUpperCase()})</p>
+            <div className="space-y-3">
+              {okrs.map((okr, oi) => (
+                <div key={oi} className="rounded-[0.8rem] border border-white/5 bg-white/[0.005] p-3 space-y-2.5">
+                  <p className="text-[8.5px] font-bold text-white/80 leading-snug">O{oi + 1}. {okr.objetivo}</p>
+                  {okr.krs.map((kr, ki) => (
+                    <div key={ki} className="flex items-start gap-2 pt-1.5 border-t border-white/5">
+                      <span className="text-[7.5px] font-mono text-white/30 shrink-0 mt-0.5">KR{ki + 1}</span>
+                      <div className="flex-1">
+                        <p className="text-[8px] text-white/50 leading-snug mb-1">{kr.descricao}</p>
+                        <div className="flex items-center gap-2">
+                          <div className="flex-1 h-1 bg-white/5 rounded-full overflow-hidden">
+                            <div className="h-full bg-[#D4AF37] rounded-full transition-all duration-500" style={{ width: `${kr.progresso}%` }} />
+                          </div>
+                          <span className="text-[7.5px] font-mono text-white/40 w-6 text-right">{kr.progresso}%</span>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               ))}
             </div>
-          )
-        })}
-      </Sec>
+          </div>
+        </div>
 
-      {/* ── MONITOR ──────────────────────────────────────────────────────── */}
-      <Sec label="Monitor" open={open.monitor} toggle={() => tog('monitor')}>
-        <div className="grid grid-cols-2 gap-2">
-          {monitor.map((item, i) => (
-            <div key={i} className="flex items-center gap-2 rounded-[0.6rem] border border-white/6 px-2.5 py-2">
-              <MonitorDot status={item.status} />
-              <div className="min-w-0">
-                <p className="text-[8.5px] text-white/48 truncate">{item.label}</p>
-                <p className="text-[8px] text-white/30">{item.valor}</p>
+      </div>
+
+      {/* ── NORTE ESTRATÉGICO COMPACTO ── */}
+      <div className="border border-white/5 bg-[#0C0C0C] rounded-[1.2rem] p-5 shadow-[0_0_20px_rgba(0,0,0,0.3)]">
+        <p className="text-[9px] font-bold uppercase tracking-[0.2em] font-mono text-[#D4AF37] mb-3">Norte Estratégico</p>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 divide-y md:divide-y-0 md:divide-x divide-white/5">
+          <div className="pb-3 md:pb-0">
+            <p className="text-[7.5px] font-semibold font-mono uppercase tracking-[0.15em] text-white/30 mb-1">Situação Atual</p>
+            <p className="text-[8.5px] leading-relaxed text-white/60">{norte.onde}</p>
+          </div>
+          <div className="pt-3 md:pt-0 md:pl-4">
+            <p className="text-[7.5px] font-semibold font-mono uppercase tracking-[0.15em] text-white/30 mb-1">Próximo Objetivo</p>
+            <p className="text-[8.5px] leading-relaxed text-white/65">{norte.proximo}</p>
+          </div>
+          <div className="pt-3 md:pt-0 md:pl-4">
+            <p className="text-[7.5px] font-semibold font-mono uppercase tracking-[0.15em] text-[#D4AF37]/75 mb-1">Aposta Estratégica</p>
+            <p className="text-[8.5px] leading-relaxed text-white/80 font-medium">{norte.aposta}</p>
+          </div>
+        </div>
+      </div>
+
+      {/* ── ADVANCED PANEL: GOVERNANÇA E CONTROLE (GAVETA COLAPSÁVEL) ── */}
+      <div className="border-t border-white/5 pt-6 mt-6">
+        <div className="flex justify-between items-center mb-4">
+          <p className="text-[10px] font-bold uppercase tracking-[0.25em] font-mono text-[#D4AF37]">Governance & Advanced Architecture</p>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {/* SGI */}
+          <Sec label="Digital Integration Map (SGI)" badge={`${sgiOk}/${sgi.length}`} open={open.sgi} toggle={() => tog('sgi')}>
+            <div className="space-y-1 bg-[#0A0A0A] p-2.5 rounded-[0.8rem] border border-white/5">
+              {sgi.map((item, i) => <CheckRow key={i} item={item} />)}
+            </div>
+          </Sec>
+
+          {/* DDDM */}
+          <Sec label="Data-Driven Strategy (DDDM)" badge={`${dddmOk}/${dddm.length}`} open={open.dddm} toggle={() => tog('dddm')}>
+            <div className="space-y-1 bg-[#0A0A0A] p-2.5 rounded-[0.8rem] border border-white/5">
+              {dddm.map((item, i) => <CheckRow key={i} item={item} />)}
+            </div>
+          </Sec>
+
+          {/* Trends */}
+          <Sec label="Market Trends" badge={`${tendOk}/${tend.length}`} open={open.tend} toggle={() => tog('tend')}>
+            <div className="space-y-1 bg-[#0A0A0A] p-2.5 rounded-[0.8rem] border border-white/5">
+              {tend.map((item, i) => <CheckRow key={i} item={item} />)}
+            </div>
+          </Sec>
+
+          {/* Sustentabilidade */}
+          <Sec label="Sustentabilidade" badge={`${sustOk}/${sust.length}`} open={open.sust} toggle={() => tog('sust')}>
+            <div className="space-y-1 bg-[#0A0A0A] p-2.5 rounded-[0.8rem] border border-white/5">
+              {sust.map((item, i) => <CheckRow key={i} item={item} />)}
+            </div>
+          </Sec>
+
+          {/* Governança */}
+          <Sec label="Corporate Governance" open={open.gov} toggle={() => tog('gov')}>
+            <div className="space-y-2 bg-[#0A0A0A] p-2.5 rounded-[0.8rem] border border-white/5">
+              {gov.map((pilar, pi) => {
+                const okCount = pilar.items.filter(i => i.ok).length
+                return (
+                  <div key={pi} className="rounded-[0.6rem] border border-white/5 p-2.5 space-y-1 bg-white/[0.005]">
+                    <div className="flex items-center justify-between mb-1">
+                      <p className="text-[8px] font-mono font-bold text-white/50">{pilar.pilar}</p>
+                      <span className="text-[7px] font-mono text-white/30">{okCount}/{pilar.items.length}</span>
+                    </div>
+                    {pilar.items.map((item, ii) => (
+                      <div key={ii} className="flex items-start gap-1">
+                        {item.ok
+                          ? <CheckCircle2 className="mt-0.5 h-2.5 w-2.5 shrink-0 text-[#D4AF37]/80" />
+                          : <AlertCircle className="mt-0.5 h-2.5 w-2.5 shrink-0 text-white/20" />
+                        }
+                        <div className="flex-1 min-w-0">
+                          <p className={`text-[7.5px] font-mono leading-tight ${item.ok ? 'text-white/70' : 'text-white/30'}`}>{item.label}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )
+              })}
+            </div>
+          </Sec>
+
+          {/* Monitor */}
+          <Sec label="Strategic Telemetry Monitor" open={open.monitor} toggle={() => tog('monitor')}>
+            <div className="space-y-2 bg-[#0A0A0A] p-2.5 rounded-[0.8rem] border border-white/5">
+              <div className="grid grid-cols-2 gap-1.5">
+                {monitor.map((item, i) => (
+                  <div key={i} className="flex items-center gap-1.5 rounded-[0.5rem] border border-white/5 px-2 py-1.5">
+                    <MonitorDot status={item.status} />
+                    <div className="min-w-0">
+                      <p className="text-[7.5px] font-mono text-white/40 truncate">{item.label}</p>
+                      <p className="text-[7.5px] font-mono font-bold text-white/80">{item.valor}</p>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
-          ))}
+          </Sec>
         </div>
-        <p className="text-[7px] text-white/20 text-right mt-1">atualizado {metrics.loadedAt || '—'}</p>
-      </Sec>
-
+      </div>
     </div>
   )
 }
