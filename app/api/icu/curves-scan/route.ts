@@ -221,6 +221,20 @@ Regra de exclusão por modo (NÃO marque):
 7. **Duplo disparo em P×T DEVE vir** com "Curva em degrau" em V×T + idealmente "Duplo pico inspiratorio" em F×T.
 8. **Recorrência ≥2 ciclos**: assinatura precisa aparecer em mais da metade dos ciclos visíveis. 1 ciclo isolado NÃO conta como padrão estabelecido.
 
+═══ CONTEXTO CLÍNICO POR PATOLOGIA (T12) ═══
+- **Restritivo (fibrose, SDRA)**: tende a CICLAGEM PRECOCE em PSV (Ti neural curto)
+- **Obstrutivo (DPOC, asma)**: tende a CICLAGEM TARDIA em PSV (Ti neural longo) + auto-PEEP recorrente
+- **SDRA com drive alto**: risco de DUPLO DISPARO + PENDELLUFT
+- **Sedação profunda + SDRA grave**: risco de DISPARO REVERSO
+- **Auto-PEEP em DPOC**: titular PEEP externa < auto-PEEP medida (geralmente 70-80%)
+
+═══ PARÂMETROS DE ESFORÇO MUSCULAR (T11) ═══
+- Pmusc / 0.75 × Pocc: insuficiente <3-5 cmH₂O | normal 3-15 | excessivo >15
+- ΔPes (esofágica): normal −2 a −8 | excessivo < −8 a −12 | insuficiente > −2 a −3
+- TFdi (espessamento diafragmático): <15% disfunção/esforço insuficiente | >15% normal
+- P0.1: <1.6 sobre-assistência | 1.6-3.5 ideal | >3.5 sub-assistência | >4 falha desmame
+- Esses contextos ajudam a confirmar disparo ineficaz (Pmusc alto + sem disparo) vs auto-disparo (Pmusc baixo + ciclos)
+
 ═══ INSTRUÇÕES DE RETORNO ═══
 
 curvaPxT: ${JSON.stringify(PXT)}
