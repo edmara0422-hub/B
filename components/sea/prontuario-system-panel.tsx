@@ -3610,12 +3610,14 @@ export function ProntuarioSystemPanel() {
     const isVCV = ['VCV', 'PRVC'].includes(currentRecord.modoVM)
     const isPCV = currentRecord.modoVM === 'PCV'
     const isSpontaneous = ['PSV', 'TuboT'].includes(currentRecord.modoVM)
-    // Para PCV, usa PIP como Pplato proxy se manobra não foi feita
-    const pplatoEffective = pplatoVal || (isPCV && ppicoVal ? ppicoVal : 0)
-    const dp = (isVCV || isPCV) && pplatoEffective && peepVal ? calcDP(pplatoEffective, peepVal) : null
+    // DP, Cest, MP só calculam quando o usuário fornece Pplato (manobra inspiratória).
+    // Sem dado, não aparece — evita números fantasma na tela.
+    const dp = (isVCV || isPCV) && pplatoVal && peepVal ? calcDP(pplatoVal, peepVal) : null
     const cest = (isVCV || isPCV) && dp && vtEfetivo ? calcCest(vtEfetivo, dp) : null
-    const cdyn = isVCV ? calcCdyn(vtEfetivo, ppicoVal, peepVal) : null
-    const mechanicalPower = (isVCV || isPCV) ? calcMechanicalPower(parseNumber(currentRecord.fr), vtEfetivo, ppicoVal, peepVal) : null
+    const cdyn = isVCV && vtEfetivo && ppicoVal && peepVal ? calcCdyn(vtEfetivo, ppicoVal, peepVal) : null
+    const mechanicalPower = (isVCV || isPCV) && pplatoVal && peepVal && vtEfetivo
+      ? calcMechanicalPower(parseNumber(currentRecord.fr), vtEfetivo, isVCV ? ppicoVal : pplatoVal, peepVal)
+      : null
     const glasgow = calcGlasgow(
       parseNumber(currentRecord.glasgowO),
       currentRecord.glasgowV || '',
@@ -6670,14 +6672,17 @@ export function ProntuarioSystemPanel() {
                             <span className="text-[8px] uppercase tracking-[0.18em] text-[#22d3ee]/70">Scaneado · {currentRecord.modoVM}</span>
                           </div>
                           <button
-                            onClick={() => updateCurrentRecord((record) => ({
-                              ...record,
-                              vt: '', vc: '', ve: '', fr: '', peep: '', fio2: '',
-                              ppico: '', pplato: '', pmean: '', ie: '', ti: '',
-                              fluxo: '', trigger: '', ps: '', ipap: '', epap: '',
-                              hfovHz: '', hfovBiasFlow: '',
-                            }))}
-                            title="Limpar valores escaneados"
+                            onClick={() => {
+                              updateCurrentRecord((record) => ({
+                                ...record,
+                                vt: '', vc: '', ve: '', fr: '', peep: '', fio2: '',
+                                ppico: '', pplato: '', pmean: '', ie: '', ti: '',
+                                fluxo: '', trigger: '', ps: '', ipap: '', epap: '',
+                                hfovHz: '', hfovBiasFlow: '',
+                              }))
+                              setVmInputMode(null)
+                            }}
+                            title="Limpar scan e voltar ao início"
                             className="flex h-4 w-4 items-center justify-center rounded text-white/40 transition hover:text-red-300 hover:bg-red-500/10"
                           >
                             <Trash2 className="h-2.5 w-2.5" />
@@ -6690,7 +6695,9 @@ export function ProntuarioSystemPanel() {
                           {currentRecord.fr && <span>FR <span className="text-white/92">{currentRecord.fr}</span></span>}
                           {currentRecord.peep && <span>PEEP <span className="text-white/92">{currentRecord.peep}</span></span>}
                           {currentRecord.fio2 && <span>FiO2 <span className="text-white/92">{currentRecord.fio2}</span></span>}
-                          {currentRecord.ppico && <span>{currentRecord.modoVM === 'PCV' ? 'PC' : 'PIP'} <span className="text-white/92">{currentRecord.ppico}</span></span>}
+                          {currentRecord.ppico && currentRecord.modoVM !== 'PSV' && currentRecord.modoVM !== 'TuboT' && currentRecord.modoVM !== 'CPAP' && (
+                            <span>{currentRecord.modoVM === 'PCV' ? 'PC' : 'PIP'} <span className="text-white/92">{currentRecord.ppico}</span></span>
+                          )}
                           {currentRecord.pmean && <span>Pmean <span className="text-white/92">{currentRecord.pmean}</span></span>}
                           {currentRecord.ie && <span>I:E <span className="text-white/92">{currentRecord.ie}</span></span>}
                           {currentRecord.ti && <span>TI <span className="text-white/92">{currentRecord.ti}</span></span>}

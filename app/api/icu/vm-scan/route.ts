@@ -47,28 +47,53 @@ MODOS POSSÍVEIS (use exatamente um destes valores):
 VCV | PCV | PSV | TuboT | CPAP | BIPAP | PRVC | HFOV | MMV | APRV | VS | ASV | IntelliVENT | SmartCare | PAV | NAVA
 
 Mapeamento de nomes alternativos:
-- VCV ↔ "Volume Control", "VC", "IPPV", "CMV", "AC-VC", "A/C Volume", "VC-AC"
-- PCV ↔ "Pressure Control", "PC", "AC-PC", "A/C Pressure", "PC-AC"
-- PSV ↔ "Pressure Support", "PS", "ASB", "SPONT", "CPAP+PS", "PSV/CPAP"
+- VCV ↔ "Volume Control", "VC", "IPPV", "CMV", "AC-VC", "A/C Volume", "VC-AC", "VCV-AC", "Volume A/C", "VOLUME CONTROL"
+- PCV ↔ "Pressure Control", "PC", "AC-PC", "A/C Pressure", "PC-AC", "PCV-AC", "Pressão A/C", "PRESSURE CONTROL", "PRESSÃO A/C"
+- PSV ↔ "Pressure Support", "PS", "ASB", "SPONT", "CPAP+PS", "PSV/CPAP", "SPN-CPAP", "SPN", "SPONT-CPAP", "Spontaneous CPAP", "CPAP/PS", "PEDIATRIC PS", "ΔPsup"
 - PRVC ↔ "Pressure Regulated Volume Control", "VC+", "AutoFlow", "VG", "VC AutoFlow", "VCRP", "PCV-VG"
-- BIPAP ↔ "BiLevel", "DuoPAP", "BiVent", "BIPAP Vision", "Bi-Level"
+- BIPAP ↔ "BiLevel", "DuoPAP", "BiVent", "BIPAP Vision", "Bi-Level", "BiPAP-AC"
 - APRV ↔ "Bi-Vent APRV", "Bilevel APRV"
 - VS ↔ "Volume Support", "VSV"
 - ASV ↔ "Adaptive Support Ventilation"
 
-═══ CRÍTICO — PCV (P_insp / PC / Pcontrol) ═══
-Em PCV, o valor de PC pode ter 2 convenções dependendo do ventilador:
-- **Acima do PEEP** (Drager Evita, alguns Servo antigos, Maquet, GE Carescape, Bird, Newport, maioria dos VMs brasileiros): "Pinsp" ou "PC" = valor ADICIONADO ao PEEP. PIP total = PEEP + PC.
-- **Absoluto** (Hamilton, Servo i/u modernos, alguns Puritan-Bennett): "Pinsp" ou "Pcontrol" = pressão total absoluta. PIP = Pinsp.
+DICA DE DESAMBIGUAÇÃO:
+- Se vir "SPN-CPAP" ou "SPN-..." → é PSV (modo espontâneo), NÃO PCV
+- Se vir "ΔPsup" no display → indica suporte pressórico, modo PSV
+- Se vir botões IPAP/EPAP → BIPAP
+- Se vir curvas com plateau quadrado e fluxo descendente típico → PCV
+- Se vir curvas com fluxo constante (quadrado) e pressão crescente → VCV
+- Se vir curvas com esforço do paciente disparando ciclos com pressão constante → PSV
+
+═══ CRÍTICO — PCV (P_insp / PC / Pcontrol / ΔP) ═══
+Em PCV, o valor de PC pode ter 3 convenções dependendo do ventilador:
+
+GRUPO 1 — SOMA (PC é DELTA acima do PEEP):
+  Marcas: Drager (Evita XL/V300/V500/V600/V800/Savina), Hamilton (G5/C1/C2/C3/C6/T1),
+  Mindray (SynoVent E3/E5, SVT, A7/A9, SV300/600/800), Intermed (Montage, iX5, Ruah),
+  Puritan-Bennett 980 (PB980 — moderno), GE Carescape/Engström/Aisys/Avance,
+  Leistung Luft/Luft3, Weinmann MEDUMAT, SEA FISIO (brasileiro).
+  → PIP = PEEP + PC.
+
+GRUPO 2 — SUBTRAI (PC é PIP ABSOLUTO, máquina calcula delta interno):
+  Marcas: Magnamed (OxyMag, FlexiMag, BabyMag), Maquet/Getinge (Servo-i, Servo-s,
+  alguns Servo-u/n antigos), Vyaire/CareFusion (Vela, T-Bird, Avea),
+  Puritan-Bennett 840 (PB840 — antigo), Tecme (GraphNet Advance/Neo/Ts).
+  → PIP = Pinsp. Delta interno = Pinsp - PEEP.
+
+GRUPO 3 — VNI / DOMICILIAR (IPAP/EPAP — ajustado absoluto na via aérea):
+  Marcas: Philips Respironics (V60, V60 Plus, Trilogy 100/200/Evo, BiPAP Focus),
+  ResMed (Astral 100/150, Stellar 100/150, Lumis).
+  → Esses geralmente são BIPAP, não PCV — classifique como BIPAP.
 
 REGRAS DE RETORNO POR MODO:
 
-▸ **PCV** — Em modo PCV, **"ppico" deve ser o valor de PC/Pinsp SETADO no botão/display**, NÃO o PIP medido no manômetro:
-  - Se o display/botão mostra "PC 15" (convenção delta), retorne ppico = 15
-  - Se o display mostra "Pinsp 35" absoluto com PEEP 20, retorne ppico = 35 - 20 = 15 (delta acima do PEEP)
-  - SEMPRE retorne ppico como DELTA acima do PEEP em PCV
-  - Use "notes" para indicar a convenção lida ("Drager — PC delta", "Hamilton — Pinsp absoluto convertido para delta")
-  - O PIP medido (peak no manômetro/curva) NÃO é o que deve ir em "ppico" para PCV
+▸ **PCV** — REGRA OBRIGATÓRIA: "ppico" deve ser o valor de PC/Pinsp SETADO, e SEMPRE como DELTA acima do PEEP:
+  - Se a marca pertence ao GRUPO 1 (Drager/Hamilton/Mindray/Intermed/etc) e display mostra "PC 15" → ppico = 15
+  - Se a marca pertence ao GRUPO 2 (Magnamed/Servo/PB840/etc) e display mostra "Pinsp 35" com PEEP 20 → ppico = 35 - 20 = 15
+  - NÃO retorne o PIP medido (Ppeak/Ppico no monitor lateral) como ppico
+  - NÃO retorne o valor absoluto da pressão de pico — apenas o DELTA
+  - Em "notes", indique a convenção detectada (ex: "Drager Grupo 1 — PC delta direto: 15")
+  - Se não conseguir determinar a marca, retorne ppico = null e explique em "notes"
 
 ▸ **VCV / PRVC** — "ppico" = PIP medido (peak inspiratory pressure observado no manômetro/curva)
 
