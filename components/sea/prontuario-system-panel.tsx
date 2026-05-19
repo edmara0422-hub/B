@@ -2787,6 +2787,11 @@ export function ProntuarioSystemPanel() {
   const [vmScanLoading, setVmScanLoading] = useState(false)
   const [vmScanResult, setVmScanResult] = useState<{ mode: string | null; params: Record<string, number | string | null>; confidence?: string; notes?: string } | null>(null)
   const [vmScanError, setVmScanError] = useState<string | null>(null)
+  const [curvesScanOpen, setCurvesScanOpen] = useState(false)
+  const [curvesScanPhotos, setCurvesScanPhotos] = useState<{ file: File; preview: string }[]>([])
+  const [curvesScanLoading, setCurvesScanLoading] = useState(false)
+  const [curvesScanResult, setCurvesScanResult] = useState<{ mode?: string | null; curvaPxT?: string[]; curvaFxT?: string[]; curvaVxT?: string[]; loopPV?: string[]; loopFV?: string[]; assincronia?: string[]; confidence?: string; notes?: string } | null>(null)
+  const [curvesScanError, setCurvesScanError] = useState<string | null>(null)
   const workspacesRef = useRef<Workspace[]>([])
   const activeWsIdRef = useRef<string>('')
   useEffect(() => { workspacesRef.current = workspaces }, [workspaces])
@@ -7620,14 +7625,25 @@ export function ProntuarioSystemPanel() {
                 <div className="chrome-panel rounded-[1rem] p-1.5 md:p-2">
                   <div className="mb-2 flex items-center justify-between gap-2">
                     <p className="text-[7px] font-semibold uppercase tracking-[0.14em] text-white/40">Analise de curvas e loops</p>
-                    <button
-                      type="button"
-                      onClick={() => updateCurrentRecord((r) => ({ ...r, curvaPxT: [], curvaFxT: [], curvaVxT: [], loopPV: [], loopFV: [], assincronia: [] }))}
-                      className="inline-flex items-center gap-1 rounded-[0.7rem] border border-[#f8717130] bg-[#f8717110] px-2 py-1 text-[8px] font-semibold text-[#fca5a5]"
-                    >
-                      <Trash2 className="h-2.5 w-2.5" />
-                      Limpar
-                    </button>
+                    <div className="flex items-center gap-1">
+                      <button
+                        type="button"
+                        onClick={() => { setCurvesScanOpen(true); setCurvesScanResult(null); setCurvesScanError(null); setCurvesScanPhotos([]) }}
+                        className="inline-flex items-center gap-1 rounded-[0.7rem] px-2 py-1 text-[8px] font-semibold uppercase tracking-[0.12em] transition"
+                        style={{ background: 'rgba(34,211,238,0.10)', border: '1px solid rgba(34,211,238,0.30)', color: '#22d3ee' }}
+                      >
+                        <Camera className="h-2.5 w-2.5" />
+                        Scan Curvas
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => updateCurrentRecord((r) => ({ ...r, curvaPxT: [], curvaFxT: [], curvaVxT: [], loopPV: [], loopFV: [], assincronia: [] }))}
+                        className="inline-flex items-center gap-1 rounded-[0.7rem] border border-[#f8717130] bg-[#f8717110] px-2 py-1 text-[8px] font-semibold text-[#fca5a5]"
+                      >
+                        <Trash2 className="h-2.5 w-2.5" />
+                        Limpar
+                      </button>
+                    </div>
                   </div>
                   <div className="grid gap-1 grid-cols-3">
                     {renderRespSelectionField('P×T', 'curvaPxT', CURVE_PXT_OPTIONS, 'PXT')}
@@ -9593,6 +9609,187 @@ export function ProntuarioSystemPanel() {
                       setVmScanOpen(false)
                       setVmScanResult(null)
                       setVmScanPhotos([])
+                    }}
+                    className="flex flex-1 items-center justify-center gap-2 rounded-[0.85rem] py-3 text-[12px] font-bold uppercase tracking-[0.14em] transition"
+                    style={{ background: 'rgba(74,222,128,0.28)', border: '1px solid rgba(74,222,128,0.55)', color: '#86efac' }}
+                  >
+                    <CheckCircle2 className="h-4 w-4" /> Confirmar
+                  </button>
+                </>
+              )}
+            </div>
+          </div>
+        </div>,
+        document.body
+      )}
+
+      {/* ── Curves Scan Modal — Portal ────────────────────────── */}
+      {curvesScanOpen && typeof window !== 'undefined' && createPortal(
+        <div
+          className="fixed inset-0 z-[100] flex items-center justify-center p-3"
+          style={{ background: 'rgba(0,0,0,0.72)', backdropFilter: 'blur(6px)' }}
+          onClick={(e) => { if (e.target === e.currentTarget) setCurvesScanOpen(false) }}
+        >
+          <div
+            className="w-full max-w-sm rounded-[1.4rem] flex flex-col overscroll-contain"
+            style={{ background: 'linear-gradient(160deg,#1a1a24,#111118)', border: '1px solid rgba(255,255,255,0.10)', maxHeight: 'min(85vh, 720px)' }}
+          >
+            <div className="shrink-0 flex items-center justify-between px-4 pt-4 pb-3" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+              <div className="flex items-center gap-2">
+                <Camera className="h-4 w-4 text-[#22d3ee]" />
+                <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-white/80">Scan Curvas / Loops</span>
+              </div>
+              <button onClick={() => setCurvesScanOpen(false)} className="flex h-6 w-6 items-center justify-center rounded-full text-white/40 hover:text-white/70 transition">
+                <X className="h-3.5 w-3.5" />
+              </button>
+            </div>
+
+            <div className="flex-1 overflow-y-auto px-4 py-3 flex flex-col gap-3">
+              <div className="grid grid-cols-3 gap-2">
+                {curvesScanPhotos.map((p, i) => (
+                  <div key={i} className="relative aspect-square overflow-hidden rounded-[0.8rem]" style={{ border: '1px solid rgba(255,255,255,0.12)' }}>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={p.preview} alt="" className="h-full w-full object-cover" />
+                    <button
+                      onClick={() => setCurvesScanPhotos(prev => { URL.revokeObjectURL(prev[i].preview); return prev.filter((_, j) => j !== i) })}
+                      className="absolute right-1 top-1 flex h-5 w-5 items-center justify-center rounded-full bg-black/70 text-white/80 hover:bg-black/90 transition"
+                    >
+                      <X className="h-3 w-3" />
+                    </button>
+                  </div>
+                ))}
+                {curvesScanPhotos.length < 10 && !curvesScanLoading && (
+                  <label className="flex aspect-square cursor-pointer flex-col items-center justify-center gap-1 rounded-[0.8rem] transition hover:bg-white/[0.06]" style={{ border: '1.5px dashed rgba(255,255,255,0.18)' }}>
+                    <Plus className="h-4 w-4 text-white/36" />
+                    <span className="text-[8px] text-white/28">Foto</span>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      capture="environment"
+                      multiple
+                      className="hidden"
+                      onChange={async (e) => {
+                        const files = Array.from(e.target.files ?? []).slice(0, 10 - curvesScanPhotos.length)
+                        const compressed = await Promise.all(files.map(f => compressImage(f)))
+                        const newPhotos = compressed.map(f => ({ file: f, preview: URL.createObjectURL(f) }))
+                        setCurvesScanPhotos(prev => [...prev, ...newPhotos])
+                        e.target.value = ''
+                      }}
+                    />
+                  </label>
+                )}
+              </div>
+
+              <p className="text-[8px] text-white/30 text-center -mt-1">
+                Até 10 fotos · P×T, F×T, V×T, Loops P-V e F-V · IA detecta padrões + assincronias
+              </p>
+
+              {curvesScanError && (
+                <div className="rounded-[0.65rem] px-3 py-2 text-[9px] text-red-400" style={{ background: 'rgba(239,68,68,0.10)', border: '1px solid rgba(239,68,68,0.20)' }}>
+                  {curvesScanError}
+                </div>
+              )}
+
+              {curvesScanResult && !curvesScanLoading && (() => {
+                const r = curvesScanResult
+                const groups: Array<{ label: string; items?: string[] }> = [
+                  { label: 'P×T', items: r.curvaPxT },
+                  { label: 'F×T', items: r.curvaFxT },
+                  { label: 'V×T', items: r.curvaVxT },
+                  { label: 'Loop P-V', items: r.loopPV },
+                  { label: 'Loop F-V', items: r.loopFV },
+                  { label: 'Assincronias', items: r.assincronia },
+                ]
+                return (
+                  <div className="rounded-[0.8rem] px-3 py-2.5 space-y-2" style={{ background: 'rgba(34,211,238,0.08)', border: '1px solid rgba(34,211,238,0.22)' }}>
+                    <div className="flex items-center justify-between">
+                      <p className="text-[8px] uppercase tracking-[0.18em] text-[#22d3ee]/70">Padrões detectados {r.mode && `· ${r.mode}`}</p>
+                      {r.confidence && (
+                        <span className="rounded-full px-1.5 py-0.5 text-[7px] font-semibold uppercase"
+                          style={{
+                            background: r.confidence === 'alta' ? 'rgba(74,222,128,0.14)' : r.confidence === 'media' ? 'rgba(251,191,36,0.14)' : 'rgba(248,113,113,0.14)',
+                            color: r.confidence === 'alta' ? '#4ade80' : r.confidence === 'media' ? '#fbbf24' : '#f87171',
+                            border: `1px solid ${r.confidence === 'alta' ? 'rgba(74,222,128,0.30)' : r.confidence === 'media' ? 'rgba(251,191,36,0.30)' : 'rgba(248,113,113,0.30)'}`,
+                          }}>
+                          {r.confidence}
+                        </span>
+                      )}
+                    </div>
+                    <div className="space-y-1.5">
+                      {groups.map(g => (g.items?.length ? (
+                        <div key={g.label}>
+                          <p className="text-[7px] uppercase tracking-[0.12em] text-white/40">{g.label}</p>
+                          <ul className="ml-2 mt-0.5 list-disc text-[9px] text-white/85 marker:text-white/30">
+                            {g.items.map((it, i) => <li key={i}>{it}</li>)}
+                          </ul>
+                        </div>
+                      ) : null))}
+                    </div>
+                    {r.notes && <p className="text-[7px] text-white/36 italic">{r.notes}</p>}
+                  </div>
+                )
+              })()}
+            </div>
+
+            <div className="shrink-0 flex gap-2 px-4 py-3" style={{ borderTop: '1px solid rgba(255,255,255,0.06)', background: 'rgba(0,0,0,0.20)' }}>
+              {!curvesScanResult ? (
+                <button
+                  onClick={async () => {
+                    if (!curvesScanPhotos.length) return
+                    setCurvesScanLoading(true)
+                    setCurvesScanError(null)
+                    try {
+                      const fd = new FormData()
+                      curvesScanPhotos.forEach(p => fd.append('files', p.file))
+                      const res = await fetch('/api/icu/curves-scan', { method: 'POST', body: fd })
+                      const text = await res.text()
+                      let json: Record<string, unknown>
+                      try { json = JSON.parse(text) } catch { throw new Error('Resposta inválida da IA. Tente foto mais nítida.') }
+                      if (!res.ok) throw new Error((json.error as string) ?? 'Erro na análise')
+                      setCurvesScanResult(json as never)
+                    } catch (err) {
+                      setCurvesScanError(err instanceof Error ? err.message : 'Falha ao analisar imagens')
+                    } finally {
+                      setCurvesScanLoading(false)
+                    }
+                  }}
+                  disabled={curvesScanPhotos.length === 0 || curvesScanLoading}
+                  className="flex flex-1 items-center justify-center gap-2 rounded-[0.85rem] py-3 text-[12px] font-semibold uppercase tracking-[0.14em] transition disabled:opacity-40"
+                  style={{ background: 'rgba(34,211,238,0.18)', border: '1px solid rgba(34,211,238,0.32)', color: '#22d3ee' }}
+                >
+                  {curvesScanLoading ? <><Loader2 className="h-3.5 w-3.5 animate-spin" /> Analisando...</> : <><Scan className="h-3.5 w-3.5" /> Analisar Curvas</>}
+                </button>
+              ) : (
+                <>
+                  <button
+                    onClick={() => { setCurvesScanResult(null); setCurvesScanError(null) }}
+                    className="flex items-center justify-center gap-1.5 rounded-[0.85rem] px-4 py-3 text-[11px] text-white/60 transition hover:text-white/80"
+                    style={{ border: '1px solid rgba(255,255,255,0.10)' }}
+                  >
+                    <Camera className="h-3.5 w-3.5" /> Rescan
+                  </button>
+                  <button
+                    onClick={() => {
+                      const r = curvesScanResult
+                      if (!selectedId) { setCurvesScanError('Nenhum paciente selecionado'); return }
+                      const merge = (existing: string[] | undefined, scanned?: string[]) => {
+                        const ex = Array.isArray(existing) ? existing : []
+                        const sc = Array.isArray(scanned) ? scanned : []
+                        const set = new Set([...ex, ...sc])
+                        return Array.from(set)
+                      }
+                      updateCurrentRecord((record) => ({
+                        ...record,
+                        curvaPxT: merge(record.curvaPxT, r.curvaPxT),
+                        curvaFxT: merge(record.curvaFxT, r.curvaFxT),
+                        curvaVxT: merge(record.curvaVxT, r.curvaVxT),
+                        loopPV: merge(record.loopPV, r.loopPV),
+                        loopFV: merge(record.loopFV, r.loopFV),
+                        assincronia: merge(record.assincronia, r.assincronia),
+                      }))
+                      setCurvesScanOpen(false)
+                      setCurvesScanResult(null)
+                      setCurvesScanPhotos([])
                     }}
                     className="flex flex-1 items-center justify-center gap-2 rounded-[0.85rem] py-3 text-[12px] font-bold uppercase tracking-[0.14em] transition"
                     style={{ background: 'rgba(74,222,128,0.28)', border: '1px solid rgba(74,222,128,0.55)', color: '#86efac' }}
