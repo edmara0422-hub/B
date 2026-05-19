@@ -152,11 +152,18 @@ Se detectar paciente neo (Ti <1s + FR >25), mencione em "notes".
 
 PASSO 2 — EXTRAIR PARÂMETROS (use null se não estiver visível):
 
+═══ REGRAS GERAIS — SETADO vs MEDIDO ═══
+Quando o display mostra DOIS valores para o mesmo parâmetro (um setado pelo clínico, outro medido pelo sensor):
+- **PEEP**: SEMPRE retorne o valor SETADO (o que o operador programou). Display típico: "PEEP 10" embaixo (set) vs "PEEP 9.1" no painel lateral (medido). Use 10, NÃO 9.1.
+- **FiO2**: SEMPRE setado (ex: O2 conc 80, FiO2 0.50). Use percentual inteiro (80, 50).
+- **FR**: SETADO (ex: "f 22", "RR 22"). Não use FR espontânea do paciente em modos controlados.
+- **Pressões (Pinsp, PS, PC)**: SETADO.
+
 NUMÉRICOS:
-- vt (mL — VOLUME CORRENTE EXALADO = VTe, é o que o paciente realmente eliminou. Procure rótulo "VTe", "VT exp", "VT", "Vexh", "VT(L)". Se em Litros 0.402 → converta para 402 mL)
-- vc (mL — VC ALVO seteado, só usado em PRVC/VS/ASV/PCV-VG; não confundir com VTe medido)
-- ve (L/min — VOLUME MINUTO. Faixa típica adulto: 4-15 L/min. Procure "VE", "MV", "MVe", "MVi". ATENÇÃO: NÃO confunda com I:E (que é uma RAZÃO tipo "1:2"). Se VE não estiver visível, CALCULE: ve = vt × fr / 1000)
-- fr (rpm — frequência respiratória, procure "FR", "RR", "f")
+- vt (mL — VOLUME CORRENTE EXALADO = VTe SOMENTE. NUNCA use VTi/VT inspirado. Rótulos a procurar: "VTe", "VT exp", "Vexh", "VT(L)", "VTexh". Se ver tanto VTi e VTe, use o VTe. Se em Litros (0.370 L) → converta para mL (370). O VTe é o que o paciente realmente ELIMINOU.)
+- vc (mL — VC ALVO SETADO, só usado em PRVC/VS/ASV/PCV-VG. Geralmente aparece no rodapé como "Tidal volume" ou "VC". Não confundir com VTe medido.)
+- ve (L/min — VOLUME MINUTO MEDIDO. Faixa típica adulto: 4-15 L/min. Procure "VE", "MV", "MVe". NÃO confunda com I:E (que é razão "1:2"). Se não visível, calcule: ve = vt × fr / 1000)
+- fr (rpm — FR SETADA em modos controlados, FR real medida em PSV/SPONT. Procure "FR", "RR", "f")
 - peep (cmH2O)
 - fio2 (% — 21 a 100; se vier 0.21–1.0, multiplicar por 100)
 - ppico (cmH2O — Peak/PIP/Ppeak)
