@@ -105,15 +105,40 @@ REGRAS DE RETORNO POR MODO:
 
 ▸ **HFOV** — mpaw, amplitude, hz, biasflow. ppico = null.
 
-═══ POR MODO — onde focar ═══
-- VCV/PRVC: VT (set + medido), Flow (fluxo), PEEP, FiO2, FR, I:E ou TI, Trigger, P.Pico medido. Pause/Pplato só se aparecer (geralmente exige manobra)
-- PCV: Pinsp/PC (com regra acima), PEEP, FiO2, FR, TI, Trigger, VT medido (resultante)
-- PSV: PS/ASB (suporte), PEEP, FiO2, Trigger, VT medido, FR espontânea
-- BIPAP: IPAP, EPAP, FR, FiO2, Trigger
-- APRV: P-High, T-High, P-Low, T-Low, FiO2
-- HFOV: mPaw, ΔP (amplitude), Hz, TI%, Bias Flow, FiO2
-- NAVA: NAVA level (μV), Trigger Edi (μV), PEEP, FiO2
-- PAV: % Suporte, PEEP, FiO2, Trigger
+═══ POR MODO — painel completo ═══
+
+▸ **VCV / PRVC (modos a VOLUME)**:
+  Ajustes a ler: FiO2, PEEP, VC (mL set), Fluxo (L/min), FR, Trigger, Ti (s) ou I:E
+  Monitores: VTe (mL — volume exalado, é o que importa, mais relevante que VC set), VE
+  P.Pico medido (Ppeak/Ppico): sempre que visível
+  Mapeamento: VC set → vc | VTe medido → vt | Pico medido → ppico
+
+▸ **PCV (modo a PRESSÃO)**:
+  Ajustes a ler: FiO2, PEEP, PC/Pinsp/ΔP (com REGRA DELTA acima), FR, Ti (s) ou I:E, Trigger, Rampa (Rise Time/Pramp)
+  Monitores: VTe (mL), VE, %Ciclagem (se modo permitir)
+  Mapeamento: PC delta → ppico | VTe → vt | rampa → ti (se não tem campo dedicado, usar notes)
+
+▸ **PSV / SPN-CPAP / SPONT (modo ESPONTÂNEO)**:
+  Ajustes a ler: FiO2, PEEP, PS/ASB/ΔPsup (suporte acima do PEEP), Trigger, Rampa, %Ciclagem (E-cycle %)
+  Monitores: VTe (mL), VE, FR REAL do paciente (não setada!)
+  Mapeamento: PS → ps | VTe → vt | FR real → fr
+
+▸ **BIPAP / VNI**:
+  Ajustes: IPAP, EPAP, FR, FiO2, Trigger, Rampa
+  Mapeamento: IPAP → ipap | EPAP → epap
+
+▸ **APRV**: P-High, T-High, P-Low, T-Low, FiO2
+▸ **HFOV**: mPaw, ΔP (amplitude), Hz, TI%, Bias Flow, FiO2
+▸ **NAVA**: NAVA level (μV), Trigger Edi (μV), PEEP, FiO2
+▸ **PAV**: % Suporte, PEEP, FiO2, Trigger
+
+═══ NEONATAL / PEDIÁTRICO — atenção especial ═══
+Em pacientes pediátricos/neonatais:
+- **VTe sempre relevante** (tubo sem cuff = vazamento, set ≠ entregue ≠ exalado)
+- **Ti em segundos** (0.35–0.6s típico), NÃO use I:E
+- **Trigger ultra-sensível**: 0.2–0.5 L/min (não 2–3 como adulto)
+- **FR alta**: 30–60 rpm normal
+Se detectar paciente neo (Ti <1s + FR >25), mencione em "notes".
 
 PASSO 2 — EXTRAIR PARÂMETROS (use null se não estiver visível):
 
