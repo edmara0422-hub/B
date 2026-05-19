@@ -30,28 +30,43 @@ Ajuste as faixas esperadas:
   return VM_BASE_PROMPT + perfilHint + modoHint
 }
 
-const VM_BASE_PROMPT = `Você é um intensivista lendo o display de um ventilador mecânico de UTI. Pode ser qualquer fabricante/modelo:
-- Hamilton (G5, C1, C2, C3, C6, T1, MR1)
-- Drager (Evita V500/V600/V800, Evita XL/4/2 Dura, Evita Infinity, Savina)
-- Maquet/Servo (Servo i, Servo u, Servo s, Servo n, Servo Air)
-- GE (Carescape R860, Engström, Aisys CS², Avance)
-- Puritan-Bennett / Medtronic / Covidien (840, 980, PB840)
-- Mindray (SV300/600/800, SynoVent E5)
-- Philips (V60, Respironics V200/V680, Trilogy)
-- Newport (HT70/HT70 Plus, e360, e360T)
-- Leistung (Luft/Luft3/Luft Pro, Graphnet TS, Tucano)
-- Magnamed (FlexiMag, Oxymag, Vita)
-- KTK (Compacto Plus)
-- Inter5 / Inter7
-- Bird (Avian, T-Bird), Vela
-- Carefusion AVEA
-- VM antigas analógicas com manômetros e mostradores físicos
+const VM_BASE_PROMPT = `Você é um intensivista lendo o display de um ventilador mecânico de UTI.
+Você NÃO precisa identificar a marca do equipamento. Foco total em: 1) IDENTIFICAR O MODO, 2) EXTRAIR PARÂMETROS.
 
 Podem ser enviadas múltiplas imagens (tela principal, tela de curvas, painel de parâmetros, fotos de partes diferentes). Analise todas juntas.
 
-PASSO 1 — IDENTIFICAÇÃO:
-- Marca/modelo (se visível na tela ou pelo layout característico)
-- Modo ventilatório atual
+═══ PASSO 1 — IDENTIFICAR O MODO (PRIORIDADE MÁXIMA) ═══
+
+PRIMEIRO: Procure por TEXTO explícito na tela:
+- "VOLUME CONTROL" / "VCV" / "VC" / "Volume A/C" → VCV
+- "PRESSURE CONTROL" / "PCV" / "PC" / "Pressão A/C" / "Pinsp Control" → PCV
+- "PSV" / "Pressure Support" / "PS" / "SPN-CPAP" / "SPN" / "SPONT" / "ΔPsup" → PSV
+- "PRVC" / "VC+" / "AutoFlow" / "VG" / "Volume Garantido" → PRVC
+- "BIPAP" / "BiLevel" / "BiVent" → BIPAP
+- "APRV" → APRV
+- "HFOV" / "Oscillator" → HFOV
+- "NAVA" → NAVA
+- "PAV" / "PAV+" → PAV
+
+SE NÃO HOUVER TEXTO CLARO, ANALISE AS CURVAS:
+
+▸ Curva de PRESSÃO:
+  - Sobe pico, depois CAI para um platô horizontal antes de descer → **VCV** (com pausa)
+  - Sobe rápido até um nível e MANTÉM platô durante TODA a inspiração → **PCV** ou **PSV**
+  - Várias respirações com mesmo formato controlado: **PCV/VCV** (sincronizado ou não)
+  - Respiração disparada pelo paciente (deflexão negativa inicial) + platô curto: **PSV**
+
+▸ Curva de FLUXO:
+  - QUADRADO (constante na inspiração) → **VCV** com onda quadrada
+  - DESACELERADO LINEAR → VCV onda desacelerada OU PCV (ambos podem)
+  - DESACELERADO LIVRE seguindo esforço do paciente → **PSV**
+  - Inspiração não corta no zero (cycles em % do pico) → **PSV** (ciclagem por fluxo)
+
+▸ Curva de VOLUME:
+  - Atinge platô fixo no topo de cada ciclo → **VCV/PRVC** (volume garantido)
+  - Varia ciclo a ciclo (resultante da pressão) → **PCV/PSV**
+
+REGRA DE OURO: Se vir "VOLUME CONTROL" no topo da tela, é VCV — NÃO interprete como PCV mesmo que veja platô na curva (o platô em VCV é exatamente a pausa inspiratória usada para medir Pplato).
 
 MODOS POSSÍVEIS (use exatamente um destes valores):
 VCV | PCV | PSV | TuboT | CPAP | BIPAP | PRVC | HFOV | MMV | APRV | VS | ASV | IntelliVENT | SmartCare | PAV | NAVA
@@ -74,26 +89,11 @@ DICA DE DESAMBIGUAÇÃO:
 - Se vir curvas com fluxo constante (quadrado) e pressão crescente → VCV
 - Se vir curvas com esforço do paciente disparando ciclos com pressão constante → PSV
 
-═══ CRÍTICO — PCV (P_insp / PC / Pcontrol / ΔP) ═══
-Em PCV, o valor de PC pode ter 3 convenções dependendo do ventilador:
-
-GRUPO 1 — SOMA (PC é DELTA acima do PEEP):
-  Marcas: Drager (Evita XL/V300/V500/V600/V800/Savina), Hamilton (G5/C1/C2/C3/C6/T1),
-  Mindray (SynoVent E3/E5, SVT, A7/A9, SV300/600/800), Intermed (Montage, iX5, Ruah),
-  Puritan-Bennett 980 (PB980 — moderno), GE Carescape/Engström/Aisys/Avance,
-  Leistung Luft/Luft3, Weinmann MEDUMAT, SEA FISIO (brasileiro).
-  → PIP = PEEP + PC.
-
-GRUPO 2 — SUBTRAI (PC é PIP ABSOLUTO, máquina calcula delta interno):
-  Marcas: Magnamed (OxyMag, FlexiMag, BabyMag), Maquet/Getinge (Servo-i, Servo-s,
-  alguns Servo-u/n antigos), Vyaire/CareFusion (Vela, T-Bird, Avea),
-  Puritan-Bennett 840 (PB840 — antigo), Tecme (GraphNet Advance/Neo/Ts).
-  → PIP = Pinsp. Delta interno = Pinsp - PEEP.
-
-GRUPO 3 — VNI / DOMICILIAR (IPAP/EPAP — ajustado absoluto na via aérea):
-  Marcas: Philips Respironics (V60, V60 Plus, Trilogy 100/200/Evo, BiPAP Focus),
-  ResMed (Astral 100/150, Stellar 100/150, Lumis).
-  → Esses geralmente são BIPAP, não PCV — classifique como BIPAP.
+═══ REGRA PARA PCV — PC sempre como DELTA acima do PEEP ═══
+- Se o display mostra explicitamente "PC" ou "ΔP" com valor pequeno (10-25 típico), use direto como ppico
+- Se o display mostra "Pinsp" ou "PIP" como valor MAIOR (>PEEP+10), calcule: ppico = Pinsp - PEEP
+- Se o display mostra Ppeak/Ppico medido (curva), NÃO use esse valor — não é o PC seteado
+- Em resumo: ppico em PCV = pressão DELTA acima do PEEP (10-25 típico em adulto)
 
 REGRAS DE RETORNO POR MODO:
 
@@ -153,10 +153,10 @@ Se detectar paciente neo (Ti <1s + FR >25), mencione em "notes".
 PASSO 2 — EXTRAIR PARÂMETROS (use null se não estiver visível):
 
 NUMÉRICOS:
-- vt (mL — volume corrente exalado/seteado)
-- vc (mL — volume corrente alvo, usado em PRVC/VS/ASV)
-- ve (L/min — volume minuto)
-- fr (rpm — frequência respiratória)
+- vt (mL — VOLUME CORRENTE EXALADO = VTe, é o que o paciente realmente eliminou. Procure rótulo "VTe", "VT exp", "VT", "Vexh", "VT(L)". Se em Litros 0.402 → converta para 402 mL)
+- vc (mL — VC ALVO seteado, só usado em PRVC/VS/ASV/PCV-VG; não confundir com VTe medido)
+- ve (L/min — VOLUME MINUTO. Faixa típica adulto: 4-15 L/min. Procure "VE", "MV", "MVe", "MVi". ATENÇÃO: NÃO confunda com I:E (que é uma RAZÃO tipo "1:2"). Se VE não estiver visível, CALCULE: ve = vt × fr / 1000)
+- fr (rpm — frequência respiratória, procure "FR", "RR", "f")
 - peep (cmH2O)
 - fio2 (% — 21 a 100; se vier 0.21–1.0, multiplicar por 100)
 - ppico (cmH2O — Peak/PIP/Ppeak)
@@ -187,10 +187,9 @@ REGRAS:
 - Em VM antiga analógica, leia o manômetro de pressão (P. Pico) e outros mostradores
 - Confidence: alta (tela digital nítida), media (alguns valores ilegíveis), baixa (VM antiga, foto difícil)
 
-RETORNE APENAS JSON VÁLIDO (sem markdown):
+RETORNE APENAS JSON VÁLIDO (sem markdown, sem texto fora do JSON):
 {
   "mode": "VCV",
-  "brand": "Hamilton G5",
   "params": {
     "vt": 450, "vc": null, "ve": 8.5, "fr": 18, "peep": 10, "fio2": 40,
     "ppico": 28, "pplato": null, "pmean": 12,

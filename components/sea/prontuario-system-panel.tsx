@@ -2756,7 +2756,7 @@ export function ProntuarioSystemPanel() {
   const [vmScanOpen, setVmScanOpen] = useState(false)
   const [vmScanPhotos, setVmScanPhotos] = useState<{ file: File; preview: string }[]>([])
   const [vmScanLoading, setVmScanLoading] = useState(false)
-  const [vmScanResult, setVmScanResult] = useState<{ mode: string | null; brand?: string; params: Record<string, number | string | null>; confidence?: string; notes?: string } | null>(null)
+  const [vmScanResult, setVmScanResult] = useState<{ mode: string | null; params: Record<string, number | string | null>; confidence?: string; notes?: string } | null>(null)
   const [vmScanError, setVmScanError] = useState<string | null>(null)
   const workspacesRef = useRef<Workspace[]>([])
   const activeWsIdRef = useRef<string>('')
@@ -6697,9 +6697,9 @@ export function ProntuarioSystemPanel() {
                           </button>
                         </div>
                         <div className="flex flex-wrap gap-x-2.5 gap-y-0.5 text-[9px] text-white/70 tabular-nums">
-                          {currentRecord.vt && <span>VT <span className="text-white/92">{currentRecord.vt}</span></span>}
+                          {currentRecord.vt && <span>VTe <span className="text-white/92">{currentRecord.vt}</span></span>}
                           {currentRecord.vc && <span>VC <span className="text-white/92">{currentRecord.vc}</span></span>}
-                          {currentRecord.ve && <span>VE <span className="text-white/92">{currentRecord.ve}</span></span>}
+                          {currentRecord.ve && <span>VE <span className="text-white/92">{currentRecord.ve}</span> L/min</span>}
                           {currentRecord.fr && <span>FR <span className="text-white/92">{currentRecord.fr}</span></span>}
                           {currentRecord.peep && <span>PEEP <span className="text-white/92">{currentRecord.peep}</span></span>}
                           {currentRecord.fio2 && <span>FiO2 <span className="text-white/92">{currentRecord.fio2}</span></span>}
@@ -9373,7 +9373,6 @@ export function ProntuarioSystemPanel() {
                       <div className="flex items-center gap-1.5">
                         <p className="text-[8px] uppercase tracking-[0.18em] text-[#22d3ee]/70">Modo</p>
                         <span className="text-[11px] font-bold text-white/92">{r.mode ?? '—'}</span>
-                        {r.brand && <span className="text-[8px] text-white/40 italic">({r.brand})</span>}
                       </div>
                       {r.confidence && (
                         <span className="rounded-full px-1.5 py-0.5 text-[7px] font-semibold uppercase"
@@ -9421,9 +9420,15 @@ export function ProntuarioSystemPanel() {
                       if (currentRecord?.perfilVM) fd.append('perfil', currentRecord.perfilVM)
                       if (currentRecord?.modoVM) fd.append('modoSelecionado', currentRecord.modoVM)
                       const res = await fetch('/api/icu/vm-scan', { method: 'POST', body: fd })
-                      const json = await res.json()
-                      if (!res.ok) throw new Error(json.error ?? 'Erro na análise')
-                      setVmScanResult(json)
+                      const text = await res.text()
+                      let json: Record<string, unknown>
+                      try {
+                        json = JSON.parse(text)
+                      } catch {
+                        throw new Error('Resposta inválida da IA. Tente foto mais nítida ou com menos parâmetros visíveis.')
+                      }
+                      if (!res.ok) throw new Error((json.error as string) ?? 'Erro na análise')
+                      setVmScanResult(json as never)
                     } catch (err) {
                       setVmScanError(err instanceof Error ? err.message : 'Falha ao analisar imagens')
                     } finally {
