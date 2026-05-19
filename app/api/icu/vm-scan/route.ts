@@ -20,7 +20,17 @@ const GROQ_MODELS = [
   'llama-3.2-11b-vision-preview',
 ]
 
-const VM_PROMPT = `Você é um intensivista lendo o display de um ventilador mecânico de UTI. Pode ser qualquer fabricante/modelo:
+function buildVmPrompt(perfil?: string, modoSelecionado?: string): string {
+  const perfilHint = perfil ? `\n\nPERFIL DO PACIENTE: ${perfil.toUpperCase()}.
+Ajuste as faixas esperadas:
+- Adulto: VC 6-8 mL/kg, FR 12-20 rpm, Ti via I:E (1:2), PEEP 5-10, Trigger 2-3 L/min, Ciclagem PSV 25%
+- Pediátrico: VC 5-8 mL/kg, FR 20-30 rpm, Ti FIXO 0.6-0.8s, PEEP 5-8, Trigger 0.8-1.5 L/min, Ciclagem PSV 10-15%
+- Neonatal: VC 4-6 mL/kg, FR 30-60 rpm, Ti FIXO 0.35-0.5s, PEEP 4-6, Trigger 0.2-0.4 L/min, Ciclagem PSV 5-10%, VTe SEMPRE proximal\n` : ''
+  const modoHint = modoSelecionado ? `\nMODO SELECIONADO PELO USUÁRIO: ${modoSelecionado}. Se a foto mostrar modo diferente, retorne o modo real lido e mencione em notes.\n` : ''
+  return VM_BASE_PROMPT + perfilHint + modoHint
+}
+
+const VM_BASE_PROMPT = `Você é um intensivista lendo o display de um ventilador mecânico de UTI. Pode ser qualquer fabricante/modelo:
 - Hamilton (G5, C1, C2, C3, C6, T1, MR1)
 - Drager (Evita V500/V600/V800, Evita XL/4/2 Dura, Evita Infinity, Savina)
 - Maquet/Servo (Servo i, Servo u, Servo s, Servo n, Servo Air)
@@ -204,7 +214,7 @@ function extractJson(content: string): string {
 
 type ContentBlock = { type: 'image'; image: string } | { type: 'text'; text: string }
 
-async function callGroqFallback(images: { base64: string; mime: string }[]): Promise<Record<string, unknown>> {
+async function callGroqFallback(images: { base64: string; mime: string }[], prompt: string): Promise<Record<string, unknown>> {
   const imageBlocks = images.map(img => ({
     type: 'image_url' as const,
     image_url: { url: `data:${img.mime};base64,${img.base64}` },
@@ -220,7 +230,7 @@ async function callGroqFallback(images: { base64: string; mime: string }[]): Pro
         },
         body: JSON.stringify({
           model,
-          messages: [{ role: 'user', content: [...imageBlocks, { type: 'text', text: VM_PROMPT }] }],
+          messages: [{ role: 'user', content: [...imageBlocks, { type: 'text', text: prompt }] }],
           temperature: 0.1,
           max_tokens: 1200,
         }),
@@ -243,6 +253,10 @@ export async function POST(req: NextRequest) {
     const files = formData.getAll('files') as File[]
     if (!files.length) return NextResponse.json({ error: 'Nenhuma imagem enviada' }, { status: 400 })
 
+    const perfil = (formData.get('perfil') as string | null) ?? undefined
+    const modoSelecionado = (formData.get('modoSelecionado') as string | null) ?? undefined
+    const prompt = buildVmPrompt(perfil, modoSelecionado)
+
     const images = await Promise.all(
       files.map(async (file) => {
         const ab = await file.arrayBuffer()
@@ -253,7 +267,7 @@ export async function POST(req: NextRequest) {
       })
     )
 
-    console.log(`[VM Scan] ${images.length} imagem(ns) recebida(s)`)
+    console.log(`[VM Scan] ${images.length} imagem(ns) · perfil=${perfil ?? 'auto'} · modo=${modoSelecionado ?? 'auto'}`)
 
     let aiResult: Record<string, unknown> | null = null
 
@@ -266,7 +280,7 @@ export async function POST(req: NextRequest) {
               type: 'image' as const,
               image: `data:${img.mime};base64,${img.base64}`,
             })),
-            { type: 'text', text: VM_PROMPT },
+            { type: 'text', text: prompt },
           ]
           const { text } = await generateText({
             model: gateway(modelId),
@@ -284,7 +298,7 @@ export async function POST(req: NextRequest) {
 
     if (!aiResult && GROQ_API_KEY) {
       console.log('[VM Scan] Usando fallback Groq')
-      aiResult = await callGroqFallback(images)
+      aiResult = await callGroqFallback(images, prompt)
     }
 
     if (!aiResult) {

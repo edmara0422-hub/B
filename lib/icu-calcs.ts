@@ -611,6 +611,7 @@ export type PatientData = {
   dataDescVM: string
   horaDescVM: string
   modoVM: string
+  perfilVM: 'adulto' | 'pediatrico' | 'neonatal' | ''
   vt: string
   vc: string
   ve: string
@@ -797,6 +798,7 @@ export function emptyPatient(): PatientData {
     dataDescVM: '',
     horaDescVM: '',
     modoVM: '',
+    perfilVM: '',
     vt: '',
     vc: '',
     ve: '',

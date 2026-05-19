@@ -6629,6 +6629,14 @@ export function ProntuarioSystemPanel() {
                         ))}
                       </select>
                     </FieldShell>
+                    <FieldShell label="Perfil">
+                      <select className={INPUT_CLASS_SM} style={INPUT_STYLE} value={currentRecord.perfilVM ?? ''} onChange={(event) => setField('perfilVM', event.target.value)}>
+                        <option value="">--</option>
+                        <option value="adulto">Adulto</option>
+                        <option value="pediatrico">Pediátrico</option>
+                        <option value="neonatal">Neonatal</option>
+                      </select>
+                    </FieldShell>
                   </div>
 
                   {/* Toggle Digite / Scan — só aparece quando um modo está selecionado */}
@@ -9410,6 +9418,8 @@ export function ProntuarioSystemPanel() {
                     try {
                       const fd = new FormData()
                       vmScanPhotos.forEach(p => fd.append('files', p.file))
+                      if (currentRecord?.perfilVM) fd.append('perfil', currentRecord.perfilVM)
+                      if (currentRecord?.modoVM) fd.append('modoSelecionado', currentRecord.modoVM)
                       const res = await fetch('/api/icu/vm-scan', { method: 'POST', body: fd })
                       const json = await res.json()
                       if (!res.ok) throw new Error(json.error ?? 'Erro na análise')
