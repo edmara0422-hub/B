@@ -6690,7 +6690,7 @@ export function ProntuarioSystemPanel() {
                           {currentRecord.fr && <span>FR <span className="text-white/92">{currentRecord.fr}</span></span>}
                           {currentRecord.peep && <span>PEEP <span className="text-white/92">{currentRecord.peep}</span></span>}
                           {currentRecord.fio2 && <span>FiO2 <span className="text-white/92">{currentRecord.fio2}</span></span>}
-                          {currentRecord.ppico && <span>PIP <span className="text-white/92">{currentRecord.ppico}</span></span>}
+                          {currentRecord.ppico && <span>{currentRecord.modoVM === 'PCV' ? 'PC' : 'PIP'} <span className="text-white/92">{currentRecord.ppico}</span></span>}
                           {currentRecord.pmean && <span>Pmean <span className="text-white/92">{currentRecord.pmean}</span></span>}
                           {currentRecord.ie && <span>I:E <span className="text-white/92">{currentRecord.ie}</span></span>}
                           {currentRecord.ti && <span>TI <span className="text-white/92">{currentRecord.ti}</span></span>}
@@ -6704,67 +6704,90 @@ export function ProntuarioSystemPanel() {
                         </div>
                       </div>
 
-                      {/* Complemento manual — campos que precisam de manobra (não dão pra escanear) */}
-                      <div className="rounded-[0.7rem] px-2 py-2" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)' }}>
-                        <p className="mb-1.5 text-[8px] uppercase tracking-[0.18em] text-white/40">Complemento manual (manobras)</p>
-                        <div className="grid gap-1 grid-cols-3 xl:grid-cols-6">
-                          {/* VCV / PRVC / PCV — Pplato + SI */}
-                          {(currentRecord.modoVM === 'VCV' || currentRecord.modoVM === 'PRVC' || currentRecord.modoVM === 'PCV') && (
-                            <>
-                              <FieldShell label="P. Plato">
-                                <input className={INPUT_CLASS_SM} style={INPUT_STYLE} value={currentRecord.pplato} onChange={(e) => setField('pplato', e.target.value)} placeholder="25" />
-                              </FieldShell>
-                              <FieldShell label="SI (P1-P2)">
-                                <input className={INPUT_CLASS_SM} style={INPUT_STYLE} value={currentRecord.si ?? ''} onChange={(e) => setField('si', e.target.value)} placeholder="1.0" />
-                              </FieldShell>
-                              <FieldShell label="P1-P2">
-                                <div className="flex gap-1">
-                                  <button type="button" onClick={() => setField('p1', currentRecord.p1 === '=' ? '' : '=')}
-                                    className={`flex-1 rounded-lg border py-1 text-[8px] font-bold transition ${currentRecord.p1 === '=' ? 'border-white/25 bg-white/15 text-white' : 'border-white/8 bg-white/[0.03] text-white/40'}`}
-                                  >=</button>
-                                  <button type="button" onClick={() => setField('p1', currentRecord.p1 === '≠' ? '' : '≠')}
-                                    className={`flex-1 rounded-lg border py-1 text-[8px] font-bold transition ${currentRecord.p1 === '≠' ? 'border-white/25 bg-white/15 text-white' : 'border-white/8 bg-white/[0.03] text-white/40'}`}
-                                  >≠</button>
+                      {/* Complemento manual + cálculos — por grupo de modo */}
+                      {(() => {
+                        const group = getModeType(currentRecord.modoVM)
+                        const calc = calculations
+                        const fmt = (v: number | null | undefined, d = 1) => v == null || Number.isNaN(v) ? '—' : v.toFixed(d)
+                        return (
+                          <div className="rounded-[0.7rem] px-2 py-2" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)' }}>
+                            <p className="mb-1.5 text-[8px] uppercase tracking-[0.18em] text-white/40">
+                              Manobras + cálculos · {group === 'volume' ? 'Modo a volume' : group === 'pressure' ? 'Modo a pressão' : group === 'spontaneous' ? 'Modo espontâneo' : 'Outros'}
+                            </p>
+
+                            {/* VOLUME: Pplato + P1-P2 + SI manuais → DP + Pico + Cest + Cdyn calculados */}
+                            {group === 'volume' && (
+                              <>
+                                <div className="grid gap-1 grid-cols-3 xl:grid-cols-6">
+                                  <FieldShell label="P. Plato">
+                                    <input className={INPUT_CLASS_SM} style={INPUT_STYLE} value={currentRecord.pplato} onChange={(e) => setField('pplato', e.target.value)} placeholder="25" />
+                                  </FieldShell>
+                                  <FieldShell label="SI">
+                                    <input className={INPUT_CLASS_SM} style={INPUT_STYLE} value={currentRecord.si ?? ''} onChange={(e) => setField('si', e.target.value)} placeholder="1.0" />
+                                  </FieldShell>
+                                  <FieldShell label="P1-P2">
+                                    <div className="flex gap-1">
+                                      <button type="button" onClick={() => setField('p1', currentRecord.p1 === '=' ? '' : '=')}
+                                        className={`flex-1 rounded-lg border py-1 text-[8px] font-bold transition ${currentRecord.p1 === '=' ? 'border-white/25 bg-white/15 text-white' : 'border-white/8 bg-white/[0.03] text-white/40'}`}>=</button>
+                                      <button type="button" onClick={() => setField('p1', currentRecord.p1 === '≠' ? '' : '≠')}
+                                        className={`flex-1 rounded-lg border py-1 text-[8px] font-bold transition ${currentRecord.p1 === '≠' ? 'border-white/25 bg-white/15 text-white' : 'border-white/8 bg-white/[0.03] text-white/40'}`}>≠</button>
+                                    </div>
+                                  </FieldShell>
                                 </div>
+                                <div className="mt-1.5 flex flex-wrap gap-x-3 gap-y-0.5 text-[9px] tabular-nums">
+                                  <span className="text-white/40">DP <span className="text-white/92 font-semibold">{fmt(calc?.dp ?? null, 0)}</span></span>
+                                  <span className="text-white/40">P. Pico <span className="text-white/92 font-semibold">{currentRecord.ppico || '—'}</span></span>
+                                  <span className="text-white/40">Cest <span className="text-white/92 font-semibold">{fmt(calc?.cest ?? null, 1)}</span></span>
+                                  <span className="text-white/40">Cdyn <span className="text-white/92 font-semibold">{fmt(calc?.cdyn ?? null, 1)}</span></span>
+                                </div>
+                              </>
+                            )}
+
+                            {/* PRESSÃO: Pplato manual → DP + Cest calculados (SEM PIP) */}
+                            {group === 'pressure' && (
+                              <>
+                                <div className="grid gap-1 grid-cols-3 xl:grid-cols-6">
+                                  <FieldShell label="P. Plato">
+                                    <input className={INPUT_CLASS_SM} style={INPUT_STYLE} value={currentRecord.pplato} onChange={(e) => setField('pplato', e.target.value)} placeholder="25" />
+                                  </FieldShell>
+                                </div>
+                                <div className="mt-1.5 flex flex-wrap gap-x-3 gap-y-0.5 text-[9px] tabular-nums">
+                                  <span className="text-white/40">DP <span className="text-white/92 font-semibold">{fmt(calc?.dp ?? null, 0)}</span></span>
+                                  <span className="text-white/40">Cest <span className="text-white/92 font-semibold">{fmt(calc?.cest ?? null, 1)}</span></span>
+                                </div>
+                              </>
+                            )}
+
+                            {/* ESPONTÂNEOS: Pplato + P0.1 + Pocc manuais → DP + Pmusc + RSBI calculados */}
+                            {group === 'spontaneous' && (
+                              <>
+                                <div className="grid gap-1 grid-cols-3 xl:grid-cols-6">
+                                  <FieldShell label="P. Plato">
+                                    <input className={INPUT_CLASS_SM} style={INPUT_STYLE} value={currentRecord.pplato} onChange={(e) => setField('pplato', e.target.value)} placeholder="—" />
+                                  </FieldShell>
+                                  <FieldShell label="P0.1">
+                                    <input className={INPUT_CLASS_SM} style={INPUT_STYLE} value={currentRecord.p01 ?? ''} onChange={(e) => setField('p01', e.target.value)} placeholder="2.5" />
+                                  </FieldShell>
+                                  <FieldShell label="Pocc">
+                                    <input className={INPUT_CLASS_SM} style={INPUT_STYLE} value={currentRecord.pocc ?? ''} onChange={(e) => setField('pocc', e.target.value)} placeholder="8" />
+                                  </FieldShell>
+                                </div>
+                                <div className="mt-1.5 flex flex-wrap gap-x-3 gap-y-0.5 text-[9px] tabular-nums">
+                                  <span className="text-white/40">DP <span className="text-white/92 font-semibold">{fmt(calc?.dp ?? null, 0)}</span></span>
+                                  <span className="text-white/40">Pmusc <span className="text-white/92 font-semibold">{fmt(calc?.pmusc ?? null, 1)}</span></span>
+                                  <span className="text-white/40">RSBI <span className="text-white/92 font-semibold">{fmt(calc?.rsbi ?? null, 0)}</span></span>
+                                </div>
+                              </>
+                            )}
+
+                            <div className="mt-1.5">
+                              <FieldShell label="Observacoes">
+                                <AutoGrowTextarea value={currentRecord.vmObs ?? ''} onChange={(v) => setField('vmObs', v)} placeholder="Tolerância, sincronia, secreção..." />
                               </FieldShell>
-                            </>
-                          )}
-                          {/* PSV / TuboT — RSBI / Drive */}
-                          {(currentRecord.modoVM === 'PSV' || currentRecord.modoVM === 'TuboT') && (
-                            <>
-                              <FieldShell label="P0.1">
-                                <input className={INPUT_CLASS_SM} style={INPUT_STYLE} value={currentRecord.p01 ?? ''} onChange={(e) => setField('p01', e.target.value)} placeholder="2.5" />
-                              </FieldShell>
-                              <FieldShell label="Pocc">
-                                <input className={INPUT_CLASS_SM} style={INPUT_STYLE} value={currentRecord.pocc ?? ''} onChange={(e) => setField('pocc', e.target.value)} placeholder="8" />
-                              </FieldShell>
-                              <FieldShell label="PImax">
-                                <input className={INPUT_CLASS_SM} style={INPUT_STYLE} value={currentRecord.dPimax ?? ''} onChange={(e) => setField('dPimax', e.target.value)} placeholder="-30" />
-                              </FieldShell>
-                              <FieldShell label="PEmax">
-                                <input className={INPUT_CLASS_SM} style={INPUT_STYLE} value={currentRecord.dPemax ?? ''} onChange={(e) => setField('dPemax', e.target.value)} placeholder="60" />
-                              </FieldShell>
-                            </>
-                          )}
-                          {/* PAV — WOB */}
-                          {currentRecord.modoVM === 'PAV' && (
-                            <>
-                              <FieldShell label="WOB (J/L)">
-                                <input className={INPUT_CLASS_SM} style={INPUT_STYLE} value={currentRecord.wob ?? ''} onChange={(e) => setField('wob', e.target.value)} placeholder="0.8" />
-                              </FieldShell>
-                              <FieldShell label="Pocc">
-                                <input className={INPUT_CLASS_SM} style={INPUT_STYLE} value={currentRecord.pocc ?? ''} onChange={(e) => setField('pocc', e.target.value)} placeholder="8" />
-                              </FieldShell>
-                            </>
-                          )}
-                        </div>
-                        {/* Observações */}
-                        <div className="mt-1.5">
-                          <FieldShell label="Observacoes">
-                            <AutoGrowTextarea value={currentRecord.vmObs ?? ''} onChange={(v) => setField('vmObs', v)} placeholder="Tolerância, sincronia, secreção..." />
-                          </FieldShell>
-                        </div>
-                      </div>
+                            </div>
+                          </div>
+                        )
+                      })()}
                     </div>
                   )}
 
