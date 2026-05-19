@@ -7789,41 +7789,6 @@ export function ProntuarioSystemPanel() {
                   </div>
                   {!collapsedDesmame && (
                     <>
-                      {/* Perfil etário do desmame */}
-                      <div className="mt-1.5 mb-1.5">
-                        <FieldShell label="Perfil do paciente (parâmetros específicos por idade)">
-                          <select className={INPUT_CLASS_SM} style={INPUT_STYLE} value={currentRecord.perfilVM ?? ''} onChange={(event) => setField('perfilVM', event.target.value)}>
-                            <option value="">-- Selecionar --</option>
-                            <option value="adulto">Adulto (FR &gt; 35 = falha · CV ≥ 15 mL/kg · RSBI &lt; 80)</option>
-                            <option value="pediatrico">Pediátrico (Lact FR &gt; 60 · Cri FR &gt; 45 · Esc FR &gt; 35 · Adol FR &gt; 30)</option>
-                            <option value="neonatal">Neonatal (PSV 8-10 + PEEP 5 · extubar p/ CPAP Bolhas 5-6)</option>
-                          </select>
-                        </FieldShell>
-                      </div>
-
-                      {/* Guia rápido por perfil */}
-                      {currentRecord.perfilVM === 'adulto' && (
-                        <div className="mb-1.5 rounded-[0.6rem] px-2 py-1.5 text-[8.5px] text-white/70" style={{ background: 'rgba(96,165,250,0.06)', border: '1px solid rgba(96,165,250,0.18)' }}>
-                          <p className="font-semibold text-[#93c5fd]">TRE Adulto:</p>
-                          <p>PSV 5-8 + PEEP 5 por 30-120 min · Sucesso: FR &lt; 35 · SpO₂ &gt; 90% · FC &lt; 140 · PAS 90-180 · sem desconforto</p>
-                        </div>
-                      )}
-                      {currentRecord.perfilVM === 'pediatrico' && (
-                        <div className="mb-1.5 rounded-[0.6rem] px-2 py-1.5 text-[8.5px] text-white/70" style={{ background: 'rgba(167,139,250,0.06)', border: '1px solid rgba(167,139,250,0.18)' }}>
-                          <p className="font-semibold text-[#a78bfa]">TRE Pediátrico:</p>
-                          <p>PSV 6-10 + PEEP 5 por 30-60 min · Falha: Lactente &gt; 60 / Criança &gt; 45 / Escolar &gt; 35 / Adolescente &gt; 30 rpm · SpO₂ &lt; 90% ou FiO₂ &gt; 40%</p>
-                          <p className="mt-0.5">Pré-extubação: Cuff-leak test · Dexametasona 0,25-0,5 mg/kg 4-12h antes se risco estridor</p>
-                        </div>
-                      )}
-                      {currentRecord.perfilVM === 'neonatal' && (
-                        <div className="mb-1.5 rounded-[0.6rem] px-2 py-1.5 text-[8.5px] text-white/70" style={{ background: 'rgba(251,113,133,0.06)', border: '1px solid rgba(251,113,133,0.18)' }}>
-                          <p className="font-semibold text-[#fb7185]">Desmame Neonatal:</p>
-                          <p>Reduzir FR em passos de 5 rpm até 20-25 rpm · Migrar para PSV 8-10 + PEEP 5 por 1-2h</p>
-                          <p className="mt-0.5">Extubação DIRETA para CPAP de Bolhas 5-6 cmH₂O (prematuro &lt; 32 sem ou &lt; 1500g obrigatório) ou NIPPV</p>
-                          <p className="mt-0.5 text-[#fb7185]">⚠ Tubo-T PROIBIDO em neonato (resistência alta do tubo neo causa fadiga)</p>
-                        </div>
-                      )}
-
                       {/* Inputs em 1 linha */}
                       <div className="mt-1.5 grid gap-0.5 grid-cols-5">
                         <FieldShell label="PImax">
@@ -8140,6 +8105,39 @@ export function ProntuarioSystemPanel() {
 
                   return (
                     <div className="chrome-panel rounded-[1rem] p-1.5 md:p-2">
+                      {/* Perfil etário — guia os parâmetros do TRE */}
+                      <div className="mb-2">
+                        <FieldShell label="Perfil do paciente">
+                          <select className={INPUT_CLASS_SM} style={INPUT_STYLE} value={currentRecord.perfilVM ?? ''} onChange={(event) => setField('perfilVM', event.target.value)}>
+                            <option value="">-- Selecionar --</option>
+                            <option value="adulto">Adulto</option>
+                            <option value="pediatrico">Pediátrico</option>
+                            <option value="neonatal">Neonatal</option>
+                          </select>
+                        </FieldShell>
+                        {currentRecord.perfilVM === 'adulto' && (
+                          <div className="mt-1 rounded-[0.6rem] px-2 py-1.5 text-[8.5px] text-white/70" style={{ background: 'rgba(96,165,250,0.06)', border: '1px solid rgba(96,165,250,0.18)' }}>
+                            <p className="font-semibold text-[#93c5fd]">TRE Adulto:</p>
+                            <p>PSV 5-8 + PEEP 5 por 30-120 min · Sucesso: FR &lt; 35 · SpO₂ &gt; 90% · FC &lt; 140 · PAS 90-180 · sem desconforto</p>
+                          </div>
+                        )}
+                        {currentRecord.perfilVM === 'pediatrico' && (
+                          <div className="mt-1 rounded-[0.6rem] px-2 py-1.5 text-[8.5px] text-white/70" style={{ background: 'rgba(167,139,250,0.06)', border: '1px solid rgba(167,139,250,0.18)' }}>
+                            <p className="font-semibold text-[#a78bfa]">TRE Pediátrico:</p>
+                            <p>PSV 6-10 + PEEP 5 por 30-60 min · Falha: Lact &gt; 60 / Cri &gt; 45 / Esc &gt; 35 / Adol &gt; 30 rpm · SpO₂ &lt; 90% ou FiO₂ &gt; 40%</p>
+                            <p className="mt-0.5">Pré-extubação: Cuff-leak test · Dexametasona 0,25-0,5 mg/kg 4-12h antes se risco estridor</p>
+                          </div>
+                        )}
+                        {currentRecord.perfilVM === 'neonatal' && (
+                          <div className="mt-1 rounded-[0.6rem] px-2 py-1.5 text-[8.5px] text-white/70" style={{ background: 'rgba(251,113,133,0.06)', border: '1px solid rgba(251,113,133,0.18)' }}>
+                            <p className="font-semibold text-[#fb7185]">Desmame Neonatal:</p>
+                            <p>Reduzir FR em passos de 5 rpm até 20-25 rpm · Migrar para PSV 8-10 + PEEP 5 por 1-2h</p>
+                            <p className="mt-0.5">Extubação DIRETA para CPAP de Bolhas 5-6 cmH₂O (prematuro &lt; 32 sem ou &lt; 1500g obrigatório) ou NIPPV</p>
+                            <p className="mt-0.5 text-[#fb7185]">⚠ Tubo-T PROIBIDO em neonato (resistência alta do tubo causa fadiga)</p>
+                          </div>
+                        )}
+                      </div>
+
                       {/* Header */}
                       <div className="mb-3 flex items-center justify-center gap-2 flex-wrap">
                         <p className="text-[7px] font-semibold uppercase tracking-[0.14em] text-white/40">Parametros de Desmame</p>
