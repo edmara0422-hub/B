@@ -31,17 +31,34 @@ function usePreloadRoutes() {
   }, [])
 }
 
-// Flag em sessionStorage: persiste entre reloads mas é apagado quando o app é
-// completamente fechado/reaberto. Reload = pula landing/splash; fechar+reabrir
-// = mostra landing/splash de novo.
+// Versão do app: aumente este número para que TODOS os usuários vejam o splash
+// novamente após um update importante. Boas práticas: bump em deploys com
+// mudanças visuais ou funcionais relevantes; mantenha estável em fixes menores.
+const APP_VERSION = '1.0.0'
+
+// localStorage (persiste entre sessões) com a última versão vista.
+// Se versão atual ≠ última vista → mostra splash + atualiza versão.
+// Reload comum (sem mudança de versão): sessionStorage flag pula splash.
+const APP_VERSION_KEY = 'sea-app-version'
 const SPLASH_SHOWN_KEY = 'sea-splash-shown'
-function readSplashShown(): boolean {
+
+function shouldShowSplash(): boolean {
   if (typeof window === 'undefined') return false
-  try { return sessionStorage.getItem(SPLASH_SHOWN_KEY) === '1' } catch { return false }
+  try {
+    // Se houve update de versão, força splash
+    const savedVersion = localStorage.getItem(APP_VERSION_KEY)
+    if (savedVersion !== APP_VERSION) return true
+    // Senão, respeita a flag de sessão (pula em reload comum)
+    return sessionStorage.getItem(SPLASH_SHOWN_KEY) !== '1'
+  } catch { return true }
 }
+
 function markSplashShown() {
   if (typeof window === 'undefined') return
-  try { sessionStorage.setItem(SPLASH_SHOWN_KEY, '1') } catch { /* ignore */ }
+  try {
+    sessionStorage.setItem(SPLASH_SHOWN_KEY, '1')
+    localStorage.setItem(APP_VERSION_KEY, APP_VERSION)
+  } catch { /* ignore */ }
 }
 
 type Tab = 'home' | 'explore' | 'other'
