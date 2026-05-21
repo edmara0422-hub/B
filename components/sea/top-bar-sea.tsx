@@ -67,13 +67,22 @@ export function TopBarSEA() {
     <header
       className="fixed left-0 right-0 top-0 z-40 px-2 pt-2 pb-2 md:px-4"
       style={{
-        background: 'rgba(5,5,5,0.82)',
-        backdropFilter: 'blur(28px)',
-        WebkitBackdropFilter: 'blur(28px)',
-        borderBottom: '1px solid rgba(192,192,192,0.06)',
+        background: 'linear-gradient(180deg, rgba(2,2,3,0.97) 0%, rgba(5,5,7,0.90) 100%)',
+        backdropFilter: 'blur(32px) saturate(1.4)',
+        WebkitBackdropFilter: 'blur(32px) saturate(1.4)',
+        borderBottom: '1px solid rgba(255,255,255,0.04)',
+        boxShadow: '0 1px 0 rgba(232,204,136,0.08), 0 4px 24px rgba(0,0,0,0.5)',
         paddingTop: 'max(0.5rem, env(safe-area-inset-top))',
       }}
     >
+      {/* Gold shimmer line at bottom — matches bottom nav */}
+      <div
+        className="absolute bottom-0 left-0 right-0 h-px pointer-events-none"
+        style={{
+          background: 'linear-gradient(90deg, transparent 8%, rgba(212,184,122,0.18) 28%, rgba(232,204,136,0.50) 50%, rgba(212,184,122,0.18) 72%, transparent 92%)',
+          opacity: 0.80,
+        }}
+      />
       <div className="flex w-full items-center justify-between gap-2">
         {/* ── ESQUERDA: logo SEA metálico + tagline (oculta em mobile) ── */}
         <div className="flex items-center gap-2 md:gap-3">
