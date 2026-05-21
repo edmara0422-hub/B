@@ -335,7 +335,7 @@ Diretoria de Governança Corporativa IPB`
                     <option value="declaracao">Declaração de Compliance Ambiental</option>
                   </select>
                   <button
-                    className="bg-[#d4b87a] hover:bg-[#c5a55a] text-black font-bold uppercase tracking-wider text-[9px] px-3.5 py-2 rounded-lg transition-colors cursor-pointer select-none"
+                    className="bg-[#d4b87a] hover:bg-[#d4b87a]/90 text-black font-bold uppercase tracking-wider text-[9px] px-3.5 py-2 rounded-lg transition-colors cursor-pointer select-none"
                     onClick={handleGenerateDoc}
                     disabled={generating}
                   >

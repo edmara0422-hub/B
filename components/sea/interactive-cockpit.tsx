@@ -21,11 +21,11 @@ interface SystemDef {
 }
 
 const SYSTEMS: Record<SystemId, SystemDef> = {
-  ai: { id: 'ai', title: 'IPB AI', icon: Sparkles, color: '#e8cc88' },
+  ai: { id: 'ai', title: 'IPB AI', icon: Sparkles, color: '#d4b87a' },
   pneumo: { id: 'pneumo', title: 'Pulmão', icon: Wind, color: '#60a5fa' },
   cardio: { id: 'cardio', title: 'Coração', icon: Activity, color: '#f87171' },
   neuro: { id: 'neuro', title: 'Cérebro', icon: Brain, color: '#4ade80' },
-  esg: { id: 'esg', title: 'Governança & ESG', icon: Leaf, color: '#c5a55a' },
+  esg: { id: 'esg', title: 'Governança & ESG', icon: Leaf, color: '#d4b87a' },
 }
 
 export function InteractiveCockpit() {

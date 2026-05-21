@@ -94,7 +94,7 @@ export function HudAi() {
       <div className="scanlines" />
 
       <div className="hero-header">
-        <div className="live-head text-[#e8cc88]">
+        <div className="live-head text-[#d4b87a]">
           <div className="pulse-dot" />
           <span>Assistente IPB-AI Clínico</span>
         </div>

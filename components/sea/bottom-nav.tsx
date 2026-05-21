@@ -34,11 +34,11 @@ export function BottomNav({
         {/* Background sliding active pill */}
         <div className="absolute inset-0 pointer-events-none z-0">
           <motion.div
-            className="h-full rounded-full border border-amber-500/50"
+            className="h-full rounded-full border border-[#d4b87a]/50"
             style={{
               width: '50%',
-              background: 'linear-gradient(180deg, rgba(255,255,255,0.06) 0%, rgba(212,175,90,0.12) 100%)',
-              boxShadow: '0 4px 14px rgba(232, 204, 136, 0.15), inset 0 1px 0 rgba(255,255,255,0.15)',
+              background: 'linear-gradient(180deg, rgba(255,255,255,0.06) 0%, rgba(212,184,122,0.12) 100%)',
+              boxShadow: '0 4px 14px rgba(212, 184, 122, 0.15), inset 0 1px 0 rgba(255,255,255,0.15)',
             }}
             animate={{ x: isExplore ? '100%' : '0%' }}
             transition={{ type: 'spring', stiffness: 350, damping: 28 }}
@@ -71,7 +71,7 @@ function NavButton({
       <div
         className={`flex items-center gap-1.5 transition-all duration-300 ${
           active
-            ? 'text-[#e8cc88] drop-shadow-[0_0_8px_rgba(232,204,136,0.5)] scale-[1.03]'
+            ? 'text-[#d4b87a] drop-shadow-[0_0_8px_rgba(212,184,122,0.5)] scale-[1.03]'
             : 'text-white/40 hover:text-white/70 scale-100'
         }`}
       >

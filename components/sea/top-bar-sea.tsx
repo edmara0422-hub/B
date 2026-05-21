@@ -79,7 +79,7 @@ export function TopBarSEA() {
       <div
         className="absolute bottom-0 left-0 right-0 h-px pointer-events-none"
         style={{
-          background: 'linear-gradient(90deg, transparent 8%, rgba(255,255,255,0.05) 28%, rgba(212,175,90,0.20) 50%, rgba(255,255,255,0.05) 72%, transparent 92%)',
+          background: 'linear-gradient(90deg, transparent 8%, rgba(255,255,255,0.05) 28%, rgba(212,184,122,0.20) 50%, rgba(255,255,255,0.05) 72%, transparent 92%)',
           opacity: 0.82,
         }}
       />
@@ -87,12 +87,12 @@ export function TopBarSEA() {
         {/* ── ESQUERDA: logo IPB metálico + tagline ── */}
         <div className="flex items-center gap-2 md:gap-3">
           <div
-            className="flex h-7 w-7 shrink-0 items-center justify-center rounded-[0.55rem] border border-amber-500/35 relative overflow-hidden"
+            className="flex h-7 w-7 shrink-0 items-center justify-center rounded-[0.55rem] border border-[#d4b87a]/35 relative overflow-hidden"
             style={{
               background:
                 'linear-gradient(135deg, #ffffff 0%, #d4b87a 40%, #a08040 70%, #1a1a1e 100%)',
               boxShadow:
-                'inset 0 1px 2px rgba(255,255,255,0.5), 0 0 10px rgba(212,175,90,0.25), 0 4px 12px rgba(0,0,0,0.5)',
+                'inset 0 1px 2px rgba(255,255,255,0.5), 0 0 10px rgba(212,184,122,0.25), 0 4px 12px rgba(0,0,0,0.5)',
             }}
           >
             {/* Gloss shine overlay */}
@@ -108,11 +108,11 @@ export function TopBarSEA() {
             className="hidden text-[8px] font-bold uppercase tracking-[0.15em] sm:block md:text-[9px]"
             style={{
               fontFamily: 'Poppins, sans-serif',
-              background: 'linear-gradient(135deg, #ffffff 0%, #e8cc88 50%, #9a7a42 100%)',
+              background: 'linear-gradient(135deg, #ffffff 0%, #d4b87a 50%, #9a7a42 100%)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text',
-              textShadow: '0 0 12px rgba(232, 204, 136, 0.1)',
+              textShadow: '0 0 12px rgba(212, 184, 122, 0.1)',
             }}
           >
             Intelligence Platform Business
