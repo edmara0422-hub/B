@@ -21,7 +21,7 @@ interface SystemDef {
 }
 
 const SYSTEMS: Record<SystemId, SystemDef> = {
-  ai: { id: 'ai', title: 'SEA AI', icon: Sparkles, color: '#e8cc88' },
+  ai: { id: 'ai', title: 'IPB AI', icon: Sparkles, color: '#e8cc88' },
   pneumo: { id: 'pneumo', title: 'Pulmão', icon: Wind, color: '#60a5fa' },
   cardio: { id: 'cardio', title: 'Coração', icon: Activity, color: '#f87171' },
   neuro: { id: 'neuro', title: 'Cérebro', icon: Brain, color: '#4ade80' },
@@ -52,9 +52,19 @@ export function InteractiveCockpit() {
   // Render a specific card (either mini or hero)
   const renderCard = (sysId: SystemId, isHero: boolean) => {
     const isInteractive = !isHero
+
+    // Determine the exact class based on system ID and whether it's hero
+    const wrapperClass = isHero
+      ? `hero-wrapper ${sysId}`
+      : sysId === 'ai'
+        ? 'mini-ai-card'
+        : sysId === 'esg'
+          ? 'mini-esg-card'
+          : `mini-sim-card ${sysId}`
+
     const cardProps = {
       layoutId: `card-${sysId}`,
-      className: `cockpit-card ${isHero ? 'hero-wrapper' : 'mini-sim-card'} ${sysId}`,
+      className: `cockpit-card ${wrapperClass}`,
       onClick: isInteractive ? () => handleSwap(sysId) : undefined,
       style: {
         height: isHero ? '100%' : undefined,
@@ -98,24 +108,6 @@ export function InteractiveCockpit() {
 
   return (
     <div className="w-full">
-      {/* Header */}
-      <div className="sub-header mb-6">
-        <div className="greet-title">
-          <h1>Olá, <b>Edmara</b></h1>
-          <p>Pronto para o plantão de hoje?</p>
-        </div>
-        <div className="cockpit-stats hidden md:flex">
-          <div className="c-stat-box">
-            <span>Pacientes Atendidos</span>
-            <b>1.482</b>
-          </div>
-          <div className="c-stat-box">
-            <span>Score de Sobrevida</span>
-            <b>98.4<em>%</em></b>
-          </div>
-        </div>
-      </div>
-
       {/* Main Grid */}
       <div className="cockpit-stage-grid">
         {/* Left Column */}

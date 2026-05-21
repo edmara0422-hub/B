@@ -43,10 +43,6 @@ export function HudCardio() {
 
   return (
     <>
-      {/* Background 3D */}
-      <div className="absolute inset-0 pointer-events-none opacity-50 z-0">
-        <CardioHeroScene />
-      </div>
       <div className="scanlines z-10" />
 
       <div className="hero-header relative z-20">
@@ -59,8 +55,11 @@ export function HudCardio() {
 
       <div className="hero-content">
         {/* Painel Central Visual */}
-        <div className="hero-visual-pane">
-          <div className="cardio-sim-screen">
+        <div className="hero-visual-pane relative overflow-hidden">
+          <div className="absolute inset-0 pointer-events-none opacity-80 z-0">
+            <CardioHeroScene transparent />
+          </div>
+          <div className="cardio-sim-screen relative z-10 w-full h-full">
             <div className="cardio-ecg-screen relative border border-red-500/15 rounded-xl bg-[#040806] shadow-[inset_0_0_30px_rgba(0,0,0,0.8)] overflow-hidden w-full h-full">
               {/* Fake ECG Line for now */}
               <div className="absolute inset-0 flex items-center justify-center text-red-500 opacity-20">

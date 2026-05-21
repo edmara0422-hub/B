@@ -74,6 +74,26 @@
   --glass-bg: oklch(0.12 0 0 / 0.6);
   --glass-border: oklch(0.35 0 0 / 0.4);
   --glow-silver: oklch(0.8 0 0 / 0.15);
+
+  /* Champagne Gold Palette */
+  --g-1: #c5a55a;
+  --g-2: #d4b87a;
+  --g-3: #e8cc88;
+  --g-soft: rgba(232, 204, 136, 0.12);
+  --g-glow: rgba(232, 204, 136, 0.25);
+  
+  --s-1: #9a7a42;
+  --s-2: #b8975a;
+  --s-3: #e0c887;
+  
+  --teal: #4ade80;
+  --rose: #f87171;
+  --azure: #60a5fa;
+  
+  --t-1: rgba(255, 255, 255, 0.95);
+  --t-2: rgba(255, 255, 255, 0.70);
+  --t-3: rgba(255, 255, 255, 0.45);
+  --t-4: rgba(255, 255, 255, 0.22);
 }
 
 
@@ -1051,4 +1071,194 @@ body.sea-splash-active [data-sea-bottom-nav='true'] {
 .hero-footer .title-group .area { font-size: 11.5px; color: rgba(255,255,255,0.45); text-transform: uppercase; letter-spacing: 0.06em; }
 .hero-footer .title-group h2 { margin: 0; font-size: 26px; font-weight: 600; color: #fff; letter-spacing: -0.01em; }
 .hero-footer .title-group p { margin: 0; font-size: 13.5px; color: rgba(255,255,255,0.7); max-width: 480px; }
+
+/* AI CHAT INTERACTIVE SCREEN */
+.ai-chat-screen {
+  width: 100%; height: 100%; border-radius: 14px; background: rgba(0,0,0,0.45);
+  border: 1px solid rgba(232, 204, 136, 0.12); display: flex; flex-direction: column; overflow: hidden;
+}
+.ai-chat-messages {
+  flex: 1; padding: 16px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px;
+}
+.ai-chat-messages::-webkit-scrollbar { width: 4px; }
+.ai-chat-messages::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.08); border-radius: 2px; }
+
+.chat-msg { max-width: 82%; padding: 11px 16px; border-radius: 16px; font-size: 13px; line-height: 1.5; font-weight: 350; }
+.chat-msg.bot {
+  background: rgba(232, 204, 136, 0.06); border: 1px solid rgba(232, 204, 136, 0.16);
+  color: var(--t-1); align-self: flex-start; border-top-left-radius: 4px;
+}
+.chat-msg.bot em { font-style: normal; color: var(--g-3); font-weight: 500; }
+.chat-msg.user {
+  background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #fff; align-self: flex-end; border-top-right-radius: 4px;
+}
+
+.chat-loading-bubble {
+  align-self: flex-start; background: rgba(232, 204, 136, 0.04);
+  border: 1px dashed rgba(232, 204, 136, 0.25); border-radius: 12px; padding: 10px 18px;
+  display: flex; align-items: center; gap: 4px;
+}
+.chat-loading-bubble span { width: 5px; height: 5px; border-radius: 50%; background: var(--g-3); animation: bounce-dots 1.2s infinite ease-in-out both; }
+.chat-loading-bubble span:nth-child(2) { animation-delay: 0.2s; }
+.chat-loading-bubble span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes bounce-dots {
+  0%, 80%, 100% { transform: scale(0.6); opacity: 0.5; }
+  40% { transform: scale(1.2); opacity: 1; }
+}
+
+.ai-chat-input-bar {
+  padding: 10px 12px; border-top: 1px solid rgba(255,255,255,0.06); background: rgba(0,0,0,0.3);
+  display: flex; gap: 8px; align-items: center;
+}
+.ai-chat-input-bar input {
+  flex: 1; border: 1px solid rgba(255, 255, 255, 0.08); background: rgba(0,0,0,0.4);
+  color: #fff; border-radius: 10px; padding: 10px 14px; font-size: 13px; outline: none;
+  font-family: inherit; transition: border-color 0.2s;
+}
+.ai-chat-input-bar input:focus { border-color: rgba(232, 204, 136, 0.35); }
+.ai-chat-input-bar button {
+  width: 36px; height: 36px; border-radius: 50%; border: none; cursor: pointer;
+  background: radial-gradient(circle at 30% 30%, #fff, var(--g-3) 60%, var(--g-1));
+  box-shadow: 0 0 12px var(--g-glow); color: #1a140a; font-size: 14px; font-weight: 700;
+  display: grid; place-items: center;
+}
+
+/* ESG & GOVERNANÇA HERO DASHBOARD */
+.esg-dashboard-grid {
+  width: 100%; height: 100%; display: grid; grid-template-columns: 1fr 1.2fr; gap: 16px;
+  overflow: hidden; min-height: 0;
+}
+.esg-scroll-panel {
+  display: flex; flex-direction: column; gap: 12px; overflow-y: auto; padding-right: 6px;
+  height: 100%; min-height: 0; padding-bottom: 8px;
+}
+.esg-scroll-panel::-webkit-scrollbar { width: 5px; }
+.esg-scroll-panel::-webkit-scrollbar-track { background: rgba(255,255,255,0.02); border-radius: 3px; }
+.esg-scroll-panel::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.10); border-radius: 3px; }
+
+.esg-dashboard-header { display: flex; align-items: center; gap: 12px; }
+.esg-dashboard-header .seal-big {
+  width: 48px; height: 48px; border-radius: 12px; display: grid; place-items: center;
+  background: linear-gradient(180deg, rgba(255,255,255,0.15) 0%, var(--s-1) 70%, rgba(40,42,46,0.95) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.15); color: #fff; font-size: 20px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.esg-section-card {
+  padding: 16px; border-radius: 16px; background: rgba(255,255,255,0.015);
+  border: 1px solid rgba(255, 255, 255, 0.05); display: flex; flex-direction: column; gap: 10px;
+}
+.esg-section-card h3 { margin: 0; font-size: 11px; color: var(--t-3); letter-spacing: 0.08em; text-transform: uppercase; }
+
+/* NPS Interactive Widget */
+.esg-nps-widget { display: flex; flex-wrap: wrap; gap: 5px; }
+.esg-nps-btn {
+  flex: 0 0 calc((100% - 50px) / 11); min-width: 28px; height: 36px;
+  border-radius: 8px; border: 1px solid rgba(255,255,255,0.07);
+  background: rgba(255,255,255,0.02); color: var(--t-2); font-size: 12px; font-weight: 600;
+  cursor: pointer; display: grid; place-items: center; transition: all 0.18s ease;
+  font-family: 'JetBrains Mono', monospace; line-height: 1;
+}
+.esg-nps-btn:hover { background: rgba(255, 255, 255, 0.07); color: #fff; transform: translateY(-1px); }
+.esg-nps-btn.active {
+  background: rgba(232, 204, 136, 0.14); border-color: rgba(232, 204, 136, 0.50); color: var(--g-3);
+  box-shadow: 0 0 14px rgba(232,204,136,0.22), inset 0 0 6px rgba(232,204,136,0.08);
+}
+
+.esg-nps-feedback-box { display: flex; gap: 8px; margin-top: 6px; }
+.esg-nps-feedback-box input {
+  flex: 1; border: 1px solid rgba(255,255,255,0.08); background: rgba(0,0,0,0.3);
+  color: #fff; padding: 8px 12px; border-radius: 8px; font-size: 11.5px; outline: none;
+}
+.esg-nps-feedback-box button {
+  padding: 8px 14px; border-radius: 8px; border: 1px solid rgba(232,204,136,0.35);
+  background: var(--g-soft); color: var(--g-3); font-size: 11px; font-weight: 600; cursor: pointer;
+}
+
+.feedbacks-scroller {
+  max-height: 120px; overflow-y: auto; display: flex; flex-direction: column; gap: 6px;
+  padding: 6px; background: rgba(0,0,0,0.2); border-radius: 10px; border: 1px solid rgba(255,255,255,0.03);
+}
+.feedbacks-scroller::-webkit-scrollbar { width: 3px; }
+.feedbacks-scroller::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.06); }
+
+.feedback-item {
+  font-size: 11px; padding: 6px 8px; border-radius: 6px; background: rgba(255,255,255,0.01);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04); display: flex; gap: 10px; align-items: flex-start;
+}
+.feedback-item .badge {
+  padding: 2px 5px; border-radius: 4px; font-family: 'JetBrains Mono', monospace; font-size: 9px;
+  background: var(--g-soft); color: var(--g-3); font-weight: bold;
+}
+.feedback-item .text { color: var(--t-2); line-height: 1.4; flex: 1; }
+
+/* ODS Interactive Cards */
+.esg-ods-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+.esg-ods-card {
+  padding: 8px 4px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.05);
+  background: rgba(255,255,255,0.015); cursor: pointer; text-align: center;
+  transition: all 0.2s ease;
+}
+.esg-ods-card:hover, .esg-ods-card.active {
+  background: rgba(255,255,255,0.04); border-color: var(--g-3); box-shadow: 0 0 10px var(--g-glow);
+}
+.esg-ods-card .num { font-size: 16px; font-weight: 700; color: var(--g-3); font-family: 'JetBrains Mono', monospace; }
+.esg-ods-card .name { font-size: 8px; color: var(--t-3); margin-top: 2px; text-transform: uppercase; }
+
+/* ODS Details box */
+.esg-ods-details {
+  padding: 10px 12px; border-radius: 10px; background: rgba(232, 204, 136, 0.04);
+  border: 1px dashed rgba(232, 204, 136, 0.25); font-size: 11.5px; color: var(--t-2); line-height: 1.5;
+}
+.esg-ods-details b { color: var(--g-3); }
+
+/* Governance Accordion */
+.esg-gov-accordion { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; }
+.esg-gov-tab {
+  padding: 8px 12px; border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.015); font-size: 11.5px; color: var(--t-2);
+  display: flex; align-items: center; justify-content: space-between; cursor: pointer;
+}
+.esg-gov-tab:hover, .esg-gov-tab.active { background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.12); color: #fff; }
+.esg-gov-tab .indicator { width: 5px; height: 5px; border-radius: 50%; background: var(--s-1); }
+.esg-gov-tab.active .indicator { background: var(--g-3); box-shadow: 0 0 6px var(--g-glow); }
+
+.esg-pillar-box { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.esg-pillar-card {
+  padding: 10px; border-radius: 12px; background: rgba(255,255,255,0.015); border: 1px solid rgba(255,255,255,0.04);
+}
+.esg-pillar-card b { display: block; font-size: 12px; color: #fff; margin-bottom: 2px; }
+.esg-pillar-card p { margin: 0; font-size: 10.5px; color: var(--t-2); line-height: 1.4; font-weight: 300; }
+
+/* Sustentabilidade Digital */
+.esg-digital-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.esg-digital-card {
+  padding: 10px 12px; border-radius: 12px; background: rgba(232, 204, 136, 0.04);
+  border: 1px solid rgba(232, 204, 136, 0.15);
+}
+.esg-digital-card b { display: block; font-size: 11.5px; color: var(--g-3); margin-bottom: 3px; }
+.esg-digital-card p { margin: 0; font-size: 10.5px; color: var(--t-2); line-height: 1.4; font-weight: 300; }
+
+/* ACCORDION GOVERNANÇA OVERLAY MODAL */
+.gov-modal-overlay {
+  position: fixed; inset: 0; z-index: 100; display: grid; place-items: center;
+  background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(12px);
+}
+.gov-modal {
+  width: 100%; max-width: 520px; padding: 24px; border-radius: 24px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: linear-gradient(180deg, rgba(20, 22, 26, 0.95), rgba(8, 8, 10, 0.98));
+  box-shadow: 0 30px 70px rgba(0,0,0,0.8); display: flex; flex-direction: column; gap: 16px;
+  transform: scale(0.92); opacity: 0; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.gov-modal.open { transform: scale(1); opacity: 1; }
+.gov-modal h3 { margin: 0; font-size: 20px; font-weight: 600; color: var(--g-3); }
+.gov-modal p { margin: 0; font-size: 13.5px; line-height: 1.6; color: var(--t-2); font-weight: 300; }
+.gov-modal button {
+  align-self: flex-end; padding: 8px 18px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.03); color: #fff; cursor: pointer; font-size: 12px;
+}
+
+
 

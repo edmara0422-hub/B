@@ -40,9 +40,6 @@ export function HudPneumo() {
 
   return (
     <>
-      <div className="absolute inset-0 pointer-events-none opacity-50 z-0">
-        <PneumoHeroScene />
-      </div>
       <div className="scanlines z-10" />
 
       <div className="hero-header relative z-20">
@@ -54,8 +51,11 @@ export function HudPneumo() {
       </div>
 
       <div className="hero-content">
-        <div className="hero-visual-pane">
-          <div className="pneumo-sim-screen w-full h-full">
+        <div className="hero-visual-pane relative overflow-hidden">
+          <div className="absolute inset-0 pointer-events-none opacity-80 z-0">
+            <PneumoHeroScene transparent />
+          </div>
+          <div className="pneumo-sim-screen w-full h-full relative z-10">
             <div className="canvas-graph-container">
               <div className="absolute inset-0 flex items-center justify-center opacity-20 text-blue-400">
                 <Wind size={100} strokeWidth={0.5} />

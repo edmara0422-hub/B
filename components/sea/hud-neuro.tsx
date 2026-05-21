@@ -103,9 +103,6 @@ export function HudNeuro() {
 
   return (
     <>
-      <div className="absolute inset-0 pointer-events-none opacity-50 z-0">
-        <BrainHeroScene />
-      </div>
       <div className="scanlines z-10" />
 
       <div className="hero-header relative z-20">
@@ -117,8 +114,11 @@ export function HudNeuro() {
       </div>
 
       <div className="hero-content">
-        <div className="hero-visual-pane">
-          <div className="neuro-node-net w-full h-full">
+        <div className="hero-visual-pane relative overflow-hidden">
+          <div className="absolute inset-0 pointer-events-none opacity-80 z-0">
+            <BrainHeroScene />
+          </div>
+          <div className="neuro-node-net w-full h-full relative z-10">
             <div className="neuro-map-canvas">
               <svg viewBox="0 0 100 100" className="w-full h-full p-4">
                 {/* Fake neural net paths */}

@@ -22,7 +22,7 @@ type SystemModule = {
 const SYSTEMS: SystemModule[] = [
   {
     id: 'S1',
-    title: 'SEA ICU',
+    title: 'IPB ICU',
     icon: FileText,
     overview: 'Registros clínicos, balanços, evolução, indicadores e exportação à beira do leito.',
     panel: () => <ProntuarioSystemPanel />,
