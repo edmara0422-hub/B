@@ -104,7 +104,7 @@ export function PremiumSplash({
             className="text-shimmer-noble uppercase"
             style={{
               fontFamily: 'Poppins, sans-serif',
-              fontSize: 'clamp(3.5rem, 12vw, 10rem)',
+              fontSize: 'clamp(2.5rem, 8vw, 4.5rem)',
               fontWeight: 200,
               letterSpacing: '-0.02em',
               lineHeight: 1,
@@ -116,7 +116,7 @@ export function PremiumSplash({
             IPB
           </motion.h1>
           <motion.p
-            className="mt-2 text-[5px] uppercase tracking-[0.18em] text-white/25 md:text-[10px] md:tracking-[0.42em]"
+            className="mt-1.5 text-[5.5px] uppercase tracking-[0.12em] text-white/30 md:text-[8px] md:tracking-[0.20em] max-w-[180px] md:max-w-[280px] mx-auto leading-relaxed"
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.38, ease: 'easeOut' }}

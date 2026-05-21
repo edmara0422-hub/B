@@ -17,7 +17,7 @@ export function RouteScreenFallback({
         <div className="chrome-panel w-full max-w-md rounded-[1.9rem] p-6">
           <div className="flex items-center gap-4">
             <div className="chrome-subtle flex h-12 w-12 items-center justify-center rounded-[1rem]">
-              <span className="metal-text pl-[0.18em] text-[0.8rem] font-semibold tracking-[0.24em]">SEA</span>
+              <span className="metal-text pl-[0.18em] text-[0.8rem] font-semibold tracking-[0.24em]">IPB</span>
             </div>
 
             <div>

@@ -22,14 +22,14 @@ const DEV_SERVER_URL = 'http://192.168.18.9:3000';
 const VERCEL_URL = 'https://sea-fisio.vercel.app';
 
 const config: CapacitorConfig = {
-  appId: 'com.seafisio.app',
-  appName: 'SEA Fisio',
+  appId: 'com.ipb.app',
+  appName: 'IPB',
   webDir: 'out',
   server: { url: VERCEL_URL },
   ios: {
     contentInset: 'automatic',
     preferredContentMode: 'mobile',
-    scheme: 'SEA Fisio',
+    scheme: 'IPB',
     allowsLinkPreview: false,
     scrollEnabled: true,
   },

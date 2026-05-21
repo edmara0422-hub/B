@@ -42,14 +42,14 @@ export function PrivacyShield() {
         `<text x="150" y="90" text-anchor="middle" dominant-baseline="middle"` +
         ` transform="rotate(-25 150 80)"` +
         ` font-family="system-ui,sans-serif" font-size="7"` +
-        ` fill="rgba(255,255,255,0.028)" letter-spacing="4">SEA FISIO</text>` +
+        ` fill="rgba(255,255,255,0.028)" letter-spacing="4">IPB</text>` +
         `</svg>`
       )
     : null
 
   return (
     <>
-      {/* Marca d'água elegante — nome + SEA FISIO em diagonal, só em Sistemas */}
+      {/* Marca d'água elegante — nome + IPB em diagonal, só em Sistemas */}
       {watermarkSvg && (
         <div
           aria-hidden
@@ -75,7 +75,7 @@ export function PrivacyShield() {
           }}
         >
           <span className="text-[9px] tracking-[0.3em] uppercase text-white/20">
-            SEA Fisio
+            IPB
           </span>
         </div>
       )}

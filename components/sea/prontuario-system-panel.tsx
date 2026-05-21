@@ -2520,7 +2520,7 @@ function ScanLightbox({ data, onClose }: { data: LightboxPayload | null; onClose
       if (!result) return
       const imgFile = new File([result.blob], 'regua-tot.jpg', { type: 'image/jpeg' })
       if (navigator.share && navigator.canShare?.({ files: [imgFile] })) {
-        await navigator.share({ files: [imgFile], title: 'Régua TOT — SEA FISIO' })
+        await navigator.share({ files: [imgFile], title: 'Régua TOT — IPB' })
       } else {
         const url = URL.createObjectURL(result.blob)
         const a = document.createElement('a'); a.href = url; a.download = 'regua-tot.jpg'; a.click()

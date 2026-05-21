@@ -272,7 +272,7 @@ export default function ProfilePage() {
         <div className={menuBtn}>
           <Info className="h-4 w-4 text-white/75" />
           <div className="flex-1">
-            <p className="text-[12px] font-semibold text-white/90">SEA Fisio</p>
+            <p className="text-[12px] font-semibold text-white/90">IPB</p>
             <p className="text-[10px] text-white/60">Versão 1.0.0 · Sistema de Estudo Avançado.</p>
           </div>
         </div>
@@ -296,7 +296,7 @@ export default function ProfilePage() {
 
 const FAQ_ITEMS = [
   {
-    q: 'O SEA FISIO substitui o prontuário eletrônico do paciente?',
+    q: 'O IPB substitui o prontuário eletrônico do paciente?',
     a: 'Não. O SEA é uma ferramenta de apoio ao raciocínio clínico pessoal. Não é um PEP (Prontuário Eletrônico do Paciente) e não substitui documentação oficial exigida pela instituição.',
   },
   {
@@ -308,8 +308,8 @@ const FAQ_ITEMS = [
     a: 'Role até o final desta página e toque em "Alterar senha". Você precisará digitar a nova senha duas vezes para confirmação.',
   },
   {
-    q: 'Posso usar o SEA FISIO sem internet?',
-    a: 'Sim. O SEA FISIO foi desenvolvido com arquitetura offline-first. As funcionalidades principais funcionam sem conexão. A sincronização e o tutor IA requerem internet.',
+    q: 'Posso usar o IPB sem internet?',
+    a: 'Sim. O IPB foi desenvolvido com arquitetura offline-first. As funcionalidades principais funcionam sem conexão. A sincronização e o tutor IA requerem internet.',
   },
   {
     q: 'O tutor IA pode errar?',
@@ -321,7 +321,7 @@ const FAQ_ITEMS = [
   },
   {
     q: 'Encontrei um erro ou tenho uma sugestão. Como reporto?',
-    a: 'Use o Canal de Denúncias e Feedback em Home → Governança, ou envie um e-mail para edmararbusiness1@gmail.com com o assunto "Suporte SEA Fisio".',
+    a: 'Use o Canal de Denúncias e Feedback em Home → Governança, ou envie um e-mail para edmararbusiness1@gmail.com com o assunto "Suporte IPB".',
   },
 ]
 
@@ -378,7 +378,7 @@ function AjudaModal({ onClose }: { onClose: () => void }) {
             <p className="mb-2 text-[8px] font-semibold uppercase tracking-wider text-white/40">Falar com o Suporte</p>
             <div className="space-y-1.5">
               <a
-                href="mailto:edmararbusiness1@gmail.com?subject=Suporte SEA Fisio"
+                href="mailto:edmararbusiness1@gmail.com?subject=Suporte IPB"
                 className="flex items-center gap-2 rounded-[0.8rem] ipb-soft px-3 py-2.5 hover:bg-white/[0.04]"
               >
                 <Mail className="h-3.5 w-3.5 shrink-0 text-white/40" />

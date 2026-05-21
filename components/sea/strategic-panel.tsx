@@ -24,7 +24,7 @@ type CheckItem = {
   detalhe?: string    // extra line below
 }
 
-// ─── Static knowledge about SEA FISIO stack ───────────────────────────────────
+// ─── Static knowledge about IPB stack ───────────────────────────────────
 
 const PHASES: { id: PhaseId; label: string; sublabel: string }[] = [
   { id: 'f1', label: 'F1', sublabel: 'Infra' },
@@ -543,7 +543,7 @@ export function StrategicPanel() {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <span className="h-1.5 w-1.5 rounded-full bg-[#d2af5a] animate-pulse" />
-            <span className="text-[7.5px] md:text-[9px] uppercase tracking-[0.25em] font-mono font-bold text-white/50">SEA FISIO STRATEGIC COCKPIT</span>
+            <span className="text-[7.5px] md:text-[9px] uppercase tracking-[0.25em] font-mono font-bold text-white/50">IPB STRATEGIC COCKPIT</span>
           </div>
           <div className="flex items-center gap-1.5 rounded-full border border-[#d2af5a]/35 bg-[#d2af5a]/5 px-2.5 py-0.5 text-[8px] font-mono font-bold text-[#d2af5a]">
             {phase.toUpperCase()} ATIVA

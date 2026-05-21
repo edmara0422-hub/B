@@ -605,7 +605,7 @@ body.sea-splash-active [data-sea-bottom-nav='true'] {
 @media print {
   body { visibility: hidden !important; }
   body::before {
-    content: 'Impressao de dados clinicos nao e permitida — SEA Fisio';
+    content: 'Impressao de dados clinicos nao e permitida — IPB';
     visibility: visible !important;
     display: block;
     padding: 60px;

@@ -245,9 +245,9 @@ async function dispatchWebhooks(alerts: StrategicAlert[]) {
         body: JSON.stringify({
           from: 'cockpit@sea-fisio.com.br',
           to: emailTo,
-          subject: `🚨 [SEA FISIO Cockpit] ${alerts.length} Alerta(s) Crítico(s)`,
+          subject: `🚨 [IPB Cockpit] ${alerts.length} Alerta(s) Crítico(s)`,
           html: `
-            <h2>SEA FISIO · Alertas Estratégicos</h2>
+            <h2>IPB · Alertas Estratégicos</h2>
             ${alerts.map((a) => `
               <div style="border-left:4px solid #f87171; padding:12px; margin-bottom:16px;">
                 <strong>${a.title}</strong><br/>

@@ -64,7 +64,7 @@ async function handleRequest(request: Request) {
     mrr: ((state.financials as Record<string, unknown> | undefined)?.mrr ?? 0),
   }
 
-  const systemPrompt = `Você é um Consultor Estratégico especialista em Edtechs de Saúde e Plataformas Clínicas Médicas no Brasil. Sua função: gerar OKRs trimestrais ambiciosos, práticos e mensuráveis pro SEA FISIO (Plataforma de Estudo Avançado e Suporte a Decisão em Fisioterapia Intensiva e UTI).
+  const systemPrompt = `Você é um Consultor Estratégico especialista em Edtechs de Saúde e Plataformas Clínicas Médicas no Brasil. Sua função: gerar OKRs trimestrais ambiciosos, práticos e mensuráveis pro IPB (Plataforma de Estudo Avançado e Suporte a Decisão em Fisioterapia Intensiva e UTI).
 
 Seu foco estratégico deve ser:
 1. VALIDAÇÃO CLÍNICA: Adoção das calculadoras (RSBI, complacência de vias aéreas, gasometria) e simuladores (ECG Cardiovascular, Ventilação Mecânica) por fisioterapeutas intensivistas na rotina diária de plantão na UTI.
@@ -95,7 +95,7 @@ RETORNE APENAS JSON (sem markdown, sem blocos de código):
   ]
 }`
 
-  const userPrompt = `Estado SEA FISIO hoje:
+  const userPrompt = `Estado IPB hoje:
 - Maturidade do Sistema (TRL): ${(ctx.trl as { level?: number })?.level ?? 7} / 9 (${(ctx.trl as { label?: string })?.label ?? 'Produção real'})
 - Fase Atual: ${(ctx.phase as { label?: string })?.label ?? 'Validação Alpha'}
 - Fisioterapeutas Cadastrados: ${ctx.users}

@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
 
   const prompt = `Você é advisor estratégico especialista em produtos SaaS de saúde no Brasil, com foco em crescimento de startups clínicas em early stage.
 
-PRODUTO: SEA FISIO
+PRODUTO: IPB
 Descrição: App clínico para fisioterapeutas intensivistas — prontuário eletrônico de UTI, calculadoras de ventilação mecânica, simulações 3D, analytics clínico.
 Fundadora: Edmara Rocha
 Data de hoje: ${today}

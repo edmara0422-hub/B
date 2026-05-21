@@ -262,7 +262,7 @@ function SustentabilidadeCard() {
 
 const GOV_CONTENT: Record<string, { title: string; sections: { heading: string; items: string[] }[] }> = {
   missao: {
-    title: 'Missão, Visão e Valores — SEA FISIO',
+    title: 'Missão, Visão e Valores — IPB',
     sections: [
       {
         heading: 'Missão',
@@ -303,15 +303,15 @@ const GOV_CONTENT: Record<string, { title: string; sections: { heading: string; 
     ],
   },
   cookies: {
-    title: 'Política de Cookies — SEA FISIO',
+    title: 'Política de Cookies — IPB',
     sections: [
       {
         heading: 'O que são Cookies',
         items: [
           'Cookies são pequenos arquivos de texto armazenados no seu dispositivo quando você acessa uma plataforma digital',
           'Eles permitem que o sistema reconheça o seu dispositivo em acessos futuros e melhore a experiência de uso',
-          'O SEA FISIO utiliza cookies de forma mínima, respeitando o princípio de privacidade desde a concepção (privacy by design)',
-          'Nenhum cookie do SEA FISIO contém dados pessoais de pacientes ou informações clínicas identificáveis',
+          'O IPB utiliza cookies de forma mínima, respeitando o princípio de privacidade desde a concepção (privacy by design)',
+          'Nenhum cookie do IPB contém dados pessoais de pacientes ou informações clínicas identificáveis',
         ],
       },
       {
@@ -321,7 +321,7 @@ const GOV_CONTENT: Record<string, { title: string; sections: { heading: string; 
           'Cookies de autenticação: gerados pelo Supabase Auth para manter o login seguro; expiram automaticamente após o logout ou inatividade prolongada',
           'Cookies de preferências: armazenam configurações locais como tema, idioma e preferências de exibição',
           'Cookies analíticos: coletam dados de uso de forma anônima e agregada para melhoria do produto — nenhum dado é vinculado à identidade do usuário',
-          'O SEA FISIO NÃO utiliza cookies de publicidade, rastreamento cross-site ou perfilamento comportamental',
+          'O IPB NÃO utiliza cookies de publicidade, rastreamento cross-site ou perfilamento comportamental',
         ],
       },
       {
@@ -339,7 +339,7 @@ const GOV_CONTENT: Record<string, { title: string; sections: { heading: string; 
           'Você pode aceitar, recusar ou personalizar os cookies no banner exibido no primeiro acesso à plataforma',
           'A qualquer momento, acesse as configurações do seu navegador para gerenciar ou excluir cookies armazenados',
           'A desativação de cookies essenciais pode impedir o funcionamento correto da plataforma',
-          'Para limpar todos os dados locais do SEA FISIO, acesse Perfil → Excluir minha conta ou limpe o localStorage pelo navegador',
+          'Para limpar todos os dados locais do IPB, acesse Perfil → Excluir minha conta ou limpe o localStorage pelo navegador',
           'Suporte para dúvidas sobre cookies: edmararbusiness1@gmail.com',
         ],
       },
@@ -348,7 +348,7 @@ const GOV_CONTENT: Record<string, { title: string; sections: { heading: string; 
         items: [
           'Cookies de sessão são excluídos automaticamente ao fechar o navegador',
           'Cookies persistentes têm validade máxima de 12 meses',
-          'O SEA FISIO utiliza Supabase (infraestrutura de autenticação) que pode definir cookies técnicos próprios — sujeitos à política de privacidade da Supabase Inc.',
+          'O IPB utiliza Supabase (infraestrutura de autenticação) que pode definir cookies técnicos próprios — sujeitos à política de privacidade da Supabase Inc.',
           'Não utilizamos Google Analytics, Meta Pixel, ou qualquer outro tracker de terceiros para fins publicitários',
         ],
       },
@@ -360,16 +360,16 @@ const GOV_CONTENT: Record<string, { title: string; sections: { heading: string; 
       {
         heading: 'Quem é o DPO',
         items: [
-          'O Encarregado de Proteção de Dados (DPO — Data Protection Officer) é a pessoa responsável por garantir que o SEA FISIO trate os dados pessoais de forma ética, legal e transparente',
-          'Designado conforme o Art. 41 da LGPD (Lei nº 13.709/2018), o DPO atua como canal oficial entre o SEA FISIO, os titulares de dados e a Autoridade Nacional de Proteção de Dados (ANPD)',
+          'O Encarregado de Proteção de Dados (DPO — Data Protection Officer) é a pessoa responsável por garantir que o IPB trate os dados pessoais de forma ética, legal e transparente',
+          'Designado conforme o Art. 41 da LGPD (Lei nº 13.709/2018), o DPO atua como canal oficial entre o IPB, os titulares de dados e a Autoridade Nacional de Proteção de Dados (ANPD)',
           'DPO responsável: Edmara Rocha',
-          'Cargo: Fundadora e Responsável pela Proteção de Dados — SEA FISIO',
+          'Cargo: Fundadora e Responsável pela Proteção de Dados — IPB',
         ],
       },
       {
         heading: 'Como Contatar o DPO',
         items: [
-          'E-mail oficial: edmararbusiness1@gmail.com — assunto: "DPO SEA FISIO"',
+          'E-mail oficial: edmararbusiness1@gmail.com — assunto: "DPO IPB"',
           'Prazo de resposta: até 5 dias úteis para solicitações gerais; até 15 dias para exercício de direitos previstos na LGPD',
           'O canal de contato com o DPO é independente do suporte técnico — utilize-o exclusivamente para questões relacionadas à privacidade e proteção de dados',
           'Em caso de não resposta dentro do prazo, o titular pode contatar diretamente a ANPD: www.gov.br/anpd',
@@ -403,7 +403,7 @@ const GOV_CONTENT: Record<string, { title: string; sections: { heading: string; 
     ],
   },
   politicas: {
-    title: 'Políticas SEA FISIO',
+    title: 'Políticas IPB',
     sections: [
       {
         heading: '4 Pilares da Governança Digital SEA',
@@ -417,7 +417,7 @@ const GOV_CONTENT: Record<string, { title: string; sections: { heading: string; 
       {
         heading: 'Política de Privacidade e Proteção de Dados (LGPD)',
         items: [
-          'Lei nº 13.709/2018 (LGPD) — O SEA FISIO opera sob o princípio de minimização de dados. Nenhum dado pessoal identificável (PII) de pacientes é coletado, armazenado ou transmitido a servidores externos',
+          'Lei nº 13.709/2018 (LGPD) — O IPB opera sob o princípio de minimização de dados. Nenhum dado pessoal identificável (PII) de pacientes é coletado, armazenado ou transmitido a servidores externos',
           'Os dados clínicos inseridos no prontuário permanecem exclusivamente no dispositivo do profissional (localStorage sandboxed do navegador/app)',
           'O prontuário SEA é classificado como ferramenta de apoio ao raciocínio clínico pessoal — não é Prontuário Eletrônico do Paciente (PEP) conforme Resolução CFM nº 1.638/2002',
           'A sincronização opcional via Supabase utiliza identificadores anônimos (UUID), sem vinculação a dados pessoais',
@@ -473,7 +473,7 @@ const GOV_CONTENT: Record<string, { title: string; sections: { heading: string; 
     ],
   },
   praticas: {
-    title: 'Práticas SEA FISIO',
+    title: 'Práticas IPB',
     sections: [
       {
         heading: 'Práticas de Segurança do Paciente',
@@ -536,12 +536,12 @@ const GOV_CONTENT: Record<string, { title: string; sections: { heading: string; 
     ],
   },
   termos: {
-    title: 'Termos de Uso — SEA FISIO',
+    title: 'Termos de Uso — IPB',
     sections: [
       {
         heading: 'Aceitação e Elegibilidade',
         items: [
-          'Ao acessar ou utilizar o SEA FISIO, o usuário declara ter lido, compreendido e aceito integralmente estes Termos de Uso',
+          'Ao acessar ou utilizar o IPB, o usuário declara ter lido, compreendido e aceito integralmente estes Termos de Uso',
           'O uso da plataforma é destinado exclusivamente a profissionais de saúde habilitados (fisioterapeutas, médicos, enfermeiros e estudantes supervisionados) e a fins educacionais e de apoio clínico',
           'É vedado o uso por menores de 18 anos sem supervisão de responsável legal profissional',
           'O aceite pode ser revogado a qualquer momento mediante exclusão da conta, cessando todos os direitos de uso',
@@ -551,7 +551,7 @@ const GOV_CONTENT: Record<string, { title: string; sections: { heading: string; 
       {
         heading: 'Licença de Uso e Restrições',
         items: [
-          'O SEA FISIO concede ao usuário uma licença pessoal, intransferível, não exclusiva e revogável para uso da plataforma',
+          'O IPB concede ao usuário uma licença pessoal, intransferível, não exclusiva e revogável para uso da plataforma',
           'É proibido copiar, modificar, distribuir, vender, sublicenciar ou criar obras derivadas sem autorização expressa por escrito',
           'O usuário não pode realizar engenharia reversa, descompilar ou desmontar qualquer componente da plataforma',
           'É vedado o uso de bots, scrapers, crawlers ou qualquer mecanismo automatizado de acesso não autorizado',
@@ -562,24 +562,24 @@ const GOV_CONTENT: Record<string, { title: string; sections: { heading: string; 
       {
         heading: 'Limitações de Responsabilidade',
         items: [
-          'O SEA FISIO é uma ferramenta de apoio ao raciocínio clínico e educação — não substitui julgamento clínico profissional, diagnóstico médico ou prescrição terapêutica',
+          'O IPB é uma ferramenta de apoio ao raciocínio clínico e educação — não substitui julgamento clínico profissional, diagnóstico médico ou prescrição terapêutica',
           'As decisões clínicas são de responsabilidade exclusiva do profissional habilitado que utiliza a plataforma',
-          'O SEA FISIO não se responsabiliza por danos decorrentes do uso inadequado das informações apresentadas fora do contexto clínico correto',
+          'O IPB não se responsabiliza por danos decorrentes do uso inadequado das informações apresentadas fora do contexto clínico correto',
           'Cálculos e alertas automáticos são baseados em literatura científica validada, mas devem ser interpretados em conjunto com o quadro clínico completo do paciente',
           'A plataforma pode apresentar indisponibilidade temporária por manutenção, atualizações ou falhas de infraestrutura de terceiros',
-          'O SEA FISIO não garante que a plataforma estará livre de erros, vírus ou outros componentes prejudiciais',
+          'O IPB não garante que a plataforma estará livre de erros, vírus ou outros componentes prejudiciais',
           'A responsabilidade total da empresa, em qualquer hipótese, é limitada ao valor pago pelo usuário nos últimos 12 meses',
         ],
       },
       {
         heading: 'Propriedade Intelectual e Conteúdo',
         items: [
-          'Todo o conteúdo da plataforma — textos, algoritmos, simulações 3D, protocolos, calculadoras e interface — é propriedade exclusiva do SEA FISIO, protegido pela Lei nº 9.610/1998 (Lei de Direitos Autorais)',
+          'Todo o conteúdo da plataforma — textos, algoritmos, simulações 3D, protocolos, calculadoras e interface — é propriedade exclusiva do IPB, protegido pela Lei nº 9.610/1998 (Lei de Direitos Autorais)',
           'O conteúdo educacional é desenvolvido por fisioterapeutas especialistas e revisado com base em guidelines internacionais',
           'O usuário pode utilizar o conteúdo exclusivamente para fins de aprendizado pessoal e aplicação clínica individual',
           'Capturas de tela, reprodução parcial ou total do conteúdo para publicação em redes sociais, cursos ou materiais de terceiros requer autorização prévia',
           'Feedbacks, sugestões e denúncias enviadas pelo usuário podem ser utilizados para melhoria da plataforma sem obrigação de compensação',
-          'Marcas, logotipos e identidade visual do SEA FISIO são protegidos e não podem ser utilizados sem licença expressa',
+          'Marcas, logotipos e identidade visual do IPB são protegidos e não podem ser utilizados sem licença expressa',
         ],
       },
       {
@@ -589,7 +589,7 @@ const GOV_CONTENT: Record<string, { title: string; sections: { heading: string; 
           'Dados clínicos inseridos no prontuário SEA permanecem no dispositivo do usuário e não são transmitidos a servidores externos',
           'O usuário é responsável pela segurança de suas credenciais de acesso (e-mail e senha)',
           'Em caso de suspeita de acesso não autorizado, o usuário deve alterar imediatamente a senha e notificar o suporte',
-          'O SEA FISIO adota criptografia TLS 1.3 em todas as comunicações e armazenamento local sandboxed',
+          'O IPB adota criptografia TLS 1.3 em todas as comunicações e armazenamento local sandboxed',
           'Dados de uso anônimos (métricas de acesso, NPS) podem ser coletados para melhoria contínua, sem identificação pessoal',
         ],
       },
@@ -597,10 +597,10 @@ const GOV_CONTENT: Record<string, { title: string; sections: { heading: string; 
         heading: 'Vigência, Alterações e Rescisão',
         items: [
           'Estes Termos entram em vigor no momento do primeiro acesso e permanecem válidos enquanto a conta estiver ativa',
-          'O SEA FISIO pode atualizar estes Termos a qualquer momento, com notificação prévia de 15 dias por e-mail ou aviso na plataforma',
+          'O IPB pode atualizar estes Termos a qualquer momento, com notificação prévia de 15 dias por e-mail ou aviso na plataforma',
           'A continuidade do uso após notificação implica aceitação automática dos novos Termos',
           'O usuário pode rescindir o contrato a qualquer momento excluindo sua conta — os dados são removidos permanentemente em até 30 dias',
-          'O SEA FISIO pode suspender ou encerrar contas que violem estes Termos, sem aviso prévio em casos de violação grave',
+          'O IPB pode suspender ou encerrar contas que violem estes Termos, sem aviso prévio em casos de violação grave',
           'Foro: fica eleito o foro da Comarca de São Paulo/SP para resolução de disputas, com preferência por mediação extrajudicial',
           'Dúvidas sobre estes Termos: edmararbusiness1@gmail.com — resposta em até 5 dias úteis',
         ],
@@ -608,7 +608,7 @@ const GOV_CONTENT: Record<string, { title: string; sections: { heading: string; 
     ],
   },
   compliance: {
-    title: 'Compliance SEA FISIO',
+    title: 'Compliance IPB',
     sections: [
       {
         heading: 'Conformidade com Legislação Brasileira',
