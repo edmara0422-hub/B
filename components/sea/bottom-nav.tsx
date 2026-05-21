@@ -67,20 +67,20 @@ function NavButton({
       style={
         active
           ? {
-              background: 'linear-gradient(180deg, rgba(232,204,136,0.12) 0%, rgba(6,6,10,0.90) 100%)',
-              border: '1px solid rgba(232,204,136,0.38)',
-              color: 'rgb(232,204,136)',
-              boxShadow: '0 0 18px rgba(232,204,136,0.08), inset 0 1px 0 rgba(255,255,255,0.08)',
+              background: 'linear-gradient(180deg, rgba(255,255,255,0.06) 0%, rgba(6,6,10,0.90) 100%)',
+              border: '1px solid rgba(232,204,136,0.60)', // Gold border only
+              boxShadow: '0 0 18px rgba(232,204,136,0.08), inset 0 1px 0 rgba(255,255,255,0.15)',
             }
           : {
-              background: 'linear-gradient(180deg, rgba(232,204,136,0.03) 0%, rgba(5,5,7,0.85) 100%)',
-              border: '1px solid rgba(232,204,136,0.10)',
-              color: 'rgba(255,255,255,0.50)',
+              background: 'linear-gradient(180deg, rgba(255,255,255,0.03) 0%, rgba(5,5,7,0.85) 100%)',
+              border: '1px solid rgba(255,255,255,0.15)',
             }
       }
     >
-      <Icon className="h-3.5 w-3.5" />
-      <span>{label}</span>
+      <div className={`flex items-center gap-2 ${active ? 'metal-text drop-shadow-[0_0_8px_rgba(255,255,255,0.4)]' : 'text-silver-light hover:text-white'}`}>
+        <Icon className="h-3.5 w-3.5" />
+        <span>{label}</span>
+      </div>
       {/* Gold underline indicator for active tab */}
       {active && (
         <span
