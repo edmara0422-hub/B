@@ -56,11 +56,11 @@ export function HudCardio() {
       <div className="hero-content">
         {/* Painel Central Visual */}
         <div className="hero-visual-pane relative overflow-hidden">
-          <div className="absolute inset-0 pointer-events-none opacity-80 z-0">
+          <div className="absolute inset-0 pointer-events-none opacity-100 z-0">
             <CardioHeroScene transparent />
           </div>
           <div className="cardio-sim-screen relative z-10 w-full h-full">
-            <div className="cardio-ecg-screen relative border border-red-500/15 rounded-xl bg-[#040806] shadow-[inset_0_0_30px_rgba(0,0,0,0.8)] overflow-hidden w-full h-full">
+            <div className="cardio-ecg-screen relative border border-red-500/15 rounded-xl bg-[#040806]/40 backdrop-blur-[2px] shadow-[inset_0_0_30px_rgba(0,0,0,0.8)] overflow-hidden w-full h-full">
               {/* Fake ECG Line for now */}
               <div className="absolute inset-0 flex items-center justify-center text-red-500 opacity-20">
                 <Activity size={120} strokeWidth={0.5} />

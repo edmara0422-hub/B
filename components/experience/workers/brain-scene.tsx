@@ -6,11 +6,11 @@ import * as THREE from 'three'
 
 const CLIP_PLANE = new THREE.Plane(new THREE.Vector3(0, 1, 0), 1.40)
 
-useGLTF.preload('/brain.glb')
+useGLTF.preload('/cerebro.glb')
 
 export function BrainScene() {
   const groupRef = useRef<THREE.Group>(null)
-  const { scene } = useGLTF('/brain.glb')
+  const { scene } = useGLTF('/cerebro.glb')
   const { gl, invalidate } = useThree()
 
   useEffect(() => { gl.localClippingEnabled = true }, [gl])

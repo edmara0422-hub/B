@@ -122,24 +122,21 @@ export function HudAi() {
             <div ref={messagesEndRef} />
           </div>
 
-          <div style={{ padding: '0 16px 12px', display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+          <div className="flex flex-wrap gap-2 px-4 pb-3 relative z-20">
             <span
-              className="mini-ai-card chips span gold"
-              style={{ cursor: 'pointer', padding: '4px 10px', fontSize: '10.5px', borderRadius: '99px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)' }}
+              className="cursor-pointer px-3 py-1.5 text-[11px] font-medium rounded-full bg-[#d4b87a]/10 border border-[#d4b87a]/30 text-[#d4b87a] hover:bg-[#d4b87a]/20 hover:border-[#d4b87a]/55 hover:scale-[1.03] active:scale-[0.97] transition-all"
               onClick={() => triggerQuickAi('Explicar Curva P-V')}
             >
               Explicar Curva P-V
             </span>
             <span
-              className="mini-ai-card chips span"
-              style={{ cursor: 'pointer', padding: '4px 10px', fontSize: '10.5px', borderRadius: '99px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.7)' }}
+              className="cursor-pointer px-3 py-1.5 text-[11px] font-medium rounded-full bg-white/5 border border-white/10 text-white/70 hover:bg-white/10 hover:border-white/20 hover:scale-[1.03] active:scale-[0.97] transition-all"
               onClick={() => triggerQuickAi('Protocolo PCR Prático')}
             >
               Protocolo PCR
             </span>
             <span
-              className="mini-ai-card chips span"
-              style={{ cursor: 'pointer', padding: '4px 10px', fontSize: '10.5px', borderRadius: '99px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.7)' }}
+              className="cursor-pointer px-3 py-1.5 text-[11px] font-medium rounded-full bg-white/5 border border-white/10 text-white/70 hover:bg-white/10 hover:border-white/20 hover:scale-[1.03] active:scale-[0.97] transition-all"
               onClick={() => triggerQuickAi('Estratégia Protetora VM')}
             >
               Desmame VM

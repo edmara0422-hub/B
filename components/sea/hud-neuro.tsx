@@ -115,7 +115,7 @@ export function HudNeuro() {
 
       <div className="hero-content">
         <div className="hero-visual-pane relative overflow-hidden">
-          <div className="absolute inset-0 pointer-events-none opacity-80 z-0">
+          <div className="absolute inset-0 pointer-events-none opacity-100 z-0">
             <BrainHeroScene />
           </div>
           <div className="neuro-node-net w-full h-full relative z-10">

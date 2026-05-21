@@ -73,7 +73,7 @@ function SharedScene() {
 
 function BrainModel({ x, material }: { x: number; material: THREE.Material }) {
   const ref = useRef<THREE.Group>(null)
-  const { scene } = useGLTF('/brain.glb')
+  const { scene } = useGLTF('/cerebro.glb')
 
   const cloned = useMemo(() => {
     const c = scene.clone(true)

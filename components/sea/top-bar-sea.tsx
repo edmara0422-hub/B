@@ -59,52 +59,61 @@ export function TopBarSEA() {
 
   // Fundo dos botões internos da direita (Zoom, Bell, Profile)
   const btnShellBg =
-    'linear-gradient(180deg, rgba(255,255,255,0.14) 0%, rgba(18,18,20,0.84) 60%, rgba(8,8,10,0.98) 100%)'
+    'linear-gradient(180deg, rgba(255,255,255,0.06) 0%, rgba(10,10,12,0.40) 60%, rgba(3,3,5,0.75) 100%)'
   const zoomShellBg =
-    'linear-gradient(180deg, rgba(255,255,255,0.06) 0%, rgba(8,8,10,0.92) 100%)'
+    'linear-gradient(180deg, rgba(255,255,255,0.03) 0%, rgba(3,3,5,0.55) 100%)'
 
   return (
     <header
-      className="fixed left-0 right-0 top-0 z-40 px-2 pt-2 pb-2 md:px-4"
+      className="fixed left-0 right-0 top-0 z-40 px-3 pt-2.5 pb-2.5 md:px-6"
       style={{
-        background: 'linear-gradient(180deg, rgba(2,2,3,0.97) 0%, rgba(5,5,7,0.90) 100%)',
-        backdropFilter: 'blur(32px) saturate(1.4)',
-        WebkitBackdropFilter: 'blur(32px) saturate(1.4)',
-        borderBottom: '1px solid rgba(255,255,255,0.04)',
-        boxShadow: '0 1px 0 rgba(232,204,136,0.08), 0 4px 24px rgba(0,0,0,0.5)',
-        paddingTop: 'max(0.5rem, env(safe-area-inset-top))',
+        background: 'rgba(3, 3, 5, 0.60)',
+        backdropFilter: 'blur(24px) saturate(1.4)',
+        WebkitBackdropFilter: 'blur(24px) saturate(1.4)',
+        borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
+        boxShadow: '0 4px 24px rgba(0,0,0,0.5)',
+        paddingTop: 'max(0.6rem, env(safe-area-inset-top))',
       }}
     >
-      {/* Gold shimmer line at bottom — matches bottom nav */}
+      {/* Chrome shimmer line at bottom */}
       <div
         className="absolute bottom-0 left-0 right-0 h-px pointer-events-none"
         style={{
-          background: 'linear-gradient(90deg, transparent 8%, rgba(212,184,122,0.18) 28%, rgba(232,204,136,0.50) 50%, rgba(212,184,122,0.18) 72%, transparent 92%)',
-          opacity: 0.80,
+          background: 'linear-gradient(90deg, transparent 8%, rgba(255,255,255,0.05) 28%, rgba(212,175,90,0.20) 50%, rgba(255,255,255,0.05) 72%, transparent 92%)',
+          opacity: 0.82,
         }}
       />
       <div className="flex w-full items-center justify-between gap-2">
-        {/* ── ESQUERDA: logo SEA metálico + tagline (oculta em mobile) ── */}
+        {/* ── ESQUERDA: logo IPB metálico + tagline ── */}
         <div className="flex items-center gap-2 md:gap-3">
           <div
-            className="flex h-6 w-6 shrink-0 items-center justify-center rounded-[0.5rem] border border-white/16 md:h-7 md:w-7 md:rounded-[0.6rem]"
+            className="flex h-7 w-7 shrink-0 items-center justify-center rounded-[0.55rem] border border-amber-500/35 relative overflow-hidden"
             style={{
               background:
-                'linear-gradient(180deg, rgba(255,255,255,0.9) 0%, rgba(219,225,232,0.36) 16%, rgba(96,101,108,0.94) 42%, rgba(14,15,18,0.98) 100%)',
+                'linear-gradient(135deg, #ffffff 0%, #d4b87a 40%, #a08040 70%, #1a1a1e 100%)',
               boxShadow:
-                'inset 0 1px 0 rgba(255,255,255,0.24), inset 0 -1px 0 rgba(255,255,255,0.05), 0 16px 32px rgba(0,0,0,0.36)',
+                'inset 0 1px 2px rgba(255,255,255,0.5), 0 0 10px rgba(212,175,90,0.25), 0 4px 12px rgba(0,0,0,0.5)',
             }}
           >
+            {/* Gloss shine overlay */}
+            <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent pointer-events-none" />
             <span
-              className="text-[0.45rem] font-semibold tracking-[0.28em] text-white md:text-[0.55rem]"
-              style={{ fontFamily: 'Poppins, sans-serif', paddingLeft: '0.32em' }}
+              className="text-[0.5rem] font-extrabold tracking-[0.03em] text-black md:text-[0.6rem] drop-shadow-[0_1px_1px_rgba(255,255,255,0.8)]"
+              style={{ fontFamily: 'Poppins, sans-serif' }}
             >
               IPB
             </span>
           </div>
           <p
-            className="metal-text hidden text-[8px] font-semibold uppercase tracking-[0.1em] text-white/50 sm:block md:text-[9px]"
-            style={{ fontFamily: 'Poppins, sans-serif' }}
+            className="hidden text-[8px] font-bold uppercase tracking-[0.15em] sm:block md:text-[9px]"
+            style={{
+              fontFamily: 'Poppins, sans-serif',
+              background: 'linear-gradient(135deg, #ffffff 0%, #e8cc88 50%, #9a7a42 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+              textShadow: '0 0 12px rgba(232, 204, 136, 0.1)',
+            }}
           >
             Intelligence Platform Business
           </p>

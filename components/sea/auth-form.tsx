@@ -61,9 +61,9 @@ export function AuthForm() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <h1 className="text-4xl font-bold text-white tracking-wider">SEA</h1>
+        <h1 className="text-4xl font-bold text-white tracking-wider">IPB</h1>
         <p className="text-[8px] tracking-[0.2em] text-white/40 mt-1 uppercase">
-          Sistema de Estudo Avancado
+          Intelligence Platform Business
         </p>
       </motion.div>
 

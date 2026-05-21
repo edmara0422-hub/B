@@ -35,11 +35,11 @@ export function BrainHeroScene({
 }
 
 // Pre-load for faster first render
-useGLTF.preload('/brain.glb')
+useGLTF.preload('/cerebro.glb')
 
 function BrainModel({ compact }: { compact: boolean }) {
   const groupRef = useRef<THREE.Group>(null)
-  const { scene } = useGLTF('/brain.glb')
+  const { scene } = useGLTF('/cerebro.glb')
 
   const { gl } = useThree()
   useEffect(() => { gl.localClippingEnabled = true }, [gl])

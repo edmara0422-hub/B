@@ -134,10 +134,12 @@ export function SimulationsGrid() {
       <motion.div
         className="col-span-2 relative overflow-hidden rounded-[1.75rem] cursor-pointer"
         style={{
-          height: 'clamp(260px, 42vw, 380px)',
-          border: '1px solid rgba(255,255,255,0.08)',
-          background: 'linear-gradient(160deg, rgba(45,212,191,0.03) 0%, rgba(255,255,255,0.01) 30%, rgba(0,0,0,0) 100%)',
-          boxShadow: '0 28px 64px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.05)',
+          height: 'clamp(180px, 24vw, 220px)',
+          border: '1px solid rgba(255, 255, 255, 0.08)',
+          background: 'rgba(3, 3, 5, 0.70)',
+          backdropFilter: 'blur(12px) saturate(1.3)',
+          WebkitBackdropFilter: 'blur(12px) saturate(1.3)',
+          boxShadow: '0 12px 32px rgba(0,0,0,0.6)',
         }}
         whileHover={{ scale: 1.007 }}
         transition={spring}
@@ -194,10 +196,12 @@ export function SimulationsGrid() {
       <motion.div
         className="relative overflow-hidden rounded-[1.75rem] cursor-pointer"
         style={{
-          height: 'clamp(200px, 34vw, 280px)',
-          border: '1px solid rgba(255,255,255,0.08)',
-          background: 'linear-gradient(160deg, rgba(180,30,40,0.04) 0%, rgba(255,255,255,0.01) 40%, rgba(0,0,0,0) 100%)',
-          boxShadow: '0 20px 48px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05)',
+          height: 'clamp(140px, 18vw, 170px)',
+          border: '1px solid rgba(255, 255, 255, 0.08)',
+          background: 'rgba(3, 3, 5, 0.70)',
+          backdropFilter: 'blur(12px) saturate(1.3)',
+          WebkitBackdropFilter: 'blur(12px) saturate(1.3)',
+          boxShadow: '0 12px 32px rgba(0,0,0,0.6)',
         }}
         whileHover={{ scale: 1.012 }}
         transition={spring}
@@ -228,10 +232,12 @@ export function SimulationsGrid() {
       <motion.div
         className="relative overflow-hidden rounded-[1.75rem] cursor-pointer"
         style={{
-          height: 'clamp(200px, 34vw, 280px)',
-          border: '1px solid rgba(255,255,255,0.08)',
-          background: 'linear-gradient(160deg, rgba(30,120,180,0.04) 0%, rgba(255,255,255,0.01) 40%, rgba(0,0,0,0) 100%)',
-          boxShadow: '0 20px 48px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05)',
+          height: 'clamp(140px, 18vw, 170px)',
+          border: '1px solid rgba(255, 255, 255, 0.08)',
+          background: 'rgba(3, 3, 5, 0.70)',
+          backdropFilter: 'blur(12px) saturate(1.3)',
+          WebkitBackdropFilter: 'blur(12px) saturate(1.3)',
+          boxShadow: '0 12px 32px rgba(0,0,0,0.6)',
         }}
         whileHover={{ scale: 1.012 }}
         transition={spring}

@@ -57,7 +57,7 @@ export function GreetingHeader({ userName = 'Usuario' }: GreetingHeaderProps) {
         </button>
         
         <span className="text-[10px] tracking-[0.15em] text-white/50 uppercase font-medium">
-          SEA Sistema de Estudo Avançado
+          IPB Intelligence Platform Business
         </span>
         
         <div className="flex items-center gap-3">
@@ -80,7 +80,7 @@ export function GreetingHeader({ userName = 'Usuario' }: GreetingHeaderProps) {
         <h1 className="text-3xl font-bold bg-gradient-to-r from-white via-white/90 to-white/70 bg-clip-text text-transparent mb-1">
           {greeting}, <span className="text-white/80">{userName}</span>
         </h1>
-        <p className="text-sm text-white/50">Bem-vindo ao SEA — Sistema de Estudo Avançado</p>
+        <p className="text-sm text-white/50">Bem-vindo ao IPB — Intelligence Platform Business</p>
       </div>
     </header>
   )

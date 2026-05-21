@@ -111,22 +111,22 @@ export function InteractiveCockpit() {
       {/* Main Grid */}
       <div className="cockpit-stage-grid">
         {/* Left Column */}
-        <div className="cockpit-grid-col">
+        <div className="cockpit-grid-col cockpit-mini-col">
           <div className="cockpit-col-label">Simulações</div>
-          <div style={{ height: '260px' }}>{renderCard(layout[0], false)}</div>
-          <div style={{ height: '300px' }}>{renderCard(layout[1], false)}</div>
+          <div style={{ height: '160px' }}>{renderCard(layout[0], false)}</div>
+          <div style={{ height: '180px' }}>{renderCard(layout[1], false)}</div>
         </div>
 
         {/* Center Column (Hero) */}
-        <div className="cockpit-grid-col">
+        <div className="cockpit-grid-col cockpit-hero-col">
           {renderCard(layout[2], true)}
         </div>
 
         {/* Right Column */}
-        <div className="cockpit-grid-col">
+        <div className="cockpit-grid-col cockpit-mini-col">
           <div className="cockpit-col-label">Inteligência & Valor</div>
-          <div style={{ height: '220px' }}>{renderCard(layout[3], false)}</div>
-          <div style={{ height: '340px' }}>{renderCard(layout[4], false)}</div>
+          <div style={{ height: '160px' }}>{renderCard(layout[3], false)}</div>
+          <div style={{ height: '180px' }}>{renderCard(layout[4], false)}</div>
         </div>
       </div>
     </div>

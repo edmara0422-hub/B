@@ -52,7 +52,7 @@ export function HudPneumo() {
 
       <div className="hero-content">
         <div className="hero-visual-pane relative overflow-hidden">
-          <div className="absolute inset-0 pointer-events-none opacity-80 z-0">
+          <div className="absolute inset-0 pointer-events-none opacity-100 z-0">
             <PneumoHeroScene transparent />
           </div>
           <div className="pneumo-sim-screen w-full h-full relative z-10">

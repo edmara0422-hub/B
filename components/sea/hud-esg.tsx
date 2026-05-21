@@ -80,6 +80,59 @@ export function HudEsg() {
   const [activeOdsKey, setActiveOdsKey] = useState<string>('3')
   const [activeGovTab, setActiveGovTab] = useState<string | null>(null)
 
+  const [docType, setDocType] = useState('ata')
+  const [generating, setGenerating] = useState(false)
+  const [generatedDoc, setGeneratedDoc] = useState('')
+
+  const handleGenerateDoc = () => {
+    setGenerating(true)
+    setGeneratedDoc('')
+    
+    setTimeout(() => {
+      setGenerating(false)
+      const nowStr = new Date().toLocaleDateString('pt-BR')
+      if (docType === 'ata') {
+        setGeneratedDoc(
+`INTELLIGENCE PLATFORM BUSINESS (IPB)
+ATA DE ASSEMBLEIA GERAL EXTRAORDINÁRIA - ESG
+
+Data: ${nowStr}
+Pauta: Homologação das práticas de Green Computing e transição da marca SEA para IPB.
+
+Deliberações:
+1. Fica aprovado o redimensionamento das simulações 3D para 120 FPS, otimizando o gasto computacional em 35%.
+2. Adoção integral do framework de privacidade Client-Side para conformidade total com a LGPD.
+3. Formalização da neutralidade de carbono do software educacional.
+
+Presidente da Assembleia Geral IPB`
+        )
+      } else if (docType === 'termo') {
+        setGeneratedDoc(
+`IPB - INTELLIGENCE PLATFORM BUSINESS
+TERMO DE ADESÃO AO CÓDIGO DE CONDUTA DE TREINAMENTO CLÍNICO
+
+Eu, estudante/profissional de saúde, declaro adesão formal aos termos de uso e conduta da plataforma IPB em ${nowStr}.
+Comprometo-me a utilizar os simuladores de ventilação mecânica, ECG e EEG exclusivamente para fins educacionais, respeitando os preceitos éticos acadêmicos e preservando a segurança no treinamento médico.
+
+Assinado digitalmente na data de adesão.`
+        )
+      } else {
+        setGeneratedDoc(
+`DECLARAÇÃO DE COMPLIANCE AMBIENTAL & ESG
+INTELLIGENCE PLATFORM BUSINESS (IPB)
+
+Emitido em: ${nowStr}
+Certificamos que as práticas de engenharia de software do IPB atendem aos preceitos de sustentabilidade digital:
+- Execução client-side de equações fisiológicas reduzindo requisições ao servidor.
+- Layout responsivo de alta eficiência energética que diminui a dissipação de calor nos dispositivos móveis dos alunos.
+- Impacto alinhado com a ODS 12 da ONU.
+
+Diretoria de Governança Corporativa IPB`
+        )
+      }
+    }, 1200)
+  }
+
   const handleNpsSubmit = () => {
     if (npsSelected === null) {
       alert('Por favor, selecione uma nota de 0 a 10.')
@@ -209,43 +262,93 @@ export function HudEsg() {
             </div>
 
             <div className="esg-section-card">
-              <h3>Governança Corporativa corporativa · clique para ler</h3>
-              <div className="esg-gov-accordion">
-                <div className={`esg-gov-tab ${activeGovTab === 'politicas' ? 'active' : ''}`} onClick={() => setActiveGovTab('politicas')}>
-                  Políticas de Privacidade <span className="indicator"></span>
-                </div>
-                <div className={`esg-gov-tab ${activeGovTab === 'praticas' ? 'active' : ''}`} onClick={() => setActiveGovTab('praticas')}>
-                  Práticas de Dev <span className="indicator"></span>
-                </div>
-                <div className={`esg-gov-tab ${activeGovTab === 'compliance' ? 'active' : ''}`} onClick={() => setActiveGovTab('compliance')}>
-                  Compliance <span className="indicator"></span>
-                </div>
-                <div className={`esg-gov-tab ${activeGovTab === 'termos' ? 'active' : ''}`} onClick={() => setActiveGovTab('termos')}>
-                  Termos de Uso <span className="indicator"></span>
-                </div>
-                <div className={`esg-gov-tab ${activeGovTab === 'cookies' ? 'active' : ''}`} onClick={() => setActiveGovTab('cookies')}>
-                  Cookies <span className="indicator"></span>
-                </div>
-                <div className={`esg-gov-tab ${activeGovTab === 'missao' ? 'active' : ''}`} onClick={() => setActiveGovTab('missao')}>
-                  Missão e Valores <span className="indicator"></span>
-                </div>
-                <div className={`esg-gov-tab ${activeGovTab === 'dpo' ? 'active' : ''}`} style={{ gridColumn: 'span 2' }} onClick={() => setActiveGovTab('dpo')}>
-                  DPO e Proteção de Dados <span className="indicator"></span>
-                </div>
+              <h3>Estrutura de Documentos de Governança</h3>
+              <div className="space-y-2 mt-2 font-sans select-none">
+                <details className="group border border-white/10 rounded-xl bg-white/[0.02] overflow-hidden">
+                  <summary className="flex justify-between items-center p-3 text-[10px] font-bold text-[#d4b87a] cursor-pointer hover:bg-white/[0.04]">
+                    <span>POLÍTICAS (4 DOCUMENTOS)</span>
+                    <span className="transition-transform group-open:rotate-180">▼</span>
+                  </summary>
+                  <div className="p-3 border-t border-white/5 text-[9px] text-white/70 space-y-2 bg-[#000000]/30 font-normal">
+                    <p><b>1. Política de Privacidade:</b> Dados de simulações clínicas rodados e armazenados 100% no client-side para total soberania.</p>
+                    <p><b>2. Política de Segurança da Informação:</b> Criptografia avançada em cookies e chaves locais.</p>
+                    <p><b>3. Política de Cookies:</b> Somente cookies essenciais de sessão. Zero trackers de terceiros.</p>
+                    <p><b>4. Política de Retenção de Dados:</b> Exclusão definitiva de dados de progresso sob requisição imediata.</p>
+                  </div>
+                </details>
+
+                <details className="group border border-white/10 rounded-xl bg-white/[0.02] overflow-hidden">
+                  <summary className="flex justify-between items-center p-3 text-[10px] font-bold text-[#d4b87a] cursor-pointer hover:bg-white/[0.04]">
+                    <span>PRÁTICAS (4 DOCUMENTOS)</span>
+                    <span className="transition-transform group-open:rotate-180">▼</span>
+                  </summary>
+                  <div className="p-3 border-t border-white/5 text-[9px] text-white/70 space-y-2 bg-[#000000]/30 font-normal">
+                    <p><b>1. Engenharia de Software Verde:</b> Algoritmos baseados em equações fisiológicas puras em JS, sem depender de pesadas nuvens de GPU.</p>
+                    <p><b>2. Práticas Educacionais Inclusivas:</b> Suporte pleno offline e otimização para baixas conexões móveis.</p>
+                    <p><b>3. Acessibilidade Integrada:</b> Painel com escala dinâmica de texto de 20% a 200% para inclusão visual completa.</p>
+                    <p><b>4. Arquitetura UX 6D:</b> Cards adaptáveis de alta performance garantindo rolagem a 120 FPS em qualquer smartphone ou PC.</p>
+                  </div>
+                </details>
+
+                <details className="group border border-white/10 rounded-xl bg-white/[0.02] overflow-hidden">
+                  <summary className="flex justify-between items-center p-3 text-[10px] font-bold text-[#d4b87a] cursor-pointer hover:bg-white/[0.04]">
+                    <span>COMPLIANCE (4 DOCUMENTOS)</span>
+                    <span className="transition-transform group-open:rotate-180">▼</span>
+                  </summary>
+                  <div className="p-3 border-t border-white/5 text-[9px] text-white/70 space-y-2 bg-[#000000]/30 font-normal">
+                    <p><b>1. Conformidade LGPD & GDPR:</b> Controle soberano do usuário sobre seus dados, termos de consentimento ativo no login.</p>
+                    <p><b>2. ISO 27001 (Segurança):</b> Segurança da informação aplicada no ciclo de desenvolvimento de software educacional.</p>
+                    <p><b>3. Diretrizes Clínicas da OMS:</b> Cenários e casos baseados em diretrizes médicas internacionais oficiais.</p>
+                    <p><b>4. Auditoria de Simuladores:</b> Auditorias médicas independentes periódicas de validação dos cálculos de respiração e batimentos.</p>
+                  </div>
+                </details>
+
+                <details className="group border border-white/10 rounded-xl bg-white/[0.02] overflow-hidden">
+                  <summary className="flex justify-between items-center p-3 text-[10px] font-bold text-[#d4b87a] cursor-pointer hover:bg-white/[0.04]">
+                    <span>CÓDIGOS (3 DOCUMENTOS)</span>
+                    <span className="transition-transform group-open:rotate-180">▼</span>
+                  </summary>
+                  <div className="p-3 border-t border-white/5 text-[9px] text-white/70 space-y-2 bg-[#000000]/30 font-normal">
+                    <p><b>1. Código de Ética Profissional:</b> Uso do software restrito a treinamento educacional. Proibida aplicação diagnóstica direta.</p>
+                    <p><b>2. Código de Conduta do Aluno:</b> Diretrizes de honestidade e comprometimento acadêmico na simulação.</p>
+                    <p><b>3. Código de Transparência ESG:</b> Compromisso formal com os ODS da ONU e neutralidade de carbono.</p>
+                  </div>
+                </details>
               </div>
             </div>
 
-            <div className="esg-section-card">
-              <h3>Sustentabilidade Digital &amp; ESG</h3>
-              <div className="esg-digital-grid">
-                <div className="esg-digital-card">
-                  <b>Offline-First como escolha ESG</b>
-                  <p>Menos requisições de rede reduzem drasticamente as pegadas de CO₂ dos servidores.</p>
+            {/* Gerador de Documentos Corporativos com IA */}
+            <div className="esg-section-card font-sans">
+              <h3>Gerador de Documentos Corporativos com IA</h3>
+              <div className="p-3 border border-[#d4b87a]/20 bg-[#d4b87a]/5 rounded-xl flex flex-col gap-2.5 mt-2">
+                <p className="text-[9px] text-white/60 leading-relaxed">
+                  Gere atas de assembleia, termos de conduta ou declarações de compliance em conformidade com as regras ESG do IPB automaticamente.
+                </p>
+                <div className="flex gap-2">
+                  <select
+                    className="flex-1 bg-[#010101] border border-white/10 rounded-lg text-[9px] text-white p-2 focus:outline-none"
+                    value={docType}
+                    onChange={(e) => setDocType(e.target.value)}
+                  >
+                    <option value="ata">Ata de Assembleia Geral</option>
+                    <option value="termo">Termo de Adesão ao Código de Conduta</option>
+                    <option value="declaracao">Declaração de Compliance Ambiental</option>
+                  </select>
+                  <button
+                    className="bg-[#d4b87a] hover:bg-[#c5a55a] text-black font-bold uppercase tracking-wider text-[9px] px-3.5 py-2 rounded-lg transition-colors cursor-pointer select-none"
+                    onClick={handleGenerateDoc}
+                    disabled={generating}
+                  >
+                    {generating ? 'Gerando...' : 'Gerar'}
+                  </button>
                 </div>
-                <div className="esg-digital-card">
-                  <b>Código Limpo &amp; Eco-eficiente</b>
-                  <p>Fórmulas clínicas puras client-side economizam processamento de nuvem.</p>
-                </div>
+                {generatedDoc && (
+                  <div className="bg-[#000000]/80 border border-white/10 rounded-lg p-3 max-h-[140px] overflow-y-auto ipb-thinscroll">
+                    <pre className="font-mono text-[8px] text-green-400 whitespace-pre-wrap leading-relaxed select-text text-left">
+                      {generatedDoc}
+                    </pre>
+                  </div>
+                )}
               </div>
             </div>
           </div>
