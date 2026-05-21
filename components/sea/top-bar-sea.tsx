@@ -99,14 +99,14 @@ export function TopBarSEA() {
               className="text-[0.45rem] font-semibold tracking-[0.28em] text-white md:text-[0.55rem]"
               style={{ fontFamily: 'Poppins, sans-serif', paddingLeft: '0.32em' }}
             >
-              SEA
+              IPB
             </span>
           </div>
           <p
             className="metal-text hidden text-[8px] font-semibold uppercase tracking-[0.1em] text-white/50 sm:block md:text-[9px]"
             style={{ fontFamily: 'Poppins, sans-serif' }}
           >
-            Sistema de Estudo Avançado
+            Intelligence Platform Business
           </p>
         </div>
 

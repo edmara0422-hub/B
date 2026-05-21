@@ -42,7 +42,7 @@ export function HudAi() {
           <div className="ai-chat-screen w-full h-full">
             <div className="ai-chat-messages">
               <div className="chat-msg bot">
-                Olá, Dr. Carlos. Sou a <em>SEA AI</em>. Estou analisando os dados do paciente do leito 04. Notei uma assincronia de fluxo na ventilação mecânica. Como posso ajudar?
+                Olá, Edmara. Sou a <em>SEA AI</em>. Estou analisando os dados do paciente do leito 04. Notei uma assincronia de fluxo na ventilação mecânica. Como posso ajudar?
               </div>
               <div className="chat-msg user">
                 Qual o melhor ajuste de fluxo inspiratório para este caso?

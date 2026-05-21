@@ -103,12 +103,12 @@ export function HudNeuro() {
 
   return (
     <>
-      <div className="absolute inset-0 pointer-events-none opacity-40 mix-blend-screen">
+      <div className="absolute inset-0 pointer-events-none opacity-50 z-0">
         <BrainHeroScene />
       </div>
-      <div className="scanlines" />
+      <div className="scanlines z-10" />
 
-      <div className="hero-header">
+      <div className="hero-header relative z-20">
         <div className="live-head text-green-400">
           <div className="pulse-dot" />
           <span>Neuro • Synapse Grid</span>

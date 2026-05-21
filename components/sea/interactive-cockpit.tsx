@@ -101,7 +101,7 @@ export function InteractiveCockpit() {
       {/* Header */}
       <div className="sub-header mb-6">
         <div className="greet-title">
-          <h1>Olá, <b>Dr. Carlos</b></h1>
+          <h1>Olá, <b>Edmara</b></h1>
           <p>Pronto para o plantão de hoje?</p>
         </div>
         <div className="cockpit-stats hidden md:flex">
