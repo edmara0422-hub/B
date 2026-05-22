@@ -218,6 +218,41 @@ Diretoria de Governança Corporativa IPB`
               </div>
             </div>
 
+            {/* Gerador de Documentos Corporativos com IA */}
+            <div className="esg-section-card font-sans">
+              <h3>Gerador de Documentos Corporativos com IA</h3>
+              <div className="p-3 border border-[#d4b87a]/20 bg-[#d4b87a]/5 rounded-xl flex flex-col gap-2.5 mt-2">
+                <p className="text-[9px] text-white/60 leading-relaxed">
+                  Gere atas de assembleia, termos de conduta ou declarações de compliance em conformidade com as regras ESG do IPB automaticamente.
+                </p>
+                <div className="flex gap-2">
+                  <select
+                    className="flex-1 bg-[#010101] border border-white/10 rounded-lg text-[9px] text-white p-2 focus:outline-none"
+                    value={docType}
+                    onChange={(e) => setDocType(e.target.value)}
+                  >
+                    <option value="ata">Ata de Assembleia Geral</option>
+                    <option value="termo">Termo de Adesão ao Código de Conduta</option>
+                    <option value="declaracao">Declaração de Compliance Ambiental</option>
+                  </select>
+                  <button
+                    className="bg-[#d4b87a] hover:bg-[#d4b87a]/90 text-black font-bold uppercase tracking-wider text-[9px] px-3.5 py-2 rounded-lg transition-colors cursor-pointer select-none"
+                    onClick={handleGenerateDoc}
+                    disabled={generating}
+                  >
+                    {generating ? 'Gerando...' : 'Gerar'}
+                  </button>
+                </div>
+                {generatedDoc && (
+                  <div className="bg-[#000000]/80 border border-white/10 rounded-lg p-3 max-h-[140px] overflow-y-auto ipb-thinscroll">
+                    <pre className="font-mono text-[8px] text-green-400 whitespace-pre-wrap leading-relaxed select-text text-left">
+                      {generatedDoc}
+                    </pre>
+                  </div>
+                )}
+              </div>
+            </div>
+
             <div className="esg-section-card">
               <h3>Sustentabilidade · Triple Bottom Line</h3>
               <div className="esg-pillar-box">
@@ -262,6 +297,7 @@ Diretoria de Governança Corporativa IPB`
                   <div className="num">12</div>
                   <div className="name">Consumo</div>
                 </div>
+              </div>
               <div
                 className="esg-ods-details"
                 dangerouslySetInnerHTML={{ __html: ODS_DATA[activeOdsKey] || '' }}
@@ -322,41 +358,6 @@ Diretoria de Governança Corporativa IPB`
                     <p><b>3. Código de Transparência ESG:</b> Compromisso formal com os ODS da ONU e neutralidade de carbono.</p>
                   </div>
                 </details>
-              </div>
-            </div>
-
-            {/* Gerador de Documentos Corporativos com IA */}
-            <div className="esg-section-card font-sans">
-              <h3>Gerador de Documentos Corporativos com IA</h3>
-              <div className="p-3 border border-[#d4b87a]/20 bg-[#d4b87a]/5 rounded-xl flex flex-col gap-2.5 mt-2">
-                <p className="text-[9px] text-white/60 leading-relaxed">
-                  Gere atas de assembleia, termos de conduta ou declarações de compliance em conformidade com as regras ESG do IPB automaticamente.
-                </p>
-                <div className="flex gap-2">
-                  <select
-                    className="flex-1 bg-[#010101] border border-white/10 rounded-lg text-[9px] text-white p-2 focus:outline-none"
-                    value={docType}
-                    onChange={(e) => setDocType(e.target.value)}
-                  >
-                    <option value="ata">Ata de Assembleia Geral</option>
-                    <option value="termo">Termo de Adesão ao Código de Conduta</option>
-                    <option value="declaracao">Declaração de Compliance Ambiental</option>
-                  </select>
-                  <button
-                    className="bg-[#d4b87a] hover:bg-[#d4b87a]/90 text-black font-bold uppercase tracking-wider text-[9px] px-3.5 py-2 rounded-lg transition-colors cursor-pointer select-none"
-                    onClick={handleGenerateDoc}
-                    disabled={generating}
-                  >
-                    {generating ? 'Gerando...' : 'Gerar'}
-                  </button>
-                </div>
-                {generatedDoc && (
-                  <div className="bg-[#000000]/80 border border-white/10 rounded-lg p-3 max-h-[140px] overflow-y-auto ipb-thinscroll">
-                    <pre className="font-mono text-[8px] text-green-400 whitespace-pre-wrap leading-relaxed select-text text-left">
-                      {generatedDoc}
-                    </pre>
-                  </div>
-                )}
               </div>
             </div>
           </div>

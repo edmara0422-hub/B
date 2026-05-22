@@ -1251,20 +1251,20 @@ body.sea-splash-active [data-sea-bottom-nav='true'] {
 /* ODS Interactive Cards */
 .esg-ods-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
 .esg-ods-card {
-  padding: 8px 4px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.05);
+  padding: 5px 2px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.05);
   background: rgba(255,255,255,0.015); cursor: pointer; text-align: center;
   transition: all 0.2s ease;
 }
 .esg-ods-card:hover, .esg-ods-card.active {
   background: rgba(255,255,255,0.04); border-color: var(--g-3); box-shadow: 0 0 10px var(--g-glow);
 }
-.esg-ods-card .num { font-size: 16px; font-weight: 700; color: var(--g-3); font-family: 'JetBrains Mono', monospace; }
-.esg-ods-card .name { font-size: 8px; color: var(--t-3); margin-top: 2px; text-transform: uppercase; }
+.esg-ods-card .num { font-size: 13px; font-weight: 700; color: var(--g-3); font-family: 'JetBrains Mono', monospace; }
+.esg-ods-card .name { font-size: 7.5px; color: var(--t-3); margin-top: 2px; text-transform: uppercase; }
 
 /* ODS Details box */
 .esg-ods-details {
-  padding: 10px 12px; border-radius: 10px; background: rgba(212, 184, 122, 0.04);
-  border: 1px dashed rgba(212, 184, 122, 0.25); font-size: 11.5px; color: var(--t-2); line-height: 1.5;
+  padding: 6px 10px; border-radius: 10px; background: rgba(212, 184, 122, 0.04);
+  border: 1px dashed rgba(212, 184, 122, 0.25); font-size: 10.5px; color: var(--t-2); line-height: 1.55;
 }
 .esg-ods-details b { color: var(--g-3); }
 
