@@ -306,33 +306,33 @@
 
   /* MINI AI CARD (220px) */
   .mini-ai-card {
-    width: 100%; height: 100%; padding: 18px 20px; display: flex; flex-direction: column; justify-content: space-between;
+    width: 100%; height: 100%; padding: 20px; display: flex; flex-direction: column; justify-content: space-between; position: relative;
   }
-  .mini-ai-card .header-ai { display: flex; align-items: center; gap: 12px; }
+  .mini-ai-card .header-ai { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
   .mini-ai-card .ai-orb {
-    width: 36px; height: 36px; border-radius: 50%; position: relative;
+    width: 28px; height: 28px; border-radius: 50%; position: relative;
     background: radial-gradient(circle at 30% 30%, #fff 0%, var(--g-3) 50%, var(--g-1) 95%);
-    box-shadow: 0 0 20px var(--g-glow), inset 0 0 8px rgba(0,0,0,0.3);
+    box-shadow: 0 0 15px var(--g-glow), inset 0 0 6px rgba(0,0,0,0.3);
   }
   .mini-ai-card .ai-orb::after {
-    content: ""; position: absolute; inset: -5px; border-radius: 50%;
-    border: 1px dashed rgba(232, 204, 136, 0.4); animation: rotate-linear 30s linear infinite;
+    content: ""; position: absolute; inset: -4px; border-radius: 50%;
+    border: 1px dashed rgba(232, 204, 136, 0.35); animation: rotate-linear 30s linear infinite;
   }
   
-  .mini-ai-card .header-ai div { display: flex; flex-direction: column; }
-  .mini-ai-card .header-ai div span { font-size: 9.5px; color: var(--t-3); letter-spacing: 0.05em; text-transform: uppercase; }
-  .mini-ai-card .header-ai div b { font-size: 15px; color: #fff; font-weight: 600; }
+  .mini-ai-card .header-ai div { display: flex; flex-direction: column; gap: 2px; }
+  .mini-ai-card .header-ai div span { font-size: 8.5px; color: var(--t-3); letter-spacing: 0.08em; text-transform: uppercase; font-weight: 300; }
+  .mini-ai-card .header-ai div b { font-size: 11.5px; color: #fff; font-weight: 400; }
   .mini-ai-card .header-ai div b em { font-style: normal; color: var(--g-2); }
   
-  .mini-ai-card p { margin: 10px 0; font-size: 12px; line-height: 1.5; color: var(--t-2); font-weight: 300; }
+  .mini-ai-card p { font-size: 9.5px; line-height: 1.4; color: var(--t-2); margin: 4px 0; text-align: justify; font-weight: 300; }
   
   .mini-ai-card .chips { display: flex; gap: 6px; }
   .mini-ai-card .chips span {
-    font-size: 10px; font-weight: 500; padding: 4px 10px; border-radius: 99px;
+    font-size: 8px; font-weight: 300; padding: 3px 8px; border-radius: 99px;
     background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); color: var(--t-2);
   }
   .mini-ai-card .chips span.gold {
-    border-color: rgba(232, 204, 136, 0.4); color: var(--g-3); background: rgba(232, 204, 136, 0.05);
+    border-color: rgba(232, 204, 136, 0.25); color: var(--g-3); background: rgba(232, 204, 136, 0.04);
   }
 
   /* MINI ESG CARD (340px) */

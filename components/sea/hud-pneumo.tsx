@@ -248,28 +248,13 @@ export function HudPneumo() {
             <PneumoHeroScene transparent />
           </div>
           <div className="pneumo-sim-screen w-full h-full relative z-10 grid grid-rows-[1fr_110px] gap-3">
-            <div className="pneumo-lung-box flex items-center justify-center gap-6">
-              <svg
-                ref={lungSvgRef}
-                className="pneumo-lung-svg w-32 h-32 transition-transform duration-75 filter drop-shadow-[0_0_16px_rgba(96,165,250,0.25)]"
-                viewBox="0 0 100 100"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M50 20C42 12 25 15 22 28C19 41 26 75 48 80C49 80.5 51 80.5 52 80C74 75 81 41 78 28C75 15 58 12 50 20Z"
-                  fill="rgba(96, 165, 250, 0.18)"
-                  stroke="#60a5fa"
-                  strokeWidth="2"
-                />
-                <path d="M50 25V80" stroke="#60a5fa" strokeWidth="1.5" strokeDasharray="3 3" />
-              </svg>
-              <div className="text-left select-none">
-                <h4 className="margin-0 text-[10px] text-white/45 uppercase font-medium">Volume Corrente (VT)</h4>
-                <b className="font-mono text-2xl text-white">
-                  {vol} <span className="text-xs text-white/45">ml</span>
+            <div className="pneumo-lung-box flex flex-col items-center justify-center text-center select-none min-h-[140px] pt-4">
+              <div className="select-none">
+                <h4 className="margin-0 text-[10px] text-white/45 uppercase font-medium tracking-widest">Volume Corrente (VT)</h4>
+                <b className="font-mono text-4xl text-white mt-1.5 block filter drop-shadow-[0_0_12px_rgba(255,255,255,0.2)]">
+                  {vol} <span className="text-sm text-white/45 font-light">ml</span>
                 </b>
-                <p className="margin-0 mt-1 text-[10px] text-green-400 font-semibold">Modo VCV • Protetor</p>
+                <p className="margin-0 mt-2 text-[10px] text-green-400 font-bold uppercase tracking-wider">Modo VCV • Protetor</p>
               </div>
             </div>
 

@@ -123,9 +123,8 @@ export function HudCardio() {
     const draw = () => {
       if (!canvas || !ctx) return
       
-      // Slight trail fade
-      ctx.fillStyle = 'rgba(4, 8, 6, 0.25)'
-      ctx.fillRect(0, 0, w, h)
+      // Clear canvas for transparency
+      ctx.clearRect(0, 0, w, h)
 
       // Telemetry grid
       ctx.strokeStyle = 'rgba(248, 113, 113, 0.04)'
@@ -359,7 +358,7 @@ export function HudCardio() {
             <CardioHeroScene transparent />
           </div>
           <div className="cardio-sim-screen relative z-10 w-full flex flex-col gap-3">
-            <div className="cardio-ecg-screen relative border border-red-500/15 rounded-xl bg-[#040806] shadow-[inset_0_0_30px_rgba(0,0,0,0.8)] overflow-hidden w-full h-[180px] shrink-0">
+            <div className="cardio-ecg-screen relative border border-red-500/15 rounded-xl bg-transparent overflow-hidden w-full h-[180px] shrink-0">
               <canvas ref={canvasRef} className="w-full h-full block" />
 
               <div className="absolute left-4 top-4 font-mono flex gap-6 pointer-events-none">
