@@ -250,6 +250,7 @@ REGRAS:
 - Se a curva não está visível na foto, retorne array vazio []
 - Em assincronia, se nenhuma anormalidade, use ["Sem assincronias"]
 - "mode" pode ser preenchido se detectar (VCV/PCV/PSV/etc) — opcional
+- Produza uma interpretação clínica aprofundada das curvas e loops, explicando as assincronias identificadas, suas prováveis causas e propondo condutas de ajuste preciso do ventilador mecânico (salvo no campo "laudo" em português com tom de médico intensivista sênior).
 
 RETORNE APENAS JSON VÁLIDO:
 {
@@ -261,7 +262,8 @@ RETORNE APENAS JSON VÁLIDO:
   "loopFV": ["..."],
   "assincronia": ["..."],
   "confidence": "alta" | "media" | "baixa",
-  "notes": "observação breve"
+  "notes": "observação breve",
+  "laudo": "Laudo clínico completo em português analisando as curvas, loops e as assincronias identificadas com condutas e ajustes precisos sugeridos"
 }`
 
 function extractJson(content: string): string {

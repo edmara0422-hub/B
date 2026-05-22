@@ -214,6 +214,7 @@ REGRAS:
 - Se valor estiver dual (set/measured), prefira o medido para Ppico/VT exalado
 - Em VM antiga analógica, leia o manômetro de pressão (P. Pico) e outros mostradores
 - Confidence: alta (tela digital nítida), media (alguns valores ilegíveis), baixa (VM antiga, foto difícil)
+- Produza um laudo de ventilação mecânica robusto e clínico em português (salvo no campo "laudo") avaliando se a ventilação é protetora, pressões seguras, driving pressure e volume minuto, recomendando de forma brilhante e precisa as condutas intensivistas cabíveis para otimizar a mecânica ventilatória do paciente.
 
 RETORNE APENAS JSON VÁLIDO (sem markdown, sem texto fora do JSON):
 {
@@ -228,7 +229,8 @@ RETORNE APENAS JSON VÁLIDO (sem markdown, sem texto fora do JSON):
     "nava_level": null, "pav_percent": null
   },
   "confidence": "alta",
-  "notes": "Observação breve se relevante"
+  "notes": "Observação breve se relevante",
+  "laudo": "Laudo clínico completo em português detalhando a adequação da ventilação mecânica, proteção pulmonar, pressões, volumes e condutas sugeridas"
 }`
 
 function extractJson(content: string): string {

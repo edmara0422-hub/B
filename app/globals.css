@@ -246,26 +246,44 @@
 }
 
 @layer utilities {
-  .glass {
-    background: rgba(10, 10, 12, 0.40) !important;
-    backdrop-filter: blur(20px) saturate(180%) !important;
-    -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
-    border: 0.2px solid rgba(212, 184, 122, 0.12) !important;
+  .glass,
+  .glass-strong {
+    position: relative;
+    background: rgba(5, 5, 5, 0.45) !important;
+    backdrop-filter: blur(28px) saturate(130%) !important;
+    -webkit-backdrop-filter: blur(28px) saturate(130%) !important;
+    border: 0.2px solid rgba(255, 255, 255, 0.08) !important;
     box-shadow:
       inset 0 1px 0 rgba(255, 255, 255, 0.06),
-      0 12px 36px rgba(0, 0, 0, 0.72) !important;
-    transition: all 0.3s cubic-bezier(0.22, 0.61, 0.36, 1);
+      0 4px 14px rgba(0, 0, 0, 0.22) !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
   }
 
-  .glass-strong {
-    background: rgba(6, 6, 8, 0.72) !important;
-    backdrop-filter: blur(28px) saturate(200%) !important;
-    -webkit-backdrop-filter: blur(28px) saturate(200%) !important;
-    border: 0.2px solid rgba(212, 184, 122, 0.20) !important;
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.08),
-      0 16px 48px rgba(0, 0, 0, 0.85) !important;
-    transition: all 0.3s cubic-bezier(0.22, 0.61, 0.36, 1);
+  .glass::before,
+  .glass-strong::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0.75rem;
+    right: 0.75rem;
+    height: 1px;
+    background: linear-gradient(90deg,
+      transparent,
+      rgba(255, 255, 255, 0.08),
+      rgba(255, 255, 255, 0.24),
+      rgba(255, 255, 255, 0.08),
+      transparent) !important;
+    pointer-events: none;
+  }
+
+  .glass:hover,
+  .glass-strong:hover {
+    background: rgba(10, 10, 12, 0.55) !important;
+    border-color: rgba(255, 255, 255, 0.22) !important;
+    box-shadow: 
+      inset 0 1px 0 rgba(255, 255, 255, 0.12),
+      0 16px 48px rgba(0, 0, 0, 0.75),
+      0 0 15px rgba(255, 255, 255, 0.04) !important;
   }
 
   .glow-silver {
@@ -307,35 +325,44 @@
   }
 
   /* chrome-shell — mesma cor transparente do .ipb-soft (Home) */
-  .chrome-shell {
-    background:
-      radial-gradient(ellipse at 0% 50%, rgba(220, 225, 235, 0.12) 0%, transparent 42%),
-      radial-gradient(ellipse at 100% 50%, rgba(220, 225, 235, 0.10) 0%, transparent 42%),
-      radial-gradient(ellipse at 50% 0%, rgba(224, 184, 94, 0.04) 0%, transparent 55%),
-      linear-gradient(160deg,
-        rgba(255, 255, 255, 0.05) 0%,
-        rgba(255, 255, 255, 0.02) 50%,
-        rgba(0, 0, 0, 0.12) 100%);
-    border: 0.2px solid rgba(255, 255, 255, 0.10);
+  .chrome-shell,
+  .chrome-card {
+    position: relative;
+    background: rgba(5, 5, 5, 0.45) !important;
+    backdrop-filter: blur(28px) saturate(130%) !important;
+    -webkit-backdrop-filter: blur(28px) saturate(130%) !important;
+    border: 0.2px solid rgba(255, 255, 255, 0.08) !important;
     box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.10),
-      0 4px 14px rgba(0, 0, 0, 0.22);
+      inset 0 1px 0 rgba(255, 255, 255, 0.06),
+      0 4px 14px rgba(0, 0, 0, 0.22) !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
   }
 
-  /* chrome-card — wrapper das CalcCards (HACOR, SOFA, Compliance, PEEP, etc) — transparente igual Home */
-  .chrome-card {
-    background:
-      radial-gradient(ellipse at 0% 50%, rgba(220, 225, 235, 0.12) 0%, transparent 42%),
-      radial-gradient(ellipse at 100% 50%, rgba(220, 225, 235, 0.10) 0%, transparent 42%),
-      radial-gradient(ellipse at 50% 0%, rgba(224, 184, 94, 0.04) 0%, transparent 55%),
-      linear-gradient(160deg,
-        rgba(255, 255, 255, 0.05) 0%,
-        rgba(255, 255, 255, 0.02) 50%,
-        rgba(0, 0, 0, 0.12) 100%);
-    border: 0.2px solid rgba(255, 255, 255, 0.10);
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.10),
-      0 4px 14px rgba(0, 0, 0, 0.22);
+  .chrome-shell::before,
+  .chrome-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0.75rem;
+    right: 0.75rem;
+    height: 1px;
+    background: linear-gradient(90deg,
+      transparent,
+      rgba(255, 255, 255, 0.08),
+      rgba(255, 255, 255, 0.24),
+      rgba(255, 255, 255, 0.08),
+      transparent) !important;
+    pointer-events: none;
+  }
+
+  .chrome-shell:hover,
+  .chrome-card:hover {
+    background: rgba(10, 10, 12, 0.55) !important;
+    border-color: rgba(255, 255, 255, 0.22) !important;
+    box-shadow: 
+      inset 0 1px 0 rgba(255, 255, 255, 0.12),
+      0 16px 48px rgba(0, 0, 0, 0.75),
+      0 0 15px rgba(255, 255, 255, 0.04) !important;
   }
 
   .chrome-pill {
@@ -379,63 +406,68 @@
     animation: float-silver 7s ease-in-out infinite;
   }
 
-  .sea-dark-glass {
-    background:
-      linear-gradient(180deg, rgba(255,255,255,0.08) 0%, rgba(10,10,12,0.92) 52%, rgba(3,3,4,0.985) 100%);
-    border: 0.2px solid rgba(255, 255, 255, 0.12);
-    box-shadow:
-      inset 0 1px 0 rgba(255,255,255,0.12),
-      inset 0 -1px 0 rgba(255,255,255,0.02),
-      0 18px 40px rgba(0,0,0,0.36);
-    backdrop-filter: blur(20px) saturate(120%);
-    -webkit-backdrop-filter: blur(20px) saturate(120%);
-  }
-
-  /* chrome-board — mesma cor transparente do .ipb-soft (Home) */
-  .chrome-board {
-    background:
-      radial-gradient(ellipse at 0% 50%, rgba(220, 225, 235, 0.12) 0%, transparent 42%),
-      radial-gradient(ellipse at 100% 50%, rgba(220, 225, 235, 0.10) 0%, transparent 42%),
-      radial-gradient(ellipse at 50% 0%, rgba(224, 184, 94, 0.04) 0%, transparent 55%),
-      linear-gradient(160deg,
-        rgba(255, 255, 255, 0.05) 0%,
-        rgba(255, 255, 255, 0.02) 50%,
-        rgba(0, 0, 0, 0.12) 100%);
-    border: 0.2px solid rgba(255, 255, 255, 0.10);
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.10),
-      0 4px 14px rgba(0, 0, 0, 0.22);
-  }
-
-  /* chrome-panel — agora usa mesmo mix prata+gold sutil+preto translúcido do .ipb-soft (Home) */
+  .sea-dark-glass,
+  .chrome-board,
   .chrome-panel {
-    background:
-      radial-gradient(ellipse at 0% 50%, rgba(220, 225, 235, 0.12) 0%, transparent 42%),
-      radial-gradient(ellipse at 100% 50%, rgba(220, 225, 235, 0.10) 0%, transparent 42%),
-      radial-gradient(ellipse at 50% 0%, rgba(224, 184, 94, 0.04) 0%, transparent 55%),
-      linear-gradient(160deg,
-        rgba(255, 255, 255, 0.05) 0%,
-        rgba(255, 255, 255, 0.02) 50%,
-        rgba(0, 0, 0, 0.12) 100%);
-    border: 0.2px solid rgba(255, 255, 255, 0.10);
+    position: relative;
+    background: rgba(5, 5, 5, 0.45) !important;
+    backdrop-filter: blur(28px) saturate(130%) !important;
+    -webkit-backdrop-filter: blur(28px) saturate(130%) !important;
+    border: 0.2px solid rgba(255, 255, 255, 0.08) !important;
     box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.10),
-      0 4px 14px rgba(0, 0, 0, 0.22);
+      inset 0 1px 0 rgba(255, 255, 255, 0.06),
+      0 4px 14px rgba(0, 0, 0, 0.22) !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  }
+
+  .sea-dark-glass::before,
+  .chrome-board::before,
+  .chrome-panel::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0.75rem;
+    right: 0.75rem;
+    height: 1px;
+    background: linear-gradient(90deg,
+      transparent,
+      rgba(255, 255, 255, 0.08),
+      rgba(255, 255, 255, 0.24),
+      rgba(255, 255, 255, 0.08),
+      transparent) !important;
+    pointer-events: none;
+  }
+
+  .sea-dark-glass:hover,
+  .chrome-board:hover,
+  .chrome-panel:hover {
+    background: rgba(10, 10, 12, 0.55) !important;
+    border-color: rgba(255, 255, 255, 0.22) !important;
+    box-shadow: 
+      inset 0 1px 0 rgba(255, 255, 255, 0.12),
+      0 16px 48px rgba(0, 0, 0, 0.75),
+      0 0 15px rgba(255, 255, 255, 0.04) !important;
   }
 
   /* chrome-subtle — variante mais leve do mesmo padrão (pra elementos aninhados) */
   .chrome-subtle {
-    background:
-      radial-gradient(ellipse at 0% 50%, rgba(220, 225, 235, 0.06) 0%, transparent 42%),
-      radial-gradient(ellipse at 100% 50%, rgba(220, 225, 235, 0.05) 0%, transparent 42%),
-      linear-gradient(160deg,
-        rgba(255, 255, 255, 0.03) 0%,
-        rgba(255, 255, 255, 0.01) 50%,
-        rgba(0, 0, 0, 0.06) 100%);
-    border: 0.2px solid rgba(255, 255, 255, 0.07);
+    position: relative;
+    background: rgba(5, 5, 5, 0.25) !important;
+    backdrop-filter: blur(12px) saturate(110%) !important;
+    -webkit-backdrop-filter: blur(12px) saturate(110%) !important;
+    border: 0.2px solid rgba(255, 255, 255, 0.05) !important;
     box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.06),
-      0 2px 8px rgba(0, 0, 0, 0.10);
+      inset 0 1px 0 rgba(255, 255, 255, 0.04),
+      0 2px 8px rgba(0, 0, 0, 0.12) !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  }
+
+  .chrome-subtle:hover {
+    background: rgba(10, 10, 12, 0.40) !important;
+    border-color: rgba(255, 255, 255, 0.15) !important;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.08),
+      0 8px 24px rgba(0, 0, 0, 0.45) !important;
   }
 
   .grid-bg {

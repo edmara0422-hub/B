@@ -834,16 +834,6 @@ export default function SistemasPageClient() {
           </div>
         </div>
 
-        {/* SYSTEM BADGE / WORKSPACE OPERACIONAL */}
-        <div className="fase-badge">
-          <div className="top-row">
-            <span className="lbl">WORKSPACE OPERACIONAL</span>
-            <span className="status">[ONLINE]</span>
-          </div>
-          <span className="val">LTDA · TIER II</span>
-          <span className="sub">TECNOLOGIA &amp; SAAS</span>
-        </div>
-
         {/* BUSCA DE COMPONENTES */}
         <div
           className="flex items-center gap-2 rounded-lg px-2.5 py-1.5"

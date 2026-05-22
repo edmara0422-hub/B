@@ -3578,7 +3578,7 @@ export function ProntuarioSystemPanel() {
       try {
         // SEGURANÇA: Não sincroniza automaticamente se a lista local estiver vazia
         // Isso evita sobrescrever backups bons com "nada".
-        const hasData = records.length > 0 || archive.length > 0 || workspaces.some(w => w.records.length > 0)
+        const hasData = records.length > 0 || archive.length > 0 || workspacesRef.current.some(w => w.records.length > 0)
         if (!hasData) {
           setSyncStatus('saved')
           return
@@ -3647,9 +3647,11 @@ export function ProntuarioSystemPanel() {
     }
     setSyncStatus('syncing')
     try {
-      const snapshot = workspaces.map(w =>
-        w.id === activeWorkspaceId ? { ...w, records, archive } : w
+      // Usar workspacesRef.current e activeWsIdRef.current para evitar dados antigos/stale do state
+      const snapshot = workspacesRef.current.map(w =>
+        w.id === activeWsIdRef.current ? { ...w, records, archive } : w
       )
+      workspacesRef.current = snapshot
 
       // Sanitiza o objeto para remover referências cíclicas antes do Supabase dar erro de JSON.stringify
       const getCircularReplacer = () => {
@@ -3667,7 +3669,7 @@ export function ProntuarioSystemPanel() {
 
       const { error } = await supabase.from('icu_sessions').upsert({
         session_id: sid,
-        records: { __sea_v2: true, workspaces: safeSnapshot, activeId: activeWorkspaceId },
+        records: { __sea_v2: true, workspaces: safeSnapshot, activeId: activeWsIdRef.current },
         archive: [],
         updated_at: new Date().toISOString(),
       }, { onConflict: 'session_id' })
@@ -4199,16 +4201,16 @@ export function ProntuarioSystemPanel() {
       }
 
       // Gera tamanhos sequencialmente (menos pressão de memória no iOS)
-      const { dataUrl: resizedDataUrl, w: imgW, h: imgH } = resizeFrom(800, 0.7)
-      const { dataUrl: thumbnailDataUrl } = resizeFrom(200, 0.65)
-      const { dataUrl: scanFullDataUrl } = resizeFrom(500, 0.82)
+      const { dataUrl: resizedDataUrl, w: imgW, h: imgH } = resizeFrom(1600, 0.85)
+      const { dataUrl: thumbnailDataUrl } = resizeFrom(300, 0.75)
+      const { dataUrl: scanFullDataUrl } = resizeFrom(1800, 0.90)
 
       const isAdminNow = useAuthStore.getState().isAdmin
 
       if (isAdminNow && supabase) {
-        // Admin: faz upload da imagem 600px para Supabase Storage (persiste)
+        // Admin: faz upload da imagem 1800px de alta qualidade para Supabase Storage (persiste)
         try {
-          const { dataUrl: adminThumbDataUrl } = resizeFrom(600, 0.75)
+          const { dataUrl: adminThumbDataUrl } = resizeFrom(1800, 0.90)
           const adminBase64 = adminThumbDataUrl.split(',')[1]
           const adminBytes = Uint8Array.from(atob(adminBase64), c => c.charCodeAt(0))
           const adminBlob = new Blob([adminBytes], { type: 'image/jpeg' })
@@ -4939,9 +4941,15 @@ export function ProntuarioSystemPanel() {
             )}
             {syncStatus === 'offline' && (
               <div className="flex items-center gap-1.5 border-l border-white/10 pl-2 ml-1">
-                <span className="flex items-center gap-1 rounded-full border border-[#facc1530] bg-[#facc150a] px-2 py-0.5 text-[8px] font-semibold text-[#facc15]" title="Dados salvos apenas no seu dispositivo">
-                  <WifiOff className="h-2.5 w-2.5" />Modo Local
-                </span>
+                {isAdmin ? (
+                  <span className="flex items-center gap-1 rounded-full border border-[#facc1530] bg-[#facc150a] px-2 py-0.5 text-[8px] font-semibold text-[#facc15]" title="Dados salvos localmente no seu aparelho. Clique na nuvem para sincronizar com o Supabase quando reconectar à internet.">
+                    <WifiOff className="h-2.5 w-2.5" />Salvo Local (Sem Conexão)
+                  </span>
+                ) : (
+                  <span className="flex items-center gap-1 rounded-full border border-[#4ade8030] bg-[#4ade800a] px-2 py-0.5 text-[8px] font-semibold text-[#4ade80]" title="Dados salvos localmente e protegidos no aparelho (LGPD)">
+                    <CheckCircle2 className="h-2.5 w-2.5" />Salvo Local (LGPD)
+                  </span>
+                )}
                 <button
                   onClick={() => {
                     if (confirm('Tem certeza que deseja forçar a limpeza dos dados locais deste login de teste? Isso apagará a lista da sua tela imediatamente.')) {
@@ -9207,9 +9215,25 @@ export function ProntuarioSystemPanel() {
                     className="hidden"
                     onChange={async (e) => {
                       const files = Array.from(e.target.files ?? []).slice(0, 10 - bhScanPhotos.length)
-                      const compressed = await Promise.all(files.map(f => compressImage(f)))
-                      const newPhotos = compressed.map(f => ({ file: f, preview: URL.createObjectURL(f) }))
-                      setBhScanPhotos(prev => [...prev, ...newPhotos])
+                      if (files.length === 0) return
+                      setBhScanLoading(true)
+                      setBhScanError(null)
+                      setBhScanResult(null)
+                      try {
+                        const compressed = await Promise.all(files.map(f => compressImage(f)))
+                        const newPhotos = compressed.map(f => ({ file: f, preview: URL.createObjectURL(f) }))
+                        setBhScanPhotos(newPhotos)
+                        const fd = new FormData()
+                        compressed.forEach(p => fd.append('files', p))
+                        const res = await fetch('/api/icu/bh-scan', { method: 'POST', body: fd })
+                        const json = await res.json()
+                        if (!res.ok) throw new Error(json.error ?? 'Erro na análise')
+                        setBhScanResult(json)
+                      } catch (err) {
+                        setBhScanError(err instanceof Error ? err.message : 'Falha ao analisar imagens')
+                      } finally {
+                        setBhScanLoading(false)
+                      }
                       e.target.value = ''
                     }}
                   />
@@ -9395,9 +9419,28 @@ export function ProntuarioSystemPanel() {
                       className="hidden"
                       onChange={async (e) => {
                         const files = Array.from(e.target.files ?? []).slice(0, 10 - gasoScanPhotos.length)
-                        const compressed = await Promise.all(files.map(f => compressImage(f)))
-                        const newPhotos = compressed.map(f => ({ file: f, preview: URL.createObjectURL(f) }))
-                        setGasoScanPhotos(prev => [...prev, ...newPhotos])
+                        if (files.length === 0) return
+                        setGasoScanLoading(true)
+                        setGasoScanError(null)
+                        setGasoScanResult(null)
+                        try {
+                          const compressed = await Promise.all(files.map(f => compressImage(f)))
+                          const newPhotos = compressed.map(f => ({ file: f, preview: URL.createObjectURL(f) }))
+                          setGasoScanPhotos(prev => [...prev, ...newPhotos])
+
+                          const fd = new FormData()
+                          const allFiles = [...gasoScanPhotos.map(p => p.file), ...compressed]
+                          allFiles.forEach(p => fd.append('files', p))
+
+                          const res = await fetch('/api/icu/gaso-scan', { method: 'POST', body: fd })
+                          const json = await res.json()
+                          if (!res.ok) throw new Error(json.error ?? 'Erro na análise')
+                          setGasoScanResult(json)
+                        } catch (err) {
+                          setGasoScanError(err instanceof Error ? err.message : 'Falha ao analisar imagens')
+                        } finally {
+                          setGasoScanLoading(false)
+                        }
                         e.target.value = ''
                       }}
                     />
@@ -9444,23 +9487,35 @@ export function ProntuarioSystemPanel() {
                       )}
                     </div>
                   </div>
-                  <div className="grid grid-cols-2 gap-x-3 gap-y-1 text-[10px] tabular-nums">
-                    {[
-                      { label: 'pH', value: gasoScanResult.ph },
-                      { label: 'PaCO2', value: gasoScanResult.paco2 },
-                      { label: 'PaO2', value: gasoScanResult.pao2 },
-                      { label: 'HCO3', value: gasoScanResult.hco3 },
-                      { label: 'BE', value: gasoScanResult.be },
-                      { label: 'SaO2', value: gasoScanResult.sao2 },
-                      { label: 'Lactato', value: gasoScanResult.lactato },
-                      { label: 'FiO2 (%)', value: gasoScanResult.fio2 },
-                    ].map(item => (
-                      <div key={item.label} className="flex items-baseline gap-1">
-                        <span className="text-white/40">{item.label}</span>
-                        <span className="font-semibold text-white/90">{item.value != null ? item.value : '—'}</span>
+                  {(() => {
+                    const pao2Val = gasoScanResult.pao2 ? parseFloat(String(gasoScanResult.pao2)) : null
+                    const fio2Val = gasoScanResult.fio2 ? parseFloat(String(gasoScanResult.fio2)) : null
+                    let pfRatio = null
+                    if (pao2Val != null && fio2Val != null && fio2Val > 0) {
+                      const fio2Percent = fio2Val <= 1.0 ? fio2Val * 100 : fio2Val
+                      pfRatio = Math.round(pao2Val / (fio2Percent / 100))
+                    }
+                    return (
+                      <div className="grid grid-cols-2 gap-x-3 gap-y-1 text-[10px] tabular-nums">
+                        {[
+                          { label: 'pH', value: gasoScanResult.ph },
+                          { label: 'PaCO2', value: gasoScanResult.paco2 },
+                          { label: 'PaO2', value: gasoScanResult.pao2 },
+                          { label: 'HCO3', value: gasoScanResult.hco3 },
+                          { label: 'BE', value: gasoScanResult.be },
+                          { label: 'SaO2', value: gasoScanResult.sao2 },
+                          { label: 'Lactato', value: gasoScanResult.lactato },
+                          { label: 'FiO2 (%)', value: gasoScanResult.fio2 },
+                          { label: 'Relação P/F', value: pfRatio },
+                        ].map(item => (
+                          <div key={item.label} className="flex items-baseline gap-1">
+                            <span className="text-white/40">{item.label}</span>
+                            <span className="font-semibold text-white/90">{item.value != null ? item.value : '—'}</span>
+                          </div>
+                        ))}
                       </div>
-                    ))}
-                  </div>
+                    )
+                  })()}
                   {gasoScanResult.notes && <p className="text-[7px] text-white/36 italic">{gasoScanResult.notes}</p>}
                 </div>
               )}
@@ -9525,6 +9580,7 @@ export function ProntuarioSystemPanel() {
                         gasoSaO2: r.sao2 != null ? String(r.sao2) : record.gasoSaO2,
                         gasoLactato: r.lactato != null ? String(r.lactato) : record.gasoLactato,
                         gasoFiO2: r.fio2 != null ? String(r.fio2) : record.gasoFiO2,
+                        gasoObs: r.laudo ? String(r.laudo) : (r.notes ? String(r.notes) : record.gasoObs),
                       }))
                       setGasoScanOpen(false)
                       setGasoScanResult(null)
@@ -9599,9 +9655,36 @@ export function ProntuarioSystemPanel() {
                       className="hidden"
                       onChange={async (e) => {
                         const files = Array.from(e.target.files ?? []).slice(0, 10 - vmScanPhotos.length)
-                        const compressed = await Promise.all(files.map(f => compressImage(f)))
-                        const newPhotos = compressed.map(f => ({ file: f, preview: URL.createObjectURL(f) }))
-                        setVmScanPhotos(prev => [...prev, ...newPhotos])
+                        if (files.length === 0) return
+                        setVmScanLoading(true)
+                        setVmScanError(null)
+                        setVmScanResult(null)
+                        try {
+                          const compressed = await Promise.all(files.map(f => compressImage(f)))
+                          const newPhotos = compressed.map(f => ({ file: f, preview: URL.createObjectURL(f) }))
+                          setVmScanPhotos(prev => [...prev, ...newPhotos])
+
+                          const fd = new FormData()
+                          const allFiles = [...vmScanPhotos.map(p => p.file), ...compressed]
+                          allFiles.forEach(p => fd.append('files', p))
+                          if (currentRecord?.perfilVM) fd.append('perfil', currentRecord.perfilVM)
+                          if (currentRecord?.modoVM) fd.append('modoSelecionado', currentRecord.modoVM)
+
+                          const res = await fetch('/api/icu/vm-scan', { method: 'POST', body: fd })
+                          const text = await res.text()
+                          let json: Record<string, unknown>
+                          try {
+                            json = JSON.parse(text)
+                          } catch {
+                            throw new Error('Resposta inválida da IA. Tente foto mais nítida ou com menos parâmetros visíveis.')
+                          }
+                          if (!res.ok) throw new Error((json.error as string) ?? 'Erro na análise')
+                          setVmScanResult(json as never)
+                        } catch (err) {
+                          setVmScanError(err instanceof Error ? err.message : 'Falha ao analisar imagens')
+                        } finally {
+                          setVmScanLoading(false)
+                        }
                         e.target.value = ''
                       }}
                     />
@@ -9757,6 +9840,11 @@ export function ProntuarioSystemPanel() {
                           const nava = set('nava_level', p['nava_level']); if (nava) next.ps = nava
                         }
 
+                        // Set observations
+                        if (r.laudo || r.notes) {
+                          next.vmObs = r.laudo ? String(r.laudo) : (r.notes ? String(r.notes) : record.vmObs)
+                        }
+
                         return next as typeof record
                       })
                       setVmScanOpen(false)
@@ -9823,9 +9911,30 @@ export function ProntuarioSystemPanel() {
                       className="hidden"
                       onChange={async (e) => {
                         const files = Array.from(e.target.files ?? []).slice(0, 10 - curvesScanPhotos.length)
-                        const compressed = await Promise.all(files.map(f => compressImage(f)))
-                        const newPhotos = compressed.map(f => ({ file: f, preview: URL.createObjectURL(f) }))
-                        setCurvesScanPhotos(prev => [...prev, ...newPhotos])
+                        if (files.length === 0) return
+                        setCurvesScanLoading(true)
+                        setCurvesScanError(null)
+                        setCurvesScanResult(null)
+                        try {
+                          const compressed = await Promise.all(files.map(f => compressImage(f)))
+                          const newPhotos = compressed.map(f => ({ file: f, preview: URL.createObjectURL(f) }))
+                          setCurvesScanPhotos(prev => [...prev, ...newPhotos])
+
+                          const fd = new FormData()
+                          const allFiles = [...curvesScanPhotos.map(p => p.file), ...compressed]
+                          allFiles.forEach(p => fd.append('files', p))
+
+                          const res = await fetch('/api/icu/curves-scan', { method: 'POST', body: fd })
+                          const text = await res.text()
+                          let json: Record<string, unknown>
+                          try { json = JSON.parse(text) } catch { throw new Error('Resposta inválida da IA. Tente foto mais nítida.') }
+                          if (!res.ok) throw new Error((json.error as string) ?? 'Erro na análise')
+                          setCurvesScanResult(json as never)
+                        } catch (err) {
+                          setCurvesScanError(err instanceof Error ? err.message : 'Falha ao analisar imagens')
+                        } finally {
+                          setCurvesScanLoading(false)
+                        }
                         e.target.value = ''
                       }}
                     />
@@ -9931,15 +10040,27 @@ export function ProntuarioSystemPanel() {
                         const set = new Set([...ex, ...sc])
                         return Array.from(set)
                       }
-                      updateCurrentRecord((record) => ({
-                        ...record,
-                        curvaPxT: merge(record.curvaPxT, r.curvaPxT),
-                        curvaFxT: merge(record.curvaFxT, r.curvaFxT),
-                        curvaVxT: merge(record.curvaVxT, r.curvaVxT),
-                        loopPV: merge(record.loopPV, r.loopPV),
-                        loopFV: merge(record.loopFV, r.loopFV),
-                        assincronia: merge(record.assincronia, r.assincronia),
-                      }))
+                      updateCurrentRecord((record) => {
+                        let finalObs = record.vmObs ?? ''
+                        const clinicalReport = r.laudo ? String(r.laudo) : (r.notes ? String(r.notes) : '')
+                        if (clinicalReport) {
+                          if (finalObs) {
+                            finalObs += `\n\n[Laudo de Curvas e Loops]\n${clinicalReport}`
+                          } else {
+                            finalObs = `[Laudo de Curvas e Loops]\n${clinicalReport}`
+                          }
+                        }
+                        return {
+                          ...record,
+                          curvaPxT: merge(record.curvaPxT, r.curvaPxT),
+                          curvaFxT: merge(record.curvaFxT, r.curvaFxT),
+                          curvaVxT: merge(record.curvaVxT, r.curvaVxT),
+                          loopPV: merge(record.loopPV, r.loopPV),
+                          loopFV: merge(record.loopFV, r.loopFV),
+                          assincronia: merge(record.assincronia, r.assincronia),
+                          vmObs: finalObs,
+                        }
+                      })
                       setCurvesScanOpen(false)
                       setCurvesScanResult(null)
                       setCurvesScanPhotos([])
@@ -10032,9 +10153,31 @@ export function ProntuarioSystemPanel() {
                       className="hidden"
                       onChange={async (e) => {
                         const files = Array.from(e.target.files ?? []).slice(0, 10 - eitScanPhotos.length)
-                        const compressed = await Promise.all(files.map(f => compressImage(f)))
-                        const newPhotos = compressed.map(f => ({ file: f, preview: URL.createObjectURL(f) }))
-                        setEitScanPhotos(prev => [...prev, ...newPhotos])
+                        if (files.length === 0) return
+                        setEitScanLoading(true)
+                        setEitScanError(null)
+                        setEitScanResult(null)
+                        try {
+                          const compressed = await Promise.all(files.map(f => compressImage(f)))
+                          const newPhotos = compressed.map(f => ({ file: f, preview: URL.createObjectURL(f) }))
+                          setEitScanPhotos(prev => [...prev, ...newPhotos])
+
+                          const fd = new FormData()
+                          const allFiles = [...eitScanPhotos.map(p => p.file), ...compressed]
+                          allFiles.forEach(p => fd.append('files', p))
+                          fd.append('mode', eitScanMode)
+
+                          const res = await fetch('/api/icu/eit-scan', { method: 'POST', body: fd })
+                          const text = await res.text()
+                          let json: Record<string, unknown>
+                          try { json = JSON.parse(text) } catch { throw new Error('Resposta inválida da IA. Tente foto mais nítida.') }
+                          if (!res.ok) throw new Error((json.error as string) ?? 'Erro na análise')
+                          setEitScanResult(json as never)
+                        } catch (err) {
+                          setEitScanError(err instanceof Error ? err.message : 'Falha ao analisar imagens')
+                        } finally {
+                          setEitScanLoading(false)
+                        }
                         e.target.value = ''
                       }}
                     />
@@ -10246,13 +10389,90 @@ export function ProntuarioSystemPanel() {
                   {eitScanLoading ? <><Loader2 className="h-3.5 w-3.5 animate-spin" /> Analisando...</> : <><Scan className="h-3.5 w-3.5" /> Analisar EIT</>}
                 </button>
               ) : (
-                <button
-                  onClick={() => { setEitScanResult(null); setEitScanError(null); setEitScanPhotos([]) }}
-                  className="flex flex-1 items-center justify-center gap-1.5 rounded-[0.85rem] py-3 text-[11px] text-white/60 transition hover:text-white/80"
-                  style={{ border: '1px solid rgba(255,255,255,0.10)' }}
-                >
-                  <Camera className="h-3.5 w-3.5" /> Novo scan
-                </button>
+                <>
+                  <button
+                    onClick={() => { setEitScanResult(null); setEitScanError(null); setEitScanPhotos([]) }}
+                    className="flex flex-1 items-center justify-center gap-1.5 rounded-[0.85rem] py-3 text-[11px] text-white/60 transition hover:text-white/80"
+                    style={{ border: '1px solid rgba(255,255,255,0.10)' }}
+                  >
+                    <Camera className="h-3.5 w-3.5" /> Novo scan
+                  </button>
+                  <button
+                    onClick={() => {
+                      updateCurrentRecord((record) => {
+                        const r = eitScanResult
+                        if (!r) return record
+                        let finalObs = record.vmObs
+                        
+                        let reportText = ''
+                        if (r.modo_analise === 'titulacao_peep') {
+                          reportText += `[Laudo Tomografia por Impedância Elétrica (TIE/EIT) - Titulação PEEP]\n`
+                          if (r.peep_recomendada != null) {
+                            reportText += `- PEEP Recomendada: ${r.peep_recomendada} cmH2O (Ideal teórica: ${r.peep_ideal_teorica ?? '—'} cmH2O, letra ${r.letra_ideal ?? '—'})\n`
+                          }
+                          if (r.interpretacao) {
+                            reportText += `- Interpretação: ${r.interpretacao}\n`
+                          }
+                          if (r.alertas && r.alertas.length > 0) {
+                            reportText += `- Alertas: ${r.alertas.join('; ')}\n`
+                          }
+                          if (r.tolerancia_clinica) {
+                            reportText += `- Tolerância Clínica: ${r.tolerancia_clinica}\n`
+                          }
+                          if (r.notes) {
+                            reportText += `- Notas: ${r.notes}\n`
+                          }
+                        } else {
+                          reportText += `[Laudo Tomografia por Impedância Elétrica (TIE/EIT) - Análise Simples]\n`
+                          if (r.freq_corr) {
+                            reportText += `- Freq. Corrente: ${r.freq_corr}/min\n`
+                          }
+                          if (r.rois) {
+                            reportText += `- Distribuição ROIs: Ventral (ROI 1): ${r.rois.roi1_pct ?? '—'}% | ROI 2: ${r.rois.roi2_pct ?? '—'}% | ROI 3: ${r.rois.roi3_pct ?? '—'}% | Dorsal (ROI 4): ${r.rois.roi4_pct ?? '—'}%\n`
+                          }
+                          if (r.cov != null) {
+                            reportText += `- CoV (Center of Ventilation): ${r.cov.toFixed(2)}\n`
+                          }
+                          if (r.razao_ant_post != null) {
+                            reportText += `- Razão Ant/Post: ${r.razao_ant_post.toFixed(1)}\n`
+                          }
+                          if (r.distribuicao) {
+                            reportText += `- Distribuição Ventilação: ${r.distribuicao}\n`
+                          }
+                          if (r.padroes && r.padroes.length > 0) {
+                            reportText += `- Padrões: ${r.padroes.join('; ')}\n`
+                          }
+                          if (r.condutas_sugeridas && r.condutas_sugeridas.length > 0) {
+                            reportText += `- Condutas sugeridas: ${r.condutas_sugeridas.join('; ')}\n`
+                          }
+                          if (r.notes) {
+                            reportText += `- Notas: ${r.notes}\n`
+                          }
+                        }
+
+                        if (reportText) {
+                          if (record.vmObs) {
+                            finalObs = `${record.vmObs}\n\n${reportText}`
+                          } else {
+                            finalObs = reportText
+                          }
+                        }
+
+                        return {
+                          ...record,
+                          vmObs: finalObs,
+                        }
+                      })
+                      setEitScanOpen(false)
+                      setEitScanResult(null)
+                      setEitScanPhotos([])
+                    }}
+                    className="flex flex-1 items-center justify-center gap-2 rounded-[0.85rem] py-3 text-[12px] font-bold uppercase tracking-[0.14em] transition"
+                    style={{ background: 'rgba(74,222,128,0.28)', border: '1px solid rgba(74,222,128,0.55)', color: '#86efac' }}
+                  >
+                    <CheckCircle2 className="h-4 w-4" /> Confirmar
+                  </button>
+                </>
               )}
             </div>
           </div>
