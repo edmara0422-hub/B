@@ -67,7 +67,7 @@ export function InteractiveCockpit() {
       className: `cockpit-card ${wrapperClass}`,
       onClick: isInteractive ? () => handleSwap(sysId) : undefined,
       style: {
-        height: isHero ? '100%' : undefined,
+        height: '100%',
         cursor: isInteractive ? 'pointer' : 'default',
       },
     }
@@ -111,10 +111,10 @@ export function InteractiveCockpit() {
       {/* Main Grid */}
       <div className="cockpit-stage-grid">
         {/* Left Column */}
-        <div className="cockpit-grid-col cockpit-mini-col">
-          <div className="cockpit-col-label">Simulações</div>
-          <div style={{ height: '160px' }}>{renderCard(layout[0], false)}</div>
-          <div style={{ height: '180px' }}>{renderCard(layout[1], false)}</div>
+        <div className="cockpit-grid-col cockpit-mini-col flex flex-col h-full">
+          <div className="cockpit-col-label shrink-0">Simulações</div>
+          <div className="flex-1 min-h-0">{renderCard(layout[0], false)}</div>
+          <div className="flex-1 min-h-0">{renderCard(layout[1], false)}</div>
         </div>
 
         {/* Center Column (Hero) */}
@@ -123,10 +123,10 @@ export function InteractiveCockpit() {
         </div>
 
         {/* Right Column */}
-        <div className="cockpit-grid-col cockpit-mini-col">
-          <div className="cockpit-col-label">Inteligência & Valor</div>
-          <div style={{ height: '160px' }}>{renderCard(layout[3], false)}</div>
-          <div style={{ height: '180px' }}>{renderCard(layout[4], false)}</div>
+        <div className="cockpit-grid-col cockpit-mini-col flex flex-col h-full">
+          <div className="cockpit-col-label shrink-0">Inteligência & Valor</div>
+          <div className="flex-1 min-h-0">{renderCard(layout[3], false)}</div>
+          <div className="flex-1 min-h-0">{renderCard(layout[4], false)}</div>
         </div>
       </div>
     </div>

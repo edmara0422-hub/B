@@ -240,7 +240,7 @@
 
 @layer utilities {
   .glass {
-    background: rgba(3, 3, 5, 0.70) !important;
+    background: rgba(0, 0, 0, 0.55) !important;
     backdrop-filter: blur(12px) saturate(1.3);
     -webkit-backdrop-filter: blur(12px) saturate(1.3);
     border: 1px solid rgba(255, 255, 255, 0.08);
@@ -503,7 +503,7 @@ body.sea-splash-active [data-sea-bottom-nav='true'] {
 /* CARD .ipb-soft — prata predominante, dourado e preto SUTIS. */
 .ipb-soft {
   position: relative;
-  background: rgba(3, 3, 5, 0.70) !important;
+  background: rgba(0, 0, 0, 0.55) !important;
   backdrop-filter: blur(12px) saturate(1.3);
   -webkit-backdrop-filter: blur(12px) saturate(1.3);
   border: 1px solid rgba(255, 255, 255, 0.08);
@@ -630,7 +630,7 @@ body.sea-splash-active [data-sea-bottom-nav='true'] {
 .ipb-card-silver {
   position: relative;
   overflow: hidden;
-  background: rgba(3, 3, 5, 0.70) !important;
+  background: rgba(0, 0, 0, 0.55) !important;
   border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: 
     inset 0 1px 0 rgba(255, 255, 255, 0.02),
@@ -676,17 +676,17 @@ body.sea-splash-active [data-sea-bottom-nav='true'] {
 
 .cockpit-stage-grid {
   display: grid;
-  grid-template-columns: 320px 1fr 340px;
+  grid-template-columns: 270px 1fr 270px;
   gap: 20px;
   align-items: stretch;
-  height: 580px; /* Constrained perfect height */
+  height: 680px; /* Enlarged height so center simulation and side cards stretch further down */
   width: 100%;
 }
 
 @media (max-width: 1200px) {
   .cockpit-stage-grid {
-    grid-template-columns: 280px 1fr 300px;
-    height: 540px;
+    grid-template-columns: 250px 1fr 250px;
+    height: 620px;
   }
 }
 
@@ -771,7 +771,7 @@ body.sea-splash-active [data-sea-bottom-nav='true'] {
   border-radius: 28px;
   overflow: hidden;
   border: 1px solid rgba(212, 184, 122, 0.22);
-  background: rgba(3, 3, 5, 0.70) !important;
+  background: rgba(0, 0, 0, 0.55) !important;
   backdrop-filter: blur(16px) saturate(1.3) !important;
   -webkit-backdrop-filter: blur(16px) saturate(1.3) !important;
   box-shadow:
@@ -789,7 +789,7 @@ body.sea-splash-active [data-sea-bottom-nav='true'] {
 .cockpit-card:hover {
   transform: translateY(-3px) translate3d(0,0,0);
   border-color: rgba(212, 184, 122, 0.45);
-  background: rgba(8, 8, 12, 0.82) !important;
+  background: rgba(0, 0, 0, 0.80) !important;
   box-shadow:
     0 28px 60px rgba(0, 0, 0, 0.8),
     inset 0 1px 0 rgba(255, 255, 255, 0.14),
@@ -841,7 +841,7 @@ body.sea-splash-active [data-sea-bottom-nav='true'] {
   height: 100%;
   position: relative;
   overflow: hidden;
-  background: rgba(3, 3, 5, 0.65) !important;
+  background: rgba(0, 0, 0, 0.55) !important;
   backdrop-filter: blur(18px) saturate(1.3) !important;
   -webkit-backdrop-filter: blur(18px) saturate(1.3) !important;
   display: flex;
