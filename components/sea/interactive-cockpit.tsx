@@ -37,9 +37,11 @@ const SYSTEMS: Record<SystemId, SystemDef> = {
   esg: { id: 'esg', title: 'Governança & ESG', icon: Leaf, color: '#d4b87a' },
 }
 
+const ALL_SYSTEMS: SystemId[] = ['neuro', 'cardio', 'pneumo', 'ai', 'esg']
+
 export function InteractiveCockpit() {
   // L1, L2, Center, R1, R2
-  const [layout, setLayout] = useState<SystemId[]>(['ai', 'pneumo', 'cardio', 'neuro', 'esg'])
+  const [layout, setLayout] = useState<SystemId[]>(['neuro', 'cardio', 'pneumo', 'ai', 'esg'])
 
   const handleSwap = (clickedId: SystemId) => {
     if (layout[2] === clickedId) return // Already center
@@ -59,7 +61,9 @@ export function InteractiveCockpit() {
   }
 
   // Render a specific card (either mini or hero)
-  const renderCard = (sysId: SystemId, isHero: boolean) => {
+  const renderCard = (sysId: SystemId) => {
+    const index = layout.indexOf(sysId)
+    const isHero = index === 2
     const isInteractive = !isHero
 
     // Determine the exact class based on system ID and whether it's hero
@@ -72,27 +76,38 @@ export function InteractiveCockpit() {
           : `mini-sim-card ${sysId}`
 
     const cardProps = {
-      layoutId: `card-${sysId}`,
-      className: `cockpit-card ${wrapperClass}`,
+      className: `cockpit-card ${wrapperClass} w-full h-full`,
       onClick: isInteractive ? () => handleSwap(sysId) : undefined,
       style: {
-        height: '100%',
         cursor: isInteractive ? 'pointer' : 'default',
       },
     }
 
+    const slotClass = `slot-${
+      index === 0 ? 'L1' : index === 1 ? 'L2' : index === 2 ? 'C' : index === 3 ? 'R1' : 'R2'
+    }`
+
     return (
-      <motion.div {...cardProps} key={sysId} transition={{ type: 'spring', stiffness: 300, damping: 30 }}>
-        {isHero ? (
-          <div className="hero-inner-scroll" style={{ flex: 1, overflowY: 'auto', minHeight: 0, display: 'flex', flexDirection: 'column', paddingBottom: '100px' }}>
+      <motion.div
+        layout
+        key={sysId}
+        className={`cockpit-slot ${slotClass}`}
+        transition={{ type: 'spring', stiffness: 220, damping: 28 }}
+      >
+        <div {...cardProps}>
+          {/* We keep both mini and hero contents mounted so canvases stay alive. */}
+          <div className="mini-container" style={{ display: isHero ? 'none' : 'block', height: '100%', width: '100%' }}>
+            {renderMiniContent(sysId)}
+          </div>
+          <div className="hero-inner-scroll" style={{ display: isHero ? 'flex' : 'none', flex: 1, overflowY: 'auto', minHeight: 0, flexDirection: 'column', paddingBottom: '100px', height: '100%' }}>
             {renderHeroContent(sysId)}
           </div>
-        ) : renderMiniContent(sysId)}
-        {isInteractive && (
-          <div className="card-expand-hint">
-            <span>Abrir</span> no Centro
-          </div>
-        )}
+          {isInteractive && (
+            <div className="card-expand-hint">
+              <span>Abrir</span> no Centro
+            </div>
+          )}
+        </div>
       </motion.div>
     )
   }
@@ -123,25 +138,21 @@ export function InteractiveCockpit() {
     <div className="w-full">
       {/* Main Grid */}
       <div className="cockpit-stage-grid">
-        {/* Left Column */}
-        <div className="cockpit-grid-col cockpit-mini-col flex flex-col h-full">
-          <div className="cockpit-col-label shrink-0">Simulações</div>
-          <div className="flex-1 min-h-0">{renderCard(layout[0], false)}</div>
-          <div className="flex-1 min-h-0">{renderCard(layout[1], false)}</div>
+        {/* Absolute labels on desktop */}
+        <div className="cockpit-col-label absolute left-0 top-0 w-[320px] hidden lg:flex">
+          Especialidades
+        </div>
+        <div className="cockpit-col-label absolute left-[340px] right-[360px] top-0 hidden lg:flex">
+          Cena Ativa · Em Foco
+        </div>
+        <div className="cockpit-col-label absolute right-0 top-0 w-[340px] hidden lg:flex">
+          Apoio &amp; Compliance
         </div>
 
-        {/* Center Column (Hero) */}
-        <div className="cockpit-grid-col cockpit-hero-col">
-          {renderCard(layout[2], true)}
-        </div>
-
-        {/* Right Column */}
-        <div className="cockpit-grid-col cockpit-mini-col flex flex-col h-full">
-          <div className="cockpit-col-label shrink-0">Inteligência & Valor</div>
-          <div className="flex-1 min-h-0">{renderCard(layout[3], false)}</div>
-          <div className="flex-1 min-h-0">{renderCard(layout[4], false)}</div>
-        </div>
+        {/* The 5 absolute-positioned card slots */}
+        {ALL_SYSTEMS.map((sysId) => renderCard(sysId))}
       </div>
     </div>
   )
 }
+
