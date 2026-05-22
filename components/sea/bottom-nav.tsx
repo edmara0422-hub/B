@@ -55,13 +55,10 @@ export function BottomNav({
           margin: '0 auto',
         }}
       >
-        {/* Wrapper: borda gradiente esquerda=prata → direita=dourado */}
         <motion.div
           className="pointer-events-auto"
           style={{
-            background: 'linear-gradient(90deg, rgba(196,208,220,0.55) 0%, rgba(180,195,210,0.22) 38%, rgba(212,184,122,0.22) 62%, rgba(212,184,122,0.58) 100%)',
             borderRadius: '100px',
-            padding: '1.5px',
             boxShadow: '0 16px 48px rgba(0,0,0,0.75), 0 4px 16px rgba(212,184,122,0.10)',
           }}
           initial={{ y: 100, opacity: 0 }}
@@ -71,15 +68,30 @@ export function BottomNav({
           <nav
             data-sea-bottom-nav="true"
             style={{
-              background: 'rgba(3, 3, 5, 0.45)',
+              background: 'rgba(3, 3, 5, 0.75)',
               backdropFilter: 'blur(28px) saturate(140%)',
               WebkitBackdropFilter: 'blur(28px) saturate(140%)',
-              borderRadius: 'calc(100px - 1.5px)',
+              borderRadius: '100px',
               padding: '5px 8px',
               position: 'relative',
               overflow: 'hidden',
             }}
           >
+            {/* Hollow gradient border: silver on the left, gold on the right */}
+            <div
+              style={{
+                position: 'absolute',
+                inset: 0,
+                borderRadius: 'inherit',
+                padding: '1.5px',
+                background: 'linear-gradient(90deg, rgba(196, 208, 220, 0.85) 0%, rgba(212, 184, 122, 0.88) 100%)',
+                WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+                WebkitMaskComposite: 'xor',
+                maskComposite: 'exclude',
+                pointerEvents: 'none',
+                zIndex: 30,
+              }}
+            />
             {/* Brilho superior interno */}
             <div
               style={{

@@ -97,25 +97,37 @@ export function TopBarSEA() {
           left: '16px',
           right: '16px',
           top: '12px',
-          /* borda gradiente: padding de 1.5px + background prata→dourado */
-          background: 'linear-gradient(90deg, rgba(196,208,220,0.55) 0%, rgba(180,195,210,0.22) 38%, rgba(212,184,122,0.22) 62%, rgba(212,184,122,0.58) 100%)',
           borderRadius: '100px',
-          padding: '1.5px',
           boxShadow: '0 10px 40px rgba(0,0,0,0.75), 0 0 20px rgba(212,184,122,0.10)',
         }}
       >
       <header
         className="px-4 py-2 md:px-6"
         style={{
-          background: 'rgba(3, 3, 5, 0.45)',
+          background: 'rgba(3, 3, 5, 0.75)',
           backdropFilter: 'blur(28px) saturate(140%)',
           WebkitBackdropFilter: 'blur(28px) saturate(140%)',
-          borderRadius: 'calc(100px - 1.5px)',
+          borderRadius: '100px',
           boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06)',
           position: 'relative',
           overflow: 'hidden',
         }}
       >
+      {/* Hollow gradient border: silver on the left, gold on the right */}
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          borderRadius: 'inherit',
+          padding: '1.5px',
+          background: 'linear-gradient(90deg, rgba(196, 208, 220, 0.85) 0%, rgba(212, 184, 122, 0.88) 100%)',
+          WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+          WebkitMaskComposite: 'xor',
+          maskComposite: 'exclude',
+          pointerEvents: 'none',
+          zIndex: 30,
+        }}
+      />
       {/* Chrome shimmer line at bottom */}
       <div
         className="absolute bottom-0 left-0 right-0 h-px pointer-events-none"
