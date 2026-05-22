@@ -107,9 +107,9 @@ export function TopBarSEA() {
       <header
         className="px-4 py-2 md:px-6"
         style={{
-          background: 'linear-gradient(135deg, rgba(6,5,10,0.82) 0%, rgba(3,3,5,0.92) 100%)',
-          backdropFilter: 'blur(32px) saturate(180%)',
-          WebkitBackdropFilter: 'blur(32px) saturate(180%)',
+          background: 'rgba(3, 3, 5, 0.45)',
+          backdropFilter: 'blur(28px) saturate(140%)',
+          WebkitBackdropFilter: 'blur(28px) saturate(140%)',
           borderRadius: 'calc(100px - 1.5px)',
           boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06)',
           position: 'relative',
@@ -157,9 +157,10 @@ export function TopBarSEA() {
           </div>
           {/* Tagline — prata puro */}
           <p
-            className="hidden text-[8px] font-bold uppercase tracking-[0.15em] sm:block md:text-[9px]"
+            className="hidden text-[8px] uppercase tracking-[0.15em] sm:block md:text-[9px]"
             style={{
               fontFamily: 'Poppins, sans-serif',
+              fontWeight: 200,
               background: 'linear-gradient(135deg, #ffffff 0%, #e8edf5 28%, #cbd5e1 58%, #94a3b8 88%, #64748b 100%)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
@@ -178,15 +179,15 @@ export function TopBarSEA() {
               <div className="flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.04] px-2.5 py-1">
                 <GreetIcon className="h-2.5 w-2.5 text-white/50" />
                 <span
-                  className="text-[9px] font-medium text-white/45"
-                  style={{ fontFamily: 'Poppins, sans-serif' }}
+                  className="text-[9px] text-white/45"
+                  style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 300 }}
                 >
                   {greeting}{firstName ? `, ${firstName}` : ''}
                 </span>
               </div>
               <span
                 className="text-[8px] uppercase tracking-[0.12em] text-white/25 sm:text-[9px]"
-                style={{ fontFamily: 'Poppins, sans-serif' }}
+                style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 300 }}
               >
                 {dateLabel}
               </span>
@@ -312,7 +313,7 @@ function NotificationPanel({ notifications, enabled, onClose }: { notifications:
       style={{ background: 'linear-gradient(180deg, rgba(22,22,22,0.99) 0%, rgba(8,8,8,1) 100%)' }}
     >
       <div className="flex items-center justify-between border-b border-white/6 px-4 py-3">
-        <p className="text-[9px] font-semibold uppercase tracking-[0.2em] text-white/60">Notificações</p>
+        <p className="text-[9px] uppercase tracking-[0.2em] text-white/60" style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 300 }}>Notificações</p>
         <button onClick={onClose} className="text-white/30 hover:text-white">
           <X className="h-3.5 w-3.5" />
         </button>
@@ -342,7 +343,7 @@ function NotificationPanel({ notifications, enabled, onClose }: { notifications:
                     <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-white/60" />
                   )}
                   <div className={!n.read ? '' : 'pl-3.5'}>
-                    <p className="text-[9px] font-semibold text-white/70">{n.title}</p>
+                    <p className="text-[9px] text-white/70" style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 300 }}>{n.title}</p>
                     <p className="mt-0.5 text-[8px] leading-relaxed text-white/40">{n.body}</p>
                     <p className="mt-1 text-[7px] text-white/25">{formatDate(n.created_at)}</p>
                   </div>

@@ -68,13 +68,12 @@ export function BottomNav({
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         >
-          {/* Nav interno — fundo escuro translúcido */}
           <nav
             data-sea-bottom-nav="true"
             style={{
-              background: 'linear-gradient(160deg, rgba(14,12,20,0.94) 0%, rgba(6,5,10,0.97) 100%)',
-              backdropFilter: 'blur(40px) saturate(200%) brightness(0.88)',
-              WebkitBackdropFilter: 'blur(40px) saturate(200%) brightness(0.88)',
+              background: 'rgba(3, 3, 5, 0.45)',
+              backdropFilter: 'blur(28px) saturate(140%)',
+              WebkitBackdropFilter: 'blur(28px) saturate(140%)',
               borderRadius: 'calc(100px - 1.5px)',
               padding: '5px 8px',
               position: 'relative',
@@ -164,7 +163,7 @@ function NavButton({
         gap: '10px',
         padding: '11px 8px',
         fontSize: '10.5px',
-        fontWeight: 800,
+        fontWeight: 300,
         letterSpacing: '0.16em',
         fontFamily: 'Poppins, sans-serif',
         cursor: 'pointer',
