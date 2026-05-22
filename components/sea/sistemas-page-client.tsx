@@ -221,7 +221,7 @@ export default function SistemasPageClient() {
           grid-template-columns: 240px 1fr;
           height: 100vh;
           width: 100vw;
-          background: #050505;
+          background: transparent;
           color: var(--ink);
           font-family: var(--f-body);
           font-weight: 200;
@@ -821,13 +821,7 @@ export default function SistemasPageClient() {
         }
       `}</style>
 
-      {/* Layer de fundo espacial glassmorphic */}
-      <div className="bg">
-        <div className="bg-nebulas"></div>
-        <div className="bg-stars"></div>
-        <div className="bg-glass-glare"></div>
-        <div className="bg-glass-bevel"></div>
-      </div>
+
 
       {/* SIDEBAR (COMPACT NASA x COCKPIT) */}
       <aside className="side">
