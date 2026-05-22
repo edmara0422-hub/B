@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=JetBrains+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');
 @import 'tailwindcss' source(none);
 @source '../app/layout.tsx';
 @source '../app/page.tsx';
@@ -188,9 +188,15 @@
       linear-gradient(180deg, #090909 0%, #030303 44%, #010101 100%);
     color: white;
     font-family: 'Poppins', 'Avenir Next', 'Segoe UI', sans-serif;
+    font-weight: 200;
     overflow-x: hidden;
     min-height: 100vh;
     position: relative;
+  }
+
+  /* Justificação global dos textos da Home/SEA para maior elegância e alinhamento */
+  p, .sec-sub, .t-desc, .cortex-msg .body, .note, .p-desc, .draw-desc, .fw-badge-desc, #maturidadeDesc, .sec-p, .timeline-desc, .goal-desc, .esg-pillar-card p, .esg-digital-card p, .feedback-item .text, .esg-ods-details, .gov-modal p {
+    text-align: justify;
   }
 
   /* CAMADA 2: linhas verticais sutis + diagonais — adiciona "trama" ao fundo */
@@ -997,13 +1003,13 @@ body.sea-splash-active [data-sea-bottom-nav='true'] {
   content: ""; position: absolute; inset: -5px; border-radius: 50%;
   border: 1px dashed rgba(212, 184, 122, 0.4); animation: rotate-linear 30s linear infinite;
 }
-.mini-sim-card .hud-vitals .val { font-size: 22px; font-weight: 300; line-height: 1; margin-bottom: 2px; }
+.mini-sim-card .hud-vitals .val { font-size: 22px; font-weight: 200; line-height: 1; margin-bottom: 2px; }
 .mini-sim-card .hud-vitals .lbl { font-size: 8px; color: rgba(255,255,255,0.45); letter-spacing: 0.05em; text-transform: uppercase; }
-.mini-ai-card .header-ai div b { font-size: 15px; color: #fff; font-weight: 300; }
+.mini-ai-card .header-ai div b { font-size: 15px; color: #fff; font-weight: 200; }
 .mini-ai-card .header-ai div b em { font-style: normal; color: #d4b87a; }
-.mini-sim-card .hud-status .big-status { font-size: 24px; font-weight: 300; letter-spacing: -0.02em; line-height: 1; }
+.mini-sim-card .hud-status .big-status { font-size: 24px; font-weight: 200; letter-spacing: -0.02em; line-height: 1; }
 .mini-sim-card .hud-status .trend-badge {
-  display: inline-block; padding: 3px 6px; border-radius: 4px; font-size: 8px; font-weight: 300;
+  display: inline-block; padding: 3px 6px; border-radius: 4px; font-size: 8px; font-weight: 200;
   text-transform: uppercase; margin-top: 6px; letter-spacing: 0.04em;
   background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); color: rgba(255,255,255,0.7);
 }
@@ -1112,9 +1118,9 @@ body.sea-splash-active [data-sea-bottom-nav='true'] {
 }
 
 .hero-footer .title-group { display: flex; flex-direction: column; gap: 6px; }
-.hero-footer .title-group .area { font-size: 11.5px; color: rgba(255,255,255,0.45); text-transform: uppercase; letter-spacing: 0.06em; font-weight: 300; }
-.hero-footer .title-group h2 { margin: 0; font-size: 26px; font-weight: 300; color: #fff; letter-spacing: 0.02em; }
-.hero-footer .title-group p { margin: 0; font-size: 13.5px; color: rgba(255,255,255,0.7); max-width: 480px; font-weight: 300; }
+.hero-footer .title-group .area { font-size: 11.5px; color: rgba(255,255,255,0.45); text-transform: uppercase; letter-spacing: 0.06em; font-weight: 200; }
+.hero-footer .title-group h2 { margin: 0; font-size: 26px; font-weight: 200; color: #fff; letter-spacing: 0.02em; }
+.hero-footer .title-group p { margin: 0; font-size: 13.5px; color: rgba(255,255,255,0.7); max-width: 480px; font-weight: 200; }
 
 /* AI CHAT INTERACTIVE SCREEN */
 .ai-chat-screen {
@@ -1291,7 +1297,7 @@ body.sea-splash-active [data-sea-bottom-nav='true'] {
   padding: 10px; border-radius: 12px; background: rgba(255,255,255,0.015); border: 1px solid rgba(255,255,255,0.04);
 }
 .esg-pillar-card b { display: block; font-size: 12px; color: #fff; margin-bottom: 2px; }
-.esg-pillar-card p { margin: 0; font-size: 10.5px; color: var(--t-2); line-height: 1.4; font-weight: 300; }
+.esg-pillar-card p { margin: 0; font-size: 10.5px; color: var(--t-2); line-height: 1.4; font-weight: 200; }
 
 /* Sustentabilidade Digital */
 .esg-digital-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
@@ -1300,7 +1306,7 @@ body.sea-splash-active [data-sea-bottom-nav='true'] {
   border: 1px solid rgba(212, 184, 122, 0.15);
 }
 .esg-digital-card b { display: block; font-size: 11.5px; color: var(--g-3); margin-bottom: 3px; }
-.esg-digital-card p { margin: 0; font-size: 10.5px; color: var(--t-2); line-height: 1.4; font-weight: 300; }
+.esg-digital-card p { margin: 0; font-size: 10.5px; color: var(--t-2); line-height: 1.4; font-weight: 200; }
 
 /* ACCORDION GOVERNANÇA OVERLAY MODAL */
 .gov-modal-overlay {
@@ -1316,7 +1322,7 @@ body.sea-splash-active [data-sea-bottom-nav='true'] {
 }
 .gov-modal.open { transform: scale(1); opacity: 1; }
 .gov-modal h3 { margin: 0; font-size: 20px; font-weight: 600; color: var(--g-3); }
-.gov-modal p { margin: 0; font-size: 13.5px; line-height: 1.6; color: var(--t-2); font-weight: 300; }
+.gov-modal p { margin: 0; font-size: 13.5px; line-height: 1.6; color: var(--t-2); font-weight: 200; }
 .gov-modal button {
   align-self: flex-end; padding: 8px 18px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1);
   background: rgba(255,255,255,0.03); color: #fff; cursor: pointer; font-size: 12px;
