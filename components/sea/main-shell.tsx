@@ -44,13 +44,7 @@ const SPLASH_SHOWN_KEY = 'sea-splash-shown'
 
 function shouldShowSplash(): boolean {
   if (typeof window === 'undefined') return false
-  try {
-    // Se houve update de versão, força splash
-    const savedVersion = localStorage.getItem(APP_VERSION_KEY)
-    if (savedVersion !== APP_VERSION) return true
-    // Senão, respeita a flag de sessão (pula em reload comum)
-    return sessionStorage.getItem(SPLASH_SHOWN_KEY) !== '1'
-  } catch { return true }
+  return true
 }
 
 function markSplashShown() {

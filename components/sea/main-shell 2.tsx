@@ -36,8 +36,7 @@ function usePreloadRoutes() {
 // = mostra landing/splash de novo.
 const SPLASH_SHOWN_KEY = 'sea-splash-shown'
 function readSplashShown(): boolean {
-  if (typeof window === 'undefined') return false
-  try { return sessionStorage.getItem(SPLASH_SHOWN_KEY) === '1' } catch { return false }
+  return false
 }
 function markSplashShown() {
   if (typeof window === 'undefined') return
