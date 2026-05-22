@@ -73,6 +73,7 @@ type AuthActions = {
   initialize: () => Promise<void>
   signIn: (email: string, password: string) => Promise<{ error: string | null }>
   signUp: (email: string, password: string, name: string) => Promise<{ error: string | null }>
+  signInWithGoogle: () => Promise<{ error: string | null }>
   signOut: () => Promise<void>
   resetPassword: (email: string) => Promise<{ error: string | null }>
   fetchProfile: (userId: string) => Promise<void>
@@ -194,6 +195,25 @@ export const useAuthStore = create<AuthState & AuthActions>((set, get) => ({
         supabase.rpc('log_my_login', { p_ip: null, p_user_agent: ua }).then(() => {})
       } catch { /* não bloqueia o login se o log falhar */ }
     }
+    return { error: null }
+  },
+
+  signInWithGoogle: async () => {
+    if (!supabase) return { error: 'Supabase nao configurado.' }
+    const redirectTo = typeof window !== 'undefined'
+      ? `${window.location.origin}/auth/callback`
+      : `${process.env.NEXT_PUBLIC_API_URL ?? ''}/auth/callback`
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo,
+        queryParams: {
+          access_type: 'offline',
+          prompt: 'consent',
+        },
+      },
+    })
+    if (error) return { error: error.message }
     return { error: null }
   },
 

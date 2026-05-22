@@ -127,28 +127,29 @@ export function TopBarSEA() {
       <div className="flex w-full items-center justify-between gap-2">
         {/* ── ESQUERDA: logo IPB metálico + tagline ── */}
         <div className="flex items-center gap-2 md:gap-3">
-          {/* Logo square — fundo escuro obsidian com símbolo IPB em prata */}
+          {/* Logo square — dourado champanhe mesclado com prata (estilo premium) */}
           <div
             className="flex h-7 w-7 shrink-0 items-center justify-center rounded-[0.55rem] relative overflow-hidden"
             style={{
-              background: 'linear-gradient(135deg, #1a1820 0%, #0e0c14 60%, #0a0810 100%)',
-              border: '1px solid rgba(200,210,220,0.30)',
+              background:
+                'linear-gradient(135deg, #e8f0f8 0%, #cbd5e1 20%, #d4b87a 50%, #b8975a 75%, #8b6914 100%)',
+              border: '1px solid rgba(212,184,122,0.60)',
               boxShadow:
-                'inset 0 1px 0 rgba(255,255,255,0.12), inset 0 -1px 0 rgba(0,0,0,0.5), 0 0 10px rgba(200,210,220,0.12), 0 4px 12px rgba(0,0,0,0.6)',
+                'inset 0 1px 2px rgba(255,255,255,0.55), inset 0 -1px 2px rgba(0,0,0,0.35), 0 0 14px rgba(212,184,122,0.35), 0 4px 12px rgba(0,0,0,0.55)',
             }}
           >
-            {/* Brilho superior chrome */}
-            <div className="absolute inset-x-0 top-0 h-[40%] bg-gradient-to-b from-white/10 to-transparent pointer-events-none" />
-            {/* Texto IPB — prata real */}
+            {/* Reflexo brilhante superior — polido */}
+            <div className="absolute inset-x-0 top-0 h-[45%] bg-gradient-to-b from-white/40 to-transparent pointer-events-none rounded-t-[0.55rem]" />
+            {/* Texto IPB — prata claro sobre fundo dourado */}
             <span
-              className="text-[0.5rem] font-black tracking-[0.03em] md:text-[0.6rem]"
+              className="text-[0.5rem] font-black tracking-[0.03em] md:text-[0.6rem] relative z-10"
               style={{
                 fontFamily: 'Poppins, sans-serif',
-                background: 'linear-gradient(135deg, #ffffff 0%, #e8edf5 25%, #cbd5e1 55%, #94a3b8 85%, #64748b 100%)',
+                background: 'linear-gradient(135deg, #ffffff 0%, #f1f5f9 40%, #cbd5e1 70%, #94a3b8 100%)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 backgroundClip: 'text',
-                filter: 'drop-shadow(0 0 3px rgba(255,255,255,0.5))',
+                filter: 'drop-shadow(0 1px 2px rgba(0,0,0,0.6))',
               }}
             >
               IPB

@@ -159,7 +159,22 @@ Diretoria de Governança Corporativa IPB`
         <div className="ch-label">VERIFIED PRACTICES</div>
       </div>
 
-      <div className="hero-content" style={{ gridTemplateColumns: '1fr', paddingBottom: '12px' }}>
+      {/* Container scrollável — garante que o footer "Entrar na cena" seja sempre alcançável */}
+      <div
+        style={{
+          flex: 1,
+          overflowY: 'auto',
+          overflowX: 'hidden',
+          display: 'flex',
+          flexDirection: 'column',
+          minHeight: 0,
+          /* scrollbar fina dourada */
+          scrollbarWidth: 'thin',
+          scrollbarColor: 'rgba(212,184,122,0.25) transparent',
+        }}
+        className="ipb-esg-scroll"
+      >
+      <div className="hero-content" style={{ gridTemplateColumns: '1fr', paddingBottom: '0' }}>
         <div className="esg-dashboard-grid">
           
           {/* Coluna Esquerda */}
@@ -365,7 +380,8 @@ Diretoria de Governança Corporativa IPB`
         <div className="action-group">
           <button className="btn-enter-scene">✦ Entrar na cena</button>
         </div>
-      </div>
+      </div> {/* fecha hero-footer */}
+      </div> {/* fecha ipb-esg-scroll */}
 
       {/* Accordion modal overlay */}
       {activeGovTab && (

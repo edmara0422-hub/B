@@ -1168,7 +1168,7 @@ body.sea-splash-active [data-sea-bottom-nav='true'] {
 /* ESG & GOVERNANÇA HERO DASHBOARD */
 .esg-dashboard-grid {
   width: 100%; height: 100%; display: grid; grid-template-columns: 1fr 1.2fr; gap: 16px;
-  overflow: hidden; min-height: 0;
+  overflow: visible; min-height: 0;
 }
 .esg-scroll-panel {
   display: flex; flex-direction: column; gap: 12px; overflow-y: auto; padding-right: 6px;
@@ -1177,6 +1177,12 @@ body.sea-splash-active [data-sea-bottom-nav='true'] {
 .esg-scroll-panel::-webkit-scrollbar { width: 5px; }
 .esg-scroll-panel::-webkit-scrollbar-track { background: rgba(255,255,255,0.02); border-radius: 3px; }
 .esg-scroll-panel::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.10); border-radius: 3px; }
+
+/* Scrollbar do wrapper ESG completo */
+.ipb-esg-scroll::-webkit-scrollbar { width: 4px; }
+.ipb-esg-scroll::-webkit-scrollbar-track { background: transparent; }
+.ipb-esg-scroll::-webkit-scrollbar-thumb { background: rgba(212, 184, 122, 0.28); border-radius: 4px; }
+.ipb-esg-scroll::-webkit-scrollbar-thumb:hover { background: rgba(212, 184, 122, 0.50); }
 
 .esg-dashboard-header { display: flex; align-items: center; gap: 12px; }
 .esg-dashboard-header .seal-big {
