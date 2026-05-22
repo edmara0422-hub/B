@@ -159,18 +159,11 @@ Diretoria de Governança Corporativa IPB`
         <div className="ch-label">VERIFIED PRACTICES</div>
       </div>
 
-      {/* Container scrollável — garante que o footer "Entrar na cena" seja sempre alcançável */}
+      {/* Wrapper flex para acomodar conteúdo que agora expandirá verticalmente no hero-wrapper */}
       <div
         style={{
-          flex: 1,
-          overflowY: 'auto',
-          overflowX: 'hidden',
           display: 'flex',
           flexDirection: 'column',
-          minHeight: 0,
-          /* scrollbar fina dourada */
-          scrollbarWidth: 'thin',
-          scrollbarColor: 'rgba(212,184,122,0.25) transparent',
         }}
         className="ipb-esg-scroll"
       >
