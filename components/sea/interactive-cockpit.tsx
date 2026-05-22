@@ -6,12 +6,12 @@ import { Activity, Brain, Wind, Leaf, Sparkles } from 'lucide-react'
 
 import dynamic from 'next/dynamic'
 
-// Lightweight Mini components remain statically imported
-import { MiniCardio } from './hud-cardio'
-import { MiniNeuro } from './hud-neuro'
-import { MiniPneumo } from './hud-pneumo'
-import { MiniEsg } from './hud-esg'
-import { MiniAi } from './hud-ai'
+// Lightweight Mini components are imported from separate lightweight files
+import { MiniCardio } from './mini-cardio'
+import { MiniNeuro } from './mini-neuro'
+import { MiniPneumo } from './mini-pneumo'
+import { MiniEsg } from './mini-esg'
+import { MiniAi } from './mini-ai'
 
 // Heavy HUD components are lazy loaded to prevent UI blocking
 const HudCardio = dynamic(() => import('./hud-cardio').then(m => m.HudCardio), { ssr: false, loading: () => <div className="w-full h-full animate-pulse bg-white/5 rounded-3xl" /> })
