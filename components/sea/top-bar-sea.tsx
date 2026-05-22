@@ -119,7 +119,7 @@ export function TopBarSEA() {
           position: 'absolute',
           inset: 0,
           borderRadius: 'inherit',
-          padding: '1px',
+          padding: '0.2px',
           background: 'linear-gradient(90deg, #e2e8f0 0%, #cbd5e1 45%, #d4b87a 55%, #b8975a 100%)',
           WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
           WebkitMaskComposite: 'xor',
@@ -145,7 +145,7 @@ export function TopBarSEA() {
             style={{
               background:
                 'linear-gradient(135deg, #e8f0f8 0%, #cbd5e1 20%, #d4b87a 50%, #b8975a 75%, #8b6914 100%)',
-              border: '1px solid rgba(212,184,122,0.60)',
+              border: '0.2px solid rgba(212,184,122,0.50)',
               boxShadow:
                 'inset 0 1px 2px rgba(255,255,255,0.55), inset 0 -1px 2px rgba(0,0,0,0.35), 0 0 14px rgba(212,184,122,0.35), 0 4px 12px rgba(0,0,0,0.55)',
             }}
@@ -188,7 +188,10 @@ export function TopBarSEA() {
         <div className="flex items-center gap-2">
           {mounted && (
             <>
-              <div className="flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.04] px-2.5 py-1">
+              <div
+                className="flex items-center gap-1.5 rounded-full bg-white/[0.04] px-2.5 py-1"
+                style={{ border: '0.2px solid rgba(255, 255, 255, 0.1)' }}
+              >
                 <GreetIcon className="h-2.5 w-2.5 text-white/50" />
                 <span
                   className="text-[9px] text-white/45"
@@ -211,8 +214,8 @@ export function TopBarSEA() {
         <div className="flex shrink-0 items-center gap-1.5 md:gap-2">
           {/* Zoom A−/A+ — visível em mobile e desktop */}
           <div
-            className="flex items-center gap-0.5 overflow-hidden rounded-[0.6rem] border border-white/10"
-            style={{ background: zoomShellBg }}
+            className="flex items-center gap-0.5 overflow-hidden rounded-[0.6rem]"
+            style={{ background: zoomShellBg, border: '0.2px solid rgba(255, 255, 255, 0.1)' }}
           >
             <button
               onClick={decreaseFontScale}
@@ -245,11 +248,11 @@ export function TopBarSEA() {
             <button
               aria-label="Notificações"
               onClick={handleBellClick}
-              className="flex h-6 w-6 items-center justify-center rounded-[0.5rem] border transition md:h-7 md:w-7 md:rounded-[0.6rem]"
+              className="flex h-6 w-6 items-center justify-center rounded-[0.5rem] transition md:h-7 md:w-7 md:rounded-[0.6rem]"
               style={{
                 background: btnShellBg,
-                borderColor: 'rgba(200,210,220,0.20)',
-                boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.08)',
+                border: '0.2px solid rgba(200,210,220,0.16)',
+                boxShadow: 'inset 0 0.2px 0 rgba(255,255,255,0.08)',
               }}
             >
               <Bell
@@ -272,11 +275,11 @@ export function TopBarSEA() {
           <button
             aria-label="Perfil"
             onClick={() => router.push('/profile')}
-            className="flex h-6 w-6 items-center justify-center rounded-[0.5rem] border transition md:h-7 md:w-7 md:rounded-[0.6rem]"
+            className="flex h-6 w-6 items-center justify-center rounded-[0.5rem] transition md:h-7 md:w-7 md:rounded-[0.6rem]"
             style={{
               background: btnShellBg,
-              borderColor: 'rgba(212,184,122,0.28)',
-              boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.08), 0 0 8px rgba(212,184,122,0.10)',
+              border: '0.2px solid rgba(212,184,122,0.24)',
+              boxShadow: 'inset 0 0.2px 0 rgba(255,255,255,0.08), 0 0 8px rgba(212,184,122,0.10)',
             }}
           >
             {profile?.photo_url ? (

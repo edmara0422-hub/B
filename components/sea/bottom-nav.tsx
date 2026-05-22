@@ -83,7 +83,7 @@ export function BottomNav({
                 position: 'absolute',
                 inset: 0,
                 borderRadius: 'inherit',
-                padding: '1px',
+                padding: '0.2px',
                 background: 'linear-gradient(90deg, #e2e8f0 0%, #cbd5e1 45%, #d4b87a 55%, #b8975a 100%)',
                 WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
                 WebkitMaskComposite: 'xor',
@@ -114,10 +114,16 @@ export function BottomNav({
                     top: 0,
                     bottom: 0,
                     width: '50%',
-                    background: 'linear-gradient(135deg, rgba(255,255,255,0.04) 0%, rgba(212,184,122,0.07) 100%)',
-                    border: '1px solid rgba(212,184,122,0.25)',
+                    background: isHome
+                      ? 'linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(200,205,215,0.05) 100%)'
+                      : 'linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(212,184,122,0.07) 100%)',
+                    border: isHome
+                      ? '0.2px solid rgba(200, 205, 215, 0.30)'
+                      : '0.2px solid rgba(212, 184, 122, 0.35)',
                     borderRadius: '90px',
-                    boxShadow: '0 0 18px rgba(212,184,122,0.12), inset 0 1px 0 rgba(255,255,255,0.10)',
+                    boxShadow: isHome
+                      ? '0 0 18px rgba(200, 205, 215, 0.20), inset 0 0.2px 0 rgba(255, 255, 255, 0.15)'
+                      : '0 0 18px rgba(212, 184, 122, 0.22), inset 0 0.2px 0 rgba(255, 255, 255, 0.15)',
                     pointerEvents: 'none',
                   }}
                   animate={{ x: isExplore ? '100%' : '0%' }}
