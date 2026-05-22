@@ -8,7 +8,6 @@ import type { LucideIcon } from 'lucide-react'
 import { ProntuarioSystemPanel } from '@/components/sea/prontuario-system-panel'
 import { VMSystemPanel } from '@/components/sea/vm-system-panel'
 import { ICUSystemPanel } from '@/components/sea/icu-system-panel'
-import { BioneuralPanel } from '@/components/sea/bioneural-panel'
 
 // ── Módulos de Sistemas ────────────────────────────────────────────────────────
 
@@ -42,36 +41,97 @@ const SYSTEMS: SystemModule[] = [
     overview: 'Protocolos, condutas e fluxos clínicos organizados por sistema — referência rápida à beira do leito.',
     panel: () => <ICUSystemPanel />,
   },
+]
+
+type SidebarGroup = {
+  id: string
+  label: string
+  code: string
+  items: {
+    id: string
+    title: string
+    desc?: string
+    isClinical?: boolean
+    clinicalIndex?: number
+  }[]
+}
+
+const SIDEBAR_GROUPS: SidebarGroup[] = [
   {
-    id: 'S4',
-    title: 'Integração Bioneural',
-    icon: Cpu,
-    overview: 'Monitoramento bioneural integrado, modelagem de ventilação mecânica adaptativa e status cognitivo.',
-    panel: () => <BioneuralPanel />,
+    id: 'clin',
+    code: 'CLIN',
+    label: 'CLÍNICO',
+    items: [
+      { id: 'S1', title: 'IPB ICU', desc: 'S1 · Módulo Clínico', isClinical: true, clinicalIndex: 0 },
+      { id: 'S2', title: 'Calculadoras', desc: 'S2 · Módulo Clínico', isClinical: true, clinicalIndex: 1 },
+      { id: 'S3', title: 'Referência Clínica', desc: 'S3 · Módulo Clínico', isClinical: true, clinicalIndex: 2 },
+    ]
   },
+  {
+    id: 'sig',
+    code: 'SIG',
+    label: 'GERENCIAL',
+    items: [
+      { id: 'sig-pessoas', title: 'Pessoas', desc: 'Líderes & Gestores' },
+      { id: 'sig-mercado', title: 'Mercado', desc: 'Panorama Cruzado' },
+      { id: 'sig-esg', title: 'ESG', desc: 'Sustentabilidade & Governança' },
+      { id: 'sig-feedback', title: 'Feedback & NPS', desc: 'Cultura & Feedback' },
+      { id: 'arquivos', title: 'Arquivos', desc: 'Relatórios do Cockpit' },
+    ]
+  },
+  {
+    id: 'sie',
+    code: 'SIE',
+    label: 'ESTRATÉGICO',
+    items: [
+      { id: 'meu-negocio', title: 'Meu Negócio', desc: 'Runway · OKRs · TRL' },
+      { id: 'sie-forecast', title: 'Cenários & Forecast', desc: 'Planejamento e forecast' },
+      { id: 'sie-inovacao', title: 'Inovação', desc: 'Ambiente P&D' },
+      { id: 'sie-canvas', title: 'Canvas & Pitch', desc: 'Modelo Canvas' },
+    ]
+  },
+  {
+    id: 'sio',
+    code: 'SIO',
+    label: 'OPERACIONAL',
+    items: [
+      { id: 'sio-ia', title: 'IA Advisor', desc: 'Análise de dados preditivos' },
+      { id: 'sio-finance', title: 'Cockpit Financeiro', desc: 'Liquidez e despesas' },
+      { id: 'sio-pricing', title: 'Smart Pricing', desc: 'Estratégia de preços' },
+      { id: 'sio-processos', title: 'Processos', desc: 'Fluxogramas e SOPs' },
+    ]
+  },
+  {
+    id: 'comp',
+    code: 'COMP',
+    label: 'COMPLIANCE',
+    items: [
+      { id: 'comp-denuncias', title: 'Canal de Denúncias', desc: 'Governança IPB' },
+      { id: 'comp-governanca', title: 'Governança', desc: 'Políticas & Contratos' },
+    ]
+  }
 ]
 
 const ease = [0.16, 1, 0.3, 1] as const
 
-// ── Workspace Sidebar — mesmo padrão do Intelligence Kit de Conteúdos ──────────
+// ── Workspace Sidebar — padrão Accordion Premium da NASA ──────────
 
 function WorkspaceSidebar({
-  modules,
-  activeIndex,
-  onSelect,
+  activeNavId,
+  onSelectNav,
   onClose,
 }: {
-  modules: SystemModule[]
-  activeIndex: number | null
-  onSelect: (i: number) => void
+  activeNavId: string
+  onSelectNav: (id: string, clinicalIndex?: number) => void
   onClose: () => void
 }) {
   const [search, setSearch] = useState('')
+  const [activeGroup, setActiveGroup] = useState<string | null>('clin')
   const q = search.toLowerCase().trim()
 
   return (
-    <div className="ipb-soft flex flex-col overflow-hidden rounded-[1.2rem] h-full lg:rounded-[1.65rem]">
-      {/* Header: label + busca + close — compacto mobile, normal desktop */}
+    <div className="ipb-soft flex flex-col overflow-hidden rounded-[1.2rem] h-full lg:rounded-[1.65rem] border border-white/[0.04]">
+      {/* Header: label + busca + close */}
       <div
         className="shrink-0 rounded-t-[1.65rem] px-2 pb-2 pt-2.5 lg:px-4 lg:pb-3 lg:pt-4"
         style={{ borderBottom: '1px solid rgba(210,175,90,0.12)' }}
@@ -86,7 +146,7 @@ function WorkspaceSidebar({
             <PanelLeftClose className="h-3 w-3 lg:h-3.5 lg:w-3.5" />
           </button>
         </div>
-        {/* Busca — desktop apenas */}
+        {/* Busca */}
         <div
           className="hidden lg:flex items-center gap-2 rounded-[0.85rem] px-3 py-2"
           style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.10)' }}
@@ -101,51 +161,81 @@ function WorkspaceSidebar({
         </div>
       </div>
 
-      {/* Lista — scroll interno */}
-      <div className="ipb-thinscroll flex-1 overflow-y-auto px-2 py-2">
-        {modules.map((mod, idx) => {
-          const isActive = activeIndex === idx
-          const ModIcon = mod.icon
-          const matches =
-            !q ||
-            mod.title.toLowerCase().includes(q) ||
-            mod.overview.toLowerCase().includes(q) ||
-            mod.id.toLowerCase().includes(q)
-          if (q && !matches) return null
+      {/* Lista Accordion — scroll interno */}
+      <div className="ipb-thinscroll flex-1 overflow-y-auto px-2 py-3 space-y-4">
+        {SIDEBAR_GROUPS.map((group) => {
+          // Filtrar items por busca
+          const filteredItems = group.items.filter(item => {
+            if (!q) return true
+            return (
+              item.title.toLowerCase().includes(q) ||
+              (item.desc && item.desc.toLowerCase().includes(q)) ||
+              item.id.toLowerCase().includes(q)
+            )
+          })
+
+          if (filteredItems.length === 0) return null
+
+          const isExpanded = activeGroup === group.id || q.length > 0
 
           return (
-            <div key={mod.id}>
-              {idx > 0 && <div className="mx-3 my-2 h-px bg-white/[0.06]" />}
-              <button
-                onClick={() => onSelect(idx)}
-                className="flex w-full items-center gap-1.5 rounded-[0.8rem] px-2 py-1.5 text-left transition lg:gap-2 lg:rounded-[0.9rem]"
-                style={
-                  isActive
-                    ? {
-                        background: 'linear-gradient(135deg, rgba(255,255,255,0.09), rgba(255,255,255,0.04))',
-                        border: '1px solid rgba(210,175,90,0.22)',
-                        boxShadow: 'inset 0 1px 0 rgba(210,175,90,0.14)',
-                      }
-                    : { border: '1px solid transparent' }
-                }
+            <div 
+              key={group.id} 
+              className={`sidebar-hexagon-group ${isExpanded ? 'active' : ''}`}
+            >
+              {/* Header do Acordeão */}
+              <div 
+                className={`hex-tab ${isExpanded ? 'active' : ''}`}
+                onClick={() => setActiveGroup(isExpanded ? null : group.id)}
               >
-                <ModIcon className={`h-3 w-3 shrink-0 lg:h-3.5 lg:w-3.5 ${isActive ? 'text-[#d2af5a]' : 'text-white/32'}`} />
-                <div className="min-w-0 flex-1">
-                  <p className={`text-[7px] uppercase tracking-[0.16em] lg:text-[8px] lg:tracking-[0.22em] ${isActive ? 'text-[#d2af5a]/60' : 'text-white/20'}`}>{mod.id}</p>
-                  <p className={`hidden lg:block truncate text-[10px] font-medium leading-snug ${isActive ? 'text-white/92' : 'text-white/55'}`}>{mod.title}</p>
+                <div className="frame">
+                  <div className="code">{group.code}</div>
                 </div>
-                <div className={`h-1.5 w-1.5 shrink-0 rounded-full transition ${isActive ? 'bg-[#d2af5a]' : 'bg-white/16'}`} />
-              </button>
+                <div className="name">{group.label}</div>
+              </div>
+
+              {/* Sub-itens */}
+              <div className="sidebar-sub-menu w-full mt-2 space-y-1">
+                {filteredItems.map((item) => {
+                  const isActive = activeNavId === item.id
+                  return (
+                    <button
+                      key={item.id}
+                      onClick={() => onSelectNav(item.id, item.clinicalIndex)}
+                      className={`side-nav-item w-full ${isActive ? 'active' : ''}`}
+                    >
+                      <span className="bullet"></span>
+                      <div className="info min-w-0">
+                        <span className="label truncate">{item.title}</span>
+                        {item.desc && <span className="desc truncate">{item.desc}</span>}
+                      </div>
+                    </button>
+                  )
+                })}
+              </div>
             </div>
           )
         })}
-        {q && modules.every(m =>
-          !m.title.toLowerCase().includes(q) &&
-          !m.overview.toLowerCase().includes(q) &&
-          !m.id.toLowerCase().includes(q)
-        ) && (
-          <p className="mt-4 px-3 text-[10px] text-white/30">Nenhum sistema encontrado.</p>
-        )}
+
+        {/* Telemetry AI Gateway Mock */}
+        <div className="telemetry-widget border border-white/[0.04] bg-black/25 mt-4">
+          <div className="title-row flex justify-between items-center text-[7.5px] font-mono text-[#d4b87a] font-bold">
+            <span>AI_GATEWAY</span>
+            <span className="h-1.5 w-1.5 rounded-full bg-[#5dcaa5] animate-pulse"></span>
+          </div>
+          <div className="flex justify-between text-[7px] text-white/40 mt-1">
+            <span>LATENCY</span>
+            <b className="text-white/70">124ms</b>
+          </div>
+          <div className="flex justify-between text-[7px] text-white/40">
+            <span>CACHE HIT</span>
+            <b className="text-white/70">86.4%</b>
+          </div>
+          <div className="flex justify-between text-[7px] text-white/40">
+            <span>SAVINGS</span>
+            <b className="text-[#d4b87a]">$0.084</b>
+          </div>
+        </div>
       </div>
     </div>
   )
@@ -154,14 +244,26 @@ function WorkspaceSidebar({
 // ── Page ─────────────────────────────────────────────────────────────────────
 
 export default function SistemasPageClient() {
-  const [activeIndex, setActiveIndex] = useState<number | null>(0)
+  const [activeNavId, setActiveNavId] = useState<string>('S1')
   const [sidebarOpen, setSidebarOpen] = useState(true)
 
-  const current = activeIndex !== null ? SYSTEMS[activeIndex] : null
+  // Encontrar o sistema clínico ativo (se houver)
+  const currentClinicalIndex = SYSTEMS.findIndex(s => s.id === activeNavId)
+  const current = currentClinicalIndex !== -1 ? SYSTEMS[currentClinicalIndex] : null
   const CurrentIcon = current?.icon
 
-  function handleSelect(index: number) {
-    setActiveIndex(index)
+  // Encontrar o título do item ativo para o painel de integração
+  let activeTitle = ''
+  for (const group of SIDEBAR_GROUPS) {
+    const item = group.items.find(i => i.id === activeNavId)
+    if (item) {
+      activeTitle = item.title
+      break
+    }
+  }
+
+  function handleSelectNav(id: string, clinicalIndex?: number) {
+    setActiveNavId(id)
   }
 
   return (
@@ -194,15 +296,13 @@ export default function SistemasPageClient() {
             </div>
           </div>
 
-          {/* Sidebar lado-a-lado mobile e desktop — colunas bem estreitas no mobile pra deixar mais espaço pros panels */}
-          <div className={sidebarOpen ? 'grid grid-cols-[86px_1fr] items-stretch gap-2 sm:grid-cols-[140px_1fr] sm:gap-3 lg:grid-cols-[220px_1fr] lg:gap-4' : ''}>
-            {/* Wrapper interno: garante que coluna direita não estoure o grid (min-w-0 permite truncar/encolher) */}
+          {/* Sidebar lado-a-lado mobile e desktop */}
+          <div className={sidebarOpen ? 'grid grid-cols-[100px_1fr] items-stretch gap-2 sm:grid-cols-[160px_1fr] sm:gap-3 lg:grid-cols-[240px_1fr] lg:gap-4' : ''}>
             {sidebarOpen && (
-              <div className="sticky top-4 h-full">
+              <div className="sticky top-4 h-[calc(100vh-140px)]">
                 <WorkspaceSidebar
-                  modules={SYSTEMS}
-                  activeIndex={activeIndex}
-                  onSelect={handleSelect}
+                  activeNavId={activeNavId}
+                  onSelectNav={handleSelectNav}
                   onClose={() => setSidebarOpen(false)}
                 />
               </div>
@@ -220,7 +320,7 @@ export default function SistemasPageClient() {
                     transition={{ duration: 0.3, ease }}
                     className="space-y-3"
                   >
-                    {/* Hero do sistema ativo — compacto no mobile, normal no desktop */}
+                    {/* Hero do sistema ativo */}
                     <div className="ipb-soft relative overflow-hidden rounded-[1.2rem] px-3 py-3 lg:rounded-[2rem] lg:px-6 lg:py-6 lg:md:px-8">
                       <div className="flex items-start gap-2 lg:gap-5">
                         <div className="chrome-subtle flex h-9 w-9 shrink-0 items-center justify-center rounded-[0.8rem] lg:h-16 lg:w-16 lg:rounded-[1.4rem]">
@@ -241,32 +341,46 @@ export default function SistemasPageClient() {
                       </div>
                     </div>
 
-                    {/* Panel real (Prontuário ICU ou Calculadoras) — sem wrapper externo
-                        pra não dobrar o ipb-soft com os cards internos (que já são ipb-soft) */}
+                    {/* Panel real */}
                     <div className="relative">{current.panel()}</div>
                   </motion.div>
                 ) : (
                   <motion.div
-                    key="empty"
-                    initial={{ opacity: 0, y: 18 }}
+                    key={`integration-${activeNavId}`}
+                    initial={{ opacity: 0, y: 16 }}
                     animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -18 }}
-                    transition={{ duration: 0.28, ease }}
-                    className="flex flex-1 items-center justify-center rounded-[1.8rem] border border-white/[0.06] min-h-[220px]"
-                    style={{ background: 'rgba(255,255,255,0.01)' }}
+                    exit={{ opacity: 0, y: -16 }}
+                    transition={{ duration: 0.3, ease }}
+                    className="space-y-3"
                   >
-                    <div className="flex flex-col items-center gap-4 text-center">
-                      <p
-                        className="select-none text-[clamp(3rem,10vw,6rem)] font-semibold leading-none tracking-[-0.04em]"
-                        style={{ color: 'rgba(255,255,255,0.05)', fontFamily: 'system-ui, sans-serif' }}
-                      >
-                        S?
-                      </p>
-                      <div className="h-px w-10 bg-white/12" />
-                      <p className="text-[10px] uppercase tracking-[0.38em] text-white/28">Selecione um sistema</p>
-                      <p className="max-w-xs text-[13px] leading-relaxed text-white/44">
-                        Escolha um sistema na trilha lateral para abrir o painel.
-                      </p>
+                    {/* Mock Corporate Integrated Panel */}
+                    <div className="ipb-soft relative overflow-hidden rounded-[1.8rem] p-6 lg:p-8 border border-white/[0.06] min-h-[380px] flex flex-col justify-between">
+                      <div className="space-y-4">
+                        <div className="flex items-center gap-3">
+                          <span className="h-2 w-2 rounded-full bg-[#d4b87a] animate-pulse" />
+                          <p className="text-[10px] uppercase tracking-[0.22em] text-[#d4b87a]/80">Cockpit Geral · Módulo Integrado</p>
+                        </div>
+                        <h3 className="text-[16px] lg:text-2xl font-light text-white tracking-wide">{activeTitle}</h3>
+                        <p className="text-[11px] lg:text-sm leading-relaxed text-white/50 max-w-xl">
+                          Este módulo corporativo está ativo e em execução sincronizada com o Cockpit Geral (Tier II). Para visualização completa de dados, análise preditiva por inteligência bioneural, relatórios consolidados e ferramentas de auditoria ativa, acesse a central de controle de governança.
+                        </p>
+                      </div>
+
+                      {/* Futuristic telemetry display */}
+                      <div className="grid grid-cols-3 gap-4 pt-6 border-t border-white/[0.04] mt-8">
+                        <div>
+                          <p className="text-[9px] uppercase tracking-wider text-white/30 font-mono">Status de Rede</p>
+                          <p className="text-[11px] lg:text-xs font-semibold text-[#7fa37a] mt-1 font-mono">Sincronizado</p>
+                        </div>
+                        <div>
+                          <p className="text-[9px] uppercase tracking-wider text-white/30 font-mono">Maturidade BI</p>
+                          <p className="text-[11px] lg:text-xs font-semibold text-white/80 mt-1 font-mono">94.8% (Tier II)</p>
+                        </div>
+                        <div>
+                          <p className="text-[9px] uppercase tracking-wider text-white/30 font-mono">Última Auditoria</p>
+                          <p className="text-[11px] lg:text-xs font-semibold text-[#d4b87a] mt-1 font-mono">Hoje, 14:02</p>
+                        </div>
+                      </div>
                     </div>
                   </motion.div>
                 )}

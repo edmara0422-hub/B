@@ -167,12 +167,10 @@ function FlatCard({ card, onClick }: { card: (typeof CARDS)[number]; onClick: ()
       style={{ rotateX: rotX, rotateY: rotY }}
       className="h-full w-full cursor-pointer"
     >
-      <div
-        className="ipb-soft relative h-full w-full overflow-hidden rounded-[1.75rem]"
-        style={{
-          boxShadow: '0 40px 80px rgba(0,0,0,0.6), inset 0 0 0 1px rgba(255,255,255,0.06), inset 0 1px 0 rgba(255,255,255,0.10)',
-        }}
-      >
+      <div className="cockpit-card relative h-full w-full overflow-hidden">
+        <div className="card-expand-hint">
+          <span>Abrir</span> {card.title}
+        </div>
         <motion.div className="pointer-events-none absolute inset-0" style={{ background: glowBackground }} />
         <div className="pointer-events-none absolute inset-x-8 top-0 h-px bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.12)_50%,transparent)]" />
 
