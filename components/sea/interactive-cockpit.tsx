@@ -4,12 +4,21 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Activity, Brain, Wind, Leaf, Sparkles } from 'lucide-react'
 
-// Sub-components that we will create next
-import { HudCardio, MiniCardio } from './hud-cardio'
-import { HudNeuro, MiniNeuro } from './hud-neuro'
-import { HudPneumo, MiniPneumo } from './hud-pneumo'
-import { HudEsg, MiniEsg } from './hud-esg'
-import { HudAi, MiniAi } from './hud-ai'
+import dynamic from 'next/dynamic'
+
+// Lightweight Mini components remain statically imported
+import { MiniCardio } from './hud-cardio'
+import { MiniNeuro } from './hud-neuro'
+import { MiniPneumo } from './hud-pneumo'
+import { MiniEsg } from './hud-esg'
+import { MiniAi } from './hud-ai'
+
+// Heavy HUD components are lazy loaded to prevent UI blocking
+const HudCardio = dynamic(() => import('./hud-cardio').then(m => m.HudCardio), { ssr: false, loading: () => <div className="w-full h-full animate-pulse bg-white/5 rounded-3xl" /> })
+const HudNeuro = dynamic(() => import('./hud-neuro').then(m => m.HudNeuro), { ssr: false, loading: () => <div className="w-full h-full animate-pulse bg-white/5 rounded-3xl" /> })
+const HudPneumo = dynamic(() => import('./hud-pneumo').then(m => m.HudPneumo), { ssr: false, loading: () => <div className="w-full h-full animate-pulse bg-white/5 rounded-3xl" /> })
+const HudEsg = dynamic(() => import('./hud-esg').then(m => m.HudEsg), { ssr: false, loading: () => <div className="w-full h-full animate-pulse bg-white/5 rounded-3xl" /> })
+const HudAi = dynamic(() => import('./hud-ai').then(m => m.HudAi), { ssr: false, loading: () => <div className="w-full h-full animate-pulse bg-white/5 rounded-3xl" /> })
 
 type SystemId = 'ai' | 'pneumo' | 'cardio' | 'neuro' | 'esg'
 
