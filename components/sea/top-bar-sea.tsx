@@ -64,15 +64,41 @@ export function TopBarSEA() {
     'linear-gradient(180deg, rgba(255,255,255,0.03) 0%, rgba(3,3,5,0.55) 100%)'
 
   return (
+    <>
+      {/* SVG gradient definitions — prata e ouro metálico para ícones */}
+      <svg style={{ position: 'absolute', width: 0, height: 0, overflow: 'hidden' }} aria-hidden="true">
+        <defs>
+          <linearGradient id="tb-silver-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%"   stopColor="#ffffff" />
+            <stop offset="20%"  stopColor="#f1f5f9" />
+            <stop offset="45%"  stopColor="#cbd5e1" />
+            <stop offset="65%"  stopColor="#94a3b8" />
+            <stop offset="100%" stopColor="#475569" />
+          </linearGradient>
+          <linearGradient id="tb-gold-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%"   stopColor="#fff8e7" />
+            <stop offset="30%"  stopColor="#f0d080" />
+            <stop offset="60%"  stopColor="#d4b87a" />
+            <stop offset="85%"  stopColor="#b8975a" />
+            <stop offset="100%" stopColor="#8b6914" />
+          </linearGradient>
+        </defs>
+      </svg>
+
     <header
-      className="fixed left-0 right-0 top-0 z-40 px-3 pt-2.5 pb-2.5 md:px-6"
+      className="fixed z-40 px-4 py-2 md:px-6"
       style={{
-        background: 'rgba(3, 3, 5, 0.60)',
-        backdropFilter: 'blur(24px) saturate(1.4)',
-        WebkitBackdropFilter: 'blur(24px) saturate(1.4)',
-        borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
-        boxShadow: '0 4px 24px rgba(0,0,0,0.5)',
-        paddingTop: 'max(0.6rem, env(safe-area-inset-top))',
+        width: 'calc(100% - 32px)',
+        maxWidth: '1400px',
+        margin: '12px auto',
+        left: '16px',
+        right: '16px',
+        background: 'linear-gradient(135deg, rgba(6,5,10,0.80) 0%, rgba(3,3,5,0.72) 100%)',
+        backdropFilter: 'blur(32px) saturate(180%)',
+        WebkitBackdropFilter: 'blur(32px) saturate(180%)',
+        border: '1.5px solid rgba(212, 184, 122, 0.35)',
+        boxShadow: '0 10px 40px rgba(0, 0, 0, 0.75), 0 0 20px rgba(212, 184, 122, 0.12), inset 0 1px 0 rgba(255,255,255,0.06)',
+        borderRadius: '100px',
       }}
     >
       {/* Chrome shimmer line at bottom */}
@@ -87,18 +113,18 @@ export function TopBarSEA() {
         {/* ── ESQUERDA: logo IPB metálico + tagline ── */}
         <div className="flex items-center gap-2 md:gap-3">
           <div
-            className="flex h-7 w-7 shrink-0 items-center justify-center rounded-[0.55rem] border border-[#d4b87a]/35 relative overflow-hidden"
+            className="flex h-7 w-7 shrink-0 items-center justify-center rounded-[0.55rem] border border-[#d4b87a]/45 relative overflow-hidden"
             style={{
               background:
-                'linear-gradient(135deg, #ffffff 0%, #d4b87a 40%, #a08040 70%, #1a1a1e 100%)',
+                'linear-gradient(135deg, #ffffff 0%, #cbd5e1 35%, #d4b87a 65%, #b8975a 100%)',
               boxShadow:
-                'inset 0 1px 2px rgba(255,255,255,0.5), 0 0 10px rgba(212,184,122,0.25), 0 4px 12px rgba(0,0,0,0.5)',
+                'inset 0 1px 2px rgba(255,255,255,0.5), 0 0 12px rgba(212,184,122,0.3), 0 4px 12px rgba(0,0,0,0.5)',
             }}
           >
             {/* Gloss shine overlay */}
-            <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/20 to-transparent pointer-events-none" />
             <span
-              className="text-[0.5rem] font-extrabold tracking-[0.03em] text-black md:text-[0.6rem] drop-shadow-[0_1px_1px_rgba(255,255,255,0.8)]"
+              className="text-[0.5rem] font-black tracking-[0.03em] text-black md:text-[0.6rem] drop-shadow-[0_1px_1px_rgba(255,255,255,0.8)]"
               style={{ fontFamily: 'Poppins, sans-serif' }}
             >
               IPB
@@ -108,11 +134,11 @@ export function TopBarSEA() {
             className="hidden text-[8px] font-bold uppercase tracking-[0.15em] sm:block md:text-[9px]"
             style={{
               fontFamily: 'Poppins, sans-serif',
-              background: 'linear-gradient(135deg, #ffffff 0%, #d4b87a 50%, #9a7a42 100%)',
+              background: 'linear-gradient(135deg, #ffffff 0%, #cbd5e1 35%, #d4b87a 65%, #b8975a 100%)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text',
-              textShadow: '0 0 12px rgba(212, 184, 122, 0.1)',
+              textShadow: '0 0 12px rgba(212, 184, 122, 0.15)',
             }}
           >
             Intelligence Platform Business
@@ -175,15 +201,26 @@ export function TopBarSEA() {
             </button>
           </div>
 
-          {/* Bell */}
+          {/* Bell — prata metálica */}
           <div className="relative" ref={notifRef}>
             <button
               aria-label="Notificações"
               onClick={handleBellClick}
-              className="flex h-6 w-6 items-center justify-center rounded-[0.5rem] border border-white/12 text-white/70 transition hover:text-white md:h-7 md:w-7 md:rounded-[0.6rem]"
-              style={{ background: btnShellBg }}
+              className="flex h-6 w-6 items-center justify-center rounded-[0.5rem] border transition md:h-7 md:w-7 md:rounded-[0.6rem]"
+              style={{
+                background: btnShellBg,
+                borderColor: 'rgba(200,210,220,0.20)',
+                boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.08)',
+              }}
             >
-              <Bell className="h-3 w-3" />
+              <Bell
+                className="h-3 w-3"
+                style={{
+                  stroke: 'url(#tb-silver-grad)',
+                  strokeWidth: '2px',
+                  filter: 'drop-shadow(0 0 4px rgba(255,255,255,0.3))',
+                }}
+              />
               {unreadCount > 0 && (
                 <span className="absolute -right-0.5 -top-0.5 flex h-3 w-3 items-center justify-center rounded-full bg-white text-[6px] font-bold text-black">
                   {unreadCount > 9 ? '9+' : unreadCount}
@@ -192,17 +229,28 @@ export function TopBarSEA() {
             </button>
           </div>
 
-          {/* Perfil */}
+          {/* Perfil — dourado champanhe */}
           <button
             aria-label="Perfil"
             onClick={() => router.push('/profile')}
-            className="flex h-6 w-6 items-center justify-center rounded-[0.5rem] border border-white/12 text-white/70 transition hover:text-white md:h-7 md:w-7 md:rounded-[0.6rem]"
-            style={{ background: btnShellBg }}
+            className="flex h-6 w-6 items-center justify-center rounded-[0.5rem] border transition md:h-7 md:w-7 md:rounded-[0.6rem]"
+            style={{
+              background: btnShellBg,
+              borderColor: 'rgba(212,184,122,0.28)',
+              boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.08), 0 0 8px rgba(212,184,122,0.10)',
+            }}
           >
             {profile?.photo_url ? (
               <img src={profile.photo_url} alt="" className="h-full w-full rounded-[0.3rem] object-cover" />
             ) : (
-              <User className="h-3 w-3" />
+              <User
+                className="h-3 w-3"
+                style={{
+                  stroke: 'url(#tb-gold-grad)',
+                  strokeWidth: '2px',
+                  filter: 'drop-shadow(0 0 4px rgba(212,184,122,0.4))',
+                }}
+              />
             )}
           </button>
         </div>
@@ -219,6 +267,7 @@ export function TopBarSEA() {
         </div>
       )}
     </header>
+    </>
   )
 }
 

@@ -264,7 +264,7 @@ Diretoria de Governança Corporativa IPB`
             <div className="esg-section-card">
               <h3>Estrutura de Documentos de Governança</h3>
               <div className="space-y-2 mt-2 font-sans select-none">
-                <details open className="group border border-white/10 rounded-xl bg-white/[0.02] overflow-hidden">
+                <details className="group border border-white/10 rounded-xl bg-white/[0.02] overflow-hidden">
                   <summary className="flex justify-between items-center p-3 text-[10px] font-bold text-[#d4b87a] cursor-pointer hover:bg-white/[0.04]">
                     <span>POLÍTICAS (4 DOCUMENTOS)</span>
                     <span className="transition-transform group-open:rotate-180">▼</span>
@@ -277,7 +277,7 @@ Diretoria de Governança Corporativa IPB`
                   </div>
                 </details>
 
-                <details open className="group border border-white/10 rounded-xl bg-white/[0.02] overflow-hidden">
+                <details className="group border border-white/10 rounded-xl bg-white/[0.02] overflow-hidden">
                   <summary className="flex justify-between items-center p-3 text-[10px] font-bold text-[#d4b87a] cursor-pointer hover:bg-white/[0.04]">
                     <span>PRÁTICAS (4 DOCUMENTOS)</span>
                     <span className="transition-transform group-open:rotate-180">▼</span>
@@ -290,7 +290,7 @@ Diretoria de Governança Corporativa IPB`
                   </div>
                 </details>
 
-                <details open className="group border border-white/10 rounded-xl bg-white/[0.02] overflow-hidden">
+                <details className="group border border-white/10 rounded-xl bg-white/[0.02] overflow-hidden">
                   <summary className="flex justify-between items-center p-3 text-[10px] font-bold text-[#d4b87a] cursor-pointer hover:bg-white/[0.04]">
                     <span>COMPLIANCE (4 DOCUMENTOS)</span>
                     <span className="transition-transform group-open:rotate-180">▼</span>
@@ -303,7 +303,7 @@ Diretoria de Governança Corporativa IPB`
                   </div>
                 </details>
 
-                <details open className="group border border-white/10 rounded-xl bg-white/[0.02] overflow-hidden">
+                <details className="group border border-white/10 rounded-xl bg-white/[0.02] overflow-hidden">
                   <summary className="flex justify-between items-center p-3 text-[10px] font-bold text-[#d4b87a] cursor-pointer hover:bg-white/[0.04]">
                     <span>CÓDIGOS (3 DOCUMENTOS)</span>
                     <span className="transition-transform group-open:rotate-180">▼</span>
