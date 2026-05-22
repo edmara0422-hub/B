@@ -1081,19 +1081,15 @@ body.sea-splash-active [data-sea-bottom-nav='true'] {
   font-family: 'JetBrains Mono', monospace; font-size: 11px; color: rgba(255,255,255,0.45); letter-spacing: 0.04em;
 }
 
+.hero-inner-scroll::-webkit-scrollbar { width: 4px; }
+.hero-inner-scroll::-webkit-scrollbar-track { background: transparent; }
+.hero-inner-scroll::-webkit-scrollbar-thumb { background: rgba(212, 184, 122, 0.28); border-radius: 4px; }
+.hero-inner-scroll::-webkit-scrollbar-thumb:hover { background: rgba(212, 184, 122, 0.50); }
+
 .hero-content {
-  flex: 1; padding: 24px; display: grid; grid-template-columns: 1fr 260px; gap: 24px;
-  min-height: 0; z-index: 12;
-  overflow-y: auto;
-  overflow-x: hidden;
-  /* Scrollbar fina dourada no conteúdo interno */
-  scrollbar-width: thin;
-  scrollbar-color: rgba(212,184,122,0.25) transparent;
+  flex: 1 0 auto; padding: 24px; display: grid; grid-template-columns: 1fr 260px; gap: 24px;
+  min-height: min-content; z-index: 12;
 }
-.hero-content::-webkit-scrollbar { width: 4px; }
-.hero-content::-webkit-scrollbar-track { background: transparent; }
-.hero-content::-webkit-scrollbar-thumb { background: rgba(212, 184, 122, 0.28); border-radius: 4px; }
-.hero-content::-webkit-scrollbar-thumb:hover { background: rgba(212, 184, 122, 0.50); }
 
 .hero-visual-pane {
   position: relative; border-radius: 20px;

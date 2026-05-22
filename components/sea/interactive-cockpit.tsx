@@ -83,7 +83,11 @@ export function InteractiveCockpit() {
 
     return (
       <motion.div {...cardProps} key={sysId} transition={{ type: 'spring', stiffness: 300, damping: 30 }}>
-        {isHero ? renderHeroContent(sysId) : renderMiniContent(sysId)}
+        {isHero ? (
+          <div className="hero-inner-scroll" style={{ flex: 1, overflowY: 'auto', minHeight: 0, display: 'flex', flexDirection: 'column' }}>
+            {renderHeroContent(sysId)}
+          </div>
+        ) : renderMiniContent(sysId)}
         {isInteractive && (
           <div className="card-expand-hint">
             <span>Abrir</span> no Centro
