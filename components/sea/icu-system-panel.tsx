@@ -2,7 +2,6 @@
 
 import { useEffect, useMemo, useState } from 'react'
 import { Search } from 'lucide-react'
-import { motion } from 'framer-motion'
 import { ICU_REFERENCE_SYSTEMS } from '@/lib/generated/icu-reference-data'
 
 type ClinicalSystem = (typeof ICU_REFERENCE_SYSTEMS)[number]
@@ -14,100 +13,6 @@ function SystemGlyph({ path, color }: { path: string; color: string }) {
       <path d={path} strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   )
-}
-
-function SystemGlyphLarge({ path, color }: { path: string; color: string }) {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.2" className="w-12 h-12 opacity-20 transition-all duration-300">
-      <path d={path} strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  )
-}
-
-const SYSTEM_METRICS: Record<string, {
-  subtitle: string
-  shortName: string
-  liveText: string
-  vitals: { label: string; value: string }[]
-  badgeText: string
-}> = {
-  cardiovascular: {
-    subtitle: "Sistema Cardíaco",
-    shortName: "Coração",
-    liveText: "Ciclo ECG · 1 Hz · LIVE",
-    vitals: [
-      { label: "FC", value: "72 bpm" },
-      { label: "SpO2", value: "98%" },
-      { label: "MAP", value: "90 mmHg" }
-    ],
-    badgeText: "72 BPM"
-  },
-  respiratory: {
-    subtitle: "Sistema Pulmonar",
-    shortName: "Pulmão",
-    liveText: "Fluxo O2 · Titulado",
-    vitals: [
-      { label: "FR", value: "16 irpm" },
-      { label: "SpO2", value: "96%" },
-      { label: "PEEP", value: "5 cmH2O" }
-    ],
-    badgeText: "16 IRPM"
-  },
-  neurological: {
-    subtitle: "Sistema Nervoso",
-    shortName: "Cérebro",
-    liveText: "EEG Contínuo · Estável",
-    vitals: [
-      { label: "PIC", value: "12 mmHg" },
-      { label: "PPC", value: "78 mmHg" },
-      { label: "Glasgow", value: "15" }
-    ],
-    badgeText: "GCS 15"
-  },
-  functional: {
-    subtitle: "Motor & Funcional",
-    shortName: "Funcional",
-    liveText: "Grau de Mobilidade",
-    vitals: [
-      { label: "Mobilidade", value: "Grau 3" },
-      { label: "Força", value: "Grau 4" },
-      { label: "Deambular", value: "Assistido" }
-    ],
-    badgeText: "MOT 3"
-  },
-  trauma: {
-    subtitle: "Trauma & Cirurgia",
-    shortName: "Trauma",
-    liveText: "Pós-Op Crítico · Monitorado",
-    vitals: [
-      { label: "Estado", value: "Estável" },
-      { label: "Dreno", value: "Ativo" },
-      { label: "Dor EVA", value: "EVA 3" }
-    ],
-    badgeText: "PO CRÍTICO"
-  },
-  perioperative: {
-    subtitle: "Módulo Perioperatório",
-    shortName: "Perioperatório",
-    liveText: "Pós-Anestésico · Ativo",
-    vitals: [
-      { label: "Temperatura", value: "36.6 °C" },
-      { label: "Bloqueio", value: "Ausente" },
-      { label: "Diurese", value: "100 mL/h" }
-    ],
-    badgeText: "RPA ATIVO"
-  },
-  populations: {
-    subtitle: "Populações Especiais",
-    shortName: "Especiais",
-    liveText: "Direcionado · LIVE",
-    vitals: [
-      { label: "Risco", value: "Geriátrico" },
-      { label: "Fragilidade", value: "Moderada" },
-      { label: "Cuidados", value: "Contínuo" }
-    ],
-    badgeText: "ESPECIAL"
-  }
 }
 
 function SectionList({
@@ -215,119 +120,37 @@ export function ICUSystemPanel() {
         </div>
       </div>
 
-      {/* System selector — Premium Glassmorphic Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+      {/* System selector — 2-col grid */}
+      <div className="grid grid-cols-2 gap-1.5">
         {filteredSystems.map((system) => {
           const active = system.id === activeSystem?.id
-          const metrics = SYSTEM_METRICS[system.id] || {
-            subtitle: "Referência Clínica",
-            shortName: system.name.replace("Sistema ", "").replace("Módulo ", ""),
-            liveText: "Monitoramento Ativo",
-            vitals: [
-              { label: "Problemas", value: `${system.problems.length}` },
-              { label: "Módulo", value: "Referência" },
-              { label: "Status", value: "Estável" }
-            ],
-            badgeText: "S3 CLIN"
-          }
 
           return (
-            <motion.button
+            <button
               key={system.id}
               onClick={() => setActiveSystemId(system.id)}
-              whileHover={{ scale: 1.02, y: -4 }}
-              whileTap={{ scale: 0.98 }}
-              className={`cockpit-card mini-sim-card relative h-[180px] w-full text-left overflow-hidden rounded-[20px] transition-all p-5 flex flex-col justify-between`}
+              className={`flex w-full items-center gap-1.5 rounded-[0.7rem] border px-2 py-1.5 text-left transition-all ${
+                active
+                  ? 'border-white/20'
+                  : 'border-white/8 hover:border-white/14'
+              }`}
               style={{
-                borderColor: active ? system.color : 'rgba(255, 255, 255, 0.08)',
-                boxShadow: active 
-                  ? `0 24px 64px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 0 25px ${system.color}25`
-                  : undefined,
-                color: system.color,
-                background: active ? 'rgba(0, 0, 0, 0.45)' : 'rgba(0, 0, 0, 0.32)'
+                backgroundColor: '#000000',
+                borderColor: active ? system.color : undefined,
+                color: active ? '#ffffff' : 'rgba(255, 255, 255, 0.5)'
               }}
             >
-              {/* Shimmer gradient line based on system color */}
-              <div 
-                className="absolute top-0 left-5 right-5 h-[1.5px] opacity-75"
-                style={{
-                  background: `linear-gradient(90deg, transparent, rgba(255,255,255,0.15) 30%, ${system.color} 50%, rgba(255,255,255,0.15) 70%, transparent)`
-                }}
-              />
-
-              {/* Status indicator / Live tag */}
-              <div className="flex items-center justify-between w-full z-10">
-                <div className="flex items-center gap-1.5 text-[9px] font-mono tracking-wider uppercase font-medium">
-                  <div className="relative w-1.5 h-1.5 rounded-full" style={{ backgroundColor: system.color }}>
-                    <div 
-                      className="absolute inset-[-4px] rounded-full border border-current animate-ping opacity-60"
-                      style={{ color: system.color }}
-                    />
-                  </div>
-                  <span className="text-white/60">{metrics.liveText}</span>
-                </div>
-
-                {/* Card expand hint */}
-                <div 
-                  className={`flex items-center gap-1 px-2 py-0.5 rounded-full border bg-black/60 text-[8px] font-medium transition-all ${
-                    active ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
-                  }`}
-                  style={{
-                    borderColor: active ? `${system.color}40` : 'rgba(255,255,255,0.12)'
-                  }}
-                >
-                  <span style={{ color: system.color }}>{active ? 'ATIVO' : 'ABRIR'}</span>
-                </div>
-              </div>
-
-              {/* Vector Ring / Large Icon in background */}
-              <div 
-                className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[110px] h-[110px] rounded-full border border-dashed flex items-center justify-center pointer-events-none opacity-20"
-                style={{ borderColor: system.color }}
+              <SystemGlyph path={system.icon} color={active ? system.color : 'rgba(255,255,255,0.36)'} />
+              <span className={`min-w-0 flex-1 truncate text-[10px] font-medium ${active ? 'text-white/88' : 'text-white/50'}`}>
+                {system.name}
+              </span>
+              <span
+                className="shrink-0 text-[9px] font-semibold"
+                style={{ color: active ? system.color : 'rgba(255,255,255,0.28)' }}
               >
-                <div 
-                  className="w-[70px] h-[70px] rounded-full border flex items-center justify-center"
-                  style={{ borderColor: system.color }}
-                >
-                  <SystemGlyphLarge path={system.icon} color={system.color} />
-                </div>
-              </div>
-
-              {/* Vitals Section */}
-              <div className="flex flex-col gap-0.5 text-[9px] text-white/40 z-10 w-full">
-                {metrics.vitals.map((v, i) => (
-                  <div key={i} className="flex justify-between border-b border-white/[0.03] py-0.5">
-                    <span>{v.label}:</span>
-                    <b className="text-white/80 font-medium font-mono">{v.value}</b>
-                  </div>
-                ))}
-              </div>
-
-              {/* Title area & Badge */}
-              <div className="flex items-end justify-between w-full z-10 mt-1">
-                <div className="flex flex-col gap-0.5">
-                  <span className="text-[8px] uppercase tracking-wider text-white/40">{metrics.subtitle}</span>
-                  <h3 className="text-sm font-semibold text-white tracking-tight flex items-center gap-1.5">
-                    <span 
-                      className="w-2.5 h-2.5 rounded-[4px] opacity-70" 
-                      style={{ backgroundColor: system.color }}
-                    />
-                    {metrics.shortName}
-                  </h3>
-                </div>
-
-                <div 
-                  className="text-[8.5px] font-mono font-semibold px-2 py-0.5 rounded-full border bg-black/50 tracking-wider shadow-sm"
-                  style={{ 
-                    borderColor: `${system.color}40`,
-                    color: system.color
-                  }}
-                >
-                  {system.problems.length} PROBS
-                </div>
-              </div>
-
-            </motion.button>
+                {system.problems.length}
+              </span>
+            </button>
           )
         })}
       </div>
@@ -336,29 +159,17 @@ export function ICUSystemPanel() {
       {activeSystem ? (
         <div>
 
-          {/* Premium Header */}
-          <div className="glass-panel p-3.5 mb-4 flex items-center justify-between border-l-2" style={{ borderLeftColor: activeSystem.color }}>
-            <div className="flex items-center gap-3">
-              <div
-                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-black/40 border"
-                style={{ borderColor: `${activeSystem.color}40`, boxShadow: `0 0 10px ${activeSystem.color}20` }}
-              >
-                <SystemGlyph path={activeSystem.icon} color={activeSystem.color} />
-              </div>
-              <div className="min-w-0">
-                <p className="text-xs font-semibold text-white tracking-tight flex items-center gap-1.5">
-                  {activeSystem.name}
-                  <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ backgroundColor: activeSystem.color }} />
-                </p>
-                <p className="text-[9px] text-white/50 font-mono tracking-wide mt-0.5">
-                  {groupedProblems.length} BLOCOS · {activeSystem.problems.length} PROBLEMAS CLÍNICOS {query ? ' · FILTRADO' : ''}
-                </p>
-              </div>
-            </div>
-            <div 
-              className="text-[9px] font-mono px-2 py-0.5 rounded-md bg-black/30 border border-white/5 text-white/60"
+          {/* Compact header */}
+          <div className="mb-3 flex items-center gap-2">
+            <div
+              className="flex h-7 w-7 shrink-0 items-center justify-center rounded-[0.6rem] border"
+              style={{ borderColor: `${activeSystem.color}30`, backgroundColor: '#000000' }}
             >
-              REF_CLÍNICA_S3
+              <SystemGlyph path={activeSystem.icon} color={activeSystem.color} />
+            </div>
+            <div className="min-w-0 flex-1">
+              <p className="truncate text-[9px] font-semibold text-white/88">{activeSystem.name}</p>
+              <p className="text-[9px] text-white/40">{groupedProblems.length} blocos · {activeSystem.problems.length} problemas{query ? ' · filtrado' : ''}</p>
             </div>
           </div>
 
@@ -383,8 +194,9 @@ export function ICUSystemPanel() {
                       <div
                         key={problem.name}
                         className={`rounded-[0.9rem] border transition-all ${
-                          open ? 'border-white/14 bg-white/[0.03]' : 'border-white/8 bg-transparent'
+                          open ? 'border-white/14' : 'border-white/8'
                         }`}
+                        style={{ backgroundColor: '#000000' }}
                       >
                         <button
                           onClick={() => setExpandedProblemId(open ? null : problem.name)}
