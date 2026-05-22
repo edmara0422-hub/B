@@ -85,22 +85,37 @@ export function TopBarSEA() {
         </defs>
       </svg>
 
-    <header
-      className="fixed z-40 px-4 py-2 md:px-6"
-      style={{
-        width: 'calc(100% - 32px)',
-        maxWidth: '1400px',
-        margin: '12px auto',
-        left: '16px',
-        right: '16px',
-        background: 'linear-gradient(135deg, rgba(6,5,10,0.80) 0%, rgba(3,3,5,0.72) 100%)',
-        backdropFilter: 'blur(32px) saturate(180%)',
-        WebkitBackdropFilter: 'blur(32px) saturate(180%)',
-        border: '1.5px solid rgba(212, 184, 122, 0.35)',
-        boxShadow: '0 10px 40px rgba(0, 0, 0, 0.75), 0 0 20px rgba(212, 184, 122, 0.12), inset 0 1px 0 rgba(255,255,255,0.06)',
-        borderRadius: '100px',
-      }}
-    >
+      {/*
+        Wrapper fixo com borda gradiente: esquerda=prata → direita=dourado
+        O header fica dentro como conteudo sem border própria
+      */}
+      <div
+        className="fixed z-40"
+        style={{
+          width: 'calc(100% - 32px)',
+          maxWidth: '1400px',
+          left: '16px',
+          right: '16px',
+          top: '12px',
+          /* borda gradiente: padding de 1.5px + background prata→dourado */
+          background: 'linear-gradient(90deg, rgba(196,208,220,0.55) 0%, rgba(180,195,210,0.22) 38%, rgba(212,184,122,0.22) 62%, rgba(212,184,122,0.58) 100%)',
+          borderRadius: '100px',
+          padding: '1.5px',
+          boxShadow: '0 10px 40px rgba(0,0,0,0.75), 0 0 20px rgba(212,184,122,0.10)',
+        }}
+      >
+      <header
+        className="px-4 py-2 md:px-6"
+        style={{
+          background: 'linear-gradient(135deg, rgba(6,5,10,0.82) 0%, rgba(3,3,5,0.92) 100%)',
+          backdropFilter: 'blur(32px) saturate(180%)',
+          WebkitBackdropFilter: 'blur(32px) saturate(180%)',
+          borderRadius: 'calc(100px - 1.5px)',
+          boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06)',
+          position: 'relative',
+          overflow: 'hidden',
+        }}
+      >
       {/* Chrome shimmer line at bottom */}
       <div
         className="absolute bottom-0 left-0 right-0 h-px pointer-events-none"
@@ -112,33 +127,43 @@ export function TopBarSEA() {
       <div className="flex w-full items-center justify-between gap-2">
         {/* ── ESQUERDA: logo IPB metálico + tagline ── */}
         <div className="flex items-center gap-2 md:gap-3">
+          {/* Logo square — fundo escuro obsidian com símbolo IPB em prata */}
           <div
-            className="flex h-7 w-7 shrink-0 items-center justify-center rounded-[0.55rem] border border-[#d4b87a]/45 relative overflow-hidden"
+            className="flex h-7 w-7 shrink-0 items-center justify-center rounded-[0.55rem] relative overflow-hidden"
             style={{
-              background:
-                'linear-gradient(135deg, #ffffff 0%, #cbd5e1 35%, #d4b87a 65%, #b8975a 100%)',
+              background: 'linear-gradient(135deg, #1a1820 0%, #0e0c14 60%, #0a0810 100%)',
+              border: '1px solid rgba(200,210,220,0.30)',
               boxShadow:
-                'inset 0 1px 2px rgba(255,255,255,0.5), 0 0 12px rgba(212,184,122,0.3), 0 4px 12px rgba(0,0,0,0.5)',
+                'inset 0 1px 0 rgba(255,255,255,0.12), inset 0 -1px 0 rgba(0,0,0,0.5), 0 0 10px rgba(200,210,220,0.12), 0 4px 12px rgba(0,0,0,0.6)',
             }}
           >
-            {/* Gloss shine overlay */}
-            <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/20 to-transparent pointer-events-none" />
+            {/* Brilho superior chrome */}
+            <div className="absolute inset-x-0 top-0 h-[40%] bg-gradient-to-b from-white/10 to-transparent pointer-events-none" />
+            {/* Texto IPB — prata real */}
             <span
-              className="text-[0.5rem] font-black tracking-[0.03em] text-black md:text-[0.6rem] drop-shadow-[0_1px_1px_rgba(255,255,255,0.8)]"
-              style={{ fontFamily: 'Poppins, sans-serif' }}
+              className="text-[0.5rem] font-black tracking-[0.03em] md:text-[0.6rem]"
+              style={{
+                fontFamily: 'Poppins, sans-serif',
+                background: 'linear-gradient(135deg, #ffffff 0%, #e8edf5 25%, #cbd5e1 55%, #94a3b8 85%, #64748b 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+                filter: 'drop-shadow(0 0 3px rgba(255,255,255,0.5))',
+              }}
             >
               IPB
             </span>
           </div>
+          {/* Tagline — prata puro */}
           <p
             className="hidden text-[8px] font-bold uppercase tracking-[0.15em] sm:block md:text-[9px]"
             style={{
               fontFamily: 'Poppins, sans-serif',
-              background: 'linear-gradient(135deg, #ffffff 0%, #cbd5e1 35%, #d4b87a 65%, #b8975a 100%)',
+              background: 'linear-gradient(135deg, #ffffff 0%, #e8edf5 28%, #cbd5e1 58%, #94a3b8 88%, #64748b 100%)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text',
-              textShadow: '0 0 12px rgba(212, 184, 122, 0.15)',
+              filter: 'drop-shadow(0 0 4px rgba(255,255,255,0.15))',
             }}
           >
             Intelligence Platform Business
@@ -267,6 +292,7 @@ export function TopBarSEA() {
         </div>
       )}
     </header>
+    </div>
     </>
   )
 }
