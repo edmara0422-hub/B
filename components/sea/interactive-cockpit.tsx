@@ -138,16 +138,7 @@ export function InteractiveCockpit() {
     <div className="w-full">
       {/* Main Grid */}
       <div className="cockpit-stage-grid">
-        {/* Absolute labels on desktop */}
-        <div className="cockpit-col-label absolute left-0 top-0 w-[320px] hidden lg:flex">
-          Especialidades
-        </div>
-        <div className="cockpit-col-label absolute left-[340px] right-[360px] top-0 hidden lg:flex">
-          Cena Ativa · Em Foco
-        </div>
-        <div className="cockpit-col-label absolute right-0 top-0 w-[340px] hidden lg:flex">
-          Apoio &amp; Compliance
-        </div>
+
 
         {/* The 5 absolute-positioned card slots */}
         {ALL_SYSTEMS.map((sysId) => renderCard(sysId))}
