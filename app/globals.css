@@ -691,14 +691,17 @@ body.sea-splash-active [data-sea-bottom-nav='true'] {
   grid-template-columns: 270px 1fr 270px;
   gap: 20px;
   align-items: stretch;
-  height: 680px; /* Enlarged height so center simulation and side cards stretch further down */
+  height: calc(100vh - 220px); /* Adjust dynamically to prevent bottom nav overlap */
+  min-height: 520px;
+  max-height: 720px;
   width: 100%;
 }
 
 @media (max-width: 1200px) {
   .cockpit-stage-grid {
     grid-template-columns: 250px 1fr 250px;
-    height: 620px;
+    height: calc(100vh - 220px);
+    min-height: 520px;
   }
 }
 
@@ -852,8 +855,7 @@ body.sea-splash-active [data-sea-bottom-nav='true'] {
   width: 100%;
   height: 100%;
   position: relative;
-  overflow-y: auto;
-  overflow-x: hidden;
+  overflow: hidden; /* Important for framer-motion layout animations */
   background: rgba(0, 0, 0, 0.55) !important;
   backdrop-filter: blur(18px) saturate(1.3) !important;
   -webkit-backdrop-filter: blur(18px) saturate(1.3) !important;
@@ -861,14 +863,7 @@ body.sea-splash-active [data-sea-bottom-nav='true'] {
   flex-direction: column;
   cursor: default;
   transform: translate3d(0,0,0);
-  /* Scrollbar fina dourada */
-  scrollbar-width: thin;
-  scrollbar-color: rgba(212,184,122,0.25) transparent;
 }
-.hero-wrapper::-webkit-scrollbar { width: 4px; }
-.hero-wrapper::-webkit-scrollbar-track { background: transparent; }
-.hero-wrapper::-webkit-scrollbar-thumb { background: rgba(212, 184, 122, 0.28); border-radius: 4px; }
-.hero-wrapper::-webkit-scrollbar-thumb:hover { background: rgba(212, 184, 122, 0.50); }
 
 .hero-wrapper .scanlines {
   position: absolute;
@@ -1087,9 +1082,18 @@ body.sea-splash-active [data-sea-bottom-nav='true'] {
 }
 
 .hero-content {
-  flex: 1 0 auto; padding: 24px; display: grid; grid-template-columns: 1fr 260px; gap: 24px;
-  min-height: min-content; z-index: 12;
+  flex: 1; padding: 24px; display: grid; grid-template-columns: 1fr 260px; gap: 24px;
+  min-height: 0; z-index: 12;
+  overflow-y: auto;
+  overflow-x: hidden;
+  /* Scrollbar fina dourada no conteúdo interno */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(212,184,122,0.25) transparent;
 }
+.hero-content::-webkit-scrollbar { width: 4px; }
+.hero-content::-webkit-scrollbar-track { background: transparent; }
+.hero-content::-webkit-scrollbar-thumb { background: rgba(212, 184, 122, 0.28); border-radius: 4px; }
+.hero-content::-webkit-scrollbar-thumb:hover { background: rgba(212, 184, 122, 0.50); }
 
 .hero-visual-pane {
   position: relative; border-radius: 20px;
@@ -1099,7 +1103,6 @@ body.sea-splash-active [data-sea-bottom-nav='true'] {
   border: 1px solid rgba(255, 255, 255, 0.08);
   display: flex; flex-direction: column;
   justify-content: center; align-items: center; overflow: hidden; padding: 12px;
-  min-height: 380px; /* Previne colapso em flex-grow expansível */
 }
 
 .hero-controls-pane {
