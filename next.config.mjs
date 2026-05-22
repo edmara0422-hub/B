@@ -34,9 +34,6 @@ const nextConfig = {
     'yjs',
   ],
 
-  // Turbopack compat (Next 16+ uses Turbopack by default)
-  turbopack: {},
-
   experimental: {
     // Tree-shake large UI packages — only import what's used
     optimizePackageImports: [
