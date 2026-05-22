@@ -118,8 +118,8 @@ export function HudNeuro() {
           <div className="absolute inset-0 pointer-events-none opacity-100 z-0">
             <BrainHeroScene />
           </div>
-          <div className="neuro-node-net w-full h-full relative z-10">
-            <div className="neuro-map-canvas">
+          <div className="neuro-node-net w-full relative z-10 flex flex-col gap-3">
+            <div className="neuro-map-canvas w-full h-[180px] shrink-0">
               <svg viewBox="0 0 100 100" className="w-full h-full p-4">
                 {/* Fake neural net paths */}
                 <path d="M20,50 Q40,20 60,50 T80,30" className="neuro-connection" fill="none" />
@@ -131,12 +131,12 @@ export function HudNeuro() {
               </svg>
             </div>
             
-            <div className="flex flex-col gap-2 relative border border-green-500/15 rounded-xl bg-[#040806] overflow-hidden">
+            <div className="flex flex-col gap-2 relative border border-green-500/15 rounded-xl bg-[#040806] overflow-hidden w-full h-[120px] shrink-0">
               <div className="px-4 pt-3 flex justify-between items-end">
                 <span className="text-[10px] text-green-500/70 uppercase tracking-widest font-semibold">Monitor EEG</span>
                 <span className="font-mono text-sm text-green-400 font-bold drop-shadow-[0_0_8px_#4ade80]">ONDA {totalGcs > 12 ? 'BETA' : totalGcs > 8 ? 'ALPHA' : totalGcs > 3 ? 'DELTA' : 'ISOELÉTRICA'}</span>
               </div>
-              <div className="flex-1 w-full relative">
+              <div className="flex-1 w-full relative h-[60px]">
                 <canvas ref={canvasRef} className="w-full h-full block" />
               </div>
             </div>

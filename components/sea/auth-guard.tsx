@@ -1,12 +1,14 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuthStore } from '@/lib/stores/authStore'
+import { PremiumSplash } from '@/components/sea/premium-splash'
 
 export function AuthGuard({ children }: { children: React.ReactNode }) {
   const { user, isLoading, initialized, initialize } = useAuthStore()
   const router = useRouter()
+  const [splashComplete, setSplashComplete] = useState(false)
 
   useEffect(() => {
     initialize()
@@ -18,11 +20,19 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
     }
   }, [initialized, isLoading, user, router])
 
-  if (!initialized || isLoading) {
+  const showSplash = !initialized || isLoading || (user && !splashComplete)
+
+  if (showSplash) {
+    if (initialized && !isLoading && !user) {
+      return null
+    }
+
     return (
-      <div className="flex h-screen items-center justify-center bg-[#010101]">
-        <div className="h-6 w-6 animate-spin rounded-full border-2 border-white/20 border-t-white/70" />
-      </div>
+      <PremiumSplash
+        durationMs={3500}
+        exitHoldMs={1000}
+        onComplete={() => setSplashComplete(true)}
+      />
     )
   }
 

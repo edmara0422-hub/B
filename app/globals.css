@@ -1117,7 +1117,7 @@ body.sea-splash-active [data-sea-bottom-nav='true'] {
 
 /* AI CHAT INTERACTIVE SCREEN */
 .ai-chat-screen {
-  width: 100%; height: 100%; border-radius: 14px; background: rgba(0,0,0,0.45);
+  width: 100%; height: 380px; border-radius: 14px; background: rgba(0,0,0,0.45);
   border: 1px solid rgba(212, 184, 122, 0.12); display: flex; flex-direction: column; overflow: hidden;
 }
 .ai-chat-messages {
@@ -1169,7 +1169,7 @@ body.sea-splash-active [data-sea-bottom-nav='true'] {
 
 /* ESG & GOVERNANÇA HERO DASHBOARD */
 .esg-dashboard-grid {
-  width: 100%; height: 100%; display: grid; grid-template-columns: 1fr 1.2fr; gap: 16px;
+  width: 100%; height: auto; display: grid; grid-template-columns: 1fr 1.2fr; gap: 16px;
   overflow: visible; min-height: 0;
 }
 .esg-scroll-panel {

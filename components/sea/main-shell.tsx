@@ -79,9 +79,7 @@ export function MainShell({ children }: { children: ReactNode }) {
   // Após login (sessionStorage limpo pelo signIn), inicia direto no splash —
   // skip landing porque o usuário já passou pela tela de auth e quer ver SEA.
   // Reload simples (flag set) → 'ready' direto, mantendo o usuário onde estava.
-  const [phase, setPhase] = useState<'landing' | 'splash' | 'ready'>(() =>
-    shouldShowSplash() ? 'splash' : 'ready'
-  )
+  const [phase, setPhase] = useState<'landing' | 'splash' | 'ready'>('ready')
   // Once we reach 'ready', persist the flag so reloads skip the intro.
   useEffect(() => {
     if (phase === 'ready') markSplashShown()
