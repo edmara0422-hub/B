@@ -1,9 +1,3 @@
-import bundleAnalyzer from '@next/bundle-analyzer'
-
-const withBundleAnalyzer = bundleAnalyzer({
-  enabled: process.env.ANALYZE === 'true',
-})
-
 // Ativado com: CAPACITOR_BUILD=true npm run build:cap
 // Gera pasta out/ para embutir no app iOS (funciona fora de casa, sem servidor)
 const isCapacitorBuild = process.env.CAPACITOR_BUILD === 'true'
@@ -11,18 +5,11 @@ const isCapacitorBuild = process.env.CAPACITOR_BUILD === 'true'
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   devIndicators: false,
-
-  allowedDevOrigins: ['192.168.18.9', '127.0.0.1', 'localhost'],
-
   compress: true,
   productionBrowserSourceMaps: false,
-
-  // Modo export estático para Capacitor — pasta out/ embutida no iOS
-  ...(isCapacitorBuild && {
-    output: 'export',
-    trailingSlash: true,
-    typescript: { ignoreBuildErrors: true },
-  }),
+  
+  // Permite conexões externas/IP local para testes em dispositivos móveis no modo dev
+  allowedDevOrigins: ['192.168.18.9', '127.0.0.1', 'localhost'],
 
   // Keep heavy server-only packages OUT of the browser bundle
   serverExternalPackages: [
@@ -53,26 +40,36 @@ const nextConfig = {
       '@radix-ui/react-tooltip',
     ],
   },
-
-  // Cache GLB 3D models e assets estáticos (apenas no modo servidor)
-  ...(!isCapacitorBuild && {
-    async headers() {
-      return [
-        {
-          source: '/:file*.glb',
-          headers: [
-            { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' },
-          ],
-        },
-        {
-          source: '/(.*)',
-          headers: [
-            { key: 'X-Content-Type-Options', value: 'nosniff' },
-          ],
-        },
-      ]
-    },
-  }),
 }
 
-export default withBundleAnalyzer(nextConfig)
+if (isCapacitorBuild) {
+  nextConfig.output = 'export'
+  nextConfig.trailingSlash = true
+  nextConfig.typescript = { ignoreBuildErrors: true }
+} else {
+  nextConfig.headers = async () => {
+    return [
+      {
+        source: '/:file*.glb',
+        headers: [
+          { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' },
+        ],
+      },
+      {
+        source: '/(.*)',
+        headers: [
+          { key: 'X-Content-Type-Options', value: 'nosniff' },
+        ],
+      },
+    ]
+  }
+}
+
+// Only wrap with bundle analyzer if explicitly enabled
+let finalConfig = nextConfig
+if (process.env.ANALYZE === 'true') {
+  const bundleAnalyzer = (await import('@next/bundle-analyzer')).default
+  finalConfig = bundleAnalyzer({ enabled: true })(nextConfig)
+}
+
+export default finalConfig
