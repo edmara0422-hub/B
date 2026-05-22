@@ -303,7 +303,6 @@ Diretoria de Governança Corporativa IPB`
                 dangerouslySetInnerHTML={{ __html: ODS_DATA[activeOdsKey] || '' }}
               />
             </div>
-          </div>
 
             <div className="esg-section-card">
               <h3>Estrutura de Documentos de Governança</h3>
