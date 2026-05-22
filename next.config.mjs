@@ -5,9 +5,6 @@ const nextConfig = {
   devIndicators: false,
   compress: true,
   productionBrowserSourceMaps: false,
-  
-  // Permite conexões externas/IP local para testes em dispositivos móveis no modo dev
-  allowedDevOrigins: ['192.168.18.9', '127.0.0.1', 'localhost'],
 
   // Keep heavy server-only packages OUT of the browser bundle
   serverExternalPackages: [
@@ -19,30 +16,35 @@ const nextConfig = {
     'yjs',
   ],
 
-  // Configurações condicionais para build nativo do Capacitor
-  output: isCapacitorBuild ? 'export' : undefined,
-  trailingSlash: isCapacitorBuild ? true : undefined,
-  typescript: isCapacitorBuild ? { ignoreBuildErrors: true } : undefined,
-
-  // Headers de segurança e cache (apenas em produção Web standard, não no Capacitor)
-  headers: isCapacitorBuild ? undefined : async () => {
-    return [
-      {
-        source: '/:file*.glb',
-        headers: [
-          { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' },
-        ],
-      },
-      {
-        source: '/(.*)',
-        headers: [
-          { key: 'X-Content-Type-Options', value: 'nosniff' },
-        ],
-      },
-    ]
-  },
+  // Conditionally spread Capacitor-specific properties so they do not exist as undefined on Web standard builds
+  ...(isCapacitorBuild ? {
+    output: 'export',
+    trailingSlash: true,
+    typescript: { ignoreBuildErrors: true },
+  } : {
+    // Standard Web production security and cache headers
+    headers: async () => {
+      return [
+        {
+          source: '/:file*.glb',
+          headers: [
+            { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' },
+          ],
+        },
+        {
+          source: '/(.*)',
+          headers: [
+            { key: 'X-Content-Type-Options', value: 'nosniff' },
+          ],
+        },
+      ]
+    },
+  }),
 
   experimental: {
+    // Correct Next.js schema location for allowedDevOrigins
+    allowedDevOrigins: ['192.168.18.9', '127.0.0.1', 'localhost'],
+    
     // Tree-shake large UI packages — only import what's used
     optimizePackageImports: [
       'lucide-react',
@@ -64,3 +66,4 @@ const nextConfig = {
 }
 
 export default nextConfig
+

@@ -2,12 +2,13 @@
 
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ArrowLeft, BookOpen, Calculator, FileText, PanelLeftClose, PanelLeftOpen, Search } from 'lucide-react'
+import { ArrowLeft, BookOpen, Calculator, Cpu, FileText, PanelLeftClose, PanelLeftOpen, Search } from 'lucide-react'
 import Link from 'next/link'
 import type { LucideIcon } from 'lucide-react'
 import { ProntuarioSystemPanel } from '@/components/sea/prontuario-system-panel'
 import { VMSystemPanel } from '@/components/sea/vm-system-panel'
 import { ICUSystemPanel } from '@/components/sea/icu-system-panel'
+import { BioneuralPanel } from '@/components/sea/bioneural-panel'
 
 // ── Módulos de Sistemas ────────────────────────────────────────────────────────
 
@@ -40,6 +41,13 @@ const SYSTEMS: SystemModule[] = [
     icon: BookOpen,
     overview: 'Protocolos, condutas e fluxos clínicos organizados por sistema — referência rápida à beira do leito.',
     panel: () => <ICUSystemPanel />,
+  },
+  {
+    id: 'S4',
+    title: 'Integração Bioneural',
+    icon: Cpu,
+    overview: 'Monitoramento bioneural integrado, modelagem de ventilação mecânica adaptativa e status cognitivo.',
+    panel: () => <BioneuralPanel />,
   },
 ]
 
