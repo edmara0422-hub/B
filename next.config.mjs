@@ -1,5 +1,3 @@
-// Ativado com: CAPACITOR_BUILD=true npm run build:cap
-// Gera pasta out/ para embutir no app iOS (funciona fora de casa, sem servidor)
 const isCapacitorBuild = process.env.CAPACITOR_BUILD === 'true'
 
 /** @type {import('next').NextConfig} */
@@ -20,6 +18,29 @@ const nextConfig = {
     'y-websocket',
     'yjs',
   ],
+
+  // Configurações condicionais para build nativo do Capacitor
+  output: isCapacitorBuild ? 'export' : undefined,
+  trailingSlash: isCapacitorBuild ? true : undefined,
+  typescript: isCapacitorBuild ? { ignoreBuildErrors: true } : undefined,
+
+  // Headers de segurança e cache (apenas em produção Web standard, não no Capacitor)
+  headers: isCapacitorBuild ? undefined : async () => {
+    return [
+      {
+        source: '/:file*.glb',
+        headers: [
+          { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' },
+        ],
+      },
+      {
+        source: '/(.*)',
+        headers: [
+          { key: 'X-Content-Type-Options', value: 'nosniff' },
+        ],
+      },
+    ]
+  },
 
   experimental: {
     // Tree-shake large UI packages — only import what's used
@@ -42,34 +63,4 @@ const nextConfig = {
   },
 }
 
-if (isCapacitorBuild) {
-  nextConfig.output = 'export'
-  nextConfig.trailingSlash = true
-  nextConfig.typescript = { ignoreBuildErrors: true }
-} else {
-  nextConfig.headers = async () => {
-    return [
-      {
-        source: '/:file*.glb',
-        headers: [
-          { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' },
-        ],
-      },
-      {
-        source: '/(.*)',
-        headers: [
-          { key: 'X-Content-Type-Options', value: 'nosniff' },
-        ],
-      },
-    ]
-  }
-}
-
-// Only wrap with bundle analyzer if explicitly enabled
-let finalConfig = nextConfig
-if (process.env.ANALYZE === 'true') {
-  const bundleAnalyzer = (await import('@next/bundle-analyzer')).default
-  finalConfig = bundleAnalyzer({ enabled: true })(nextConfig)
-}
-
-export default finalConfig
+export default nextConfig
