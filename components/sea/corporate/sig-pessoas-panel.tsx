@@ -595,35 +595,528 @@ export function SigPessoasPanel() {
         )}
       </AnimatePresence>
 
+      <style dangerouslySetInnerHTML={{ __html: `
+        /* Custom Pessoas Styles from Approved Mockup */
+        .tab-pessoas-row {
+          display: flex;
+          gap: 8px;
+          margin-bottom: 20px;
+          padding: 4px;
+          background: rgba(10, 10, 10, 0.5) !important;
+          border: 0.2px solid rgba(255, 255, 255, 0.08) !important;
+          border-radius: 9px;
+          box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 8px 32px rgba(0,0,0,0.3) !important;
+          backdrop-filter: blur(12px);
+          width: 100%;
+        }
+        .tab-p-btn {
+          flex: 1;
+          padding: 10px 14px;
+          background: transparent;
+          border: 0.2px solid transparent;
+          color: #8a9098;
+          font-family: inherit;
+          font-size: 11.5px;
+          font-weight: 500;
+          border-radius: 7px;
+          cursor: pointer;
+          transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+          display: flex; flex-direction: column; align-items: flex-start; gap: 2px;
+          text-align: left;
+        }
+        .tab-sub {
+          font-size: 9px;
+          color: #cbd5e1;
+          font-weight: 400;
+          letter-spacing: 0.02em;
+          opacity: 0.7;
+        }
+        .tab-p-btn:hover {
+          color: #fff;
+          background: rgba(255, 255, 255, 0.06);
+          border-color: rgba(255, 255, 255, 0.04);
+        }
+        .tab-p-btn.active {
+          color: #d4b87a !important;
+          background: linear-gradient(180deg, rgba(30, 25, 18, 0.75) 0%, rgba(18, 15, 10, 0.85) 100%) !important;
+          border: 0.2px solid #d4b87a !important;
+          box-shadow: 0 0 0 2px rgba(255,255,255,0.2), inset 0 1px 0 rgba(212, 184, 122, 0.12), 0 0 18px rgba(212, 184, 122, 0.25) !important;
+          font-weight: 600;
+        }
+        .btn-professor-ia {
+          display: flex; align-items: center; gap: 6px;
+          padding: 7px 12px; background: rgba(212,184,122,0.08);
+          border: 0.2px solid rgba(212,184,122,0.25); border-radius: 8px;
+          color: #d4b87a; font-family: inherit; font-size: 9.5px; font-weight: 600;
+          cursor: pointer; transition: all 0.2s; letter-spacing: 0.04em;
+          align-self: center;
+        }
+        .btn-professor-ia:hover { background: rgba(212,184,122,0.14); border-color: rgba(212,184,122,0.4); }
+
+        /* Dashboard layout elements */
+        .home-dashboard {
+          display: flex; flex-direction: column; gap: 18px;
+          padding: 10px 0px 40px;
+        }
+        .home-row { display: grid; gap: 16px; }
+        .home-row.cols-2 { grid-template-columns: 1fr 1fr; }
+        .home-row.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+        .home-row.cols-4 { grid-template-columns: repeat(4, 1fr); }
+        .home-row.full { grid-template-columns: 1fr; }
+        .home-row.split-6040 { grid-template-columns: 1.5fr 1fr; }
+
+        @media (max-width: 1024px) {
+          .home-row.split-6040, .home-row.cols-2, .home-row.cols-3, .home-row.cols-4 {
+            grid-template-columns: 1fr;
+          }
+        }
+
+        .dash-card {
+          background: rgba(10, 10, 12, 0.40) !important;
+          backdrop-filter: blur(20px) saturate(180%) !important;
+          -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+          border: 0.2px solid rgba(212, 184, 122, 0.12) !important;
+          border-radius: 14px;
+          padding: 22px;
+          position: relative;
+          overflow: hidden;
+          box-shadow: 
+            inset 0 1px 0 rgba(255, 255, 255, 0.05),
+            0 12px 40px rgba(0, 0, 0, 0.75) !important;
+          transition: all .3s cubic-bezier(.22,.61,.36,1);
+        }
+        .dash-card::before {
+          content: '';
+          position: absolute; top: 0; left: 0; right: 0; height: 1px;
+          background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.04) 20%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0.04) 80%, transparent 100%);
+          pointer-events: none;
+        }
+        .dash-card.gold-border {
+          border-color: rgba(212, 184, 122, 0.35) !important;
+          box-shadow: 
+            inset 0 1px 0 rgba(255, 255, 255, 0.08),
+            0 16px 48px rgba(0, 0, 0, 0.85),
+            0 0 15px rgba(212, 184, 122, 0.10) !important;
+        }
+        .dash-card.gold-border::before {
+          background: linear-gradient(90deg, transparent 0%, rgba(212, 184, 122, 0.2) 20%, rgba(255, 255, 255, 0.4) 50%, rgba(212, 184, 122, 0.2) 80%, transparent 100%);
+        }
+        .dash-card:hover {
+          border-color: rgba(212, 184, 122, 0.35) !important;
+          background: rgba(15, 15, 18, 0.55) !important;
+          box-shadow: 
+            inset 0 1px 0 rgba(255, 255, 255, 0.10),
+            0 16px 48px rgba(0, 0, 0, 0.85),
+            0 0 20px rgba(212, 184, 122, 0.15) !important;
+          transform: translateY(-2px);
+        }
+
+        .panel-label {
+          font-family: inherit; font-size: 8px; letter-spacing: 0.12em;
+          color: #b8975a; text-transform: uppercase;
+          border: 0.2px solid rgba(212,184,122,0.15); padding: 2px 8px; border-radius: 4px;
+          background: rgba(212,184,122,0.04); display: inline-block; margin-bottom: 6px;
+        }
+        .panel-title {
+          font-family: inherit; font-size: 14px; font-weight: 500; color: #f3f5f8; margin: 0;
+        }
+        .panel-sub {
+          font-family: inherit; font-size: 9px; color: #8a9098; margin-top: 2px;
+        }
+
+        /* Radar layout classes */
+        .vc-d-dots { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
+        .vc-dot {
+          display: flex; align-items: center; gap: 5px; padding: 4px 10px 4px 6px;
+          border: 0.2px solid rgba(255,255,255,0.08); border-radius: 20px;
+          font-family: inherit; font-size: 10px; cursor: pointer; transition: all 0.2s;
+          background: rgba(255,255,255,0.02);
+        }
+        .vc-dot .dot-circle {
+          width: 8px; height: 8px; border-radius: 50%;
+          background: rgba(255,255,255,0.25); transition: all 0.2s;
+        }
+        .vc-dot.active { border-color: rgba(212,184,122,0.4); background: rgba(212,184,122,0.06); color: #d4b87a; }
+        .vc-dot.active .dot-circle { background: #d4b87a; box-shadow: 0 0 6px rgba(212,184,122,0.6); }
+        .vc-dot:hover { border-color: rgba(255,255,255,0.15); }
+        .vc-saude-bar { margin-top: 12px; }
+        .vc-saude-bar .lbl { font-size: 9px; color: #8a9098; margin-bottom: 4px; font-family: inherit; text-transform: uppercase; letter-spacing: 0.05em; }
+        .vc-bar-track { height: 5px; background: rgba(255,255,255,0.05); border-radius: 3px; overflow: hidden; }
+        .vc-bar-fill { height: 100%; border-radius: 3px; background: linear-gradient(90deg, #b8975a, #d4b87a, #e0c887); transition: width 0.8s ease-out; }
+        .btn-reset-sm {
+          padding: 5px 10px; border: 0.2px solid rgba(255,255,255,0.1); border-radius: 6px;
+          font-family: inherit; font-size: 9px; color: #8a9098;
+          background: transparent; cursor: pointer; transition: all 0.2s;
+        }
+        .btn-reset-sm:hover { color: #f3f5f8; border-color: rgba(255,255,255,0.2); }
+
+        /* Block Status elements */
+        .blocos-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 12px; }
+        @media (max-width: 768px) {
+          .blocos-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        .bloco-item {
+          padding: 12px 14px; border-radius: 10px;
+          border: 0.2px solid rgba(212, 184, 122, 0.12) !important;
+          background: rgba(10, 10, 12, 0.40) !important;
+          backdrop-filter: blur(20px) saturate(180%) !important;
+          -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+          cursor: pointer; transition: all 0.2s;
+          display: flex; flex-direction: column; gap: 4px;
+          text-align: left;
+        }
+        .bloco-item:hover { border-color: rgba(212,184,122,0.35) !important; background: rgba(15, 15, 18, 0.55) !important; transform: translateY(-1px); }
+        .bloco-item .b-code { font-family: inherit; font-size: 8px; color: #b8975a; letter-spacing: 0.1em; text-transform: uppercase; }
+        .bloco-item .b-name { font-size: 12px; font-weight: 600; color: #f3f5f8; }
+        .bloco-item .b-sub { font-size: 9px; color: #8a9098; }
+        .bloco-item .b-status { font-family: inherit; font-size: 8px; margin-top: 4px; padding: 2px 6px; border-radius: 3px; display: inline-block; align-self: flex-start; }
+        .bloco-item .b-status.ok { color: #5dcaa5; background: rgba(93,202,165,0.1); border: 0.2px solid rgba(93,202,165,0.2); }
+        .bloco-item .b-status.warn { color: #fac775; background: rgba(250,199,117,0.1); border: 0.2px solid rgba(250,199,117,0.2); }
+        .bloco-item .b-status.idle { color: #8a9098; background: rgba(255,255,255,0.03); border: 0.2px solid rgba(255,255,255,0.08); }
+
+        /* Political Map Influencia */
+        .mapa-container { position: relative; margin-top: 12px; }
+        .mapa-svg-wrap { position: relative; aspect-ratio: 1.5; width: 100%; }
+        .mapa-svg-wrap svg { width: 100%; height: 100%; }
+        .mapa-quadrant-lbl {
+          position: absolute; font-family: inherit; font-size: 8px;
+          text-transform: uppercase; letter-spacing: 0.07em;
+          padding: 2px 6px; border-radius: 3px; pointer-events: none;
+        }
+        .mapa-quadrant-lbl.top-right { top: 5px; right: 5px; color: #5dcaa5; background: rgba(93,202,165,0.08); }
+        .mapa-quadrant-lbl.top-left { top: 5px; left: 5px; color: #fac775; background: rgba(250,199,117,0.08); }
+        .mapa-quadrant-lbl.bot-right { bottom: 5px; right: 5px; color: #b8975a; background: rgba(212,184,122,0.08); }
+        .mapa-quadrant-lbl.bot-left { bottom: 5px; left: 5px; color: #e24b4a; background: rgba(226,75,74,0.08); }
+        .mapa-empty-msg {
+          position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+          font-family: inherit; font-size: 9px; color: #8a9098;
+          text-align: center; pointer-events: none;
+        }
+
+        /* Profile & Roles */
+        .voce-role-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+        .role-card {
+          padding: 14px; border-radius: 10px;
+          border: 0.2px solid rgba(212, 184, 122, 0.12) !important;
+          background: rgba(10, 10, 12, 0.40) !important;
+          backdrop-filter: blur(20px) saturate(180%) !important;
+          -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+          cursor: pointer; transition: all 0.2s;
+          display: flex; flex-direction: column; gap: 3px;
+          text-align: left;
+        }
+        .role-card:hover { border-color: rgba(212, 184, 122, 0.35) !important; background: rgba(15, 15, 18, 0.55) !important; }
+        .role-card.active { border-color: rgba(212, 184, 122, 0.4) !important; background: rgba(212, 184, 122, 0.08) !important; }
+        .role-card .rc-label { font-family: inherit; font-size: 8px; color: #b8975a; letter-spacing: 0.08em; text-transform: uppercase; }
+        .role-card .rc-title { font-size: 12px; font-weight: 600; color: #f3f5f8; }
+        .role-card .rc-sub { font-size: 9px; color: #8a9098; }
+
+        .manifesto-list { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
+        .manifesto-item {
+          display: flex; align-items: center; gap: 10px; padding: 10px 12px;
+          border: 0.2px solid rgba(212, 184, 122, 0.12) !important;
+          border-radius: 8px;
+          background: rgba(10, 10, 12, 0.40) !important;
+          backdrop-filter: blur(20px) saturate(180%) !important;
+          -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+          transition: all 0.2s;
+          text-align: left;
+        }
+        .manifesto-item:hover { border-color: rgba(212, 184, 122, 0.35) !important; background: rgba(15, 15, 18, 0.55) !important; }
+        .manifesto-item .m-code {
+          font-family: inherit; font-size: 9px; color: #d4b87a;
+          background: rgba(212,184,122,0.1); border: 0.2px solid rgba(212,184,122,0.2);
+          padding: 2px 6px; border-radius: 4px; flex-shrink: 0; font-weight: 700;
+        }
+        .manifesto-item .m-text { font-size: 10.5px; color: #8a9098; flex: 1; line-height: 1.4; }
+        .manifesto-item .m-val {
+          font-family: inherit; font-size: 10px; color: #8a9098;
+          flex-shrink: 0; font-style: italic;
+        }
+        .manifesto-item.done .m-text { color: #f3f5f8; }
+        .manifesto-item.done .m-val { color: #5dcaa5; }
+
+        /* Steps */
+        .primeiros-list { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
+        .passo-item {
+          display: flex; align-items: flex-start; gap: 10px; padding: 12px 14px;
+          border: 0.2px solid rgba(212, 184, 122, 0.12) !important;
+          border-radius: 10px;
+          background: rgba(10, 10, 12, 0.40) !important;
+          backdrop-filter: blur(20px) saturate(180%) !important;
+          -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+          cursor: pointer; transition: all 0.2s;
+          text-align: left;
+        }
+        .passo-item:hover { border-color: rgba(212, 184, 122, 0.35) !important; background: rgba(15, 15, 18, 0.55) !important; }
+        .passo-item .p-num {
+          width: 22px; height: 22px; border-radius: 50%; border: 0.2px solid rgba(212,184,122,0.3);
+          display: flex; align-items: center; justify-content: center;
+          font-family: inherit; font-size: 10px; color: #d4b87a; flex-shrink: 0; font-weight: 700;
+        }
+        .passo-item .p-body { flex: 1; }
+        .passo-item .p-title { font-size: 11px; font-weight: 600; color: #f3f5f8; display: block; margin-bottom: 2px; }
+        .passo-item .p-title.done { text-decoration: line-through; opacity: 0.45; }
+        .passo-item .p-desc { font-size: 9.5px; color: #8a9098; line-height: 1.4; }
+        .passo-item .p-arrow { color: #d4b87a; font-size: 14px; flex-shrink: 0; align-self: center; }
+
+        /* Telemetry blocks & okr nav */
+        .blocos-nav-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 12px; }
+        @media (max-width: 768px) {
+          .blocos-nav-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        .bloco-nav-card {
+          padding: 18px 14px; border-radius: 12px;
+          border: 0.2px solid rgba(212, 184, 122, 0.12) !important;
+          background: rgba(10, 10, 12, 0.40) !important;
+          backdrop-filter: blur(20px) saturate(180%) !important;
+          -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+          cursor: pointer; transition: all 0.25s;
+          display: flex; flex-direction: column; gap: 4px;
+          text-align: left;
+        }
+        .bloco-nav-card:hover { border-color: rgba(212, 184, 122, 0.35) !important; background: rgba(15, 15, 18, 0.55) !important; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.4); }
+        .bloco-nav-card .bnc-icon { font-size: 22px; margin-bottom: 6px; }
+        .bloco-nav-card .bnc-title { font-size: 11.5px; font-weight: 600; color: #f3f5f8; }
+        .bloco-nav-card .bnc-sub { font-size: 9px; color: #8a9098; }
+        .bloco-nav-card .bnc-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px; }
+        .bloco-nav-card .bnc-tag {
+          font-family: inherit; font-size: 8px; color: #8a9098;
+          border: 0.2px solid rgba(255,255,255,0.07); padding: 1px 5px; border-radius: 3px;
+        }
+        .bloco-nav-card .bnc-count {
+          font-family: inherit; font-size: 10px; color: #8a9098;
+          margin-top: 8px; padding-top: 8px; border-top: 0.2px solid rgba(255,255,255,0.05);
+        }
+
+        /* Twinkle & Pulso Rating styles */
+        .pulso-semana-badge {
+          padding: 4px 8px; border-radius: 4px; background: rgba(212,184,122,0.15);
+          color: #d4b87a; border: 0.2px solid rgba(212,184,122,0.25); font-family: inherit; font-size: 8.5px;
+        }
+        .pulso-rating-row { display: flex; gap: 8px; margin-top: 6px; }
+        .pulso-btn {
+          flex: 1; text-align: center; padding: 6px 0; border-radius: 6px;
+          border: 0.2px solid rgba(255,255,255,0.06); background: rgba(0,0,0,0.3);
+          font-family: inherit; font-size: 10px; font-weight: 700; cursor: pointer; transition: all 0.2s;
+          color: #8a9098;
+        }
+        .pulso-btn:hover { border-color: rgba(255,255,255,0.15); color: #fff; }
+        .pulso-btn.active {
+          background: rgba(212,184,122,0.20) !important; border-color: #d4b87a !important; color: #d4b87a !important;
+          box-shadow: 0 0 8px rgba(212,184,122,0.2);
+        }
+        .pulso-input-area {
+          width: 100%; height: 44px; background: rgba(0,0,0,0.4); border: 0.2px solid rgba(255,255,255,0.08);
+          border-radius: 8px; padding: 10px; font-family: inherit; font-size: 10.5px; color: #fff;
+          outline: none; resize: none; margin-top: 6px; transition: border-color 0.2s;
+        }
+        .pulso-input-area:focus { border-color: rgba(212,184,122,0.4); }
+        .btn-pulso-save {
+          width: 100%; padding: 10px; border-radius: 8px; background: rgba(212,184,122,0.15);
+          border: 0.2px solid rgba(212,184,122,0.4); color: #d4b87a; font-family: inherit; font-size: 10px;
+          font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; cursor: pointer;
+          transition: all 0.2s; margin-top: 14px;
+        }
+        .btn-pulso-save:hover { background: rgba(212,184,122,0.3); border-color: #d4b87a; }
+
+        /* Candidate cards & layouts */
+        .cand-card-mockup {
+          background: rgba(10, 10, 12, 0.40) !important;
+          border: 0.2px solid rgba(212, 184, 122, 0.12) !important;
+          border-radius: 12px;
+          padding: 18px;
+          margin-bottom: 16px;
+          backdrop-filter: blur(28px) saturate(180%) !important;
+          -webkit-backdrop-filter: blur(28px) saturate(180%) !important;
+          box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 10px 30px rgba(0, 0, 0, 0.5) !important;
+          transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+          position: relative;
+          overflow: hidden;
+          flex-shrink: 0 !important;
+          text-align: left;
+        }
+        .cand-card-mockup::before {
+          content: '';
+          position: absolute; top: 0; left: 0; right: 0; height: 1px;
+          background: linear-gradient(90deg, transparent 0%, rgba(212, 184, 122, 0.2) 20%, rgba(255, 255, 255, 0.4) 50%, rgba(212, 184, 122, 0.2) 80%, transparent 100%);
+          pointer-events: none;
+        }
+        .cand-card-mockup:hover {
+          border-color: rgba(212, 184, 122, 0.35) !important;
+          background: rgba(15, 15, 18, 0.55) !important;
+          transform: translateY(-2px);
+          box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.10), 0 16px 36px rgba(0, 0, 0, 0.6) !important;
+        }
+        .cand-card-mockup .header-row {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+        }
+        .cand-card-mockup .avatar {
+          width: 34px;
+          height: 34px;
+          border-radius: 50%;
+          border: 2px solid transparent;
+          background: linear-gradient(#111, #111) padding-box, linear-gradient(135deg, #8a9098 0%, #ffffff 50%, #64748b 100%) border-box;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-family: inherit;
+          font-size: 14px;
+          font-weight: 700;
+          color: #d4b87a;
+          box-shadow: 0 0 10px rgba(255, 255, 255, 0.15), inset 0 0 4px rgba(255, 255, 255, 0.15);
+          flex-shrink: 0;
+        }
+        .cand-card-mockup .info-col {
+          flex: 1;
+          min-width: 0;
+        }
+        .cand-card-mockup .name {
+          font-size: 13px;
+          font-weight: 700;
+          color: #d4b87a;
+          display: block;
+        }
+        .cand-card-mockup .subtext {
+          font-size: 9px;
+          color: #cbd5e1;
+          letter-spacing: 0.02em;
+        }
+        .hhs-bar-mockup {
+          height: 4px;
+          background: rgba(255,255,255,0.1);
+          border-radius: 2px;
+          margin: 12px 0;
+          overflow: hidden;
+        }
+        .hhs-bar-mockup i {
+          display: block;
+          height: 100%;
+          background: linear-gradient(135deg, #8a9098 0%, #e2e8f0 25%, #ffffff 50%, #cbd5e1 75%, #64748b 100%);
+          box-shadow: 0 0 8px rgba(255,255,255,0.5);
+        }
+        .cand-card-mockup .stats-row {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          font-size: 8.5px;
+          padding-top: 8px;
+          position: relative;
+          margin-top: 4px;
+        }
+        .cand-card-mockup .stats-row::before {
+          content: '';
+          position: absolute;
+          top: 0; left: 0; right: 0;
+          height: 1px;
+          background: linear-gradient(90deg, rgba(255, 255, 255, 0.02) 0%, rgba(255, 255, 255, 0.22) 20%, rgba(255, 255, 255, 0.35) 50%, rgba(255, 255, 255, 0.22) 80%, rgba(255, 255, 255, 0.02) 100%);
+          pointer-events: none;
+        }
+        .cand-card-mockup .stats-row .item {
+          display: flex;
+          flex-direction: column;
+          gap: 2px;
+          margin-top: 4px;
+        }
+        .cand-card-mockup .stats-row .item span {
+          color: #94a3b8;
+          letter-spacing: 0.03em;
+        }
+        .cand-card-mockup .stats-row .item b {
+          color: #ffffff;
+          font-weight: 700;
+          text-shadow: 0 0 4px rgba(255, 255, 255, 0.15);
+        }
+        .cand-card-mockup .stats-row .item b small {
+          color: #5dcaa5;
+          margin-left: 2px;
+          font-weight: bold;
+        }
+        .btn-onboard {
+          margin-top: 14px;
+          padding: 10px 14px;
+          background: linear-gradient(135deg, #d4b87a 0%, #b8975a 100%) !important;
+          border: none !important;
+          color: #0f0d09 !important;
+          font-family: inherit;
+          font-size: 10px;
+          font-weight: 700;
+          text-transform: uppercase;
+          letter-spacing: 0.04em;
+          border-radius: 6px;
+          cursor: pointer;
+          box-shadow: 0 4px 15px rgba(212, 184, 122, 0.25);
+          transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+          text-align: center;
+          width: 100%;
+        }
+        .btn-onboard:hover {
+          filter: brightness(1.15) !important;
+          box-shadow: 0 6px 20px rgba(212, 184, 122, 0.4) !important;
+          transform: translateY(-1px);
+        }
+        .btn-onboard:active {
+          transform: scale(0.97);
+        }
+        .btn-del-cand {
+          position: absolute; top: 10px; right: 10px;
+          width: 20px; height: 20px; border-radius: 50%;
+          border: 0.2px solid rgba(200,205,215,0.15);
+          background: rgba(255,255,255,0.02);
+          color: rgba(200,205,215,0.35);
+          font-size: 11px; cursor: pointer;
+          display: flex; align-items: center; justify-content: center;
+          transition: all 0.2s; font-family: inherit;
+        }
+        .btn-del-cand:hover {
+          background: rgba(226,75,74,0.12);
+          border-color: rgba(226,75,74,0.35);
+          color: #e24b4a;
+        }
+        .btn-reset-fake {
+          display: flex; align-items: center; gap: 5px;
+          padding: 5px 10px;
+          border: 0.2px solid rgba(200,205,215,0.15);
+          border-radius: 6px;
+          background: rgba(255,255,255,0.02);
+          color: #8a9098;
+          font-family: inherit; font-size: 8.5px;
+          cursor: pointer; transition: all 0.2s;
+          letter-spacing: 0.04em;
+        }
+        .btn-reset-fake:hover {
+          border-color: rgba(226,75,74,0.3);
+          color: #e24b4a;
+          background: rgba(226,75,74,0.06);
+        }
+      `}} />
+
       {/* Tabs HUD Header (Mockup exact replica) */}
-      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-white/[0.04] pb-3">
-        <div className="flex flex-wrap gap-2">
-          {[
-            { id: 'home', label: 'Home', sub: 'panorama cruzado' },
-            { id: 'lideres', label: 'Líderes / Gestores', sub: 'Liderança · Gerir · Delegar' },
-            { id: 'time', label: 'Time', sub: 'demais equipes · Formar' },
-            { id: 'empresa', label: 'Empresa', sub: 'Estratégia · BI · Canais' }
-          ].map(t => (
-            <button
-              key={t.id}
-              onClick={() => setActiveTab(t.id as TabOption)}
-              className={`flex flex-col items-start px-4 py-2.5 rounded-[0.8rem] border transition-all duration-300 ${
-                activeTab === t.id 
-                  ? 'bg-white/[0.05] border-[#d4b87a]/35 text-white shadow-[0_0_12px_rgba(212,184,122,0.1)]' 
-                  : 'bg-transparent border-transparent text-white/40 hover:text-white/70'
-              }`}
-            >
-              <span className="text-[11px] font-bold tracking-tight">{t.label}</span>
-              <span className="text-[8px] uppercase tracking-wider opacity-60 mt-0.5 font-mono">{t.sub}</span>
-            </button>
-          ))}
-        </div>
+      <div className="tab-pessoas-row">
+        {[
+          { id: 'home', label: 'Home', sub: 'panorama cruzado' },
+          { id: 'lideres', label: 'Líderes / Gestores', sub: 'Liderança · Gerir · Delegar' },
+          { id: 'time', label: 'Time', sub: 'demais equipes · Formar' },
+          { id: 'empresa', label: 'Empresa', sub: 'Estratégia · BI · Canais' }
+        ].map(t => (
+          <button
+            key={t.id}
+            onClick={() => setActiveTab(t.id as TabOption)}
+            className={`tab-p-btn ${activeTab === t.id ? 'active' : ''}`}
+          >
+            {t.label} <span className="tab-sub">{t.sub}</span>
+          </button>
+        ))}
         
         <button 
           onClick={() => triggerToast('Professor de IA iniciando mentoria de liderança...', 'ok')}
-          className="flex items-center gap-2 rounded-[0.7rem] bg-white/[0.04] border border-white/[0.08] px-3.5 py-2 text-[9px] uppercase tracking-widest text-[#d4b87a] transition hover:bg-[#d4b87a]/15 shadow-sm hover:border-[#d4b87a]/30"
+          className="btn-professor-ia"
         >
-          <Play className="h-3 w-3 fill-[#d4b87a] stroke-none" /> PROFESSOR IA
+          ▶ PROFESSOR IA
         </button>
       </div>
 
@@ -637,28 +1130,28 @@ export function SigPessoasPanel() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className="space-y-4"
+            className="home-dashboard"
           >
             {/* ROW 1: Visão Cruzada + Candidates Funnel */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
+            <div className="home-row split-6040">
               
               {/* Visão Cruzada 4D/6D */}
-              <div className="lg:col-span-7 ipb-soft p-5 rounded-[1.2rem] space-y-4">
-                <div className="flex items-start justify-between">
+              <div className="dash-card gold-border">
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
                   <div>
-                    <span className="text-[7.5px] uppercase tracking-widest text-[#d4b87a]/70 font-mono">SIG · OS</span>
-                    <h3 className="text-sm font-bold text-white/95 mt-0.5">Visão Cruzada · 4 Dimensões OS</h3>
-                    <p className="text-[10px] text-white/40">Radar multidimensional · n = {teamMembers.length} colaboradores</p>
+                    <span className="panel-label">SIG · OS</span>
+                    <h3 className="panel-title">Visão Cruzada · 4 Dimensões OS</h3>
+                    <div className="panel-sub">Radar multidimensional · n = {teamMembers.length} colaboradores</div>
                   </div>
-                  <button onClick={handleResetRadar} className="text-[8px] uppercase tracking-widest text-white/45 hover:text-white border border-white/[0.08] rounded-[0.4rem] px-2.5 py-1 transition font-mono">
-                    ⟲ RESET
-                  </button>
+                  <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                    <button onClick={handleResetRadar} className="btn-reset-sm">⟲ RESET</button>
+                  </div>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-12 gap-6 items-center">
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.2fr', gap: '20px', alignItems: 'center' }}>
                   
                   {/* Radar Stage SVG */}
-                  <div className="sm:col-span-5 flex justify-center relative py-2">
+                  <div style={{ maxWidth: '180px', margin: '0 auto', position: 'relative' }}>
                     <div className="w-[180px] h-[180px] relative">
                       <svg className="w-full h-full overflow-visible" viewBox="-200 -200 400 400">
                         <defs>
@@ -734,126 +1227,119 @@ export function SigPessoasPanel() {
                   </div>
 
                   {/* Interactive Dimension list & checkmarks */}
-                  <div className="sm:col-span-7 space-y-3">
-                    <div className="grid grid-cols-2 gap-2">
-                      {dimensionsInfo.map(dim => {
-                        const active = selectedDims.includes(dim.code)
-                        return (
-                          <div 
-                            key={dim.code}
-                            onClick={() => handleSelectDimension(dim.code)}
-                            className={`flex items-center gap-2 px-2.5 py-1.5 rounded-[0.5rem] border transition cursor-pointer select-none ${
-                              active 
-                                ? 'bg-white/[0.03] border-[#d4b87a]/15 text-white' 
-                                : 'bg-transparent border-transparent opacity-35 text-white/50'
-                            }`}
-                          >
-                            <div className="h-1.5 w-1.5 rounded-full shrink-0" style={{ backgroundColor: dim.color }} />
-                            <span className="text-[9px] font-mono font-bold text-[#d4b87a]">{dim.code}</span>
-                            <span className="text-[9.5px] truncate flex-1 leading-none">{dim.label}</span>
-                            <span className="text-[9px] font-mono font-bold">{dim.val}</span>
-                          </div>
-                        )
-                      })}
+                  <div>
+                    <div className="vc-d-dots">
+                      {dimensionsInfo.map(dim => (
+                        <div 
+                          key={dim.code}
+                          onClick={() => handleSelectDimension(dim.code)}
+                          className={`vc-dot ${selectedDims.includes(dim.code) ? 'active' : ''}`}
+                        >
+                          <span className="dot-circle" style={{ backgroundColor: dim.color }}></span>
+                          {dim.code}
+                        </div>
+                      ))}
                     </div>
 
                     {/* Progress Bar of Health */}
-                    <div className="border-t border-white/[0.04] pt-3">
-                      <div className="flex justify-between text-[9px] text-white/45">
-                        <span>Saúde 6D · Score Geral</span>
-                        <span className="font-mono text-[#d4b87a] font-bold">{Math.round((selectedDims.length / 6) * 100)}%</span>
+                    <div className="vc-saude-bar">
+                      <div className="lbl">Saúde 6D · Score Geral</div>
+                      <div className="vc-bar-track">
+                        <div className="vc-bar-fill" style={{ width: `${(selectedDims.length / 6) * 100}%` }} />
                       </div>
-                      <div className="h-1 bg-white/[0.05] rounded-full overflow-hidden mt-1.5">
-                        <div className="h-full bg-gradient-to-r from-[#d4b87a] to-white rounded-full transition-all duration-500" style={{ width: `${(selectedDims.length / 6) * 100}%` }} />
+                      <div style={{ display: 'flex', justifyContent: 'space-between', fontFamily: 'inherit', fontSize: '9px', color: '#8a9098', marginTop: '3px' }}>
+                        <span>S10</span><span>S21 · AGORA</span>
                       </div>
                     </div>
                   </div>
+
                 </div>
               </div>
 
               {/* Recrutamento Funil Lencioni & Candidates */}
-              <div className="lg:col-span-5 flex flex-col gap-4">
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                 
                 {/* 5 Stage recruit bar */}
-                <div className="ipb-soft p-4 rounded-[1.2rem] space-y-2.5">
-                  <div className="flex items-center justify-between">
-                    <span className="text-[7.5px] uppercase tracking-widest text-[#d4b87a]/70 font-mono">RECRUTAMENTO - 4 ESTÁGIOS</span>
-                    <button className="text-[7.5px] uppercase tracking-wider text-[#d4b87a] font-bold hover:underline" onClick={() => setActiveTab('lideres')}>▶ Detalhes</button>
+                <div className="dash-card">
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
+                    <span className="panel-label">RECRUTAMENTO - 4 ESTÁGIOS</span>
+                    <button className="text-[9px] uppercase tracking-wider text-[#d4b87a] font-bold hover:underline" onClick={() => setActiveTab('lideres')}>▶ Detalhes</button>
                   </div>
                   
-                  <div className="grid grid-cols-5 gap-1 text-center bg-black/25 border border-white/[0.03] rounded-lg p-2.5 font-mono text-[9px]">
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'rgba(0,0,0,0.3)', border: '0.2px solid rgba(255,255,255,0.05)', borderRadius: '8px', padding: '12px', fontSize: '9px', textAlign: 'center' }}>
                     <div>
-                      <b className="text-[#d4b87a] text-sm block">{candidates.filter(c => c.stage === 'triagem').length}</b>
-                      <span className="text-[6.5px] text-white/40 block">TRIAGEM</span>
+                      <b style={{ color: '#d4b87a', fontSize: '15px', display: 'block' }}>{candidates.filter(c => c.stage === 'triagem').length}</b>
+                      <span style={{ color: '#8a9098', fontSize: '7.5px', display: 'block' }}>TRIAGEM</span>
                     </div>
+                    <div style={{ color: 'rgba(255,255,255,0.2)' }}>→</div>
                     <div>
-                      <b className="text-[#d4b87a] text-sm block">{candidates.filter(c => c.stage === 'entrevista').length}</b>
-                      <span className="text-[6.5px] text-white/40 block">ENTREVISTA</span>
+                      <b style={{ color: '#d4b87a', fontSize: '15px', display: 'block' }}>{candidates.filter(c => c.stage === 'entrevista').length}</b>
+                      <span style={{ color: '#8a9098', fontSize: '7.5px', display: 'block' }}>ENTREVISTA</span>
                     </div>
+                    <div style={{ color: 'rgba(255,255,255,0.2)' }}>→</div>
                     <div>
-                      <b className="text-[#d4b87a] text-sm block">{candidates.filter(c => c.stage === 'decisao').length}</b>
-                      <span className="text-[6.5px] text-white/40 block">DECISÃO</span>
+                      <b style={{ color: '#d4b87a', fontSize: '15px', display: 'block' }}>{candidates.filter(c => c.stage === 'decisao').length}</b>
+                      <span style={{ color: '#8a9098', fontSize: '7.5px', display: 'block' }}>DECISÃO</span>
                     </div>
+                    <div style={{ color: 'rgba(255,255,255,0.2)' }}>→</div>
                     <div>
-                      <b className="text-[#d4b87a] text-sm block">{candidates.filter(c => c.stage === 'onboarding').length}</b>
-                      <span className="text-[6.5px] text-white/40 block">ONBOARD</span>
+                      <b style={{ color: '#d4b87a', fontSize: '15px', display: 'block' }}>{candidates.filter(c => c.stage === 'onboarding').length}</b>
+                      <span style={{ color: '#8a9098', fontSize: '7.5px', display: 'block' }}>ONBOARD</span>
                     </div>
+                    <div style={{ color: 'rgba(255,255,255,0.2)' }}>→</div>
                     <div>
-                      <b className="text-[#5dcaa5] text-sm block">{teamMembers.length}</b>
-                      <span className="text-[6.5px] text-white/40 block">HIRED</span>
+                      <b style={{ color: '#5dcaa5', fontSize: '15px', display: 'block' }}>{teamMembers.length}</b>
+                      <span style={{ color: '#8a9098', fontSize: '7.5px', display: 'block' }}>HIRED</span>
                     </div>
                   </div>
                 </div>
 
                 {/* Candidate list stack */}
-                <div className="ipb-soft p-4 rounded-[1.2rem] flex-1 flex flex-col justify-between space-y-3">
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between border-b border-white/[0.04] pb-2">
+                <div className="dash-card" style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                  <div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px', borderBottom: '0.2px solid rgba(255,255,255,0.06)', paddingBottom: '8px' }}>
                       <div>
-                        <span className="text-[7.5px] uppercase tracking-widest text-[#d4b87a]/70 font-mono">HHS · SIG</span>
-                        <h3 className="text-[12px] font-bold text-[#d4b87a]">Funil Lencioni &amp; HHS</h3>
+                        <span className="panel-label">HHS · SIG</span>
+                        <h3 className="panel-title" style={{ fontSize: '13px', fontWeight: 700, color: '#d4b87a', margin: '2px 0' }}>Funil Lencioni &amp; HHS</h3>
                       </div>
-                      <button onClick={handleResetCandidates} className="text-[7.5px] uppercase tracking-wider text-white/45 hover:text-white border border-white/[0.08] rounded-[0.3rem] px-2 py-0.5 transition font-mono">
-                        ♻ Restaurar
-                      </button>
+                      <button onClick={handleResetCandidates} className="btn-reset-fake">♻ Restaurar</button>
                     </div>
 
-                    <div className="space-y-2 max-h-[160px] overflow-y-auto pr-1">
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', maxHeight: '180px', overflowY: 'auto', paddingRight: '4px' }}>
                       {candidates.length === 0 ? (
                         <div className="text-center py-6 text-[10px] text-white/30">Nenhum candidato no funil.</div>
                       ) : (
                         candidates.map(cand => (
-                          <div key={cand.id} className="p-2.5 bg-black/20 border border-white/[0.03] rounded-[0.6rem] relative flex flex-col gap-1.5 transition-all hover:border-white/[0.08]">
-                            <button onClick={() => handleDeleteCandidate(cand.id)} className="absolute top-2 right-2 text-white/30 hover:text-red-400 text-[9px] transition">✕</button>
+                          <div key={cand.id} className="cand-card-mockup" style={{ padding: '12px', marginBottom: '0px' }}>
+                            <button onClick={() => handleDeleteCandidate(cand.id)} className="btn-del-cand" style={{ width: '16px', height: '16px', fontSize: '9px', top: '8px', right: '8px' }}>✕</button>
                             
-                            <div className="flex items-center gap-2">
-                              <div className="h-6 w-6 rounded-full bg-[#d4b87a]/15 text-[#d4b87a] font-bold text-[9px] flex items-center justify-center border border-[#d4b87a]/20">
+                            <div className="header-row" style={{ gap: '8px' }}>
+                              <div className="avatar" style={{ width: '26px', height: '26px', fontSize: '10px' }}>
                                 {cand.name.split(' ').map(x => x[0]).join('')}
                               </div>
-                              <div>
-                                <h4 className="text-[10px] font-bold text-white/95 leading-none">{cand.name}</h4>
-                                <span className="text-[8px] text-white/45 font-mono">{cand.role} · {cand.stage.toUpperCase()}</span>
+                              <div className="info-col">
+                                <span className="name" style={{ fontSize: '11.5px' }}>{cand.name}</span>
+                                <span className="subtext" style={{ fontSize: '8px' }}>{cand.role} · {cand.stage.toUpperCase()}</span>
                               </div>
                             </div>
                             
                             {/* HHS Bar */}
-                            <div className="h-1 bg-white/[0.04] rounded-full overflow-hidden">
-                              <div className="h-full bg-[#d4b87a] rounded-full" style={{ width: `${cand.lencioniScore}%` }} />
+                            <div className="hhs-bar-mockup" style={{ margin: '6px 0' }}>
+                              <i style={{ width: `${cand.lencioniScore}%` }} />
                             </div>
 
-                            <div className="flex justify-between items-center text-[7.5px] font-mono text-white/50">
-                              <div className="flex gap-2">
-                                <span>HUM: <b className="text-white/80">{cand.stats.hum}%</b></span>
-                                <span>FOM: <b className="text-white/80">{cand.stats.fom}%</b></span>
-                                <span>INT: <b className="text-white/80">{cand.stats.int}%</b></span>
-                              </div>
-                              <button 
-                                onClick={() => handleTriggerOnboard(cand)}
-                                className="px-2 py-0.5 rounded-[0.25rem] bg-[#d4b87a]/15 border border-[#d4b87a]/30 text-[#d4b87a] font-bold hover:bg-[#d4b87a]/30 transition"
-                              >
-                                {cand.stage === 'triagem' ? 'Avançar' : cand.stage === 'onboarding' ? 'CONTRATAR' : 'Evoluir'}
-                              </button>
+                            <div className="stats-row" style={{ fontSize: '7.5px', paddingTop: '4px' }}>
+                              <div className="item"><span>HUM</span><b>{cand.stats.hum}%</b></div>
+                              <div className="item"><span>FOM</span><b>{cand.stats.fom}%</b></div>
+                              <div className="item"><span>INT</span><b>{cand.stats.int}%</b></div>
                             </div>
+                            <button 
+                              onClick={() => handleTriggerOnboard(cand)}
+                              className="btn-onboard"
+                              style={{ marginTop: '8px', padding: '6px' }}
+                            >
+                              {cand.stage === 'triagem' ? 'Avançar' : cand.stage === 'onboarding' ? 'CONTRATAR' : 'Evoluir'}
+                            </button>
                           </div>
                         ))
                       )}
@@ -871,8 +1357,8 @@ export function SigPessoasPanel() {
                 {[
                   { code: 'BLOCO 01', name: 'Líderes', action: 'Recrutar', status: '✓ ativo', color: 'text-[#5dcaa5]', tab: 'lideres', sub: 'recrutar' },
                   { code: 'BLOCO 02', name: 'Time', action: 'Formar', status: '⚡ atenção', color: 'text-[#fac775]', tab: 'time', sub: 'formar' },
-                  { code: 'BLOCO 03', name: 'Gerir', action: 'Diário', status: '✓ calibrado', color: 'text-[#5c9ae6]', tab: 'lideres', sub: 'gerir' },
-                  { code: 'BLOCO 04', name: 'Empresa', action: 'Estratégia', status: '✓ ativo', color: 'text-[#5dcaa5]', tab: 'empresa', sub: 'estrategia' }
+                  { code: 'BLOCO 03', name: 'Gerir', action: 'Diário', status: '✓ calibrado', style: 'ok', tab: 'lideres', sub: 'gerir' },
+                  { code: 'BLOCO 04', name: 'Empresa', action: 'Estratégia', status: '✓ ativo', style: 'ok', tab: 'empresa', sub: 'estrategia' }
                 ].map(b => (
                   <div 
                     key={b.code} 
@@ -882,267 +1368,228 @@ export function SigPessoasPanel() {
                       if (b.tab === 'time') setTimeTab(b.sub as TimeSubTab)
                       if (b.tab === 'empresa') setEmpresaTab(b.sub as EmpresaSubTab)
                     }}
-                    className="p-3 bg-black/30 border border-white/[0.04] rounded-lg transition-all hover:border-[#d4b87a]/40 hover:-translate-y-0.5 cursor-pointer text-left relative"
+                    className="bloco-item"
                   >
-                    <span className="text-[7.5px] font-mono text-white/35 block">{b.code}</span>
-                    <span className="text-[11px] font-bold text-white block mt-0.5">{b.name}</span>
-                    <span className="text-[8px] font-mono text-white/45 block">{b.action}</span>
-                    <span className={`text-[8px] font-bold ${b.color} absolute bottom-3 right-3`}>{b.status}</span>
+                    <div className="b-code">{b.code}</div>
+                    <div className="b-name">{b.name}</div>
+                    <div className="b-sub">{b.action}</div>
+                    <div className={`b-status ${b.style}`}>{b.status}</div>
                   </div>
                 ))}
               </div>
             </div>
 
             {/* ROW 2: Mapa do Time + Você como Líder */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <div className="home-row cols-2">
               
               {/* Mapa do Time */}
-              <div className="ipb-soft p-5 rounded-[1.2rem] space-y-3">
-                <div className="flex justify-between items-start">
+              <div className="dash-card">
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '4px' }}>
                   <div>
-                    <span className="text-[7.5px] uppercase tracking-widest text-[#d4b87a]/70 font-mono font-bold">Mapa · Time</span>
-                    <h3 className="text-sm font-bold text-white/90 leading-tight">Influência × Impacto</h3>
-                    <p className="text-[9.5px] text-white/40 mt-0.5">Mapeamento estratégico com base no capital social</p>
+                    <span className="panel-label">Mapa · Time</span>
+                    <h3 className="panel-title">Influência × Impacto</h3>
+                    <div className="panel-sub">Mapeamento estratégico com base no capital social</div>
                   </div>
-                  <button onClick={handleAddTeamMemberMap} className="text-[8.5px] uppercase tracking-wider text-[#d4b87a] border border-[#d4b87a]/30 hover:bg-[#d4b87a]/15 rounded-[0.4rem] px-2.5 py-1 transition font-bold font-mono">
-                    + ADD
+                  <button onClick={handleAddTeamMemberMap} className="btn-reset-sm" style={{ fontSize: '8px' }}>
+                    + add
                   </button>
                 </div>
 
-                <div className="relative aspect-[3/2] w-full border border-white/[0.06] rounded-xl overflow-hidden bg-black/40">
-                  {/* Grid Quadrants */}
-                  <div className="absolute inset-0 grid grid-cols-2 grid-rows-2">
-                    <div className="border-r border-b border-white/[0.03] bg-[#fac775]/[0.01] p-2 text-[7.5px] text-white/30 uppercase font-mono tracking-wider">neutralos · orientar</div>
-                    <div className="border-b border-white/[0.03] bg-[#5dcaa5]/[0.01] p-2 text-[7.5px] text-white/30 uppercase font-mono tracking-wider text-right">aliados · delegar</div>
-                    <div className="border-r border-white/[0.03] bg-[#e24b4a]/[0.01] p-2 text-[7.5px] text-white/30 uppercase font-mono tracking-wider flex items-end">bloqueador · direcionar</div>
-                    <div className="bg-[#cbd5e1]/[0.01] p-2 text-[7.5px] text-white/30 uppercase font-mono tracking-wider flex items-end justify-end">exec · apoiar</div>
-                  </div>
-
-                  {/* Axes Lines */}
-                  <div className="absolute inset-x-0 top-1/2 h-[0.7px] border-b border-dashed border-white/10" />
-                  <div className="absolute inset-y-0 left-1/2 w-[0.7px] border-r border-dashed border-white/10" />
-
-                  {/* Axis Label */}
-                  <span className="absolute bottom-2 left-1/2 -translate-x-1/2 text-[7px] font-mono text-white/20 uppercase tracking-widest">← Baixa Influência · Alta Influência →</span>
-                  <span className="absolute left-2 top-1/2 -translate-y-1/2 -rotate-90 origin-left text-[6.5px] font-mono text-white/20 uppercase tracking-widest">Alto Impacto ↑</span>
-
-                  {/* Plot Dots */}
-                  <div className="absolute inset-0">
-                    {teamMembers.map(m => {
-                      // Map -150..150 to 5%..95% and -100..100 to 5%..95%
-                      const left = `${((m.influence + 150) / 300) * 90 + 5}%`
-                      const bottom = `${((m.impact + 100) / 200) * 90 + 5}%`
-                      return (
-                        <div 
-                          key={m.id}
-                          className="absolute group cursor-pointer transition-all duration-300 hover:scale-125"
-                          style={{ left, bottom }}
-                          onClick={() => triggerToast(`${m.name} (${m.role}): D6=${m.d6}`)}
-                        >
-                          <div className="h-3 w-3 rounded-full bg-[#d4b87a] border border-white/40 shadow-[0_0_8px_#d4b87a]" />
-                          <div className="absolute top-4 left-1/2 -translate-x-1/2 whitespace-nowrap bg-black/95 border border-white/10 rounded px-1.5 py-0.5 text-[7.5px] pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity z-20">
-                            {m.name} ({m.role})
-                          </div>
-                        </div>
-                      )
-                    })}
+                <div className="mapa-container">
+                  <div className="mapa-svg-wrap">
+                    <svg viewBox="0 0 300 200" style={{ overflow: 'visible' }}>
+                      {/* Background quadrants */}
+                      <rect x="0" y="0" width="150" height="100" fill="rgba(250,199,117,0.04)" stroke="rgba(255,255,255,0.06)" strokeWidth="0.5"/>
+                      <rect x="150" y="0" width="150" height="100" fill="rgba(93,202,165,0.04)" stroke="rgba(255,255,255,0.06)" strokeWidth="0.5"/>
+                      <rect x="0" y="100" width="150" height="100" fill="rgba(226,75,74,0.04)" stroke="rgba(255,255,255,0.06)" strokeWidth="0.5"/>
+                      <rect x="150" y="100" width="150" height="100" fill="rgba(212,184,122,0.04)" stroke="rgba(255,255,255,0.06)" strokeWidth="0.5"/>
+                      {/* Axes */}
+                      <line x1="0" y1="100" x2="300" y2="100" stroke="rgba(255,255,255,0.12)" strokeWidth="1" strokeDasharray="4 3"/>
+                      <line x1="150" y1="0" x2="150" y2="200" stroke="rgba(255,255,255,0.12)" strokeWidth="1" strokeDasharray="4 3"/>
+                      {/* Axis labels */}
+                      <text x="150" y="195" textAnchor="middle" fontFamily="inherit" fontSize="8" fill="rgba(255,255,255,0.3)">← baixa influência · alta influência →</text>
+                      <text x="4" y="100" fontFamily="inherit" fontSize="7" fill="rgba(255,255,255,0.3)" writingMode="vertical-rl" transform="rotate(180,4,100)">alto impacto ↑</text>
+                      
+                      {/* Plot Dots */}
+                      <g>
+                        {teamMembers.map(m => {
+                          const cx = ((m.influence + 150) / 300) * 280 + 10
+                          const cy = 200 - (((m.impact + 100) / 200) * 180 + 10)
+                          return (
+                            <g key={m.id} className="cursor-pointer group" onClick={() => triggerToast(`${m.name} (${m.role}): D6=${m.d6}`)}>
+                              <circle cx={cx} cy={cy} r="6" fill="#d4b87a" stroke="#fff" strokeWidth="1" className="transition duration-300 hover:scale-125" style={{ filter: 'drop-shadow(0 0 4px #d4b87a)' }} />
+                              <text x={cx} y={cy - 10} textAnchor="middle" fill="#fff" fontSize="7" fontWeight="bold" className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none bg-black px-1 rounded">{m.name.split(' ')[0]}</text>
+                            </g>
+                          )
+                        })}
+                      </g>
+                    </svg>
+                    {/* Quadrant labels */}
+                    <div className="mapa-quadrant-lbl top-left">neutralos · orientar</div>
+                    <div className="mapa-quadrant-lbl top-right">aliados · delegar</div>
+                    <div className="mapa-quadrant-lbl bot-left">bloqueador · direcionar</div>
+                    <div className="mapa-quadrant-lbl bot-right">exec · apoiar</div>
                   </div>
                 </div>
               </div>
 
               {/* Você como Líder */}
-              <div className="ipb-soft p-5 rounded-[1.2rem] space-y-4">
-                <div>
-                  <span className="text-[7.5px] uppercase tracking-widest text-[#d4b87a]/70 font-mono">Perfil · Liderança</span>
-                  <h3 className="text-sm font-bold text-white/95 leading-tight">Você como Líder</h3>
-                </div>
+              <div className="dash-card">
+                <div className="panel-label">Perfil · Liderança</div>
+                <h3 className="panel-title">Você como Líder</h3>
 
-                <div className="grid grid-cols-2 gap-2 font-mono">
-                  <div className="p-2.5 bg-white/[0.02] border border-white/[0.08] hover:border-[#d4b87a]/30 rounded-lg cursor-pointer transition text-left">
-                    <span className="text-[7.5px] text-white/40 block">Modo 01</span>
-                    <span className="text-[11px] font-bold text-[#d4b87a] block mt-0.5">Gestor</span>
-                    <span className="text-[8px] text-white/50 block">Complexidade &amp; Orçamento</span>
+                {/* Role selector */}
+                <div className="voce-role-row">
+                  <div className="role-card active">
+                    <span className="rc-label">Modo 1</span>
+                    <span className="rc-title">Gestor</span>
+                    <span className="rc-sub">Complexidade &amp; Processos</span>
                   </div>
-                  <div className="p-2.5 bg-white/[0.04] border border-[#d4b87a]/35 rounded-lg cursor-pointer transition text-left shadow-[0_0_10px_rgba(212,184,122,0.06)]">
-                    <span className="text-[7.5px] text-[#d4b87a] block">Modo 02</span>
-                    <span className="text-[11px] font-bold text-white block mt-0.5">Líder</span>
-                    <span className="text-[8px] text-white/50 block">Mudança &amp; Pessoas</span>
+                  <div className="role-card">
+                    <span className="rc-label">Modo 2</span>
+                    <span className="rc-title">Líder</span>
+                    <span className="rc-sub">Mudança &amp; Propósito</span>
                   </div>
                 </div>
 
                 {/* Manifesto Checklist */}
-                <div className="space-y-2">
-                  <div className="flex justify-between items-center">
-                    <span className="text-[8px] font-mono uppercase tracking-wider text-white/40">Saúde Manifesto · 5 Princípios</span>
-                    <span className="text-[9px] font-mono text-[#5dcaa5] font-bold">{manifestoScoreVal}%</span>
-                  </div>
-                  
-                  <div className="space-y-1.5">
-                    {manifestoPrinciples.map((p, idx) => (
-                      <div 
-                        key={p.code}
-                        onClick={() => handleToggleManifesto(idx)}
-                        className="flex items-center justify-between p-2 bg-black/20 border border-white/[0.03] rounded-lg transition hover:border-white/[0.08] cursor-pointer"
-                      >
-                        <div className="flex items-center gap-2.5">
-                          <span className="text-[8px] font-mono font-bold text-[#d4b87a]">{p.code}</span>
-                          <span className="text-[10px] text-white/75">{p.text}</span>
-                        </div>
-                        <div className="shrink-0 cursor-pointer">
-                          {manifestoChecks[idx] ? (
-                            <CheckSquare className="h-3.5 w-3.5 text-[#5dcaa5]" />
-                          ) : (
-                            <Square className="h-3.5 w-3.5 text-white/20" />
-                          )}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
+                <div style={{ fontFamily: 'inherit', fontSize: '8px', color: '#8a9098', textTransform: 'uppercase', letterSpacing: '0.08em', marginTop: '14px', marginBottom: '8px' }}>
+                  Saúde Manifesto · 5 Princípios
+                </div>
+                <div className="manifesto-list">
+                  {manifestoPrinciples.map((p, idx) => (
+                    <div 
+                      key={p.code}
+                      onClick={() => handleToggleManifesto(idx)}
+                      className={`manifesto-item ${manifestoChecks[idx] ? 'done' : ''}`}
+                      style={{ cursor: 'pointer' }}
+                    >
+                      <div className="m-code">{p.code}</div>
+                      <div className="m-text">{p.text}</div>
+                      <div className="m-val">{manifestoChecks[idx] ? '✓ ativo' : '—'}</div>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
 
             {/* ROW 3: Primeiros Passos + Pulso Semanal */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <div className="home-row cols-2">
               
               {/* Primeiros Passos */}
-              <div className="ipb-soft p-5 rounded-[1.2rem] space-y-3">
-                <div className="flex justify-between items-start">
+              <div className="dash-card">
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
                   <div>
-                    <span className="text-[7.5px] uppercase tracking-widest text-[#d4b87a]/70 font-mono font-bold">Onboarding · Sistema</span>
-                    <h3 className="text-sm font-bold text-white/90 leading-tight">Primeiros Passos</h3>
+                    <span className="panel-label">Onboarding · Sistema</span>
+                    <h3 className="panel-title">Primeiros Passos</h3>
                   </div>
-                  <button onClick={handlePopularPassosExemplo} className="text-[8px] uppercase tracking-wider text-white/45 hover:text-white border border-white/[0.08] rounded-[0.4rem] px-2.5 py-1 transition font-mono">
-                    popular exemplo
-                  </button>
+                  <button onClick={handlePopularPassosExemplo} className="btn-reset-sm">popular com exemplo</button>
                 </div>
-
-                <div className="space-y-2">
+                <div className="primeiros-list">
                   {primeirosPassos.map((p, idx) => (
                     <div 
                       key={p.id}
                       onClick={() => handleTogglePassos(idx)}
-                      className="flex items-center gap-3 p-2.5 bg-black/15 border border-white/[0.03] hover:border-white/[0.06] rounded-xl transition cursor-pointer"
+                      className="passo-item"
                     >
-                      <div className={`h-5 w-5 rounded-full text-[9px] font-bold font-mono flex items-center justify-center shrink-0 transition-all ${
-                        passosChecks[idx] 
-                          ? 'bg-[#5dcaa5]/20 text-[#5dcaa5] border border-[#5dcaa5]/30' 
-                          : 'bg-white/[0.04] text-white/40 border border-white/[0.08]'
-                      }`}>
-                        {p.id}
+                      <div className="p-num">{p.id}</div>
+                      <div className="p-body">
+                        <span className={`p-title ${passosChecks[idx] ? 'done' : ''}`}>{p.title}</span>
+                        <span className="p-desc">{p.desc}</span>
                       </div>
-                      <div className="flex-1 text-left">
-                        <span className={`text-[10px] font-bold block ${passosChecks[idx] ? 'line-through text-white/30' : 'text-white/90'}`}>{p.title}</span>
-                        <span className="text-[8px] text-white/35 block font-mono">{p.desc}</span>
-                      </div>
-                      <div className="text-white/20">→</div>
+                      <div className="p-arrow">→</div>
                     </div>
                   ))}
                 </div>
               </div>
 
               {/* Pulso Semanal */}
-              <div className="ipb-soft p-5 rounded-[1.2rem] space-y-4">
-                <div className="flex justify-between items-center">
+              <div className="dash-card gold-border">
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
                   <div>
-                    <span className="text-[7.5px] uppercase tracking-widest text-[#d4b87a]/70 font-mono">📊 PULSO SEMANAL</span>
-                    <h3 className="text-sm font-bold text-white/90 leading-tight">Como está sua energia?</h3>
+                    <span className="panel-label">📊 Pulso Semanal</span>
+                    <h3 className="panel-title">Como está sua energia?</h3>
                   </div>
-                  <span className="px-2 py-0.5 rounded-[0.3rem] bg-[#d4b87a]/15 text-[#d4b87a] border border-[#d4b87a]/20 text-[8.5px] font-mono">Semana 21</span>
+                  <span className="pulso-semana-badge">Semana 21</span>
                 </div>
 
-                <div className="space-y-3 text-left">
-                  {/* Energy Row */}
-                  <div>
-                    <span className="text-[9.5px] font-bold text-white/45">Energia esta semana:</span>
-                    <div className="flex gap-2 mt-1.5">
-                      {[1, 2, 3, 4, 5].map(v => (
-                        <button
-                          key={v}
-                          onClick={() => setPulseEnergy(v)}
-                          className={`flex-1 py-1.5 rounded-md font-mono font-bold text-[10px] border transition ${
-                            pulseEnergy === v
-                              ? 'bg-[#d4b87a]/20 border-[#d4b87a]/70 text-[#d4b87a] shadow-[0_0_8px_rgba(212,184,122,0.2)]'
-                              : 'bg-black/30 border-white/[0.06] text-white/40 hover:text-white/70'
-                          }`}
-                        >
-                          {v}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Focus Row */}
-                  <div>
-                    <span className="text-[9.5px] font-bold text-white/45">E seu foco?</span>
-                    <div className="flex gap-2 mt-1.5">
-                      {[1, 2, 3, 4, 5].map(v => (
-                        <button
-                          key={v}
-                          onClick={() => setPulseFocus(v)}
-                          className={`flex-1 py-1.5 rounded-md font-mono font-bold text-[10px] border transition ${
-                            pulseFocus === v
-                              ? 'bg-[#d4b87a]/20 border-[#d4b87a]/70 text-[#d4b87a] shadow-[0_0_8px_rgba(212,184,122,0.2)]'
-                              : 'bg-black/30 border-white/[0.06] text-white/40 hover:text-white/70'
-                          }`}
-                        >
-                          {v}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Blocker Area */}
-                  <div>
-                    <span className="text-[9.5px] font-bold text-white/45 block mb-1">Qual o maior bloqueio agora? <span className="opacity-50 font-normal">(1 linha)</span></span>
-                    <textarea 
-                      value={pulseBlocker}
-                      onChange={(e) => setPulseBlocker(e.target.value)}
-                      placeholder="Descreva seu bloqueio principal desta semana..."
-                      className="w-full h-11 bg-black/40 border border-white/[0.08] rounded-lg p-2 text-[10px] text-white outline-none resize-none focus:border-[#d4b87a]/40 transition"
-                    />
-                  </div>
-
-                  <button 
-                    onClick={handleSavePulso}
-                    className="w-full py-2 rounded-lg bg-[#d4b87a]/15 hover:bg-[#d4b87a]/30 border border-[#d4b87a]/40 font-mono font-bold text-[10px] uppercase text-[#d4b87a] transition tracking-wider"
-                  >
-                    ✓ Salvar Pulso da Semana
-                  </button>
+                <div style={{ fontSize: '10px', color: '#8a9098', marginBottom: '6px', fontWeight: 600 }}>
+                  Energia esta semana:
                 </div>
+                <div className="pulso-rating-row">
+                  {[1, 2, 3, 4, 5].map(v => (
+                    <button
+                      key={v}
+                      onClick={() => setPulseEnergy(v)}
+                      className={`pulso-btn ${pulseEnergy === v ? 'active' : ''}`}
+                    >
+                      {v}
+                    </button>
+                  ))}
+                </div>
+
+                <div style={{ fontSize: '10px', color: '#8a9098', marginTop: '14px', marginBottom: '6px', fontWeight: 600 }}>
+                  E seu foco?
+                </div>
+                <div className="pulso-rating-row">
+                  {[1, 2, 3, 4, 5].map(v => (
+                    <button
+                      key={v}
+                      onClick={() => setPulseFocus(v)}
+                      className={`pulso-btn ${pulseFocus === v ? 'active' : ''}`}
+                    >
+                      {v}
+                    </button>
+                  ))}
+                </div>
+
+                <div style={{ fontSize: '10px', color: '#8a9098', marginTop: '14px', marginBottom: '6px', fontWeight: 600 }}>
+                  Qual o maior bloqueio agora? <span style={{ opacity: 0.5 }}>(1 linha)</span>
+                </div>
+                <textarea 
+                  value={pulseBlocker}
+                  onChange={(e) => setPulseBlocker(e.target.value)}
+                  placeholder="Descreva seu bloqueio principal desta semana..."
+                  className="pulso-input-area"
+                />
+                <button className="btn-pulso-save" onClick={handleSavePulso}>
+                  ✓ Salvar Pulso da Semana
+                </button>
               </div>
-
             </div>
 
             {/* ROW 4: OS 4 BLOCOS NAV */}
-            <div className="ipb-soft p-5 rounded-[1.2rem] space-y-3">
-              <span className="text-[7.5px] uppercase tracking-widest text-white/40 font-mono block mb-2">Navegação · OS - Os 4 Blocos · Clica pra Entrar</span>
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
-                {[
-                  { title: 'Líderes / Gestores', icon: '👥', desc: 'Recrutar · Gerir · Delegar', tags: ['Recrutar', 'Gerir', 'Você'], info: 'lideres', sub: 'recrutar' },
-                  { title: 'Time', icon: '🎯', desc: 'Formar · Pessoas · Influência', tags: ['Formar', 'Pessoas', 'Influência'], info: 'time', sub: 'formar' },
-                  { title: 'Gerir Diário', icon: '📓', desc: 'D6 · SBI · 1:1 · Config', tags: ['D6', 'SBI', '1:1'], info: 'lideres', sub: 'gerir' },
-                  { title: 'Empresa', icon: '🏢', desc: 'Estratégia · BI · OKRs', tags: ['Estratégia', 'BI', 'Canais'], info: 'empresa', sub: 'estrategia' }
-                ].map(n => (
-                  <div 
-                    key={n.title}
-                    onClick={() => {
-                      setActiveTab(n.info as TabOption)
-                      if (n.info === 'lideres') setLideresTab(n.sub as LideresSubTab)
-                      if (n.info === 'time') setTimeTab(n.sub as TimeSubTab)
-                    }}
-                    className="p-4 bg-black/20 border border-white/[0.03] hover:border-[#d4b87a]/35 rounded-xl transition cursor-pointer text-left flex flex-col justify-between h-[125px]"
-                  >
-                    <div>
-                      <span className="text-xl block">{n.icon}</span>
-                      <h4 className="text-[11px] font-bold text-white mt-1 leading-none">{n.title}</h4>
-                      <span className="text-[8px] text-white/45 block mt-1 font-mono leading-tight">{n.desc}</span>
+            <div className="home-row full">
+              <div className="dash-card">
+                <div className="panel-label">Navegação · OS</div>
+                <h3 className="panel-title">Os 4 Blocos · Clica pra Entrar</h3>
+                <div className="blocos-nav-grid">
+                  {[
+                    { title: 'Líderes / Gestores', icon: '👥', desc: 'Recrutar · Gerir · Delegar', tags: ['Recrutar', 'Gerir', 'Você'], info: 'lideres', sub: 'recrutar', count: `${candidates.length} cand` },
+                    { title: 'Time', icon: '🎯', desc: 'Formar · Pessoas · Influência', tags: ['Formar', 'Pessoas', 'Influência'], info: 'time', sub: 'formar', count: `${teamMembers.length} pess` },
+                    { title: 'Gerir Diário', icon: '📓', desc: 'D6 · SBI · 1:1 · Config', tags: ['D6', 'SBI', '1:1'], info: 'lideres', sub: 'gerir', count: 'diário IE' },
+                    { title: 'Empresa', icon: '🏢', desc: 'Estratégia · BI · OKRs', tags: ['Estratégia', 'BI', 'Canais'], info: 'empresa', sub: 'estrategia', count: 'configurar' }
+                  ].map(n => (
+                    <div 
+                      key={n.title}
+                      onClick={() => {
+                        setActiveTab(n.info as TabOption)
+                        if (n.info === 'lideres') setLideresTab(n.sub as LideresSubTab)
+                        if (n.info === 'time') setTimeTab(n.sub as TimeSubTab)
+                        if (n.info === 'empresa') setEmpresaTab(n.sub as EmpresaSubTab)
+                      }}
+                      className="bloco-nav-card"
+                    >
+                      <div className="bnc-icon">{n.icon}</div>
+                      <div className="bnc-title">{n.title}</div>
+                      <div className="bnc-sub">{n.desc}</div>
+                      <div className="bnc-tags">
+                        {n.tags.map(t => <span key={t} className="bnc-tag">{t}</span>)}
+                      </div>
+                      <div className="bnc-count">{n.count}</div>
                     </div>
-                    <div className="flex gap-1 flex-wrap mt-2">
-                      {n.tags.map(t => <span key={t} className="px-1.5 py-0.5 bg-white/[0.04] rounded-[0.25rem] text-[6.5px] font-mono text-white/50">{t}</span>)}
-                    </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
             </div>
           </motion.div>
