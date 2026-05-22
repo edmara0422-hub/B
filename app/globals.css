@@ -146,7 +146,7 @@
 
 .sea-shell-root {
   min-height: 100vh;
-  background: #010101;
+  background: transparent;
   color: #fff;
 }
 
@@ -779,16 +779,16 @@ body.sea-splash-active [data-sea-bottom-nav='true'] {
   position: relative;
   border-radius: 28px;
   overflow: hidden;
-  border: 1px solid rgba(212, 184, 122, 0.22);
-  background: rgba(0, 0, 0, 0.55) !important;
-  backdrop-filter: blur(16px) saturate(1.3) !important;
-  -webkit-backdrop-filter: blur(16px) saturate(1.3) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(0, 0, 0, 0.32) !important;
+  backdrop-filter: blur(24px) saturate(1.4) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(1.4) !important;
   box-shadow:
-    0 20px 48px rgba(0, 0, 0, 0.7),
-    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 24px 64px rgba(0, 0, 0, 0.65),
+    inset 0 1px 0 rgba(255, 255, 255, 0.10),
     inset 0 0 0 0.5px rgba(255, 255, 255, 0.02);
   cursor: pointer;
-  transition: all 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
   display: flex;
   flex-direction: column;
   transform: translate3d(0,0,0);
@@ -796,13 +796,13 @@ body.sea-splash-active [data-sea-bottom-nav='true'] {
 }
 
 .cockpit-card:hover {
-  transform: translateY(-3px) translate3d(0,0,0);
-  border-color: rgba(212, 184, 122, 0.45);
-  background: rgba(0, 0, 0, 0.80) !important;
+  transform: translateY(-4px) translate3d(0,0,0);
+  border-color: rgba(212, 184, 122, 0.40);
+  background: rgba(0, 0, 0, 0.48) !important;
   box-shadow:
-    0 28px 60px rgba(0, 0, 0, 0.8),
-    inset 0 1px 0 rgba(255, 255, 255, 0.14),
-    0 0 0 1.5px rgba(212, 184, 122, 0.16);
+    0 32px 72px rgba(0, 0, 0, 0.78),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    0 0 20px rgba(212, 184, 122, 0.12);
 }
 
 .cockpit-card::before {
@@ -850,9 +850,9 @@ body.sea-splash-active [data-sea-bottom-nav='true'] {
   height: 100%;
   position: relative;
   overflow: hidden; /* Important for framer-motion layout animations */
-  background: rgba(0, 0, 0, 0.55) !important;
-  backdrop-filter: blur(18px) saturate(1.3) !important;
-  -webkit-backdrop-filter: blur(18px) saturate(1.3) !important;
+  background: rgba(0, 0, 0, 0.35) !important;
+  backdrop-filter: blur(28px) saturate(1.4) !important;
+  -webkit-backdrop-filter: blur(28px) saturate(1.4) !important;
   display: flex;
   flex-direction: column;
   cursor: default;
