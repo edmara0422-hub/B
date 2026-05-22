@@ -78,8 +78,8 @@ export function MainShell({ children }: { children: ReactNode }) {
   }, [router])
   // Após login (sessionStorage limpo pelo signIn), inicia direto no splash —
   // skip landing porque o usuário já passou pela tela de auth e quer ver SEA.
-  // Reload simples → inicia no 'splash' todas as vezes.
-  const [phase, setPhase] = useState<'landing' | 'splash' | 'ready'>('splash')
+  // Reload simples (flag set) → 'ready' direto, mantendo o usuário onde estava.
+  const [phase, setPhase] = useState<'landing' | 'splash' | 'ready'>('ready')
   // Once we reach 'ready', persist the flag so reloads skip the intro.
   useEffect(() => {
     if (phase === 'ready') markSplashShown()
@@ -152,7 +152,7 @@ function ShellWithZoom({
   return (
     <div className="sea-shell-root">
       <main
-        className="pb-36"
+        className="pb-16"
         style={{ zoom: fontScale } as React.CSSProperties}
       >
         {visited.home && (
