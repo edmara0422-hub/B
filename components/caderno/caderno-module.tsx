@@ -17,7 +17,7 @@ const MODULE_NAMES: Record<string, string> = {
   M1: 'Neuro',
   M2: 'Pneumo/VM',
   M3: 'Cardio',
-  M4: 'Trauma',
+  M4: 'BUSINESS',
   M5: 'UTI',
 }
 
@@ -142,6 +142,92 @@ export function CadernoModulePanel({ moduleId, openTopicId: controlledOpenTopicI
     const isOpen = openTopicId === id
     setOpenTopicId(isOpen ? null : id)
     if (!isOpen) { setActiveTopicId(id); setActiveSidebarTool('summary') }
+  }
+
+  if (moduleId === 'M4') {
+    const slideCount = activeTopic.blocks.reduce((n, b) => n + (b.type === 'slides' ? b.slides.length : 0), 0)
+    
+    return (
+      <div className="flex flex-col gap-4">
+        {/* Elevated Strategic Brief Header */}
+        <div className="p-4 rounded-xl bg-white/[0.015] border border-white/[0.04] flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <span className="flex h-7 w-7 items-center justify-center rounded-lg font-mono text-[9px] font-extrabold bg-[#d4b87a]/15 text-[#d4b87a] border border-[#d4b87a]/20 shadow-[0_0_8px_rgba(212,184,122,0.15)]">
+              {String(module.topics.indexOf(activeTopic) + 1).padStart(2, '0')}
+            </span>
+            <div>
+              <span className="text-[7.5px] uppercase tracking-[0.25em] font-bold text-[#d4b87a]">Briefing Executivo Ativo</span>
+              <h3 className="text-[12.5px] font-bold text-white/90 leading-none mt-0.5">{activeTopic.title}</h3>
+            </div>
+          </div>
+          <span className="text-[8px] font-mono font-semibold px-2 py-0.5 rounded bg-white/5 border border-white/10 text-white/40 uppercase">
+            {slideCount ? `${slideCount} Slides de Estratégia` : 'Conteúdo Teórico'}
+          </span>
+        </div>
+
+        {/* Content reader */}
+        <div className="mt-1 space-y-5">
+          <div className="grid gap-5 xl:grid-cols-[1fr_256px]">
+            {/* Sidebar tool */}
+            <div className="order-1 xl:order-2">
+              <StudySidebar
+                topicId={activeTopic.id}
+                topicTitle={activeTopic.title}
+                moduleId={moduleId}
+                activeTool={activeSidebarTool}
+                onToolChange={setActiveSidebarTool}
+                tutorHistory={tutorHistory[activeTopic.id] ?? []}
+                onTutorHistoryChange={(msgs) => setTutorHistory((h) => ({ ...h, [activeTopic.id]: msgs }))}
+                tutorInput={tutorInput}
+                onTutorInputChange={setTutorInput}
+                isTutorLoading={isTutorLoading}
+                onSendTutor={(q) => handleAskTutor(q)}
+                videoUrls={activeTopic.blocks
+                  .filter((b): b is Extract<typeof b, { type: 'video' }> => b.type === 'video' && !!b.url)
+                  .map((b) => ({ title: b.title, url: b.url }))}
+              />
+            </div>
+
+            {/* Direct elevated reading blocks */}
+            <div className={(activeSidebarTool === 'summary' || activeSidebarTool === 'tutor') ? 'order-2 xl:order-1 space-y-5 min-w-0' : 'hidden'}>
+              {activeTopic.blocks.length === 0 ? (
+                <SkeletonDocument />
+              ) : (
+                activeTopic.blocks.filter((b) => b.type !== 'video').map((block) => (
+                  <div key={block.id} className="p-5 rounded-2xl bg-white/[0.015] border border-white/[0.04] backdrop-blur-md relative overflow-hidden transition-all duration-300 hover:border-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.02),0_8px_32px_rgba(0,0,0,0.2)]">
+                    <div className="absolute inset-0 opacity-[0.015] pointer-events-none" style={{
+                      background: 'radial-gradient(circle at 0% 0%, #d4b87a, transparent 40%)'
+                    }} />
+                    <CadernoBlock block={block} />
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Floating popup for selection search */}
+        {selectionPopup && typeof document !== 'undefined' && createPortal(
+          <AnimatePresence>
+            <motion.button
+              key="selection-popup"
+              ref={popupRef}
+              initial={{ opacity: 0, scale: 0.8, y: 4 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.8, y: 4 }}
+              transition={{ duration: 0.18 }}
+              style={{ position: 'fixed', left: selectionPopup.x, top: selectionPopup.y, transform: 'translateX(-50%)', zIndex: 9999 }}
+              onClick={() => handleAskTutor('', selectionPopup.text)}
+              className="flex items-center gap-1.5 rounded-full border border-white/16 bg-[rgba(10,10,12,0.94)] px-3 py-1.5 text-[10px] uppercase tracking-[0.2em] text-[#d4b87a] backdrop-blur-xl shadow-[0_8px_24px_rgba(0,0,0,0.4)] hover:bg-white/10 transition"
+            >
+              <Sparkles className="h-3 w-3" />
+              Explicar Termo
+            </motion.button>
+          </AnimatePresence>,
+          document.body
+        )}
+      </div>
+    )
   }
 
   return (
