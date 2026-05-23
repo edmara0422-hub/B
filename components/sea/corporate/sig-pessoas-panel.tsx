@@ -672,43 +672,47 @@ export function SigPessoasPanel() {
         }
 
         .dash-card {
-          background: rgba(10, 10, 12, 0.40) !important;
-          backdrop-filter: blur(20px) saturate(180%) !important;
-          -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
-          border: 0.2px solid rgba(212, 184, 122, 0.12) !important;
+          background: rgba(5, 5, 5, 0.85) !important;
+          backdrop-filter: blur(28px) saturate(130%) !important;
+          -webkit-backdrop-filter: blur(28px) saturate(130%) !important;
+          border: none !important;
           border-radius: 14px;
           padding: 22px;
           position: relative;
           overflow: hidden;
           box-shadow: 
-            inset 0 1px 0 rgba(255, 255, 255, 0.05),
+            inset 0 1px 0 rgba(255, 255, 255, 0.06),
+            inset 0 -1px 0 rgba(0, 0, 0, 0.85),
             0 12px 40px rgba(0, 0, 0, 0.75) !important;
           transition: all .3s cubic-bezier(.22,.61,.36,1);
         }
         .dash-card::before {
-          content: '';
-          position: absolute; top: 0; left: 0; right: 0; height: 1px;
-          background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.04) 20%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0.04) 80%, transparent 100%);
+          content: "";
+          position: absolute;
+          inset: 0;
+          border-radius: 14px;
+          padding: 1px;
+          background: linear-gradient(90deg, #cbd5e1 0%, #d4b87a 100%) !important;
+          -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+          -webkit-mask-composite: xor;
+          mask-composite: exclude;
           pointer-events: none;
+          z-index: 1;
         }
         .dash-card.gold-border {
-          border-color: rgba(212, 184, 122, 0.35) !important;
-          box-shadow: 
-            inset 0 1px 0 rgba(255, 255, 255, 0.08),
-            0 16px 48px rgba(0, 0, 0, 0.85),
-            0 0 15px rgba(212, 184, 122, 0.10) !important;
+          background: rgba(5, 5, 5, 0.85) !important;
+          border: none !important;
         }
         .dash-card.gold-border::before {
-          background: linear-gradient(90deg, transparent 0%, rgba(212, 184, 122, 0.2) 20%, rgba(255, 255, 255, 0.4) 50%, rgba(212, 184, 122, 0.2) 80%, transparent 100%);
+          background: linear-gradient(90deg, #cbd5e1 0%, #d4b87a 100%) !important;
         }
         .dash-card:hover {
-          border-color: rgba(212, 184, 122, 0.35) !important;
-          background: rgba(15, 15, 18, 0.55) !important;
+          background: rgba(10, 10, 12, 0.95) !important;
           box-shadow: 
-            inset 0 1px 0 rgba(255, 255, 255, 0.10),
+            inset 0 1px 0 rgba(255, 255, 255, 0.12),
             0 16px 48px rgba(0, 0, 0, 0.85),
-            0 0 20px rgba(212, 184, 122, 0.15) !important;
-          transform: translateY(-2px);
+            0 0 25px rgba(255, 255, 255, 0.05) !important;
+          transform: translateY(-2.5px);
         }
 
         .panel-label {

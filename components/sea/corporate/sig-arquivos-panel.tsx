@@ -1,8 +1,6 @@
 'use client'
 
 import React, { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { Search, UploadCloud, FolderOpen, FileText, Trash2, Plus, HardDrive } from 'lucide-react'
 
 type VaultFile = {
   id: string
@@ -28,18 +26,8 @@ export function SigArquivosPanel() {
     { id: 'v-4', name: 'manual_operacional_sprint5.pdf', category: 'Outro', size: '8.2 MB', date: '12 Mai, 11:22' }
   ])
 
-  const [toastMsg, setToastMsg] = useState<string | null>(null)
-
-  function triggerToast(msg: string) {
-    setToastMsg(msg)
-    setTimeout(() => setToastMsg(null), 3000)
-  }
-
   function handleAddFile() {
-    if (!newName.trim()) {
-      triggerToast('Por favor, digite o nome do arquivo.')
-      return
-    }
+    if (!newName.trim()) return
 
     const nameWithExt = newName.includes('.') ? newName : `${newName}.pdf`
 
@@ -53,12 +41,10 @@ export function SigArquivosPanel() {
 
     setFiles([newFile, ...files])
     setNewName('')
-    triggerToast(`Arquivo ${nameWithExt} arquivado no Vault!`)
   }
 
-  function handleDeleteFile(id: string, name: string) {
+  function handleDeleteFile(id: string) {
     setFiles(files.filter(f => f.id !== id))
-    triggerToast(`Arquivo ${name} removido com sucesso.`)
   }
 
   // Filter & Search logic
@@ -69,189 +55,311 @@ export function SigArquivosPanel() {
   })
 
   // Calculate used space
-  const totalFiles = files.length
-  const usedSpace = (files.reduce((acc, f) => acc + parseFloat(f.size), 0)).toFixed(1)
+  const usedSpace = files.reduce((acc, f) => acc + parseFloat(f.size), 0).toFixed(1)
 
   return (
-    <div className="ipb-soft p-5 border border-white/[0.04] rounded-[1.2rem] space-y-6">
-      {/* Toast Alert floating */}
-      <AnimatePresence>
-        {toastMsg && (
-          <motion.div
-            initial={{ opacity: 0, y: -20, x: '-50%' }}
-            animate={{ opacity: 1, y: 0, x: '-50%' }}
-            exit={{ opacity: 0, y: -20, x: '-50%' }}
-            className="fixed top-6 left-1/2 z-50 px-4 py-2 rounded-lg text-xs font-medium shadow-2xl backdrop-blur-md border bg-black/90 text-[#d4b87a] border-[#d4b87a]/20"
-          >
-            {toastMsg}
-          </motion.div>
-        )}
-      </AnimatePresence>
+    <div className="w-full">
+      <style>{`
+        .dash-card-vault {
+          background: rgba(5, 5, 5, 0.85) !important;
+          backdrop-filter: blur(28px) saturate(130%) !important;
+          -webkit-backdrop-filter: blur(28px) saturate(130%) !important;
+          border: none !important;
+          border-radius: 14px;
+          padding: 30px;
+          position: relative;
+          overflow: hidden;
+          box-shadow: 
+            inset 0 1px 0 rgba(255, 255, 255, 0.06),
+            inset 0 -1px 0 rgba(0, 0, 0, 0.85),
+            0 12px 40px rgba(0, 0, 0, 0.55) !important;
+          transition: all .3s cubic-bezier(.22,.61,.36,1);
+        }
+        .dash-card-vault::before {
+          content: "";
+          position: absolute;
+          inset: 0;
+          border-radius: 14px;
+          padding: 1px;
+          background: linear-gradient(90deg, #cbd5e1 0%, #d4b87a 100%) !important;
+          -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+          -webkit-mask-composite: xor;
+          mask-composite: exclude;
+          pointer-events: none;
+          z-index: 1;
+        }
+        .sec-head { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 24px; gap: 20px }
+        .sec-head .lhs { display: flex; flex-direction: column; gap: 5px }
+        .sec-id { display: flex; align-items: center; gap: 12px }
+        .sec-id .num {
+          font-family: monospace; font-size: 9.5px; letter-spacing: .1em; color: #d4b87a; font-weight: 500;
+          border: 0.2px solid rgba(255, 255, 255, 0.08); padding: 3px 9px; border-radius: 4px; background: rgba(218,165,32,.04);
+        }
+        .sec-id .tag { font-family: monospace; font-size: 10px; letter-spacing: .1em; color: #8a9098; text-transform: uppercase }
+        .sec-h {
+          font-family: inherit; font-size: 22px; letter-spacing: -.02em;
+          font-weight: 300; line-height: 1.2; color: #fff;
+          margin-top: 4px; margin-bottom: 0;
+        }
+        .sec-h .em {
+          background: linear-gradient(135deg, #b8975a 0%, #d4b87a 28%, #e8cc88 50%, #d4b87a 72%, #b8975a 100%);
+          background-clip: text; -webkit-background-clip: text;
+          color: transparent; -webkit-text-fill-color: transparent;
+          font-weight: 600;
+        }
+        .sec-sub { font-size: 11.5px; color: #8a9098; margin-top: 4px; font-weight: 200 }
+        .sec-meta { display: flex; flex-direction: column; gap: 4px; font-family: monospace; font-size: 10px; letter-spacing: .04em; color: #8a9098; text-align: right }
+        .sec-meta b { color: #fff; font-weight: 600 }
 
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between border-b border-white/[0.04] pb-3 gap-3">
-        <div>
-          <span className="text-[7.5px] uppercase tracking-widest text-[#d4b87a]/70">SIG · ARQUIVOS</span>
-          <h3 className="text-sm font-semibold text-white/90">Cockpit Vault Database</h3>
-          <p className="text-[10px] text-white/40">Repositório criptografado para relatórios consolidados e documentos de governança</p>
-        </div>
-        
-        {/* Capacity Indicator */}
-        <div className="flex items-center gap-2.5 p-2 bg-black/20 border border-white/[0.03] rounded-[0.6rem] shrink-0">
-          <HardDrive className="h-5 w-5 text-[#d4b87a]" />
-          <div className="text-[9px] leading-tight">
-            <span className="text-white/60 font-medium">Capacidade: {usedSpace} MB / 100 MB</span>
-            <div className="h-1 bg-white/[0.08] rounded-full overflow-hidden mt-1 w-28">
-              <div 
-                className="h-full bg-[#d4b87a] rounded-full" 
-                style={{ width: `${Math.min((parseFloat(usedSpace) / 100) * 100, 100)}%` }} 
-              />
+        .vault-pill {
+          padding: 6px 12px;
+          border-radius: 20px;
+          font-size: 9.5px;
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+          transition: all 0.2s;
+          cursor: pointer;
+        }
+        .vault-pill.active {
+          background: rgba(212, 184, 122, 0.12) !important;
+          border: 0.2px solid rgba(212, 184, 122, 0.3) !important;
+          color: #d4b87a;
+          font-weight: bold;
+        }
+        .vault-pill.inactive {
+          background: rgba(255, 255, 255, 0.02) !important;
+          border: 0.2px solid rgba(255, 255, 255, 0.05) !important;
+          color: #8a9098;
+        }
+        .vault-pill.inactive:hover {
+          color: #fff;
+          background: rgba(255, 255, 255, 0.04) !important;
+        }
+        .vault-table {
+          width: 100%;
+          border-collapse: collapse;
+          font-size: 11px;
+          text-align: left;
+        }
+        .vault-table th {
+          padding: 10px 8px;
+          color: rgba(255, 255, 255, 0.4);
+          font-family: monospace;
+          font-size: 8.5px;
+          text-transform: uppercase;
+          letter-spacing: 0.08em;
+          border-bottom: 0.2px solid rgba(255, 255, 255, 0.1);
+        }
+        .vault-table td {
+          padding: 12px 8px;
+          border-bottom: 0.2px solid rgba(255, 255, 255, 0.03);
+          vertical-align: middle;
+        }
+        .vault-table tr:hover {
+          background: rgba(255, 255, 255, 0.01);
+        }
+      `}</style>
+
+      <div className="dash-card-vault">
+        <div className="sec-head">
+          <div className="lhs">
+            <div className="sec-id">
+              <span className="num">SEC · 08</span>
+              <span className="tag">Arquivos &amp; Vault</span>
             </div>
+            <h2 className="sec-h">
+              Cockpit <span className="em">Vault Database</span>
+            </h2>
+            <div className="sec-sub">Repositório criptografado para relatórios consolidados e documentos de governança</div>
           </div>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        {/* Left: Table with Search and Filter pills */}
-        <div className="lg:col-span-8 space-y-4">
-          <div className="flex flex-col sm:flex-row gap-2.5">
-            {/* Search Bar */}
-            <div className="flex-1 flex items-center gap-2 rounded-[0.7rem] bg-black/40 border border-white/[0.08] px-3 py-2">
-              <Search className="h-3.5 w-3.5 shrink-0 text-white/30" />
-              <input
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                placeholder="Buscar arquivos por nome..."
-                className="flex-1 bg-transparent text-[11px] text-white/70 outline-none placeholder:text-white/20"
-              />
-            </div>
-            {/* Category Pills */}
-            <div className="flex flex-wrap gap-1 items-center">
-              {['todos', 'relatório', 'contrato', 'auditoria', 'outro'].map(cat => (
-                <button
-                  key={cat}
-                  onClick={() => setActiveCategory(cat)}
-                  className={`px-3 py-1.5 rounded-full text-[9px] uppercase tracking-wider transition ${
-                    activeCategory === cat 
-                      ? 'bg-[#d4b87a]/12 border border-[#d4b87a]/25 text-[#d4b87a] font-semibold' 
-                      : 'bg-white/[0.02] border border-white/[0.05] text-white/40 hover:text-white/60'
-                  }`}
-                >
-                  {cat}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Database Grid Table */}
-          <div className="overflow-x-auto border border-white/[0.04] bg-black/25 rounded-[0.8rem]">
-            <table className="w-full text-left border-collapse">
-              <thead>
-                <tr className="border-b border-white/[0.06] bg-white/[0.01] text-[8.5px] uppercase tracking-wider text-white/30">
-                  <th className="p-3">Nome do Arquivo</th>
-                  <th className="p-3">Categoria</th>
-                  <th className="p-3">Tamanho</th>
-                  <th className="p-3">Maturidade</th>
-                  <th className="p-3 text-center">Ações</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-white/[0.03]">
-                {filteredFiles.length > 0 ? (
-                  filteredFiles.map(file => (
-                    <tr key={file.id} className="hover:bg-white/[0.01] transition text-[10.5px]">
-                      <td className="p-3 font-medium text-white/80 flex items-center gap-2">
-                        <FileText className="h-3.5 w-3.5 text-white/30 shrink-0" />
-                        <span className="truncate max-w-[200px]" title={file.name}>{file.name}</span>
-                      </td>
-                      <td className="p-3">
-                        <span className="px-2 py-0.5 rounded-[0.3rem] text-[8px] uppercase tracking-wide bg-white/[0.04] border border-white/[0.06] text-white/60">
-                          {file.category}
-                        </span>
-                      </td>
-                      <td className="p-3 font-mono text-white/40">{file.size}</td>
-                      <td className="p-3 font-mono text-white/40">{file.date}</td>
-                      <td className="p-3 text-center">
-                        <button 
-                          onClick={() => handleDeleteFile(file.id, file.name)}
-                          className="text-white/30 hover:text-red-400 p-1.5 rounded transition hover:bg-white/[0.04]"
-                        >
-                          <Trash2 className="h-3.5 w-3.5" />
-                        </button>
-                      </td>
-                    </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td colSpan={5} className="p-8 text-center text-white/30 text-[10px]">
-                      Nenhum arquivo encontrado no Vault.
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        {/* Right: Upload zone & Archiving Form */}
-        <div className="lg:col-span-4 space-y-4">
-          {/* Custom Dropzone */}
-          <div 
-            onClick={() => triggerToast('Carregando seletor de arquivos local...')}
-            className="border border-dashed border-[#d4b87a]/20 bg-black/10 hover:bg-[#d4b87a]/5 p-5 rounded-[0.8rem] text-center cursor-pointer transition flex flex-col items-center justify-center gap-2.5"
-          >
-            <UploadCloud className="h-8 w-8 text-[#d4b87a]/80" />
-            <div>
-              <span className="text-[10px] font-semibold text-white/90 block">Arraste arquivos aqui</span>
-              <span className="text-[8.5px] text-white/40 block mt-0.5">Suporta PDF, XLSX, DOCX até 15MB</span>
-            </div>
-          </div>
-
-          {/* Archiving Form */}
-          <div className="p-4 bg-black/20 border border-white/[0.03] rounded-[0.8rem] space-y-3">
-            <span className="text-[7.5px] uppercase tracking-widest text-[#d4b87a] block">Arquivamento Manual</span>
-            
-            <div className="space-y-2">
-              <div>
-                <label className="text-[9px] text-white/50 block mb-1">Nome do Documento</label>
-                <input
-                  value={newName}
-                  onChange={(e) => setNewName(e.target.value)}
-                  placeholder="Ex: balanco_patrimonial_q1"
-                  className="w-full bg-black/40 border border-white/[0.08] rounded-[0.5rem] px-3 py-1.5 text-[10.5px] outline-none text-white focus:border-[#d4b87a]/45 transition"
-                />
-              </div>
-
-              <div className="grid grid-cols-2 gap-2">
-                <div>
-                  <label className="text-[9px] text-white/50 block mb-1">Categoria</label>
-                  <select
-                    value={newCat}
-                    onChange={(e) => setNewCat(e.target.value as any)}
-                    className="w-full bg-black/40 border border-white/[0.08] rounded-[0.5rem] px-2.5 py-1.5 text-[10.5px] outline-none text-white/80 cursor-pointer"
-                  >
-                    <option value="Relatório">Relatório</option>
-                    <option value="Contrato">Contrato</option>
-                    <option value="Auditoria">Auditoria</option>
-                    <option value="Outro">Outro</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="text-[9px] text-white/50 block mb-1">Tamanho (MB)</label>
-                  <input
-                    value={newSize}
-                    onChange={(e) => setNewSize(e.target.value)}
-                    placeholder="Ex: 3.5 MB"
-                    className="w-full bg-black/40 border border-white/[0.08] rounded-[0.5rem] px-3 py-1.5 text-[10.5px] outline-none text-white focus:border-[#d4b87a]/45 transition"
+          <div className="rhs">
+            <div className="flex items-center gap-3 bg-black/30 border border-white/[0.06] p-3 rounded-lg text-left">
+              <div className="text-[10px] leading-tight">
+                <span className="text-white/60 font-medium block">Capacidade: {usedSpace} MB / 100 MB</span>
+                <div className="h-1 bg-white/[0.08] rounded-full overflow-hidden mt-1.5 w-24">
+                  <div
+                    className="h-full bg-[#d4b87a] rounded-full"
+                    style={{ width: `${Math.min((parseFloat(usedSpace) / 100) * 100, 100)}%` }}
                   />
                 </div>
               </div>
             </div>
+          </div>
+        </div>
 
-            <button
-              onClick={handleAddFile}
-              className="w-full bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.1] py-2 rounded-[0.6rem] text-[10px] font-medium text-white transition flex items-center justify-center gap-1"
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-6 relative z-10">
+          {/* LEFT: TABLE WITH SEARCH AND FILTERS */}
+          <div className="lg:col-span-8 flex flex-col gap-4">
+            <div className="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center">
+              {/* Search Bar */}
+              <div className="flex-1 flex items-center gap-2.5 rounded-lg bg-black/40 border border-white/[0.08] px-3.5 py-2">
+                <input
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  placeholder="Buscar arquivos por nome..."
+                  className="flex-1 bg-transparent text-[11px] text-white outline-none placeholder:text-white/20"
+                />
+              </div>
+
+              {/* Category Pills */}
+              <div className="flex flex-wrap gap-1.5">
+                {['todos', 'relatório', 'contrato', 'auditoria', 'outro'].map(cat => (
+                  <button
+                    key={cat}
+                    onClick={() => setActiveCategory(cat)}
+                    className={`vault-pill ${activeCategory === cat ? 'active' : 'inactive'}`}
+                  >
+                    {cat}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Cripto file vault table grid */}
+            <div className="overflow-x-auto border border-white/[0.06] bg-black/20 rounded-xl">
+              <table className="vault-table">
+                <thead>
+                  <tr>
+                    <th>Nome do Arquivo</th>
+                    <th>Categoria</th>
+                    <th>Tamanho</th>
+                    <th>Maturidade</th>
+                    <th className="text-center">Ações</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredFiles.length > 0 ? (
+                    filteredFiles.map(file => (
+                      <tr key={file.id}>
+                        <td className="font-medium text-white/90">
+                          <span className="flex items-center gap-2">
+                            <span>📄</span>
+                            <span className="truncate max-w-[180px]" title={file.name}>
+                              {file.name}
+                            </span>
+                          </span>
+                        </td>
+                        <td>
+                          <span className="px-2 py-0.5 rounded text-[8.5px] uppercase tracking-wide bg-white/[0.04] border border-white/[0.08] text-white/60">
+                            {file.category}
+                          </span>
+                        </td>
+                        <td className="font-mono text-white/40">{file.size}</td>
+                        <td className="font-mono text-white/40">{file.date}</td>
+                        <td className="text-center">
+                          <button
+                            onClick={() => handleDeleteFile(file.id)}
+                            className="text-white/30 hover:text-red-400 font-mono text-[9px] hover:underline"
+                          >
+                            ✕ Excluir
+                          </button>
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan={5} className="p-8 text-center text-white/30 text-[10.5px]">
+                        Nenhum arquivo encontrado no Vault.
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          {/* RIGHT: DRAG & DROP & FORM */}
+          <div className="lg:col-span-4 flex flex-col gap-4">
+            {/* Custom Dropzone */}
+            <div
+              className="border border-dashed border-[#d4b87a]/20 bg-black/10 hover:bg-[#d4b87a]/5 p-5 rounded-xl text-center cursor-pointer transition flex flex-col items-center justify-center gap-2"
+              onClick={() => alert('Carregando seletor local...')}
             >
-              <Plus className="h-3.5 w-3.5" /> Arquivar no Vault
-            </button>
+              <span className="text-2xl">☁️</span>
+              <div>
+                <span className="text-[10px] font-semibold text-white/90 block">Arraste arquivos aqui</span>
+                <span className="text-[8.5px] text-white/40 block mt-0.5">Suporta PDF, XLSX, DOCX até 15MB</span>
+              </div>
+            </div>
+
+            {/* Archiving Form */}
+            <div className="bg-black/25 border border-white/[0.06] rounded-xl p-5 flex flex-col gap-3">
+              <span className="font-mono text-[8.5px] text-[#d4b87a] tracking-wider uppercase border-b border-white/[0.08] pb-2">
+                Arquivamento Manual
+              </span>
+
+              <div className="flex flex-col gap-2.5">
+                <div>
+                  <label className="text-[9.5px] text-white/40 block mb-1">Nome do Documento</label>
+                  <input
+                    value={newName}
+                    onChange={(e) => setNewName(e.target.value)}
+                    placeholder="Ex: balanco_patrimonial_q1"
+                    style={{
+                      width: '100%',
+                      background: 'rgba(5, 5, 5, 0.45)',
+                      border: '0.2px solid rgba(255,255,255,0.08)',
+                      borderRadius: '6px',
+                      padding: '8px 12px',
+                      fontSize: '10.5px',
+                      color: '#fff',
+                      outline: 'none'
+                    }}
+                  />
+                </div>
+
+                <div className="grid grid-cols-2 gap-2">
+                  <div>
+                    <label className="text-[9.5px] text-white/40 block mb-1">Categoria</label>
+                    <select
+                      value={newCat}
+                      onChange={(e) => setNewCat(e.target.value as any)}
+                      style={{
+                        width: '100%',
+                        background: 'rgba(5, 5, 5, 0.45)',
+                        border: '0.2px solid rgba(255,255,255,0.08)',
+                        borderRadius: '6px',
+                        padding: '7px 10px',
+                        fontSize: '10px',
+                        color: '#fff',
+                        outline: 'none',
+                        cursor: 'pointer'
+                      }}
+                    >
+                      <option value="Relatório">Relatório</option>
+                      <option value="Contrato">Contrato</option>
+                      <option value="Auditoria">Auditoria</option>
+                      <option value="Outro">Outro</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="text-[9.5px] text-white/40 block mb-1">Tamanho (MB)</label>
+                    <input
+                      value={newSize}
+                      onChange={(e) => setNewSize(e.target.value)}
+                      placeholder="Ex: 3.5 MB"
+                      style={{
+                        width: '100%',
+                        background: 'rgba(5, 5, 5, 0.45)',
+                        border: '0.2px solid rgba(255,255,255,0.08)',
+                        borderRadius: '6px',
+                        padding: '8px 12px',
+                        fontSize: '10.5px',
+                        color: '#fff',
+                        outline: 'none'
+                      }}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <button
+                onClick={handleAddFile}
+                className="bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.1] py-2 rounded-md text-[10px] font-medium text-white transition mt-2 w-full"
+              >
+                + Arquivar no Vault
+              </button>
+            </div>
           </div>
         </div>
       </div>

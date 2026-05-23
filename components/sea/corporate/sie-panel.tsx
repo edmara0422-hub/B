@@ -75,17 +75,54 @@ export function SiePanel({ initialTab }: { initialTab?: SieSubTab }) {
 
   return (
     <div className="w-full space-y-4">
+      <style>{`
+        .dash-card-systems {
+          background: rgba(5, 5, 5, 0.85) !important;
+          backdrop-filter: blur(28px) saturate(130%) !important;
+          -webkit-backdrop-filter: blur(28px) saturate(130%) !important;
+          border: none !important;
+          border-radius: 14px;
+          padding: 30px;
+          position: relative;
+          overflow: hidden;
+          box-shadow: 
+            inset 0 1px 0 rgba(255, 255, 255, 0.06),
+            inset 0 -1px 0 rgba(0, 0, 0, 0.85),
+            0 12px 40px rgba(0, 0, 0, 0.55) !important;
+          transition: all .3s cubic-bezier(.22,.61,.36,1);
+        }
+        .dash-card-systems::before {
+          content: "";
+          position: absolute;
+          inset: 0;
+          border-radius: 14px;
+          padding: 1px;
+          background: linear-gradient(90deg, #cbd5e1 0%, #d4b87a 100%) !important;
+          -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+          -webkit-mask-composite: xor;
+          mask-composite: exclude;
+          pointer-events: none;
+          z-index: 1;
+        }
+        .system-tab-btn {
+          font-family: inherit; font-size: 11px; letter-spacing: .03em;
+          color: #8a9098; background: transparent; border: none;
+          padding: 6px 16px; border-radius: 6px; cursor: pointer;
+          transition: all .2s ease-in-out;
+        }
+        .system-tab-btn.active {
+          background: rgba(212, 184, 122, 0.1) !important;
+          border: 0.2px solid rgba(212, 184, 122, 0.3) !important;
+          color: #e0c887 !important;
+        }
+      `}</style>
       {/* Sub tabs Row */}
       <div className="flex gap-2 border-b border-white/[0.06] pb-2.5">
         {(['forecast', 'inovacao', 'canvas'] as const).map(tab => (
           <button
             key={tab}
             onClick={() => setSubTab(tab)}
-            className={`px-4 py-2 text-[11px] lg:text-xs rounded-md font-medium tracking-wide transition ${
-              subTab === tab
-                ? 'bg-[#d4b87a]/10 border border-[#d4b87a]/30 text-[#e0c887]'
-                : 'text-white/40 hover:text-white/80'
-            }`}
+            className={`system-tab-btn ${subTab === tab ? 'active' : ''}`}
           >
             {tab === 'forecast' && 'Cenários & Forecast'}
             {tab === 'inovacao' && 'Inovação'}
@@ -103,7 +140,7 @@ export function SiePanel({ initialTab }: { initialTab?: SieSubTab }) {
             exit={{ opacity: 0, y: -10 }}
             className="space-y-4"
           >
-            <div className="ipb-soft relative overflow-hidden rounded-[1.2rem] p-6 lg:p-8 border border-white/[0.06]">
+            <div className="dash-card-systems">
               <div className="flex justify-between items-start mb-6">
                 <div>
                   <div className="text-[7.5px] font-mono text-[#d4b87a] tracking-[0.2em] font-bold uppercase mb-1">SEC · 01 ◆ Cenários & Forecast</div>
@@ -202,7 +239,7 @@ export function SiePanel({ initialTab }: { initialTab?: SieSubTab }) {
             exit={{ opacity: 0, y: -10 }}
             className="space-y-4"
           >
-            <div className="ipb-soft relative overflow-hidden rounded-[1.2rem] p-6 lg:p-8 border border-white/[0.06]">
+            <div className="dash-card-systems">
               <div className="flex justify-between items-start mb-6">
                 <div>
                   <div className="text-[7.5px] font-mono text-[#d4b87a] tracking-[0.2em] font-bold uppercase mb-1">SEC · 02 ◆ Inovação</div>
@@ -327,8 +364,8 @@ export function SiePanel({ initialTab }: { initialTab?: SieSubTab }) {
                 }
               }
               .canvas-block {
-                background: rgba(10, 10, 12, 0.45);
-                border: 0.2px solid rgba(212, 184, 122, 0.12);
+                background: rgba(5, 5, 5, 0.85) !important;
+                border: 0.2px solid rgba(255, 255, 255, 0.08) !important;
                 border-radius: 10px;
                 padding: 15px;
                 transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
@@ -336,11 +373,11 @@ export function SiePanel({ initialTab }: { initialTab?: SieSubTab }) {
                 flex-direction: column;
                 gap: 8px;
                 backdrop-filter: blur(12px);
-                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45);
               }
               .canvas-block:hover {
-                border-color: rgba(212, 184, 122, 0.35);
-                background: rgba(15, 15, 18, 0.6);
+                border-color: rgba(255, 255, 255, 0.2) !important;
+                background: rgba(10, 10, 12, 0.95) !important;
                 transform: translateY(-2px);
               }
               .canvas-block h4 {
@@ -373,7 +410,7 @@ export function SiePanel({ initialTab }: { initialTab?: SieSubTab }) {
               }
             `}</style>
 
-            <div className="ipb-soft relative overflow-hidden rounded-[1.2rem] p-6 lg:p-8 border border-white/[0.06]">
+            <div className="dash-card-systems">
               <div className="flex justify-between items-start mb-6">
                 <div>
                   <div className="text-[7.5px] font-mono text-[#d4b87a] tracking-[0.2em] font-bold uppercase mb-1">SEC · 03 ◆ Canvas & Pitch</div>
