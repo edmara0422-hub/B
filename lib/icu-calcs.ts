@@ -269,7 +269,8 @@ export function calcGlasgow(
   v: number | string,
   m: number,
 ): { total: number | string; interp: string; cor: string; detail: string } | null {
-  if (v === 'T' || v === 't') {
+  const vStr = String(v || '').trim().toLowerCase()
+  if (vStr === 't') {
     const om = (o || 0) + (m || 0)
     let interp = 'Intubado'
     let cor = '#60a5fa'
@@ -281,7 +282,12 @@ export function calcGlasgow(
     return { total: `${om}T`, interp, cor, detail }
   }
 
-  const t = (o || 0) + Number(v) + (m || 0)
+  const vNum = Number(v)
+  const t = (o || 0) + (Number.isNaN(vNum) ? 0 : vNum) + (m || 0)
+  if (Number.isNaN(t) || t < 3) {
+    return { total: '—', interp: 'Não avaliável', cor: '#94a3b8', detail: 'Escore de Glasgow incompleto ou não avaliável.' }
+  }
+
   if (t === 15) return { total: 15, interp: 'Consciente e orientado', cor: '#4ade80', detail: 'Glasgow maximo. Paciente lucido e responsivo.' }
   if (t >= 13) return { total: t, interp: 'Disfuncao leve', cor: '#facc15', detail: `Glasgow ${t}: confusao leve ou desorientacao. Avaliar delirium (CAM-ICU), dor, disturbio metabolico (Na+, glicemia, ureia). Monitorar evolucao.` }
   if (t >= 9) return { total: t, interp: 'Disfuncao moderada', cor: '#fb923c', detail: `Glasgow ${t}: rebaixamento moderado. Resposta a estimulos presente mas inadequada. Investigar: sedacao residual, hiponatremia, hipoglicemia, lesao intracraniana. Considerar TC de cranio se nao justificado por sedacao.` }

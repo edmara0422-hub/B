@@ -1508,15 +1508,16 @@ function summarizeIms(score: string) {
   return { value, text: 'Imobilidade', color: '#f87171' }
 }
 
-function calcDays(value: string) {
-  if (!value) return null
+function calcDays(value: unknown) {
+  const str = String(value || '').trim()
+  if (!str) return null
   let start: Date
-  const br = value.match(/^(\d{1,2})\/(\d{1,2})\/(\d{2,4})$/)
+  const br = str.match(/^(\d{1,2})\/(\d{1,2})\/(\d{2,4})$/)
   if (br) {
     const year = br[3].length === 2 ? 2000 + parseInt(br[3]) : parseInt(br[3])
     start = new Date(year, parseInt(br[2]) - 1, parseInt(br[1]))
   } else {
-    start = new Date(value)
+    start = new Date(str)
   }
   if (Number.isNaN(start.getTime())) return null
   const diff = Date.now() - start.getTime()
@@ -3896,7 +3897,7 @@ export function ProntuarioSystemPanel() {
       pronaAtiva && currentRecord.pronaData && currentRecord.pronaHora && currentRecord.pronaTempo
         ? (() => {
           const start = new Date(`${currentRecord.pronaData}T${currentRecord.pronaHora}`)
-          const hours = Number.parseInt(currentRecord.pronaTempo.replace('h', ''), 10)
+          const hours = Number.parseInt(String(currentRecord.pronaTempo || '').replace('h', ''), 10)
           if (Number.isNaN(start.getTime()) || Number.isNaN(hours)) return null
           return new Date(start.getTime() + hours * 3600000)
         })()
@@ -3999,23 +4000,51 @@ export function ProntuarioSystemPanel() {
       return
     }
 
-    // Tenta atualizar em records — se o registro existir lá, aplica.
-    // Se não existir em records (ex: registro arquivado), tenta no archive.
-    setRecords((prev) => {
-      const idx = prev.findIndex((r) => r.id === id)
-      if (idx === -1) return prev
-      const next = [...prev]
-      next[idx] = updater({ ...prev[idx], updatedAt: nowIso() })
-      return next
+    // Calcula os novos arrays de forma síncrona imediata
+    const updatedRecords = records.map((r) => {
+      if (r.id === id) {
+        return updater({ ...r, updatedAt: nowIso() })
+      }
+      return r
     })
 
-    setArchive((prev) => {
-      const idx = prev.findIndex((r) => r.id === id)
-      if (idx === -1) return prev
-      const next = [...prev]
-      next[idx] = updater({ ...prev[idx], updatedAt: nowIso() })
-      return next
+    const updatedArchive = archive.map((r) => {
+      if (r.id === id) {
+        return updater({ ...r, updatedAt: nowIso() })
+      }
+      return r
     })
+
+    // Atualiza os estados do React
+    setRecords(updatedRecords)
+    setArchive(updatedArchive)
+
+    // Atualiza síncronamente o snapshot de workspaces
+    const snapshot = workspacesRef.current.map(w =>
+      w.id === activeWsIdRef.current ? { ...w, records: updatedRecords, archive: updatedArchive } : w
+    )
+    workspacesRef.current = snapshot
+    setWorkspaces(snapshot)
+
+    // Persistência local síncrona e instantânea
+    try {
+      const getCircularReplacer = () => {
+        const seen = new WeakSet()
+        return (key: string, value: any) => {
+          if (typeof value === "object" && value !== null) {
+            if (seen.has(value)) return "[Circular]"
+            seen.add(value)
+          }
+          return value
+        }
+      }
+      localStorage.setItem(sk.workspaces, JSON.stringify(snapshot, getCircularReplacer()))
+      localStorage.setItem(sk.activeWorkspace, activeWsIdRef.current)
+      localStorage.setItem(sk.records, JSON.stringify(updatedRecords, getCircularReplacer()))
+      localStorage.setItem(sk.archive, JSON.stringify(updatedArchive, getCircularReplacer()))
+    } catch (err) {
+      console.warn('[updateCurrentRecord] erro ao persistir no localStorage:', err)
+    }
   }
 
   const setField = (field: keyof PatientData, value: string) => {
@@ -4879,41 +4908,155 @@ export function ProntuarioSystemPanel() {
   const archiveRecord = (id: string) => {
     const target = records.find((r) => r.id === id)
     if (!target) return
-    setRecords((prev) => prev.filter((r) => r.id !== id))
-    setArchive((prev) => [{ ...target, updatedAt: nowIso() }, ...prev])
+    const updatedRecords = records.filter((r) => r.id !== id)
+    const updatedArchive = [{ ...target, updatedAt: nowIso() }, ...archive]
+    
+    setRecords(updatedRecords)
+    setArchive(updatedArchive)
     if (selectedId === id) setSelectedId(null)
+
+    const snapshot = workspacesRef.current.map(w =>
+      w.id === activeWsIdRef.current ? { ...w, records: updatedRecords, archive: updatedArchive } : w
+    )
+    workspacesRef.current = snapshot
+    setWorkspaces(snapshot)
+
+    try {
+      const getCircularReplacer = () => {
+        const seen = new WeakSet()
+        return (key: string, value: any) => {
+          if (typeof value === "object" && value !== null) {
+            if (seen.has(value)) return "[Circular]"
+            seen.add(value)
+          }
+          return value
+        }
+      }
+      localStorage.setItem(sk.workspaces, JSON.stringify(snapshot, getCircularReplacer()))
+      localStorage.setItem(sk.records, JSON.stringify(updatedRecords, getCircularReplacer()))
+      localStorage.setItem(sk.archive, JSON.stringify(updatedArchive, getCircularReplacer()))
+    } catch {}
   }
 
   const restoreRecord = (id: string) => {
     const target = archive.find((r) => r.id === id)
     if (!target) return
-    setArchive((prev) => prev.filter((r) => r.id !== id))
-    setRecords((prev) => [{ ...target, updatedAt: nowIso() }, ...prev])
+    const updatedArchive = archive.filter((r) => r.id !== id)
+    const updatedRecords = [{ ...target, updatedAt: nowIso() }, ...records]
+    
+    setArchive(updatedArchive)
+    setRecords(updatedRecords)
     setView('records')
+
+    const snapshot = workspacesRef.current.map(w =>
+      w.id === activeWsIdRef.current ? { ...w, records: updatedRecords, archive: updatedArchive } : w
+    )
+    workspacesRef.current = snapshot
+    setWorkspaces(snapshot)
+
+    try {
+      const getCircularReplacer = () => {
+        const seen = new WeakSet()
+        return (key: string, value: any) => {
+          if (typeof value === "object" && value !== null) {
+            if (seen.has(value)) return "[Circular]"
+            seen.add(value)
+          }
+          return value
+        }
+      }
+      localStorage.setItem(sk.workspaces, JSON.stringify(snapshot, getCircularReplacer()))
+      localStorage.setItem(sk.records, JSON.stringify(updatedRecords, getCircularReplacer()))
+      localStorage.setItem(sk.archive, JSON.stringify(updatedArchive, getCircularReplacer()))
+    } catch {}
   }
 
   const deletePermanently = (id: string) => {
-    setArchive((prev) => prev.filter((record) => record.id !== id))
+    const updatedArchive = archive.filter((record) => record.id !== id)
+    setArchive(updatedArchive)
+
+    const snapshot = workspacesRef.current.map(w =>
+      w.id === activeWsIdRef.current ? { ...w, archive: updatedArchive } : w
+    )
+    workspacesRef.current = snapshot
+    setWorkspaces(snapshot)
+
+    try {
+      const getCircularReplacer = () => {
+        const seen = new WeakSet()
+        return (key: string, value: any) => {
+          if (typeof value === "object" && value !== null) {
+            if (seen.has(value)) return "[Circular]"
+            seen.add(value)
+          }
+          return value
+        }
+      }
+      localStorage.setItem(sk.workspaces, JSON.stringify(snapshot, getCircularReplacer()))
+      localStorage.setItem(sk.archive, JSON.stringify(updatedArchive, getCircularReplacer()))
+    } catch {}
   }
 
   const deleteActiveRecord = (id: string) => {
-    setRecords((prev) => prev.filter((record) => record.id !== id))
+    const updatedRecords = records.filter((record) => record.id !== id)
+    setRecords(updatedRecords)
     if (selectedId === id) {
       setSelectedId(null)
     }
+
+    const snapshot = workspacesRef.current.map(w =>
+      w.id === activeWsIdRef.current ? { ...w, records: updatedRecords } : w
+    )
+    workspacesRef.current = snapshot
+    setWorkspaces(snapshot)
+
+    try {
+      const getCircularReplacer = () => {
+        const seen = new WeakSet()
+        return (key: string, value: any) => {
+          if (typeof value === "object" && value !== null) {
+            if (seen.has(value)) return "[Circular]"
+            seen.add(value)
+          }
+          return value
+        }
+      }
+      localStorage.setItem(sk.workspaces, JSON.stringify(snapshot, getCircularReplacer()))
+      localStorage.setItem(sk.records, JSON.stringify(updatedRecords, getCircularReplacer()))
+    } catch {}
   }
 
   const moveRecord = (id: string, direction: 'up' | 'down') => {
-    setRecords((prev) => {
-      const index = prev.findIndex((r) => r.id === id)
-      if (index === -1) return prev
-      if (direction === 'up' && index === 0) return prev
-      if (direction === 'down' && index === prev.length - 1) return prev
-      const next = [...prev]
-      const swap = direction === 'up' ? index - 1 : index + 1
-      ;[next[index], next[swap]] = [next[swap], next[index]]
-      return next
-    })
+    const index = records.findIndex((r) => r.id === id)
+    if (index === -1) return
+    if (direction === 'up' && index === 0) return
+    if (direction === 'down' && index === records.length - 1) return
+    const updatedRecords = [...records]
+    const swap = direction === 'up' ? index - 1 : index + 1
+    ;[updatedRecords[index], updatedRecords[swap]] = [updatedRecords[swap], updatedRecords[index]]
+    
+    setRecords(updatedRecords)
+
+    const snapshot = workspacesRef.current.map(w =>
+      w.id === activeWsIdRef.current ? { ...w, records: updatedRecords } : w
+    )
+    workspacesRef.current = snapshot
+    setWorkspaces(snapshot)
+
+    try {
+      const getCircularReplacer = () => {
+        const seen = new WeakSet()
+        return (key: string, value: any) => {
+          if (typeof value === "object" && value !== null) {
+            if (seen.has(value)) return "[Circular]"
+            seen.add(value)
+          }
+          return value
+        }
+      }
+      localStorage.setItem(sk.workspaces, JSON.stringify(snapshot, getCircularReplacer()))
+      localStorage.setItem(sk.records, JSON.stringify(updatedRecords, getCircularReplacer()))
+    } catch {}
   }
 
   const saveAndClose = () => {
