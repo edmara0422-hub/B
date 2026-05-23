@@ -4601,16 +4601,36 @@ export function ProntuarioSystemPanel() {
     }))
   }
 
-  const ensureMraRows = (rows: MraRow[]): MraRow[] => {
-    const result = [...rows]
-    while (result.length < 8) result.push({ plato: '', peep: '', cest: '', sat: '', pam: '', best: false })
-    return result
+  const ensureMraRows = (rows: MraRow[] | null | undefined): MraRow[] => {
+    const base = Array.isArray(rows) ? rows.slice(0, 8) : []
+    while (base.length < 8) {
+      base.push({ plato: '', peep: '', cest: '', sat: '', pam: '', best: false })
+    }
+    return base.map((row) => ({
+      plato: row?.plato ?? '',
+      peep: row?.peep ?? '',
+      cest: row?.cest ?? '',
+      sat: row?.sat ?? '',
+      pam: row?.pam ?? '',
+      best: !!row?.best,
+    }))
   }
 
-  const ensureTitRows = (rows: TitRow[]): TitRow[] => {
-    const result = [...rows]
-    while (result.length < 10) result.push({ pico: '', plato: '', peep: '', cest: '', si: '', sat: '', pam: '', best: false })
-    return result
+  const ensureTitRows = (rows: TitRow[] | null | undefined): TitRow[] => {
+    const base = Array.isArray(rows) ? rows.slice(0, 10) : []
+    while (base.length < 10) {
+      base.push({ pico: '', plato: '', peep: '', cest: '', si: '', sat: '', pam: '', best: false })
+    }
+    return base.map((row) => ({
+      pico: row?.pico ?? '',
+      plato: row?.plato ?? '',
+      peep: row?.peep ?? '',
+      cest: row?.cest ?? '',
+      si: row?.si ?? '',
+      sat: row?.sat ?? '',
+      pam: row?.pam ?? '',
+      best: !!row?.best,
+    }))
   }
 
   const setMraField = (index: number, field: keyof MraRow, value: string) => {
@@ -4763,7 +4783,8 @@ export function ProntuarioSystemPanel() {
   }
 
   const executeAddRecord = (template?: ICURecord) => {
-    const record = template ? { ...template, id: template.id || generateId() } : createRecord()
+    const isEvent = template && typeof template === 'object' && ('nativeEvent' in template || 'preventDefault' in template || 'target' in template)
+    const record = (template && !isEvent) ? normalizeRecord({ ...template, id: template.id || generateId() }) : createRecord()
     setRecords((prev) => [record, ...prev])
     setSelectedId(record.id)
     setActiveTab('dados')
@@ -4809,12 +4830,14 @@ export function ProntuarioSystemPanel() {
   }
 
   const addRecord = (template?: ICURecord) => {
+    const isEvent = template && typeof template === 'object' && ('nativeEvent' in template || 'preventDefault' in template || 'target' in template)
+    const validTemplate = isEvent ? undefined : template
     if (!isAdmin && !shiftCutoff) {
       pendingAddRecordRef.current = true
       setShowShiftModal(true)
       return
     }
-    executeAddRecord(template)
+    executeAddRecord(validTemplate)
   }
 
   const startShift = (duration: number) => {
