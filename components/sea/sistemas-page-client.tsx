@@ -256,82 +256,82 @@ export default function SistemasPageClient() {
             transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
           }
           
-          .app-workspace-layout .side-header {
+          .app-workspace-layout .side .side-header {
             gap: 4px !important;
           }
           
-          .app-workspace-layout .brand-mark {
+          .app-workspace-layout .side .brand-mark {
             width: 24px !important;
             height: 24px !important;
           }
-          .app-workspace-layout .brand-mark span {
+          .app-workspace-layout .side .brand-mark span {
             font-size: 8px !important;
           }
           
-          .app-workspace-layout .side-title-block .h1 {
+          .app-workspace-layout .side .side-title-block .h1 {
             font-size: 7.5px !important;
           }
-          .app-workspace-layout .side-title-block .h2 {
+          .app-workspace-layout .side .side-title-block .h2 {
             font-size: 6px !important;
           }
           
-          .app-workspace-layout .fase-badge {
+          .app-workspace-layout .side .fase-badge {
             padding: 4px 5px !important;
           }
-          .app-workspace-layout .fase-badge .lbl, 
-          .app-workspace-layout .fase-badge .sub,
-          .app-workspace-layout .fase-badge .status {
+          .app-workspace-layout .side .fase-badge .lbl, 
+          .app-workspace-layout .side .fase-badge .sub,
+          .app-workspace-layout .side .fase-badge .status {
             font-size: 5.5px !important;
           }
-          .app-workspace-layout .fase-badge .val {
+          .app-workspace-layout .side .fase-badge .val {
             font-size: 8px !important;
           }
           
-          .app-workspace-layout .tab {
+          .app-workspace-layout .side .tab {
             width: 62px !important;
             padding: 5px 1px !important;
             gap: 3px !important;
           }
-          .app-workspace-layout .tab .tab-frame {
+          .app-workspace-layout .side .tab .tab-frame {
             width: 38px !important;
             height: 38px !important;
           }
-          .app-workspace-layout .tab .code {
+          .app-workspace-layout .side .tab .code {
             font-size: 10px !important;
           }
-          .app-workspace-layout .tab .name {
+          .app-workspace-layout .side .tab .name {
             font-size: 7.5px !important;
           }
           
-          .app-workspace-layout .side-nav-item {
+          .app-workspace-layout .side .side-nav-item {
             padding: 5px 6px !important;
             gap: 5px !important;
           }
-          .app-workspace-layout .side-nav-item .label {
+          .app-workspace-layout .side .side-nav-item .label {
             font-size: 8.5px !important;
           }
-          .app-workspace-layout .side-nav-item .desc {
+          .app-workspace-layout .side .side-nav-item .desc {
             font-size: 6.5px !important;
           }
           
-          .app-workspace-layout .telemetry-widget {
+          .app-workspace-layout .side .telemetry-widget {
             padding: 4px 6px !important;
             font-size: 6.5px !important;
             gap: 2px !important;
           }
-          .app-workspace-layout .telemetry-widget .title-row span {
+          .app-workspace-layout .side .telemetry-widget .title-row span {
             font-size: 6.5px !important;
           }
-          .app-workspace-layout .telemetry-widget .metric {
+          .app-workspace-layout .side .telemetry-widget .metric {
             font-size: 6.5px !important;
           }
-          .app-workspace-layout .acc-panel {
+          .app-workspace-layout .side .acc-panel {
             gap: 2px !important;
           }
-          .app-workspace-layout .acc-panel-lbl {
+          .app-workspace-layout .side .acc-panel-lbl {
             font-size: 6px !important;
           }
-          .app-workspace-layout .acc-chip {
+          .app-workspace-layout .side .acc-chip {
             font-size: 6px !important;
             padding: 3px 0.5px !important;
           }
@@ -425,24 +425,6 @@ export default function SistemasPageClient() {
             padding: 10px 36px 80px 10px !important; /* Safely clears the 30px vertical scroll-rail on the right edge */
             width: 100vw !important;
             box-sizing: border-box !important;
-          }
-
-          /* Reduzir tipografia e fontes no celular para caber perfeitamente sem trombar no trilho */
-          .app-workspace-layout .content-area h1,
-          .app-workspace-layout .content-area .text-xl,
-          .app-workspace-layout .content-area .text-2xl {
-            font-size: 13px !important;
-          }
-          .app-workspace-layout .content-area h2,
-          .app-workspace-layout .content-area h3,
-          .app-workspace-layout .content-area h4,
-          .app-workspace-layout .content-area p,
-          .app-workspace-layout .content-area span,
-          .app-workspace-layout .content-area label,
-          .app-workspace-layout .content-area input,
-          .app-workspace-layout .content-area select,
-          .app-workspace-layout .content-area button {
-            font-size: calc(100% - 0.5px) !important;
           }
 
           /* Prevenir cortes e garantir fluidez em Clinica, SIG, SIE, SIO, Complice no celular */
