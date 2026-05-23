@@ -4117,7 +4117,7 @@ export function ProntuarioSystemPanel() {
 
   const addListItem = (key: ListFieldKey) => {
     updateCurrentRecord((record) => {
-      const next = [...(record[key] as Array<Record<string, string>>)]
+      const next = [...(Array.isArray(record[key]) ? record[key] : [])] as Array<Record<string, string>>
 
       if (key === 'sedativos') {
         next.push({ droga: '', inicio: '', atual: '', unidade: 'ml/h' } satisfies SedativeEntry)
@@ -4157,8 +4157,10 @@ export function ProntuarioSystemPanel() {
 
   const updateListItem = (key: ListFieldKey, index: number, field: string, value: string) => {
     updateCurrentRecord((record) => {
-      const next = [...(record[key] as Array<Record<string, string>>)]
-      next[index] = { ...next[index], [field]: value }
+      const next = [...(Array.isArray(record[key]) ? record[key] : [])] as Array<Record<string, string>>
+      if (next[index]) {
+        next[index] = { ...next[index], [field]: value }
+      }
 
       return {
         ...record,
@@ -4170,7 +4172,7 @@ export function ProntuarioSystemPanel() {
   const removeListItem = (key: ListFieldKey, index: number) => {
     updateCurrentRecord((record) => ({
       ...record,
-      [key]: (record[key] as Array<Record<string, string>>).filter((_, itemIndex) => itemIndex !== index),
+      [key]: (Array.isArray(record[key]) ? record[key] : []).filter((_, itemIndex) => itemIndex !== index),
     }))
   }
 
@@ -4729,10 +4731,41 @@ export function ProntuarioSystemPanel() {
     setSelectedId(record.id)
     setActiveTab('dados')
     setView('records')
-    const snapshot = workspacesRef.current.map(w =>
-      w.id === activeWsIdRef.current ? { ...w, records: [record, ...(Array.isArray(w.records) ? w.records : [])] } : w
+
+    // Se workspacesRef.current estiver vazio ou desatualizado, inicializa com um setor padrão
+    let wsList = workspacesRef.current
+    let activeId = activeWsIdRef.current
+    if (!wsList || wsList.length === 0) {
+      activeId = activeId || generateId()
+      wsList = [{ id: activeId, name: 'UTI', records: [], archive: [] }]
+      activeWsIdRef.current = activeId
+      setActiveWorkspaceId(activeId)
+    }
+
+    const snapshot = wsList.map(w =>
+      w.id === activeId ? { ...w, records: [record, ...(Array.isArray(w.records) ? w.records : [])] } : w
     )
     workspacesRef.current = snapshot
+    setWorkspaces(snapshot)
+
+    // Persistência local instantânea e robusta contra perda ou dessincronização de dados
+    try {
+      const getCircularReplacer = () => {
+        const seen = new WeakSet()
+        return (key: string, value: any) => {
+          if (typeof value === "object" && value !== null) {
+            if (seen.has(value)) return "[Circular]"
+            seen.add(value)
+          }
+          return value
+        }
+      }
+      localStorage.setItem(sk.workspaces, JSON.stringify(snapshot, getCircularReplacer()))
+      localStorage.setItem(sk.activeWorkspace, activeId)
+      localStorage.setItem(sk.records, JSON.stringify([record, ...records], getCircularReplacer()))
+    } catch (err) {
+      console.warn('[executeAddRecord] erro ao salvar localmente:', err)
+    }
   }
 
   const addRecord = (template?: ICURecord) => {
