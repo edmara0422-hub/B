@@ -1026,13 +1026,7 @@ function generateId(): string {
 }
 
 function createRecord(): ICURecord {
-  const timestamp = nowIso()
-  return {
-    ...emptyPatient(),
-    id: generateId(),
-    createdAt: timestamp,
-    updatedAt: timestamp,
-  }
+  return normalizeRecord(null)
 }
 
 function normalizeRecord(raw: Partial<ICURecord> | null | undefined): ICURecord {
@@ -3150,10 +3144,9 @@ export function ProntuarioSystemPanel() {
 
     const activeWs = localWs.find(w => w.id === localActiveId)!
     
-    // --- POLÍTICA DE SYNC ADMIN-ONLY ---
-    // Somente o e-mail da Edmara Rocha persiste listas no Supabase.
-    // Outros usuários operam localmente e são limpos pelo relógio.
-    const isAdminEmail = authUserId && useAuthStore.getState().isAdmin
+    // --- POLÍTICA DE SYNC PARA QUALQUER USUÁRIO AUTENTICADO ---
+    // Médicos autenticados persistem suas próprias listas no Supabase para backup definitivo.
+    const isUserAuthenticated = !!authUserId
     
     // Sempre carrega os dados locais primeiro para garantir que a UI não fique vazia
     // e o usuário não perca dados ao recarregar a página.
@@ -3163,7 +3156,7 @@ export function ProntuarioSystemPanel() {
     setArchive(activeWs.archive)
     setHydrated(true)
 
-    if (!supabase || !isAdminEmail) {
+    if (!supabase || !isUserAuthenticated) {
       setSyncStatus('offline')
       return
     }
@@ -3256,7 +3249,7 @@ export function ProntuarioSystemPanel() {
   // Força salvar dados LOCAIS → Supabase agora (sem debounce).
   // Útil quando o row do Supabase ficou corrompido ou muito grande.
   const forceSaveLocalToSupabase = async () => {
-    if (!supabase || !isAdmin) return
+    if (!supabase || !authUserId) return
     const sessionId = getOrCreateSessionId()
     const currentWs = workspacesRef.current
     const hasData = currentWs.some(w => w.records.length > 0 || w.archive.length > 0)
@@ -3584,18 +3577,17 @@ export function ProntuarioSystemPanel() {
       localStorage.setItem(sk.archive, JSON.stringify(archive, getCircularReplacer()))
     } catch { /* quota / private mode */ }
 
-    const isAdminEmail = authUserId && useAuthStore.getState().isAdmin
+    const isUserAuthenticated = !!authUserId
     if (isFirstSync.current) {
       isFirstSync.current = false
-      setSyncStatus(supabase && isAdminEmail ? 'saved' : 'offline')
+      setSyncStatus(supabase && isUserAuthenticated ? 'saved' : 'offline')
       return
     }
-    if (!supabase || !isAdminEmail) {
+    if (!supabase || !isUserAuthenticated) {
       setSyncStatus('offline')
       return
     }
 
-    setSyncStatus('syncing')
     const timer = setTimeout(async () => {
       try {
         // SEGURANÇA: Não sincroniza automaticamente se a lista local estiver vazia
@@ -3607,11 +3599,7 @@ export function ProntuarioSystemPanel() {
         }
 
         const sessionId = getOrCreateSessionId()
-        console.log('[Auto-save] Salvando session:', sessionId)
-
-        // Remove campos com imagens base64 grandes antes de enviar ao Supabase
-        // (thumbnails e scans ficam só no localStorage)
-        const getCircularReplacer = () => {
+        const getCircularReplacerInner = () => {
           const seen = new WeakSet()
           return (_key: string, value: any) => {
             if (typeof value === 'object' && value !== null) {
@@ -3622,9 +3610,17 @@ export function ProntuarioSystemPanel() {
           }
         }
         const stripped = stripBase64(snapshot)
-        const safeSnapshot = JSON.parse(JSON.stringify(stripped, getCircularReplacer()))
-        const payloadKb = Math.round(JSON.stringify(safeSnapshot).length / 1024)
-        console.log(`[Auto-save] Payload: ${payloadKb} KB`)
+        const safeSnapshot = JSON.parse(JSON.stringify(stripped, getCircularReplacerInner()))
+        const payloadString = JSON.stringify(safeSnapshot)
+
+        // Evita re-salvar se o conteúdo de dados for idêntico ao último salvo com sucesso
+        if (lastSavedPayloadRef.current === payloadString) {
+          setSyncStatus('saved')
+          return
+        }
+
+        setSyncStatus('syncing')
+        console.log('[Auto-save] Salvando session:', sessionId)
 
         const upsertPayload = {
           session_id: sessionId,
@@ -3648,6 +3644,7 @@ export function ProntuarioSystemPanel() {
         }
         if (saved) {
           console.log('[Auto-save] Salvo com sucesso')
+          lastSavedPayloadRef.current = payloadString
           setSyncStatus('saved')
         } else {
           setSyncStatus('offline')
@@ -3656,7 +3653,7 @@ export function ProntuarioSystemPanel() {
         console.error('[Auto-save] Falhou:', err?.message || err)
         setSyncStatus('offline')
       }
-    }, 3000)
+    }, 1500)
     return () => clearTimeout(timer)
   }, [archive, hydrated, records, workspaces, isAdmin, authUserId])
 
@@ -3706,13 +3703,23 @@ export function ProntuarioSystemPanel() {
   }
 
   useEffect(() => {
-    if (selectedId && !records.some((record) => record.id === selectedId) && !archive.some((record) => record.id === selectedId)) {
-      setSelectedId(null)
+    if (!hydrated) return
+    if (selectedId) {
+      const inRecords = records.some((record) => record.id === selectedId)
+      const inArchive = archive.some((record) => record.id === selectedId)
+      const inWorkspaces = workspacesRef.current.some(w => 
+        (Array.isArray(w.records) && w.records.some(r => r.id === selectedId)) || 
+        (Array.isArray(w.archive) && w.archive.some(r => r.id === selectedId))
+      )
+      if (!inRecords && !inArchive && !inWorkspaces) {
+        setSelectedId(null)
+      }
     }
-  }, [records, archive, selectedId])
+  }, [records, archive, selectedId, hydrated])
 
   const tabContentRef = useRef<HTMLDivElement>(null)
   const isFirstSync = useRef(true)
+  const lastSavedPayloadRef = useRef<string>('')
 
   useEffect(() => {
     if (!selectedId) return
@@ -4796,6 +4803,9 @@ export function ProntuarioSystemPanel() {
     } catch (err) {
       console.warn('[executeAddRecord] erro ao salvar localmente:', err)
     }
+
+    // SUPABASE IMMEDIATE SYNC!
+    triggerCloudSyncImmediate(snapshot)
   }
 
   const addRecord = (template?: ICURecord) => {
@@ -4900,6 +4910,56 @@ export function ProntuarioSystemPanel() {
     }
   }
 
+  const triggerCloudSyncImmediate = async (customSnapshot?: Workspace[]) => {
+    if (!supabase || !authUserId) return
+    const sessionId = getOrCreateSessionId()
+    const targetSnapshot = customSnapshot || workspacesRef.current.map(w =>
+      w.id === activeWsIdRef.current ? { ...w, records, archive } : w
+    )
+    
+    const hasData = targetSnapshot.some(w => w.records.length > 0 || w.archive.length > 0)
+    if (!hasData) return
+
+    const getCircularReplacer = () => {
+      const seen = new WeakSet()
+      return (key: string, value: any) => {
+        if (typeof value === "object" && value !== null) {
+          if (seen.has(value)) return "[Circular]"
+          seen.add(value)
+        }
+        return value
+      }
+    }
+
+    try {
+      const stripped = stripBase64(targetSnapshot)
+      const safeSnapshot = JSON.parse(JSON.stringify(stripped, getCircularReplacer()))
+      const payloadString = JSON.stringify(safeSnapshot)
+      
+      lastSavedPayloadRef.current = payloadString
+
+      const upsertPayload = {
+        session_id: sessionId,
+        records: { __sea_v2: true, workspaces: safeSnapshot, activeId: activeWsIdRef.current },
+        archive: [],
+        updated_at: new Date().toISOString(),
+      }
+
+      setSyncStatus('syncing')
+      const { error } = await supabase.from('icu_sessions').upsert(upsertPayload, { onConflict: 'session_id' })
+      if (!error) {
+        setSyncStatus('saved')
+        console.log('[Sync Immediate] Salvo na nuvem com sucesso.')
+      } else {
+        console.warn('[Sync Immediate] Erro ao salvar na nuvem:', error.message)
+        setSyncStatus('offline')
+      }
+    } catch (e: any) {
+      console.warn('[Sync Immediate] Falha crítica:', e?.message)
+      setSyncStatus('offline')
+    }
+  }
+
   const openRecord = (id: string) => {
     setSelectedId(id)
     setActiveTab('dados')
@@ -4937,6 +4997,8 @@ export function ProntuarioSystemPanel() {
       localStorage.setItem(sk.records, JSON.stringify(updatedRecords, getCircularReplacer()))
       localStorage.setItem(sk.archive, JSON.stringify(updatedArchive, getCircularReplacer()))
     } catch {}
+
+    triggerCloudSyncImmediate(snapshot)
   }
 
   const restoreRecord = (id: string) => {
@@ -4970,6 +5032,8 @@ export function ProntuarioSystemPanel() {
       localStorage.setItem(sk.records, JSON.stringify(updatedRecords, getCircularReplacer()))
       localStorage.setItem(sk.archive, JSON.stringify(updatedArchive, getCircularReplacer()))
     } catch {}
+
+    triggerCloudSyncImmediate(snapshot)
   }
 
   const deletePermanently = (id: string) => {
@@ -4996,6 +5060,8 @@ export function ProntuarioSystemPanel() {
       localStorage.setItem(sk.workspaces, JSON.stringify(snapshot, getCircularReplacer()))
       localStorage.setItem(sk.archive, JSON.stringify(updatedArchive, getCircularReplacer()))
     } catch {}
+
+    triggerCloudSyncImmediate(snapshot)
   }
 
   const deleteActiveRecord = (id: string) => {
@@ -5025,6 +5091,8 @@ export function ProntuarioSystemPanel() {
       localStorage.setItem(sk.workspaces, JSON.stringify(snapshot, getCircularReplacer()))
       localStorage.setItem(sk.records, JSON.stringify(updatedRecords, getCircularReplacer()))
     } catch {}
+
+    triggerCloudSyncImmediate(snapshot)
   }
 
   const moveRecord = (id: string, direction: 'up' | 'down') => {
@@ -5064,6 +5132,7 @@ export function ProntuarioSystemPanel() {
     if (!currentRecord) return
     updateCurrentRecord((record) => record)
     setSelectedId(null)
+    triggerCloudSyncImmediate()
   }
 
   const tabIndex = TAB_ITEMS.findIndex((tab) => tab.id === activeTab)
