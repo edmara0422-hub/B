@@ -19,7 +19,11 @@ import {
   Clock, 
   ChevronRight, 
   Maximize2,
-  HelpCircle
+  HelpCircle,
+  TrendingUp,
+  Award,
+  Shield,
+  Users
 } from 'lucide-react'
 import Link from 'next/link'
 import type { LucideIcon } from 'lucide-react'
@@ -322,6 +326,475 @@ function FloatingVideoPlayer({ moduleTitle, moduleId }: { moduleTitle: string; m
         </button>
         <button className="text-[9px] hover:text-white transition">⏭</button>
       </div>
+    </div>
+  )
+}
+
+// ── Business Module Custom High-Fidelity Components ──────────────────────────
+
+const BUSINESS_PLAYLIST = [
+  {
+    id: 'M4-T1',
+    title: 'Liderança e Gestão',
+    subtitle: 'Alta Performance e Segurança Psicológica',
+    duration: '45:10',
+  },
+  {
+    id: 'M4-T2',
+    title: 'Inteligência de Mercado',
+    subtitle: 'Cultura Data-Driven e SWOT Dinâmica',
+    duration: '38:15',
+  },
+  {
+    id: 'M4-T3',
+    title: 'Sustentabilidade ESG',
+    subtitle: 'Conformidade e Mitigação de Riscos',
+    duration: '52:40',
+  },
+  {
+    id: 'M4-T4',
+    title: 'Feedback Estratégico',
+    subtitle: 'Modelo SBI e Regulação de Talentos',
+    duration: '30:25',
+  },
+  {
+    id: 'M4-T5',
+    title: 'Governança & LGPD',
+    subtitle: 'Arquivos Corporativos e Segurança',
+    duration: '42:50',
+  },
+]
+
+function ExecutiveMasterclassTheater({ 
+  moduleTitle, 
+  moduleId,
+  onSelectTopic,
+  activeTopicId
+}: { 
+  moduleTitle: string; 
+  moduleId?: string;
+  onSelectTopic?: (topicId: string) => void;
+  activeTopicId?: string | null;
+}) {
+  const theme = MODULE_THEMES[moduleId ?? 'M4'] || MODULE_THEMES.M4
+  const [playing, setPlaying] = useState(false)
+  const [progress, setProgress] = useState(24)
+  const [activeItemIndex, setActiveItemIndex] = useState(0)
+
+  // Sync with activeTopicId if set from outside
+  useEffect(() => {
+    if (activeTopicId) {
+      const idx = BUSINESS_PLAYLIST.findIndex(item => item.id === activeTopicId)
+      if (idx !== -1) {
+        setActiveItemIndex(idx)
+      }
+    }
+  }, [activeTopicId])
+
+  useEffect(() => {
+    if (!playing) return
+    const interval = setInterval(() => {
+      setProgress((prev) => (prev >= 100 ? 0 : prev + 0.4))
+    }, 500)
+    return () => clearInterval(interval)
+  }, [playing])
+
+  const activeLesson = BUSINESS_PLAYLIST[activeItemIndex]
+
+  const handleLessonSelect = (index: number) => {
+    setActiveItemIndex(index)
+    setProgress(0)
+    setPlaying(false)
+    if (onSelectTopic) {
+      onSelectTopic(BUSINESS_PLAYLIST[index].id)
+    }
+  }
+
+  return (
+    <div className="ipb-glass-card w-full flex flex-col pointer-events-auto transition-all duration-300">
+      <div className="grid grid-cols-1 lg:grid-cols-5 bg-black/60">
+        
+        {/* Visual Screen Area */}
+        <div className="lg:col-span-3 relative aspect-[16/10] bg-black flex items-center justify-center overflow-hidden border-r border-white/[0.04]">
+          <div className="absolute inset-0" style={{
+            background: `radial-gradient(circle at 50% 50%, ${theme.glow}, transparent 80%)`
+          }} />
+          
+          {playing && (
+            <div className="absolute bottom-6 left-6 flex gap-1 items-end h-5 z-10 opacity-70">
+              {[0.5, 0.9, 0.3, 0.7, 0.4, 0.8, 0.2].map((val, i) => (
+                <motion.div
+                  key={i}
+                  className="w-0.5 rounded-sm"
+                  style={{ backgroundColor: theme.primary }}
+                  animate={{ height: ['4px', '20px', '4px'] }}
+                  transition={{ duration: 0.8 + i * 0.1, repeat: Infinity, ease: 'easeInOut' }}
+                />
+              ))}
+            </div>
+          )}
+
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/30 pointer-events-none" />
+
+          <div className="absolute top-4 left-4 z-10">
+            <span className="text-[7px] uppercase tracking-widest font-bold px-2 py-0.5 rounded bg-black/50 border border-white/10" style={{ color: theme.primary }}>
+              Masterclass M4 · Aula {activeItemIndex + 1}
+            </span>
+          </div>
+
+          <motion.button 
+            onClick={() => setPlaying(!playing)}
+            whileHover={{ scale: 1.08, boxShadow: `0 0 24px ${theme.accent}` }}
+            whileTap={{ scale: 0.95 }}
+            className="relative z-10 w-14 h-14 rounded-full flex items-center justify-center cursor-pointer"
+            style={{
+              background: `radial-gradient(circle at 30% 25%, ${theme.accent} 0%, rgba(15,12,8,0.95) 100%)`,
+              border: `0.5px solid ${theme.primary}`,
+              boxShadow: `0 0 20px ${theme.accent}, inset 0 1px 1px rgba(255,255,255,0.2)`
+            }}
+          >
+            {playing ? (
+              <div className="flex gap-1.5 justify-center items-center">
+                <div className="w-1.5 h-4 bg-white/90 rounded-sm" />
+                <div className="w-1.5 h-4 bg-white/90 rounded-sm" />
+              </div>
+            ) : (
+              <Play className="h-5 w-5 text-white/95 fill-white/80 ml-1" />
+            )}
+          </motion.button>
+        </div>
+
+        {/* Playlist Panel */}
+        <div className="lg:col-span-2 flex flex-col border-t lg:border-t-0 border-white/[0.04] bg-black/40 h-full max-h-[300px] lg:max-h-[none] overflow-y-auto ipb-thinscroll">
+          <div className="px-4 py-3 border-b border-white/[0.04] bg-black/30 flex justify-between items-center">
+            <span className="text-[9px] uppercase tracking-widest text-white/40 font-bold">Conteúdo da Trilha</span>
+            <span className="text-[8px] px-1.5 py-0.5 rounded bg-white/5 border border-white/10 text-white/50">{BUSINESS_PLAYLIST.length} Aulas</span>
+          </div>
+          <div className="flex-1 divide-y divide-white/[0.02]">
+            {BUSINESS_PLAYLIST.map((item, idx) => {
+              const isSelected = idx === activeItemIndex
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => handleLessonSelect(idx)}
+                  className="w-full text-left p-3.5 flex gap-3 transition-all duration-200 cursor-pointer hover:bg-white/[0.02]"
+                  style={{
+                    background: isSelected ? 'rgba(212,184,122,0.06)' : 'transparent',
+                  }}
+                >
+                  <span className="font-mono text-[9px] mt-0.5" style={{ color: isSelected ? theme.primary : 'rgba(255,255,255,0.2)' }}>
+                    {String(idx + 1).padStart(2, '0')}
+                  </span>
+                  <div className="flex-1 min-w-0">
+                    <p className={`text-[10px] font-semibold truncate leading-tight ${isSelected ? 'text-white' : 'text-white/60'}`}>
+                      {item.title}
+                    </p>
+                    <p className="text-[8.5px] text-white/30 truncate mt-0.5 leading-normal">
+                      {item.subtitle}
+                    </p>
+                  </div>
+                  <span className="text-[8px] font-mono text-white/30 shrink-0 self-center">
+                    {item.duration}
+                  </span>
+                </button>
+              )
+            })}
+          </div>
+        </div>
+      </div>
+
+      {/* Control bar and timeline progress */}
+      <div className="p-4 flex flex-col justify-between bg-black/30 border-t border-white/[0.04]">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-2.5">
+          <div className="min-w-0">
+            <span className="text-[7.5px] uppercase tracking-widest font-bold" style={{ color: theme.primary }}>Execução de Masterclass</span>
+            <h4 className="text-[11.5px] font-bold text-white/90 leading-tight mt-0.5 truncate">{activeLesson.title}</h4>
+            <p className="text-[9px] text-white/40 truncate mt-0.5">{activeLesson.subtitle}</p>
+          </div>
+          
+          <div className="flex items-center gap-4 shrink-0 mt-2 md:mt-0">
+            <div className="flex justify-between items-center text-[9px] text-white/40 font-mono gap-3">
+              <span className="px-1.5 py-0.5 rounded bg-white/5 border border-white/10 text-[8.5px]" style={{ color: playing ? theme.primary : 'inherit' }}>
+                {playing ? 'Reproduzindo' : 'Pausado'}
+              </span>
+              <span>{Math.floor((progress/100)*35)}:14 / {activeLesson.duration}</span>
+            </div>
+          </div>
+        </div>
+        
+        {/* Timeline Bar */}
+        <div className="mt-3 relative">
+          <div className="h-1 bg-white/10 rounded-full overflow-hidden cursor-pointer">
+            <div className="h-full transition-all duration-300" style={{ 
+              width: `${progress}%`,
+              background: `linear-gradient(to right, ${theme.primary}, ${theme.secondary})`
+            }} />
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function ExecutivePerformanceDashboard({ moduleId }: { moduleId?: string }) {
+  const theme = MODULE_THEMES[moduleId ?? 'M4'] || MODULE_THEMES.M4
+  const [activeKpi, setActiveKpi] = useState<'clima' | 'growth' | 'esg'>('clima')
+
+  const kpis = {
+    clima: {
+      title: 'Segurança Psicológica',
+      metric: '94.2%',
+      desc: 'Medido sob o Modelo Aristotle (Google)',
+      detail: 'Clima organizacional de transparência radical e aceitação de vulnerabilidade, resultando em 98.6% de engajamento ativo e zero fricção de silêncio.',
+      badge: 'Cultura Excepcional',
+      icon: Users,
+    },
+    growth: {
+      title: 'Inteligência e Crescimento',
+      metric: '+18.4%',
+      desc: 'CAGR anual de posicionamento competitivo',
+      detail: 'Modelagem preditiva orientada a dados com assertividade em decisões de expansão internacional e automação de taxonomia operacional.',
+      badge: 'Data-Driven High ROI',
+      icon: TrendingUp,
+    },
+    esg: {
+      title: 'Conformidade ESG',
+      metric: 'AAA',
+      desc: 'Maturidade de sustentabilidade e governança',
+      detail: 'Mitigação rigorosa de riscos legais e reputacionais. ESG totalmente alinhado com a compensação executiva e controles de conformidade.',
+      badge: 'Triple-A Certified',
+      icon: Award,
+    }
+  }
+
+  const ActiveIcon = kpis[activeKpi].icon
+
+  return (
+    <div className="ipb-glass-card p-4 flex flex-col justify-between h-full transition-all duration-300">
+      <div>
+        <div className="flex justify-between items-center">
+          <span className="text-[7.5px] uppercase tracking-wider font-bold" style={{ color: theme.primary }}>KPIs Estratégicos</span>
+          <span className="text-[8px] px-1.5 py-0.5 rounded bg-[#d4b87a]/10 border border-[#d4b87a]/20 text-[#d4b87a] font-mono">Executive Mode</span>
+        </div>
+        <h4 className="text-[12px] font-bold text-white/90 mt-1">Indicadores de Alta Performance</h4>
+      </div>
+
+      <div className="grid grid-cols-3 gap-2 mt-4">
+        
+        {/* KPI 1: Clima */}
+        <button
+          onClick={() => setActiveKpi('clima')}
+          className="p-2.5 rounded-lg border text-left transition-all duration-300 flex flex-col justify-between cursor-pointer"
+          style={{
+            background: activeKpi === 'clima' ? 'rgba(212,184,122,0.08)' : 'rgba(255,255,255,0.01)',
+            borderColor: activeKpi === 'clima' ? theme.primary : 'rgba(255,255,255,0.04)',
+            boxShadow: activeKpi === 'clima' ? `0 0 12px ${theme.glow}` : 'none'
+          }}
+        >
+          <div className="flex justify-between items-start">
+            <span className="text-[7.5px] uppercase tracking-widest text-white/40 block font-bold">Segurança</span>
+            <Users className="h-2.5 w-2.5 opacity-30" style={{ color: theme.primary }} />
+          </div>
+          <span className="text-[14px] font-extrabold text-white mt-1 leading-none">{kpis.clima.metric}</span>
+          <div className="w-full h-1 bg-white/10 rounded-full mt-2 overflow-hidden">
+            <motion.div 
+              className="h-full" 
+              style={{ backgroundColor: theme.primary }}
+              initial={{ width: 0 }}
+              animate={{ width: '94.2%' }}
+              transition={{ duration: 1.2 }}
+            />
+          </div>
+        </button>
+
+        {/* KPI 2: Growth */}
+        <button
+          onClick={() => setActiveKpi('growth')}
+          className="p-2.5 rounded-lg border text-left transition-all duration-300 flex flex-col justify-between cursor-pointer"
+          style={{
+            background: activeKpi === 'growth' ? 'rgba(212,184,122,0.08)' : 'rgba(255,255,255,0.01)',
+            borderColor: activeKpi === 'growth' ? theme.primary : 'rgba(255,255,255,0.04)',
+            boxShadow: activeKpi === 'growth' ? `0 0 12px ${theme.glow}` : 'none'
+          }}
+        >
+          <div className="flex justify-between items-start">
+            <span className="text-[7.5px] uppercase tracking-widest text-white/40 block font-bold">ROI & Crescimento</span>
+            <TrendingUp className="h-2.5 w-2.5 opacity-30" style={{ color: theme.primary }} />
+          </div>
+          <span className="text-[14px] font-extrabold text-white mt-1 leading-none">{kpis.growth.metric}</span>
+          <div className="h-3 w-full mt-2 overflow-hidden">
+            <svg className="w-full h-full" viewBox="0 0 50 15" preserveAspectRatio="none">
+              <path d="M0,12 Q12,5 25,8 T50,2 L50,15 L0,15 Z" fill="rgba(212,184,122,0.15)"/>
+              <path d="M0,12 Q12,5 25,8 T50,2" fill="none" stroke={theme.primary} strokeWidth="1.2"/>
+            </svg>
+          </div>
+        </button>
+
+        {/* KPI 3: ESG */}
+        <button
+          onClick={() => setActiveKpi('esg')}
+          className="p-2.5 rounded-lg border text-left transition-all duration-300 flex flex-col justify-between cursor-pointer"
+          style={{
+            background: activeKpi === 'esg' ? 'rgba(212,184,122,0.08)' : 'rgba(255,255,255,0.01)',
+            borderColor: activeKpi === 'esg' ? theme.primary : 'rgba(255,255,255,0.04)',
+            boxShadow: activeKpi === 'esg' ? `0 0 12px ${theme.glow}` : 'none'
+          }}
+        >
+          <div className="flex justify-between items-start">
+            <span className="text-[7.5px] uppercase tracking-widest text-white/40 block font-bold">ESG Score</span>
+            <Award className="h-2.5 w-2.5 opacity-30" style={{ color: theme.primary }} />
+          </div>
+          <span className="text-[14px] font-extrabold mt-1 text-[#d4b87a] leading-none tracking-wider">{kpis.esg.metric}</span>
+          <div className="flex items-center gap-1 mt-2.5">
+            <div className="w-1.5 h-1.5 rounded-full bg-[#10b981] animate-pulse" />
+            <span className="text-[7px] font-mono text-white/30">Maturidade AAA</span>
+          </div>
+        </button>
+
+      </div>
+
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={activeKpi}
+          initial={{ opacity: 0, y: 6 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -6 }}
+          transition={{ duration: 0.2 }}
+          className="mt-4 p-3 rounded-lg bg-black/40 border border-white/[0.04] flex flex-col gap-1.5"
+        >
+          <div className="flex justify-between items-center">
+            <div className="flex items-center gap-2">
+              <ActiveIcon className="h-3.5 w-3.5" style={{ color: theme.primary }} />
+              <span className="text-[9px] font-bold text-white/80">{kpis[activeKpi].title}</span>
+            </div>
+            <span className="text-[7.5px] font-mono font-bold uppercase px-1.5 py-0.5 rounded bg-white/5 border border-white/10 text-white/40">
+              {kpis[activeKpi].badge}
+            </span>
+          </div>
+          <span className="text-[8px] font-mono text-white/30">{kpis[activeKpi].desc}</span>
+          <p className="text-[10px] text-white/50 leading-relaxed text-justify mt-1">
+            {kpis[activeKpi].detail}
+          </p>
+        </motion.div>
+      </AnimatePresence>
+
+    </div>
+  )
+}
+
+const STRATEGIC_NODES = [
+  { id: 'N1', label: 'Liderança', x: 18, y: 22, desc: 'Comportamento regulatório & clareza de OKRs de alta performance' },
+  { id: 'N2', label: 'Segurança', x: 34, y: 72, desc: 'Segurança psicológica (Modelo Aristotle do Google)' },
+  { id: 'N3', label: 'Dados', x: 50, y: 28, desc: 'Inteligência competitiva & modelagem preditiva baseada em dados' },
+  { id: 'N4', label: 'ESG', x: 66, y: 68, desc: 'Mitigação rigorosa de riscos ambientais, sociais e de governança' },
+  { id: 'N5', label: 'Governança', x: 82, y: 24, desc: 'Controle de documentação, conformidade regulatória e LGPD' },
+]
+
+function StrategicRoadmapBoard({ moduleId }: { moduleId?: string }) {
+  const theme = MODULE_THEMES[moduleId ?? 'M4'] || MODULE_THEMES.M4
+  const [hoveredNode, setHoveredNode] = useState<string | null>(null)
+
+  return (
+    <div className="relative w-full h-[142px] rounded-lg overflow-hidden bg-radial-glow mt-2" style={{
+      background: `radial-gradient(circle at 50% 50%, ${theme.glow} 0%, transparent 80%)`
+    }}>
+      
+      <svg className="absolute inset-0 w-full h-full pointer-events-none">
+        <path
+          d="M 18,33 Q 26,70 34,108 T 50,42 T 66,102 T 82,36"
+          fill="none"
+          stroke={`url(#pathGradient-${moduleId || 'M4'})`}
+          strokeWidth="0.8"
+          strokeDasharray="3 2"
+        />
+
+        <defs>
+          <linearGradient id={`pathGradient-${moduleId || 'M4'}`} x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor={theme.primary} stopOpacity="0.2" />
+            <stop offset="50%" stopColor={theme.secondary} stopOpacity="0.7" />
+            <stop offset="100%" stopColor={theme.primary} stopOpacity="0.2" />
+          </linearGradient>
+        </defs>
+      </svg>
+
+      <div 
+        className="absolute w-2 h-2 rounded-full animate-pulse"
+        style={{
+          left: `calc(50% - 4px)`,
+          top: `calc(32% - 4px)`,
+          background: `radial-gradient(circle, ${theme.secondary}, ${theme.primary})`,
+          boxShadow: `0 0 12px ${theme.primary}`,
+          zIndex: 10
+        }}
+      />
+
+      {STRATEGIC_NODES.map((node, i) => {
+        const isHovered = hoveredNode === node.id
+        return (
+          <div key={node.id}>
+            
+            <motion.div
+              className="absolute w-3.5 h-3.5 rounded-full cursor-pointer flex items-center justify-center border"
+              animate={{ scale: isHovered ? 1.3 : [1, 1.08, 1] }}
+              transition={{ duration: isHovered ? 0.2 : 2.5 + i * 0.3, repeat: isHovered ? 0 : Infinity, ease: 'easeInOut' }}
+              onMouseEnter={() => setHoveredNode(node.id)}
+              onMouseLeave={() => setHoveredNode(null)}
+              style={{
+                left: `calc(${node.x}% - 7px)`,
+                top: `calc(${node.y}% - 7px)`,
+                borderColor: isHovered ? theme.primary : 'rgba(255,255,255,0.2)',
+                background: isHovered 
+                  ? `radial-gradient(circle, ${theme.primary} 0%, rgba(20,16,8,0.95) 100%)` 
+                  : `radial-gradient(circle, rgba(255,255,255,0.06) 0%, rgba(10,10,10,0.9) 100%)`,
+                boxShadow: isHovered 
+                  ? `0 0 14px ${theme.accent}, inset 0 1px 1px rgba(255,255,255,0.2)` 
+                  : `0 0 6px rgba(0,0,0,0.5)`,
+                zIndex: 15
+              }}
+            >
+              <span className="text-[6.5px] font-bold" style={{ color: isHovered ? '#fff' : 'rgba(255,255,255,0.4)' }}>
+                {i + 1}
+              </span>
+            </motion.div>
+
+            <span 
+              className="absolute text-[7.5px] font-medium tracking-wide pointer-events-none text-center select-none"
+              style={{
+                left: `${node.x}%`,
+                top: `calc(${node.y}% + 9px)`,
+                transform: 'translateX(-50%)',
+                color: isHovered ? '#fff' : 'rgba(255,255,255,0.3)',
+                fontWeight: isHovered ? 700 : 500
+              }}
+            >
+              {node.label}
+            </span>
+
+          </div>
+        )
+      })}
+
+      <AnimatePresence>
+        {hoveredNode && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            className="absolute bottom-2 inset-x-2 p-2 rounded bg-black/85 border border-[#d4b87a]/30 backdrop-blur-md z-20 flex flex-col gap-0.5"
+          >
+            <div className="flex justify-between items-center">
+              <span className="text-[8px] font-bold text-white uppercase tracking-wider">
+                Fluxo {STRATEGIC_NODES.findIndex(n => n.id === hoveredNode) + 1}: {STRATEGIC_NODES.find(n => n.id === hoveredNode)?.label}
+              </span>
+              <span className="text-[7px] font-mono text-[#d4b87a] font-semibold">Foco Estratégico</span>
+            </div>
+            <p className="text-[8.5px] text-white/70 leading-snug">
+              {STRATEGIC_NODES.find(n => n.id === hoveredNode)?.desc}
+            </p>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
     </div>
   )
 }
@@ -838,47 +1311,70 @@ export default function ConteudosPageClient() {
                       </div>
 
                       {/* Sub-cards Dashboard Grid */}
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 px-6 pb-6 items-stretch">
-                        
-                        {/* Card 1: Vídeo Aula */}
-                        <div className="flex">
-                          <FloatingVideoPlayer moduleTitle={current.title} moduleId={current.id} />
-                        </div>
-
-                        {/* Card 2: Sumário e Telemetria */}
-                        <div className="ipb-glass-card p-4 flex flex-col justify-between">
-                          <div>
-                            <span className="text-[7.5px] uppercase tracking-wider font-medium" style={{ color: activeTheme.primary }}>Sumário</span>
-                            <h4 className="text-xs font-semibold text-white/90 mt-1">Mapeamento e Telemetria</h4>
+                      {current.id === 'M4' ? (
+                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 px-6 pb-6 items-stretch">
+                          {/* Card 1: Masterclass playlist cinema spans 2 cols on lg screens */}
+                          <div className="lg:col-span-2 flex">
+                            <ExecutiveMasterclassTheater 
+                              moduleTitle={current.title} 
+                              moduleId={current.id} 
+                              onSelectTopic={(topicId) => handleSelectTopic(activeIndex!, topicId)}
+                              activeTopicId={activeTopicId}
+                            />
                           </div>
-                          <TelemetriaSparkline moduleId={current.id} />
-                        </div>
 
-                      </div>
+                          {/* Card 2: Executive Performance Dashboard */}
+                          <div className="lg:col-span-1 flex">
+                            <ExecutivePerformanceDashboard moduleId={current.id} />
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 px-6 pb-6 items-stretch">
+                          {/* Card 1: Vídeo Aula */}
+                          <div className="flex">
+                            <FloatingVideoPlayer moduleTitle={current.title} moduleId={current.id} />
+                          </div>
+
+                          {/* Card 2: Sumário e Telemetria */}
+                          <div className="ipb-glass-card p-4 flex flex-col justify-between">
+                            <div>
+                              <span className="text-[7.5px] uppercase tracking-wider font-medium" style={{ color: activeTheme.primary }}>Sumário</span>
+                              <h4 className="text-xs font-semibold text-white/90 mt-1">Mapeamento e Telemetria</h4>
+                            </div>
+                            <TelemetriaSparkline moduleId={current.id} />
+                          </div>
+                        </div>
+                      )}
 
                       {/* Material de Apoio Support Grid */}
                       <div className="border-t border-white/[0.04] px-6 py-5 bg-black/20">
                         <h4 className="text-[10px] uppercase tracking-widest text-white/30 font-semibold mb-3">Material de Apoio</h4>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                           
-                          {/* Tutor Card */}
-                          <div className="ipb-glass-card p-3 flex items-center justify-between cursor-pointer group">
-                            <div className="flex items-center gap-3">
-                              <div className="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-white/40 group-hover:text-white transition-all duration-300" style={{
-                                borderColor: activeTheme.accent,
-                                color: activeTheme.primary
-                              }}>
-                                <Brain className="h-4 w-4" />
-                              </div>
-                              <div className="flex flex-col">
-                                <span className="text-[10.5px] font-semibold text-white/90 leading-tight">Tutor Acadêmico IA</span>
-                                <span className="text-[9px] text-white/30">
-                                  {current.id === 'M4' ? 'Suporte executivo e cognitivo via IA' : 'Apoio clínico e cognitivo via IA'}
-                                </span>
-                              </div>
-                            </div>
-                            <ChevronRight className="h-3.5 w-3.5 opacity-50 group-hover:opacity-100 transition-all" style={{ color: activeTheme.primary }} />
-                          </div>
+                           {/* Tutor Card */}
+                           <div className="ipb-glass-card p-3 flex items-center justify-between cursor-pointer group">
+                             <div className="flex items-center gap-3">
+                               <div className="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-white/40 group-hover:text-white transition-all duration-300" style={{
+                                 borderColor: activeTheme.accent,
+                                 color: activeTheme.primary
+                               }}>
+                                 {current.id === 'M4' ? (
+                                   <Briefcase className="h-4 w-4" />
+                                 ) : (
+                                   <Brain className="h-4 w-4" />
+                                 )}
+                               </div>
+                               <div className="flex flex-col">
+                                 <span className="text-[10.5px] font-semibold text-white/90 leading-tight">
+                                   {current.id === 'M4' ? 'Executive Board Advisor IA' : 'Tutor Acadêmico IA'}
+                                 </span>
+                                 <span className="text-[9px] text-white/30">
+                                   {current.id === 'M4' ? 'Briefing estratégico e mentoria de negócios' : 'Apoio clínico e cognitivo via IA'}
+                                 </span>
+                               </div>
+                             </div>
+                             <ChevronRight className="h-3.5 w-3.5 opacity-50 group-hover:opacity-100 transition-all" style={{ color: activeTheme.primary }} />
+                           </div>
 
                           {/* Slides Card */}
                           <div className="ipb-glass-card p-3 flex items-center justify-between cursor-pointer group">
@@ -950,18 +1446,30 @@ export default function ConteudosPageClient() {
                               }} />
                               
                               <div className="relative z-10 mb-4">
-                                <span className="text-[8px] uppercase tracking-wider font-bold" style={{ color: activeTheme.primary }}>Mapa de Conexões</span>
-                                <h3 className="text-sm font-bold text-white/90 mt-1">Rede Neuronal & Simulações</h3>
+                                <span className="text-[8px] uppercase tracking-wider font-bold" style={{ color: activeTheme.primary }}>
+                                  {current.id === 'M4' ? 'Fluxo de Valor' : 'Mapa de Conexões'}
+                                </span>
+                                <h3 className="text-sm font-bold text-white/90 mt-1">
+                                  {current.id === 'M4' ? 'Alinhamento Estratégico' : 'Rede Neuronal & Simulações'}
+                                </h3>
                                 <p className="text-[10.5px] text-white/44 leading-relaxed mt-1.5">
-                                  Estrutura neuronal dinâmica que simula o fluxo cognitivo e as correlações teóricas do módulo.
+                                  {current.id === 'M4' 
+                                    ? 'Mapeamento dinâmico das conexões táticas corporativas e fluxo de governança executiva.'
+                                    : 'Estrutura neuronal dinâmica que simula o fluxo cognitivo e as correlações teóricas do módulo.'}
                                 </p>
                               </div>
 
-                              <MiniNetworkGraph moduleId={current.id} />
+                              {current.id === 'M4' ? (
+                                <StrategicRoadmapBoard moduleId={current.id} />
+                              ) : (
+                                <MiniNetworkGraph moduleId={current.id} />
+                              )}
                               
                               {/* Pillars of Knowledge inside Connection Map */}
                               <div className="mt-6 pt-4 border-t border-white/[0.04]">
-                                <span className="text-[8px] uppercase tracking-wider font-bold text-white/30 block mb-2.5">Pilares do Conhecimento</span>
+                                <span className="text-[8px] uppercase tracking-wider font-bold text-white/30 block mb-2.5">
+                                  {current.id === 'M4' ? 'Pilares Corporativos' : 'Pilares do Conhecimento'}
+                                </span>
                                 <ul className="space-y-2">
                                   {current.concepts.map((concept, idx) => (
                                     <li key={idx} className="text-[9.5px] text-white/60 flex items-start gap-2">
