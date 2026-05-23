@@ -236,53 +236,128 @@ export default function SistemasPageClient() {
 
         @media (max-width: 768px) {
           .app-workspace-layout {
-            grid-template-columns: 86px 1fr !important;
+            grid-template-columns: 170px 1fr !important;
           }
           .app-workspace-layout.sidebar-closed {
             grid-template-columns: 1fr !important;
           }
           
-          /* Hide bulky text widgets on mobile to make the sidebar thin */
-          .app-workspace-layout .side-title-block,
-          .app-workspace-layout .fase-badge,
-          .app-workspace-layout .telemetry-widget,
-          .app-workspace-layout .acc-panel,
-          .app-workspace-layout .side-nav-item .info,
-          .app-workspace-layout .tab .name,
-          .app-workspace-layout .side div:has(input[placeholder*="Buscar"]) {
-            display: none !important;
-          }
-          
+          /* Slim down sidebar on mobile and shrink elements instead of hiding them */
           .app-workspace-layout .side {
+            width: 170px !important;
             padding: 12px 6px !important;
-            width: 86px !important;
             overflow-x: hidden !important;
           }
           
+          .app-workspace-layout .side-header {
+            gap: 6px !important;
+          }
+          
+          .app-workspace-layout .brand-mark {
+            width: 26px !important;
+            height: 26px !important;
+          }
+          .app-workspace-layout .brand-mark span {
+            font-size: 9px !important;
+          }
+          
+          .app-workspace-layout .side-title-block .h1 {
+            font-size: 8px !important;
+          }
+          .app-workspace-layout .side-title-block .h2 {
+            font-size: 6.5px !important;
+          }
+          
+          .app-workspace-layout .fase-badge {
+            padding: 5px 6px !important;
+          }
+          .app-workspace-layout .fase-badge .lbl, 
+          .app-workspace-layout .fase-badge .sub,
+          .app-workspace-layout .fase-badge .status {
+            font-size: 6px !important;
+          }
+          .app-workspace-layout .fase-badge .val {
+            font-size: 9px !important;
+          }
+          
           .app-workspace-layout .tab {
-            width: 70px !important;
-            padding: 8px 4px !important;
+            width: 68px !important;
+            padding: 6px 2px !important;
+            gap: 4px !important;
           }
-          
           .app-workspace-layout .tab .tab-frame {
-            width: 46px !important;
-            height: 46px !important;
+            width: 42px !important;
+            height: 42px !important;
           }
-          
           .app-workspace-layout .tab .code {
             font-size: 11px !important;
           }
+          .app-workspace-layout .tab .name {
+            font-size: 8px !important;
+          }
           
           .app-workspace-layout .side-nav-item {
-            justify-content: center !important;
-            padding: 8px 4px !important;
+            padding: 6px 8px !important;
+            gap: 6px !important;
+          }
+          .app-workspace-layout .side-nav-item .label {
+            font-size: 9.5px !important;
+          }
+          .app-workspace-layout .side-nav-item .desc {
+            font-size: 7px !important;
           }
           
-          .app-workspace-layout .side-nav-item .bullet {
-            width: 6px !important;
-            height: 6px !important;
+          .app-workspace-layout .telemetry-widget {
+            padding: 5px 8px !important;
           }
-        }    -webkit-font-smoothing: antialiased;
+          .app-workspace-layout .acc-panel {
+            gap: 2px !important;
+          }
+          .app-workspace-layout .acc-chip {
+            font-size: 6.5px !important;
+          }
+
+          /* Extremely compact and thin Top HUD on mobile screen */
+          .app-workspace-layout .tophud {
+            width: calc(100% - 16px) !important;
+            padding: 6px 12px !important;
+            margin: 8px auto 6px auto !important;
+            top: 8px !important;
+          }
+          .app-workspace-layout .thd-title {
+            font-size: 10px !important;
+          }
+          .app-workspace-layout .thd-title b {
+            font-weight: 600 !important;
+          }
+          .app-workspace-layout .thd-title .sep,
+          .app-workspace-layout .thd-title span {
+            display: none !important;
+          }
+          .app-workspace-layout .thd-crumb {
+            font-size: 7.5px !important;
+            padding: 3px 6px !important;
+          }
+          .app-workspace-layout .thd-clock {
+            font-size: 9.5px !important;
+            padding: 4px 8px !important;
+            gap: 4px !important;
+          }
+          .app-workspace-layout .thd-clock span {
+            display: none !important;
+          }
+          .app-workspace-layout .thd-chip {
+            font-size: 8px !important;
+            padding: 4px 8px !important;
+          }
+          .app-workspace-layout .thd-chip.live {
+            display: none !important; /* Hide live feed to save massive space on mobile */
+          }
+
+          /* Widen the content area on mobile by reducing its padding to avoid any cutting off */
+          .app-workspace-layout .content-area {
+            padding: 10px 10px 80px 10px !important;
+          }
         }
 
         /* Ambient background stars and nebulas */

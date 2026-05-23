@@ -692,17 +692,15 @@ export default function ConteudosPageClient() {
             
             {/* Left Sidebar */}
             {sidebarOpen && (
-              <div className="h-full flex flex-col">
-                <WorkspaceSidebar
-                  modules={MODULES}
-                  activeIndex={activeIndex}
-                  topicsMap={topicsMap}
-                  activeTopicId={activeTopicId}
-                  onSelectModule={handleSelectModule}
-                  onSelectTopic={handleSelectTopic}
-                  onClose={() => setSidebarOpen(false)}
-                />
-              </div>
+              <WorkspaceSidebar
+                modules={MODULES}
+                activeIndex={activeIndex}
+                topicsMap={topicsMap}
+                activeTopicId={activeTopicId}
+                onSelectModule={handleSelectModule}
+                onSelectTopic={handleSelectTopic}
+                onClose={() => setSidebarOpen(false)}
+              />
             )}
 
             {/* Right Container: Rail + Dynamic Cockpit */}
