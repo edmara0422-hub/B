@@ -18,7 +18,8 @@ import {
   Bell, 
   Clock, 
   ChevronRight, 
-  Maximize2 
+  Maximize2,
+  HelpCircle
 } from 'lucide-react'
 import Link from 'next/link'
 import type { LucideIcon } from 'lucide-react'
@@ -88,11 +89,59 @@ const MODULES: Module[] = [
   },
 ]
 
+const MODULE_THEMES: Record<string, {
+  primary: string
+  secondary: string
+  accent: string
+  glow: string
+  badgeBg: string
+  badgeText: string
+  gradient: string
+}> = {
+  M1: {
+    primary: '#a855f7', // purple
+    secondary: '#06b6d4', // cyan
+    accent: 'rgba(168, 85, 247, 0.35)',
+    glow: 'rgba(6, 182, 212, 0.18)',
+    badgeBg: 'rgba(168, 85, 247, 0.14)',
+    badgeText: '#c084fc',
+    gradient: 'linear-gradient(90deg, #06b6d4 0%, #a855f7 100%)'
+  },
+  M2: {
+    primary: '#3b82f6', // blue
+    secondary: '#14b8a6', // teal
+    accent: 'rgba(59, 82, 246, 0.35)',
+    glow: 'rgba(20, 184, 166, 0.18)',
+    badgeBg: 'rgba(59, 82, 246, 0.14)',
+    badgeText: '#60a5fa',
+    gradient: 'linear-gradient(90deg, #14b8a6 0%, #3b82f6 100%)'
+  },
+  M3: {
+    primary: '#ef4444', // red
+    secondary: '#10b981', // emerald
+    accent: 'rgba(239, 68, 68, 0.35)',
+    glow: 'rgba(16, 185, 129, 0.18)',
+    badgeBg: 'rgba(239, 68, 68, 0.14)',
+    badgeText: '#f87171',
+    gradient: 'linear-gradient(90deg, #10b981 0%, #ef4444 100%)'
+  },
+  M4: {
+    primary: '#d4b87a', // gold
+    secondary: '#cbd5e1', // silver
+    accent: 'rgba(212, 184, 122, 0.35)',
+    glow: 'rgba(212, 184, 122, 0.18)',
+    badgeBg: 'rgba(212, 184, 122, 0.14)',
+    badgeText: '#d4b87a',
+    gradient: 'linear-gradient(90deg, #cbd5e1 0%, #d4b87a 100%)'
+  }
+}
+
 const ease = [0.16, 1, 0.3, 1] as const
 
 // ── Sub-components from mockup ────────────────────────────────────────────────
 
-function MiniNetworkGraph() {
+function MiniNetworkGraph({ moduleId }: { moduleId?: string }) {
+  const theme = MODULE_THEMES[moduleId ?? 'M4'] || MODULE_THEMES.M4
   const center = { x: 50, y: 50 }
   const nodes = [
     { x: 18, y: 25 }, { x: 82, y: 22 }, { x: 14, y: 70 },
@@ -101,7 +150,7 @@ function MiniNetworkGraph() {
 
   return (
     <div className="relative w-full h-[130px] rounded-lg overflow-hidden bg-radial-glow mt-2" style={{
-      background: 'radial-gradient(circle at 50% 50%, rgba(212, 184, 122, 0.06) 0%, transparent 70%)'
+      background: `radial-gradient(circle at 50% 50%, ${theme.glow} 0%, transparent 70%)`
     }}>
       <svg className="absolute inset-0 w-full h-full pointer-events-none">
         {nodes.map((n, i) => (
@@ -111,27 +160,27 @@ function MiniNetworkGraph() {
             y1={`${center.y}%`}
             x2={`${n.x}%`}
             y2={`${n.y}%`}
-            stroke="url(#lineGradient)"
+            stroke={`url(#lineGradient-${moduleId || 'M4'})`}
             strokeWidth="0.8"
             strokeDasharray="2 1"
           />
         ))}
         <defs>
-          <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="rgba(212, 184, 122, 0.1)" />
-            <stop offset="50%" stopColor="rgba(212, 184, 122, 0.45)" />
-            <stop offset="100%" stopColor="rgba(212, 184, 122, 0.1)" />
+          <linearGradient id={`lineGradient-${moduleId || 'M4'}`} x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor={theme.primary} stopOpacity="0.1" />
+            <stop offset="50%" stopColor={theme.secondary} stopOpacity="0.45" />
+            <stop offset="100%" stopColor={theme.primary} stopOpacity="0.1" />
           </linearGradient>
         </defs>
       </svg>
 
       <div 
-        className="absolute w-3 h-3 rounded-full"
+        className="absolute w-3 h-3 rounded-full animate-pulse"
         style={{
           left: `calc(${center.x}% - 6px)`,
           top: `calc(${center.y}% - 6px)`,
-          background: 'radial-gradient(circle, #f4d03f, #d4b87a)',
-          boxShadow: '0 0 10px rgba(212, 184, 122, 0.8)',
+          background: `radial-gradient(circle, ${theme.secondary}, ${theme.primary})`,
+          boxShadow: `0 0 10px ${theme.primary}`,
           zIndex: 10
         }}
       />
@@ -145,18 +194,19 @@ function MiniNetworkGraph() {
           style={{
             left: `calc(${n.x}% - 3px)`,
             top: `calc(${n.y}% - 3px)`,
-            background: 'radial-gradient(circle, #d4b87a, #b8975a)',
-            boxShadow: '0 0 6px rgba(212, 184, 122, 0.6)',
+            background: `radial-gradient(circle, ${theme.primary}, ${theme.secondary})`,
+            boxShadow: `0 0 6px ${theme.accent}`,
             zIndex: 5
           }}
-          whileHover={{ scale: 1.4, boxShadow: '0 0 10px rgba(255,215,0,0.9)' }}
+          whileHover={{ scale: 1.4, boxShadow: `0 0 10px ${theme.primary}` }}
         />
       ))}
     </div>
   )
 }
 
-function TelemetriaSparkline() {
+function TelemetriaSparkline({ moduleId }: { moduleId?: string }) {
+  const theme = MODULE_THEMES[moduleId ?? 'M4'] || MODULE_THEMES.M4
   return (
     <div className="flex flex-col gap-2 mt-2">
       <div className="h-14 rounded-md border border-white/[0.06] bg-black/60 relative overflow-hidden flex items-center justify-between px-3">
@@ -168,7 +218,10 @@ function TelemetriaSparkline() {
           {[40, 60, 45, 75, 55, 90, 70, 85, 95].map((h, i) => (
             <motion.div
               key={i}
-              className="w-1 rounded-t bg-gradient-to-t from-[#b8975a] to-[#d4b87a]"
+              className="w-1 rounded-t"
+              style={{
+                background: `linear-gradient(to top, ${theme.primary}, ${theme.secondary})`
+              }}
               initial={{ height: 2 }}
               animate={{ height: `${h}%` }}
               transition={{ duration: 1.5, repeat: Infinity, repeatType: 'reverse', delay: i * 0.1 }}
@@ -179,20 +232,21 @@ function TelemetriaSparkline() {
       <div className="h-[46px] w-full">
         <svg className="w-full h-full" viewBox="0 0 100 40" preserveAspectRatio="none">
           <defs>
-            <linearGradient id="sparkFill" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#d4b87a" stopOpacity="0.4"/>
-              <stop offset="100%" stopColor="#d4b87a" stopOpacity="0"/>
+            <linearGradient id={`sparkFill-${moduleId || 'M4'}`} x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor={theme.primary} stopOpacity="0.4"/>
+              <stop offset="100%" stopColor={theme.primary} stopOpacity="0"/>
             </linearGradient>
           </defs>
-          <path d="M0,28 L12,22 L24,26 L36,15 L48,20 L60,10 L72,18 L84,8 L100,14 L100,40 L0,40 Z" fill="url(#sparkFill)"/>
-          <path d="M0,28 L12,22 L24,26 L36,15 L48,20 L60,10 L72,18 L84,8 L100,14" fill="none" stroke="#d4b87a" strokeWidth="1.4"/>
+          <path d="M0,28 L12,22 L24,26 L36,15 L48,20 L60,10 L72,18 L84,8 L100,14 L100,40 L0,40 Z" fill={`url(#sparkFill-${moduleId || 'M4'})`}/>
+          <path d="M0,28 L12,22 L24,26 L36,15 L48,20 L60,10 L72,18 L84,8 L100,14" fill="none" stroke={theme.primary} strokeWidth="1.4"/>
         </svg>
       </div>
     </div>
   )
 }
 
-function FloatingVideoPlayer({ moduleTitle }: { moduleTitle: string }) {
+function FloatingVideoPlayer({ moduleTitle, moduleId }: { moduleTitle: string; moduleId?: string }) {
+  const theme = MODULE_THEMES[moduleId ?? 'M4'] || MODULE_THEMES.M4
   const [playing, setPlaying] = useState(false)
   const [progress, setProgress] = useState(36)
 
@@ -205,9 +259,11 @@ function FloatingVideoPlayer({ moduleTitle }: { moduleTitle: string }) {
   }, [playing])
 
   return (
-    <div className="ipb-glass-card w-[260px] flex flex-col pointer-events-auto shadow-2xl transition-all duration-300">
+    <div className="ipb-glass-card w-full flex flex-col pointer-events-auto transition-all duration-300">
       <div className="relative aspect-[16/10] bg-black/80 flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(212,184,122,0.15),transparent_70%)]" />
+        <div className="absolute inset-0" style={{
+          background: `radial-gradient(circle at 50% 50%, ${theme.glow}, transparent 70%)`
+        }} />
         
         <motion.button 
           onClick={() => setPlaying(!playing)}
@@ -215,9 +271,9 @@ function FloatingVideoPlayer({ moduleTitle }: { moduleTitle: string }) {
           whileTap={{ scale: 0.95 }}
           className="relative z-10 w-11 h-11 rounded-full flex items-center justify-center cursor-pointer"
           style={{
-            background: 'radial-gradient(circle at 30% 25%, rgba(212,184,122,0.35) 0%, rgba(212,184,122,0.18) 50%, rgba(20,16,8,0.92) 100%)',
-            border: '0.2px solid rgba(212, 184, 122, 0.5)',
-            boxShadow: '0 0 18px rgba(212,184,122,0.38), inset 0 1px 1px rgba(255,235,180,0.30)'
+            background: `radial-gradient(circle at 30% 25%, ${theme.accent} 0%, rgba(20,16,8,0.92) 100%)`,
+            border: `0.2px solid ${theme.primary}`,
+            boxShadow: `0 0 18px ${theme.accent}, inset 0 1px 1px rgba(255,255,255,0.2)`
           }}
         >
           {playing ? (
@@ -231,17 +287,24 @@ function FloatingVideoPlayer({ moduleTitle }: { moduleTitle: string }) {
         </motion.button>
       </div>
 
-      <div className="p-3 flex flex-col">
-        <span className="text-[8px] uppercase tracking-wider text-[#d4b87a] font-medium">Vídeo Aula</span>
-        <h4 className="text-[11px] font-semibold text-white/90 leading-tight mt-0.5">{moduleTitle}</h4>
-        
-        <div className="flex justify-between items-center text-[9px] text-white/40 mt-3 font-mono">
-          <span>{playing ? 'Reproduzindo' : 'Pausado'}</span>
-          <span>{Math.floor((progress/100)*45)}:10 / 45:10</span>
+      <div className="p-4 flex flex-col flex-1 justify-between">
+        <div>
+          <span className="text-[8px] uppercase tracking-wider font-semibold animate-pulse" style={{ color: theme.primary }}>Vídeo Aula</span>
+          <h4 className="text-[11px] font-semibold text-white/90 leading-tight mt-0.5">{moduleTitle}</h4>
         </div>
         
-        <div className="h-1 bg-white/10 rounded-full mt-1.5 overflow-hidden">
-          <div className="h-full bg-gradient-to-r from-[#b8975a] to-[#d4b87a] transition-all duration-300" style={{ width: `${progress}%` }} />
+        <div className="mt-4">
+          <div className="flex justify-between items-center text-[9px] text-white/40 font-mono">
+            <span>{playing ? 'Reproduzindo' : 'Pausado'}</span>
+            <span>{Math.floor((progress/100)*45)}:10 / 45:10</span>
+          </div>
+          
+          <div className="h-1 bg-white/10 rounded-full mt-1.5 overflow-hidden">
+            <div className="h-full transition-all duration-300" style={{ 
+              width: `${progress}%`,
+              background: `linear-gradient(to right, ${theme.primary}, ${theme.secondary})`
+            }} />
+          </div>
         </div>
       </div>
 
@@ -249,7 +312,11 @@ function FloatingVideoPlayer({ moduleTitle }: { moduleTitle: string }) {
         <button className="text-[9px] hover:text-white transition">⏮</button>
         <button 
           onClick={() => setPlaying(!playing)}
-          className="text-[9px] bg-white/5 hover:bg-[#d4b87a]/15 hover:border-[#d4b87a]/40 w-6 h-6 rounded-full flex items-center justify-center border border-white/10 text-white/90 transition"
+          className="text-[9px] bg-white/5 w-6 h-6 rounded-full flex items-center justify-center border border-white/10 text-white/90 transition"
+          style={{
+            borderColor: playing ? theme.primary : 'rgba(255,255,255,0.1)',
+            background: playing ? `${theme.accent}` : 'rgba(255,255,255,0.05)'
+          }}
         >
           {playing ? '⏸' : '▶'}
         </button>
@@ -568,6 +635,7 @@ export default function ConteudosPageClient() {
   }, [])
 
   const current = activeIndex !== null ? MODULES[activeIndex] : null
+  const activeTheme = current ? MODULE_THEMES[current.id] : MODULE_THEMES.M4
   const CurrentIcon = current?.icon
 
   function handleSelectModule(index: number) {
@@ -614,7 +682,7 @@ export default function ConteudosPageClient() {
             inset: 0;
             border-radius: 20px;
             padding: 1.2px;
-            background: linear-gradient(90deg, #cbd5e1 0%, #d4b87a 100%) !important;
+            background: ${activeTheme.gradient} !important;
             -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
             -webkit-mask-composite: xor;
             mask-composite: exclude;
@@ -641,7 +709,7 @@ export default function ConteudosPageClient() {
             inset: 0;
             border-radius: 14px;
             padding: 1px;
-            background: linear-gradient(90deg, #cbd5e1 0%, #d4b87a 100%) !important;
+            background: ${activeTheme.gradient} !important;
             -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
             -webkit-mask-composite: xor;
             mask-composite: exclude;
@@ -649,7 +717,7 @@ export default function ConteudosPageClient() {
             z-index: 1;
           }
           .ipb-glass-card:hover {
-            border-color: rgba(212,184,122,0.35) !important;
+            border-color: ${activeTheme.accent} !important;
             transform: translateY(-2px);
             box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), 0 14px 36px rgba(0,0,0,0.75) !important;
           }
@@ -789,49 +857,50 @@ export default function ConteudosPageClient() {
                       </div>
 
                       {/* Sub-cards Dashboard Grid */}
-                      <div className="grid grid-cols-1 md:grid-cols-[1.1fr_1.3fr_1fr] gap-4 px-6 pb-6 relative items-stretch">
+                      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 px-6 pb-6 items-stretch">
                         
-                        {/* Card 1: Conceitos */}
+                        {/* Card 1: Vídeo Aula */}
+                        <div className="flex">
+                          <FloatingVideoPlayer moduleTitle={current.title} moduleId={current.id} />
+                        </div>
+
+                        {/* Card 2: Sumário e Telemetria */}
                         <div className="ipb-glass-card p-4 flex flex-col justify-between">
                           <div>
-                            <span className="text-[7.5px] uppercase tracking-wider text-[#d4b87a] font-medium">Fundamentos</span>
+                            <span className="text-[7.5px] uppercase tracking-wider font-medium" style={{ color: activeTheme.primary }}>Sumário</span>
+                            <h4 className="text-xs font-semibold text-white/90 mt-1">Mapeamento e Telemetria</h4>
+                          </div>
+                          <TelemetriaSparkline moduleId={current.id} />
+                        </div>
+
+                        {/* Card 3: Fundamentos */}
+                        <div className="ipb-glass-card p-4 flex flex-col justify-between">
+                          <div>
+                            <span className="text-[7.5px] uppercase tracking-wider font-medium" style={{ color: activeTheme.primary }}>Fundamentos</span>
                             <h4 className="text-xs font-semibold text-white/90 mt-1 mb-2">Conceito de {current.title}</h4>
-                            <p className="text-[10px] text-white/40 leading-relaxed">
+                            <p className="text-[10px] text-white/44 leading-relaxed">
                               {current.overview}
                             </p>
                           </div>
                           <ul className="mt-3 space-y-1.5 border-t border-white/[0.04] pt-3">
                             {current.concepts.map((concept, idx) => (
                               <li key={idx} className="text-[9px] text-white/50 flex items-start gap-1.5">
-                                <span className="text-[#d4b87a] mt-0.5">•</span>
+                                <span className="mt-0.5" style={{ color: activeTheme.primary }}>•</span>
                                 <span>{concept}</span>
                               </li>
                             ))}
                           </ul>
                         </div>
 
-                        {/* Card 2: Mapa Mental (Network Connections Graph) */}
+                        {/* Card 4: Mapa de Conexões */}
                         <div className="ipb-glass-card p-4 flex flex-col justify-between">
                           <div>
-                            <span className="text-[7.5px] uppercase tracking-wider text-[#d4b87a] font-medium">Mapa de Conexões</span>
-                            <h4 className="text-xs font-semibold text-white/90 mt-1">Rede Neuronal de Conhecimento</h4>
+                            <span className="text-[7.5px] uppercase tracking-wider font-medium" style={{ color: activeTheme.primary }}>Mapa de Conexões</span>
+                            <h4 className="text-xs font-semibold text-white/90 mt-1">Rede Neuronal & Simulações</h4>
                           </div>
-                          <MiniNetworkGraph />
+                          <MiniNetworkGraph moduleId={current.id} />
                         </div>
 
-                        {/* Card 3: Telemetria / Indicadores */}
-                        <div className="ipb-glass-card p-4 flex flex-col justify-between">
-                          <div>
-                            <span className="text-[7.5px] uppercase tracking-wider text-[#d4b87a] font-medium">Indicadores</span>
-                            <h4 className="text-xs font-semibold text-white/90 mt-1">Mapeamento e Telemetria</h4>
-                          </div>
-                          <TelemetriaSparkline />
-                        </div>
-
-                        {/* Floating Interactive Video Player */}
-                        <div className="md:absolute md:-right-4 md:top-[8px] md:z-20 md:pointer-events-none flex justify-center w-full md:w-auto mt-4 md:mt-0">
-                          <FloatingVideoPlayer moduleTitle={current.title} />
-                        </div>
                       </div>
 
                       {/* Material de Apoio Support Grid */}
@@ -839,46 +908,57 @@ export default function ConteudosPageClient() {
                         <h4 className="text-[10px] uppercase tracking-widest text-white/30 font-semibold mb-3">Material de Apoio</h4>
                         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                           
-                          {/* PDF Card */}
+                          {/* Tutor Card */}
                           <div className="ipb-glass-card p-3 flex items-center justify-between cursor-pointer group">
                             <div className="flex items-center gap-3">
-                              <div className="w-8 h-8 rounded-lg bg-[#d4b87a]/10 border border-[#d4b87a]/30 flex items-center justify-center text-[#d4b87a] group-hover:bg-[#d4b87a]/20 transition-all duration-300">
-                                <FileText className="h-4 w-4" />
+                              <div className="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-white/40 group-hover:text-white transition-all duration-300" style={{
+                                borderColor: activeTheme.accent,
+                                color: activeTheme.primary
+                              }}>
+                                <Brain className="h-4 w-4" />
                               </div>
                               <div className="flex flex-col">
-                                <span className="text-[10.5px] font-semibold text-white/90 leading-tight">PDF Complementar</span>
-                                <span className="text-[9px] text-white/30">Documentação técnica PDF</span>
+                                <span className="text-[10.5px] font-semibold text-white/90 leading-tight">Tutor Acadêmico IA</span>
+                                <span className="text-[9px] text-white/30">
+                                  {current.id === 'M4' ? 'Suporte executivo e cognitivo via IA' : 'Apoio clínico e cognitivo via IA'}
+                                </span>
                               </div>
                             </div>
-                            <ChevronRight className="h-3.5 w-3.5 text-[#d4b87a] opacity-50 group-hover:opacity-100 transition-all" />
+                            <ChevronRight className="h-3.5 w-3.5 opacity-50 group-hover:opacity-100 transition-all" style={{ color: activeTheme.primary }} />
                           </div>
 
                           {/* Slides Card */}
                           <div className="ipb-glass-card p-3 flex items-center justify-between cursor-pointer group">
                             <div className="flex items-center gap-3">
-                              <div className="w-8 h-8 rounded-lg bg-[#d4b87a]/10 border border-[#d4b87a]/30 flex items-center justify-center text-[#d4b87a] group-hover:bg-[#d4b87a]/20 transition-all duration-300">
-                                <Maximize2 className="h-4 w-4" />
+                              <div className="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-white/40 group-hover:text-white transition-all duration-300" style={{
+                                borderColor: activeTheme.accent,
+                                color: activeTheme.primary
+                              }}>
+                                <FileText className="h-4 w-4" />
                               </div>
                               <div className="flex flex-col">
-                                <span className="text-[10.5px] font-semibold text-white/90 leading-tight">Slides Expositivos</span>
-                                <span className="text-[9px] text-white/30">Apresentação e esquemas</span>
+                                <span className="text-[10.5px] font-semibold text-white/90 leading-tight">Notas de Aula</span>
+                                <span className="text-[9px] text-white/30">Esquemas e anotações resumidas</span>
                               </div>
                             </div>
-                            <ChevronRight className="h-3.5 w-3.5 text-[#d4b87a] opacity-50 group-hover:opacity-100 transition-all" />
+                            <ChevronRight className="h-3.5 w-3.5 opacity-50 group-hover:opacity-100 transition-all" style={{ color: activeTheme.primary }} />
                           </div>
 
                           {/* Quiz Card */}
                           <div className="ipb-glass-card p-3 flex items-center justify-between cursor-pointer group">
                             <div className="flex items-center gap-3">
-                              <div className="w-8 h-8 rounded-lg bg-[#d4b87a]/10 border border-[#d4b87a]/30 flex items-center justify-center text-[#d4b87a] group-hover:bg-[#d4b87a]/20 transition-all duration-300">
-                                <Radar className="h-4 w-4" />
+                              <div className="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-white/40 group-hover:text-white transition-all duration-300" style={{
+                                borderColor: activeTheme.accent,
+                                color: activeTheme.primary
+                              }}>
+                                <HelpCircle className="h-4 w-4" />
                               </div>
                               <div className="flex flex-col">
                                 <span className="text-[10.5px] font-semibold text-white/90 leading-tight">Quiz de Revisão</span>
                                 <span className="text-[9px] text-white/30">Autoavaliação e fixação</span>
                               </div>
                             </div>
-                            <ChevronRight className="h-3.5 w-3.5 text-[#d4b87a] opacity-50 group-hover:opacity-100 transition-all" />
+                            <ChevronRight className="h-3.5 w-3.5 opacity-50 group-hover:opacity-100 transition-all" style={{ color: activeTheme.primary }} />
                           </div>
 
                         </div>
