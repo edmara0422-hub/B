@@ -173,63 +173,19 @@ export async function POST(req: NextRequest) {
 
     const timeoutPromise = new Promise<null>((resolve) =>
       setTimeout(() => {
-        console.log('[Gaso Scan] Timeout de 4.2 segundos atingido para chamadas remotas')
+        console.log('[Gaso Scan] Timeout de 15 segundos atingido para chamadas remotas')
         resolve(null)
-      }, 4200)
+      }, 15000)
     )
 
     aiResult = await Promise.race([externalCallPromise, timeoutPromise])
 
     if (!aiResult) {
-      console.log('[Gaso Scan] Usando fallback local de alta fidelidade')
-      await new Promise(r => setTimeout(r, 450))
-
-      const scenarios = [
-        {
-          ph: 7.36,
-          paco2: 56,
-          pao2: 62,
-          hco3: 31,
-          be: 5.5,
-          sao2: 91,
-          lactato: 1.1,
-          fio2: 24,
-          type: "arterial",
-          confidence: "alta",
-          notes: "⚠️ [Caso Clínico Simulado - Fallback] Conexão com IA excedeu tempo limite. Caso de acidose respiratória crônica compensada.",
-          laudo: "• DIAGNÓSTICO: Acidose respiratória crônica compensada (retentor crônico/DPOC).\n• OXIGENAÇÃO: Hipoxemia moderada (Relação P/F = 258).\n• CONDUTA / AJUSTES:\n1. Manter suporte de O2 em baixo fluxo (meta de SpO2 88-92%).\n2. Evitar VNI com pressões elevadas para não deprimir esforço próprio."
-        },
-        {
-          ph: 7.22,
-          paco2: 28,
-          pao2: 94,
-          hco3: 12,
-          be: -12.5,
-          sao2: 98,
-          lactato: 4.8,
-          fio2: 50,
-          type: "arterial",
-          confidence: "alta",
-          notes: "⚠️ [Caso Clínico Simulado - Fallback] Conexão com IA excedeu tempo limite. Caso de choque séptico com acidose metabólica grave.",
-          laudo: "• DIAGNÓSTICO: Acidose metabólica grave com hiperlactatemia severa (4.8 mmol/L).\n• CONDUTA / AJUSTES:\n1. Ressuscitação volêmica guiada por metas microhemodinâmicas e início imediato de noradrenalina.\n2. Controle de foco infeccioso imediato."
-        },
-        {
-          ph: 7.49,
-          paco2: 29,
-          pao2: 70,
-          hco3: 22,
-          be: -1.0,
-          sao2: 94,
-          lactato: 1.4,
-          fio2: null,
-          type: "arterial",
-          confidence: "alta",
-          notes: "⚠️ [Caso Clínico Simulado - Fallback] Conexão com IA excedeu tempo limite. Alcalose respiratória aguda. FiO2 não registrada na imagem.",
-          laudo: "• DIAGNÓSTICO: Alcalose respiratória aguda induzida por hiperventilação.\n• OXIGENAÇÃO: PaO2 de 70 mmHg. Relação PaO2/FiO2 não calculada devido à ausência de registro da FiO2 no laudo.\n• CONDUTA / AJUSTES:\n1. Investigar causas de taquipneia (dor, ansiedade, embolia pulmonar precoce).\n2. Tratar a causa base do desconforto."
-        }
-      ]
-
-      aiResult = scenarios[Math.floor(Math.random() * scenarios.length)]
+      console.log('[Gaso Scan] Falha ou timeout na análise da IA e nenhum fallback simulado ativo')
+      return NextResponse.json(
+        { error: 'Não foi possível analisar a gasometria. Por favor, tente novamente ou insira os dados manualmente.' },
+        { status: 504 }
+      )
     }
 
     return NextResponse.json(aiResult)

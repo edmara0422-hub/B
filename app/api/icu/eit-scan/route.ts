@@ -301,103 +301,20 @@ export async function POST(req: NextRequest) {
 
     const timeoutPromise = new Promise<null>((resolve) =>
       setTimeout(() => {
-        console.log('[EIT Scan] Timeout de 4.2 segundos atingido para chamadas remotas')
+        console.log('[EIT Scan] Timeout de 15 segundos atingido para chamadas remotas')
         resolve(null)
-      }, 4200)
+      }, 15000)
     )
 
     aiResult = await Promise.race([externalCallPromise, timeoutPromise])
 
     if (!aiResult) {
-      console.log(`[EIT Scan] Usando fallback local de alta fidelidade · modo=${mode}`)
-      await new Promise(r => setTimeout(r, 450))
-
-      if (mode === 'titulacao') {
-        aiResult = {
-          modo_analise: "titulacao_peep",
-          degraus: [
-            { letra: "A", peep: 24, colapso_pct: 0, hiperdistensao_pct: 25, soma: 25 },
-            { letra: "B", peep: 22, colapso_pct: 0, hiperdistensao_pct: 18, soma: 18 },
-            { letra: "C", peep: 20, colapso_pct: 2, hiperdistensao_pct: 12, soma: 14 },
-            { letra: "D", peep: 18, colapso_pct: 5, hiperdistensao_pct: 6, soma: 11 },
-            { letra: "E", peep: 16, colapso_pct: 8, hiperdistensao_pct: 3, soma: 11 },
-            { letra: "F", peep: 14, colapso_pct: 15, hiperdistensao_pct: 1, soma: 16 }
-          ],
-          peep_ideal_teorica: 18,
-          peep_recomendada: 20,
-          letra_ideal: "D",
-          tolerancia_clinica: "5-10% de cada (colapso + hiperdistensão)",
-          interpretacao: "PEEP ideal estimada entre 16-18 cmH₂O (letras D-E), onde a soma de colapso e hiperdistensão é mínima (11%). Recomenda-se programar PEEP de 20 cmH₂O (+2 cmH₂O de margem de segurança contra colapso progressivo).",
-          alertas: [
-            "Sinal de excelente qualidade, eletrodos estáveis",
-            "Pulmão altamente recrutável: bases responderam de forma linear à titulação decremental"
-          ],
-          confidence: "alta",
-          notes: "⚠️ [Caso Clínico Simulado - Fallback] Conexão com IA excedeu o tempo limite. Titulação de PEEP por impedância elétrica."
-        }
-      } else {
-        const scenarios = [
-          {
-            freq_corr: 22,
-            tv_global_pct: 100,
-            rois: {
-              roi1_pct: 44,
-              roi2_pct: 36,
-              roi3_pct: 14,
-              roi4_pct: 6
-            },
-            cov: 0.33,
-            razao_ant_post: 4.0,
-            distribuicao: "ventral predominante",
-            atelectasia_dorsal: true,
-            hiperdistensao_ventral: true,
-            silent_spaces: "dorsal",
-            padroes: [
-              "Atelectasia dorsal severa",
-              "Heterogeneidade pulmonar expressiva",
-              "Silent spaces posteriores (dependentes)"
-            ],
-            condutas_sugeridas: [
-              "Considerar posição prona (P/F < 150 + CoV < 0.45)",
-              "Titular PEEP por EIT decremental para recrutar bases",
-              "Reduzir volume corrente se hiperdistensão anterior piorar"
-            ],
-            confidence: "alta",
-            notes: "⚠️ [Caso Clínico Simulado - Fallback] Conexão com IA excedeu o tempo limite. Caso simulado de atelectasia dorsal severa e silent spaces."
-          },
-          {
-            freq_corr: 16,
-            tv_global_pct: 100,
-            rois: {
-              roi1_pct: 22,
-              roi2_pct: 28,
-              roi3_pct: 32,
-              roi4_pct: 18
-            },
-            cov: 0.49,
-            razao_ant_post: 1.0,
-            distribuicao: "equilibrada",
-            atelectasia_dorsal: false,
-            hiperdistensao_ventral: false,
-            silent_spaces: "nenhum",
-            padroes: [
-              "Ventilação homogênea bilateral",
-              "Centro de ventilação equilibrado (CoV 49%)",
-              "Boa complacência pulmonar global"
-            ],
-            condutas_sugeridas: [
-              "Manter parâmetros atuais de ventilação protetora",
-              "Seguir protocolo de desmame ventilatório se clinicamente estável",
-              "Evitar manobras de recrutamento desnecessárias"
-            ],
-            confidence: "alta",
-            notes: "⚠️ [Caso Clínico Simulado - Fallback] Conexão com IA excedeu o tempo limite. Caso simulado de ventilação homogênea e equilibrada."
-          }
-        ]
-        aiResult = scenarios[Math.floor(Math.random() * scenarios.length)]
-      }
+      console.log('[EIT Scan] Falha ou timeout na análise da IA e nenhum fallback simulado ativo')
+      return NextResponse.json(
+        { error: 'Não foi possível analisar a imagem de EIT. Por favor, tente novamente ou insira os dados manualmente.' },
+        { status: 504 }
+      )
     }
-
     return NextResponse.json(aiResult)
   } catch (error: unknown) {
     const errMsg = error instanceof Error ? error.message : 'Erro interno'

@@ -356,56 +356,19 @@ export async function POST(req: NextRequest) {
 
     const timeoutPromise = new Promise<null>((resolve) =>
       setTimeout(() => {
-        console.log('[Curves Scan] Timeout de 4.2 segundos atingido para chamadas remotas')
+        console.log('[Curves Scan] Timeout de 15 segundos atingido para chamadas remotas')
         resolve(null)
-      }, 4200)
+      }, 15000)
     )
 
     aiResult = await Promise.race([externalCallPromise, timeoutPromise])
 
     if (!aiResult) {
-      console.log('[Curves Scan] Usando fallback local de alta fidelidade')
-      await new Promise(r => setTimeout(r, 450))
-
-      const scenarios = [
-        {
-          mode: "VCV",
-          curvaPxT: ["Curva concava (obstrutiva)", "Pico elevado (resistencia aumentada)"],
-          curvaFxT: ["Fluxo quadrado (VCV normal)", "Fluxo inspiratorio insuficiente (assincronia de fluxo)"],
-          curvaVxT: ["Normal - Sincronico A/C"],
-          loopPV: ["Deslocamento para direita (reducao complacencia)"],
-          loopFV: ["Normal - Formato sigmoide"],
-          assincronia: ["Assincronia de fluxo (Flow Starvation)"],
-          confidence: "alta",
-          notes: "⚠️ [Caso Clínico Simulado - Fallback] Conexão com IA excedeu o tempo limite. Assincronia de fluxo (Flow Starvation).",
-          laudo: "• ASSINCRONIA: Flow Starvation (Fome de fluxo) severa.\n• ANÁLISE: Deflexão côncava ('scooping') proeminente na curva de Pressão × Tempo durante a fase inspiratória.\n• AJUSTES SUGERIDOS:\n1. Aumentar o fluxo inspiratório setado (ex: de 50 para 60-70 L/min) em VCV.\n2. Considerar mudança da onda de fluxo para desacelerada ou transição para modo PCV/PSV."
-        },
-        {
-          mode: "VCV",
-          curvaPxT: ["Duplo disparo"],
-          curvaFxT: ["Duplo pico inspiratorio"],
-          curvaVxT: ["Curva em degrau (duplo disparo)"],
-          loopPV: ["Histerese aumentada (recrutamento)"],
-          loopFV: ["Loop irregular (assincronia)"],
-          assincronia: ["Duplo disparo (Double Triggering)"],
-          confidence: "alta",
-          notes: "⚠️ [Caso Clínico Simulado - Fallback] Conexão com IA excedeu o tempo limite. Assincronia de duplo disparo (Double Triggering).",
-          laudo: "• ASSINCRONIA: Double Triggering (Duplo disparo) com empilhamento de volume.\n• ANÁLISE: Dois ciclos inspiratórios consecutivos sem expiração completa entre eles, visível na curva de Pressão e em degrau na curva de Volume.\n• AJUSTES SUGERIDOS:\n1. Avaliar nível de sedação/analgesia (drive do paciente elevado).\n2. Aumentar o volume alvo ou tempo inspiratório configurado."
-        },
-        {
-          mode: "PCV",
-          curvaPxT: ["Normal - Sincronico A/C"],
-          curvaFxT: ["Fluxo desacelerado (PCV normal)"],
-          curvaVxT: ["Normal - Sincronico A/C"],
-          loopPV: ["Normal - Padrao sigmoide"],
-          loopFV: ["Normal - Formato sigmoide"],
-          assincronia: ["Sem assincronias"],
-          confidence: "alta",
-          notes: "⚠️ [Caso Clínico Simulado - Fallback] Conexão com IA excedeu o tempo limite. Padrão gráfico normal e sincronizado.",
-          laudo: "• ANÁLISE: Sincronia ventilador-paciente excelente. Sem assincronias identificadas.\n• CURVAS: Curvas P×T, F×T e loops anatômicos e regulares.\n• AJUSTES SUGERIDOS:\n1. Manter estratégia protetora atual."
-        }
-      ]
-      aiResult = scenarios[Math.floor(Math.random() * scenarios.length)]
+      console.log('[Curves Scan] Falha ou timeout na análise da IA e nenhum fallback simulado ativo')
+      return NextResponse.json(
+        { error: 'Não foi possível analisar as curvas de ventilação. Por favor, tente novamente ou insira os dados manualmente.' },
+        { status: 504 }
+      )
     }
 
     return NextResponse.json(aiResult)

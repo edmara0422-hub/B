@@ -340,85 +340,19 @@ export async function POST(req: NextRequest) {
 
     const timeoutPromise = new Promise<null>((resolve) =>
       setTimeout(() => {
-        console.log('[VM Scan] Timeout de 4.2 segundos atingido para chamadas remotas')
+        console.log('[VM Scan] Timeout de 15 segundos atingido para chamadas remotas')
         resolve(null)
-      }, 4200)
+      }, 15000)
     )
 
     aiResult = await Promise.race([externalCallPromise, timeoutPromise])
 
     if (!aiResult) {
-      const activePerfil = (perfil || 'adulto').toLowerCase()
-      const activeModo = (modoSelecionado || 'VCV').toUpperCase()
-      console.log(`[VM Scan] Usando fallback local de alta fidelidade · perfil=${activePerfil} · modo=${activeModo}`)
-      await new Promise(r => setTimeout(r, 450))
-
-      if (activePerfil === 'neonatal') {
-        aiResult = {
-          mode: "PCV",
-          params: {
-            vt: 15, vc: null, ve: 0.6, fr: 40, peep: 5, fio2: 30,
-            ppico: 10, pplato: null, pmean: 7,
-            ie: "1:2", ti: 0.4, fluxo: null, trigger: 0.3,
-            ps: null, ipap: null, epap: null,
-            phigh: null, plow: null, thigh: null, tlow: null,
-            mpaw: null, amplitude: null, hz: null, biasflow: null,
-            nava_level: null, pav_percent: null
-          },
-          confidence: "alta",
-          notes: "⚠️ [Caso Clínico Simulado - Fallback] Conexão com IA excedeu o tempo limite. Parâmetros neonatais típicos (PCV).",
-          laudo: "• MODO: PCV (Neonatal).\n• PROTEÇÃO: Volume exalado de 15 mL é protetor e seguro (~5 mL/kg).\n• CONDUTAS: Manter estratégia protetora atual. Acompanhar gasometria capilar periódica."
-        }
-      } else if (activeModo === 'PSV' || activeModo === 'SPONT') {
-        aiResult = {
-          mode: "PSV",
-          params: {
-            vt: 460, vc: null, ve: 7.4, fr: 16, peep: 8, fio2: 30,
-            ppico: null, pplato: null, pmean: 9,
-            ie: null, ti: null, fluxo: null, trigger: 1.5,
-            ps: 12, ipap: null, epap: null,
-            phigh: null, plow: null, thigh: null, tlow: null,
-            mpaw: null, amplitude: null, hz: null, biasflow: null,
-            nava_level: null, pav_percent: null
-          },
-          confidence: "alta",
-          notes: "⚠️ [Caso Clínico Simulado - Fallback] Conexão com IA excedeu o tempo limite. Parâmetros espontâneos típicos (PSV).",
-          laudo: "• MODO: PSV (Espontâneo).\n• MECÂNICA: Esforço respiratório adequado sem taquipneia (FR 16 rpm, volume exalado 460 mL).\n• CONDUTAS: Indicado prosseguir com protocolo de desmame e teste de respiração espontânea (TRE)."
-        }
-      } else if (activeModo === 'PCV') {
-        aiResult = {
-          mode: "PCV",
-          params: {
-            vt: 450, vc: null, ve: 7.2, fr: 16, peep: 10, fio2: 40,
-            ppico: 15, pplato: null, pmean: 11,
-            ie: "1:2", ti: 1.2, fluxo: null, trigger: 2.0,
-            ps: null, ipap: null, epap: null,
-            phigh: null, plow: null, thigh: null, tlow: null,
-            mpaw: null, amplitude: null, hz: null, biasflow: null,
-            nava_level: null, pav_percent: null
-          },
-          confidence: "alta",
-          notes: "⚠️ [Caso Clínico Simulado - Fallback] Conexão com IA excedeu o tempo limite. Parâmetros controlados a pressão (PCV).",
-          laudo: "• MODO: PCV (Adulto).\n• METAS: Delta de pressão de 15 cmH2O gerando volume corrente de 450 mL (6.5 mL/kg), mantendo pressões seguras (<30 cmH2O).\n• CONDUTAS: Estabilidade ventilatória satisfatória. Manter parâmetros protetores."
-        }
-      } else {
-        // Default to VCV
-        aiResult = {
-          mode: "VCV",
-          params: {
-            vt: 420, vc: 420, ve: 6.7, fr: 16, peep: 8, fio2: 35,
-            ppico: 22, pplato: 16, pmean: 9,
-            ie: "1:2", ti: 1.2, fluxo: 50, trigger: 2.0,
-            ps: null, ipap: null, epap: null,
-            phigh: null, plow: null, thigh: null, tlow: null,
-            mpaw: null, amplitude: null, hz: null, biasflow: null,
-            nava_level: null, pav_percent: null
-          },
-          confidence: "alta",
-          notes: "⚠️ [Caso Clínico Simulado - Fallback] Conexão com IA excedeu o tempo limite. Parâmetros controlados a volume (VCV).",
-          laudo: "• MODO: VCV (Adulto).\n• MECÂNICA: Ventilação protetora (6.2 mL/kg). Ppico (22 cmH2O) e Pplato (16 cmH2O) adequados. Driving Pressure excelente de 8 cmH2O.\n• CONDUTAS: Parâmetros protetores e estáveis. Manter conduta atual."
-        }
-      }
+      console.log('[VM Scan] Falha ou timeout na análise da IA e nenhum fallback simulado ativo')
+      return NextResponse.json(
+        { error: 'Não foi possível analisar os parâmetros do ventilador mecânico. Por favor, tente novamente ou insira os dados manualmente.' },
+        { status: 504 }
+      )
     }
 
     return NextResponse.json(aiResult)

@@ -306,95 +306,19 @@ export async function POST(req: NextRequest) {
 
     const timeoutPromise = new Promise<null>((resolve) =>
       setTimeout(() => {
-        console.log('[Vision API] Timeout de 4.2 segundos atingido para chamadas remotas')
+        console.log('[Vision API] Timeout de 15 segundos atingido para chamadas remotas')
         resolve(null)
-      }, 4200)
+      }, 15000)
     )
 
     aiResult = await Promise.race([externalCallPromise, timeoutPromise])
 
     if (!aiResult) {
-      const activeExam = (examType || 'RX-Tórax').toUpperCase()
-      console.log(`[Vision API] Usando fallback local de alta fidelidade · exame=${activeExam}`)
-      await new Promise(r => setTimeout(r, 450))
-
-      if (activeExam.includes('TC-CRÂNIO')) {
-        aiResult = {
-          findings: [
-            "⚠️ [Caso Clínico Simulado - Fallback] Conexão com IA excedeu o tempo limite.",
-            "Presença de hematoma subdural agudo frontoparietal esquerdo medindo 1.2 cm",
-            "Desvio de estruturas da linha média para a direita em 0.6 cm",
-            "Apagamento dos sulcos e giros corticais ipsilaterais por edema cerebral focal"
-          ],
-          report: "LAUDO DE TOMOGRAFIA DE CRÂNIO\n\n1. ACHADOS CEREBRAIS:\n- Presença de coleção extra-axial hiperdensa com formato em crescente localizada na região frontoparietal esquerda, compatível com hematoma subdural agudo (espessura máxima de 1.2 cm).\n- Efeito de massa manifestado por apagamento parcial do ventrículo lateral esquerdo e apagamento difuso de sulcos corticais no hemisfério esquerdo.\n- Desvio da linha média para a direita medindo 0.6 cm no nível do septo pelúcido.\n- Tronco cerebral e fossa posterior sem alterações estruturais agudas.\n\nCONCLUSÃO:\n- Hematoma subdural agudo frontoparietal esquerdo com moderado efeito de massa e desvio de linha média.\n- RECOMENDAÇÃO: Avaliação neurocirúrgica de urgência para acompanhamento ou intervenção descompressiva.",
-          measurements: null,
-          deviceStatus: {
-            tot: null,
-            sne: null,
-            central_access: null,
-            outros: "⚠️ [Caso Clínico Simulado - Fallback] Conexão com IA excedeu o tempo limite."
-          }
-        }
-      } else {
-        // Default to Chest X-ray scenarios
-        const scenarios = [
-          {
-            findings: [
-              "⚠️ [Caso Clínico Simulado - Fallback] Conexão com IA excedeu o tempo limite.",
-              "Campos pleuropulmonares livres de consolidações grosseiras",
-              "Ponta do tubo endotraqueal (TOT) posicionada a 4.2 cm da carina traqueal — adequado",
-              "Silhueta cardíaca dentro dos limites normais (Índice cardiotorácico 0.48)",
-              "Seios costofrênicos livres de derrames"
-            ],
-            report: "LAUDO DE RADIOGRAFIA DE TÓRAX (LEITO DE UTI)\n\n1. ANÁLISE DE DISPOSITIVOS:\n- Tubo endotraqueal (TOT) bem posicionado, com ponta distal a 4.2 cm acima da carina traqueal (posicionamento ideal/seguro).\n- Acesso venoso central em veia subclávia direita com ponta projetada na transição cavo-atrial de forma correta.\n\n2. PARÊNQUIMA PULMONAR E PLEURA:\n- Parênquima pulmonar sem focos de consolidação lobar, infiltrados alveolares grosseiros ou atelectasias significativas.\n- Transparência pulmonar bilateral preservada.\n- Espaço pleural livre; ausência de derrames pleurais ou pneumotórax.\n\n3. SILHUETA CARDIOVASCULAR E MEDIASTINO:\n- Área cardíaca de dimensões normais (ICT = 0.48).\n- Mediastino superior livre, sem alargamento patológico.\n\nCONCLUSÃO:\n- Exame de controle radiológico satisfatório. Dispositivos médicos invasivos (TOT e acesso central) corretamente posicionados e seguros para uso.",
-            measurements: {
-              tot_to_carina_cm: 4.2,
-              status: "ADEQUADO",
-              direction: "ADEQUADO",
-              alert: null,
-              rim_labial_cm: 22,
-              seletiva: false,
-              seletiva_side: null,
-              tube_tip_pct: { x: 0.48, y: 0.38 },
-              carina_pct: { x: 0.50, y: 0.52 }
-            },
-            deviceStatus: {
-              tot: "Ponta a 4.2 cm da carina — posicionamento adequado",
-              sne: null,
-              central_access: "Transição cavo-atrial — adequado",
-              outros: "⚠️ [Caso Clínico Simulado - Fallback] Conexão com IA excedeu o tempo limite."
-            }
-          },
-          {
-            findings: [
-              "⚠️ [Caso Clínico Simulado - Fallback] Conexão com IA excedeu o tempo limite.",
-              "Intubação seletiva em brônquio principal direito",
-              "Atelectasia total do pulmão esquerdo por hipoventilação obstrutiva",
-              "Ponta do tubo endotraqueal (TOT) ultrapassando a carina em 1.5 cm",
-              "Campos pulmonares direitos hiperinsuflados"
-            ],
-            report: "LAUDO DE RADIOGRAFIA DE TÓRAX (URGÊNCIA CLÍNICA)\n\n1. ANÁLISE DE DISPOSITIVOS:\n- Tubo endotraqueal (TOT) posicionado de forma SELETIVA, ultrapassando a carina traqueal e adentrando o brônquio principal direito em 1.5 cm (classificação: CRÍTICO_SELETIVO).\n\n2. PARÊNQUIMA PULMONAR E PLEURA:\n- Atelectasia total e opacidade homogênea do pulmão esquerdo secundária à ausência de ventilação (intubação seletiva).\n- Desvio ipsilateral das estruturas mediastinais para a esquerda.\n- Pulmão direito com sinais de hiperinsuflação compensatória.\n\nCONCLUSÃO:\n- INTUBAÇÃO SELETIVA EM BRÔNQUIO PRINCIPAL DIREITO COM ATELECTASIA TOTAL DO PULMÃO ESQUERDO.\n- RECOMENDAÇÃO: Recuar o tubo endotraqueal em aproximadamente 3 a 4 cm de forma urgente sob controle de ausculta pulmonar bilateral.",
-            measurements: {
-              tot_to_carina_cm: -1.5,
-              status: "CRITICO_SELETIVO",
-              direction: "URGENTE",
-              alert: "Recuar o tubo endotraqueal imediatamente em 3-4 cm para restabelecer ventilação bilateral!",
-              rim_labial_cm: 26,
-              seletiva: true,
-              seletiva_side: "direito",
-              tube_tip_pct: { x: 0.53, y: 0.58 },
-              carina_pct: { x: 0.50, y: 0.52 }
-            },
-            deviceStatus: {
-              tot: "Seletiva em brônquio principal direito — URGENTE",
-              sne: null,
-              central_access: null,
-              outros: "⚠️ [Caso Clínico Simulado - Fallback] Conexão com IA excedeu o tempo limite."
-            }
-          }
-        ]
-        aiResult = scenarios[Math.floor(Math.random() * scenarios.length)]
-      }
+      console.log('[Vision API] Falha ou timeout na análise da IA e nenhum fallback simulado ativo')
+      return NextResponse.json(
+        { error: 'Não foi possível analisar a imagem de raio-x/tomografia. Por favor, tente novamente ou insira os dados manualmente.' },
+        { status: 504 }
+      )
     }
 
     return NextResponse.json(aiResult)

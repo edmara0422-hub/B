@@ -154,36 +154,19 @@ export async function POST(req: NextRequest) {
 
     const timeoutPromise = new Promise<null>((resolve) =>
       setTimeout(() => {
-        console.log('[BH Scan] Timeout de 4.2 segundos atingido para chamadas remotas')
+        console.log('[BH Scan] Timeout de 15 segundos atingido para chamadas remotas')
         resolve(null)
-      }, 4200)
+      }, 15000)
     )
 
     aiResult = await Promise.race([externalCallPromise, timeoutPromise])
 
     if (!aiResult) {
-      console.log('[BH Scan] Usando fallback local de alta fidelidade')
-      await new Promise(r => setTimeout(r, 450))
-
-      const scenarios = [
-        {
-          bh24_ml: 1250,
-          bhac_ml: 4800,
-          bh24_raw: "+1.25L",
-          bhac_raw: "+4.8L",
-          confidence: "alta",
-          notes: "⚠️ [Caso Clínico Simulado - Fallback] Conexão com IA excedeu o tempo limite. Tendência de balanço acumulado positivo persistente."
-        },
-        {
-          bh24_ml: -850,
-          bhac_ml: 1850,
-          bh24_raw: "-850mL",
-          bhac_raw: "+1.85L",
-          confidence: "alta",
-          notes: "⚠️ [Caso Clínico Simulado - Fallback] Conexão com IA excedeu o tempo limite. Balanço negativo de 24h por terapia diurética planeada."
-        }
-      ]
-      aiResult = scenarios[Math.floor(Math.random() * scenarios.length)]
+      console.log('[BH Scan] Falha ou timeout na análise da IA e nenhum fallback simulado ativo')
+      return NextResponse.json(
+        { error: 'Não foi possível analisar a folha de balanço hídrico. Por favor, tente novamente ou insira os dados manualmente.' },
+        { status: 504 }
+      )
     }
 
     return NextResponse.json(aiResult)
