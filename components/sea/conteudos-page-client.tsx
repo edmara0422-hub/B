@@ -803,25 +803,6 @@ export default function ConteudosPageClient() {
                           <Radar className="h-3.5 w-3.5 text-[#d4b87a]" />
                           <span>Operational Module System</span>
                         </div>
-                        <div className="flex items-center gap-3">
-                          {/* Live Clock */}
-                          <div className="flex items-center gap-1.5 bg-white/5 border border-white/10 rounded-lg px-2.5 py-1 text-[10px] font-mono text-white/80">
-                            <Clock className="h-3 w-3 text-[#d4b87a]" />
-                            <span>{clockTime}</span>
-                          </div>
-                          {/* Notifications */}
-                          <div className="relative w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-white/40 cursor-pointer hover:text-white transition">
-                            <Bell className="h-3.5 w-3.5" />
-                            <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full bg-[#d4b87a] shadow-[0_0_5px_rgba(212,184,122,0.8)]" />
-                          </div>
-                          {/* User Avatar */}
-                          <div className="flex items-center gap-2 bg-white/5 border border-white/10 rounded-full pl-1.5 pr-3 py-1 cursor-pointer hover:border-white/20 transition">
-                            <div className="w-5 h-5 rounded-full bg-gradient-to-tr from-[#cbd5e1] to-[#d4b87a] flex items-center justify-center text-black text-[9px] font-bold">
-                              A
-                            </div>
-                            <span className="text-[10px] font-medium text-white/80">A. Silva</span>
-                          </div>
-                        </div>
                       </div>
 
                       {/* Hero Section */}
