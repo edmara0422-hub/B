@@ -9,7 +9,7 @@ import {
 } from 'lucide-react'
 
 type TabOption = 'home' | 'lideres' | 'time' | 'empresa'
-type LideresSubTab = 'recrutar' | 'gerir' | 'lideranca' | 'delegar' | 'significado'
+type LideresSubTab = 'recrutar' | 'gerir' | 'delegar' | 'voce'
 type TimeSubTab = 'formar' | 'pessoas' | 'influencia'
 type EmpresaSubTab = 'estrategia' | 'bi' | 'relatorio' | 'canais'
 
@@ -1093,6 +1093,136 @@ export function SigPessoasPanel() {
           color: #e24b4a;
           background: rgba(226,75,74,0.06);
         }
+
+        /* Nested Sub-tabs for leaders, time, and company */
+        .tab-lideres-row, .tab-time-row, .tab-empresa-row {
+          display: flex;
+          gap: 8px;
+          margin-bottom: 20px;
+          border-bottom: 0.2px solid rgba(255, 255, 255, 0.06);
+          padding-bottom: 10px;
+          flex-wrap: wrap;
+        }
+        .sub-tab-btn {
+          background: rgba(255, 255, 255, 0.02) !important;
+          border: 0.2px solid rgba(255, 255, 255, 0.08) !important;
+          color: #8a9098 !important;
+          padding: 6px 14px;
+          border-radius: 6px;
+          font-size: 11px;
+          font-weight: 500;
+          font-family: inherit;
+          cursor: pointer;
+          transition: all 0.2s;
+        }
+        .sub-tab-btn:hover {
+          color: #fff !important;
+          background: rgba(255, 255, 255, 0.06) !important;
+          border-color: rgba(255, 255, 255, 0.12) !important;
+        }
+        .sub-tab-btn.active {
+          background: rgba(212, 184, 122, 0.08) !important;
+          border-color: rgba(212, 184, 122, 0.5) !important;
+          box-shadow: 0 0 0 1.5px rgba(255, 255, 255, 0.15), 0 2px 8px rgba(212, 184, 122, 0.1) !important;
+          color: #d4b87a !important;
+          font-weight: 600;
+        }
+
+        .p-sub-view {
+          display: none;
+        }
+        .p-sub-view.active {
+          display: block;
+          animation: fadeInSubView 0.25s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+        }
+        @keyframes fadeInSubView {
+          from { opacity: 0; transform: translateY(6px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Interactive lessons */
+        .interactive-lesson {
+          background: rgba(255, 255, 255, 0.02) !important;
+          border: 0.2px solid rgba(255, 255, 255, 0.05) !important;
+          border-radius: 8px;
+          padding: 10px 12px;
+          cursor: pointer;
+          transition: all 0.2s ease;
+          margin-bottom: 8px;
+          text-align: left;
+        }
+        .interactive-lesson:hover {
+          border-color: rgba(255, 255, 255, 0.12) !important;
+          background: rgba(255, 255, 255, 0.04) !important;
+        }
+        .interactive-lesson .lesson-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+        .interactive-lesson .lesson-body {
+          max-height: 0;
+          overflow: hidden;
+          transition: max-height 0.3s ease-out, margin-top 0.3s ease;
+          font-size: 10px;
+          color: #cbd5e1;
+          line-height: 1.4;
+        }
+        .interactive-lesson.expanded .lesson-body {
+          max-height: 200px;
+          margin-top: 8px;
+        }
+
+        /* CNV Linter & General forms */
+        .cnv-text-area {
+          width: 100%;
+          height: 70px;
+          background: rgba(0, 0, 0, 0.25) !important;
+          border: 0.2px solid rgba(255, 255, 255, 0.08) !important;
+          border-radius: 6px;
+          padding: 10px;
+          font-family: inherit;
+          font-size: 10.5px;
+          color: #fff;
+          outline: none;
+          resize: none;
+          transition: border-color 0.2s;
+        }
+        .cnv-text-area:focus {
+          border-color: rgba(212, 184, 122, 0.4) !important;
+        }
+
+        /* ROI calculators inputs */
+        .calc-grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 12px;
+        }
+        .calc-input-group {
+          display: flex;
+          flex-direction: column;
+          gap: 4px;
+          text-align: left;
+        }
+        .calc-input-group label {
+          font-size: 8.5px;
+          font-family: inherit;
+          color: rgba(255, 255, 255, 0.4);
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+        }
+        .calc-input-group input, .calc-input-group select {
+          background: rgba(0, 0, 0, 0.25) !important;
+          border: 0.2px solid rgba(255, 255, 255, 0.08) !important;
+          border-radius: 6px;
+          padding: 6px 10px;
+          font-size: 10px;
+          color: #fff;
+          outline: none;
+        }
+        .calc-input-group input:focus, .calc-input-group select:focus {
+          border-color: rgba(212, 184, 122, 0.4) !important;
+        }
       `}} />
 
       {/* Tabs HUD Header (Mockup exact replica) */}
@@ -1602,40 +1732,41 @@ export function SigPessoasPanel() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className="ipb-soft p-5 rounded-[1.2rem] space-y-4"
+            className="dash-card gold-border"
+            style={{ padding: '24px' }}
           >
             {/* Header info */}
-            <div className="flex items-start justify-between border-b border-white/[0.04] pb-3">
-              <div>
-                <span className="text-[7.5px] uppercase tracking-widest text-[#d4b87a]/70 font-mono">LÍDERES · GESTORES</span>
-                <h3 className="text-sm font-bold text-white/90 leading-none mt-0.5 font-sans">Desenvolvimento de Liderança</h3>
-                <p className="text-[9.5px] text-white/40 mt-1">Autoconhecimento → Gestão → Equipe → Organização</p>
+            <div className="sec-head" style={{ marginBottom: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div className="lhs" style={{ textAlign: 'left' }}>
+                <div className="sec-id" style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                  <span className="num" style={{ fontFamily: 'inherit', fontSize: '10px', color: '#b8975a', border: '0.2px solid rgba(212,184,122,0.3)', padding: '1px 6px', borderRadius: '4px', background: 'rgba(212,184,122,0.05)', fontWeight: 'bold' }}>LÍDERES</span>
+                  <span className="tag" style={{ fontSize: '9px', color: 'var(--ink-mute)' }}>Ferramentas do Líder como Agente</span>
+                </div>
+                <h2 className="sec-h" style={{ fontSize: '16px', fontWeight: 'bold', color: '#fff', marginTop: '6px' }}>Desenvolvimento de Liderança</h2>
+                <div className="sec-sub" style={{ fontSize: '9.5px', color: 'var(--ink-mute)', marginTop: '2px' }}>Você não pode liderar quem você não é. Desenvolvimento tem uma sequência: Autoconhecimento → Gestão → Equipe → Organização.</div>
               </div>
-              <button 
-                onClick={() => triggerToast('Carregando áudio de liderança Situacional...', 'ok')}
-                className="rounded-[0.5rem] bg-white/[0.03] border border-white/[0.08] hover:border-[#d4b87a]/35 text-[#d4b87a] px-3 py-1.5 text-[8.5px] font-bold uppercase transition"
-              >
-                ▶ PROFESSOR IA
-              </button>
+              <div className="rhs">
+                <button 
+                  onClick={() => triggerToast('Professor de IA iniciando mentoria de liderança...', 'ok')}
+                  className="btn-professor-ia"
+                >
+                  ▶ PROFESSOR IA
+                </button>
+              </div>
             </div>
 
             {/* Sub-tabs Row */}
-            <div className="flex gap-1.5 border-b border-white/[0.03] pb-2 overflow-x-auto">
+            <div className="tab-lideres-row">
               {[
                 { id: 'recrutar', label: 'Recrutar' },
                 { id: 'gerir', label: 'Gerir' },
-                { id: 'lideranca', label: 'Você (PDI)' },
-                { id: 'delegar', label: 'Delegar (M1-M4)' },
-                { id: 'significado', label: 'Significado' }
+                { id: 'delegar', label: 'Delegar' },
+                { id: 'voce', label: 'Você' }
               ].map(sub => (
                 <button
                   key={sub.id}
                   onClick={() => setLideresTab(sub.id as LideresSubTab)}
-                  className={`px-3 py-1.5 rounded-[0.4rem] text-[9.5px] font-bold font-mono transition-all ${
-                    lideresTab === sub.id
-                      ? 'bg-white/[0.05] text-[#d4b87a] border border-[#d4b87a]/25 shadow-sm'
-                      : 'bg-transparent text-white/40 hover:text-white/75 border border-transparent'
-                  }`}
+                  className={`sub-tab-btn ${lideresTab === sub.id ? 'active' : ''}`}
                 >
                   {sub.label}
                 </button>
@@ -1645,52 +1776,84 @@ export function SigPessoasPanel() {
             {/* Inner pages dispatch */}
             <AnimatePresence mode="wait">
               
-              {/* SUVPAGE: RECRUTAR */}
+              {/* SUBPAGE: RECRUTAR */}
               {lideresTab === 'recrutar' && (
                 <motion.div
                   key="recrutar"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  className="grid grid-cols-1 lg:grid-cols-12 gap-4"
+                  className="p-sub-view active"
                 >
-                  {/* Left: Role metrics */}
-                  <div className="lg:col-span-8 space-y-4 text-left">
-                    <div className="ipb-soft p-4 rounded-xl border border-white/[0.03]">
-                      <h4 className="text-[11px] font-bold text-[#d4b87a] uppercase tracking-wider font-mono">Novo Candidato</h4>
-                      <p className="text-[9.5px] text-white/40 mt-1">Selecione o papel desejado para parametrizar o formulário estruturado:</p>
-                      
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3">
-                        {[
-                          { title: 'Liderado', desc: 'Foco: Fit cultural + comportamento + soft skills específicos.', qCount: '5 perguntas' },
-                          { title: 'Gestor', desc: 'Foco: Capacidade gestora + desenvolvimento + mediação.', qCount: '7 perguntas' },
-                          { title: 'Líder & Gestor', desc: 'Liderança estratégica que gere pessoas. Foco: Visão + Operação.', qCount: '10 perguntas' },
-                          { title: 'Líder', desc: 'Head ou C-level estratégico. Foco: Transformação + Direção.', qCount: '10 perguntas' }
-                        ].map((role, idx) => (
-                          <div 
-                            key={idx}
-                            onClick={() => triggerToast(`Parâmetros de fit para ${role.title} ativados.`, 'ok')}
-                            className="p-3 bg-black/20 border border-white/[0.05] hover:border-[#d4b87a]/45 rounded-lg cursor-pointer transition text-left"
-                          >
-                            <b className="text-[11px] text-[#d4b87a] block leading-none">{role.title}</b>
-                            <span className="text-[8.5px] text-white/50 block mt-1 leading-snug">{role.desc}</span>
-                            <span className="text-[8px] font-mono text-white/35 block mt-2">{role.qCount}</span>
+                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
+                    {/* Left: Role metrics */}
+                    <div className="lg:col-span-8 space-y-4 text-left">
+                      <div className="dash-card">
+                        <div className="sec-head" style={{ marginBottom: '20px' }}>
+                          <div className="lhs">
+                            <h3 className="panel-title" style={{ fontSize: '16px' }}>NOVO CANDIDATO</h3>
+                            <div className="panel-sub">Para qual papel?</div>
                           </div>
-                        ))}
+                        </div>
+                        
+                        <p style={{ fontSize: '11px', color: 'var(--ink-mute)', marginBottom: '15px', lineHeight: '1.5' }}>
+                          Cada papel tem critérios diferentes de avaliação. Líderes/Gestores precisam de mais perguntas porque o impacto cultural deles é maior.
+                        </p>
+                        
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-5">
+                          {[
+                            { title: 'Liderado', desc: 'Alguém que vai compor seu time e reportar a você. Foco: fit cultural + comportamento + soft skills.', qCount: '5 perguntas de avaliação' },
+                            { title: 'Gestor', desc: 'Função de gestão (coordenador, gerente). Foco: capacidade gestora + desenvolvimento + mediação.', qCount: '7 perguntas de avaliação' },
+                            { title: 'Líder & Gestor', desc: 'Liderança estratégica que gere pessoas diretamente. Foco: visão + operação + cultura.', qCount: '10 perguntas de avaliação' },
+                            { title: 'Líder', desc: 'Liderança estratégica (head, C-level) que NÃO gere pessoas diretamente. Foco: transformação + coragem ética.', qCount: '10 perguntas de avaliação' }
+                          ].map((role, idx) => (
+                            <div 
+                              key={idx}
+                              onClick={() => triggerToast(`Parâmetros de fit para ${role.title} ativados.`, 'ok')}
+                              className="p-3 bg-white/[0.01] border border-white/[0.05] hover:border-[#d4b87a]/45 rounded-lg cursor-pointer transition text-left"
+                            >
+                              <b className="text-[11.5px] text-[#d4b87a] block leading-none">{role.title}</b>
+                              <span className="text-[9.5px] text-white/50 block mt-1 leading-snug">{role.desc}</span>
+                              <span className="text-[8.5px] font-mono text-white/35 block mt-2">{role.qCount}</span>
+                            </div>
+                          ))}
+                        </div>
+
+                        <div style={{ background: 'rgba(255,255,255,0.01)', borderTop: '0.2px solid rgba(255,255,255,0.05)', paddingTop: '15px' }}>
+                          <span style={{ fontFamily: 'inherit', fontSize: '9px', color: '#d4b87a', letterSpacing: '0.05em', display: 'block', marginBottom: '6px', fontWeight: 'bold' }}>◆ PRA QUÊ SERVEM ESSAS PERGUNTAS</span>
+                          <p style={{ fontSize: '10.5px', color: 'var(--ink-2)', lineHeight: '1.5', margin: 0 }}>
+                            Cada resposta é analisada por IA contra 6 frameworks (Lencioni, HHS, SBI, Tuckman, Goleman, Big Five) e vira scores no perfil do candidato. Esses scores aparecem automaticamente em:
+                            <br /><b>Triagem</b> → ordena candidatos por fit
+                            <br /><b>Ficha do liderado</b> → vira histórico Lencioni/HHS
+                            <br /><b>Onboarding</b> → personaliza o plano dos 90 dias
+                            <br /><b>Folha mensal</b> → cruza com SBI e D6 ao longo do tempo
+                          </p>
+                        </div>
                       </div>
                     </div>
-                  </div>
 
-                  {/* Right: Automations */}
-                  <div className="lg:col-span-4 space-y-4 text-left">
-                    <div className="ipb-soft p-4 rounded-xl border border-white/[0.03]">
-                      <h4 className="text-[11px] font-bold text-white uppercase tracking-wider font-mono mb-3">Automações Ativas</h4>
-                      <div className="space-y-2 text-[9px] font-mono text-white/60">
-                        <div className="flex justify-between"><span>Whisper Transcrição</span><span className="text-[#5dcaa5]">ativo</span></div>
-                        <div className="flex justify-between"><span>IA Lencioni Evaluation</span><span className="text-[#5dcaa5]">ativo</span></div>
-                        <div className="flex justify-between"><span>HHS Scoring Ranks</span><span className="text-[#5dcaa5]">ativo</span></div>
-                        <div className="flex justify-between"><span>Conexão LinkedIn Gupy</span><span className="text-[#fac775]">pendente</span></div>
-                        <div className="flex justify-between"><span>Slack NLP Watcher</span><span className="text-[#5dcaa5]">ativo</span></div>
+                    {/* Right: Automations */}
+                    <div className="lg:col-span-4 space-y-4 text-left">
+                      <div className="dash-card">
+                        <div className="sec-head" style={{ marginBottom: '12px' }}>
+                          <h3 className="panel-title" style={{ fontSize: '12px' }}>AUTOMAÇÕES RECRUTAR</h3>
+                        </div>
+                        <div className="space-y-2 text-[9.5px] font-mono text-white/60">
+                          <div className="flex justify-between"><span>Whisper Transcrição</span><span className="text-[#5dcaa5]">ativo</span></div>
+                          <div className="flex justify-between"><span>IA Lencioni</span><span className="text-[#5dcaa5]">ativo</span></div>
+                          <div className="flex justify-between"><span>HHS scoring</span><span className="text-[#5dcaa5]">ativo</span></div>
+                          <div className="flex justify-between"><span>LinkedIn - Gupy</span><span className="text-[#fac775]">pendente</span></div>
+                        </div>
+
+                        <div className="sec-head" style={{ marginTop: '20px', marginBottom: '12px' }}>
+                          <h3 className="panel-title" style={{ fontSize: '12px' }}>AUTOMAÇÕES GERAIS</h3>
+                        </div>
+                        <div className="space-y-2 text-[9.5px] font-mono text-white/60">
+                          <div className="flex justify-between"><span>1:1 mobile</span><span className="text-[#5dcaa5]">ativo</span></div>
+                          <div className="flex justify-between"><span>Slack NLP</span><span className="text-[#5dcaa5]">ativo</span></div>
+                          <div className="flex justify-between"><span>Pulso semanal</span><span className="text-[#5dcaa5]">ativo</span></div>
+                          <div className="flex justify-between"><span>Gmail - GitHub - HRIS</span><span className="text-[#fac775]">pendente</span></div>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -1704,38 +1867,42 @@ export function SigPessoasPanel() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  className="space-y-4"
+                  className="p-sub-view active space-y-4"
                 >
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                    <div className="ipb-soft p-4 rounded-xl text-center">
-                      <span className="text-[8px] uppercase tracking-wider font-mono text-white/40 block mb-1">Pessoas em Alerta</span>
-                      <b className="text-2xl font-bold text-[#e24b4a]">{teamMembers.filter(m => m.d6 < 60).length}</b>
-                      <span className="text-[8px] text-white/30 block mt-1 font-mono">D6 individual &lt; 60%</span>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '15px', marginBottom: '20px' }}>
+                    <div className="dash-card" style={{ padding: '15px', textAlign: 'center' }}>
+                      <span className="panel-label">Pessoas em Alerta</span>
+                      <b className="text-2xl font-bold text-[#e24b4a] block mt-1">{teamMembers.filter(m => m.d6 < 60).length}</b>
+                      <span className="text-[9px] text-white/40 block mt-1 font-mono">D6 ou ISR &lt; 50</span>
                     </div>
-                    <div className="ipb-soft p-4 rounded-xl text-center">
-                      <span className="text-[8px] uppercase tracking-wider font-mono text-white/40 block mb-1">D6 Médio do Time</span>
-                      <b className="text-2xl font-bold text-[#d4b87a]">{Math.round(teamMembers.reduce((s, m) => s + m.d6, 0) / teamMembers.length)}%</b>
-                      <span className="text-[8px] text-white/30 block mt-1 font-mono">Calibrado em tempo real</span>
+                    <div className="dash-card" style={{ padding: '15px', textAlign: 'center' }}>
+                      <span className="panel-label">D6 Médio do Time</span>
+                      <b className="text-2xl font-bold text-[#d4b87a] block mt-1">{Math.round(teamMembers.reduce((s, m) => s + m.d6, 0) / teamMembers.length)}<small style={{ fontSize: '12px', color: 'var(--ink-mute)' }}>/100</small></b>
+                      <span className="text-[9px] text-white/40 block mt-1 font-mono">Calculado em tempo real</span>
                     </div>
-                    <div className="ipb-soft p-4 rounded-xl text-center">
-                      <span className="text-[8px] uppercase tracking-wider font-mono text-white/40 block mb-1">Tarefas Ativas Delegadas</span>
-                      <b className="text-2xl font-bold text-[#5c9ae6]">{delegatedTasks.length}</b>
-                      <span className="text-[8px] text-white/30 block mt-1 font-mono">Liderança situacional</span>
+                    <div className="dash-card" style={{ padding: '15px', textAlign: 'center' }}>
+                      <span className="panel-label">Com Tarefas Pendentes</span>
+                      <b className="text-2xl font-bold text-[#fac775] block mt-1">{delegatedTasks.filter(t => t.status !== 'concluido').length}</b>
+                      <span className="text-[9px] text-white/40 block mt-1 font-mono">Delegação ativa</span>
                     </div>
                   </div>
 
                   <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
                     {/* Coach SBI */}
-                    <div className="lg:col-span-7 ipb-soft p-4 rounded-xl text-left space-y-3">
-                      <div>
-                        <h4 className="text-[11px] font-bold text-white uppercase font-mono">Registrar Feedback SBI</h4>
-                        <p className="text-[9px] text-white/45">Foque em Fato → Comportamento objetivo → Impacto</p>
+                    <div className="lg:col-span-7 dash-card text-left space-y-3">
+                      <div className="flex justify-between items-center" style={{ marginBottom: '12px' }}>
+                        <div>
+                          <span className="panel-label">COACH SBI</span>
+                          <h4 className="panel-title">Registrar Feedback SBI</h4>
+                          <div className="panel-sub">Foque em Situação → Comportamento objetivo → Impacto</div>
+                        </div>
+                        <button className="btn-reset-sm" onClick={() => triggerToast('Carregando aula SBI...', 'ok')}>▶ AULA</button>
                       </div>
 
                       <div className="space-y-2">
                         <input 
                           type="text" 
-                          placeholder="Situação (Onde e quando ocorreu? Ex: Na reunião de OKRs...)" 
+                          placeholder="Situação (Onde e quando ocorreu? Ex: Na reunião de OKRs de terça...)" 
                           value={sbiSit}
                           onChange={(e) => setSbiSit(e.target.value)}
                           className="w-full bg-black/40 border border-white/[0.08] rounded-[0.4rem] px-3 py-1.5 text-[10px] text-white outline-none focus:border-[#d4b87a]/40"
@@ -1748,7 +1915,7 @@ export function SigPessoasPanel() {
                           className="w-full bg-black/40 border border-white/[0.08] rounded-[0.4rem] px-3 py-1.5 text-[10px] text-white outline-none focus:border-[#d4b87a]/40"
                         />
                         <textarea 
-                          placeholder="Impacto (Efeito no time. Ex: Isso alongou a discussão em 20 min...)" 
+                          placeholder="Impacto (Efeito no time. Ex: Isso gerou ruído na equipe...)" 
                           value={sbiImp}
                           onChange={(e) => setSbiImp(e.target.value)}
                           className="w-full h-14 bg-black/40 border border-white/[0.08] rounded-[0.4rem] px-3 py-1.5 text-[10px] text-white outline-none focus:border-[#d4b87a]/40 resize-none"
@@ -1758,184 +1925,55 @@ export function SigPessoasPanel() {
                           onClick={handleAddSbi}
                           className="px-3.5 py-1.5 bg-[#d4b87a]/15 hover:bg-[#d4b87a]/30 border border-[#d4b87a]/45 rounded-lg text-[9px] font-bold text-[#d4b87a] font-mono transition"
                         >
-                          + REGISTRAR SBI
+                          + REGISTRAR FEEDBACK SBI
                         </button>
                       </div>
 
                       {/* Log feed */}
                       <div className="border-t border-white/[0.04] pt-3 max-h-[140px] overflow-y-auto space-y-2 pr-1">
-                        {sbiLogs.map((log, i) => (
-                          <div key={i} className="p-2 bg-white/[0.02] border border-white/[0.04] rounded-lg font-mono text-[9px]">
-                            <span className="text-[#d4b87a] font-bold block">{log.date} · REGISTRO SBI</span>
-                            <span className="text-white/40 block mt-1">Situação: <b className="text-white/70">{log.situation}</b></span>
-                            <span className="text-white/40 block">Comportamento: <b className="text-white/70">{log.behavior}</b></span>
-                            <span className="text-white/40 block">Impacto: <b className="text-white/70">{log.impact}</b></span>
-                          </div>
-                        ))}
+                        {sbiLogs.length === 0 ? (
+                          <span style={{ fontSize: '10px', fontStyle: 'italic', opacity: 0.5 }}>Nenhum feedback SBI registrado hoje. Use em 1:1 semanais.</span>
+                        ) : (
+                          sbiLogs.map((log, i) => (
+                            <div key={i} className="p-2 bg-white/[0.02] border border-white/[0.04] rounded-lg font-mono text-[9px]">
+                              <span className="text-[#d4b87a] font-bold block">{log.date} · REGISTRO SBI</span>
+                              <span className="text-white/40 block mt-1">Situação: <b className="text-white/70">{log.situation}</b></span>
+                              <span className="text-white/40 block">Comportamento: <b className="text-white/70">{log.behavior}</b></span>
+                              <span className="text-white/40 block">Impacto: <b className="text-white/70">{log.impact}</b></span>
+                            </div>
+                          ))
+                        )}
                       </div>
                     </div>
 
                     {/* Team Individual Health */}
-                    <div className="lg:col-span-5 ipb-soft p-4 rounded-xl text-left space-y-3">
+                    <div className="lg:col-span-5 dash-card text-left space-y-3">
                       <div>
-                        <h4 className="text-[11px] font-bold text-white uppercase font-mono">Saúde Individual do Time</h4>
-                        <p className="text-[9px] text-white/45">Filtro cruzado de calibração</p>
+                        <span className="panel-label">SAÚDE INDIVIDUAL</span>
+                        <h4 className="panel-title">Saúde Individual e Indicadores</h4>
+                        <div className="panel-sub">Filtro cruzado de calibração em tempo real</div>
                       </div>
 
                       <div className="space-y-1.5">
-                        {teamMembers.map(m => (
-                          <div key={m.id} className="p-2 bg-black/25 border border-white/[0.03] rounded-lg flex items-center justify-between">
-                            <div>
-                              <b className="text-[10px] text-white/90 block leading-tight">{m.name}</b>
-                              <span className="text-[8px] font-mono text-white/40">{m.role}</span>
-                            </div>
-                            <div className="text-right">
-                              <span className="text-[9.5px] font-bold font-mono text-[#d4b87a] block leading-none">{m.d6}% D6</span>
-                              <span className={`text-[7.5px] font-bold uppercase font-mono mt-0.5 block ${m.d6 >= 80 ? 'text-[#5dcaa5]' : m.d6 >= 60 ? 'text-[#fac775]' : 'text-[#e24b4a]'}`}>{m.status}</span>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
-              )}
-
-              {/* SUBPAGE: VOCÊ (PDI) */}
-              {lideresTab === 'lideranca' && (
-                <motion.div
-                  key="lideranca"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  className="grid grid-cols-1 lg:grid-cols-12 gap-4 text-left"
-                >
-                  
-                  {/* Left: Diary & CNV */}
-                  <div className="lg:col-span-6 space-y-4">
-                    {/* Progress */}
-                    <div className="ipb-soft p-4 rounded-xl border border-white/[0.03] space-y-2">
-                      <div className="flex justify-between items-center text-[9px] font-mono">
-                        <span className="text-[#d4b87a] font-bold">PDI - Jornada do Líder</span>
-                        <span>{lessonsCompletedPercent}% completo</span>
-                      </div>
-                      <div className="h-2 bg-white/[0.05] rounded-full overflow-hidden">
-                        <div className="h-full bg-gradient-to-r from-[#d4b87a] to-white rounded-full transition-all duration-500" style={{ width: `${lessonsCompletedPercent}%` }} />
-                      </div>
-                    </div>
-
-                    {/* Diary Form */}
-                    <div className="ipb-soft p-4 rounded-xl border border-white/[0.03] space-y-3">
-                      <div>
-                        <h4 className="text-[11px] font-bold text-white uppercase font-mono">Diário de Inteligência Emocional</h4>
-                        <p className="text-[9.5px] text-white/40">Registre fatos marcantes para controle de reações sob estresse.</p>
-                      </div>
-                      
-                      <div className="flex gap-2">
-                        <input 
-                          type="text" 
-                          placeholder="Situação geradora de emoção..." 
-                          value={diaryInput}
-                          onChange={(e) => setDiaryInput(e.target.value)}
-                          className="flex-1 bg-black/45 border border-white/[0.08] rounded-[0.4rem] px-3 py-1.5 text-[10px] text-white outline-none focus:border-[#d4b87a]/40"
-                          onKeyDown={(e) => e.key === 'Enter' && handleAddDiary()}
-                        />
-                        <button onClick={handleAddDiary} className="px-3 bg-white/[0.03] hover:bg-white/[0.08] border border-white/[0.08] rounded-[0.4rem] text-[10px] font-bold transition flex items-center justify-center">
-                          <Plus className="h-3.5 w-3.5" />
-                        </button>
-                      </div>
-
-                      <div className="space-y-2 max-h-[120px] overflow-y-auto pr-1">
-                        {diaryLogs.map((log, idx) => (
-                          <div key={idx} className="p-2.5 bg-white/[0.01] border border-white/[0.03] rounded-lg">
-                            <span className="text-[7.5px] font-mono text-[#d4b87a] font-bold block">{log.time} · AUTO-REGISTRO</span>
-                            <p className="text-[9.5px] text-white/70 mt-1 leading-snug">{log.text}</p>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* CNV Rosenberg linter */}
-                    <div className="ipb-soft p-4 rounded-xl border border-white/[0.03] space-y-3">
-                      <div>
-                        <h4 className="text-[11px] font-bold text-white uppercase font-mono">Alpha-Linter: Comunicar Sem Julgamentos</h4>
-                        <p className="text-[9.5px] text-white/40">Filtre acusações morais subjetivas e adote fatos verificáveis.</p>
-                      </div>
-
-                      <textarea 
-                        value={cnvInput}
-                        onChange={(e) => setCnvInput(e.target.value)}
-                        placeholder="Ex: O colaborador é preguiçoso e sempre atrasa as entregas da sprint."
-                        className="w-full h-16 bg-black/40 border border-white/[0.08] rounded-[0.4rem] p-2.5 text-[10.5px] text-white outline-none resize-none focus:border-[#d4b87a]/40 transition"
-                      />
-
-                      <div className="flex justify-between items-center">
-                        <span className="text-[9px] font-mono font-bold text-[#d4b87a]">{cnvScore || 'Score: --'}</span>
-                        <button 
-                          onClick={handleCnvAnalyze}
-                          disabled={cnvAnalyzing}
-                          className="px-3.5 py-1.5 bg-[#d4b87a]/15 hover:bg-[#d4b87a]/30 border border-[#d4b87a]/45 rounded-lg text-[9px] font-bold text-[#d4b87a] font-mono transition disabled:opacity-50"
-                        >
-                          {cnvAnalyzing ? 'Analisando...' : 'Calcular Índice Alpha CNV'}
-                        </button>
-                      </div>
-
-                      {cnvFeedback && (
-                        <div className="p-2.5 bg-white/[0.02] border border-white/[0.04] rounded-lg">
-                          {cnvFeedback}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Right: Microaulas Checklist Accordion */}
-                  <div className="lg:col-span-6 space-y-4">
-                    <div className="ipb-soft p-4 rounded-xl border border-white/[0.03] space-y-3">
-                      <div>
-                        <h4 className="text-[11px] font-bold text-[#d4b87a] uppercase font-mono">Microaulas de Autoconhecimento</h4>
-                        <p className="text-[9px] text-white/45">Fase 1 do PDI: Marque os módulos concluídos após assistir.</p>
-                      </div>
-
-                      <div className="space-y-2">
-                        {lessons.map((lesson, idx) => {
-                          const expanded = expandedLesson === lesson.id
-                          return (
-                            <div key={lesson.id} className="border border-white/[0.04] rounded-lg overflow-hidden bg-black/20">
-                              <div 
-                                onClick={() => setExpandedLesson(expanded ? null : lesson.id)}
-                                className="flex items-center justify-between p-2.5 bg-white/[0.01] hover:bg-white/[0.04] cursor-pointer transition select-none"
-                              >
-                                <div className="flex items-center gap-2">
-                                  <input 
-                                    type="checkbox" 
-                                    checked={microaulasProgress[idx] || false}
-                                    onChange={() => handleToggleLessonCheck(idx)}
-                                    onClick={(e) => e.stopPropagation()}
-                                    className="h-3 w-3 accent-[#d4b87a]"
-                                  />
-                                  <span className="text-[10px] font-bold text-white/80">{lesson.title}</span>
-                                </div>
-                                <span className="text-[7.5px] uppercase font-mono text-[#d4b87a]">VER ▼</span>
+                        {teamMembers.length === 0 ? (
+                          <span style={{ fontSize: '10.5px', opacity: 0.5, fontStyle: 'italic', display: 'block' }}>Nenhum liderado cadastrado ainda. Vá em Home → Funil e contrate candidatos para popular a saúde individual.</span>
+                        ) : (
+                          teamMembers.map(m => (
+                            <div key={m.id} className="p-2 bg-black/25 border border-white/[0.03] rounded-lg flex items-center justify-between">
+                              <div>
+                                <b className="text-[10px] text-white/90 block leading-tight">{m.name}</b>
+                                <span className="text-[8px] font-mono text-white/40">{m.role}</span>
                               </div>
-
-                              {expanded && (
-                                <div className="p-3 bg-black/45 border-t border-white/[0.03] text-[9.5px] text-white/50 leading-relaxed space-y-2">
-                                  <p>{lesson.body}</p>
-                                  <button 
-                                    onClick={() => triggerToast(`Tocando vídeo ${lesson.title}...`, 'ok')}
-                                    className="text-[8px] font-mono font-bold text-[#d4b87a] uppercase hover:underline block"
-                                  >
-                                    ▶ INICIAR PLAYER VIDEO
-                                  </button>
-                                </div>
-                              )}
+                              <div className="text-right">
+                                <span className="text-[9.5px] font-bold font-mono text-[#d4b87a] block leading-none">{m.d6}% D6</span>
+                                <span className={`text-[7.5px] font-bold uppercase font-mono mt-0.5 block ${m.d6 >= 80 ? 'text-[#5dcaa5]' : m.d6 >= 60 ? 'text-[#fac775]' : 'text-[#e24b4a]'}`}>{m.status}</span>
+                              </div>
                             </div>
-                          )
-                        })}
+                          ))
+                        )}
                       </div>
                     </div>
                   </div>
-
                 </motion.div>
               )}
 
@@ -1946,98 +1984,102 @@ export function SigPessoasPanel() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  className="space-y-4 text-left"
+                  className="p-sub-view active space-y-4 text-left"
                 >
-                  {/* M1-M4 situational matrix explanation */}
-                  <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
-                    {[
-                      { m: 'M1', label: 'Iniciante', focus: 'Direcionar', color: 'border-red-900/30 text-red-400', desc: 'Alta motivação, baixa competência. Prescritivo: defina e monitore.' },
-                      { m: 'M2', label: 'Aprendiz', focus: 'Orientar', color: 'border-yellow-900/30 text-yellow-400', desc: 'Motivação cai no progresso. Direcione tarefas e apoie socioemocionalmente.' },
-                      { m: 'M3', label: 'Capaz', focus: 'Apoiar', color: 'border-slate-700 text-slate-300', desc: 'Competência alta, confiança oscila. Coparticipe da decisão e incentive.' },
-                      { m: 'M4', label: 'Expert', focus: 'Delegar', color: 'border-[#5dcaa5]/30 text-[#5dcaa5]', desc: 'Maturidade máxima. Conceda autonomia de decisão com monitoramento assíncrono.' }
-                    ].map(item => (
-                      <div key={item.m} className={`p-3 bg-black/20 border ${item.color} rounded-lg space-y-1`}>
-                        <span className="text-[8px] font-mono font-bold block">{item.m} · {item.label.toUpperCase()}</span>
-                        <b className="text-[11px] block leading-none">{item.focus}</b>
-                        <span className="text-[9px] text-white/45 block leading-snug">{item.desc}</span>
-                      </div>
-                    ))}
+                  {/* Matriz M1-M4 situational matrix explanation */}
+                  <div className="dash-card">
+                    <h4 className="panel-title" style={{ fontSize: '12px', marginBottom: '10px' }}>Matriz M1-M4 — Liderança Situacional</h4>
+                    <p className="panel-sub" style={{ fontSize: '10px', marginTop: 0, marginBottom: '15px' }}>Adapte sua liderança à maturidade técnica (M1 a M4) do seu liderado para cada tarefa específica.</p>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
+                      {[
+                        { m: 'M1', label: 'INICIANTE', focus: 'Direcionar / Instruir', color: 'border-red-900/30 text-red-400', desc: 'Alta motivação, baixa competência. Prescritivo: defina e monitore.' },
+                        { m: 'M2', label: 'APRENDIZ', focus: 'Orientar / Treinar', color: 'border-yellow-900/30 text-yellow-400', desc: 'Motivação cai no progresso. Direcione tarefas e apoie socioemocionalmente.' },
+                        { m: 'M3', label: 'CAPAZ', focus: 'Apoiar / Facilitar', color: 'border-slate-700 text-slate-300', desc: 'Competência alta, confiança oscila. Coparticipe da decisão e incentive.' },
+                        { m: 'M4', label: 'EXPERT', focus: 'Delegar Autonomia', color: 'border-[#5dcaa5]/30 text-[#5dcaa5]', desc: 'Maturidade máxima. Conceda autonomia de decisão com monitoramento assíncrono.' }
+                      ].map(item => (
+                        <div key={item.m} className={`p-3 bg-black/20 border ${item.color} rounded-lg space-y-1`}>
+                          <span className="text-[8px] font-mono font-bold block">{item.m} · {item.label}</span>
+                          <b className="text-[11px] block leading-none">{item.focus}</b>
+                          <span className="text-[9px] text-white/45 block leading-snug">{item.desc}</span>
+                        </div>
+                      ))}
+                    </div>
                   </div>
 
                   {/* Calculator Split */}
                   <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
                     {/* Calculator Form */}
-                    <div className="lg:col-span-7 ipb-soft p-4 rounded-xl space-y-3">
+                    <div className="lg:col-span-7 dash-card space-y-3">
                       <div>
-                        <h4 className="text-[11px] font-bold text-white uppercase font-mono">Calculadora de Custo de Oportunidade</h4>
-                        <p className="text-[9px] text-white/45">Descubra o valor financeiro de recuperar seu tempo delegando tarefas</p>
+                        <h4 className="panel-title" style={{ fontSize: '12px' }}>Calculadora de Custo de Oportunidade (ROI da Delegação)</h4>
+                        <p className="panel-sub" style={{ fontSize: '9.5px', marginBottom: '12px' }}>Regra dos 80%: descubra quanto vale a recuperação do seu tempo operacional.</p>
                       </div>
 
-                      <div className="grid grid-cols-2 gap-3 text-left">
-                        <div className="space-y-1">
-                          <label className="text-[8.5px] font-mono text-white/40 block">Salário Mensal Estimado (R$)</label>
+                      <div className="calc-grid">
+                        <div className="calc-input-group">
+                          <label>Seu Salário Mensal (R$)</label>
                           <input 
                             type="number" 
                             value={salary}
                             onChange={(e) => setSalary(parseInt(e.target.value) || 0)}
-                            className="w-full bg-black/40 border border-white/[0.08] rounded-[0.4rem] px-3 py-1.5 text-[10px] text-white outline-none focus:border-[#d4b87a]/40"
                           />
                         </div>
-                        <div className="space-y-1">
-                          <label className="text-[8.5px] font-mono text-white/40 block">Horas Gastas/Semana</label>
+                        <div className="calc-input-group">
+                          <label>Horas Operacionais/Semana</label>
                           <input 
                             type="number" 
                             value={operHours}
                             onChange={(e) => setOperHours(parseInt(e.target.value) || 0)}
-                            className="w-full bg-black/40 border border-white/[0.08] rounded-[0.4rem] px-3 py-1.5 text-[10px] text-white outline-none focus:border-[#d4b87a]/40"
                           />
                         </div>
                         
-                        <div className="col-span-2 space-y-1">
-                          <label className="text-[8.5px] font-mono text-white/40 block">Maturidade do Liderado Destinado</label>
+                        <div className="calc-input-group" style={{ gridColumn: 'span 2' }}>
+                          <label>Maturidade do Liderado</label>
                           <select 
                             value={delegationMaturity}
                             onChange={(e) => setDelegationMaturity(e.target.value as any)}
-                            className="w-full bg-black/40 border border-white/[0.08] rounded-[0.4rem] px-3 py-1.5 text-[10px] text-white outline-none focus:border-[#d4b87a]/40"
                           >
-                            <option value="M1">M1 - Iniciante (Supervisão constante - ROI Baixo)</option>
-                            <option value="M2">M2 - Aprendiz (Orientação + Instrução - ROI Médio)</option>
-                            <option value="M3">M3 - Capaz (Facilitação socioemocional - ROI Alto)</option>
-                            <option value="M4">M4 - Expert (Autonomia Plena - ROI Máximo)</option>
+                            <option value="M1">M1: Iniciante (Microgestão / Direcional - Baixo ROI)</option>
+                            <option value="M2">M2: Aprendiz (Direção + Treinamento - Médio ROI)</option>
+                            <option value="M3">M3: Capaz (Autonomia Assistida - Alto ROI)</option>
+                            <option value="M4">M4: Expert (Delegação Plena - ROI Máximo)</option>
                           </select>
                         </div>
                       </div>
 
                       {/* Diagnostic Outputs */}
-                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-2">
-                        <div className="p-2 bg-black/35 border border-white/[0.03] rounded-lg">
-                          <span className="text-[7.5px] font-mono text-white/40 block">Custo Hora</span>
-                          <b className="text-[11px] text-white font-mono block">R$ {costPerHour}</b>
+                      <div style={{ background: 'rgba(212,184,122,0.03)', border: '0.2px solid rgba(212,184,122,0.15)', borderRadius: '8px', padding: '12px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', marginTop: '14px' }}>
+                        <div>
+                          <span style={{ fontSize: '9px', opacity: 0.5, display: 'block' }}>Custo da Sua Hora</span>
+                          <b style={{ fontSize: '13px', color: '#ffffff' }} className="font-mono">R$ {costPerHour}</b>
                         </div>
-                        <div className="p-2 bg-black/35 border border-white/[0.03] rounded-lg">
-                          <span className="text-[7.5px] font-mono text-white/40 block">Burnout Líder</span>
-                          <b className="text-[11px] text-[#fac775] font-bold block">{burnoutRisk}</b>
+                        <div>
+                          <span style={{ fontSize: '9px', opacity: 0.5, display: 'block' }}>Risco de Burnout</span>
+                          <b style={{ fontSize: '13px', color: '#fac775' }}>{burnoutRisk}</b>
                         </div>
-                        <div className="p-2 bg-[#5dcaa5]/5 border border-[#5dcaa5]/20 rounded-lg">
-                          <span className="text-[7.5px] font-mono text-white/40 block">ROI Mensal</span>
-                          <b className="text-[11px] text-[#5dcaa5] font-mono block">R$ {Math.round(opportunityRoi)}</b>
+                        <div>
+                          <span style={{ fontSize: '9px', opacity: 0.5, display: 'block' }}>ROI Estratégico Mensal</span>
+                          <b style={{ fontSize: '13px', color: '#5dcaa5' }} className="font-mono">R$ {Math.round(opportunityRoi)}</b>
                         </div>
-                        <div className="p-2 bg-[#5dcaa5]/5 border border-[#5dcaa5]/20 rounded-lg">
-                          <span className="text-[7.5px] font-mono text-white/40 block">Impacto Anual</span>
-                          <b className="text-[11px] text-[#5dcaa5] font-mono block">R$ {annualRoi}</b>
+                        <div>
+                          <span style={{ fontSize: '9px', opacity: 0.5, display: 'block' }}>Impacto Anual Gerado</span>
+                          <b style={{ fontSize: '13px', color: '#5dcaa5' }} className="font-mono">R$ {annualRoi}</b>
                         </div>
                       </div>
 
-                      <div className="p-2.5 bg-white/[0.02] border border-white/[0.05] rounded-lg font-mono text-[9px] leading-relaxed text-white/60">
-                        <b>DIAGNÓSTICO ALX:</b> Seu gargalo operacional de {operHours}h/semana drena o orçamento. Ao delegar para um {delegationMaturity}, você recupera R$ {Math.round(opportunityRoi)} mensais em foco estratégico.
+                      <div style={{ fontSize: '9.5px', lineHeight: '1.4', padding: '8px', background: 'rgba(0,0,0,0.2)', borderRadius: '6px' }}>
+                        <b>DIAGNÓSTICO ALX:</b> Líder, seu gargalo de {operHours}h/semana gera um desperdício. Ao delegar para um {delegationMaturity}, você recupera R$ {Math.round(opportunityRoi)} mensais em valor estratégico.
                       </div>
                     </div>
 
                     {/* Delegated task checklist */}
-                    <div className="lg:col-span-5 ipb-soft p-4 rounded-xl space-y-3">
-                      <div>
-                        <h4 className="text-[11px] font-bold text-white uppercase font-mono">Painel de Delegações Ativas</h4>
-                        <p className="text-[9px] text-white/45">Atribua metas baseadas na maturidade</p>
+                    <div className="lg:col-span-5 dash-card space-y-3">
+                      <div className="flex justify-between items-center" style={{ marginBottom: '10px' }}>
+                        <div>
+                          <h4 className="panel-title" style={{ fontSize: '12px' }}>Painel de Tarefas Delegadas</h4>
+                          <div className="panel-sub">Atribua metas baseadas na maturidade</div>
+                        </div>
                       </div>
 
                       <div className="space-y-2">
@@ -2046,21 +2088,21 @@ export function SigPessoasPanel() {
                           placeholder="Meta / Tarefa a ser delegada..."
                           value={newTaskTitle}
                           onChange={(e) => setNewTaskTitle(e.target.value)}
-                          className="w-full bg-black/45 border border-white/[0.08] rounded-[0.4rem] px-3 py-1 text-[9.5px] text-white outline-none focus:border-[#d4b87a]/40"
+                          className="w-full bg-black/45 border border-white/[0.08] rounded-[0.4rem] px-3 py-1.5 text-[9.5px] text-white outline-none focus:border-[#d4b87a]/40"
                         />
                         
                         <div className="flex gap-2">
                           <select 
                             value={newTaskAssignee}
                             onChange={(e) => setNewTaskAssignee(e.target.value)}
-                            className="flex-1 bg-black/45 border border-white/[0.08] rounded-[0.4rem] px-2 py-1 text-[9.5px] text-white outline-none"
+                            className="flex-1 bg-black/45 border border-white/[0.08] rounded-[0.4rem] px-2 py-1.5 text-[9.5px] text-white outline-none"
                           >
                             {teamMembers.map(m => <option key={m.id} value={m.name}>{m.name}</option>)}
                           </select>
                           <select 
                             value={newTaskMaturity}
                             onChange={(e) => setNewTaskMaturity(e.target.value)}
-                            className="w-20 bg-black/45 border border-white/[0.08] rounded-[0.4rem] px-2 py-1 text-[9.5px] text-white outline-none"
+                            className="w-20 bg-black/45 border border-white/[0.08] rounded-[0.4rem] px-2 py-1.5 text-[9.5px] text-white outline-none"
                           >
                             <option value="M1">M1</option>
                             <option value="M2">M2</option>
@@ -2077,85 +2119,273 @@ export function SigPessoasPanel() {
                       </div>
 
                       <div className="space-y-1.5 pt-2 max-h-[140px] overflow-y-auto pr-1">
-                        {delegatedTasks.map(t => (
-                          <div 
-                            key={t.id} 
-                            onClick={() => handleToggleTaskStatus(t.id)}
-                            className="p-2 bg-white/[0.02] border border-white/[0.04] rounded-lg flex items-center justify-between cursor-pointer transition hover:border-[#d4b87a]/30"
-                          >
-                            <div>
-                              <b className="text-[10px] text-white block leading-none">{t.title}</b>
-                              <span className="text-[8px] font-mono text-white/40 block mt-1">{t.assignee} · {t.maturity}</span>
+                        {delegatedTasks.length === 0 ? (
+                          <span style={{ fontSize: '10px', fontStyle: 'italic', opacity: 0.5 }}>Nenhum liderado cadastrado hoje. Adicione colaboradores para delegar tarefas.</span>
+                        ) : (
+                          delegatedTasks.map(t => (
+                            <div 
+                              key={t.id} 
+                              onClick={() => handleToggleTaskStatus(t.id)}
+                              className="p-2 bg-white/[0.02] border border-white/[0.04] rounded-lg flex items-center justify-between cursor-pointer transition hover:border-[#d4b87a]/30 text-left"
+                            >
+                              <div>
+                                <b className="text-[10px] text-white block leading-none">{t.title}</b>
+                                <span className="text-[8px] font-mono text-white/40 block mt-1">{t.assignee} · {t.maturity}</span>
+                              </div>
+                              <span className={`text-[8.5px] font-mono uppercase font-bold ${t.status === 'concluido' ? 'text-[#5dcaa5]' : 'text-white/35'}`}>{t.status}</span>
                             </div>
-                            <span className={`text-[8.5px] font-mono uppercase font-bold ${t.status === 'concluido' ? 'text-[#5dcaa5]' : t.status === 'calibrado' ? 'text-[#fac775]' : 'text-white/35'}`}>{t.status}</span>
-                          </div>
-                        ))}
+                          ))
+                        )}
                       </div>
                     </div>
                   </div>
-
                 </motion.div>
               )}
 
-              {/* SUBPAGE: SIGNIFICADO */}
-              {lideresTab === 'significado' && (
+              {/* SUBPAGE: VOCÊ (PDI & SIGNIFICADO UNIFICADOS) */}
+              {lideresTab === 'voce' && (
                 <motion.div
-                  key="significado"
+                  key="voce"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  className="grid grid-cols-1 lg:grid-cols-12 gap-4 text-left"
+                  className="p-sub-view active space-y-5 text-left"
                 >
-                  
-                  {/* Lentes de missão */}
-                  <div className="lg:col-span-8 space-y-4">
-                    <div className="ipb-soft p-4 rounded-xl border border-white/[0.03]">
-                      <h4 className="text-[11px] font-bold text-white uppercase font-mono mb-2">Lentes de Missão — Estudos Críticos OBI</h4>
+                  {/* Top Highlight: Progress */}
+                  <div style={{ background: 'rgba(255,255,255,0.02)', border: '0.2px solid rgba(255,255,255,0.06)', padding: '16px', borderRadius: '10px' }}>
+                    <span style={{ fontFamily: 'inherit', fontSize: '8.5px', color: '#d4b87a', textTransform: 'uppercase', letterSpacing: '0.08em', display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>PDI - JORNADA DO LÍDER</span>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '15px', marginBottom: '8px' }}>
+                      <div style={{ flex: 1, height: '8px', background: 'rgba(255,255,255,0.06)', borderRadius: '4px', overflow: 'hidden' }}>
+                        <div style={{ width: `${lessonsCompletedPercent}%`, height: '100%', background: 'linear-gradient(90deg, #94a3b8, #ffffff)', boxShadow: '0 0 8px rgba(255,255,255,0.5)' }}></div>
+                      </div>
+                      <span style={{ fontFamily: 'inherit', fontSize: '10px', fontWeight: 'bold' }}>{lessonsCompletedPercent}%</span>
+                    </div>
+                    <p style={{ fontSize: '10.5px', opacity: 0.75, lineHeight: '1.45', margin: 0 }}>
+                      Seu PDI calcula automaticamente baseado nas suas ações reais registradas no cockpit (ex: Diário IE, Feedbacks SBI, OKRs). <b>Não pule etapas!</b>
+                    </p>
+                  </div>
+
+                  {/* Grid 1: Diário IE & Alpha Linter + Microaulas */}
+                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
+                    {/* Left: Diary & CNV */}
+                    <div className="lg:col-span-7 space-y-4">
+                      {/* Diary Form */}
+                      <div className="dash-card">
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
+                          <h4 style={{ fontSize: '12px', margin: 0, fontWeight: 'bold', color: '#fff' }}>Diário de Inteligência Emocional + IA</h4>
+                          <button className="btn-reset-sm" onClick={() => triggerToast('Carregando Diário IE...', 'ok')}>▶ AULA</button>
+                        </div>
+                        <p style={{ fontSize: '10px', opacity: 0.6, marginTop: 0 }}>Escreva sobre uma situation que gerou emoção intensa. A IA analisa o padrão e sugere ações de autogestão.</p>
+                        
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                          <textarea 
+                            value={diaryInput}
+                            onChange={(e) => setDiaryInput(e.target.value)}
+                            placeholder="Situação geradora de emoção intensa..."
+                            className="cnv-text-area"
+                          />
+                          <button 
+                            onClick={handleAddDiary}
+                            className="px-3.5 py-1.5 bg-[#d4b87a]/15 hover:bg-[#d4b87a]/30 border border-[#d4b87a]/45 rounded-lg text-[9px] font-bold text-[#d4b87a] font-mono transition"
+                            style={{ alignSelf: 'flex-end' }}
+                          >
+                            + ADICIONAR ENTRADA
+                          </button>
+                        </div>
+
+                        <div style={{ marginTop: '12px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                          {diaryLogs.length === 0 ? (
+                            <span style={{ fontSize: '10px', fontStyle: 'italic', opacity: 0.5 }}>Nenhuma entrada ainda. Comece hoje — autoconhecimento é a fase 1 do PDI.</span>
+                          ) : (
+                            diaryLogs.map((log, idx) => (
+                              <div key={idx} className="p-2 bg-white/[0.01] border border-white/[0.03] rounded-lg">
+                                <span className="text-[7.5px] font-mono text-[#d4b87a] font-bold block">{log.time} · AUTO-REGISTRO</span>
+                                <p className="text-[9.5px] text-white/70 mt-1 leading-snug">{log.text}</p>
+                              </div>
+                            ))
+                          )}
+                        </div>
+                      </div>
+
+                      {/* CNV Rosenberg linter */}
+                      <div className="dash-card">
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
+                          <h4 style={{ fontSize: '12px', margin: 0, fontWeight: 'bold', color: '#fff' }}>Linter de Comunicação (Índice α)</h4>
+                          <span style={{ fontFamily: 'inherit', fontSize: '8.5px', color: '#5dcaa5', border: '0.2px solid rgba(93,202,165,0.2)', padding: '2px 6px', borderRadius: '4px' }}>CNV Rosenberg</span>
+                        </div>
+                        <p style={{ fontSize: '10px', opacity: 0.6, marginTop: 0 }}>Reduza julgamentos e transforme sua comunicação executiva em fatos objetivos.</p>
+
+                        <textarea 
+                          value={cnvInput}
+                          onChange={(e) => setCnvInput(e.target.value)}
+                          placeholder="Ex: O colaborador é preguiçoso e sempre atrasa as entregas da sprint."
+                          className="cnv-text-area"
+                        />
+
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '10px' }}>
+                          <b style={{ fontSize: '11px' }}>{cnvScore || 'Score Alpha: --'}</b>
+                          <button 
+                            onClick={handleCnvAnalyze}
+                            disabled={cnvAnalyzing}
+                            className="px-3.5 py-1.5 bg-[#d4b87a]/15 hover:bg-[#d4b87a]/30 border border-[#d4b87a]/45 rounded-lg text-[9px] font-bold text-[#d4b87a] font-mono transition disabled:opacity-50"
+                          >
+                            {cnvAnalyzing ? 'Analisando...' : 'CALCULAR ÍNDICE ALPHA'}
+                          </button>
+                        </div>
+
+                        {cnvFeedback && (
+                          <div style={{ marginTop: '12px', background: 'rgba(0,0,0,0.15)', borderRadius: '6px', padding: '10px', fontSize: '10.5px', lineHeight: '1.4' }}>
+                            {cnvFeedback}
+                          </div>
+                        )}
+
+                        <div style={{ marginTop: '15px', borderTop: '0.2px solid rgba(255,255,255,0.06)', paddingTop: '15px' }}>
+                          <span style={{ fontFamily: 'inherit', fontSize: '8.5px', color: '#d4b87a', display: 'block', marginBottom: '10px', fontWeight: 'bold' }}>📡 PDI DE COMUNICAÇÃO · 4 MÓDULOS</span>
+                          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+                            <div style={{ background: 'rgba(255,255,255,0.01)', border: '0.2px solid rgba(255,255,255,0.04)', borderRadius: '6px', padding: '10px' }}>
+                              <b style={{ fontSize: '10.5px', display: 'block', marginBottom: '4px' }}>MÓDULO 1: Fato vs Julgamento</b>
+                              <span style={{ fontSize: '9.5px', opacity: 0.65, display: 'block', marginBottom: '6px' }}>Eliminar adjetivos subjetivos da sua comunicação técnica.</span>
+                              <span style={{ fontFamily: 'inherit', fontSize: '8.5px', color: '#5dcaa5', display: 'block' }}>KPI: Alpha-Linter &gt;70%</span>
+                            </div>
+                            <div style={{ background: 'rgba(255,255,255,0.01)', border: '0.2px solid rgba(255,255,255,0.04)', borderRadius: '6px', padding: '10px' }}>
+                              <b style={{ fontSize: '10.5px', display: 'block', marginBottom: '4px' }}>MÓDULO 2: Assertividade (CNV)</b>
+                              <span style={{ fontSize: '9.5px', opacity: 0.65, display: 'block', marginBottom: '6px' }}>Fato + Sentimento + Necessidade + Pedido em conversas difíceis.</span>
+                              <span style={{ fontFamily: 'inherit', fontSize: '8.5px', color: '#5dcaa5', display: 'block' }}>KPI: 3 conversas/mês</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Right: Microaulas Checklist */}
+                    <div className="lg:col-span-5 space-y-4">
+                      <div className="dash-card">
+                        <h4 style={{ fontSize: '12px', marginTop: 0, marginBottom: '12px', fontWeight: 'bold', color: '#fff' }}>Fase 1: Autoconhecimento</h4>
+                        <div style={{ fontSize: '9px', fontFamily: 'inherit', color: 'var(--ink-mute)', marginBottom: '10px', display: 'flex', justifyContent: 'space-between' }}>
+                          <span>0/5 MÓDULOS COMPLETOS</span>
+                          <span>{lessonsCompletedPercent}%</span>
+                        </div>
+
+                        <div className="space-y-2">
+                          {lessons.map((lesson, idx) => {
+                            const expanded = expandedLesson === lesson.id
+                            return (
+                              <div key={lesson.id} className={`interactive-lesson ${expanded ? 'expanded' : ''}`} onClick={() => setExpandedLesson(expanded ? null : lesson.id)}>
+                                <div className="lesson-header">
+                                  <b style={{ fontSize: '10.5px', color: '#fff' }}>▶ {lesson.title}</b>
+                                  <input 
+                                    type="checkbox" 
+                                    checked={microaulasProgress[idx] || false}
+                                    onChange={() => handleToggleLessonCheck(idx)}
+                                    onClick={(e) => e.stopPropagation()}
+                                    className="manifesto-checkbox"
+                                    style={{ width: '12px', height: '12px' }}
+                                  />
+                                </div>
+                                <div className="lesson-body">
+                                  {lesson.body}
+                                </div>
+                              </div>
+                            )
+                          })}
+                        </div>
+
+                        {/* Locked phases */}
+                        <div style={{ background: 'rgba(0,0,0,0.3)', border: '0.2px solid rgba(255,255,255,0.04)', borderRadius: '8px', padding: '12px', marginTop: '12px', opacity: 0.6 }}>
+                          <span style={{ fontSize: '11px', display: 'block', fontWeight: 'bold', marginBottom: '2px', color: '#fff' }}>🔒 Fase 2: Ponte de Empatia</span>
+                          <span style={{ fontSize: '9.5px', opacity: 0.5, display: 'block' }}>Complete ≥ 80% da Fase 1 para desbloquear.</span>
+                        </div>
+                      </div>
+
+                      {/* Autoavaliação M1-M4 */}
+                      <div className="dash-card">
+                        <h4 style={{ fontSize: '12px', marginTop: 0, marginBottom: '4px', fontWeight: 'bold', color: '#fff' }}>Autoavaliação Liderança</h4>
+                        <p style={{ fontSize: '9.5px', opacity: 0.5, marginBottom: '12px' }}>Avalie seu repertório em cada estilo. Reavalie a cada 90 dias.</p>
+                        
+                        <div className="space-y-2">
+                          {[
+                            { id: 'm1-eval', title: '1. M1 — Direcionar', q: 'Você dá instruções claras de processos?' },
+                            { id: 'm2-eval', title: '2. M2 — Orientar', q: 'Você apoia e cobra entrega técnica?' },
+                            { id: 'm3-eval', title: '3. M3 — Apoiar', q: 'Você estimula a iniciativa própria?' },
+                            { id: 'm4-eval', title: '4. M4 — Delegar', q: 'Você concede autonomia plena com monitoramento?' }
+                          ].map(item => {
+                            const expanded = expandedLesson === item.id
+                            return (
+                              <div key={item.id} className={`interactive-lesson ${expanded ? 'expanded' : ''}`} onClick={() => setExpandedLesson(expanded ? null : item.id)}>
+                                <div className="lesson-header">
+                                  <b style={{ fontSize: '10.5px', color: '#fff' }}>{item.title}</b>
+                                  <span style={{ fontSize: '9.5px', opacity: 0.6 }}>calibrado</span>
+                                </div>
+                                <div className="lesson-body" onClick={(e) => e.stopPropagation()}>
+                                  <span style={{ fontSize: '9.5px', display: 'block', marginBottom: '6px' }}>{item.q}</span>
+                                  <input type="range" className="w-full h-1 bg-white/10 rounded-lg appearance-none cursor-pointer" min="1" max="5" defaultValue="3" style={{ accentColor: '#d4b87a' }} />
+                                </div>
+                              </div>
+                            )
+                          })}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Grid 2: Lentes de Missão & Manifesto */}
+                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
+                    {/* Lentes de Missão */}
+                    <div className="lg:col-span-7 dash-card">
+                      <h4 style={{ fontSize: '12px', marginTop: 0, marginBottom: '4px', fontWeight: 'bold', color: '#fff' }}>Lentes de Missão — Estudos Críticos OBI</h4>
+                      <p style={{ fontSize: '9.5px', opacity: 0.5, marginBottom: '12px' }}>Fundamentos científicos da engenharia de comportamento humano.</p>
+                      
                       <div className="space-y-2">
                         {[
-                          { title: '⚡ Gestão de Energia Cerebral', text: 'O cérebro opera com energia limitada sob estresse e incerteza constante. Cortar retrabalho e reuniões vazias é sobrevivência cognitiva.' },
-                          { title: '🛡️ Cultura como Sistema Imunológico', text: 'Cultura é o conjunto de ações tomadas quando o líder não está olhando. Fortaleça-a co-criando o Contrato de Aliança.' },
-                          { title: '🔬 Baixa Entropia Interna — Shalom', text: 'Para o organismo produzir sem fricção, a clareza e transparência devem ser absolutas em rituais semanais.' }
-                        ].map((l, i) => (
-                          <div key={i} className="p-3 bg-black/25 border border-white/[0.04] rounded-lg font-sans">
-                            <b className="text-[10.5px] text-[#d4b87a] block leading-none">{l.title}</b>
-                            <p className="text-[9.5px] text-white/60 mt-1.5 leading-relaxed">{l.text}</p>
+                          { id: 'l1', title: '⚡ Gestão de Energia Cerebral', desc: 'O cérebro opera com energia limitada sob incerteza constante. Gerenciar onde e como você gasta a energia do time é estratégia de sobrevivência cognitiva. Reduza reuniões desnecessárias.' },
+                          { id: 'l2', title: '🛡️ Cultura como Sistema Imunológico', desc: 'Cultura é o conjunto de comportamentos repetidos no dia a dia que definem como as pessoas decidem quando o líder não está olhando. Fortaleça-a co-criando o Contrato de Aliança.' },
+                          { id: 'l3', title: '🔬 Baixa Entropia Interna — Shalom', desc: 'Para o sistema fluir sem desperdício de energia, a clareza deve ser absoluta e o peso morto de retrabalho e microgerenciamento deve ser cortado trimestralmente.' }
+                        ].map(l => {
+                          const expanded = expandedLesson === l.id
+                          return (
+                            <div key={l.id} className={`interactive-lesson ${expanded ? 'expanded' : ''}`} onClick={() => setExpandedLesson(expanded ? null : l.id)}>
+                              <div className="lesson-header"><b style={{ fontSize: '10.5px', color: '#fff' }}>{l.title}</b><span style={{ fontSize: '8px', color: '#d4b87a', fontWeight: 'bold' }}>LER ▼</span></div>
+                              <div className="lesson-body">{l.desc}</div>
+                            </div>
+                          )
+                        })}
+                      </div>
+                    </div>
+
+                    {/* Manifesto de Liderança */}
+                    <div className="lg:col-span-5 dash-card">
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                        <h4 style={{ fontSize: '12px', margin: 0, fontWeight: 'bold', color: '#fff' }}>Manifesto de Liderança: 5 Princípios</h4>
+                      </div>
+                      <p style={{ fontSize: '9.5px', opacity: 0.5, marginTop: 0, marginBottom: '12px' }}>Adereço prático diário ao legado principal. Calcule sua nota abaixo.</p>
+                      
+                      <div className="space-y-2">
+                        {manifestoPrinciples.map((p, idx) => (
+                          <div key={p.code} style={{ background: 'rgba(255,255,255,0.01)', border: '0.2px solid rgba(255,255,255,0.04)', borderRadius: '6px', padding: '8px', display: 'flex', gap: '10px', alignItems: 'center' }}>
+                            <input 
+                              type="checkbox" 
+                              checked={manifestoChecks[idx]}
+                              onChange={() => handleToggleManifesto(idx)}
+                              className="manifesto-checkbox"
+                              style={{ width: '12px', height: '12px' }}
+                            />
+                            <div>
+                              <b style={{ fontSize: '10.5px', display: 'block', color: '#fff' }}>{p.code} · {p.text.split(' como ')[0]}</b>
+                              <span style={{ fontSize: '9px', opacity: 0.6, display: 'block' }}>{p.text}</span>
+                            </div>
                           </div>
                         ))}
                       </div>
-                    </div>
-                  </div>
 
-                  {/* Scripts */}
-                  <div className="lg:col-span-4 space-y-4">
-                    <div className="ipb-soft p-4 rounded-xl border border-white/[0.03]">
-                      <h4 className="text-[11px] font-bold text-[#d4b87a] uppercase font-mono mb-3">Scripts de Liderança M1-M4</h4>
-                      <div className="space-y-2 font-sans text-[9px] text-white/60">
-                        <div className="p-2 bg-white/[0.01] border border-white/[0.03] rounded">
-                          <b className="text-red-400 block font-mono">M1 Direcional:</b>
-                          <span className="italic">"Vou te mostrar o passo a passo. Faça assim e me avise."</span>
-                        </div>
-                        <div className="p-2 bg-white/[0.01] border border-white/[0.03] rounded">
-                          <b className="text-yellow-400 block font-mono">M2 Orientador:</b>
-                          <span className="italic">"Você já tem o básico. O que travou no processo?"</span>
-                        </div>
-                        <div className="p-2 bg-white/[0.01] border border-white/[0.03] rounded">
-                          <b className="text-slate-300 block font-mono">M3 Apoiador:</b>
-                          <span className="italic">"Confio em você. O que você precisa de mim para decidir?"</span>
-                        </div>
-                        <div className="p-2 bg-white/[0.01] border border-white/[0.03] rounded">
-                          <b className="text-[#5dcaa5] block font-mono">M4 Delegar:</b>
-                          <span className="italic">"Você define o plano. Me mantenha informado dos marcos."</span>
-                        </div>
+                      <div style={{ marginTop: '12px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontFamily: 'inherit', fontSize: '11px' }}>
+                        <span>Índice de Manifesto:</span>
+                        <b style={{ color: '#5dcaa5' }}>{manifestoScoreVal}%</b>
                       </div>
                     </div>
                   </div>
-
                 </motion.div>
               )}
-
             </AnimatePresence>
-
           </motion.div>
         )}
 
@@ -2166,25 +2396,31 @@ export function SigPessoasPanel() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className="ipb-soft p-5 rounded-[1.2rem] space-y-4"
+            className="dash-card gold-border"
+            style={{ padding: '24px' }}
           >
             {/* Header info */}
-            <div className="flex items-start justify-between border-b border-white/[0.04] pb-3">
-              <div>
-                <span className="text-[7.5px] uppercase tracking-widest text-[#d4b87a]/70 font-mono">TIME · ESTRUTURAR</span>
-                <h3 className="text-sm font-bold text-white/90 leading-none mt-0.5 font-sans">Saúde e Desenvolvimento Coletivo</h3>
-                <p className="text-[9.5px] text-white/40 mt-1 font-sans">Mapeamento integrado baseado nos níveis de Tuckman</p>
+            <div className="sec-head" style={{ marginBottom: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div className="lhs" style={{ textAlign: 'left' }}>
+                <div className="sec-id" style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                  <span className="num" style={{ fontFamily: 'inherit', fontSize: '10px', color: '#b8975a', border: '0.2px solid rgba(212,184,122,0.3)', padding: '1px 6px', borderRadius: '4px', background: 'rgba(212,184,122,0.05)', fontWeight: 'bold' }}>TIME</span>
+                  <span className="tag" style={{ fontSize: '9px', color: 'var(--ink-mute)' }}>Saúde e Desenvolvimento Coletivo</span>
+                </div>
+                <h2 className="sec-h" style={{ fontSize: '16px', fontWeight: 'bold', color: '#fff', marginTop: '6px' }}>Gestão e Dinâmica de Equipe</h2>
+                <div className="sec-sub" style={{ fontSize: '9.5px', color: 'var(--ink-mute)', marginTop: '2px' }}>A performance real do time depende da maturidade coletiva (Tuckman), do alinhamento HHH e da clareza do Contrato de Aliança.</div>
               </div>
-              <button 
-                onClick={() => triggerToast('Carregando mentoria de dinâmica de equipes...', 'ok')}
-                className="rounded-[0.5rem] bg-white/[0.03] border border-white/[0.08] hover:border-[#d4b87a]/35 text-[#d4b87a] px-3 py-1.5 text-[8.5px] font-bold uppercase transition"
-              >
-                ▶ PROFESSOR IA
-              </button>
+              <div className="rhs">
+                <button 
+                  onClick={() => triggerToast('Carregando mentoria de dinâmica de equipes...', 'ok')}
+                  className="btn-professor-ia"
+                >
+                  ▶ PROFESSOR IA
+                </button>
+              </div>
             </div>
 
             {/* Sub-tabs Row */}
-            <div className="flex gap-1.5 border-b border-white/[0.03] pb-2 overflow-x-auto">
+            <div className="tab-time-row">
               {[
                 { id: 'formar', label: 'Formar & Contrato' },
                 { id: 'pessoas', label: 'Pessoas & Perfil' },
@@ -2193,11 +2429,7 @@ export function SigPessoasPanel() {
                 <button
                   key={sub.id}
                   onClick={() => setTimeTab(sub.id as TimeSubTab)}
-                  className={`px-3 py-1.5 rounded-[0.4rem] text-[9.5px] font-bold font-mono transition-all ${
-                    timeTab === sub.id
-                      ? 'bg-white/[0.05] text-[#d4b87a] border border-[#d4b87a]/25'
-                      : 'bg-transparent text-white/40 hover:text-white/75 border border-transparent'
-                  }`}
+                  className={`sub-tab-btn ${timeTab === sub.id ? 'active' : ''}`}
                 >
                   {sub.label}
                 </button>
@@ -2218,18 +2450,18 @@ export function SigPessoasPanel() {
                 >
                   {/* Tuckman Stages */}
                   <div className="lg:col-span-7 space-y-4">
-                    <div className="ipb-soft p-4 rounded-xl border border-white/[0.03] space-y-3">
+                    <div className="dash-card space-y-3">
                       <div>
                         <h4 className="text-[11px] font-bold text-white uppercase font-mono">Velocidade Tuckman — Estágios do Time</h4>
-                        <p className="text-[9px] text-white/45">Calibre o multiplicador coletivo conforme o nível de maturidade:</p>
+                        <p className="text-[9px] text-white/45 font-sans">Calibre o multiplicador coletivo conforme o nível de maturidade:</p>
                       </div>
 
                       <div className="grid grid-cols-4 gap-2 text-center font-mono">
                         {[
-                          { id: 'forming', label: 'Forming', val: 'x0.6', color: tuckmanStage === 'forming' ? 'border-[#d4b87a] bg-[#d4b87a]/15 text-[#d4b87a]' : 'border-white/5 bg-black/20 text-white/40' },
-                          { id: 'storming', label: 'Storming', val: 'x0.4', color: tuckmanStage === 'storming' ? 'border-[#e24b4a] bg-[#e24b4a]/15 text-[#e24b4a]' : 'border-white/5 bg-black/20 text-white/40' },
-                          { id: 'norming', label: 'Norming', val: 'x0.95', color: tuckmanStage === 'norming' ? 'border-[#fac775] bg-[#fac775]/15 text-[#fac775]' : 'border-white/5 bg-black/20 text-white/40' },
-                          { id: 'performing', label: 'Performing', val: 'x1.45', color: tuckmanStage === 'performing' ? 'border-[#5dcaa5] bg-[#5dcaa5]/15 text-[#5dcaa5]' : 'border-white/5 bg-black/20 text-white/40' }
+                          { id: 'forming', label: 'Forming', val: 'x0.6', color: tuckmanStage === 'forming' ? 'border-[#d4b87a]/60 bg-[#d4b87a]/10 text-[#d4b87a] shadow-[0_0_12px_rgba(212,184,122,0.15)]' : 'border-white/[0.06] bg-black/30 text-white/40 hover:border-white/10 hover:text-white/60' },
+                          { id: 'storming', label: 'Storming', val: 'x0.4', color: tuckmanStage === 'storming' ? 'border-[#e24b4a]/60 bg-[#e24b4a]/10 text-[#e24b4a] shadow-[0_0_12px_rgba(226,75,74,0.15)]' : 'border-white/[0.06] bg-black/30 text-white/40 hover:border-white/10 hover:text-white/60' },
+                          { id: 'norming', label: 'Norming', val: 'x0.95', color: tuckmanStage === 'norming' ? 'border-[#fac775]/60 bg-[#fac775]/10 text-[#fac775] shadow-[0_0_12px_rgba(250,199,117,0.15)]' : 'border-white/[0.06] bg-black/30 text-white/40 hover:border-white/10 hover:text-white/60' },
+                          { id: 'performing', label: 'Performing', val: 'x1.45', color: tuckmanStage === 'performing' ? 'border-[#5dcaa5]/60 bg-[#5dcaa5]/10 text-[#5dcaa5] shadow-[0_0_12px_rgba(93,202,165,0.15)]' : 'border-white/[0.06] bg-black/30 text-white/40 hover:border-white/10 hover:text-white/60' }
                         ].map(stage => (
                           <div 
                             key={stage.id}
@@ -2246,26 +2478,26 @@ export function SigPessoasPanel() {
                       </div>
 
                       {/* Formula result */}
-                      <div className="p-3 bg-black/30 border border-white/[0.04] rounded-lg font-mono text-[9.5px] leading-normal text-white/60">
+                      <div className="p-3 bg-black/40 border border-white/[0.05] rounded-lg font-mono text-[9.5px] leading-normal text-white/60">
                         <span className="text-[#d4b87a] text-[8px] font-bold block mb-1">PR = ΣPI × T − LG · POTENCIAL REAL</span>
                         <b>POTENCIAL REAL:</b> Potencial calibrado em <b className="text-white">{calculatedPotential}%</b> baseado nos {teamMembers.length} liderados ativos e no multiplicador.
                       </div>
 
                       {/* HHH parameters */}
                       <div className="border-t border-white/[0.04] pt-3">
-                        <span className="text-[8px] font-mono text-[#d4b87a] uppercase tracking-wider block mb-2">HHH Framework (Médio do Time)</span>
+                        <span className="text-[8px] font-mono text-[#d4b87a] uppercase tracking-wider block mb-2 font-bold">HHH Framework (Médio do Time)</span>
                         <div className="grid grid-cols-3 gap-3 text-center">
-                          <div className="p-2 bg-white/[0.01] border border-white/[0.03] rounded-lg">
+                          <div className="p-3 bg-white/[0.02] border border-white/[0.06] rounded-lg shadow-inner">
                             <span className="text-[8px] text-white/45 block">Smart (Cabeça)</span>
-                            <b className="text-sm font-mono text-white mt-1 block">{avgHead}/100</b>
+                            <b className="text-sm font-mono text-white mt-1 block font-bold">{avgHead}/100</b>
                           </div>
-                          <div className="p-2 bg-white/[0.01] border border-white/[0.03] rounded-lg">
+                          <div className="p-3 bg-white/[0.02] border border-white/[0.06] rounded-lg shadow-inner">
                             <span className="text-[8px] text-white/45 block">Humble (Coração)</span>
-                            <b className="text-sm font-mono text-white mt-1 block">{avgHeart}/100</b>
+                            <b className="text-sm font-mono text-white mt-1 block font-bold">{avgHeart}/100</b>
                           </div>
-                          <div className="p-2 bg-white/[0.01] border border-white/[0.03] rounded-lg">
+                          <div className="p-3 bg-white/[0.02] border border-white/[0.06] rounded-lg shadow-inner">
                             <span className="text-[8px] text-white/45 block">Hungry (Mãos)</span>
-                            <b className="text-sm font-mono text-white mt-1 block">{avgHands}/100</b>
+                            <b className="text-sm font-mono text-white mt-1 block font-bold">{avgHands}/100</b>
                           </div>
                         </div>
                       </div>
@@ -2274,12 +2506,12 @@ export function SigPessoasPanel() {
 
                   {/* Contrato de Aliança */}
                   <div className="lg:col-span-5 space-y-4">
-                    <div className="ipb-soft p-4 rounded-xl border border-white/[0.03] space-y-3">
+                    <div className="dash-card space-y-3">
                       <div className="flex justify-between items-center">
                         <h4 className="text-[11px] font-bold text-white uppercase font-mono">Contrato de Aliança</h4>
                         <button 
                           onClick={handleGenerateAllianceContract}
-                          className="px-2 py-0.5 bg-[#d4b87a]/15 hover:bg-[#d4b87a]/30 border border-[#d4b87a]/30 text-[#d4b87a] rounded text-[8px] font-mono"
+                          className="px-2 py-1 bg-[#d4b87a]/15 hover:bg-[#d4b87a]/30 border border-[#d4b87a]/30 text-[#d4b87a] rounded text-[8px] font-mono font-bold"
                         >
                           ✨ GERAR VIA IA
                         </button>
@@ -2287,7 +2519,7 @@ export function SigPessoasPanel() {
                       
                       <div className="space-y-1.5 max-h-[140px] overflow-y-auto pr-1">
                         {allianceClauses.map((clause, idx) => (
-                          <div key={idx} className="p-2 bg-white/[0.01] border border-white/[0.03] rounded-lg flex items-center justify-between gap-2 text-[10px]">
+                          <div key={idx} className="p-2.5 bg-black/20 border border-white/[0.06] rounded-lg flex items-center justify-between gap-2 text-[10px] hover:border-[#d4b87a]/20 transition">
                             <span className="text-white/80">{idx + 1} · {clause}</span>
                             <button onClick={() => handleRemoveAllianceClause(idx)} className="text-red-400 hover:text-red-500 font-bold px-1 text-[11px]">✕</button>
                           </div>
@@ -2300,12 +2532,12 @@ export function SigPessoasPanel() {
                           placeholder="Adicionar nova cláusula..." 
                           value={newClauseInput}
                           onChange={(e) => setNewClauseInput(e.target.value)}
-                          className="flex-1 bg-black/45 border border-white/[0.08] rounded-[0.4rem] px-2.5 py-1 text-[9.5px] outline-none focus:border-[#d4b87a]/40"
+                          className="flex-1 bg-black/40 border border-white/[0.08] rounded-[0.4rem] px-2.5 py-1.5 text-[9.5px] outline-none focus:border-[#d4b87a]/40"
                           onKeyDown={(e) => e.key === 'Enter' && handleAddAllianceClause()}
                         />
                         <button 
                           onClick={handleAddAllianceClause}
-                          className="px-3 bg-white/[0.03] hover:bg-white/[0.08] border border-white/[0.08] rounded-[0.4rem] text-[9.5px] font-bold transition"
+                          className="px-3 bg-[#d4b87a]/15 hover:bg-[#d4b87a]/30 border border-[#d4b87a]/45 rounded-[0.4rem] text-[9.5px] font-bold text-[#d4b87a] transition"
                         >
                           + ADD
                         </button>
@@ -2327,25 +2559,25 @@ export function SigPessoasPanel() {
                 >
                   
                   {/* Algoritmo de Sucessor */}
-                  <div className="lg:col-span-6 ipb-soft p-4 rounded-xl border border-white/[0.03] space-y-3">
+                  <div className="lg:col-span-6 dash-card space-y-3">
                     <div>
                       <h4 className="text-[11px] font-bold text-white uppercase font-mono">Algoritmo de Identificação de Sucessor</h4>
-                      <p className="text-[9.5px] text-white/40">Parâmetros combinados de D6 + HHH + Propósito</p>
+                      <p className="text-[9.5px] text-white/40 font-sans">Parâmetros combinados de D6 + HHH + Propósito</p>
                     </div>
 
                     <div className="space-y-2">
                       {rankedSuccessors.map((member, i) => (
-                        <div key={member.id} className="p-3 bg-black/25 border border-white/[0.04] rounded-lg flex items-center justify-between">
+                        <div key={member.id} className="p-3 bg-black/35 border border-white/[0.06] rounded-lg flex items-center justify-between hover:border-[#d4b87a]/25 transition">
                           <div className="flex items-center gap-3">
-                            <b className="text-white/45 font-mono text-[10px]">0{i + 1}</b>
+                            <b className="text-[#d4b87a] font-mono text-[10px]">0{i + 1}</b>
                             <div>
-                              <b className="text-[10.5px] text-white leading-none block">{member.name}</b>
+                              <b className="text-[10.5px] text-white leading-none block font-bold">{member.name}</b>
                               <span className="text-[8.5px] font-mono text-white/40">{member.role}</span>
                             </div>
                           </div>
                           
                           <div className="text-right">
-                            <span className="text-[10px] font-mono font-bold text-[#d4b87a] block leading-none">{member.successionScore} pts</span>
+                            <span className="text-[10px] font-mono font-bold text-[#5dcaa5] block leading-none">{member.successionScore} pts</span>
                             <span className="text-[8px] text-white/35 block mt-0.5">{member.wishes}</span>
                           </div>
                         </div>
@@ -2354,17 +2586,17 @@ export function SigPessoasPanel() {
                   </div>
 
                   {/* Profiler detail */}
-                  <div className="lg:col-span-6 ipb-soft p-4 rounded-xl border border-white/[0.03] space-y-3">
+                  <div className="lg:col-span-6 dash-card space-y-3">
                     <div className="flex justify-between items-center border-b border-white/[0.04] pb-2">
                       <div>
                         <h4 className="text-[11px] font-bold text-white uppercase font-mono">Ficha de Perfil do Liderado</h4>
-                        <p className="text-[9.5px] text-white/40">Visualização unificada de fit cultural</p>
+                        <p className="text-[9.5px] text-white/40 font-sans">Visualização unificada de fit cultural</p>
                       </div>
                       
                       <select
                         value={selectedProfileId}
                         onChange={(e) => setSelectedProfileId(e.target.value)}
-                        className="bg-black/40 border border-white/[0.08] rounded px-2 py-1 text-[9.5px] text-white outline-none"
+                        className="bg-black/40 border border-white/[0.08] rounded px-2.5 py-1 text-[9.5px] text-white outline-none focus:border-[#d4b87a]/40"
                       >
                         {teamMembers.map(m => <option key={m.id} value={m.id}>{m.name}</option>)}
                       </select>
@@ -2381,17 +2613,17 @@ export function SigPessoasPanel() {
                               {m.name.split(' ').map(x => x[0]).join('')}
                             </div>
                             <div>
-                              <b className="text-white text-[12px] block leading-none">{m.name}</b>
+                              <b className="text-white text-[12px] block leading-none font-bold">{m.name}</b>
                               <span className="text-white/45 text-[9px] font-mono block mt-1">{m.role} · Maturidade {m.maturity}</span>
                             </div>
                           </div>
 
-                          <div className="grid grid-cols-2 gap-2 text-[9px] font-mono text-white/60 bg-black/25 p-2.5 rounded-lg border border-white/[0.03]">
+                          <div className="grid grid-cols-2 gap-2 text-[9px] font-mono text-white/60 bg-black/35 p-3 rounded-lg border border-white/[0.06]">
                             <div>D6 Health Index: <b className="text-white">{m.d6}%</b></div>
                             <div>Alinhamento: <b className="text-[#5dcaa5]">{m.status}</b></div>
                             <div>Humble: <b className="text-white">{m.hhh.humble}%</b></div>
                             <div>Hungry: <b className="text-white">{m.hhh.hungry}%</b></div>
-                            <div className="col-span-2">Desejo de Carreira: <b className="text-[#fac775]">{m.wishes}</b></div>
+                            <div className="col-span-2 mt-1 pt-1 border-t border-white/[0.04]">Desejo de Carreira: <b className="text-[#fac775]">{m.wishes}</b></div>
                           </div>
                         </div>
                       )
@@ -2412,17 +2644,17 @@ export function SigPessoasPanel() {
                 >
                   
                   {/* Conflict Analyzer Thomas Kilmann */}
-                  <div className="lg:col-span-7 ipb-soft p-4 rounded-xl border border-white/[0.03] space-y-3">
+                  <div className="lg:col-span-7 dash-card space-y-3">
                     <div>
                       <h4 className="text-[11px] font-bold text-white uppercase font-mono">Protocolo de Mediação ALX</h4>
-                      <p className="text-[9.5px] text-white/40">IA-Assisted Thomas-Kilmann conflict resolver</p>
+                      <p className="text-[9.5px] text-white/40 font-sans">IA-Assisted Thomas-Kilmann conflict resolver</p>
                     </div>
 
                     <textarea 
                       value={conflictDesc}
                       onChange={(e) => setConflictDesc(e.target.value)}
                       placeholder="Descreva o conflito ocorrido na equipe de forma extremamente objetiva (ex: Discordância de metodologia de calibração bioneural)..."
-                      className="w-full h-20 bg-black/45 border border-white/[0.08] rounded-[0.4rem] p-2.5 text-[10px] text-white outline-none resize-none focus:border-[#d4b87a]/40 transition"
+                      className="cnv-text-area h-20"
                     />
 
                     <button 
@@ -2441,15 +2673,15 @@ export function SigPessoasPanel() {
                   </div>
 
                   {/* Small Matrix Info */}
-                  <div className="lg:col-span-5 ipb-soft p-4 rounded-xl border border-white/[0.03]">
+                  <div className="lg:col-span-5 dash-card">
                     <h4 className="text-[11px] font-bold text-[#d4b87a] uppercase font-mono mb-2">Thomas-Kilmann Styles</h4>
-                    <p className="text-[9px] text-white/45 mb-3">5 estilos de resolução para calibração</p>
+                    <p className="text-[9px] text-white/45 mb-3 font-sans">5 estilos de resolução para calibração</p>
                     
                     <div className="space-y-1.5 font-sans text-[9px] text-white/60">
-                      <div className="p-1.5 bg-white/[0.01] border border-white/[0.03] rounded"><b>Competição:</b> Alta assertividade, baixa cooperação.</div>
-                      <div className="p-1.5 bg-white/[0.01] border border-white/[0.03] rounded"><b>Colaboração:</b> Alta assertividade, alta cooperação. Win-win.</div>
-                      <div className="p-1.5 bg-white/[0.01] border border-white/[0.03] rounded"><b>Compromisso:</b> Equilíbrio sutil de concessões.</div>
-                      <div className="p-1.5 bg-white/[0.01] border border-white/[0.03] rounded"><b>Acomodação:</b> Baixa assertividade, alta cooperação.</div>
+                      <div className="p-2 bg-black/20 border border-white/[0.06] rounded hover:border-[#d4b87a]/15 transition"><b>Competição:</b> Alta assertividade, baixa cooperação.</div>
+                      <div className="p-2 bg-black/20 border border-white/[0.06] rounded hover:border-[#d4b87a]/15 transition"><b>Colaboração:</b> Alta assertividade, alta cooperação. Win-win.</div>
+                      <div className="p-2 bg-black/20 border border-white/[0.06] rounded hover:border-[#d4b87a]/15 transition"><b>Compromisso:</b> Equilíbrio sutil de concessões.</div>
+                      <div className="p-2 bg-black/20 border border-white/[0.06] rounded hover:border-[#d4b87a]/15 transition"><b>Acomodação:</b> Baixa assertividade, alta cooperação.</div>
                     </div>
                   </div>
 
@@ -2467,25 +2699,31 @@ export function SigPessoasPanel() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className="ipb-soft p-5 rounded-[1.2rem] space-y-4"
+            className="dash-card gold-border"
+            style={{ padding: '24px' }}
           >
             {/* Header info */}
-            <div className="flex items-start justify-between border-b border-white/[0.04] pb-3">
-              <div>
-                <span className="text-[7.5px] uppercase tracking-widest text-[#d4b87a]/70 font-mono">EMPRESA · ESTRATÉGICO</span>
-                <h3 className="text-sm font-bold text-white/90 leading-none mt-0.5 font-sans">Mapeamento Corporativo &amp; BI</h3>
-                <p className="text-[9.5px] text-white/40 mt-1 font-sans">OKRs trimestrais + Clima Organizacional + Auditoria de Canais</p>
+            <div className="sec-head" style={{ marginBottom: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div className="lhs" style={{ textAlign: 'left' }}>
+                <div className="sec-id" style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                  <span className="num" style={{ fontFamily: 'inherit', fontSize: '10px', color: '#b8975a', border: '0.2px solid rgba(212,184,122,0.3)', padding: '1px 6px', borderRadius: '4px', background: 'rgba(212,184,122,0.05)', fontWeight: 'bold' }}>EMPRESA</span>
+                  <span className="tag" style={{ fontSize: '9px', color: 'var(--ink-mute)' }}>Alinhamento Organizacional &amp; BI</span>
+                </div>
+                <h2 className="sec-h" style={{ fontSize: '16px', fontWeight: 'bold', color: '#fff', marginTop: '6px' }}>Mapeamento Corporativo e Indicadores</h2>
+                <div className="sec-sub" style={{ fontSize: '9.5px', color: 'var(--ink-mute)', marginTop: '2px' }}>Acompanhamento de OKRs estratégicos, ROI do Clima Organizacional, eNPS consolidado e saúde dos canais de comunicação.</div>
               </div>
-              <button 
-                onClick={() => triggerToast('Carregando mentoria estratégica executiva...', 'ok')}
-                className="rounded-[0.5rem] bg-white/[0.03] border border-white/[0.08] hover:border-[#d4b87a]/35 text-[#d4b87a] px-3 py-1.5 text-[8.5px] font-bold uppercase transition"
-              >
-                ▶ PROFESSOR IA
-              </button>
+              <div className="rhs">
+                <button 
+                  onClick={() => triggerToast('Carregando mentoria estratégica executiva...', 'ok')}
+                  className="btn-professor-ia"
+                >
+                  ▶ PROFESSOR IA
+                </button>
+              </div>
             </div>
 
             {/* Sub-tabs Row */}
-            <div className="flex gap-1.5 border-b border-white/[0.03] pb-2 overflow-x-auto">
+            <div className="tab-empresa-row">
               {[
                 { id: 'estrategia', label: 'Estratégia & OKRs' },
                 { id: 'bi', label: 'BI & Clima' },
@@ -2495,11 +2733,7 @@ export function SigPessoasPanel() {
                 <button
                   key={sub.id}
                   onClick={() => setEmpresaTab(sub.id as EmpresaSubTab)}
-                  className={`px-3 py-1.5 rounded-[0.4rem] text-[9.5px] font-bold font-mono transition-all ${
-                    empresaTab === sub.id
-                      ? 'bg-white/[0.05] text-[#d4b87a] border border-[#d4b87a]/25'
-                      : 'bg-transparent text-white/40 hover:text-white/75 border border-transparent'
-                  }`}
+                  className={`sub-tab-btn ${empresaTab === sub.id ? 'active' : ''}`}
                 >
                   {sub.label}
                 </button>
@@ -2518,19 +2752,19 @@ export function SigPessoasPanel() {
                   className="grid grid-cols-1 lg:grid-cols-12 gap-4 text-left"
                 >
                   {/* Left: OKR list and add */}
-                  <div className="lg:col-span-7 ipb-soft p-4 rounded-xl border border-white/[0.03] space-y-4">
+                  <div className="lg:col-span-7 dash-card space-y-4">
                     <div className="flex justify-between items-center">
                       <div>
                         <h4 className="text-[11px] font-bold text-white uppercase font-mono">OKRs Trimestrais · Q2 2026</h4>
-                        <p className="text-[9px] text-white/40">41 dias restantes · Q2 consolidado</p>
+                        <p className="text-[9px] text-white/40 font-sans">41 dias restantes · Q2 consolidado</p>
                       </div>
                     </div>
 
                     <div className="space-y-3">
                       {okrs.map(okr => (
-                        <div key={okr.id} className="p-3 bg-black/25 border border-white/[0.04] rounded-lg space-y-2">
+                        <div key={okr.id} className="p-3.5 bg-black/35 border border-white/[0.06] rounded-lg space-y-2 hover:border-[#d4b87a]/20 transition">
                           <div className="flex justify-between text-[10px] font-bold">
-                            <span className="text-white/95">{okr.title}</span>
+                            <span className="text-white/95 font-bold">{okr.title}</span>
                             <span className="font-mono text-[#d4b87a]">{okr.progress}%</span>
                           </div>
                           <span className="text-[8px] font-mono text-white/40 block leading-tight">{okr.keyResults}</span>
@@ -2543,13 +2777,13 @@ export function SigPessoasPanel() {
 
                     {/* OKR add form */}
                     <div className="border-t border-white/[0.04] pt-3 space-y-2">
-                      <span className="text-[8px] font-mono text-[#d4b87a] uppercase tracking-wider block">Criar Novo OKR Estratégico</span>
+                      <span className="text-[8px] font-mono text-[#d4b87a] uppercase tracking-wider block font-bold">Criar Novo OKR Estratégico</span>
                       <input 
                         type="text" 
                         placeholder="Objetivo principal (ex: Reduzir churn em 10%)..." 
                         value={newOkrTitle}
                         onChange={(e) => setNewOkrTitle(e.target.value)}
-                        className="w-full bg-black/45 border border-white/[0.08] rounded-[0.4rem] px-2.5 py-1 text-[9.5px] outline-none"
+                        className="w-full bg-black/40 border border-white/[0.08] rounded-[0.4rem] px-2.5 py-1.5 text-[9.5px] outline-none focus:border-[#d4b87a]/40"
                       />
                       <div className="flex gap-2">
                         <input 
@@ -2557,11 +2791,11 @@ export function SigPessoasPanel() {
                           placeholder="Key Results (ex: KR1: LTV > 12 meses, KR2: zero bugs)..." 
                           value={newOkrKr}
                           onChange={(e) => setNewOkrKr(e.target.value)}
-                          className="flex-1 bg-black/45 border border-white/[0.08] rounded-[0.4rem] px-2.5 py-1 text-[9.5px] outline-none"
+                          className="flex-1 bg-black/40 border border-white/[0.08] rounded-[0.4rem] px-2.5 py-1.5 text-[9.5px] outline-none focus:border-[#d4b87a]/40"
                         />
                         <button 
                           onClick={handleAddOkr}
-                          className="px-3 bg-[#d4b87a]/20 border border-[#d4b87a]/30 hover:bg-[#d4b87a]/30 rounded-[0.4rem] text-[9.5px] font-bold text-[#d4b87a]"
+                          className="px-3 bg-[#d4b87a]/15 hover:bg-[#d4b87a]/30 border border-[#d4b87a]/45 rounded-[0.4rem] text-[9.5px] font-bold text-[#d4b87a] transition"
                         >
                           DEFINIR
                         </button>
@@ -2571,12 +2805,12 @@ export function SigPessoasPanel() {
 
                   {/* Right: strategic info bank */}
                   <div className="lg:col-span-5 space-y-4">
-                    <div className="ipb-soft p-4 rounded-xl border border-white/[0.03] space-y-3">
+                    <div className="dash-card space-y-3">
                       <h4 className="text-[11px] font-bold text-[#d4b87a] uppercase font-mono">Banco de Estratégias</h4>
                       <div className="space-y-1.5 font-sans text-[9px] text-white/50">
-                        <div className="p-2 bg-white/[0.01] border border-white/[0.03] rounded"><b>D6 Diagnóstico:</b> Visão cruzada 360 do time em 6 dimensões de saúde.</div>
-                        <div className="p-2 bg-white/[0.01] border border-white/[0.03] rounded"><b>eNPS Clima:</b> Frequência mensal de contentamento e disposição de indicar a equipe.</div>
-                        <div className="p-2 bg-white/[0.01] border border-white/[0.03] rounded"><b>ISR Score:</b> Relação de impacto e reconhecimento individual do colaborador.</div>
+                        <div className="p-2.5 bg-black/20 border border-white/[0.06] rounded hover:border-[#d4b87a]/15 transition"><b>D6 Diagnóstico:</b> Visão cruzada 360 do time em 6 dimensões de saúde.</div>
+                        <div className="p-2.5 bg-black/20 border border-white/[0.06] rounded hover:border-[#d4b87a]/15 transition"><b>eNPS Clima:</b> Frequência mensal de contentamento e disposição de indicar a equipe.</div>
+                        <div className="p-2.5 bg-black/20 border border-white/[0.06] rounded hover:border-[#d4b87a]/15 transition"><b>ISR Score:</b> Relação de impacto e reconhecimento individual do colaborador.</div>
                       </div>
                     </div>
                   </div>
@@ -2595,10 +2829,10 @@ export function SigPessoasPanel() {
                 >
                   
                   {/* Climate ROI Calculator */}
-                  <div className="lg:col-span-8 ipb-soft p-4 rounded-xl border border-white/[0.03] space-y-3">
+                  <div className="lg:col-span-8 dash-card space-y-3">
                     <div>
                       <h4 className="text-[11px] font-bold text-white uppercase font-mono">ROI do Clima Organizacional (Custo Oculto)</h4>
-                      <p className="text-[9.5px] text-white/40">Estresses, ruídos e retrabalhos geram latência. Meça os custos ocultos sistêmicos:</p>
+                      <p className="text-[9.5px] text-white/40 font-sans">Estresses, ruídos e retrabalhos geram latência. Meça os custos ocultos sistêmicos:</p>
                     </div>
 
                     <div className="grid grid-cols-2 gap-3">
@@ -2608,7 +2842,7 @@ export function SigPessoasPanel() {
                           type="number" 
                           value={climateSalary}
                           onChange={(e) => setClimateSalary(parseInt(e.target.value) || 0)}
-                          className="w-full bg-black/40 border border-white/[0.08] rounded-[0.4rem] px-3 py-1 text-[10px] text-white outline-none focus:border-[#d4b87a]/40"
+                          className="w-full bg-black/40 border border-white/[0.08] rounded-[0.4rem] px-3 py-1.5 text-[10px] text-white outline-none focus:border-[#d4b87a]/40"
                         />
                       </div>
                       <div className="space-y-1">
@@ -2617,7 +2851,7 @@ export function SigPessoasPanel() {
                           type="number" 
                           value={climateLatency}
                           onChange={(e) => setClimateLatency(parseInt(e.target.value) || 0)}
-                          className="w-full bg-black/40 border border-white/[0.08] rounded-[0.4rem] px-3 py-1 text-[10px] text-white outline-none"
+                          className="w-full bg-black/40 border border-white/[0.08] rounded-[0.4rem] px-3 py-1.5 text-[10px] text-white outline-none focus:border-[#d4b87a]/40"
                         />
                       </div>
                       <div className="space-y-1">
@@ -2626,7 +2860,7 @@ export function SigPessoasPanel() {
                           type="number" 
                           value={climateRework}
                           onChange={(e) => setClimateRework(parseInt(e.target.value) || 0)}
-                          className="w-full bg-black/40 border border-white/[0.08] rounded-[0.4rem] px-3 py-1 text-[10px] text-white outline-none"
+                          className="w-full bg-black/40 border border-white/[0.08] rounded-[0.4rem] px-3 py-1.5 text-[10px] text-white outline-none focus:border-[#d4b87a]/40"
                         />
                       </div>
                       <div className="space-y-1">
@@ -2635,27 +2869,27 @@ export function SigPessoasPanel() {
                           type="number" 
                           value={climateTurnover}
                           onChange={(e) => setClimateTurnover(parseInt(e.target.value) || 0)}
-                          className="w-full bg-black/40 border border-white/[0.08] rounded-[0.4rem] px-3 py-1 text-[10px] text-white outline-none"
+                          className="w-full bg-black/40 border border-white/[0.08] rounded-[0.4rem] px-3 py-1.5 text-[10px] text-white outline-none focus:border-[#d4b87a]/40"
                         />
                       </div>
                     </div>
 
-                    <div className="p-3 bg-red-950/20 border border-red-900/30 rounded-lg flex justify-between items-center">
+                    <div className="p-3.5 bg-red-950/25 border border-red-900/40 rounded-lg flex justify-between items-center shadow-inner">
                       <div>
                         <span className="text-[8.5px] font-mono text-white/45 block">Custo Oculto Estimado / Mês</span>
                         <b className="text-lg font-mono text-red-400">R$ {climateHiddenCost}</b>
                       </div>
-                      <span className="text-[9.5px] font-mono text-white/30 uppercase tracking-wide">Turnover + Risco real</span>
+                      <span className="text-[9.5px] font-mono text-white/30 uppercase tracking-wide font-bold">Turnover + Risco real</span>
                     </div>
                   </div>
 
                   {/* eNPS consolidated gauge */}
-                  <div className="lg:col-span-4 ipb-soft p-4 rounded-xl border border-white/[0.03] space-y-3">
+                  <div className="lg:col-span-4 dash-card space-y-3">
                     <h4 className="text-[11px] font-bold text-white uppercase font-mono">Consolidado eNPS</h4>
                     
-                    <div className="p-5 bg-black/35 rounded-lg border border-white/[0.03] text-center space-y-1">
-                      <span className="text-[8px] font-mono text-[#5dcaa5] uppercase block">Zona de Calibração</span>
-                      <b className="text-3xl font-mono text-[#5dcaa5]">+74</b>
+                    <div className="p-5 bg-black/35 rounded-lg border border-white/[0.06] text-center space-y-1">
+                      <span className="text-[8px] font-mono text-[#5dcaa5] uppercase block font-bold">Zona de Calibração</span>
+                      <b className="text-3xl font-mono text-[#5dcaa5] font-bold">+74</b>
                       <span className="text-[8px] text-white/45 block mt-1 font-mono">{teamMembers.length} respostas válidas</span>
                     </div>
                   </div>
@@ -2670,7 +2904,7 @@ export function SigPessoasPanel() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  className="ipb-soft p-5 rounded-xl border border-white/[0.03] text-left space-y-3"
+                  className="dash-card text-left space-y-3"
                 >
                   <div className="flex justify-between items-center border-b border-white/[0.04] pb-2">
                     <div>
@@ -2679,7 +2913,7 @@ export function SigPessoasPanel() {
                     </div>
                     <button 
                       onClick={() => window.print()}
-                      className="px-3 py-1 bg-white/[0.04] border border-white/[0.08] hover:bg-white/[0.08] text-white rounded text-[8.5px] font-mono font-bold transition"
+                      className="px-3.5 py-1.5 bg-[#d4b87a]/15 hover:bg-[#d4b87a]/30 border border-[#d4b87a]/45 text-[#d4b87a] rounded-[0.4rem] text-[8.5px] font-mono font-bold transition"
                     >
                       IMPRIMIR RELATÓRIO
                     </button>
@@ -2706,7 +2940,7 @@ export function SigPessoasPanel() {
                 >
                   
                   {/* Channels noise calculator */}
-                  <div className="lg:col-span-8 ipb-soft p-4 rounded-xl border border-white/[0.03] space-y-3">
+                  <div className="lg:col-span-8 dash-card space-y-3">
                     <div>
                       <h4 className="text-[11px] font-bold text-white uppercase font-mono">Score de Ruído de Canais</h4>
                       <p className="text-[9.5px] text-white/40 font-sans">Análise cruzada de complexidade da mensagem contra a sincronia do meio</p>
@@ -2718,7 +2952,7 @@ export function SigPessoasPanel() {
                         <select 
                           value={msgComplexity}
                           onChange={(e) => setMsgComplexity(parseInt(e.target.value) as any)}
-                          className="w-full bg-black/40 border border-white/[0.08] rounded-[0.4rem] px-3 py-1 text-[10px] text-white outline-none"
+                          className="w-full bg-black/40 border border-white/[0.08] rounded-[0.4rem] px-3 py-1.5 text-[10px] text-white outline-none focus:border-[#d4b87a]/40"
                         >
                           <option value="1">1: Baixa (Transacional / Aviso simples)</option>
                           <option value="2">2: Média (Definição / Alinhamento tático)</option>
@@ -2731,7 +2965,7 @@ export function SigPessoasPanel() {
                         <select 
                           value={channelUsed}
                           onChange={(e) => setChannelUsed(e.target.value)}
-                          className="w-full bg-black/40 border border-white/[0.08] rounded-[0.4rem] px-3 py-1 text-[10px] text-white outline-none"
+                          className="w-full bg-black/40 border border-white/[0.08] rounded-[0.4rem] px-3 py-1.5 text-[10px] text-white outline-none focus:border-[#d4b87a]/40"
                         >
                           <option value="slack">Slack / Chat escrito (Assíncrono)</option>
                           <option value="email">E-mail escrito (Assíncrono)</option>
@@ -2743,7 +2977,7 @@ export function SigPessoasPanel() {
                       </div>
                     </div>
 
-                    <div className="p-3 bg-black/35 rounded-lg border border-white/[0.03] flex justify-between items-center">
+                    <div className="p-3.5 bg-black/35 rounded-lg border border-white/[0.06] flex justify-between items-center shadow-inner">
                       <div>
                         <span className="text-[8.5px] font-mono text-white/45 block">Índice de Ruído Calculado</span>
                         <b className={`text-lg font-mono ${noiseScore > 70 ? 'text-red-400' : 'text-[#5dcaa5]'}`}>{noiseScore}%</b>
@@ -2753,13 +2987,13 @@ export function SigPessoasPanel() {
                   </div>
 
                   {/* C2 Communication Styles */}
-                  <div className="lg:col-span-4 ipb-soft p-4 rounded-xl border border-white/[0.03] space-y-3">
+                  <div className="lg:col-span-4 dash-card space-y-3">
                     <h4 className="text-[11px] font-bold text-[#d4b87a] uppercase font-mono">C² Communication Matrix</h4>
                     
                     <div className="space-y-1.5 font-sans text-[8.5px] text-white/60">
-                      <div className="p-1 bg-white/[0.01] border border-white/[0.03] rounded"><b>Direto:</b> Objetivo e focado em fatos. Indicado para M3/M4.</div>
-                      <div className="p-1 bg-white/[0.01] border border-white/[0.03] rounded"><b>Analítico:</b> Data-driven, focado em métricas.</div>
-                      <div className="p-1 bg-white/[0.01] border border-white/[0.03] rounded"><b>Relacional:</b> Empático, focado na calibração emocional.</div>
+                      <div className="p-2 bg-black/20 border border-white/[0.06] rounded hover:border-[#d4b87a]/15 transition"><b>Direto:</b> Objetivo e focado em fatos. Indicado para M3/M4.</div>
+                      <div className="p-2 bg-black/20 border border-white/[0.06] rounded hover:border-[#d4b87a]/15 transition"><b>Analítico:</b> Data-driven, focado em métricas.</div>
+                      <div className="p-2 bg-black/20 border border-white/[0.06] rounded hover:border-[#d4b87a]/15 transition"><b>Relacional:</b> Empático, focado na calibração emocional.</div>
                     </div>
                   </div>
 
