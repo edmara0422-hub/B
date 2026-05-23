@@ -333,7 +333,7 @@ export async function POST(req: NextRequest) {
             "Pulmão altamente recrutável: bases responderam de forma linear à titulação decremental"
           ],
           confidence: "alta",
-          notes: "Análise realizada via processamento local para titulação decremental de PEEP por impedância elétrica."
+          notes: "⚠️ [Caso Clínico Simulado - Fallback] Conexão com IA excedeu o tempo limite. Titulação de PEEP por impedância elétrica."
         }
       } else {
         const scenarios = [
@@ -363,7 +363,7 @@ export async function POST(req: NextRequest) {
               "Reduzir volume corrente se hiperdistensão anterior piorar"
             ],
             confidence: "alta",
-            notes: "Análise realizada via processamento local. Atelectasia dorsal severa e silent spaces em zonas posteriores dependentes."
+            notes: "⚠️ [Caso Clínico Simulado - Fallback] Conexão com IA excedeu o tempo limite. Caso simulado de atelectasia dorsal severa e silent spaces."
           },
           {
             freq_corr: 16,
@@ -391,7 +391,7 @@ export async function POST(req: NextRequest) {
               "Evitar manobras de recrutamento desnecessárias"
             ],
             confidence: "alta",
-            notes: "Análise realizada via processamento local. Padrão de ventilação homogêneo e equilibrado entre as ROIs."
+            notes: "⚠️ [Caso Clínico Simulado - Fallback] Conexão com IA excedeu o tempo limite. Caso simulado de ventilação homogênea e equilibrada."
           }
         ]
         aiResult = scenarios[Math.floor(Math.random() * scenarios.length)]

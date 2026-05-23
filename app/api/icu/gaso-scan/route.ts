@@ -45,6 +45,7 @@ const GASO_PROMPT = `Você é um intensivista lendo uma gasometria (arterial ou 
  
  REGRAS:
  - Se um valor estiver ausente ou ilegível, retorne null
+ - IMPORTANTE: Se a FiO2 NÃO estiver escrita explicitamente no papel da gasometria, retorne "fio2": null. É proibido deduzir ou inventar um valor (como 21%) se ele não constar na imagem. Se "fio2" for null, NÃO calcule e nem cite a relação PaO2/FiO2 na análise lógica ("laudo"), registrando que a relação P/F não pôde ser medida por falta da FiO2.
  - Lactato: aceitar formatos "1.5 mmol/L", "13.5 mg/dL" (converter), "Lac 2.0"
  - BE: pode aparecer como "BE", "EB", "Base Excess" — pode ser positivo ou negativo
  - FiO2: se ar ambiente, retorne 21. Se vier como 0.21–1.00, converta para 21–100
@@ -195,8 +196,8 @@ export async function POST(req: NextRequest) {
           fio2: 24,
           type: "arterial",
           confidence: "alta",
-          notes: "Padrão compatível com acidose respiratória crônica compensada (retentor crônico/DPOC). Lactato normal.",
-          laudo: "• DIAGNÓSTICO: Acidose respiratória crônica compensada (hipercapnia compensada renalmente).\n• OXIGENAÇÃO: Hipoxemia moderada (Relação P/F = 258).\n• CONDUTA / AJUSTES:\n1. Manter O2 em baixo fluxo (cateter 1-2 L/min) com meta de SpO2 88-92%.\n2. Evitar pressões ventilatórias excessivas para não inibir o drive respiratório próprio."
+          notes: "⚠️ [Caso Clínico Simulado - Fallback] Conexão com IA excedeu tempo limite. Caso de acidose respiratória crônica compensada.",
+          laudo: "• DIAGNÓSTICO: Acidose respiratória crônica compensada (retentor crônico/DPOC).\n• OXIGENAÇÃO: Hipoxemia moderada (Relação P/F = 258).\n• CONDUTA / AJUSTES:\n1. Manter suporte de O2 em baixo fluxo (meta de SpO2 88-92%).\n2. Evitar VNI com pressões elevadas para não deprimir esforço próprio."
         },
         {
           ph: 7.22,
@@ -209,8 +210,8 @@ export async function POST(req: NextRequest) {
           fio2: 50,
           type: "arterial",
           confidence: "alta",
-          notes: "Acidose metabólica grave com hiperlactatemia severa. Compensação respiratória parcial presente.",
-          laudo: "• DIAGNÓSTICO: Acidose metabólica grave com compensação respiratória parcial (hiperventilação secundária).\n• METABOLISMO: Hiperlactatemia severa (4.8 mmol/L), denotando hipoperfusão orgânica crítica.\n• CONDUTA / AJUSTES:\n1. Ressuscitação volêmica agressiva e introdução/titulação precoce de noradrenalina.\n2. Investigar e tratar foco de choque (ex: choque séptico).\n3. Reservar uso de bicarbonato apenas se pH cair abaixo de 7.15."
+          notes: "⚠️ [Caso Clínico Simulado - Fallback] Conexão com IA excedeu tempo limite. Caso de choque séptico com acidose metabólica grave.",
+          laudo: "• DIAGNÓSTICO: Acidose metabólica grave com hiperlactatemia severa (4.8 mmol/L).\n• CONDUTA / AJUSTES:\n1. Ressuscitação volêmica guiada por metas microhemodinâmicas e início imediato de noradrenalina.\n2. Controle de foco infeccioso imediato."
         },
         {
           ph: 7.49,
@@ -220,11 +221,11 @@ export async function POST(req: NextRequest) {
           be: -1.0,
           sao2: 94,
           lactato: 1.4,
-          fio2: 21,
+          fio2: null,
           type: "arterial",
           confidence: "alta",
-          notes: "Alcalose respiratória aguda por hiperventilação. Hipoxemia leve em ar ambiente.",
-          laudo: "• DIAGNÓSTICO: Alcalose respiratória aguda induzida por hiperventilação alveolar.\n• OXIGENAÇÃO: Hipoxemia leve em ar ambiente.\n• CONDUTA / AJUSTES:\n1. Tratar a causa subjacente da hiperventilação (ansiedade, dor, desconforto, TEP precoce).\n2. Monitorar frequência respiratória e reavaliar mecânica ventilatória."
+          notes: "⚠️ [Caso Clínico Simulado - Fallback] Conexão com IA excedeu tempo limite. Alcalose respiratória aguda. FiO2 não registrada na imagem.",
+          laudo: "• DIAGNÓSTICO: Alcalose respiratória aguda induzida por hiperventilação.\n• OXIGENAÇÃO: PaO2 de 70 mmHg. Relação PaO2/FiO2 não calculada devido à ausência de registro da FiO2 no laudo.\n• CONDUTA / AJUSTES:\n1. Investigar causas de taquipneia (dor, ansiedade, embolia pulmonar precoce).\n2. Tratar a causa base do desconforto."
         }
       ]
 

@@ -366,7 +366,7 @@ export async function POST(req: NextRequest) {
             nava_level: null, pav_percent: null
           },
           confidence: "alta",
-          notes: "Processamento local realizado. Parâmetros neonatais típicos com tempo inspiratório de 0.4s e frequência respiratória de 40 rpm.",
+          notes: "⚠️ [Caso Clínico Simulado - Fallback] Conexão com IA excedeu o tempo limite. Parâmetros neonatais típicos (PCV).",
           laudo: "• MODO: PCV (Neonatal).\n• PROTEÇÃO: Volume exalado de 15 mL é protetor e seguro (~5 mL/kg).\n• CONDUTAS: Manter estratégia protetora atual. Acompanhar gasometria capilar periódica."
         }
       } else if (activeModo === 'PSV' || activeModo === 'SPONT') {
@@ -382,7 +382,7 @@ export async function POST(req: NextRequest) {
             nava_level: null, pav_percent: null
           },
           confidence: "alta",
-          notes: "Processamento local realizado. Modo espontâneo (PSV) com ventilação protetora e bom esforço espontâneo.",
+          notes: "⚠️ [Caso Clínico Simulado - Fallback] Conexão com IA excedeu o tempo limite. Parâmetros espontâneos típicos (PSV).",
           laudo: "• MODO: PSV (Espontâneo).\n• MECÂNICA: Esforço respiratório adequado sem taquipneia (FR 16 rpm, volume exalado 460 mL).\n• CONDUTAS: Indicado prosseguir com protocolo de desmame e teste de respiração espontânea (TRE)."
         }
       } else if (activeModo === 'PCV') {
@@ -398,7 +398,7 @@ export async function POST(req: NextRequest) {
             nava_level: null, pav_percent: null
           },
           confidence: "alta",
-          notes: "Processamento local realizado. Ventilação por Pressão Controlada com bom volume gerado e pressão delta de 15 cmH2O.",
+          notes: "⚠️ [Caso Clínico Simulado - Fallback] Conexão com IA excedeu o tempo limite. Parâmetros controlados a pressão (PCV).",
           laudo: "• MODO: PCV (Adulto).\n• METAS: Delta de pressão de 15 cmH2O gerando volume corrente de 450 mL (6.5 mL/kg), mantendo pressões seguras (<30 cmH2O).\n• CONDUTAS: Estabilidade ventilatória satisfatória. Manter parâmetros protetores."
         }
       } else {
@@ -415,7 +415,7 @@ export async function POST(req: NextRequest) {
             nava_level: null, pav_percent: null
           },
           confidence: "alta",
-          notes: "Processamento local realizado. Ventilação por Volume Controlado preenchendo todos os critérios de proteção pulmonar.",
+          notes: "⚠️ [Caso Clínico Simulado - Fallback] Conexão com IA excedeu o tempo limite. Parâmetros controlados a volume (VCV).",
           laudo: "• MODO: VCV (Adulto).\n• MECÂNICA: Ventilação protetora (6.2 mL/kg). Ppico (22 cmH2O) e Pplato (16 cmH2O) adequados. Driving Pressure excelente de 8 cmH2O.\n• CONDUTAS: Parâmetros protetores e estáveis. Manter conduta atual."
         }
       }

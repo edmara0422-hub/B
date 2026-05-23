@@ -321,6 +321,7 @@ export async function POST(req: NextRequest) {
       if (activeExam.includes('TC-CRÂNIO')) {
         aiResult = {
           findings: [
+            "⚠️ [Caso Clínico Simulado - Fallback] Conexão com IA excedeu o tempo limite.",
             "Presença de hematoma subdural agudo frontoparietal esquerdo medindo 1.2 cm",
             "Desvio de estruturas da linha média para a direita em 0.6 cm",
             "Apagamento dos sulcos e giros corticais ipsilaterais por edema cerebral focal"
@@ -331,7 +332,7 @@ export async function POST(req: NextRequest) {
             tot: null,
             sne: null,
             central_access: null,
-            outros: null
+            outros: "⚠️ [Caso Clínico Simulado - Fallback] Conexão com IA excedeu o tempo limite."
           }
         }
       } else {
@@ -339,6 +340,7 @@ export async function POST(req: NextRequest) {
         const scenarios = [
           {
             findings: [
+              "⚠️ [Caso Clínico Simulado - Fallback] Conexão com IA excedeu o tempo limite.",
               "Campos pleuropulmonares livres de consolidações grosseiras",
               "Ponta do tubo endotraqueal (TOT) posicionada a 4.2 cm da carina traqueal — adequado",
               "Silhueta cardíaca dentro dos limites normais (Índice cardiotorácico 0.48)",
@@ -360,11 +362,12 @@ export async function POST(req: NextRequest) {
               tot: "Ponta a 4.2 cm da carina — posicionamento adequado",
               sne: null,
               central_access: "Transição cavo-atrial — adequado",
-              outros: null
+              outros: "⚠️ [Caso Clínico Simulado - Fallback] Conexão com IA excedeu o tempo limite."
             }
           },
           {
             findings: [
+              "⚠️ [Caso Clínico Simulado - Fallback] Conexão com IA excedeu o tempo limite.",
               "Intubação seletiva em brônquio principal direito",
               "Atelectasia total do pulmão esquerdo por hipoventilação obstrutiva",
               "Ponta do tubo endotraqueal (TOT) ultrapassando a carina em 1.5 cm",
@@ -386,7 +389,7 @@ export async function POST(req: NextRequest) {
               tot: "Seletiva em brônquio principal direito — URGENTE",
               sne: null,
               central_access: null,
-              outros: null
+              outros: "⚠️ [Caso Clínico Simulado - Fallback] Conexão com IA excedeu o tempo limite."
             }
           }
         ]

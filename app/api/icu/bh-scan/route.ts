@@ -172,7 +172,7 @@ export async function POST(req: NextRequest) {
           bh24_raw: "+1.25L",
           bhac_raw: "+4.8L",
           confidence: "alta",
-          notes: "Análise realizada via processamento local. Balanço hídrico acumulado elevado, indicando tendência a balanço acumulado positivo persistente."
+          notes: "⚠️ [Caso Clínico Simulado - Fallback] Conexão com IA excedeu o tempo limite. Tendência de balanço acumulado positivo persistente."
         },
         {
           bh24_ml: -850,
@@ -180,7 +180,7 @@ export async function POST(req: NextRequest) {
           bh24_raw: "-850mL",
           bhac_raw: "+1.85L",
           confidence: "alta",
-          notes: "Análise realizada via processamento local. Balanço negativo de 24h, compatível com uso de diuréticos em fase de balanço negativo planejado."
+          notes: "⚠️ [Caso Clínico Simulado - Fallback] Conexão com IA excedeu o tempo limite. Balanço negativo de 24h por terapia diurética planeada."
         }
       ]
       aiResult = scenarios[Math.floor(Math.random() * scenarios.length)]
