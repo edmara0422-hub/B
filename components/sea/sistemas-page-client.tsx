@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ArrowLeft, BookOpen, Calculator, Cpu, FileText, Search } from 'lucide-react'
+import { ArrowLeft, BookOpen, Calculator, Cpu, FileText, Search, PanelLeftClose, PanelLeftOpen } from 'lucide-react'
 import Link from 'next/link'
 
 // Importações dos Painéis Clínicos Homologados (Intactos)
@@ -83,6 +83,7 @@ export default function SistemasPageClient() {
   const [activeGroup, setActiveGroup] = useState<string | null>('clin')
   const [accMode, setAccMode] = useState<'padrao' | 'foco' | 'calmo' | 'contraste'>('padrao')
   const [timeStr, setTimeStr] = useState('')
+  const [sidebarOpen, setSidebarOpen] = useState(true)
 
   // Efeito para manter relógio UTC atualizado em tempo real
   useEffect(() => {
@@ -181,7 +182,7 @@ export default function SistemasPageClient() {
   }
 
   return (
-    <div className={`app-workspace-layout ${accMode === 'foco' ? 'acc-foco' : ''} ${accMode === 'calmo' ? 'acc-calmo' : ''} ${accMode === 'contraste' ? 'acc-contraste' : ''}`}>
+    <div className={`app-workspace-layout ${sidebarOpen ? '' : 'sidebar-closed'} ${accMode === 'foco' ? 'acc-foco' : ''} ${accMode === 'calmo' ? 'acc-calmo' : ''} ${accMode === 'contraste' ? 'acc-contraste' : ''}`}>
       
       {/* Estilos CSS Scoped para isolamento total da página */}
       <style>{`
@@ -215,7 +216,7 @@ export default function SistemasPageClient() {
           --f-display: 'Poppins', sans-serif;
           --f-mono: 'Poppins', sans-serif;
           --f-body: 'Poppins', sans-serif;
-
+ 
           position: relative;
           display: grid;
           grid-template-columns: 240px 1fr;
@@ -227,6 +228,61 @@ export default function SistemasPageClient() {
           font-weight: 200;
           overflow: hidden;
           -webkit-font-smoothing: antialiased;
+        }
+
+        .app-workspace-layout.sidebar-closed {
+          grid-template-columns: 1fr !important;
+        }
+
+        @media (max-width: 768px) {
+          .app-workspace-layout {
+            grid-template-columns: 86px 1fr !important;
+          }
+          .app-workspace-layout.sidebar-closed {
+            grid-template-columns: 1fr !important;
+          }
+          
+          /* Hide bulky text widgets on mobile to make the sidebar thin */
+          .app-workspace-layout .side-title-block,
+          .app-workspace-layout .fase-badge,
+          .app-workspace-layout .telemetry-widget,
+          .app-workspace-layout .acc-panel,
+          .app-workspace-layout .side-nav-item .info,
+          .app-workspace-layout .tab .name,
+          .app-workspace-layout .side div:has(input[placeholder*="Buscar"]) {
+            display: none !important;
+          }
+          
+          .app-workspace-layout .side {
+            padding: 12px 6px !important;
+            width: 86px !important;
+            overflow-x: hidden !important;
+          }
+          
+          .app-workspace-layout .tab {
+            width: 70px !important;
+            padding: 8px 4px !important;
+          }
+          
+          .app-workspace-layout .tab .tab-frame {
+            width: 46px !important;
+            height: 46px !important;
+          }
+          
+          .app-workspace-layout .tab .code {
+            font-size: 11px !important;
+          }
+          
+          .app-workspace-layout .side-nav-item {
+            justify-content: center !important;
+            padding: 8px 4px !important;
+          }
+          
+          .app-workspace-layout .side-nav-item .bullet {
+            width: 6px !important;
+            height: 6px !important;
+          }
+        }    -webkit-font-smoothing: antialiased;
         }
 
         /* Ambient background stars and nebulas */
@@ -824,15 +880,26 @@ export default function SistemasPageClient() {
 
 
       {/* SIDEBAR (COMPACT NASA x COCKPIT) */}
-      <aside className="side">
-        {/* HEADER */}
-        <div className="side-header">
-          <div className="brand-mark"><span>IP</span></div>
-          <div className="side-title-block">
-            <span className="h1">IPB OPERATIONAL</span>
-            <span className="h2">COCKPIT · v0.9.4</span>
+      {sidebarOpen && (
+        <aside className="side">
+          {/* HEADER */}
+          <div className="side-header justify-between">
+            <div className="brand-mark"><span>IP</span></div>
+            <div className="side-title-block">
+              <span className="h1">IPB OPERATIONAL</span>
+              <span className="h2">COCKPIT · v0.9.4</span>
+            </div>
+            
+            {/* Close Button visible on mobile & desktop */}
+            <button
+              onClick={() => setSidebarOpen(false)}
+              title="Fechar sidebar"
+              className="ml-auto flex h-6 w-6 items-center justify-center rounded-[0.4rem] text-white/36 transition hover:bg-white/[0.08] hover:text-white/64"
+              style={{ border: '0.2px solid rgba(255,255,255,0.06)' }}
+            >
+              <PanelLeftClose className="h-3.5 w-3.5" />
+            </button>
           </div>
-        </div>
 
         {/* BUSCA DE COMPONENTES */}
         <div
@@ -922,12 +989,22 @@ export default function SistemasPageClient() {
           </div>
         </div>
       </aside>
+      )}
 
       {/* MAIN CONTENT SECTION */}
       <main className="main">
         {/* TOP HUD */}
         <header className="tophud">
           <div className="thd-left">
+            {!sidebarOpen && (
+              <button
+                onClick={() => setSidebarOpen(true)}
+                className="mr-3 flex items-center gap-2 rounded-[0.85rem] border border-white/[0.08] bg-white/[0.04] px-2.5 py-1.5 text-[9px] uppercase tracking-[0.2em] text-white/60 transition hover:text-white"
+              >
+                <PanelLeftOpen className="h-3.5 w-3.5 text-[#d4b87a]" />
+                <span>Abrir Menu</span>
+              </button>
+            )}
             <div className="thd-title"><b>IPB</b> <span className="sep">◆</span> Operational Workspace</div>
             <div className="thd-crumb">{getBreadcrumb()}</div>
           </div>

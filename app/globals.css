@@ -1388,10 +1388,8 @@ body.sea-splash-active [data-sea-bottom-nav='true'] {
 
 @media (max-width: 1024px) {
   .cockpit-stage-grid {
-    display: flex !important;
-    flex-direction: column !important;
+    display: block !important;
     height: auto !important;
-    gap: 24px !important;
   }
 
   .cockpit-slot {
@@ -1401,16 +1399,15 @@ body.sea-splash-active [data-sea-bottom-nav='true'] {
     top: auto !important;
     left: auto !important;
     right: auto !important;
-    margin-bottom: 12px;
+    margin-bottom: 0px;
+  }
+
+  .cockpit-slot:not(.slot-C) {
+    display: none !important;
   }
 
   .slot-C {
-    order: -1;
-    height: 540px !important;
-  }
-
-  .slot-L1, .slot-L2, .slot-R1, .slot-R2 {
-    height: 280px !important;
+    height: 520px !important;
   }
 }
 

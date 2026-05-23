@@ -101,7 +101,7 @@ function MiniNetworkGraph() {
 
   return (
     <div className="relative w-full h-[130px] rounded-lg overflow-hidden bg-radial-glow mt-2" style={{
-      background: 'radial-gradient(circle at 50% 50%, rgba(210,175,90,0.06) 0%, transparent 70%)'
+      background: 'radial-gradient(circle at 50% 50%, rgba(212, 184, 122, 0.06) 0%, transparent 70%)'
     }}>
       <svg className="absolute inset-0 w-full h-full pointer-events-none">
         {nodes.map((n, i) => (
@@ -118,9 +118,9 @@ function MiniNetworkGraph() {
         ))}
         <defs>
           <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="rgba(210,175,90,0.1)" />
-            <stop offset="50%" stopColor="rgba(210,175,90,0.45)" />
-            <stop offset="100%" stopColor="rgba(210,175,90,0.1)" />
+            <stop offset="0%" stopColor="rgba(212, 184, 122, 0.1)" />
+            <stop offset="50%" stopColor="rgba(212, 184, 122, 0.45)" />
+            <stop offset="100%" stopColor="rgba(212, 184, 122, 0.1)" />
           </linearGradient>
         </defs>
       </svg>
@@ -130,8 +130,8 @@ function MiniNetworkGraph() {
         style={{
           left: `calc(${center.x}% - 6px)`,
           top: `calc(${center.y}% - 6px)`,
-          background: 'radial-gradient(circle, #f4d03f, #D4AF37)',
-          boxShadow: '0 0 10px rgba(244,208,63,0.8)',
+          background: 'radial-gradient(circle, #f4d03f, #d4b87a)',
+          boxShadow: '0 0 10px rgba(212, 184, 122, 0.8)',
           zIndex: 10
         }}
       />
@@ -145,8 +145,8 @@ function MiniNetworkGraph() {
           style={{
             left: `calc(${n.x}% - 3px)`,
             top: `calc(${n.y}% - 3px)`,
-            background: 'radial-gradient(circle, #D4AF37, #B8860B)',
-            boxShadow: '0 0 6px rgba(210,175,90,0.6)',
+            background: 'radial-gradient(circle, #d4b87a, #b8975a)',
+            boxShadow: '0 0 6px rgba(212, 184, 122, 0.6)',
             zIndex: 5
           }}
           whileHover={{ scale: 1.4, boxShadow: '0 0 10px rgba(255,215,0,0.9)' }}
@@ -168,7 +168,7 @@ function TelemetriaSparkline() {
           {[40, 60, 45, 75, 55, 90, 70, 85, 95].map((h, i) => (
             <motion.div
               key={i}
-              className="w-1 rounded-t bg-gradient-to-t from-[#B8860B] to-[#D4AF37]"
+              className="w-1 rounded-t bg-gradient-to-t from-[#b8975a] to-[#d4b87a]"
               initial={{ height: 2 }}
               animate={{ height: `${h}%` }}
               transition={{ duration: 1.5, repeat: Infinity, repeatType: 'reverse', delay: i * 0.1 }}
@@ -180,12 +180,12 @@ function TelemetriaSparkline() {
         <svg className="w-full h-full" viewBox="0 0 100 40" preserveAspectRatio="none">
           <defs>
             <linearGradient id="sparkFill" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#D4AF37" stopOpacity="0.4"/>
-              <stop offset="100%" stopColor="#D4AF37" stopOpacity="0"/>
+              <stop offset="0%" stopColor="#d4b87a" stopOpacity="0.4"/>
+              <stop offset="100%" stopColor="#d4b87a" stopOpacity="0"/>
             </linearGradient>
           </defs>
           <path d="M0,28 L12,22 L24,26 L36,15 L48,20 L60,10 L72,18 L84,8 L100,14 L100,40 L0,40 Z" fill="url(#sparkFill)"/>
-          <path d="M0,28 L12,22 L24,26 L36,15 L48,20 L60,10 L72,18 L84,8 L100,14" fill="none" stroke="#D4AF37" strokeWidth="1.4"/>
+          <path d="M0,28 L12,22 L24,26 L36,15 L48,20 L60,10 L72,18 L84,8 L100,14" fill="none" stroke="#d4b87a" strokeWidth="1.4"/>
         </svg>
       </div>
     </div>
@@ -207,7 +207,7 @@ function FloatingVideoPlayer({ moduleTitle }: { moduleTitle: string }) {
   return (
     <div className="ipb-glass-card w-[260px] flex flex-col pointer-events-auto shadow-2xl transition-all duration-300">
       <div className="relative aspect-[16/10] bg-black/80 flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(210,175,90,0.15),transparent_70%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(212,184,122,0.15),transparent_70%)]" />
         
         <motion.button 
           onClick={() => setPlaying(!playing)}
@@ -215,9 +215,9 @@ function FloatingVideoPlayer({ moduleTitle }: { moduleTitle: string }) {
           whileTap={{ scale: 0.95 }}
           className="relative z-10 w-11 h-11 rounded-full flex items-center justify-center cursor-pointer"
           style={{
-            background: 'radial-gradient(circle at 30% 25%, rgba(244,208,63,0.35) 0%, rgba(212,175,55,0.18) 50%, rgba(20,16,8,0.92) 100%)',
-            border: '0.2px solid rgba(210, 175, 90, 0.5)',
-            boxShadow: '0 0 18px rgba(210,175,90,0.38), inset 0 1px 1px rgba(255,235,180,0.30)'
+            background: 'radial-gradient(circle at 30% 25%, rgba(212,184,122,0.35) 0%, rgba(212,184,122,0.18) 50%, rgba(20,16,8,0.92) 100%)',
+            border: '0.2px solid rgba(212, 184, 122, 0.5)',
+            boxShadow: '0 0 18px rgba(212,184,122,0.38), inset 0 1px 1px rgba(255,235,180,0.30)'
           }}
         >
           {playing ? (
@@ -241,7 +241,7 @@ function FloatingVideoPlayer({ moduleTitle }: { moduleTitle: string }) {
         </div>
         
         <div className="h-1 bg-white/10 rounded-full mt-1.5 overflow-hidden">
-          <div className="h-full bg-gradient-to-r from-[#B8860B] to-[#D4AF37] transition-all duration-300" style={{ width: `${progress}%` }} />
+          <div className="h-full bg-gradient-to-r from-[#b8975a] to-[#d4b87a] transition-all duration-300" style={{ width: `${progress}%` }} />
         </div>
       </div>
 
@@ -289,7 +289,7 @@ function WorkspaceSidebar({
       {/* Header: label + busca + close */}
       <div
         className="shrink-0 rounded-t-[1.65rem] px-2 pb-2 pt-2.5 lg:px-4 lg:pb-3 lg:pt-4"
-        style={{ borderBottom: '1px solid rgba(210,175,90,0.12)' }}
+        style={{ borderBottom: '1px solid rgba(212,184,122,0.12)' }}
       >
         <div className="mb-2 flex items-center justify-between lg:mb-3">
           <p className="text-[7px] uppercase tracking-[0.22em] text-[#d4b87a] lg:text-[9px] lg:tracking-[0.44em]">Academic Trilha</p>
@@ -343,9 +343,9 @@ function WorkspaceSidebar({
                 style={
                   isActive
                     ? {
-                        background: 'linear-gradient(135deg, rgba(210,175,90,0.12), rgba(20,16,8,0.7))',
-                        border: '1px solid rgba(210,175,90,0.32)',
-                        boxShadow: 'inset 0 1px 0 rgba(210,175,90,0.18)',
+                        background: 'linear-gradient(135deg, rgba(212,184,122,0.12), rgba(20,16,8,0.7))',
+                        border: '1px solid rgba(212,184,122,0.32)',
+                        boxShadow: 'inset 0 1px 0 rgba(212,184,122,0.18)',
                       }
                     : { border: '1px solid transparent' }
                 }
@@ -388,8 +388,8 @@ function WorkspaceSidebar({
                         style={
                           isTopicActive
                             ? {
-                                background: 'rgba(210,175,90,0.06)',
-                                boxShadow: 'inset 0 0 0 1px rgba(210,175,90,0.18)',
+                                background: 'rgba(212,184,122,0.06)',
+                                boxShadow: 'inset 0 0 0 1px rgba(212,184,122,0.18)',
                               }
                             : { background: 'transparent' }
                         }
@@ -455,7 +455,7 @@ function ModuleRail({
       <div className="relative px-2 md:px-4">
         {/* Horizontal glowing line */}
         <div className="pointer-events-none absolute inset-x-0 top-[2.25rem] h-[1px]" style={{
-          background: 'linear-gradient(90deg, transparent 0%, rgba(200,205,215,0.10) 8%, rgba(210,175,90,0.28) 35%, rgba(210,175,90,0.40) 50%, rgba(210,175,90,0.28) 65%, rgba(200,205,215,0.10) 92%, transparent 100%)'
+          background: 'linear-gradient(90deg, transparent 0%, rgba(200,205,215,0.10) 8%, rgba(212,184,122,0.28) 35%, rgba(212,184,122,0.40) 50%, rgba(212,184,122,0.28) 65%, rgba(200,205,215,0.10) 92%, transparent 100%)'
         }} />
 
         <div className="relative flex items-start justify-between gap-2 md:gap-4">
@@ -479,15 +479,15 @@ function ModuleRail({
                     style={
                       active
                         ? {
-                            borderColor: 'rgba(210, 175, 90, 0.55)',
-                            background: 'radial-gradient(circle at 30% 28%, rgba(244,208,63,0.55) 0%, rgba(212,175,55,0.35) 45%, rgba(40,28,8,0.95) 100%)',
-                            boxShadow: '0 0 16px rgba(210, 175, 90, 0.32), 0 0 32px rgba(210, 175, 90, 0.16), inset 0 0.2px 0.2px rgba(255,235,180,0.32)',
+                            borderColor: 'rgba(212, 184, 122, 0.55)',
+                            background: 'radial-gradient(circle at 30% 28%, rgba(212,184,122,0.55) 0%, rgba(212,184,122,0.35) 45%, rgba(40,28,8,0.95) 100%)',
+                            boxShadow: '0 0 16px rgba(212, 184, 122, 0.32), 0 0 32px rgba(212, 184, 122, 0.16), inset 0 0.2px 0.2px rgba(255,235,180,0.32)',
                             color: '#fff',
                           }
                         : done
                         ? {
-                            borderColor: 'rgba(210, 175, 90, 0.32)',
-                            background: 'linear-gradient(180deg, rgba(210,175,90,0.20) 0%, rgba(20,16,8,0.92) 100%)',
+                            borderColor: 'rgba(212, 184, 122, 0.32)',
+                            background: 'linear-gradient(180deg, rgba(212,184,122,0.20) 0%, rgba(20,16,8,0.92) 100%)',
                             color: 'rgba(255,255,255,0.85)',
                           }
                         : {
@@ -505,9 +505,9 @@ function ModuleRail({
                   className="h-1.5 w-1.5 rounded-full transition-all duration-300 mt-1"
                   style={
                     active
-                      ? { background: '#D4AF37', boxShadow: '0 0 8px rgba(210,175,90,0.8)' }
+                      ? { background: '#d4b87a', boxShadow: '0 0 8px rgba(212,184,122,0.8)' }
                       : done
-                      ? { background: 'rgba(210,175,90,0.45)' }
+                      ? { background: 'rgba(212,184,122,0.45)' }
                       : { background: 'rgba(200,205,215,0.20)' }
                   }
                 />
@@ -649,7 +649,7 @@ export default function ConteudosPageClient() {
             z-index: 1;
           }
           .ipb-glass-card:hover {
-            border-color: rgba(210,175,90,0.35) !important;
+            border-color: rgba(212,184,122,0.35) !important;
             transform: translateY(-2px);
             box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), 0 14px 36px rgba(0,0,0,0.75) !important;
           }
@@ -692,7 +692,7 @@ export default function ConteudosPageClient() {
             
             {/* Left Sidebar */}
             {sidebarOpen && (
-              <div className="sticky top-4 h-[calc(100vh-80px)]">
+              <div className="h-full flex flex-col">
                 <WorkspaceSidebar
                   modules={MODULES}
                   activeIndex={activeIndex}
@@ -740,7 +740,7 @@ export default function ConteudosPageClient() {
                           {/* Notifications */}
                           <div className="relative w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-white/40 cursor-pointer hover:text-white transition">
                             <Bell className="h-3.5 w-3.5" />
-                            <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full bg-[#D4AF37] shadow-[0_0_5px_rgba(210,175,90,0.8)]" />
+                            <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full bg-[#d4b87a] shadow-[0_0_5px_rgba(212,184,122,0.8)]" />
                           </div>
                           {/* User Avatar */}
                           <div className="flex items-center gap-2 bg-white/5 border border-white/10 rounded-full pl-1.5 pr-3 py-1 cursor-pointer hover:border-white/20 transition">
@@ -759,9 +759,9 @@ export default function ConteudosPageClient() {
                           <div 
                             className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
                             style={{
-                              background: 'radial-gradient(circle at 30% 25%, rgba(244,208,63,0.35) 0%, rgba(212,175,55,0.20) 50%, rgba(20,16,8,0.95) 100%)',
-                              border: '0.2px solid rgba(210, 175, 90, 0.40)',
-                              boxShadow: 'inset 0 1px 1px rgba(255,235,180,0.22), 0 0 16px rgba(210,175,90,0.18)'
+                              background: 'radial-gradient(circle at 30% 25%, rgba(212,184,122,0.35) 0%, rgba(212,184,122,0.20) 50%, rgba(20,16,8,0.95) 100%)',
+                              border: '0.2px solid rgba(212, 184, 122, 0.40)',
+                              boxShadow: 'inset 0 1px 1px rgba(255,235,180,0.22), 0 0 16px rgba(212,184,122,0.18)'
                             }}
                           >
                             <span className="text-[12px] font-bold text-white tracking-wider">{current.id}</span>
@@ -824,7 +824,7 @@ export default function ConteudosPageClient() {
                           <TelemetriaSparkline />
                         </div>
 
-                        {/* Floating Interactive Video Player (absolutely positioned on large screens, stacked on small) */}
+                        {/* Floating Interactive Video Player */}
                         <div className="md:absolute md:-right-4 md:top-[8px] md:z-20 md:pointer-events-none flex justify-center w-full md:w-auto mt-4 md:mt-0">
                           <FloatingVideoPlayer moduleTitle={current.title} />
                         </div>
@@ -919,7 +919,7 @@ export default function ConteudosPageClient() {
                       </motion.div>
                       <div className="h-px w-12 bg-gradient-to-r from-transparent via-white/20 to-transparent" />
                       <p className="text-[10px] uppercase tracking-[0.38em] text-[#d4b87a] font-semibold">Plataforma Acadêmica IPB</p>
-                      <p className="max-w-xs text-[12px] leading-relaxed text-white/40">
+                      <p className="max-w-xs text-[12px] leading-relaxed text-white/44">
                         Selecione um dos módulos acadêmicos acima na trilha para inicializar o cockpit operacional e carregar o caderno de estudos.
                       </p>
                     </div>

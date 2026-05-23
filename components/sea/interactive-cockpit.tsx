@@ -135,11 +135,35 @@ export function InteractiveCockpit() {
   }
 
   return (
-    <div className="w-full">
+    <div className="w-full flex flex-col gap-4">
+      {/* Mobile Systems Switcher */}
+      <div className="flex lg:hidden items-center justify-between gap-1 p-1 rounded-2xl bg-black/45 border border-white/5 backdrop-blur-xl">
+        {ALL_SYSTEMS.map((sysId) => {
+          const sys = SYSTEMS[sysId]
+          const active = layout[2] === sysId
+          const Icon = sys.icon
+          return (
+            <button
+              key={sysId}
+              onClick={() => handleSwap(sysId)}
+              className="flex flex-col items-center gap-1 flex-1 py-2 rounded-xl transition cursor-pointer"
+              style={{
+                background: active ? 'rgba(212, 184, 122, 0.12)' : 'transparent',
+                border: active ? '0.2px solid rgba(212, 184, 122, 0.35)' : '0.2px solid transparent',
+                boxShadow: active ? 'inset 0 1px 0 rgba(212,184,122,0.12), 0 4px 12px rgba(0,0,0,0.2)' : 'none'
+              }}
+            >
+              <Icon className="h-4 w-4 shrink-0" style={{ color: active ? '#d4b87a' : 'rgba(255,255,255,0.36)' }} />
+              <span className="text-[7.5px] font-semibold tracking-wider uppercase text-center" style={{ color: active ? '#fff' : 'rgba(255,255,255,0.26)' }}>
+                {sys.title.split(' ')[0]}
+              </span>
+            </button>
+          )
+        })}
+      </div>
+
       {/* Main Grid */}
       <div className="cockpit-stage-grid">
-
-
         {/* The 5 absolute-positioned card slots */}
         {ALL_SYSTEMS.map((sysId) => renderCard(sysId))}
       </div>
