@@ -422,9 +422,27 @@ export default function SistemasPageClient() {
 
           /* Widen the content area on mobile by reducing its padding to avoid any cutting off */
           .app-workspace-layout .content-area {
-            padding: 10px 10px 80px 10px !important;
+            padding: 10px 36px 80px 10px !important; /* Safely clears the 30px vertical scroll-rail on the right edge */
             width: 100vw !important;
             box-sizing: border-box !important;
+          }
+
+          /* Reduzir tipografia e fontes no celular para caber perfeitamente sem trombar no trilho */
+          .app-workspace-layout .content-area h1,
+          .app-workspace-layout .content-area .text-xl,
+          .app-workspace-layout .content-area .text-2xl {
+            font-size: 13px !important;
+          }
+          .app-workspace-layout .content-area h2,
+          .app-workspace-layout .content-area h3,
+          .app-workspace-layout .content-area h4,
+          .app-workspace-layout .content-area p,
+          .app-workspace-layout .content-area span,
+          .app-workspace-layout .content-area label,
+          .app-workspace-layout .content-area input,
+          .app-workspace-layout .content-area select,
+          .app-workspace-layout .content-area button {
+            font-size: calc(100% - 0.5px) !important;
           }
 
           /* Prevenir cortes e garantir fluidez em Clinica, SIG, SIE, SIO, Complice no celular */

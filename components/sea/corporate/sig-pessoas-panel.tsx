@@ -671,6 +671,35 @@ export function SigPessoasPanel() {
           }
         }
 
+        @media (max-width: 768px) {
+          .tab-pessoas-row {
+            overflow-x: auto !important;
+            flex-wrap: nowrap !important;
+            gap: 4px !important;
+            width: 100% !important;
+            scrollbar-width: none !important;
+            padding: 3px !important;
+          }
+          .tab-pessoas-row::-webkit-scrollbar {
+            display: none !important;
+          }
+          .tab-p-btn {
+            flex-shrink: 0 !important;
+            flex-grow: 0 !important;
+            width: 120px !important;
+            padding: 6px 8px !important;
+            font-size: 10px !important;
+          }
+          .tab-sub {
+            font-size: 7.5px !important;
+          }
+          .btn-professor-ia {
+            flex-shrink: 0 !important;
+            padding: 6px 10px !important;
+            font-size: 8.5px !important;
+          }
+        }
+
         .dash-card {
           background: rgba(5, 5, 5, 0.45) !important;
           backdrop-filter: blur(28px) saturate(130%) !important;
