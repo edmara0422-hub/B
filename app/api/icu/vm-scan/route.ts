@@ -214,7 +214,7 @@ REGRAS:
 - Se valor estiver dual (set/measured), prefira o medido para Ppico/VT exalado
 - Em VM antiga analógica, leia o manômetro de pressão (P. Pico) e outros mostradores
 - Confidence: alta (tela digital nítida), media (alguns valores ilegíveis), baixa (VM antiga, foto difícil)
-- Produza um laudo de ventilação mecânica robusto e clínico em português (salvo no campo "laudo") avaliando se a ventilação é protetora, pressões seguras, driving pressure e volume minuto, recomendando de forma brilhante e precisa as condutas intensivistas cabíveis para otimizar a mecânica ventilatória do paciente.
+- Produza uma análise clínica e lógica extremamente concisa e objetiva em português (salva no campo "laudo"). Máximo de 3-4 bullet points diretos avaliando a proteção pulmonar (pressão de pico/condução, volume por kg) e sugerindo condutas/ajustes práticos imediatos. Evite parágrafos longos e descrições prolixas.
 
 RETORNE APENAS JSON VÁLIDO (sem markdown, sem texto fora do JSON):
 {
@@ -354,7 +354,7 @@ export async function POST(req: NextRequest) {
           },
           confidence: "alta",
           notes: "Processamento local realizado. Parâmetros neonatais típicos com tempo inspiratório de 0.4s e frequência respiratória de 40 rpm.",
-          laudo: "LAUDO DE VENTILAÇÃO MECÂNICA NEONATAL\n\n1. AJUSTES CONFIGURADOS:\n- Modo: Ventilação por Pressão Controlada (PCV).\n- Pressão inspiratória (Delta PC) setada em 10 cmH₂O, PEEP de 5 cmH₂O.\n- Frequência respiratória neonatal de 40 rpm, com tempo inspiratório curto de 0.4s.\n\n2. PARÂMETROS DE INTERPRETAÇÃO:\n- Volume exalado (vt) de 15 mL está perfeitamente seguro e protetor para o peso neonatal (meta ~4-6 mL/kg).\n- Sem sinais de vazamento peri-tubo crítico ou obstrução das vias aéreas.\n\n3. CONDUTA SUGERIDA:\n- Manter estratégia de ventilação mecânica ultraprotetora. Acompanhar gasometria capilar periódica."
+          laudo: "• MODO: PCV (Neonatal).\n• PROTEÇÃO: Volume exalado de 15 mL é protetor e seguro (~5 mL/kg).\n• CONDUTAS: Manter estratégia protetora atual. Acompanhar gasometria capilar periódica."
         }
       } else if (activeModo === 'PSV' || activeModo === 'SPONT') {
         aiResult = {
@@ -370,7 +370,7 @@ export async function POST(req: NextRequest) {
           },
           confidence: "alta",
           notes: "Processamento local realizado. Modo espontâneo (PSV) com ventilação protetora e bom esforço espontâneo.",
-          laudo: "LAUDO DE VENTILAÇÃO MECÂNICA (PSV)\n\n1. ANÁLISE DOS AJUSTES:\n- Modo: Pressão de Suporte (PSV) ativo, indicando paciente em fase de desmame ou autonomia ventilatória parcial.\n- Pressão de suporte (PS) configurada em 12 cmH₂O acima da PEEP de 8 cmH₂O. FiO2 de 30%.\n\n2. DADOS DE MONITORAÇÃO REAL:\n- Volume corrente exalado (VTe) médio de 460 mL.\n- Frequência respiratória espontânea média de 16 rpm, sem taquipneia ou esforço acessório.\n- Volume minuto de 7.4 L/min.\n\n3. CONCLUSÕES:\n- Padrão espontâneo excelente. Nível de suporte adequado para gerar volumes correntes fisiológicos sem sobrecarga muscular. Paciente apto para prosseguir no protocolo de desmame e teste de respiração espontânea (TRE) se clinicamente estável."
+          laudo: "• MODO: PSV (Espontâneo).\n• MECÂNICA: Esforço respiratório adequado sem taquipneia (FR 16 rpm, volume exalado 460 mL).\n• CONDUTAS: Indicado prosseguir com protocolo de desmame e teste de respiração espontânea (TRE)."
         }
       } else if (activeModo === 'PCV') {
         aiResult = {
@@ -386,7 +386,7 @@ export async function POST(req: NextRequest) {
           },
           confidence: "alta",
           notes: "Processamento local realizado. Ventilação por Pressão Controlada com bom volume gerado e pressão delta de 15 cmH2O.",
-          laudo: "LAUDO DE VENTILAÇÃO MECÂNICA (PCV)\n\n1. ANÁLISE DOS AJUSTES:\n- Modo: Ventilação por Pressão Controlada (PCV) ativo.\n- Pressão controlada setada (Delta PC) em 15 cmH₂O, com PEEP de 10 cmH₂O (Pressão inspiratória total de 25 cmH₂O). FiO2 de 40%, bem titulada.\n- Tempo inspiratório de 1.2s (relação I:E de 1:2).\n\n2. DADOS DE MECÂNICA E MONITORAÇÃO:\n- Volume corrente exalado (VTe) em 450 mL (aproximadamente 6.5 mL/kg), adequado.\n- Pressão média de vias aéreas (Pmean) de 11 cmH₂O.\n- Volume minuto exalado (VE) de 7.2 L/min.\n\n3. CONCLUSÕES:\n- Paciente ventilando de forma protetora sob pressão controlada. Pressões inspiratórias totais mantidas sob limite de segurança (<30 cmH₂O). Adequação de troca e mecânica respiratória satisfatórias."
+          laudo: "• MODO: PCV (Adulto).\n• METAS: Delta de pressão de 15 cmH2O gerando volume corrente de 450 mL (6.5 mL/kg), mantendo pressões seguras (<30 cmH2O).\n• CONDUTAS: Estabilidade ventilatória satisfatória. Manter parâmetros protetores."
         }
       } else {
         // Default to VCV
@@ -403,7 +403,7 @@ export async function POST(req: NextRequest) {
           },
           confidence: "alta",
           notes: "Processamento local realizado. Ventilação por Volume Controlado preenchendo todos os critérios de proteção pulmonar.",
-          laudo: "LAUDO DE VENTILAÇÃO MECÂNICA (VCV)\n\n1. ANÁLISE DOS AJUSTES:\n- Modo: Ventilação por Volume Controlado (VCV) ativo.\n- Volume corrente (VT) configurado em 420 mL (equivalente a 6.2 mL/kg para peso predito do paciente), dentro das faixas recomendadas de ventilação protetora (6-8 mL/kg).\n- Fração Inspirada de O2 (FiO2) em 35% e PEEP programada em 8 cmH₂O.\n- Frequência respiratória setada em 16 rpm.\n\n2. DADOS DE MECÂNICA E MONITORAÇÃO:\n- Pressão de pico (Ppico) adequada em 22 cmH₂O (limite seguro <35 cmH₂O).\n- Pressão de platô (Pplato) de 16 cmH₂O (dentro da meta de segurança <30 cmH₂O).\n- Pressão de condução (Driving Pressure) de 8 cmH₂O (excelente, bem abaixo do teto de 15 cmH₂O), indicando alta complacência do sistema respiratório.\n- Volume minuto medido em 6.7 L/min.\n\n3. CONCLUSÕES:\n- Ventilação mecânica altamente protetora e estável. Sem sinais de assincronia ou hiperdistensão."
+          laudo: "• MODO: VCV (Adulto).\n• MECÂNICA: Ventilação protetora (6.2 mL/kg). Ppico (22 cmH2O) e Pplato (16 cmH2O) adequados. Driving Pressure excelente de 8 cmH2O.\n• CONDUTAS: Parâmetros protetores e estáveis. Manter conduta atual."
         }
       }
     }

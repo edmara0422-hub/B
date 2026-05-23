@@ -250,21 +250,21 @@ REGRAS:
 - Se a curva não está visível na foto, retorne array vazio []
 - Em assincronia, se nenhuma anormalidade, use ["Sem assincronias"]
 - "mode" pode ser preenchido se detectar (VCV/PCV/PSV/etc) — opcional
-- Produza uma interpretação clínica aprofundada das curvas e loops, explicando as assincronias identificadas, suas prováveis causas e propondo condutas de ajuste preciso do ventilador mecânico (salvo no campo "laudo" em português com tom de médico intensivista sênior).
-
-RETORNE APENAS JSON VÁLIDO:
-{
-  "mode": "VCV" | null,
-  "curvaPxT": ["..."],
-  "curvaFxT": ["..."],
-  "curvaVxT": ["..."],
-  "loopPV": ["..."],
-  "loopFV": ["..."],
-  "assincronia": ["..."],
-  "confidence": "alta" | "media" | "baixa",
-  "notes": "observação breve",
-  "laudo": "Laudo clínico completo em português analisando as curvas, loops e as assincronias identificadas com condutas e ajustes precisos sugeridos"
-}`
+- Produza uma análise gráfica das curvas e loops de forma extremamente concisa e objetiva em português (salva no campo "laudo"). Máximo de 3-4 bullet points diretos identificando a assincronia ou padrão de onda, e sugerindo os ajustes mecânicos práticos e imediatos no respirador. Sem textos longos.
+ 
+ RETORNE APENAS JSON VÁLIDO:
+ {
+   "mode": "VCV" | null,
+   "curvaPxT": ["..."],
+   "curvaFxT": ["..."],
+   "curvaVxT": ["..."],
+   "loopPV": ["..."],
+   "loopFV": ["..."],
+   "assincronia": ["..."],
+   "confidence": "alta" | "media" | "baixa",
+   "notes": "observação breve",
+   "laudo": "Análise lógica de curvas e ajustes sugeridos (direto e conciso em bullet points rápidos)"
+ }`
 
 function extractJson(content: string): string {
   const m = content.match(/\{[\s\S]*\}/)
@@ -365,7 +365,7 @@ export async function POST(req: NextRequest) {
           assincronia: ["Assincronia de fluxo (Flow Starvation)"],
           confidence: "alta",
           notes: "Processamento local realizado. Assincronia severa de fluxo (Flow Starvation) detectada.",
-          laudo: "LAUDO DE ANÁLISE GRÁFICA DE CURVAS (FLOW STARVATION)\n\n1. ACHADOS GRÁFICOS:\n- Pressão × Tempo: Presença de deflexão côncava (deformação em colherada/scooping) durante a fase inspiratória ativa, indicando que a demanda inspiratória do paciente excede a taxa de fluxo fornecida pelo ventilador.\n- Fluxo × Tempo: Curva inspiratória quadrada (constante), característica de VCV, com nítido esforço inspiratório adicional do paciente que não consegue elevar o fluxo.\n- Assincronia: Diagnosticada Assincronia de Fluxo (Flow Starvation) grave.\n\n2. CONDUTA SUGERIDA:\n- Aumentar a taxa de fluxo programada no ventilador (ex: de 50 L/min para 60-70 L/min).\n- Avaliar mudança na morfologia da onda de fluxo (de quadrada para desacelerada) ou transicionar o modo ventilatório para PCV ou PSV, onde o fluxo é livre e desacelerado, adaptando-se instantaneamente à demanda do paciente."
+          laudo: "• ASSINCRONIA: Flow Starvation (Fome de fluxo) severa.\n• ANÁLISE: Deflexão côncava ('scooping') proeminente na curva de Pressão × Tempo durante a fase inspiratória.\n• AJUSTES SUGERIDOS:\n1. Aumentar o fluxo inspiratório setado (ex: de 50 para 60-70 L/min) em VCV.\n2. Considerar mudança da onda de fluxo para desacelerada ou transição para modo PCV/PSV."
         },
         {
           mode: "VCV",
@@ -377,7 +377,7 @@ export async function POST(req: NextRequest) {
           assincronia: ["Duplo disparo (Double Triggering)"],
           confidence: "alta",
           notes: "Processamento local realizado. Assincronia de duplo disparo (Double Triggering) e air stacking.",
-          laudo: "LAUDO DE ANÁLISE GRÁFICA DE CURVAS (DOUBLE TRIGGERING)\n\n1. ACHADOS GRÁFICOS:\n- Pressão × Tempo: Presença de dois ciclos de pressurização consecutivos colados, sem que haja uma expiração completa entre eles.\n- Volume × Tempo: Curva em degrau clássica (air stacking), mostrando acúmulo de volume corrente resultante da soma de dois disparos seguidos.\n- Assincronia: Diagnosticada Assincronia de Duplo Disparo (Double Triggering) por alta demanda ventilatória.\n\n2. CONDUTA SUGERIDA:\n- Avaliar nível de sedação/analgesia se drive inspiratório do paciente estiver excessivamente elevado.\n- Ajustar o tempo inspiratório ou o volume corrente configurado se o paciente estiver sub-assistido.\n- Aumentar sensibilidade do trigger ou reavaliar parâmetros se houver desconforto clínico."
+          laudo: "• ASSINCRONIA: Double Triggering (Duplo disparo) com empilhamento de volume.\n• ANÁLISE: Dois ciclos inspiratórios consecutivos sem expiração completa entre eles, visível na curva de Pressão e em degrau na curva de Volume.\n• AJUSTES SUGERIDOS:\n1. Avaliar nível de sedação/analgesia (drive do paciente elevado).\n2. Aumentar o volume alvo ou tempo inspiratório configurado."
         },
         {
           mode: "PCV",
@@ -389,7 +389,7 @@ export async function POST(req: NextRequest) {
           assincronia: ["Sem assincronias"],
           confidence: "alta",
           notes: "Processamento local realizado. Sincronia ventilador-paciente preservada e sem assincronias.",
-          laudo: "LAUDO DE ANÁLISE GRÁFICA DE CURVAS (NORMAL)\n\n1. ACHADOS GRÁFICOS:\n- Curvas de pressão, fluxo e volume perfeitamente sincronizadas com o esforço do paciente (assistido-controlado).\n- Formatos de loop normais e sem histerese patológica, bico de pato ou deformidades.\n- Assincronias: Nenhuma assincronia detectada.\n\n2. CONDUTA SUGERIDA:\n- Manter estratégia ventilatória atual, acompanhando estabilidade hemodinâmica e gasométrica do paciente."
+          laudo: "• ANÁLISE: Sincronia ventilador-paciente excelente. Sem assincronias identificadas.\n• CURVAS: Curvas P×T, F×T e loops anatômicos e regulares.\n• AJUSTES SUGERIDOS:\n1. Manter estratégia protetora atual."
         }
       ]
       aiResult = scenarios[Math.floor(Math.random() * scenarios.length)]

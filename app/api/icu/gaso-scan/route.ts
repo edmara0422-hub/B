@@ -20,51 +20,51 @@ const GROQ_MODELS = [
   'llama-3.2-11b-vision-preview',
 ]
 
-const GASO_PROMPT = `Você é um intensivista lendo laudo de gasometria (arterial ou venosa).
-
-Podem ser enviadas múltiplas imagens (frente/verso do laudo, fotos de partes diferentes). Analise todas juntas.
-
-OBJETIVO: Extrair os 8 valores essenciais, classificar se é arterial ou venosa, E produzir um laudo clínico completo e robusto.
-
-VALORES A EXTRAIR:
-1. pH (ex: 7.36)
-2. PaCO2 / pCO2 (mmHg, ex: 45)
-3. PaO2 / pO2 (mmHg, ex: 80 arterial / 35-45 venosa)
-4. HCO3 / Bicarbonato (mEq/L ou mmol/L, ex: 24)
-5. BE / Base Excess (mEq/L, pode ser negativo, ex: -2 ou +3)
-6. SaO2 / SatO2 / SO2 (%, ex: 96 arterial / 65-75 venosa)
-7. Lactato (mmol/L ou mg/dL — se em mg/dL, converter dividindo por 9 para mmol/L)
-8. FiO2 (% — valor da fração inspirada de O2 no momento da coleta. Procure por "FiO2", "FIO2", "FIO₂", "O2 insp", "ar ambiente=21%". Aceita formato 0.40 → converter para 40)
-9. laudo (Um relatório clínico extremamente completo e robusto em português, agindo como médico intensivista sênior. O laudo deve conter: a) Análise minuciosa e diagnóstico do distúrbio ácido-base primário e secundário/compensatório com base no pH, PaCO2, HCO3 e BE; b) Cálculo da relação PaO2/FiO2 se arterial, com classificação de SARA/SDRA se relevante; c) Avaliação prognóstica do lactato e metabolismo tecidual; d) Sugestões de condutas práticas e ajustes terapêuticos rápidos focados em salvar vidas)
-
-CLASSIFICAÇÃO ARTERIAL vs VENOSA:
-- ARTERIAL: PaO2 normalmente 70-100 mmHg, SaO2 >90%, pH 7.35-7.45
-- VENOSA: PvO2 normalmente 35-45 mmHg, SvO2 65-75%, pH 7.32-7.42
-- Use o conjunto dos valores para decidir, não um isolado
-- Se o laudo declarar explicitamente "arterial" ou "venoso", use isso
-
-REGRAS:
-- Se um valor estiver ausente ou ilegível, retorne null
-- Lactato: aceitar formatos "1.5 mmol/L", "13.5 mg/dL" (converter), "Lac 2.0"
-- BE: pode aparecer como "BE", "EB", "Base Excess" — pode ser positivo ou negativo
-- FiO2: se ar ambiente, retorne 21. Se vier como 0.21–1.00, converta para 21–100
-- Ignore valores duplicados (alguns laudos repetem ABG e VBG)
-
-RETORNE APENAS JSON VÁLIDO (sem markdown, sem texto fora do JSON):
-{
-  "ph": 7.36,
-  "paco2": 45,
-  "pao2": 80,
-  "hco3": 24,
-  "be": -2,
-  "sao2": 96,
-  "lactato": 1.5,
-  "fio2": 40,
-  "type": "arterial" | "venosa" | "indefinido",
-  "confidence": "alta" | "media" | "baixa",
-  "notes": "observação breve, ex: lactato convertido de mg/dL, valor ilegível, etc",
-  "laudo": "Laudo clínico completo em português detalhando distúrbios, compensação, relação P/F, análise de lactato e condutas sugeridas"
-}`
+const GASO_PROMPT = `Você é um intensivista lendo uma gasometria (arterial ou venosa).
+ 
+ Podem ser enviadas múltiplas imagens (frente/verso do laudo, fotos de partes diferentes). Analise todas juntas.
+ 
+ OBJETIVO: Extrair os 8 valores essenciais, classificar se é arterial ou venosa, E produzir uma análise clínica direta, lógica e concisa.
+ 
+ VALORES A EXTRAIR:
+ 1. pH (ex: 7.36)
+ 2. PaCO2 / pCO2 (mmHg, ex: 45)
+ 3. PaO2 / pO2 (mmHg, ex: 80 arterial / 35-45 venosa)
+ 4. HCO3 / Bicarbonato (mEq/L ou mmol/L, ex: 24)
+ 5. BE / Base Excess (mEq/L, pode ser negativo, ex: -2 ou +3)
+ 6. SaO2 / SatO2 / SO2 (%, ex: 96 arterial / 65-75 venosa)
+ 7. Lactato (mmol/L ou mg/dL — se em mg/dL, converter dividindo por 9 para mmol/L)
+ 8. FiO2 (% — valor da fração inspirada de O2 no momento da coleta. Procure por "FiO2", "FIO2", "FIO₂", "O2 insp", "ar ambiente=21%". Aceita formato 0.40 → converter para 40)
+ 9. laudo (Uma análise clínica e lógica extremamente concisa e objetiva em português. Máximo de 3-4 bullet points rápidos apontando o diagnóstico ácido-base e sugestões de condutas práticas e ajustes terapêuticos. Sem enrolação, sem parágrafos longos, focado em tomadas de decisão rápidas à beira do leito.)
+ 
+ CLASSIFICAÇÃO ARTERIAL vs VENOSA:
+ - ARTERIAL: PaO2 normalmente 70-100 mmHg, SaO2 >90%, pH 7.35-7.45
+ - VENOSA: PvO2 normalmente 35-45 mmHg, SvO2 65-75%, pH 7.32-7.42
+ - Use o conjunto dos valores para decidir, não um isolado
+ - Se o laudo declarar explicitamente "arterial" ou "venoso", use isso
+ 
+ REGRAS:
+ - Se um valor estiver ausente ou ilegível, retorne null
+ - Lactato: aceitar formatos "1.5 mmol/L", "13.5 mg/dL" (converter), "Lac 2.0"
+ - BE: pode aparecer como "BE", "EB", "Base Excess" — pode ser positivo ou negativo
+ - FiO2: se ar ambiente, retorne 21. Se vier como 0.21–1.00, converta para 21–100
+ - Ignore valores duplicados (alguns laudos repetem ABG e VBG)
+ 
+ RETORNE APENAS JSON VÁLIDO (sem markdown, sem texto fora do JSON):
+ {
+   "ph": 7.36,
+   "paco2": 45,
+   "pao2": 80,
+   "hco3": 24,
+   "be": -2,
+   "sao2": 96,
+   "lactato": 1.5,
+   "fio2": 40,
+   "type": "arterial" | "venosa" | "indefinido",
+   "confidence": "alta" | "media" | "baixa",
+   "notes": "observação breve, ex: lactato convertido de mg/dL, valor ilegível, etc",
+   "laudo": "Análise lógica e ajustes sugeridos (direto e conciso em poucas linhas de bullet points)"
+ }`
 
 function extractJson(content: string): string {
   const m = content.match(/\{[\s\S]*\}/)
@@ -183,7 +183,7 @@ export async function POST(req: NextRequest) {
           type: "arterial",
           confidence: "alta",
           notes: "Padrão compatível com acidose respiratória crônica compensada (retentor crônico/DPOC). Lactato normal.",
-          laudo: "LAUDO DE GASOMETRIA ARTERIAL\n\n1. ANÁLISE ÁCIDO-BASE:\n- pH na faixa da normalidade (7.36) às custas de compensação metabólica.\n- PaCO2 elevado (56 mmHg), caracterizando hipercapnia crônica.\n- Bicarbonato (31 mEq/L) e Base Excess (+5.5 mEq/L) significativamente elevados, confirmando compensação renal sustentada.\n- Diagnóstico: Acidose respiratória crônica completamente compensada por alcalose metabólica secundária.\n\n2. OXIGENAÇÃO:\n- PaO2 limítrofe (62 mmHg) sob FiO2 de 24% (relação PaO2/FiO2 de 258), caracterizando hipoxemia moderada.\n- Saturação de O2 de 91%, tolerável para o perfil de retentor crônico de CO2.\n\n3. PERFUSÃO E METABOLISMO:\n- Lactato sérico de 1.1 mmol/L (normal), indicando perfusão tecidual e metabolismo celular preservados.\n\n4. RECOMENDAÇÕES:\n- Manter suporte de oxigênio de baixo fluxo (cateter nasal a 1-2 L/min) com meta de saturação entre 88-92% para evitar abolição do drive respiratório hipóxico.\n- Evitar ventilação mecânica invasiva desnecessária; se necessário VNI, focar em pressões moderadas para não deprimir o esforço próprio."
+          laudo: "• DIAGNÓSTICO: Acidose respiratória crônica compensada (hipercapnia compensada renalmente).\n• OXIGENAÇÃO: Hipoxemia moderada (Relação P/F = 258).\n• CONDUTA / AJUSTES:\n1. Manter O2 em baixo fluxo (cateter 1-2 L/min) com meta de SpO2 88-92%.\n2. Evitar pressões ventilatórias excessivas para não inibir o drive respiratório próprio."
         },
         {
           ph: 7.22,
@@ -197,7 +197,7 @@ export async function POST(req: NextRequest) {
           type: "arterial",
           confidence: "alta",
           notes: "Acidose metabólica grave com hiperlactatemia severa. Compensação respiratória parcial presente.",
-          laudo: "LAUDO DE GASOMETRIA ARTERIAL\n\n1. ANÁLISE ÁCIDO-BASE:\n- Acidemia importante (pH 7.22) de origem primariamente metabólica.\n- Bicarbonato muito baixo (12 mEq/L) com déficit de bases acentuado (Base Excess de -12.5 mEq/L).\n- PaCO2 reduzido (28 mmHg) por hiperventilação compensatória na tentativa de amortecer o pH (compensação respiratória parcial).\n- Diagnóstico: Acidose metabólica grave com compensação respiratória parcial.\n\n2. OXIGENAÇÃO:\n- PaO2 de 94 mmHg sob FiO2 de 50% (relação PaO2/FiO2 de 188), indicando distúrbio de troca gasosa moderado (provável shunt/espaço morto associado ao quadro sistêmico).\n- Saturação de O2 estável em 98%.\n\n3. PERFUSÃO E METABOLISMO:\n- Lactato marcadamente elevado (4.8 mmol/L), denotando hipoperfusão orgânica sistêmica, metabolismo anaeróbio ativado (acidose lática) e alto risco de disfunção multiorgânica.\n\n4. RECOMENDAÇÕES:\n- Investigar e tratar agressivamente o foco da hipoperfusão (ex: choque séptico, choque hipovolêmico ou cardiogênico).\n- Ressuscitação volêmica guiada por metas microhemodinâmicas e introdução/ajuste precoce de drogas vasoativas (noradrenalina).\n- Evitar uso intempestivo de bicarbonato de sódio, exceto se pH persistir abaixo de 7.15 após medidas de suporte hemodinâmico."
+          laudo: "• DIAGNÓSTICO: Acidose metabólica grave com compensação respiratória parcial (hiperventilação secundária).\n• METABOLISMO: Hiperlactatemia severa (4.8 mmol/L), denotando hipoperfusão orgânica crítica.\n• CONDUTA / AJUSTES:\n1. Ressuscitação volêmica agressiva e introdução/titulação precoce de noradrenalina.\n2. Investigar e tratar foco de choque (ex: choque séptico).\n3. Reservar uso de bicarbonato apenas se pH cair abaixo de 7.15."
         },
         {
           ph: 7.49,
@@ -211,7 +211,7 @@ export async function POST(req: NextRequest) {
           type: "arterial",
           confidence: "alta",
           notes: "Alcalose respiratória aguda por hiperventilação. Hipoxemia leve em ar ambiente.",
-          laudo: "LAUDO DE GASOMETRIA ARTERIAL\n\n1. ANÁLISE ÁCIDO-BASE:\n- Alcalemia leve (pH 7.49) de origem puramente respiratória.\n- PaCO2 significativamente baixo (29 mmHg), secundário a taquipneia/hiperventilação alveolar aguda.\n- Bicarbonato (22 mEq/L) e Base Excess (-1.0 mEq/L) dentro da faixa da normalidade, confirmando a agudeza do distúrbio (sem tempo para compensação renal).\n- Diagnóstico: Alcalose respiratória aguda.\n\n2. OXIGENAÇÃO:\n- PaO2 de 70 mmHg em ar ambiente (FiO2 21%), com relação PaO2/FiO2 de 333.\n- Discreta hipoxemia, sugerindo desequilíbrio ventilação-perfusão leve ou shunt intrapulmonar primário.\n\n3. PERFUSÃO E METABOLISMO:\n- Lactato normal de 1.4 mmol/L, descartando sofrimento tecidual ou hipoperfusão generalizada.\n\n4. RECOMENDAÇÕES:\n- Investigar causas de hiperventilação: dor, ansiedade, embolia pulmonar precoce ou desconforto respiratório incipiente.\n- Monitorar padrão respiratório e frequência cardíaca; reavaliar necessidade de oxigenoterapia de baixo fluxo se desconforto aumentar."
+          laudo: "• DIAGNÓSTICO: Alcalose respiratória aguda induzida por hiperventilação alveolar.\n• OXIGENAÇÃO: Hipoxemia leve em ar ambiente.\n• CONDUTA / AJUSTES:\n1. Tratar a causa subjacente da hiperventilação (ansiedade, dor, desconforto, TEP precoce).\n2. Monitorar frequência respiratória e reavaliar mecânica ventilatória."
         }
       ]
 
