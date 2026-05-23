@@ -3235,16 +3235,18 @@ export function ProntuarioSystemPanel() {
 
   // Remove TODOS os base64 (data:...) antes de enviar ao Supabase.
   // Thumbnails são exibição local; Supabase só precisa de thumbnailPath.
-  const stripBase64 = (obj: any): any => {
+  const stripBase64 = (obj: any, seen = new WeakSet()): any => {
     if (!obj || typeof obj !== 'object') return obj
-    if (Array.isArray(obj)) return obj.map(stripBase64)
+    if (seen.has(obj)) return '[Circular]'
+    seen.add(obj)
+    if (Array.isArray(obj)) return obj.map(x => stripBase64(x, seen))
     const out: any = {}
     for (const k of Object.keys(obj)) {
       const v = obj[k]
       if (typeof v === 'string' && v.startsWith('data:')) {
         out[k] = '[img]'
       } else {
-        out[k] = stripBase64(v)
+        out[k] = stripBase64(v, seen)
       }
     }
     return out
@@ -3552,14 +3554,25 @@ export function ProntuarioSystemPanel() {
     )
     workspacesRef.current = snapshot
 
+    const getCircularReplacer = () => {
+      const seen = new WeakSet()
+      return (key: string, value: any) => {
+        if (typeof value === "object" && value !== null) {
+          if (seen.has(value)) return "[Circular]"
+          seen.add(value)
+        }
+        return value
+      }
+    }
+
     // localStorage salva instantâneo — status verde imediato.
     // Mantém também as chaves legacy populadas com o setor ativo para que
     // qualquer código antigo que ainda as leia continue funcionando.
     try {
-      localStorage.setItem(sk.workspaces, JSON.stringify(snapshot))
+      localStorage.setItem(sk.workspaces, JSON.stringify(snapshot, getCircularReplacer()))
       localStorage.setItem(sk.activeWorkspace, activeWsIdRef.current)
-      localStorage.setItem(sk.records, JSON.stringify(records))
-      localStorage.setItem(sk.archive, JSON.stringify(archive))
+      localStorage.setItem(sk.records, JSON.stringify(records, getCircularReplacer()))
+      localStorage.setItem(sk.archive, JSON.stringify(archive, getCircularReplacer()))
     } catch { /* quota / private mode */ }
 
     const isAdminEmail = authUserId && useAuthStore.getState().isAdmin
