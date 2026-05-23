@@ -77,7 +77,7 @@ export function SiePanel({ initialTab }: { initialTab?: SieSubTab }) {
     <div className="w-full space-y-4">
       <style>{`
         .dash-card-systems {
-          background: rgba(5, 5, 5, 0.85) !important;
+          background: rgba(5, 5, 5, 0.45) !important;
           backdrop-filter: blur(28px) saturate(130%) !important;
           -webkit-backdrop-filter: blur(28px) saturate(130%) !important;
           border: none !important;
@@ -364,7 +364,7 @@ export function SiePanel({ initialTab }: { initialTab?: SieSubTab }) {
                 }
               }
               .canvas-block {
-                background: rgba(5, 5, 5, 0.85) !important;
+                background: rgba(5, 5, 5, 0.45) !important;
                 border: 0.2px solid rgba(255, 255, 255, 0.08) !important;
                 border-radius: 10px;
                 padding: 15px;
@@ -377,7 +377,7 @@ export function SiePanel({ initialTab }: { initialTab?: SieSubTab }) {
               }
               .canvas-block:hover {
                 border-color: rgba(255, 255, 255, 0.2) !important;
-                background: rgba(10, 10, 12, 0.95) !important;
+                background: rgba(10, 10, 12, 0.55) !important;
                 transform: translateY(-2px);
               }
               .canvas-block h4 {

@@ -672,7 +672,7 @@ export function SigPessoasPanel() {
         }
 
         .dash-card {
-          background: rgba(5, 5, 5, 0.85) !important;
+          background: rgba(5, 5, 5, 0.45) !important;
           backdrop-filter: blur(28px) saturate(130%) !important;
           -webkit-backdrop-filter: blur(28px) saturate(130%) !important;
           border: none !important;
@@ -700,14 +700,14 @@ export function SigPessoasPanel() {
           z-index: 1;
         }
         .dash-card.gold-border {
-          background: rgba(5, 5, 5, 0.85) !important;
+          background: rgba(5, 5, 5, 0.45) !important;
           border: none !important;
         }
         .dash-card.gold-border::before {
           background: linear-gradient(90deg, #cbd5e1 0%, #d4b87a 100%) !important;
         }
         .dash-card:hover {
-          background: rgba(10, 10, 12, 0.95) !important;
+          background: rgba(10, 10, 12, 0.55) !important;
           box-shadow: 
             inset 0 1px 0 rgba(255, 255, 255, 0.12),
             0 16px 48px rgba(0, 0, 0, 0.85),

@@ -193,7 +193,7 @@ export function SigEsgPanel() {
     <div className="w-full">
       <style>{`
         .dash-card-esg {
-          background: rgba(5, 5, 5, 0.85) !important;
+          background: rgba(5, 5, 5, 0.45) !important;
           backdrop-filter: blur(28px) saturate(130%) !important;
           -webkit-backdrop-filter: blur(28px) saturate(130%) !important;
           border: none !important;

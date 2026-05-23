@@ -91,7 +91,7 @@ export function CompPanel({ initialTab }: { initialTab?: CompSubTab }) {
     <div className="w-full space-y-4">
       <style>{`
         .dash-card-systems {
-          background: rgba(5, 5, 5, 0.85) !important;
+          background: rgba(5, 5, 5, 0.45) !important;
           backdrop-filter: blur(28px) saturate(130%) !important;
           -webkit-backdrop-filter: blur(28px) saturate(130%) !important;
           border: none !important;
