@@ -138,6 +138,12 @@ export async function POST(req: NextRequest) {
       let result: Record<string, unknown> | null = null
       if (process.env.AI_GATEWAY_API_KEY) {
         for (const modelId of GATEWAY_MODELS) {
+          const controller = new AbortController()
+          const idTimeout = setTimeout(() => {
+            console.log(`[Gaso Scan] Abortando ${modelId} devido a timeout de 3.5s`)
+            controller.abort()
+          }, 3500)
+
           try {
             console.log(`[Gaso Scan] Gateway tentando: ${modelId}`)
             const contentBlocks: ContentBlock[] = [
@@ -151,12 +157,15 @@ export async function POST(req: NextRequest) {
               model: gateway(modelId),
               messages: [{ role: 'user', content: contentBlocks }],
               temperature: 0.1,
+              abortSignal: controller.signal,
             })
+            clearTimeout(idTimeout)
             result = JSON.parse(extractJson(text))
             console.log(`[Gaso Scan] Gateway sucesso: ${modelId}`)
             break
           } catch (err) {
-            console.warn(`[Gaso Scan] Gateway falhou (${modelId}):`, err instanceof Error ? err.message : err)
+            clearTimeout(idTimeout)
+            console.warn(`[Gaso Scan] Gateway falhou ou abortou (${modelId}):`, err instanceof Error ? err.message : err)
           }
         }
       }

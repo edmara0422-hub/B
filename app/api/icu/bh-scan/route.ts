@@ -21,32 +21,42 @@ const GROQ_MODELS = [
   'llama-3.2-11b-vision-preview',
 ]
 
-const BH_PROMPT = `Você é um especialista em UTI analisando folha(s) de balanço hídrico.
+const BH_PROMPT = `Você é um intensivista especialista em UTI analisando folha(s) de balanço hídrico (entradas e saídas de fluidos de pacientes).
 
 Podem ser enviadas múltiplas imagens (páginas diferentes ou ângulos da mesma folha) — analise todas juntas.
 
-OBJETIVO: Extrair os valores finais de balanço hídrico:
-1. BH 24h — balanço das últimas 24 horas (total entradas menos total saídas do dia)
-2. BH Acumulado — balanço total desde a internação ou o início registrado
+OBJETIVO: Extrair com precisão matemática absoluta os valores finais de balanço hídrico de 24 horas e acumulado.
 
-REGRAS DE LEITURA:
-- Procure pelos TOTAIS FINAIS, não valores parciais intermediários
-- Valores podem estar em mL ou Litros. Se em Litros (ex: "1.5", "-0.8L"), converta para mL (1500, -800)
-- Valores POSITIVOS = entradas > saídas (balanço positivo/ganho)
-- Valores NEGATIVOS = saídas > entradas (balanço negativo/perda) — pode aparecer como "-500", "(-500)", "500 neg"
-- Se houver colunas "Entradas" e "Saídas" sem total explícito, some as colunas e calcule a diferença
-- Se uma folha mostrar só BH24 (sem acumulado), retorne null para bhac_ml
-- Se não conseguir ler um valor com segurança, retorne null para aquele campo
-- Ignore bordas sujas, manchas, rabiscos — foque nos números escritos claramente
+═══ PASSO A PASSO PARA EVITAR ERROS (CRÍTICO) ═══
+Para garantir que você não leia valores errados ou cometa erros de digitação/OCR:
 
-RETORNE APENAS JSON VÁLIDO (sem markdown, sem explicação fora do JSON):
+1. IDENTIFIQUE E REGISTRE A ESTRUTURA DO BALANÇO:
+   - Identifique as colunas de "ENTRADAS" (Soros, Expansões, Medicação, Dieta/Enteral, Via Oral, Sangue/Hemoderivados).
+   - Identifique as colunas de "SAÍDAS" (Diurese, Drenos, Evacuação, Sonda Nasogástrica/SNG, Ultrafiltração, Outros).
+
+2. DETECTE DIGITAÇÕES OU ESCRITAS MANUAIS E MATEMÁTICA:
+   - Se houver valores por horário (ex: das 07h às 06h), some as entradas e as saídas manualmente para confrontar com o total final escrito na folha.
+   - Esboce mentalmente a soma: se o total final lido na folha divergir da sua soma dos horários, analise se houve erro de OCR (ex: ler 0 como 8, ou 1 como 7) na linha de algum horário, e use o valor matematicamente coerente.
+   - PRIORIZE a exatidão matemática: se a soma real das linhas der 1500 e o papel estiver escrito 1500, confirme. Se o papel estiver rasurado, calcule a soma exata.
+
+3. ATENÇÃO MÁXIMA A VÍRGULAS E UNIDADES (CUIDADO COM DECIMAIS):
+   - "1.5 L" ou "1,5 L" significa 1500 mL.
+   - "-0.8 L" significa -800 mL.
+   - Valores menores (ex: "150", "200") são em mL.
+   - Certifique-se de retornar os valores finais convertidos estritamente para mL (Mililitros) inteiros.
+
+4. SEPARAÇÃO DE VALORES:
+   - bh24_ml: Total de Entradas de 24h menos Total de Saídas de 24h.
+   - bhac_ml: Balanço acumulado desde a internação (geralmente marcado no topo ou fim como "Acumulado" ou "BH Ac"). Se não estiver escrito na folha, retorne null.
+
+RETORNE APENAS JSON VÁLIDO (sem markdown, sem explicações fora do JSON):
 {
   "bh24_ml": 500,
   "bhac_ml": 2500,
   "bh24_raw": "texto exato lido para BH24, ex: +500mL ou 1.5L",
   "bhac_raw": "texto exato lido para BHAc, ex: +2500mL",
-  "confidence": "alta | media | baixa",
-  "notes": "observação breve se relevante, ex: letra ilegível em parte, valor calculado por soma, etc"
+  "confidence": "alta" | "media" | "baixa",
+  "notes": "Explicação concisa do cálculo matemático realizado e se houve divergência ou rasura resolvida (em português)"
 }`
 
 function extractJson(content: string): string {
@@ -119,6 +129,12 @@ export async function POST(req: NextRequest) {
       let result: Record<string, unknown> | null = null
       if (process.env.AI_GATEWAY_API_KEY) {
         for (const modelId of GATEWAY_MODELS) {
+          const controller = new AbortController()
+          const idTimeout = setTimeout(() => {
+            console.log(`[BH Scan] Abortando ${modelId} devido a timeout de 3.5s`)
+            controller.abort()
+          }, 3500)
+
           try {
             console.log(`[BH Scan] Gateway tentando: ${modelId}`)
             const contentBlocks: ImageBlock[] = [
@@ -132,12 +148,15 @@ export async function POST(req: NextRequest) {
               model: gateway(modelId),
               messages: [{ role: 'user', content: contentBlocks }],
               temperature: 0.1,
+              abortSignal: controller.signal,
             })
+            clearTimeout(idTimeout)
             result = JSON.parse(extractJson(text))
             console.log(`[BH Scan] Gateway sucesso: ${modelId}`)
             break
           } catch (err) {
-            console.warn(`[BH Scan] Gateway falhou (${modelId}):`, err instanceof Error ? err.message : err)
+            clearTimeout(idTimeout)
+            console.warn(`[BH Scan] Gateway falhou ou abortou (${modelId}):`, err instanceof Error ? err.message : err)
           }
         }
       }
