@@ -3548,19 +3548,7 @@ export function ProntuarioSystemPanel() {
 
   useEffect(() => {
     if (!hydrated || workspaces.length === 0) return
-    // Snapshot the active workspace with the latest records/archive
-    const snapshot = workspacesRef.current.map(w =>
-      w.id === activeWsIdRef.current ? { ...w, records, archive } : w
-    )
-    workspacesRef.current = snapshot
-
-    // Mantém o estado `workspaces` do React em sincronia com as alterações
-    // de records e archive para evitar que regressões de renderização limpem ou desatualizem o estado local.
-    const hasDiff = JSON.stringify(workspaces) !== JSON.stringify(snapshot)
-    if (hasDiff) {
-      setWorkspaces(snapshot)
-    }
-
+    
     const getCircularReplacer = () => {
       const seen = new WeakSet()
       return (key: string, value: any) => {
@@ -3570,6 +3558,19 @@ export function ProntuarioSystemPanel() {
         }
         return value
       }
+    }
+
+    // Snapshot the active workspace with the latest records/archive
+    const snapshot = workspacesRef.current.map(w =>
+      w.id === activeWsIdRef.current ? { ...w, records, archive } : w
+    )
+    workspacesRef.current = snapshot
+
+    // Mantém o estado `workspaces` do React em sincronia com as alterações
+    // de records e archive para evitar que regressões de renderização limpem ou desatualizem o estado local.
+    const hasDiff = JSON.stringify(workspaces, getCircularReplacer()) !== JSON.stringify(snapshot, getCircularReplacer())
+    if (hasDiff) {
+      setWorkspaces(snapshot)
     }
 
     // localStorage salva instantâneo — status verde imediato.
