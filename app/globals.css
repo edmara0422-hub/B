@@ -1407,7 +1407,16 @@ body.sea-splash-active [data-sea-bottom-nav='true'] {
   }
 
   .slot-C {
-    height: 520px !important;
+    height: 480px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .slot-C {
+    height: 440px !important;
+  }
+  main.pt-20 {
+    padding-top: 66px !important;
   }
 }
 

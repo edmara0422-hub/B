@@ -285,7 +285,7 @@ function WorkspaceSidebar({
   const q = search.toLowerCase().trim()
 
   return (
-    <div className="ipb-soft flex flex-col overflow-hidden rounded-[1.2rem] h-full lg:rounded-[1.65rem]">
+    <div className="workspace-sidebar-stretch ipb-soft flex flex-col overflow-hidden rounded-[1.2rem] h-full lg:rounded-[1.65rem]">
       {/* Header: label + busca + close */}
       <div
         className="shrink-0 rounded-t-[1.65rem] px-2 pb-2 pt-2.5 lg:px-4 lg:pb-3 lg:pt-4"
@@ -652,6 +652,12 @@ export default function ConteudosPageClient() {
             border-color: rgba(212,184,122,0.35) !important;
             transform: translateY(-2px);
             box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), 0 14px 36px rgba(0,0,0,0.75) !important;
+          }
+          .workspace-sidebar-stretch {
+            height: 100% !important;
+            min-height: 100% !important;
+            display: flex !important;
+            flex-direction: column !important;
           }
         `
       }} />
