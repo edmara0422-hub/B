@@ -857,7 +857,7 @@ export default function ConteudosPageClient() {
                       </div>
 
                       {/* Sub-cards Dashboard Grid */}
-                      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 px-6 pb-6 items-stretch">
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 px-6 pb-6 items-stretch">
                         
                         {/* Card 1: Vídeo Aula */}
                         <div className="flex">
@@ -873,26 +873,7 @@ export default function ConteudosPageClient() {
                           <TelemetriaSparkline moduleId={current.id} />
                         </div>
 
-                        {/* Card 3: Fundamentos */}
-                        <div className="ipb-glass-card p-4 flex flex-col justify-between">
-                          <div>
-                            <span className="text-[7.5px] uppercase tracking-wider font-medium" style={{ color: activeTheme.primary }}>Fundamentos</span>
-                            <h4 className="text-xs font-semibold text-white/90 mt-1 mb-2">Conceito de {current.title}</h4>
-                            <p className="text-[10px] text-white/44 leading-relaxed">
-                              {current.overview}
-                            </p>
-                          </div>
-                          <ul className="mt-3 space-y-1.5 border-t border-white/[0.04] pt-3">
-                            {current.concepts.map((concept, idx) => (
-                              <li key={idx} className="text-[9px] text-white/50 flex items-start gap-1.5">
-                                <span className="mt-0.5" style={{ color: activeTheme.primary }}>•</span>
-                                <span>{concept}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-
-                        {/* Card 4: Mapa de Conexões */}
+                        {/* Card 3: Mapa de Conexões */}
                         <div className="ipb-glass-card p-4 flex flex-col justify-between">
                           <div>
                             <span className="text-[7.5px] uppercase tracking-wider font-medium" style={{ color: activeTheme.primary }}>Mapa de Conexões</span>
@@ -906,7 +887,7 @@ export default function ConteudosPageClient() {
                       {/* Material de Apoio Support Grid */}
                       <div className="border-t border-white/[0.04] px-6 py-5 bg-black/20">
                         <h4 className="text-[10px] uppercase tracking-widest text-white/30 font-semibold mb-3">Material de Apoio</h4>
-                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                           
                           {/* Tutor Card */}
                           <div className="ipb-glass-card p-3 flex items-center justify-between cursor-pointer group">
@@ -944,36 +925,58 @@ export default function ConteudosPageClient() {
                             <ChevronRight className="h-3.5 w-3.5 opacity-50 group-hover:opacity-100 transition-all" style={{ color: activeTheme.primary }} />
                           </div>
 
-                          {/* Quiz Card */}
-                          <div className="ipb-glass-card p-3 flex items-center justify-between cursor-pointer group">
-                            <div className="flex items-center gap-3">
-                              <div className="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-white/40 group-hover:text-white transition-all duration-300" style={{
-                                borderColor: activeTheme.accent,
-                                color: activeTheme.primary
-                              }}>
-                                <HelpCircle className="h-4 w-4" />
-                              </div>
-                              <div className="flex flex-col">
-                                <span className="text-[10.5px] font-semibold text-white/90 leading-tight">Quiz de Revisão</span>
-                                <span className="text-[9px] text-white/30">Autoavaliação e fixação</span>
-                              </div>
-                            </div>
-                            <ChevronRight className="h-3.5 w-3.5 opacity-50 group-hover:opacity-100 transition-all" style={{ color: activeTheme.primary }} />
-                          </div>
-
                         </div>
                       </div>
 
                     </div>
 
-                    {/* Operational Notebook Content Viewer */}
+                    {/* Operational Notebook Content Viewer / Fundamentos e Caderno de Conteúdo */}
                     <div className="ipb-soft relative overflow-hidden rounded-[2rem]">
-                      <div className="p-5 md:p-6">
-                        <div className="flex items-center gap-2 mb-4 border-b border-white/[0.04] pb-3">
-                          <BookOpen className="h-4 w-4 text-[#d4b87a]" />
-                          <span className="text-[10px] uppercase tracking-wider text-white/50 font-semibold">Caderno Interativo de Conteúdo</span>
+                      <div className="p-5 md:p-6 space-y-6">
+                        
+                        {/* Fundamentos Banner inside the Caderno Card */}
+                        <div className="p-5 rounded-2xl bg-white/[0.02] border border-white/[0.04] relative overflow-hidden">
+                          <div className="absolute inset-0 opacity-[0.03]" style={{
+                            background: `radial-gradient(circle at 0% 0%, ${activeTheme.primary}, transparent 50%)`
+                          }} />
+                          
+                          <div className="flex flex-col lg:flex-row gap-6 relative z-10">
+                            {/* Overview Column */}
+                            <div className="flex-1 space-y-2">
+                              <span className="text-[8px] uppercase tracking-wider font-bold" style={{ color: activeTheme.primary }}>Fundamentos</span>
+                              <h3 className="text-base font-bold text-white/90">Conceito de {current.title}</h3>
+                              <p className="text-[11px] text-white/50 leading-relaxed max-w-2xl">
+                                {current.overview}
+                              </p>
+                            </div>
+                            
+                            {/* Key Concepts Column */}
+                            <div className="lg:w-96 shrink-0 lg:border-l lg:border-white/[0.06] lg:pl-6 flex flex-col justify-center">
+                              <span className="text-[8px] uppercase tracking-wider font-bold text-white/30 mb-2">Pilares do Conhecimento</span>
+                              <ul className="space-y-1.5">
+                                {current.concepts.map((concept, idx) => (
+                                  <li key={idx} className="text-[9.5px] text-white/60 flex items-start gap-2">
+                                    <span className="mt-1 w-1.5 h-1.5 rounded-full shrink-0" style={{ backgroundColor: activeTheme.primary }} />
+                                    <span className="leading-snug">{concept}</span>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          </div>
                         </div>
-                        <CadernoModulePanel moduleId={current.id} openTopicId={activeTopicId} />
+
+                        {/* Divider */}
+                        <div className="h-px bg-white/[0.04] w-full" />
+
+                        {/* Interactive Notebook */}
+                        <div className="space-y-4">
+                          <div className="flex items-center gap-2 pb-1">
+                            <BookOpen className="h-4 w-4" style={{ color: activeTheme.primary }} />
+                            <span className="text-[10px] uppercase tracking-wider text-white/60 font-semibold">Caderno Interativo de Conteúdo</span>
+                          </div>
+                          <CadernoModulePanel moduleId={current.id} openTopicId={activeTopicId} />
+                        </div>
+
                       </div>
                     </div>
 
