@@ -267,38 +267,51 @@ export async function POST(req: NextRequest) {
 
     let aiResult: Record<string, unknown> | null = null
 
-    if (process.env.AI_GATEWAY_API_KEY) {
-      for (const modelId of GATEWAY_MODELS) {
-        try {
-          console.log(`[Vision API] Gateway tentando: ${modelId}`)
-          const { text } = await generateText({
-            model: gateway(modelId),
-            messages: [{
-              role: 'user',
-              content: [
-                { type: 'image', image: `data:${mimeType};base64,${base64Image}` },
-                { type: 'text', text: prompt },
-              ],
-            }],
-            temperature: 0.1,
-          })
-          aiResult = JSON.parse(extractJson(text))
-          console.log(`[Vision API] Gateway sucesso: ${modelId}`)
-          break
-        } catch (err) {
-          console.warn(`[Vision API] Gateway falhou (${modelId}):`, err instanceof Error ? err.message : err)
+    const externalCallPromise = (async () => {
+      let result: Record<string, unknown> | null = null
+      if (process.env.AI_GATEWAY_API_KEY) {
+        for (const modelId of GATEWAY_MODELS) {
+          try {
+            console.log(`[Vision API] Gateway tentando: ${modelId}`)
+            const { text } = await generateText({
+              model: gateway(modelId),
+              messages: [{
+                role: 'user',
+                content: [
+                  { type: 'image', image: `data:${mimeType};base64,${base64Image}` },
+                  { type: 'text', text: prompt },
+                ],
+              }],
+              temperature: 0.1,
+            })
+            result = JSON.parse(extractJson(text))
+            console.log(`[Vision API] Gateway sucesso: ${modelId}`)
+            break
+          } catch (err) {
+            console.warn(`[Vision API] Gateway falhou (${modelId}):`, err instanceof Error ? err.message : err)
+          }
         }
       }
-    }
 
-    if (!aiResult && GROQ_API_KEY) {
-      console.log('[Vision API] Usando fallback Groq')
-      try {
-        aiResult = await callGroqFallback(base64Image, examType)
-      } catch (err) {
-        console.warn('[Vision API] Fallback Groq falhou:', err)
+      if (!result && GROQ_API_KEY) {
+        console.log('[Vision API] Usando fallback Groq')
+        try {
+          result = await callGroqFallback(base64Image, examType)
+        } catch (err) {
+          console.warn('[Vision API] Fallback Groq falhou:', err)
+        }
       }
-    }
+      return result
+    })()
+
+    const timeoutPromise = new Promise<null>((resolve) =>
+      setTimeout(() => {
+        console.log('[Vision API] Timeout de 4.2 segundos atingido para chamadas remotas')
+        resolve(null)
+      }, 4200)
+    )
+
+    aiResult = await Promise.race([externalCallPromise, timeoutPromise])
 
     if (!aiResult) {
       const activeExam = (examType || 'RX-Tórax').toUpperCase()

@@ -114,39 +114,52 @@ export async function POST(req: NextRequest) {
 
     let aiResult: Record<string, unknown> | null = null
 
-    if (process.env.AI_GATEWAY_API_KEY) {
-      for (const modelId of GATEWAY_MODELS) {
-        try {
-          console.log(`[BH Scan] Gateway tentando: ${modelId}`)
-          const contentBlocks: ImageBlock[] = [
-            ...images.map(img => ({
-              type: 'image' as const,
-              image: `data:${img.mime};base64,${img.base64}`,
-            })),
-            { type: 'text', text: BH_PROMPT },
-          ]
-          const { text } = await generateText({
-            model: gateway(modelId),
-            messages: [{ role: 'user', content: contentBlocks }],
-            temperature: 0.1,
-          })
-          aiResult = JSON.parse(extractJson(text))
-          console.log(`[BH Scan] Gateway sucesso: ${modelId}`)
-          break
-        } catch (err) {
-          console.warn(`[BH Scan] Gateway falhou (${modelId}):`, err instanceof Error ? err.message : err)
+    const externalCallPromise = (async () => {
+      let result: Record<string, unknown> | null = null
+      if (process.env.AI_GATEWAY_API_KEY) {
+        for (const modelId of GATEWAY_MODELS) {
+          try {
+            console.log(`[BH Scan] Gateway tentando: ${modelId}`)
+            const contentBlocks: ImageBlock[] = [
+              ...images.map(img => ({
+                type: 'image' as const,
+                image: `data:${img.mime};base64,${img.base64}`,
+              })),
+              { type: 'text', text: BH_PROMPT },
+            ]
+            const { text } = await generateText({
+              model: gateway(modelId),
+              messages: [{ role: 'user', content: contentBlocks }],
+              temperature: 0.1,
+            })
+            result = JSON.parse(extractJson(text))
+            console.log(`[BH Scan] Gateway sucesso: ${modelId}`)
+            break
+          } catch (err) {
+            console.warn(`[BH Scan] Gateway falhou (${modelId}):`, err instanceof Error ? err.message : err)
+          }
         }
       }
-    }
 
-    if (!aiResult && GROQ_API_KEY) {
-      console.log('[BH Scan] Usando fallback Groq')
-      try {
-        aiResult = await callGroqFallback(images)
-      } catch (err) {
-        console.warn('[BH Scan] Fallback Groq falhou:', err)
+      if (!result && GROQ_API_KEY) {
+        console.log('[BH Scan] Usando fallback Groq')
+        try {
+          result = await callGroqFallback(images)
+        } catch (err) {
+          console.warn('[BH Scan] Fallback Groq falhou:', err)
+        }
       }
-    }
+      return result
+    })()
+
+    const timeoutPromise = new Promise<null>((resolve) =>
+      setTimeout(() => {
+        console.log('[BH Scan] Timeout de 4.2 segundos atingido para chamadas remotas')
+        resolve(null)
+      }, 4200)
+    )
+
+    aiResult = await Promise.race([externalCallPromise, timeoutPromise])
 
     if (!aiResult) {
       console.log('[BH Scan] Usando fallback local de alta fidelidade')
