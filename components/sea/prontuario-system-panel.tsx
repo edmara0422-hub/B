@@ -4729,7 +4729,7 @@ export function ProntuarioSystemPanel() {
     setActiveTab('dados')
     setView('records')
     const snapshot = workspacesRef.current.map(w =>
-      w.id === activeWsIdRef.current ? { ...w, records: [record, ...w.records] } : w
+      w.id === activeWsIdRef.current ? { ...w, records: [record, ...(Array.isArray(w.records) ? w.records : [])] } : w
     )
     workspacesRef.current = snapshot
   }

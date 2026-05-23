@@ -85,11 +85,11 @@ export default function SistemasPageClient() {
   const [timeStr, setTimeStr] = useState('')
   const [sidebarOpen, setSidebarOpen] = useState(true)
 
-  // Efeito para manter relógio UTC atualizado em tempo real
+  // Efeito para manter relógio local atualizado em tempo real
   useEffect(() => {
     const updateTime = () => {
       const d = new Date()
-      const t = [d.getUTCHours(), d.getUTCMinutes(), d.getUTCSeconds()]
+      const t = [d.getHours(), d.getMinutes(), d.getSeconds()]
         .map(n => String(n).padStart(2, '0'))
         .join(':')
       setTimeStr(t)
@@ -1211,7 +1211,7 @@ export default function SistemasPageClient() {
           
           <div className="thd-right">
             <div className="thd-clock">
-              <span>UTC</span>
+              <span>LCL</span>
               <b>{timeStr || '00:00:00'}</b>
             </div>
 
