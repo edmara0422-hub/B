@@ -10010,7 +10010,15 @@ export function ProntuarioSystemPanel() {
                           ipap: 'ipap', epap: 'epap',
                         }
                         for (const [scanKey, recordKey] of Object.entries(baseMap)) {
-                          const v = set(scanKey, p[scanKey])
+                          let rawVal = p[scanKey]
+                          // Caso a FiO2 venha como fração (ex: 0.40), converte para porcentagem de forma defensiva
+                          if (scanKey === 'fio2' && rawVal != null && rawVal !== '') {
+                            const num = parseFloat(String(rawVal))
+                            if (!isNaN(num) && num > 0 && num <= 1.0) {
+                              rawVal = Math.round(num * 100)
+                            }
+                          }
+                          const v = set(scanKey, rawVal)
                           if (v !== undefined) next[recordKey] = v
                         }
 

@@ -8,10 +8,11 @@ const gateway = createGateway({
 })
 
 const GATEWAY_MODELS = [
-  'google/gemini-2.5-flash-preview-05-20',
-  'anthropic/claude-sonnet-4-5',
+  'google/gemini-1.5-flash',
+  'openai/gpt-4o-mini',
   'openai/gpt-4o',
-  'google/gemini-2.5-pro-preview-06-05',
+  'google/gemini-1.5-pro',
+  'anthropic/claude-3-5-sonnet',
 ]
 
 const GROQ_API_KEY = process.env.GROQ_API_KEY || ''
@@ -186,7 +187,7 @@ NUMÉRICOS:
 - ve (L/min — VOLUME MINUTO MEDIDO. Faixa típica adulto: 4-15 L/min. Procure "VE", "MV", "MVe". NÃO confunda com I:E (que é razão "1:2"). Se não visível, calcule: ve = vt × fr / 1000)
 - fr (rpm — FR SETADA em modos controlados, FR real medida em PSV/SPONT. Procure "FR", "RR", "f")
 - peep (cmH2O)
-- fio2 (% — 21 a 100; se vier 0.21–1.0, multiplicar por 100)
+- fio2 (% — 21 a 100. Procure atenta e minuciosamente na imagem por "FiO2", "FIO2", "FiO₂", "O2", "O₂", "O2 %", "O2%", "O2 conc", "O2 Set", ou fração de O2. Se vier como fração decimal (ex: 0.21 a 1.0), multiplique por 100 para retornar um número inteiro de 21 a 100)
 - ppico (cmH2O — Peak/PIP/Ppeak)
 - pplato (cmH2O — Plateau/Pplat — só se visível, normalmente exige manobra)
 - pmean (cmH2O — MAP/Pmean)
@@ -353,6 +354,53 @@ export async function POST(req: NextRequest) {
         { error: 'Não foi possível analisar os parâmetros do ventilador mecânico. Por favor, tente novamente ou insira os dados manualmente.' },
         { status: 504 }
       )
+    }
+
+    // Normalização pós-processamento robusta do resultado da IA no backend
+    try {
+      if (aiResult.params && typeof aiResult.params === 'object') {
+        const rawParams = aiResult.params as Record<string, unknown>
+        const normalizedParams: Record<string, unknown> = {}
+
+        // 1. Normalizar todas as chaves para caixa baixa para evitar problemas de case-sensitivity
+        for (const [key, value] of Object.entries(rawParams)) {
+          normalizedParams[key.toLowerCase()] = value
+        }
+
+        // 2. Tratar especificamente o campo 'fio2'
+        if (normalizedParams.fio2 !== undefined && normalizedParams.fio2 !== null && normalizedParams.fio2 !== '') {
+          let fio2Val = parseFloat(String(normalizedParams.fio2))
+          if (!isNaN(fio2Val) && fio2Val > 0) {
+            if (fio2Val <= 1.0) {
+              fio2Val = Math.round(fio2Val * 100)
+            } else {
+              fio2Val = Math.round(fio2Val)
+            }
+            normalizedParams.fio2 = fio2Val
+          } else {
+            normalizedParams.fio2 = null
+          }
+        }
+
+        // 3. Garantir conversão de strings numéricas para tipos Number reais
+        const numericFields = [
+          'vt', 'vc', 've', 'fr', 'peep', 'ppico', 'pplato', 'pmean', 'ti', 
+          'fluxo', 'trigger', 'ps', 'ipap', 'epap', 'phigh', 'plow', 'thigh', 
+          'tlow', 'mpaw', 'amplitude', 'hz', 'biasflow', 'nava_level', 'pav_percent'
+        ]
+        for (const field of numericFields) {
+          if (normalizedParams[field] !== undefined && normalizedParams[field] !== null && normalizedParams[field] !== '') {
+            const numVal = parseFloat(String(normalizedParams[field]))
+            if (!isNaN(numVal)) {
+              normalizedParams[field] = numVal
+            }
+          }
+        }
+
+        aiResult.params = normalizedParams
+      }
+    } catch (normError) {
+      console.error('[VM Scan] Erro ao normalizar parâmetros pós-IA:', normError)
     }
 
     return NextResponse.json(aiResult)

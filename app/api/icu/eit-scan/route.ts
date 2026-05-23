@@ -8,10 +8,11 @@ const gateway = createGateway({
 })
 
 const GATEWAY_MODELS = [
-  'google/gemini-2.5-flash-preview-05-20',
-  'anthropic/claude-sonnet-4-5',
+  'google/gemini-1.5-flash',
+  'openai/gpt-4o-mini',
   'openai/gpt-4o',
-  'google/gemini-2.5-pro-preview-06-05',
+  'google/gemini-1.5-pro',
+  'anthropic/claude-3-5-sonnet',
 ]
 
 const GROQ_API_KEY = process.env.GROQ_API_KEY || ''
