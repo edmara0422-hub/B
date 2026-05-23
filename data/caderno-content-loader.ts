@@ -4,6 +4,7 @@ const MODULE_LOADERS: Record<string, () => Promise<CadernoModuleContent>> = {
   M1: () => import('./caderno-content-m1').then(m => m.M1_CONTENT),
   M2: () => import('./caderno-content-m2').then(m => m.M2_CONTENT),
   M3: () => import('./caderno-content-m3').then(m => m.M3_CONTENT),
+  M4: () => import('./caderno-content-m4').then(m => m.M4_CONTENT),
 }
 
 const cache = new Map<string, CadernoModuleContent>()
