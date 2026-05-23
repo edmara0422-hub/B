@@ -427,14 +427,36 @@ export default function SistemasPageClient() {
             box-sizing: border-box !important;
           }
 
-          /* Prevenir cortes e garantir fluidez em Clinica, SIG, SIE, SIO, Complice no celular */
-          .app-workspace-layout .content-area .grid-cols-2:not(.grid-cols-2-keep),
-          .app-workspace-layout .content-area .grid-cols-3:not(.grid-cols-3-keep),
+          /* Restore multi-column grids in clinical/corporate panels on mobile and make them compact */
+          .app-workspace-layout .content-area .grid,
+          .app-workspace-layout .content-area [data-s1-prontuario] .grid,
+          .app-workspace-layout .content-area .grid-cols-2,
+          .app-workspace-layout .content-area .grid-cols-3,
           .app-workspace-layout .content-area .grid-cols-4,
           .app-workspace-layout .content-area .grid-cols-5,
           .app-workspace-layout .content-area .grid-cols-6,
           .app-workspace-layout .content-area .grid-cols-12 {
-            grid-template-columns: 1fr !important;
+            gap: 4px !important;
+          }
+
+          /* Shrink inputs, labels, and text inside clinical fields on mobile to fit columns side-by-side */
+          .app-workspace-layout .content-area input,
+          .app-workspace-layout .content-area select,
+          .app-workspace-layout .content-area button,
+          .app-workspace-layout .content-area span,
+          .app-workspace-layout .content-area p,
+          .app-workspace-layout .content-area label {
+            font-size: 8px !important;
+            padding-left: 2px !important;
+            padding-right: 2px !important;
+          }
+          
+          /* Specifically shrink the prontuario card fields and ensure inline alignment */
+          .app-workspace-layout .content-area [data-s1-prontuario] input,
+          .app-workspace-layout .content-area [data-s1-prontuario] select,
+          .app-workspace-layout .content-area [data-s1-prontuario] span,
+          .app-workspace-layout .content-area [data-s1-prontuario] label {
+            font-size: 7.5px !important;
           }
           
           /* Evitar que componentes complexos extrapolem a tela lateralmente */
@@ -445,9 +467,7 @@ export default function SistemasPageClient() {
           
           /* Forçar tabelas e monitores muito largos a rolarem horizontalmente em vez de cortarem */
           .app-workspace-layout .content-area table,
-          .app-workspace-layout .content-area .table-container,
-          .app-workspace-layout .content-area [data-s1-prontuario] .grid-cols-6,
-          .app-workspace-layout .content-area [data-s1-prontuario] .grid-cols-5 {
+          .app-workspace-layout .content-area .table-container {
             display: block !important;
             width: 100% !important;
             overflow-x: auto !important;
