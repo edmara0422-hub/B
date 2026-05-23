@@ -236,127 +236,227 @@ export default function SistemasPageClient() {
 
         @media (max-width: 768px) {
           .app-workspace-layout {
-            grid-template-columns: 170px 1fr !important;
+            grid-template-columns: 1fr !important;
           }
           .app-workspace-layout.sidebar-closed {
             grid-template-columns: 1fr !important;
           }
           
-          /* Slim down sidebar on mobile and shrink elements instead of hiding them */
+          /* Slim down sidebar on mobile and act as an elegant, floating overlay drawer */
           .app-workspace-layout .side {
-            width: 170px !important;
-            padding: 12px 6px !important;
+            position: fixed !important;
+            top: 0 !important;
+            bottom: 0 !important;
+            left: 0 !important;
+            width: 155px !important; /* Thinner sidebar */
+            padding: 10px 4px !important;
             overflow-x: hidden !important;
+            z-index: 9999 !important; /* Float on top of everything */
+            box-shadow: 5px 0 25px rgba(0,0,0,0.85), inset 0 1px 0 rgba(255,255,255,0.08) !important;
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
           }
           
           .app-workspace-layout .side-header {
-            gap: 6px !important;
+            gap: 4px !important;
           }
           
           .app-workspace-layout .brand-mark {
-            width: 26px !important;
-            height: 26px !important;
+            width: 24px !important;
+            height: 24px !important;
           }
           .app-workspace-layout .brand-mark span {
-            font-size: 9px !important;
+            font-size: 8px !important;
           }
           
           .app-workspace-layout .side-title-block .h1 {
-            font-size: 8px !important;
+            font-size: 7.5px !important;
           }
           .app-workspace-layout .side-title-block .h2 {
-            font-size: 6.5px !important;
+            font-size: 6px !important;
           }
           
           .app-workspace-layout .fase-badge {
-            padding: 5px 6px !important;
+            padding: 4px 5px !important;
           }
           .app-workspace-layout .fase-badge .lbl, 
           .app-workspace-layout .fase-badge .sub,
           .app-workspace-layout .fase-badge .status {
-            font-size: 6px !important;
+            font-size: 5.5px !important;
           }
           .app-workspace-layout .fase-badge .val {
-            font-size: 9px !important;
-          }
-          
-          .app-workspace-layout .tab {
-            width: 68px !important;
-            padding: 6px 2px !important;
-            gap: 4px !important;
-          }
-          .app-workspace-layout .tab .tab-frame {
-            width: 42px !important;
-            height: 42px !important;
-          }
-          .app-workspace-layout .tab .code {
-            font-size: 11px !important;
-          }
-          .app-workspace-layout .tab .name {
             font-size: 8px !important;
           }
           
+          .app-workspace-layout .tab {
+            width: 62px !important;
+            padding: 5px 1px !important;
+            gap: 3px !important;
+          }
+          .app-workspace-layout .tab .tab-frame {
+            width: 38px !important;
+            height: 38px !important;
+          }
+          .app-workspace-layout .tab .code {
+            font-size: 10px !important;
+          }
+          .app-workspace-layout .tab .name {
+            font-size: 7.5px !important;
+          }
+          
           .app-workspace-layout .side-nav-item {
-            padding: 6px 8px !important;
-            gap: 6px !important;
+            padding: 5px 6px !important;
+            gap: 5px !important;
           }
           .app-workspace-layout .side-nav-item .label {
-            font-size: 9.5px !important;
+            font-size: 8.5px !important;
           }
           .app-workspace-layout .side-nav-item .desc {
-            font-size: 7px !important;
+            font-size: 6.5px !important;
           }
           
           .app-workspace-layout .telemetry-widget {
-            padding: 5px 8px !important;
+            padding: 4px 6px !important;
+            font-size: 6.5px !important;
+            gap: 2px !important;
+          }
+          .app-workspace-layout .telemetry-widget .title-row span {
+            font-size: 6.5px !important;
+          }
+          .app-workspace-layout .telemetry-widget .metric {
+            font-size: 6.5px !important;
           }
           .app-workspace-layout .acc-panel {
             gap: 2px !important;
           }
+          .app-workspace-layout .acc-panel-lbl {
+            font-size: 6px !important;
+          }
           .app-workspace-layout .acc-chip {
-            font-size: 6.5px !important;
+            font-size: 6px !important;
+            padding: 3px 0.5px !important;
           }
 
-          /* Extremely compact and thin Top HUD on mobile screen */
+          /* Extremely compact, thin, and full-featured Top HUD on mobile screen */
           .app-workspace-layout .tophud {
-            width: calc(100% - 16px) !important;
-            padding: 6px 12px !important;
-            margin: 8px auto 6px auto !important;
-            top: 8px !important;
+            width: calc(100% - 10px) !important;
+            padding: 4px 6px !important;
+            margin: 4px auto 4px auto !important;
+            top: 4px !important;
+            gap: 4px !important;
+            border-radius: 8px !important;
+          }
+          .app-workspace-layout .thd-left {
+            gap: 4px !important;
+            min-width: 0 !important;
+            flex: 1 !important;
           }
           .app-workspace-layout .thd-title {
-            font-size: 10px !important;
+            font-size: 7.5px !important;
+            line-height: 1 !important;
+            white-space: nowrap !important;
+            color: var(--ink) !important;
+            display: block !important;
           }
           .app-workspace-layout .thd-title b {
-            font-weight: 600 !important;
+            font-weight: 700 !important;
           }
-          .app-workspace-layout .thd-title .sep,
+          .app-workspace-layout .thd-title .sep {
+            margin: 0 2px !important;
+            display: inline-block !important;
+            color: var(--c-gold) !important;
+          }
           .app-workspace-layout .thd-title span {
-            display: none !important;
+            display: inline-block !important;
+            color: var(--ink-mute) !important;
           }
           .app-workspace-layout .thd-crumb {
-            font-size: 7.5px !important;
-            padding: 3px 6px !important;
+            font-size: 6.5px !important;
+            padding: 1.5px 3px !important;
+            letter-spacing: 0.02em !important;
+            display: inline-block !important;
+            white-space: nowrap !important;
+            max-width: 90px !important;
+            overflow: hidden !important;
+            text-overflow: ellipsis !important;
+          }
+          .app-workspace-layout .thd-right {
+            gap: 3px !important;
+            flex-shrink: 0 !important;
           }
           .app-workspace-layout .thd-clock {
-            font-size: 9.5px !important;
-            padding: 4px 8px !important;
-            gap: 4px !important;
+            font-size: 7.5px !important;
+            padding: 2.5px 4px !important;
+            gap: 2px !important;
+            display: flex !important;
+            align-items: center !important;
+            background: rgba(255,255,255,.02) !important;
+            border: 0.2px solid var(--s-line) !important;
           }
           .app-workspace-layout .thd-clock span {
-            display: none !important;
+            display: inline-block !important; /* Show UTC! */
+            color: var(--g-2) !important;
+            font-weight: 700 !important;
+          }
+          .app-workspace-layout .thd-clock b {
+            font-size: 7.5px !important;
           }
           .app-workspace-layout .thd-chip {
-            font-size: 8px !important;
-            padding: 4px 8px !important;
+            font-size: 7px !important;
+            padding: 2.5px 4px !important;
+            gap: 2px !important;
+            display: flex !important;
+            align-items: center !important;
+            background: rgba(255,255,255,.02) !important;
+            border: 0.2px solid var(--s-line) !important;
           }
           .app-workspace-layout .thd-chip.live {
-            display: none !important; /* Hide live feed to save massive space on mobile */
+            display: flex !important; /* Show LIVE FEED! */
+            color: var(--g-2) !important;
+            border-color: var(--g-line-on) !important;
+            background: rgba(218,165,32,.04) !important;
+          }
+          .app-workspace-layout .thd-chip.live .d {
+            width: 3.5px !important;
+            height: 3.5px !important;
           }
 
           /* Widen the content area on mobile by reducing its padding to avoid any cutting off */
           .app-workspace-layout .content-area {
             padding: 10px 10px 80px 10px !important;
+            width: 100vw !important;
+            box-sizing: border-box !important;
+          }
+
+          /* Prevenir cortes e garantir fluidez em Clinica, SIG, SIE, SIO, Complice no celular */
+          .app-workspace-layout .content-area .grid-cols-2:not(.grid-cols-2-keep),
+          .app-workspace-layout .content-area .grid-cols-3:not(.grid-cols-3-keep),
+          .app-workspace-layout .content-area .grid-cols-4,
+          .app-workspace-layout .content-area .grid-cols-5,
+          .app-workspace-layout .content-area .grid-cols-6,
+          .app-workspace-layout .content-area .grid-cols-12 {
+            grid-template-columns: 1fr !important;
+          }
+          
+          /* Evitar que componentes complexos extrapolem a tela lateralmente */
+          .app-workspace-layout .content-area * {
+            max-width: 100% !important;
+            box-sizing: border-box !important;
+          }
+          
+          /* Forçar tabelas e monitores muito largos a rolarem horizontalmente em vez de cortarem */
+          .app-workspace-layout .content-area table,
+          .app-workspace-layout .content-area .table-container,
+          .app-workspace-layout .content-area [data-s1-prontuario] .grid-cols-6,
+          .app-workspace-layout .content-area [data-s1-prontuario] .grid-cols-5 {
+            display: block !important;
+            width: 100% !important;
+            overflow-x: auto !important;
+            scrollbar-width: none !important;
+          }
+          
+          .app-workspace-layout .content-area table::-webkit-scrollbar,
+          .app-workspace-layout .content-area .table-container::-webkit-scrollbar {
+            display: none !important;
           }
         }
 
@@ -1017,7 +1117,12 @@ export default function SistemasPageClient() {
                     return (
                       <button
                         key={item.id}
-                        onClick={() => setActiveNavId(item.id)}
+                        onClick={() => {
+                          setActiveNavId(item.id)
+                          if (typeof window !== 'undefined' && window.innerWidth <= 768) {
+                            setSidebarOpen(false)
+                          }
+                        }}
                         className={`side-nav-item ${isActive ? 'active' : ''}`}
                       >
                         <span className="bullet"></span>
