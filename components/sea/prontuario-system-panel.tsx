@@ -4252,24 +4252,24 @@ export function ProntuarioSystemPanel() {
         return { dataUrl, w: width, h: height }
       }
 
-      // Gera tamanhos sequencialmente (menos pressão de memória no iOS)
-      const { dataUrl: resizedDataUrl, w: imgW, h: imgH } = resizeFrom(1600, 0.85)
-      const { dataUrl: thumbnailDataUrl } = resizeFrom(300, 0.75)
-      const { dataUrl: scanFullDataUrl } = resizeFrom(1800, 0.90)
+      // Gera tamanhos sequencialmente (menos pressão de memória no iOS e evita estourar cota do localStorage)
+      const { dataUrl: resizedDataUrl, w: imgW, h: imgH } = resizeFrom(1200, 0.80) // Ideal para análise de IA e extremamente leve
+      const { dataUrl: thumbnailDataUrl } = resizeFrom(200, 0.70)                 // Thumbnail compacto para listagem rápida
+      const { dataUrl: scanFullDataUrl } = resizeFrom(1000, 0.75)                 // Lightbox super nítido na UTI e muito leve (~70KB)
 
-      const isAdminNow = useAuthStore.getState().isAdmin
+      const hasSession = !!authUserId
 
-      if (isAdminNow && supabase) {
-        // Admin: faz upload da imagem 1800px de alta qualidade para Supabase Storage (persiste)
+      if (hasSession && supabase) {
+        // Usuário autenticado: faz upload da imagem de alta qualidade (1600px, 0.85) para o Supabase Storage (persiste e economiza localStorage)
         try {
-          const { dataUrl: adminThumbDataUrl } = resizeFrom(1800, 0.90)
-          const adminBase64 = adminThumbDataUrl.split(',')[1]
-          const adminBytes = Uint8Array.from(atob(adminBase64), c => c.charCodeAt(0))
-          const adminBlob = new Blob([adminBytes], { type: 'image/jpeg' })
+          const { dataUrl: uploadThumbDataUrl } = resizeFrom(1600, 0.85)
+          const uploadBase64 = uploadThumbDataUrl.split(',')[1]
+          const uploadBytes = Uint8Array.from(atob(uploadBase64), c => c.charCodeAt(0))
+          const uploadBlob = new Blob([uploadBytes], { type: 'image/jpeg' })
           const fileName = `${currentRecord.id}_${index}_${Date.now()}.jpg`
           const { data: uploadData, error: uploadError } = await supabase.storage
             .from('icu-scans')
-            .upload(fileName, adminBlob, { contentType: 'image/jpeg', upsert: true })
+            .upload(fileName, uploadBlob, { contentType: 'image/jpeg', upsert: true })
 
           if (!uploadError && uploadData) {
             updateCurrentRecord((record) => {
@@ -4278,6 +4278,7 @@ export function ProntuarioSystemPanel() {
               return { ...record, examesImagemList: next }
             })
           } else {
+            // Se falhar o upload, grava localmente como fallback
             updateCurrentRecord((record) => {
               const next = [...record.examesImagemList]
               next[index] = { ...next[index], thumbnail: thumbnailDataUrl, scanFull: scanFullDataUrl, imgW, imgH }
@@ -4292,7 +4293,7 @@ export function ProntuarioSystemPanel() {
           })
         }
       } else {
-        // Usuário comum: base64 local — some com cronômetro (LGPD)
+        // Usuário offline/comum local: base64 local compactado (evita estourar localStorage quota)
         updateCurrentRecord((record) => {
           const next = [...record.examesImagemList]
           next[index] = { ...next[index], thumbnail: thumbnailDataUrl, scanFull: scanFullDataUrl, imgW, imgH }
