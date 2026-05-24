@@ -108,31 +108,31 @@ const MODULE_THEMES: Record<string, {
   gradient: string
 }> = {
   M1: {
-    primary: '#10b981', // green (emerald)
-    secondary: '#059669', // mint green
-    accent: 'rgba(16, 185, 129, 0.35)',
-    glow: 'rgba(5, 150, 105, 0.18)',
-    badgeBg: 'rgba(16, 185, 129, 0.14)',
-    badgeText: '#34d399',
-    gradient: 'linear-gradient(90deg, #059669 0%, #10b981 100%)'
+    primary: '#2dd4bf', // soft mint/teal green
+    secondary: '#14b8a6', // teal
+    accent: 'rgba(45, 212, 191, 0.25)',
+    glow: 'rgba(20, 184, 166, 0.12)',
+    badgeBg: 'rgba(45, 212, 191, 0.10)',
+    badgeText: '#2dd4bf',
+    gradient: 'linear-gradient(90deg, #14b8a6 0%, #2dd4bf 100%)'
   },
   M2: {
-    primary: '#3b82f6', // blue
-    secondary: '#06b6d4', // cyan
-    accent: 'rgba(59, 130, 246, 0.35)',
-    glow: 'rgba(6, 182, 212, 0.18)',
-    badgeBg: 'rgba(59, 130, 246, 0.14)',
-    badgeText: '#60a5fa',
-    gradient: 'linear-gradient(90deg, #06b6d4 0%, #3b82f6 100%)'
+    primary: '#38bdf8', // soft ice/sky blue
+    secondary: '#0ea5e9', // sky blue
+    accent: 'rgba(56, 189, 248, 0.25)',
+    glow: 'rgba(14, 165, 233, 0.12)',
+    badgeBg: 'rgba(56, 189, 248, 0.10)',
+    badgeText: '#38bdf8',
+    gradient: 'linear-gradient(90deg, #0ea5e9 0%, #38bdf8 100%)'
   },
   M3: {
-    primary: '#ef4444', // red
-    secondary: '#f43f5e', // rose
-    accent: 'rgba(239, 68, 68, 0.35)',
-    glow: 'rgba(244, 63, 94, 0.18)',
-    badgeBg: 'rgba(239, 68, 68, 0.14)',
-    badgeText: '#f87171',
-    gradient: 'linear-gradient(90deg, #f43f5e 0%, #ef4444 100%)'
+    primary: '#fb7185', // soft rose/coral red
+    secondary: '#f43f5e', // rose red
+    accent: 'rgba(251, 113, 133, 0.25)',
+    glow: 'rgba(244, 63, 94, 0.12)',
+    badgeBg: 'rgba(251, 113, 133, 0.10)',
+    badgeText: '#fb7185',
+    gradient: 'linear-gradient(90deg, #f43f5e 0%, #fb7185 100%)'
   },
   M4: {
     primary: '#d4b87a', // gold
