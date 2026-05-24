@@ -40,7 +40,7 @@ import { SUBJECTS_DB } from '@/data/caderno-content-m1-m8'
 const SYLLABUS_TO_DB_MAP: Record<string, string> = {
   // Pilar 1: Inovação e Estratégia
   'M4-T1-S1': 'M1-S3', // Sustentabilidade em Negócios
-  'M4-T1-S2': 'M1-S1', // Gestão da Inovação e Ferramentas Digitais
+  'M4-T1-S2': 'M4-S1', // Inovação, Transformação e Ferramentas Digitais (M4-S1 — conteúdo completo)
   'M4-T1-S3': 'M1-S2', // Pensamento Criativo
   'M4-T1-S4': 'M5-S2', // Empreendedorismo e Inovação Exponencial (M5-S2 no BD)
   'M4-T1-S5': 'M5-S2', // Empreendedorismo e Inovação Exponencial (M5-S2 no BD)
