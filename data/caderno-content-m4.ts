@@ -5,180 +5,519 @@ export const M4_CONTENT: CadernoModuleContent = {
   topics: [
     {
       id: 'M4-T1',
-      title: 'Liderança e Gestão de Times',
+      title: 'Inovação e Estratégia',
       blocks: [
         {
-          id: 'M4-T1-slides-1',
+          id: 'M4-T1-S1',
           type: 'slides',
-          title: 'Liderança de Alta Performance',
+          title: 'Inovação, Criatividade e Sustentabilidade',
           slides: [
             {
-              title: 'O Papel do Líder Moderno',
+              title: 'Design Thinking e Ecologia',
               bullets: [
-                'Liderança não é cargo — é comportamento regulatório e catalisador',
-                'O líder atua como integrador de competências, direcionando esforço coletivo sob incerteza',
-                'Alinhamento de propósito e metas claras reduz a entropia organizacional',
-                'Foco em segurança psicológica: base para inovação e alto rendimento',
+                'Uso do pensamento de design focado em soluções circulares de baixo impacto',
+                'Estágios clássicos: Empatia, Definição, Ideação, Prototipação e Teste Sustentável',
+                'Mitigação de resíduos de ponta a ponta desde a concepção do produto (Cradle-to-Cradle)'
               ],
-              highlight: 'Liderança de impacto orienta a performance através de clareza, empatia e metas sólidas.',
-            },
-            {
-              title: 'Segurança Psicológica',
-              bullets: [
-                'Permite que membros do time expressem ideias sem medo de retaliação',
-                'Promove aprendizado rápido com erros construtivos',
-                'Aumenta a retenção de talentos e o engajamento de longo prazo',
-                'Segundo estudos do Google (Aristotle), é o fator #1 em equipes de sucesso',
-              ],
-              highlight: 'Sem segurança psicológica, o silêncio corporativo drena a eficiência.',
-            },
-          ],
+              highlight: 'Criatividade aliada à sustentabilidade redesenha modelos de negócios para o século XXI.'
+            }
+          ]
         },
         {
-          id: 'M4-T1-text-1',
-          type: 'text',
-          title: 'Comunicação e Alinhamento',
-          body: 'A comunicação clara e recorrente evita desalinhamentos e retrabalhos. Liderar equipes de alta performance exige transparência radical, estabelecimento de metas ambiciosas (OKRs) e canais abertos de comunicação bidirecional.',
+          id: 'M4-T1-S2',
+          type: 'slides',
+          title: 'Inovação, Transformação e Ferramentas Digitais',
+          slides: [
+            {
+              title: 'Automação e IA em Larga Escala',
+              bullets: [
+                'Uso de agentes de inteligência artificial para otimização de fluxos operacionais',
+                'Ferramentas de computação em nuvem, Big Data e modelagem analítica preditiva',
+                'Redução de lead-time através da digitalização de processos burocráticos'
+              ],
+              highlight: 'A transformação digital não é sobre tecnologia, é sobre agilidade cultural e valor.'
+            }
+          ]
         },
-      ],
+        {
+          id: 'M4-T1-S3',
+          type: 'slides',
+          title: 'Pensamento Criativo',
+          slides: [
+            {
+              title: 'Lógica Lateral e Habilidades Cognitivas',
+              bullets: [
+                'Estratégias para quebrar barreiras cognitivas tradicionais e resolver problemas complexos',
+                'Técnicas de brainstorming estruturado, mapas mentais dinâmicos e SCAMPER',
+                'Incentivo à experimentação ativa e aceitação rápida do fracasso construtivo'
+              ],
+              highlight: 'O pensamento criativo é o ativo intangível mais valioso de uma corporação sob incerteza.'
+            }
+          ]
+        },
+        {
+          id: 'M4-T1-S4',
+          type: 'slides',
+          title: 'Empreendedorismo e Inovação',
+          slides: [
+            {
+              title: 'Criação de Modelos de Negócio Exponenciais',
+              bullets: [
+                'Uso do framework Lean Startup para validação de hipóteses de mercado',
+                'Mapeamento de propostas de valor disruptivas utilizando o Business Model Canvas',
+                'Identificação de oceanos azuis e gaps mercadológicos para escalabilidade'
+              ],
+              highlight: 'Empreender exige alinhar dor do cliente com soluções de alta adaptabilidade.'
+            }
+          ]
+        },
+        {
+          id: 'M4-T1-S5',
+          type: 'slides',
+          title: 'Empreendedorismo e Estratégia',
+          slides: [
+            {
+              title: 'Posicionamento e Vantagem Competitiva',
+              bullets: [
+                'Formulação de estratégias corporativas de longo prazo sob volatilidade (VUCA/BANI)',
+                'Definição de objetivos de mercado e core-competence organizacionais',
+                'Alinhamento tático de recursos e capabilities para mitigar riscos concorrenciais'
+              ],
+              highlight: 'A estratégia de alto impacto garante que o amanhã seja planejado com clareza matemática.'
+            }
+          ]
+        }
+      ]
     },
     {
       id: 'M4-T2',
-      title: 'Inteligência de Mercado e Empresas',
+      title: 'Finanças e Inteligência Quantitativa',
       blocks: [
         {
-          id: 'M4-T2-slides-1',
+          id: 'M4-T2-S1',
           type: 'slides',
-          title: 'Inteligência Competitiva',
+          title: 'Finanças Avançadas',
           slides: [
             {
-              title: 'Análise de Ecossistema',
+              title: 'Estrutura de Capital e Valuation',
               bullets: [
-                'Mapeamento ativo de concorrentes, substitutos e novos entrantes',
-                'Coleta de sinais fracos e análise de tendências de consumo',
-                'Tomada de decisão baseada em dados reais, não em intuição isolada',
-                'Uso de frameworks clássicos: 5 Forças de Porter e Matriz SWOT Dinâmica',
+                'Análise de custo médio ponderado de capital (WACC) e alavancagem financeira',
+                'Modelagem de Fluxo de Caixa Descontado (DCF) para avaliação de ativos corporativos',
+                'Decisões de investimento complexas baseadas em VPL, TIR e payback dinâmico'
               ],
-              highlight: 'A inteligência antecipa as movimentações do mercado antes que se tornem ameaças.',
-            },
-            {
-              title: 'Cultura Orientada a Dados (Data-Driven)',
-              bullets: [
-                'Democratização do acesso a métricas e KPIs importantes do negócio',
-                'Decisões fundamentadas em testes A/B, pesquisas e análises estatísticas',
-                'Redução de vieses cognitivos na formulação de estratégias corporativas',
-                'Agilidade operacional através do monitoramento em tempo real',
-              ],
-            },
-          ],
+              highlight: 'A saúde financeira sustentável é medida pela governança de caixa e geração de valor.'
+            }
+          ]
         },
-      ],
+        {
+          id: 'M4-T2-S2',
+          type: 'slides',
+          title: 'Análise Financeira',
+          slides: [
+            {
+              title: 'Demonstrações de Performance e EBITDA',
+              bullets: [
+                'Leitura aprofundada de rentabilidade operacional, geração de caixa e passivo circulante',
+                'Cálculo e interpretação de ROE, ROIC e giro de ativos corporativos',
+                'Monitoramento de liquidez corrente e margens de contribuição por produto'
+              ],
+              highlight: 'A análise financeira afiada identifica ineficiências invisíveis aos olhos operacionais.'
+            }
+          ]
+        },
+        {
+          id: 'M4-T2-S3',
+          type: 'slides',
+          title: 'Matemática Financeira',
+          slides: [
+            {
+              title: 'Juros Compostos e Equivalência de Fluxos',
+              bullets: [
+                'Cálculos avançados de taxas de juros nominais, efetivas, reais e equivalentes',
+                'Amortização de dívidas utilizando tabelas SAC, Price e sistemas mistos',
+                'Valor do dinheiro no tempo como princípio fundamental para tomadas de decisão'
+              ],
+              highlight: 'Dominar o tempo e a taxa é a chave de qualquer modelagem quantitativa de sucesso.'
+            }
+          ]
+        },
+        {
+          id: 'M4-T2-S4',
+          type: 'slides',
+          title: 'Demonstrações Contábeis',
+          slides: [
+            {
+              title: 'Balanço Patrimonial e DRE',
+              bullets: [
+                'Estruturação contábil e conciliação de ativos, passivos e patrimônio líquido',
+                'Elaboração e análise da Demonstração do Resultado do Exercício (DRE)',
+                'Conformidade técnica internacional (IFRS) para publicação corporativa'
+              ],
+              highlight: 'A transparência contábil é o alicerce da confiança perante o mercado e auditores.'
+            }
+          ]
+        },
+        {
+          id: 'M4-T2-S5',
+          type: 'slides',
+          title: 'Precificação',
+          slides: [
+            {
+              title: 'Estratégias de Preço baseadas em Margem e Valor',
+              bullets: [
+                'Cálculo de markup, custos fixos, variáveis e ponto de equilíbrio (breakeven)',
+                'Táticas de precificação dinâmica, baseada em elasticidade de demanda e valor percebido',
+                'Alinhamento de margens corporativas com metas agressivas de market-share'
+              ],
+              highlight: 'Preço é o que o cliente paga; valor é o que ele percebe e retém.'
+            }
+          ]
+        },
+        {
+          id: 'M4-T2-S6',
+          type: 'slides',
+          title: 'Cálculo Aplicado a Negócios',
+          slides: [
+            {
+              title: 'Otimização e Taxas de Variação',
+              bullets: [
+                'Aplicação de derivadas para maximização de lucro corporativo e minimização de custos',
+                'Análise de produtividade marginal de insumos e fatores de produção',
+                'Modelos matemáticos determinísticos aplicados ao comportamento de oferta e demanda'
+              ],
+              highlight: 'O cálculo diferencial fornece a precisão exata para a otimização de limites operacionais.'
+            }
+          ]
+        },
+        {
+          id: 'M4-T2-S7',
+          type: 'slides',
+          title: 'Análise Estatística',
+          slides: [
+            {
+              title: 'Inferência de Dados e Previsões',
+              bullets: [
+                'Uso de regressão linear para previsão de vendas e comportamento de consumidores',
+                'Cálculo de desvio padrão, intervalos de confiança e testes de hipóteses de qualidade',
+                'Transformação de dados estatísticos brutos em inteligência corporativa e dashboards'
+              ],
+              highlight: 'Em Deus nós confiamos; para todos os outros, tragam-me dados estatísticos.'
+            }
+          ]
+        }
+      ]
     },
     {
       id: 'M4-T3',
-      title: 'Sustentabilidade e ESG Corporativo',
+      title: 'Liderança, Pessoas e Cultura',
       blocks: [
         {
-          id: 'M4-T3-slides-1',
+          id: 'M4-T3-S1',
           type: 'slides',
-          title: 'Os Três Pilares do ESG',
+          title: 'Liderança e Gestão de Equipes',
           slides: [
             {
-              title: 'Environmental (Ambiental)',
+              title: 'Segurança Psicológica e Performance',
               bullets: [
-                'Gestão de carbono e pegada ecológica nas operações corporativas',
-                'Transição energética e eficiência no uso de recursos naturais',
-                'Economia circular: do design do produto até a reciclagem de resíduos',
-                'Preservação da biodiversidade e conformidade regulatória rigorosa',
+                'Construção de clima organizacional de transparência extrema (Modelo Google Aristotle)',
+                'Delegação ágil de responsabilidades baseada em competências individuais e autonomia',
+                'Gestão humanizada e empática focada em retenção de talentos de alto impacto'
               ],
-              highlight: 'O pilar ambiental garante a sustentabilidade ecológica da cadeia de valor.',
-            },
-            {
-              title: 'Social (Social)',
-              bullets: [
-                'Inclusão, diversidade e equidade em todos os níveis da empresa',
-                'Segurança, saúde e bem-estar do colaborador',
-                'Impacto positivo e engajamento com comunidades locais',
-                'Direitos humanos na cadeia de fornecedores globais',
-              ],
-            },
-            {
-              title: 'Governance (Governança)',
-              bullets: [
-                'Ética nos negócios, transparência financeira e compliance robusto',
-                'Direitos dos acionistas e estrutura balanceada do conselho de administração',
-                'Combate ativo à corrupção e canais seguros de denúncia',
-                'Alinhamento de compensação executiva a metas ESG',
-              ],
-              highlight: 'A governança sólida protege a reputação e mitiga riscos operacionais severos.',
-            },
-          ],
+              highlight: 'Líderes modernos não gerenciam tarefas; eles desbloqueiam o potencial humano.'
+            }
+          ]
         },
-      ],
+        {
+          id: 'M4-T3-S2',
+          type: 'slides',
+          title: 'Mercado e Pessoas',
+          slides: [
+            {
+              title: 'Employer Branding e Captação de Talentos',
+              bullets: [
+                'Estratégias de posicionamento da empresa como marca empregadora de destaque',
+                'Alinhamento entre as expectativas da geração Z/Millennials e os valores corporativos',
+                'Estruturação de planos de desenvolvimento individuais (PDI) focados em crescimento mútuo'
+              ],
+              highlight: 'A principal vantagem competitiva sustentável é a densidade de talentos do seu time.'
+            }
+          ]
+        },
+        {
+          id: 'M4-T3-S3',
+          type: 'slides',
+          title: 'Educação, Identidade e Solidariedade',
+          slides: [
+            {
+              title: 'Cultura Inclusiva e Responsabilidade Coletiva',
+              bullets: [
+                'Promoção de diversidade, equidade e inclusão (DEI) em todos os níveis da corporação',
+                'Programas de mentoria coletiva e desenvolvimento social sustentável',
+                'Establecimento de conexões solidárias genuínas entre os colaboradores e a sociedade'
+              ],
+              highlight: 'Uma empresa próspera só existe dentro de uma comunidade saudável e engajada.'
+            }
+          ]
+        },
+        {
+          id: 'M4-T3-S4',
+          type: 'slides',
+          title: 'Ética',
+          slides: [
+            {
+              title: 'Compliance e Valores Universais nos Negócios',
+              bullets: [
+                'Implementação prática de códigos de conduta rigorosos contra fraudes e assédio',
+                'Decisões corporativas fundamentadas em princípios éticos invioláveis perante o lucro',
+                'Cultura de integridade radical construída pelo exemplo da alta liderança (Tone from the Top)'
+              ],
+              highlight: 'A reputação corporativa leva décadas para ser construída e minutos para ser destruída por falhas éticas.'
+            }
+          ]
+        }
+      ]
     },
     {
       id: 'M4-T4',
-      title: 'Feedback Estratégico',
+      title: 'Gestão e Operações Corporativas',
       blocks: [
         {
-          id: 'M4-T4-slides-1',
+          id: 'M4-T4-S1',
           type: 'slides',
-          title: 'Cultura de Feedback Constante',
+          title: 'Fundamentos de Gestão',
           slides: [
             {
-              title: 'Princípios do Feedback Construtivo',
+              title: 'Funções Administrativas Clássicas',
               bullets: [
-                'Feedback deve ser específico, baseado em fatos observáveis, não em suposições',
-                'Foco no comportamento e no impacto, nunca na personalidade do colaborador',
-                'Processo contínuo: feedbacks semanais/quinzenais, não apenas avaliações anuais',
-                'Clareza sobre os próximos passos e plano de ação conjunto',
+                'Planejamento, Organização, Direção e Controle aplicados à realidade contemporânea',
+                'Desenho de organogramas eficientes e fluxogramas de redução de gargalos operacionais',
+                'Mapeamento tático de recursos escassos visando eficiência produtiva máxima'
               ],
-              highlight: 'O feedback é a principal ferramenta de regulação e desenvolvimento de talentos.',
-            },
-            {
-              title: 'Modelo SBI (Situation-Behavior-Impact)',
-              bullets: [
-                'Situação: contextualize o momento exato onde o comportamento ocorreu',
-                'Comportamento: descreva o que o colaborador fez ou disse (fatos objetivos)',
-                'Impacto: explique como esse comportamento afetou o time, o cliente ou o projeto',
-                'Estimule a cocriação do plano de melhoria ou celebração do acerto',
-              ],
-            },
-          ],
+              highlight: 'Gestão sólida é a base que sustenta a criatividade e a disrupção corporativa.'
+            }
+          ]
         },
-      ],
+        {
+          id: 'M4-T4-S2',
+          type: 'slides',
+          title: 'Gestão de Negócios',
+          slides: [
+            {
+              title: 'OKR e KPIs: Foco em Resultados',
+              bullets: [
+                'Implementação e monitoramento de Objectives and Key Results (OKRs) ágeis',
+                'Criação de painéis de telemetria baseados em Balanced Scorecard (BSC)',
+                'Garantia de alinhamento estratégico transversal conectando todos os setores da corporação'
+              ],
+              highlight: 'O que não é medido não é gerenciado e dificilmente será otimizado.'
+            }
+          ]
+        },
+        {
+          id: 'M4-T4-S3',
+          type: 'slides',
+          title: 'Sustentabilidade em Negócios',
+          slides: [
+            {
+              title: 'Economia Circular e Pegada Ecológica',
+              bullets: [
+                'Transição operacional do modelo linear (extrair, fazer, descartar) para o circular',
+                'Desenho de produtos focados em reciclagem, refabricação e logística reversa',
+                'Mapeamento ativamente de emissões de carbono com metas sólidas de neutralização'
+              ],
+              highlight: 'A sustentabilidade não é um custo regulatório, é a longevidade estratégica da empresa.'
+            }
+          ]
+        }
+      ]
     },
     {
       id: 'M4-T5',
-      title: 'Gestão de Arquivos corporativos',
+      title: 'Mercado e Macroeconomia',
       blocks: [
         {
-          id: 'M4-T5-slides-1',
+          id: 'M4-T5-S1',
           type: 'slides',
-          title: 'Organização de Documentação e Ativos',
+          title: 'Economia de Empresa e Análise Mercadológica',
           slides: [
             {
-              title: 'Governança da Informação',
+              title: 'Microeconomia e Forças do Mercado',
               bullets: [
-                'Classificação rigorosa de dados corporativos (confidencial, interno, público)',
-                'Controle de versão unificado e prevenção de perda de dados (DLP)',
-                'Políticas claras de retenção e expurgo seguro de documentos',
-                'Conformidade com a LGPD e regulamentações setoriais de privacidade',
+                'Estudo de concorrência perfeita, monopólios, oligopólios e estruturas de custos',
+                'Elasticidade de demanda e mapeamento de excedente do consumidor e produtor',
+                'Framework das 5 Forças de Porter aplicadas ao ecossistema moderno de tecnologia'
               ],
-              highlight: 'A gestão profissional de arquivos evita vazamentos de dados e multas pesadas.',
-            },
-            {
-              title: 'Estruturação de Repositórios',
-              bullets: [
-                'Nomenclatura padronizada e taxonomia clara de diretórios',
-                'Acesso baseado em papéis (RBAC) e autenticação multifator (MFA)',
-                'Facilidade de busca e indexação automatizada via metadados',
-                'Backups redundantes e planos de recuperação de desastres',
-              ],
-            },
-          ],
+              highlight: 'Compreender a dinâmica de forças do seu setor é a base do seu diferencial competitivo.'
+            }
+          ]
         },
-      ],
+        {
+          id: 'M4-T5-S2',
+          type: 'slides',
+          title: 'Ambiente Macroeconômico',
+          slides: [
+            {
+              title: 'Indicadores Globais e Políticas Monetárias',
+              bullets: [
+                'Impacto de taxas de juros (Selic, FED), inflação e PIB no planejamento corporativo',
+                'Análise de ciclos econômicos, balança comercial e volatilidade de câmbio',
+                'Formulação de estratégias defensivas para períodos de contração e recessão cambial'
+              ],
+              highlight: 'Nenhum negócio é uma idia; a inteligência macroeconômica blinda a empresa contra choques globais.'
+            }
+          ]
+        },
+        {
+          id: 'M4-T5-S3',
+          type: 'slides',
+          title: 'Lógica e Humanidades',
+          slides: [
+            {
+              title: 'Estruturação de Argumentos e Falácias nos Negócios',
+              bullets: [
+                'Uso de lógica proposicional aplicada à construção de cenários e tomadas de decisão',
+                'Identificação ativa de vieses cognitivos e falácias lógicas em discursos de negociação',
+                'Interpretação crítica do comportamento social corporativo sob a ótica das humanidades'
+              ],
+              highlight: 'A clareza de pensamento lógico poupa milhões em decisões precipitadas ou baseadas em falsas premissas.'
+            }
+          ]
+        },
+        {
+          id: 'M4-T5-S4',
+          type: 'slides',
+          title: 'Filosofia',
+          slides: [
+            {
+              title: 'Pensamento Crítico, Ética e Tomada de Decisão',
+              bullets: [
+                'Exploração de frameworks filosóficos clássicos (utilitarismo, deontologia) aplicados a dilemas modernos',
+                'Questionamento analítico de premissas organizacionais estagnadas (Status Quo)',
+                'A busca pelo propósito corporativo (Ikigai) e a geração de valor existencial compartilhado'
+              ],
+              highlight: 'A filosofia ensina a fazer as perguntas certas em vez de aceitar respostas prontas.'
+            }
+          ]
+        }
+      ]
     },
-  ],
+    {
+      id: 'M4-T6',
+      title: 'Impacto Social e Intervenção',
+      blocks: [
+        {
+          id: 'M4-T6-S1',
+          type: 'slides',
+          title: 'Pesquisa Aplicada a Negócios',
+          slides: [
+            {
+              title: 'Metodologias Científicas de Validação e Mercado',
+              bullets: [
+                'Estruturação de pesquisas quantitativas, qualitativas e grupos de foco estruturados',
+                'Coleta de dados primários e secundários sem vieses analíticos indesejados',
+                'Garantia de validação estatística de hipóteses antes de grandes lançamentos de produtos'
+              ],
+              highlight: 'Pesquisa profissional transforma palpites e intuições corporativas em certezas estratégicas.'
+            }
+          ]
+        },
+        {
+          id: 'M4-T6-S2',
+          type: 'slides',
+          title: 'Projeto de Intervenção em Negócios',
+          slides: [
+            {
+              title: 'Diagnóstico Operacional e Resolução de Dores Reais',
+              bullets: [
+                'Identificação de ineficiências em processos existentes e formulação de planos de intervenção',
+                'Aplicação do ciclo PDCA e matriz de priorização (GUT) para correção ágil de falhas',
+                'Cronograma de execução baseado em marcos (Milestones) e gestão de stakeholders'
+              ],
+              highlight: 'Intervir com método gera valor imediato ao converter problemas crônicos em inovação pragmática.'
+            }
+          ]
+        },
+        {
+          id: 'M4-T6-S3',
+          type: 'slides',
+          title: 'Empreendedorismo Social',
+          slides: [
+            {
+              title: 'Negócios de Impacto e Valor Compartilhado',
+              bullets: [
+                'Desenho de modelos autossustentáveis cujo core-business resolve mazelas sociais reais',
+                'Definição e acompanhamento de métricas de impacto socioambiental positivo (SROI)',
+                'Atuação estratégica em consonância com as Metas de Desenvolvimento Sustentável (ODS/ONU)'
+              ],
+              highlight: 'Empreender socialmente é provar que é possível lucrar resolvendo dores coletivas profundas.'
+            }
+          ]
+        },
+        {
+          id: 'M4-T6-S4',
+          type: 'slides',
+          title: 'Intervenção e Sociedade',
+          slides: [
+            {
+              title: 'Projetos de Extensão e Desenvolvimento Comunitário',
+              bullets: [
+                'Diagnóstico participativo com comunidades locais para criação de cooperativas sustentáveis',
+                'Empoderamento de populações vulneráveis através de capacitação financeira e empreendedora',
+                'Mitigação de desigualdades através de ações táticas pontuais integradas ao setor privado'
+              ],
+              highlight: 'Sociedade fortalecida consome com consciência e retroalimenta o ciclo da economia.'
+            }
+          ]
+        },
+        {
+          id: 'M4-T6-S5',
+          type: 'slides',
+          title: 'Teologia e Sociedade',
+          slides: [
+            {
+              title: 'Dimensão Transcendental e o Papel Ético na Comunidade',
+              bullets: [
+                'Investigação das raízes teológicas e de justiça social que regem o comportamento comunitário',
+                'O papel das instituições de fé na coesão social, solidariedade e preservação da dignidade humana',
+                'Diálogo inter-religioso e ecumênico visando pacificação e inclusão ética em ecossistemas de negócios'
+              ],
+              highlight: 'A busca pelo transcendental inspira a responsabilidade ética máxima perante o próximo e a criação.'
+            }
+          ]
+        },
+        {
+          id: 'M4-T6-S6',
+          type: 'slides',
+          title: 'Pesquisa e Identidade',
+          slides: [
+            {
+              title: 'Autoconhecimento, História Social e Propósito Acadêmico',
+              bullets: [
+                'Investigação de raízes identitárias individuais aplicadas ao desenvolvimento profissional',
+                'O papel da história social e demográfica na formulação do perfil de liderança',
+                'Construção de projetos de vida estruturados a partir de pesquisa e fundamentos reflexivos'
+              ],
+              highlight: 'Compreender a própria identidade é a âncora que estabiliza a liderança em tempos de tempestades corporativas.'
+            }
+          ]
+        },
+        {
+          id: 'M4-T6-S7',
+          type: 'slides',
+          title: 'Leitura e Escrita Acadêmica',
+          slides: [
+            {
+              title: 'Comunicação Científica de Alto Impacto',
+              bullets: [
+                'Redação estruturada de artigos de pesquisa, relatórios técnicos executivos e resumos estratégicos',
+                'Metodologia de citação (ABNT, APA) visando integridade acadêmica absoluta contra plágios',
+                'Técnicas de síntese de informação densa para construção de briefings concisos'
+              ],
+              highlight: 'Escrever com clareza é a manifestação de um pensamento estruturado e rigoroso.'
+            }
+          ]
+        }
+      ]
+    }
+  ]
 }

@@ -23,7 +23,9 @@ import {
   TrendingUp,
   Award,
   Shield,
-  Users
+  Users,
+  Zap,
+  Target
 } from 'lucide-react'
 import Link from 'next/link'
 import type { LucideIcon } from 'lucide-react'
@@ -335,33 +337,39 @@ function FloatingVideoPlayer({ moduleTitle, moduleId }: { moduleTitle: string; m
 const BUSINESS_PLAYLIST = [
   {
     id: 'M4-T1',
-    title: 'Liderança e Gestão',
-    subtitle: 'Alta Performance e Segurança Psicológica',
-    duration: '45:10',
+    title: 'Inovação & Estratégia',
+    subtitle: 'IE · Transformação Digital e Novos Negócios',
+    duration: '42:10',
   },
   {
     id: 'M4-T2',
-    title: 'Inteligência de Mercado',
-    subtitle: 'Cultura Data-Driven e SWOT Dinâmica',
-    duration: '38:15',
+    title: 'Finanças & Inteligência Quantitativa',
+    subtitle: 'FIQ · Valuation, Análise e Estatística',
+    duration: '56:15',
   },
   {
     id: 'M4-T3',
-    title: 'Sustentabilidade ESG',
-    subtitle: 'Conformidade e Mitigação de Riscos',
-    duration: '52:40',
+    title: 'Liderança, Pessoas & Cultura',
+    subtitle: 'LPC · Segurança Psicológica, DEI e Ética',
+    duration: '38:40',
   },
   {
     id: 'M4-T4',
-    title: 'Feedback Estratégico',
-    subtitle: 'Modelo SBI e Regulação de Talentos',
-    duration: '30:25',
+    title: 'Gestão & Operações Corporativas',
+    subtitle: 'GOC · Métricas OKR e Economia Circular',
+    duration: '34:25',
   },
   {
     id: 'M4-T5',
-    title: 'Governança & LGPD',
-    subtitle: 'Arquivos Corporativos e Segurança',
-    duration: '42:50',
+    title: 'Mercado & Macroeconomia',
+    subtitle: 'MME · Ciclos de Mercado e Lógica Analítica',
+    duration: '48:50',
+  },
+  {
+    id: 'M4-T6',
+    title: 'Impacto Social & Intervenção',
+    subtitle: 'ISI · Projetos de Extensão e SROI',
+    duration: '52:15',
   },
 ]
 
@@ -538,32 +546,104 @@ function ExecutiveMasterclassTheater({
 
 function ExecutivePerformanceDashboard({ moduleId }: { moduleId?: string }) {
   const theme = MODULE_THEMES[moduleId ?? 'M4'] || MODULE_THEMES.M4
-  const [activeKpi, setActiveKpi] = useState<'clima' | 'growth' | 'esg'>('clima')
+  const [activeKpi, setActiveKpi] = useState<'ie' | 'fiq' | 'lpc' | 'goc' | 'mme' | 'isi'>('ie')
 
   const kpis = {
-    clima: {
-      title: 'Segurança Psicológica',
+    ie: {
+      title: 'Inovação & Estratégia',
       metric: '94.2%',
-      desc: 'Medido sob o Modelo Aristotle (Google)',
-      detail: 'Clima organizacional de transparência radical e aceitação de vulnerabilidade, resultando em 98.6% de engajamento ativo e zero fricção de silêncio.',
-      badge: 'Cultura Excepcional',
-      icon: Users,
+      desc: 'Competitividade e Transformação Digital',
+      detail: 'Mapeamento de modelagens disruptivas e agilidade cultural corporativa baseada em novas tecnologias.',
+      badge: 'Transformação Exponencial',
+      icon: Zap,
+      subjects: [
+        'Inovação, Criatividade e Sustentabilidade',
+        'Inovação, Transformação e Ferramentas Digitais',
+        'Pensamento Criativo',
+        'Empreendedorismo e Inovação',
+        'Empreendedorismo e Estratégia'
+      ],
+      progress: '94.2%'
     },
-    growth: {
-      title: 'Inteligência e Crescimento',
+    fiq: {
+      title: 'Finanças & Quantitativa',
       metric: '+18.4%',
-      desc: 'CAGR anual de posicionamento competitivo',
-      detail: 'Modelagem preditiva orientada a dados com assertividade em decisões de expansão internacional e automação de taxonomia operacional.',
-      badge: 'Data-Driven High ROI',
+      desc: 'Valuation, Margens e Decisões Financeiras',
+      detail: 'Análise de investimentos sob incerteza mercadológica, otimização marginal e modelagens de demonstrações contábeis robustas.',
+      badge: 'High ROI & Margins',
       icon: TrendingUp,
+      subjects: [
+        'Finanças Avançadas',
+        'Análise Financeira',
+        'Matemática Financeira',
+        'Demonstrações Contábeis',
+        'Precificação',
+        'Cálculo Aplicado a Negócios',
+        'Análise Estatística'
+      ],
+      progress: '85%'
     },
-    esg: {
-      title: 'Conformidade ESG',
+    lpc: {
+      title: 'Liderança, Pessoas & Cultura',
       metric: 'AAA',
-      desc: 'Maturidade de sustentabilidade e governança',
-      detail: 'Mitigação rigorosa de riscos legais e reputacionais. ESG totalmente alinhado com a compensação executiva e controles de conformidade.',
-      badge: 'Triple-A Certified',
+      desc: 'Segurança Psicológica, DEI e Ética de Liderança',
+      detail: 'Construção de times de alta performance fundamentados em transparência extrema, equidade social e conduta ética Tone-from-the-Top.',
+      badge: 'Cultura Altamente Segura',
+      icon: Users,
+      subjects: [
+        'Liderança e Gestão de Equipes',
+        'Mercado e Pessoas',
+        'Educação, Identidade e Solidariedade',
+        'Ética'
+      ],
+      progress: '100%'
+    },
+    goc: {
+      title: 'Gestão & Operações',
+      metric: '91.5%',
+      desc: 'Balanced Scorecard, OKRs e Circularidade',
+      detail: 'Desenho de processos táticos altamente eficientes com acompanhamento de metas ágeis e transições completas para a economia circular.',
+      badge: 'Operação de Alta Eficiência',
+      icon: Target,
+      subjects: [
+        'Fundamentos de Gestão',
+        'Gestão de Negócios',
+        'Sustentabilidade em Negócios'
+      ],
+      progress: '91.5%'
+    },
+    mme: {
+      title: 'Mercado & Macroeconomia',
+      metric: 'A+',
+      desc: 'Ciclos Monetários e Análise de Ecossistema',
+      detail: 'Compreensão aprofundada de concorrência setorial, forças mercadológicas de Porter e proteção contra oscilações de juros ou PIBs globais.',
+      badge: 'Inteligência de Mercado',
+      icon: Shield,
+      subjects: [
+        'Economia de Empresa e Análise Mercadológica',
+        'Ambiente Macroeconômico',
+        'Lógica e Humanidades',
+        'Filosofia'
+      ],
+      progress: '93%'
+    },
+    isi: {
+      title: 'Impacto Social & Intervenção',
+      metric: '88.6%',
+      desc: 'Projetos Transversais e SROI Sustentável',
+      detail: 'Solução tática de mazelas comunitárias através de extensão social ativa e pesquisas científicas de validação estatística de campo.',
+      badge: 'Social Impact Certified',
       icon: Award,
+      subjects: [
+        'Pesquisa Aplicada a Negócios',
+        'Projeto de Intervenção em Negócios',
+        'Empreendedorismo Social',
+        'Intervenção e Sociedade',
+        'Teologia e Sociedade',
+        'Pesquisa e Identidade',
+        'Leitura e Escrita Acadêmica'
+      ],
+      progress: '88.6%'
     }
   }
 
@@ -576,83 +656,47 @@ function ExecutivePerformanceDashboard({ moduleId }: { moduleId?: string }) {
           <span className="text-[7.5px] uppercase tracking-wider font-bold" style={{ color: theme.primary }}>KPIs Estratégicos</span>
           <span className="text-[8px] px-1.5 py-0.5 rounded bg-[#d4b87a]/10 border border-[#d4b87a]/20 text-[#d4b87a] font-mono">Executive Mode</span>
         </div>
-        <h4 className="text-[12px] font-bold text-white/90 mt-1">Indicadores de Alta Performance</h4>
+        <h4 className="text-[12px] font-bold text-white/90 mt-1">Indicadores de Competência (30 Disciplinas)</h4>
       </div>
 
-      <div className="grid grid-cols-3 gap-2 mt-4">
-        
-        {/* KPI 1: Clima */}
-        <button
-          onClick={() => setActiveKpi('clima')}
-          className="p-2.5 rounded-lg border text-left transition-all duration-300 flex flex-col justify-between cursor-pointer"
-          style={{
-            background: activeKpi === 'clima' ? 'rgba(212,184,122,0.08)' : 'rgba(255,255,255,0.01)',
-            borderColor: activeKpi === 'clima' ? theme.primary : 'rgba(255,255,255,0.04)',
-            boxShadow: activeKpi === 'clima' ? `0 0 12px ${theme.glow}` : 'none'
-          }}
-        >
-          <div className="flex justify-between items-start">
-            <span className="text-[7.5px] uppercase tracking-widest text-white/40 block font-bold">Segurança</span>
-            <Users className="h-2.5 w-2.5 opacity-30" style={{ color: theme.primary }} />
-          </div>
-          <span className="text-[14px] font-extrabold text-white mt-1 leading-none">{kpis.clima.metric}</span>
-          <div className="w-full h-1 bg-white/10 rounded-full mt-2 overflow-hidden">
-            <motion.div 
-              className="h-full" 
-              style={{ backgroundColor: theme.primary }}
-              initial={{ width: 0 }}
-              animate={{ width: '94.2%' }}
-              transition={{ duration: 1.2 }}
-            />
-          </div>
-        </button>
-
-        {/* KPI 2: Growth */}
-        <button
-          onClick={() => setActiveKpi('growth')}
-          className="p-2.5 rounded-lg border text-left transition-all duration-300 flex flex-col justify-between cursor-pointer"
-          style={{
-            background: activeKpi === 'growth' ? 'rgba(212,184,122,0.08)' : 'rgba(255,255,255,0.01)',
-            borderColor: activeKpi === 'growth' ? theme.primary : 'rgba(255,255,255,0.04)',
-            boxShadow: activeKpi === 'growth' ? `0 0 12px ${theme.glow}` : 'none'
-          }}
-        >
-          <div className="flex justify-between items-start">
-            <span className="text-[7.5px] uppercase tracking-widest text-white/40 block font-bold">ROI & Crescimento</span>
-            <TrendingUp className="h-2.5 w-2.5 opacity-30" style={{ color: theme.primary }} />
-          </div>
-          <span className="text-[14px] font-extrabold text-white mt-1 leading-none">{kpis.growth.metric}</span>
-          <div className="h-3 w-full mt-2 overflow-hidden">
-            <svg className="w-full h-full" viewBox="0 0 50 15" preserveAspectRatio="none">
-              <path d="M0,12 Q12,5 25,8 T50,2 L50,15 L0,15 Z" fill="rgba(212,184,122,0.15)"/>
-              <path d="M0,12 Q12,5 25,8 T50,2" fill="none" stroke={theme.primary} strokeWidth="1.2"/>
-            </svg>
-          </div>
-        </button>
-
-        {/* KPI 3: ESG */}
-        <button
-          onClick={() => setActiveKpi('esg')}
-          className="p-2.5 rounded-lg border text-left transition-all duration-300 flex flex-col justify-between cursor-pointer"
-          style={{
-            background: activeKpi === 'esg' ? 'rgba(212,184,122,0.08)' : 'rgba(255,255,255,0.01)',
-            borderColor: activeKpi === 'esg' ? theme.primary : 'rgba(255,255,255,0.04)',
-            boxShadow: activeKpi === 'esg' ? `0 0 12px ${theme.glow}` : 'none'
-          }}
-        >
-          <div className="flex justify-between items-start">
-            <span className="text-[7.5px] uppercase tracking-widest text-white/40 block font-bold">ESG Score</span>
-            <Award className="h-2.5 w-2.5 opacity-30" style={{ color: theme.primary }} />
-          </div>
-          <span className="text-[14px] font-extrabold mt-1 text-[#d4b87a] leading-none tracking-wider">{kpis.esg.metric}</span>
-          <div className="flex items-center gap-1 mt-2.5">
-            <div className="w-1.5 h-1.5 rounded-full bg-[#10b981] animate-pulse" />
-            <span className="text-[7px] font-mono text-white/30">Maturidade AAA</span>
-          </div>
-        </button>
-
+      {/* Grid: 2 rows of 3 columns for 6 KPIs */}
+      <div className="grid grid-cols-2 gap-2 mt-4">
+        {Object.entries(kpis).map(([key, kpi]) => {
+          const isSelected = activeKpi === key
+          const Icon = kpi.icon
+          return (
+            <button
+              key={key}
+              onClick={() => setActiveKpi(key as any)}
+              className="p-2 rounded-lg border text-left transition-all duration-300 flex flex-col justify-between cursor-pointer"
+              style={{
+                background: isSelected ? 'rgba(212,184,122,0.08)' : 'rgba(255,255,255,0.01)',
+                borderColor: isSelected ? theme.primary : 'rgba(255,255,255,0.04)',
+                boxShadow: isSelected ? `0 0 12px ${theme.glow}` : 'none'
+              }}
+            >
+              <div className="flex justify-between items-start w-full">
+                <span className="text-[7px] uppercase tracking-wider text-white/35 font-bold truncate max-w-[80px]">
+                  {kpi.title.split(' ')[0]}
+                </span>
+                <Icon className="h-2.5 w-2.5 opacity-30" style={{ color: theme.primary }} />
+              </div>
+              <span className="text-[12.5px] font-extrabold text-white mt-1 leading-none">{kpi.metric}</span>
+              <div className="w-full h-0.5 bg-white/10 rounded-full mt-2 overflow-hidden">
+                <motion.div 
+                  className="h-full" 
+                  style={{ backgroundColor: theme.primary }}
+                  initial={{ width: 0 }}
+                  animate={{ width: kpi.progress.includes('%') ? kpi.progress : '90%' }}
+                  transition={{ duration: 1 }}
+                />
+              </div>
+            </button>
+          )
+        })}
       </div>
 
+      {/* KPI Dynamic Details with Subject List Tags */}
       <AnimatePresence mode="wait">
         <motion.div
           key={activeKpi}
@@ -660,21 +704,36 @@ function ExecutivePerformanceDashboard({ moduleId }: { moduleId?: string }) {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -6 }}
           transition={{ duration: 0.2 }}
-          className="mt-4 p-3 rounded-lg bg-black/40 border border-white/[0.04] flex flex-col gap-1.5"
+          className="mt-4 p-3.5 rounded-lg bg-black/40 border border-white/[0.04] flex flex-col gap-1.5"
         >
           <div className="flex justify-between items-center">
             <div className="flex items-center gap-2">
               <ActiveIcon className="h-3.5 w-3.5" style={{ color: theme.primary }} />
-              <span className="text-[9px] font-bold text-white/80">{kpis[activeKpi].title}</span>
+              <span className="text-[9.5px] font-bold text-white/80">{kpis[activeKpi].title}</span>
             </div>
             <span className="text-[7.5px] font-mono font-bold uppercase px-1.5 py-0.5 rounded bg-white/5 border border-white/10 text-white/40">
               {kpis[activeKpi].badge}
             </span>
           </div>
-          <span className="text-[8px] font-mono text-white/30">{kpis[activeKpi].desc}</span>
-          <p className="text-[10px] text-white/50 leading-relaxed text-justify mt-1">
+          <span className="text-[8px] font-mono text-white/35">{kpis[activeKpi].desc}</span>
+          <p className="text-[9.5px] text-white/50 leading-relaxed text-justify mt-1 border-b border-white/[0.04] pb-2" style={{ borderBottom: '0.2px solid rgba(255,255,255,0.04)' }}>
             {kpis[activeKpi].detail}
           </p>
+          
+          {/* Subjects Sub-list */}
+          <div className="mt-1.5">
+            <span className="text-[7px] uppercase tracking-widest text-[#d4b87a] font-bold block mb-1">Disciplinas Integradas ({kpis[activeKpi].subjects.length})</span>
+            <div className="flex flex-wrap gap-1 max-h-[72px] overflow-y-auto ipb-thinscroll pr-1">
+              {kpis[activeKpi].subjects.map((sub, sIdx) => (
+                <span 
+                  key={sIdx} 
+                  className="text-[7.5px] px-1.5 py-0.5 rounded bg-white/5 border border-white/10 text-white/60 hover:text-white transition duration-150"
+                >
+                  {sub}
+                </span>
+              ))}
+            </div>
+          </div>
         </motion.div>
       </AnimatePresence>
 
