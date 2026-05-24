@@ -28,12 +28,20 @@ import {
   Target,
   Layers,
   MessageSquare,
-  Send
+  Send,
+  Lightbulb,
+  LayoutGrid,
+  Scale,
+  LineChart,
+  Globe,
+  Compass,
+  Sliders,
+  Fingerprint,
+  Rocket
 } from 'lucide-react'
 import Link from 'next/link'
 import type { LucideIcon } from 'lucide-react'
-import { CadernoModulePanel } from '@/components/caderno/caderno-module'
-import { loadModuleContent } from '@/data/caderno-content-loader'
+import { SUBJECTS_DB } from '@/data/caderno-content-m1-m8'
 import { IpbBackground } from '@/components/sea/ipb-background'
 
 // ── Module data ───────────────────────────────────────────────────────────────
@@ -42,60 +50,108 @@ type Module = {
   id: string
   title: string
   icon: LucideIcon
-  overview: string
   eyebrow: string
+  overview: string
   concepts: string[]
 }
 
 const MODULES: Module[] = [
   {
     id: 'M1',
-    title: 'Neuro',
-    icon: Brain,
-    eyebrow: 'Neuroscience',
-    overview: 'Plasticidade neural, mapas funcionais e correlações clínicas. Avaliação neurológica e reabilitação pós-AVC.',
+    title: 'Inovação e Sustentabilidade',
+    icon: Lightbulb,
+    eyebrow: 'M1 · Innovation & ESG',
+    overview: 'Gestão da inovação, criatividade, transformação digital e sustentabilidade circular corporativa.',
     concepts: [
-      'Plasticidade cortical e reorganização sináptica após lesão central',
-      'Acoplamento neurovascular e suprimento hemodinâmico local',
-      'Vias eferentes e regulação do tônus muscular na espasticidade'
+      'Inovação, Transformação e Ferramentas Digitais',
+      'Pensamento Criativo e Habilidades Cognitivas',
+      'Sustentabilidade em Negócios e Economia Circular'
     ]
   },
   {
     id: 'M2',
-    title: 'Pneumo / VM',
-    icon: Wind,
-    eyebrow: 'Pulmonology',
-    overview: 'Ventilação mecânica protetora, mecânica pulmonar, parâmetros ventilatórios e desmame.',
+    title: 'Fundamentos de Gestão',
+    icon: LayoutGrid,
+    eyebrow: 'M2 · Management Foundations',
+    overview: 'Processos de gestão de negócios, relatórios patrimoniais, DRE, IFRS e matemática financeira.',
     concepts: [
-      'Ventilação protetora sob restrição de pressão e complacência',
-      'Troca gasosa, relação V/Q e shunt intrapulmonar em decúbito',
-      'Desmame ventilatório orientado por índices preditivos e fisiológicos'
+      'Gestão de Negócios e OKRs',
+      'Demonstrações Contábeis e Balanço (IFRS)',
+      'Matemática Financeira e Fluxos de Amortização'
     ]
   },
   {
     id: 'M3',
-    title: 'Cardio',
-    icon: Heart,
-    eyebrow: 'Cardiology',
-    overview: 'ECG, hemodinâmica e reabilitação cardiovascular. Exercício supervisionado e protocolo cardíaco.',
+    title: 'Mercado e Pessoas',
+    icon: Users,
+    eyebrow: 'M3 · Market & People',
+    overview: 'Microeconomia, concorrência, forças de mercado, liderança situacional e segurança psicológica.',
     concepts: [
-      'Fisiologia do esforço e consumo de oxigênio miocárdico',
-      'Variabilidade da frequência cardíaca e modulação autonômica',
-      'Protocolos de condicionamento seguro pós-infarto agudo'
+      'Economia de Empresa e Análise Mercadológica (Porter)',
+      'Liderança e Gestão de Equipes de Alta Performance',
+      'Cultura Organizacional e Captação de Talentos'
     ]
   },
   {
     id: 'M4',
-    title: 'BUSINESS',
-    icon: Briefcase,
-    eyebrow: 'Executive Business',
-    overview: 'Liderança executiva de alta performance, inteligência competitiva de mercado, ESG corporativo, cultura de feedback e governança de arquivos.',
+    title: 'Lógica e Humanidades',
+    icon: Scale,
+    eyebrow: 'M4 · Logic & Humanities',
+    overview: 'Filosofia corporativa, ética utilitarista, lógica analítica, derivadas e otimização estatística.',
     concepts: [
-      'Liderança de impacto e construção de segurança psicológica',
-      'Inteligência competitiva baseada em modelagem de dados',
-      'ESG e sustentabilidade corporativa como mitigação de riscos'
+      'Filosofia, Pensamento Crítico e Ética nos Negócios',
+      'Cálculo Aplicado a Negócios e Otimização Marginal',
+      'Análise Estatística, Regressões e Previsão de Demanda'
     ]
   },
+  {
+    id: 'M5',
+    title: 'Empreendedorismo e Estratégia',
+    icon: Target,
+    eyebrow: 'M5 · Strategy & Ventures',
+    overview: 'Modelagem de novos negócios, canvas, lean startup, redação de alto impacto e ambiente macroeconômico.',
+    concepts: [
+      'Leitura e Escrita Acadêmica e Comunicação Científica',
+      'Empreendedorismo e Inovação Exponencial',
+      'Ambiente Macroeconômico e Políticas Monetárias'
+    ]
+  },
+  {
+    id: 'M6',
+    title: 'Finanças Avançadas',
+    icon: LineChart,
+    eyebrow: 'M6 · Advanced Finance',
+    overview: 'Valuation, DCF, estrutura de capital, WACC, markup, precificação dinâmica e governança ética.',
+    concepts: [
+      'Análise Financeira, EBITDA, ROIC e Valuation',
+      'Precificação Dinâmica e Elasticidade de Preço',
+      'Ética, Compliance e Integridade Corporativa'
+    ]
+  },
+  {
+    id: 'M7',
+    title: 'Intervenção e Sociedade',
+    icon: Globe,
+    eyebrow: 'M7 · Social Intervention',
+    overview: 'Empreendedorismo social, métricas SROI, teologia do trabalho, diagnóstico operacional e PDCA.',
+    concepts: [
+      'Empreendedorismo Social e ODS/ONU',
+      'Teologia e Sociedade (Dignidade Humana)',
+      'Projeto de Intervenção em Negócios e Ciclo PDCA'
+    ]
+  },
+  {
+    id: 'M8',
+    title: 'Pesquisa e Identidade',
+    icon: Compass,
+    eyebrow: 'M8 · Research & Purpose',
+    overview: 'Metodologias científicas de validação, responsabilidade social, PDIs e projetos de vida.',
+    concepts: [
+      'Educação, Identidade e Solidariedade (DEI)',
+      'Pesquisa Aplicada a Negócios (Quali/Quanti)',
+      'Construção de Projetos de Vida e Liderança'
+    ]
+  }
 ]
 
 const MODULE_THEMES: Record<string, {
@@ -108,49 +164,268 @@ const MODULE_THEMES: Record<string, {
   gradient: string
 }> = {
   M1: {
-    primary: '#2dd4bf', // soft mint/teal green
-    secondary: '#14b8a6', // teal
-    accent: 'rgba(45, 212, 191, 0.25)',
+    primary: '#2dd4bf', // Teal Green
+    secondary: '#14b8a6',
+    accent: 'rgba(45, 212, 191, 0.22)',
     glow: 'rgba(20, 184, 166, 0.12)',
     badgeBg: 'rgba(45, 212, 191, 0.10)',
     badgeText: '#2dd4bf',
     gradient: 'linear-gradient(90deg, #14b8a6 0%, #2dd4bf 100%)'
   },
   M2: {
-    primary: '#38bdf8', // soft ice/sky blue
-    secondary: '#0ea5e9', // sky blue
-    accent: 'rgba(56, 189, 248, 0.25)',
+    primary: '#38bdf8', // Ice Blue
+    secondary: '#0ea5e9',
+    accent: 'rgba(56, 189, 248, 0.22)',
     glow: 'rgba(14, 165, 233, 0.12)',
     badgeBg: 'rgba(56, 189, 248, 0.10)',
     badgeText: '#38bdf8',
     gradient: 'linear-gradient(90deg, #0ea5e9 0%, #38bdf8 100%)'
   },
   M3: {
-    primary: '#fb7185', // soft rose/coral red
-    secondary: '#f43f5e', // rose red
-    accent: 'rgba(251, 113, 133, 0.25)',
+    primary: '#fb7185', // Coral Rose
+    secondary: '#f43f5e',
+    accent: 'rgba(251, 113, 133, 0.22)',
     glow: 'rgba(244, 63, 94, 0.12)',
     badgeBg: 'rgba(251, 113, 133, 0.10)',
     badgeText: '#fb7185',
     gradient: 'linear-gradient(90deg, #f43f5e 0%, #fb7185 100%)'
   },
   M4: {
-    primary: '#d4b87a', // gold
-    secondary: '#cbd5e1', // silver
-    accent: 'rgba(212, 184, 122, 0.35)',
-    glow: 'rgba(212, 184, 122, 0.18)',
-    badgeBg: 'rgba(212, 184, 122, 0.14)',
+    primary: '#d4b87a', // Gold
+    secondary: '#b39556',
+    accent: 'rgba(212, 184, 122, 0.25)',
+    glow: 'rgba(212, 184, 122, 0.12)',
+    badgeBg: 'rgba(212, 184, 122, 0.10)',
     badgeText: '#d4b87a',
-    gradient: 'linear-gradient(90deg, #cbd5e1 0%, #d4b87a 100%)'
+    gradient: 'linear-gradient(90deg, #b39556 0%, #d4b87a 100%)'
+  },
+  M5: {
+    primary: '#a78bfa', // Purple Violet
+    secondary: '#8b5cf6',
+    accent: 'rgba(167, 139, 250, 0.22)',
+    glow: 'rgba(139, 92, 246, 0.12)',
+    badgeBg: 'rgba(167, 139, 250, 0.10)',
+    badgeText: '#a78bfa',
+    gradient: 'linear-gradient(90deg, #8b5cf6 0%, #a78bfa 100%)'
+  },
+  M6: {
+    primary: '#34d399', // Emerald Mint
+    secondary: '#10b981',
+    accent: 'rgba(52, 211, 153, 0.22)',
+    glow: 'rgba(16, 185, 129, 0.12)',
+    badgeBg: 'rgba(52, 211, 153, 0.10)',
+    badgeText: '#34d399',
+    gradient: 'linear-gradient(90deg, #10b981 0%, #34d399 100%)'
+  },
+  M7: {
+    primary: '#fb923c', // Warm Orange
+    secondary: '#f97316',
+    accent: 'rgba(251, 146, 60, 0.22)',
+    glow: 'rgba(249, 115, 22, 0.12)',
+    badgeBg: 'rgba(251, 146, 60, 0.10)',
+    badgeText: '#fb923c',
+    gradient: 'linear-gradient(90deg, #f97316 0%, #fb923c 100%)'
+  },
+  M8: {
+    primary: '#94a3b8', // Silver Slate
+    secondary: '#64748b',
+    accent: 'rgba(148, 163, 184, 0.22)',
+    glow: 'rgba(100, 116, 139, 0.12)',
+    badgeBg: 'rgba(148, 163, 184, 0.10)',
+    badgeText: '#94a3b8',
+    gradient: 'linear-gradient(90deg, #64748b 0%, #94a3b8 100%)'
   }
 }
 
 const ease = [0.16, 1, 0.3, 1] as const
 
-// ── Sub-components from mockup ────────────────────────────────────────────────
+type ModuleTopicsMap = Record<string, { id: string; title: string }[]>
+
+const INITIAL_TOPICS_MAP: ModuleTopicsMap = {
+  M1: [
+    { id: 'M1-S1', title: 'Gestão da Inovação e Ferramentas Digitais' },
+    { id: 'M1-S2', title: 'Pensamento Criativo' },
+    { id: 'M1-S3', title: 'Sustentabilidade em Negócios' }
+  ],
+  M2: [
+    { id: 'M2-S1', title: 'Gestão de Negócios' },
+    { id: 'M2-S2', title: 'Demonstrações Contábeis' },
+    { id: 'M2-S3', title: 'Matemática Financeira' }
+  ],
+  M3: [
+    { id: 'M3-S1', title: 'Economia de Empresa e Análise Mercadológica' },
+    { id: 'M3-S2', title: 'Liderança e Gestão de Equipes' }
+  ],
+  M4: [
+    { id: 'M4-S1', title: 'Filosofia' },
+    { id: 'M4-S2', title: 'Cálculo Aplicado a Negócios' },
+    { id: 'M4-S3', title: 'Análise Estatística' }
+  ],
+  M5: [
+    { id: 'M5-S1', title: 'Leitura e Escrita Acadêmica' },
+    { id: 'M5-S2', title: 'Empreendedorismo e Inovação' },
+    { id: 'M5-S3', title: 'Ambiente Macroeconômico' }
+  ],
+  M6: [
+    { id: 'M6-S1', title: 'Análise Financeira' },
+    { id: 'M6-S2', title: 'Precificação' },
+    { id: 'M6-S3', title: 'Ética' }
+  ],
+  M7: [
+    { id: 'M7-S1', title: 'Empreendedorismo Social' },
+    { id: 'M7-S2', title: 'Teologia e Sociedade' },
+    { id: 'M7-S3', title: 'Projeto de Intervenção em Negócios' }
+  ],
+  M8: [
+    { id: 'M8-S1', title: 'Educação, Identidade e Solidariedade' },
+    { id: 'M8-S2', title: 'Pesquisa Aplicada a Negócios' }
+  ]
+}
+
+const ACADEMIC_SYLLABUS = [
+  { id: 'M1-S1', subtitle: 'M1 · Ferramentas Digitais', duration: '22:15' },
+  { id: 'M1-S2', subtitle: 'M1 · Pensamento Criativo', duration: '18:40' },
+  { id: 'M1-S3', subtitle: 'M1 · Economia Circular', duration: '25:10' },
+  { id: 'M2-S1', subtitle: 'M2 · Gestão e OKRs', duration: '20:30' },
+  { id: 'M2-S2', subtitle: 'M2 · Contabilidade IFRS', duration: '24:15' },
+  { id: 'M2-S3', subtitle: 'M2 · Matemática Financeira', duration: '22:45' },
+  { id: 'M3-S1', subtitle: 'M3 · Análise de Porter', duration: '19:50' },
+  { id: 'M3-S2', subtitle: 'M3 · Alta Performance', duration: '21:20' },
+  { id: 'M4-S1', subtitle: 'M4 · Ética e Lógica', duration: '23:10' },
+  { id: 'M4-S2', subtitle: 'M4 · Cálculo e Otimização', duration: '26:40' },
+  { id: 'M4-S3', subtitle: 'M4 · Estatística Regressiva', duration: '24:50' },
+  { id: 'M5-S1', subtitle: 'M5 · Comunicação Premium', duration: '17:30' },
+  { id: 'M5-S2', subtitle: 'M5 · Lean Canvas Setup', duration: '25:20' },
+  { id: 'M5-S3', subtitle: 'M5 · Ambiente Macro', duration: '21:10' },
+  { id: 'M6-S1', subtitle: 'M6 · Valuation & DCF', duration: '27:40' },
+  { id: 'M6-S2', subtitle: 'M6 · Elasticidade-Preço', duration: '20:15' },
+  { id: 'M6-S3', subtitle: 'M6 · Compliance & Ética', duration: '22:30' },
+  { id: 'M7-S1', subtitle: 'M7 · Métricas SROI', duration: '23:45' },
+  { id: 'M7-S2', subtitle: 'M7 · Teologia do Trabalho', duration: '19:10' },
+  { id: 'M7-S3', subtitle: 'M7 · Gestão com PDCA', duration: '24:20' },
+  { id: 'M8-S1', subtitle: 'M8 · Cultura DEI', duration: '18:50' },
+  { id: 'M8-S2', subtitle: 'M8 · Validação Científica', duration: '22:15' }
+]
+
+const SUBJECT_KPIS: Record<string, {
+  metric1: { label: string; value: string; progress: number; sparkline: number[] }
+  metric2: { label: string; value: string; chartData: number[] }
+  metric3: { label: string; value: string; badge: string }
+}> = {
+  'M1-S1': {
+    metric1: { label: 'Adoção Digital', value: '92.4%', progress: 92.4, sparkline: [40, 55, 62, 78, 85, 92] },
+    metric2: { label: 'Time-to-Market', value: '5.2d', chartData: [12, 10, 8, 7, 6, 5] },
+    metric3: { label: 'Nível TRL', value: 'TRL 9', badge: 'Alta Automação' }
+  },
+  'M1-S2': {
+    metric1: { label: 'Geração de Ideias', value: '96.8%', progress: 96.8, sparkline: [30, 45, 60, 80, 88, 96] },
+    metric2: { label: 'Bloqueio Cognitivo', value: '-82%', chartData: [90, 70, 50, 35, 25, 18] },
+    metric3: { label: 'Fluência Guilford', value: 'Excepcional', badge: 'Alta Divergência' }
+  },
+  'M1-S3': {
+    metric1: { label: 'Circularidade', value: '88.5%', progress: 88.5, sparkline: [20, 35, 50, 68, 78, 88] },
+    metric2: { label: 'Resíduos Mitigados', value: '-42.8%', chartData: [100, 85, 72, 60, 50, 42] },
+    metric3: { label: 'Selo ESG', value: 'AAA', badge: 'Cradle-to-Cradle' }
+  },
+  'M2-S1': {
+    metric1: { label: 'Uso de OKRs', value: '94.2%', progress: 94.2, sparkline: [50, 65, 72, 85, 90, 94] },
+    metric2: { label: 'Aproveitamento', value: '91.5%', chartData: [60, 70, 78, 82, 88, 91] },
+    metric3: { label: 'Métricas Ágeis', value: 'Grau A', badge: 'Alta Eficiência' }
+  },
+  'M2-S2': {
+    metric1: { label: 'Acurácia Contábil', value: '100%', progress: 100, sparkline: [95, 98, 99, 100, 100, 100] },
+    metric2: { label: 'Auditabilidade', value: '99.8%', chartData: [80, 88, 92, 95, 98, 99] },
+    metric3: { label: 'Normas IFRS', value: 'Padrão Ext.', badge: 'Confiança de Mercado' }
+  },
+  'M2-S3': {
+    metric1: { label: 'Cálculo de Juros', value: '98.5%', progress: 98.5, sparkline: [80, 85, 90, 93, 96, 98] },
+    metric2: { label: 'Base de Amortização', value: '12 meses', chartData: [12, 10, 8, 6, 4, 2] },
+    metric3: { label: 'Modelo SAC/Price', value: 'SAC Vencedor', badge: 'Custo Minimizado' }
+  },
+  'M3-S1': {
+    metric1: { label: 'Gargalo Concorrencial', value: 'Sob Controle', progress: 90, sparkline: [40, 50, 65, 78, 82, 90] },
+    metric2: { label: 'Forças de Porter', value: 'Pressão 12%', chartData: [35, 30, 25, 20, 15, 12] },
+    metric3: { label: 'Oceano Azul', value: 'Grau Máximo', badge: 'Diferencial Forte' }
+  },
+  'M3-S2': {
+    metric1: { label: 'Segurança Psicológica', value: '96.4%', progress: 96.4, sparkline: [60, 75, 82, 90, 93, 96] },
+    metric2: { label: 'Retenção de Talentos', value: '94.8%', chartData: [80, 84, 88, 91, 93, 94] },
+    metric3: { label: 'eNPS', value: '+78 pts', badge: 'Cultura Altamente Segura' }
+  },
+  'M4-S1': {
+    metric1: { label: 'Rigor Ético', value: '99.1%', progress: 99.1, sparkline: [90, 93, 95, 97, 98, 99] },
+    metric2: { label: 'Consciência Crítica', value: '94.5%', chartData: [70, 75, 82, 88, 91, 94] },
+    metric3: { label: 'Ikigai Corporativo', value: 'Alinhado', badge: 'Rigor Filosófico' }
+  },
+  'M4-S2': {
+    metric1: { label: 'Otimização de Lucro', value: '95.2%', progress: 95.2, sparkline: [70, 80, 85, 90, 93, 95] },
+    metric2: { label: 'Marginal Revenue R\'', value: 'R\' = C\'', chartData: [40, 30, 20, 10, 5, 0] },
+    metric3: { label: 'Derivada Aplicada', value: 'Ponto Ótimo', badge: 'Margem Máxima' }
+  },
+  'M4-S3': {
+    metric1: { label: 'Confiança Estatística', value: '95%', progress: 95, sparkline: [85, 88, 90, 92, 94, 95] },
+    metric2: { label: 'Desvio Padrão (σ)', value: 'σ = 1.2', chartData: [2.5, 2.0, 1.8, 1.5, 1.3, 1.2] },
+    metric3: { label: 'Previsibilidade', value: 'Excelente', badge: 'Regressão Bayesiana' }
+  },
+  'M5-S1': {
+    metric1: { label: 'Acurácia Científica', value: '98.2%', progress: 98.2, sparkline: [80, 85, 90, 94, 96, 98] },
+    metric2: { label: 'Rigor Metodológico', value: 'Padrão APA', chartData: [10, 8, 6, 4, 2, 1] },
+    metric3: { label: 'Integridade Textual', value: 'Zero Plágio', badge: 'Comunicação Premium' }
+  },
+  'M5-S2': {
+    metric1: { label: 'Disrupção do Modelo', value: '91.8%', progress: 91.8, sparkline: [40, 55, 68, 78, 85, 91] },
+    metric2: { label: 'CAC / LTV Ratio', value: '1 : 4.5', chartData: [1.5, 2.0, 2.8, 3.5, 4.0, 4.5] },
+    metric3: { label: 'Escala Exponencial', value: 'Valido', badge: 'Canvas & Lean Setup' }
+  },
+  'M5-S3': {
+    metric1: { label: 'Proteção Cambial', value: '88.4%', progress: 88.4, sparkline: [60, 70, 78, 82, 85, 88] },
+    metric2: { label: 'Mapeamento Taxas', value: 'Selic/FED', chartData: [50, 40, 30, 25, 20, 15] },
+    metric3: { label: 'Resiliência Choque', value: 'Grau Forte', badge: 'Inteligência Macro' }
+  },
+  'M6-S1': {
+    metric1: { label: 'Valuation Preciso', value: '96.2%', progress: 96.2, sparkline: [50, 65, 78, 88, 93, 96] },
+    metric2: { label: 'Retorno Operacional', value: '+34.2%', chartData: [15, 20, 24, 28, 31, 34] },
+    metric3: { label: 'Margem EBITDA', value: '34.2%', badge: 'High ROI & Margins' }
+  },
+  'M6-S2': {
+    metric1: { label: 'Excedente do Produtor', value: '94.5%', progress: 94.5, sparkline: [70, 78, 85, 90, 93, 94] },
+    metric2: { label: 'Markup Adicionado', value: '1.8x Média', chartData: [1.2, 1.4, 1.5, 1.6, 1.7, 1.8] },
+    metric3: { label: 'Elasticidade-Preço', value: 'Equilibrada', badge: 'Preço Dinâmico' }
+  },
+  'M6-S3': {
+    metric1: { label: 'Segurança e Compliance', value: '100%', progress: 100, sparkline: [95, 98, 99, 100, 100, 100] },
+    metric2: { label: 'Whistleblowing', value: '0 Pendência', chartData: [5, 3, 2, 1, 0, 0] },
+    metric3: { label: 'Tone from the Top', value: 'Radical', badge: 'Ética Absoluta' }
+  },
+  'M7-S1': {
+    metric1: { label: 'Multiplicador Social', value: '88.6%', progress: 88.6, sparkline: [40, 55, 68, 78, 83, 88] },
+    metric2: { label: 'SROI Calculado', value: 'R$ 3.5 : R$ 1', chartData: [1.5, 2.0, 2.5, 2.8, 3.2, 3.5] },
+    metric3: { label: 'Metas ODS/ONU', value: '12 Alinhadas', badge: 'Impacto Autossustentável' }
+  },
+  'M7-S2': {
+    metric1: { label: 'Coesão Social', value: '93.5%', progress: 93.5, sparkline: [60, 72, 80, 86, 90, 93] },
+    metric2: { label: 'Solidariedade', value: 'Alta', chartData: [10, 25, 45, 65, 80, 93] },
+    metric3: { label: 'Justiça e Propósito', value: 'Padrão Ético', badge: 'Dignidade Humana' }
+  },
+  'M7-S3': {
+    metric1: { label: 'Correção de Falhas', value: '95.4%', progress: 95.4, sparkline: [50, 68, 78, 88, 92, 95] },
+    metric2: { label: 'Ciclos PDCA', value: 'Concluídos', chartData: [1, 2, 3, 4, 5, 6] },
+    metric3: { label: 'Priorização GUT', value: 'Score Preciso', badge: 'Execução de Projetos' }
+  },
+  'M8-S1': {
+    metric1: { label: 'Score de Equidade DEI', value: '94.2%', progress: 94.2, sparkline: [60, 72, 80, 88, 92, 94] },
+    metric2: { label: 'Diversidade Interna', value: '91.8%', chartData: [50, 65, 78, 85, 89, 91] },
+    metric3: { label: 'Cultura Inclusiva', value: 'Padrão Ouro', badge: 'Responsabilidade Coletiva' }
+  },
+  'M8-S2': {
+    metric1: { label: 'Acurácia Quali/Quanti', value: '97.5%', progress: 97.5, sparkline: [75, 82, 88, 92, 95, 97] },
+    metric2: { label: 'Validação de Hipóteses', value: '99%', chartData: [40, 60, 75, 85, 92, 99] },
+    metric3: { label: 'Metodologia', value: 'Científica', badge: 'Pesquisa Profissional' }
+  }
+}
 
 function MiniNetworkGraph({ moduleId }: { moduleId?: string }) {
-  const theme = MODULE_THEMES[moduleId ?? 'M4'] || MODULE_THEMES.M4
+  const theme = MODULE_THEMES[moduleId ?? 'M1'] || MODULE_THEMES.M1
   const center = { x: 50, y: 50 }
   const nodes = [
     { x: 18, y: 25 }, { x: 82, y: 22 }, { x: 14, y: 70 },
@@ -158,54 +433,44 @@ function MiniNetworkGraph({ moduleId }: { moduleId?: string }) {
   ]
 
   return (
-    <div className="relative w-full h-[130px] rounded-lg overflow-hidden bg-radial-glow mt-2" style={{
-      background: `radial-gradient(circle at 50% 50%, ${theme.glow} 0%, transparent 70%)`
-    }}>
+    <div className="relative w-full h-[120px] rounded-lg overflow-hidden bg-black/40 border border-white/[0.04] mt-2">
       <svg className="absolute inset-0 w-full h-full pointer-events-none">
-        {nodes.map((n, i) => (
+        {nodes.map((node, i) => (
           <line
-            key={`line-${i}`}
+            key={i}
             x1={`${center.x}%`}
             y1={`${center.y}%`}
-            x2={`${n.x}%`}
-            y2={`${n.y}%`}
-            stroke={`url(#lineGradient-${moduleId || 'M4'})`}
-            strokeWidth="0.8"
-            strokeDasharray="2 1"
+            x2={`${node.x}%`}
+            y2={`${node.y}%`}
+            stroke={theme.primary}
+            strokeWidth="0.5"
+            strokeOpacity="0.15"
           />
         ))}
-        <defs>
-          <linearGradient id={`lineGradient-${moduleId || 'M4'}`} x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor={theme.primary} stopOpacity="0.1" />
-            <stop offset="50%" stopColor={theme.secondary} stopOpacity="0.45" />
-            <stop offset="100%" stopColor={theme.primary} stopOpacity="0.1" />
-          </linearGradient>
-        </defs>
       </svg>
 
       <div 
-        className="absolute w-3 h-3 rounded-full animate-pulse"
+        className="absolute w-3.5 h-3.5 rounded-full flex items-center justify-center border animate-pulse"
         style={{
-          left: `calc(${center.x}% - 6px)`,
-          top: `calc(${center.y}% - 6px)`,
-          background: `radial-gradient(circle, ${theme.secondary}, ${theme.primary})`,
-          boxShadow: `0 0 10px ${theme.primary}`,
-          zIndex: 10
+          left: `calc(${center.x}% - 7px)`,
+          top: `calc(${center.y}% - 7px)`,
+          borderColor: theme.primary,
+          background: `radial-gradient(circle at 30% 28%, ${theme.primary} 0%, rgba(20,16,8,0.95) 100%)`,
+          boxShadow: `0 0 12px ${theme.accent}`
         }}
-      />
+      >
+        <span className="text-[6.5px] font-bold text-white">★</span>
+      </div>
 
-      {nodes.map((n, i) => (
+      {nodes.map((node, i) => (
         <motion.div
-          key={`node-${i}`}
-          className="absolute w-1.5 h-1.5 rounded-full cursor-pointer"
-          animate={{ scale: [1, 1.15, 1] }}
-          transition={{ duration: 2 + i * 0.4, repeat: Infinity, ease: 'easeInOut' }}
+          key={i}
+          className="absolute w-2 h-2 rounded-full border"
           style={{
-            left: `calc(${n.x}% - 3px)`,
-            top: `calc(${n.y}% - 3px)`,
-            background: `radial-gradient(circle, ${theme.primary}, ${theme.secondary})`,
-            boxShadow: `0 0 6px ${theme.accent}`,
-            zIndex: 5
+            left: `calc(${node.x}% - 4px)`,
+            top: `calc(${node.y}% - 4px)`,
+            borderColor: 'rgba(255,255,255,0.2)',
+            background: 'rgba(255,255,255,0.06)'
           }}
           whileHover={{ scale: 1.4, boxShadow: `0 0 10px ${theme.primary}` }}
         />
@@ -214,545 +479,20 @@ function MiniNetworkGraph({ moduleId }: { moduleId?: string }) {
   )
 }
 
-function TelemetriaSparkline({ moduleId }: { moduleId?: string }) {
-  const theme = MODULE_THEMES[moduleId ?? 'M4'] || MODULE_THEMES.M4
-  return (
-    <div className="flex flex-col gap-2 mt-2">
-      <div className="h-14 rounded-md border border-white/[0.06] bg-black/60 relative overflow-hidden flex items-center justify-between px-3">
-        <div className="flex flex-col">
-          <span className="text-[7.5px] uppercase tracking-wider text-white/30">Mapeamento</span>
-          <span className="text-[10px] font-semibold text-white/80">98.4% ativo</span>
-        </div>
-        <div className="flex gap-1 items-end h-8">
-          {[40, 60, 45, 75, 55, 90, 70, 85, 95].map((h, i) => (
-            <motion.div
-              key={i}
-              className="w-1 rounded-t"
-              style={{
-                background: `linear-gradient(to top, ${theme.primary}, ${theme.secondary})`
-              }}
-              initial={{ height: 2 }}
-              animate={{ height: `${h}%` }}
-              transition={{ duration: 1.5, repeat: Infinity, repeatType: 'reverse', delay: i * 0.1 }}
-            />
-          ))}
-        </div>
-      </div>
-      <div className="h-[46px] w-full">
-        <svg className="w-full h-full" viewBox="0 0 100 40" preserveAspectRatio="none">
-          <defs>
-            <linearGradient id={`sparkFill-${moduleId || 'M4'}`} x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor={theme.primary} stopOpacity="0.4"/>
-              <stop offset="100%" stopColor={theme.primary} stopOpacity="0"/>
-            </linearGradient>
-          </defs>
-          <path d="M0,28 L12,22 L24,26 L36,15 L48,20 L60,10 L72,18 L84,8 L100,14 L100,40 L0,40 Z" fill={`url(#sparkFill-${moduleId || 'M4'})`}/>
-          <path d="M0,28 L12,22 L24,26 L36,15 L48,20 L60,10 L72,18 L84,8 L100,14" fill="none" stroke={theme.primary} strokeWidth="1.4"/>
-        </svg>
-      </div>
-    </div>
-  )
+function STRATEGIC_NODES_MAPPING(moduleId: string) {
+  return [
+    { id: '1', x: 18, y: 35, label: 'Mapeamento', desc: 'Identificação de core-capabilities e gaps organizacionais' },
+    { id: '2', x: 38, y: 70, label: 'Alinhamento', desc: 'Conexão transversal tática baseada em frameworks OKR' },
+    { id: '3', x: 50, y: 25, label: 'Implementação', desc: 'Deploy acelerado de ferramentas e automatizações digitais' },
+    { id: '4', x: 68, y: 65, label: 'Mapeamento Metódico', desc: 'Monitoramento contínuo da governança sob compliance rigoroso' },
+    { id: '5', x: 82, y: 30, label: 'Telemetria do Valor', desc: 'Entrega final de ROI, sustentabilidade real e margens máximas' }
+  ]
 }
-
-function FloatingVideoPlayer({ moduleTitle, moduleId }: { moduleTitle: string; moduleId?: string }) {
-  const theme = MODULE_THEMES[moduleId ?? 'M4'] || MODULE_THEMES.M4
-  const [playing, setPlaying] = useState(false)
-  const [progress, setProgress] = useState(36)
-
-  useEffect(() => {
-    if (!playing) return
-    const interval = setInterval(() => {
-      setProgress((prev) => (prev >= 100 ? 0 : prev + 0.5))
-    }, 500)
-    return () => clearInterval(interval)
-  }, [playing])
-
-  return (
-    <div className="ipb-glass-card w-full flex flex-col pointer-events-auto transition-all duration-300">
-      <div className="relative aspect-[16/10] bg-black/80 flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0" style={{
-          background: `radial-gradient(circle at 50% 50%, ${theme.glow}, transparent 70%)`
-        }} />
-        
-        <motion.button 
-          onClick={() => setPlaying(!playing)}
-          whileHover={{ scale: 1.08 }}
-          whileTap={{ scale: 0.95 }}
-          className="relative z-10 w-11 h-11 rounded-full flex items-center justify-center cursor-pointer"
-          style={{
-            background: `radial-gradient(circle at 30% 25%, ${theme.accent} 0%, rgba(20,16,8,0.92) 100%)`,
-            border: `0.2px solid ${theme.primary}`,
-            boxShadow: `0 0 18px ${theme.accent}, inset 0 1px 1px rgba(255,255,255,0.2)`
-          }}
-        >
-          {playing ? (
-            <div className="flex gap-1 justify-center items-center">
-              <div className="w-1 h-3 bg-white/90 rounded-sm" />
-              <div className="w-1 h-3 bg-white/90 rounded-sm" />
-            </div>
-          ) : (
-            <div className="w-0 h-0 border-l-[9px] border-l-white/90 border-t-[5px] border-t-transparent border-b-[5px] border-b-transparent ml-0.5" />
-          )}
-        </motion.button>
-      </div>
-
-      <div className="p-4 flex flex-col flex-1 justify-between">
-        <div>
-          <span className="text-[8px] uppercase tracking-wider font-semibold animate-pulse" style={{ color: theme.primary }}>Vídeo Aula</span>
-          <h4 className="text-[11px] font-semibold text-white/90 leading-tight mt-0.5">{moduleTitle}</h4>
-        </div>
-        
-        <div className="mt-4">
-          <div className="flex justify-between items-center text-[9px] text-white/40 font-mono">
-            <span>{playing ? 'Reproduzindo' : 'Pausado'}</span>
-            <span>{Math.floor((progress/100)*45)}:10 / 45:10</span>
-          </div>
-          
-          <div className="h-1 bg-white/10 rounded-full mt-1.5 overflow-hidden">
-            <div className="h-full transition-all duration-300" style={{ 
-              width: `${progress}%`,
-              background: `linear-gradient(to right, ${theme.primary}, ${theme.secondary})`
-            }} />
-          </div>
-        </div>
-      </div>
-
-      <div className="flex justify-center items-center gap-4 py-2 text-white/40 border-t border-white/[0.04] bg-black/20">
-        <button className="text-[9px] hover:text-white transition">⏮</button>
-        <button 
-          onClick={() => setPlaying(!playing)}
-          className="text-[9px] bg-white/5 w-6 h-6 rounded-full flex items-center justify-center border border-white/10 text-white/90 transition"
-          style={{
-            borderColor: playing ? theme.primary : 'rgba(255,255,255,0.1)',
-            background: playing ? `${theme.accent}` : 'rgba(255,255,255,0.05)'
-          }}
-        >
-          {playing ? '⏸' : '▶'}
-        </button>
-        <button className="text-[9px] hover:text-white transition">⏭</button>
-      </div>
-    </div>
-  )
-}
-
-// ── Business Module Custom High-Fidelity Components ──────────────────────────
-
-const BUSINESS_PLAYLIST = [
-  { id: 'M4-T1', topicId: 'M4-T1', title: 'Liderança e Gestão de Times', subtitle: 'Aula 01 · Estratégia de Equipes e Propósito', duration: '28:30' },
-  { id: 'M4-T2', topicId: 'M4-T2', title: 'Inteligência de Mercado e Empresas', subtitle: 'Aula 02 · Concorrência e Análise do Ecossistema', duration: '32:15' },
-  { id: 'M4-T3', topicId: 'M4-T3', title: 'Sustentabilidade e ESG Corporativo', subtitle: 'Aula 03 · Logística Reversa e Pegada Ecológica', duration: '25:40' },
-  { id: 'M4-T4', topicId: 'M4-T4', title: 'Feedback Estratégico', subtitle: 'Aula 04 · Modelo SBI e Regulação de Performance', duration: '19:20' },
-  { id: 'M4-T5', topicId: 'M4-T5', title: 'Gestão de Arquivos corporativos', subtitle: 'Aula 05 · Repositórios baseados em RBAC e Segurança', duration: '22:15' }
-]
-
-const ACADEMIC_SYLLABUS = [
-  // Pilar 1: Inovação e Estratégia
-  { id: 'M4-T1-S1', topicId: 'M4-T1', title: 'Inovação, Criatividade e Sustentabilidade', subtitle: 'IE · Design Thinking e Economia Circular', duration: '18:20' },
-  { id: 'M4-T1-S2', topicId: 'M4-T1', title: 'Inovação, Transformação e Ferramentas Digitais', subtitle: 'IE · Automação e Inteligência Artificial', duration: '22:15' },
-  { id: 'M4-T1-S3', topicId: 'M4-T1', title: 'Pensamento Criativo', subtitle: 'IE · Lógica Lateral e Habilidades Cognitivas', duration: '15:40' },
-  { id: 'M4-T1-S4', topicId: 'M4-T1', title: 'Empreendedorismo e Inovação', subtitle: 'IE · Canvas e Modelos de Negócio Exponenciais', duration: '24:10' },
-  { id: 'M4-T1-S5', topicId: 'M4-T1', title: 'Empreendedorismo e Estratégia', subtitle: 'IE · Posicionamento e Vantagem Competitiva', duration: '28:50' },
-
-  // Pilar 2: Finanças e Inteligência Quantitativa
-  { id: 'M4-T2-S1', topicId: 'M4-T2', title: 'Finanças Avançadas', subtitle: 'FIQ · Estrutura de Capital e Valuation', duration: '32:15' },
-  { id: 'M4-T2-S2', topicId: 'M4-T2', title: 'Análise Financeira', subtitle: 'FIQ · Demonstrações de Performance e EBITDA', duration: '26:40' },
-  { id: 'M4-T2-S3', topicId: 'M4-T2', title: 'Matemática Financeira', subtitle: 'FIQ · Juros Compostos e Equivalência de Fluxos', duration: '20:10' },
-  { id: 'M4-T2-S4', topicId: 'M4-T2', title: 'Demonstrações Contábeis', subtitle: 'FIQ · Balanço Patrimonial e DRE (IFRS)', duration: '25:30' },
-  { id: 'M4-T2-S5', topicId: 'M4-T2', title: 'Precificação', subtitle: 'FIQ · Estratégias de Margem e Valor Percebido', duration: '19:45' },
-  { id: 'M4-T2-S6', topicId: 'M4-T2', title: 'Cálculo Aplicado a Negócios', subtitle: 'FIQ · Otimização de Limites Operacionais e Derivadas', duration: '22:15' },
-  { id: 'M4-T2-S7', topicId: 'M4-T2', title: 'Análise Estatística', subtitle: 'FIQ · Inferência de Dados e Modelos de Previsão', duration: '27:30' },
-
-  // Pilar 3: Liderança, Pessoas e Cultura
-  { id: 'M4-T3-S1', topicId: 'M4-T3', title: 'Liderança e Gestão de Equipes', subtitle: 'LPC · Segurança Psicológica e Performance', duration: '24:10' },
-  { id: 'M4-T3-S2', topicId: 'M4-T3', title: 'Mercado e Pessoas', subtitle: 'LPC · Employer Branding e Captação de Talentos', duration: '21:30' },
-  { id: 'M4-T3-S3', topicId: 'M4-T3', title: 'Educação, Identidade e Solidariedade', subtitle: 'LPC · Cultura Inclusiva e Responsabilidade Coletiva', duration: '18:15' },
-  { id: 'M4-T3-S4', topicId: 'M4-T3', title: 'Ética', subtitle: 'LPC · Compliance e Valores Universais nos Negócios', duration: '15:50' },
-
-  // Pilar 4: Gestão e Operações Corporativas
-  { id: 'M4-T4-S1', topicId: 'M4-T4', title: 'Fundamentos de Gestão', subtitle: 'GOC · Funções Administrativas Clássicas e Processos', duration: '16:40' },
-  { id: 'M4-T4-S2', topicId: 'M4-T4', title: 'Gestão de Negócios', subtitle: 'GOC · Métricas Ágeis OKR e KPIs Operacionais', duration: '22:10' },
-  { id: 'M4-T4-S3', topicId: 'M4-T4', title: 'Sustentabilidade em Negócios', subtitle: 'GOC · Economia Circular e Pegada Ecológica', duration: '20:45' },
-
-  // Pilar 5: Mercado e Macroeconomia
-  { id: 'M4-T5-S1', topicId: 'M4-T5', title: 'Economia de Empresa e Análise Mercadológica', subtitle: 'MME · Microeconomia e Forças do Mercado (Porter)', duration: '28:15' },
-  { id: 'M4-T5-S2', topicId: 'M4-T5', title: 'Ambiente Macroeconômico', subtitle: 'MME · Indicadores Globais e Políticas Monetárias', duration: '25:40' },
-  { id: 'M4-T5-S3', topicId: 'M4-T5', title: 'Lógica e Humanidades', subtitle: 'MME · Estruturação de Argumentos e Lógica Proposicional', duration: '19:20' },
-  { id: 'M4-T5-S4', topicId: 'M4-T5', title: 'Filosofia', subtitle: 'MME · Pensamento Crítico, Ética e Dilemas Modernos', duration: '22:15' },
-
-  // Pilar 6: Impacto Social e Intervenção
-  { id: 'M4-T6-S1', topicId: 'M4-T6', title: 'Pesquisa Aplicada a Negócios', subtitle: 'ISI · Metodologias Científicas de Validação e Mercado', duration: '23:45' },
-  { id: 'M4-T6-S2', topicId: 'M4-T6', title: 'Projeto de Intervenção em Negócios', subtitle: 'ISI · Diagnóstico Operacional e Resolução de Dores Reais', duration: '29:10' },
-  { id: 'M4-T6-S3', topicId: 'M4-T6', title: 'Empreendedorismo Social', subtitle: 'ISI · Negócios de Impacto e Valor Compartilhado (SROI)', duration: '26:30' },
-  { id: 'M4-T6-S4', topicId: 'M4-T6', title: 'Intervenção e Sociedade', subtitle: 'ISI · Projetos de Extensão e Desenvolvimento Comunitário', duration: '20:50' },
-  { id: 'M4-T6-S5', topicId: 'M4-T6', title: 'Teologia e Sociedade', subtitle: 'ISI · Dimensão Transcendental e o Papel Ético na Comunidade', duration: '22:15' },
-  { id: 'M4-T6-S6', topicId: 'M4-T6', title: 'Pesquisa e Identidade', subtitle: 'ISI · Autoconhecimento, História Social e Propósito', duration: '21:40' },
-  { id: 'M4-T6-S7', topicId: 'M4-T6', title: 'Leitura e Escrita Acadêmica', subtitle: 'ISI · Comunicação Científica e Redação de Alto Impacto', duration: '18:55' }
-]
-
-function ExecutiveMasterclassTheater({ 
-  moduleTitle, 
-  moduleId,
-  onSelectTopic,
-  activeTopicId,
-  activeLessonIndex,
-  onChangeLessonIndex
-}: { 
-  moduleTitle: string; 
-  moduleId?: string;
-  onSelectTopic?: (topicId: string) => void;
-  activeTopicId?: string | null;
-  activeLessonIndex: number;
-  onChangeLessonIndex: (index: number) => void;
-}) {
-  const theme = MODULE_THEMES[moduleId ?? 'M4'] || MODULE_THEMES.M4
-  const [playing, setPlaying] = useState(false)
-  const [progress, setProgress] = useState(24)
-
-  // Sync with activeTopicId if set from outside
-  useEffect(() => {
-    if (activeTopicId) {
-      const activeItem = BUSINESS_PLAYLIST[activeLessonIndex]
-      if (activeItem?.topicId !== activeTopicId) {
-        const idx = BUSINESS_PLAYLIST.findIndex(item => item.topicId === activeTopicId)
-        if (idx !== -1) {
-          onChangeLessonIndex(idx)
-        }
-      }
-    }
-  }, [activeTopicId])
-
-  useEffect(() => {
-    if (!playing) return
-    const interval = setInterval(() => {
-      setProgress((prev) => (prev >= 100 ? 0 : prev + 0.4))
-    }, 500)
-    return () => clearInterval(interval)
-  }, [playing])
-
-  const activeLesson = BUSINESS_PLAYLIST[activeLessonIndex] ?? BUSINESS_PLAYLIST[0]
-
-  const handleLessonSelect = (index: number) => {
-    onChangeLessonIndex(index)
-    setProgress(0)
-    setPlaying(false)
-    if (onSelectTopic) {
-      onSelectTopic(BUSINESS_PLAYLIST[index].topicId)
-    }
-  }
-
-  return (
-    <div className="ipb-glass-card w-full flex flex-col pointer-events-auto transition-all duration-300">
-      {/* Video Cinema screen occupies full width (100%) */}
-      <div className="relative aspect-[21/9] bg-black flex items-center justify-center overflow-hidden rounded-t-xl">
-        <div className="absolute inset-0" style={{
-          background: `radial-gradient(circle at 50% 50%, ${theme.glow}, transparent 80%)`
-        }} />
-        
-        {playing && (
-          <div className="absolute bottom-6 left-6 flex gap-1 items-end h-5 z-10 opacity-70">
-            {[0.5, 0.9, 0.3, 0.7, 0.4, 0.8, 0.2].map((val, i) => (
-              <motion.div
-                key={i}
-                className="w-0.5 rounded-sm"
-                style={{ backgroundColor: theme.primary }}
-                animate={{ height: ['4px', '20px', '4px'] }}
-                transition={{ duration: 0.8 + i * 0.1, repeat: Infinity, ease: 'easeInOut' }}
-              />
-            ))}
-          </div>
-        )}
-
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/30 pointer-events-none" />
-
-        <div className="absolute top-4 left-4 z-10 flex gap-2">
-          <span className="text-[7.5px] uppercase tracking-widest font-bold px-2 py-0.5 rounded bg-black/50 border border-white/10" style={{ color: theme.primary }}>
-            Masterclass M4 · Aula {activeLessonIndex + 1}
-          </span>
-          <span className="text-[7.5px] uppercase tracking-widest font-bold px-2 py-0.5 rounded bg-black/50 border border-white/10 text-white/50">
-            {activeLesson.duration}
-          </span>
-        </div>
-
-        <motion.button 
-          onClick={() => setPlaying(!playing)}
-          whileHover={{ scale: 1.08, boxShadow: `0 0 24px ${theme.accent}` }}
-          whileTap={{ scale: 0.95 }}
-          className="relative z-10 w-14 h-14 rounded-full flex items-center justify-center cursor-pointer"
-          style={{
-            background: `radial-gradient(circle at 30% 25%, ${theme.accent} 0%, rgba(15,12,8,0.95) 100%)`,
-            border: `0.5px solid ${theme.primary}`,
-            boxShadow: `0 0 20px ${theme.accent}, inset 0 1px 1px rgba(255,255,255,0.2)`
-          }}
-        >
-          {playing ? (
-            <div className="flex gap-1.5 justify-center items-center">
-              <div className="w-1.5 h-4 bg-white/95 rounded-sm" />
-              <div className="w-1.5 h-4 bg-white/95 rounded-sm" />
-            </div>
-          ) : (
-            <Play className="h-5 w-5 text-white/95 fill-white/80 ml-1" />
-          )}
-        </motion.button>
-      </div>
-
-      {/* Control bar and timeline progress */}
-      <div className="p-4 flex flex-col justify-between bg-black/30 border-t border-white/[0.04] space-y-4">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-2.5">
-          <div className="min-w-0">
-            <span className="text-[7.5px] uppercase tracking-widest font-bold" style={{ color: theme.primary }}>Execução de Masterclass</span>
-            <h4 className="text-[11.5px] font-bold text-white/90 leading-tight mt-0.5 truncate">{activeLesson.title}</h4>
-            <p className="text-[9px] text-white/40 truncate mt-0.5">{activeLesson.subtitle}</p>
-          </div>
-          
-          <div className="flex items-center gap-4 shrink-0 mt-2 md:mt-0">
-            <div className="flex justify-between items-center text-[9px] text-white/40 font-mono gap-3">
-              <span className="px-1.5 py-0.5 rounded bg-white/5 border border-white/10 text-[8.5px]" style={{ color: playing ? theme.primary : 'inherit' }}>
-                {playing ? 'Reproduzindo' : 'Pausado'}
-              </span>
-              <span>{Math.floor((progress/100)*28)}:14 / {activeLesson.duration}</span>
-            </div>
-          </div>
-        </div>
-        
-        {/* Timeline Bar */}
-        <div className="relative">
-          <div className="h-1 bg-white/10 rounded-full overflow-hidden cursor-pointer">
-            <div className="h-full transition-all duration-300" style={{ 
-              width: `${progress}%`,
-              background: `linear-gradient(to right, ${theme.primary}, ${theme.secondary})`
-            }} />
-          </div>
-        </div>
-
-        {/* Masterclass Ribbon Selector (Replacing the bulky right playlist column) */}
-        <div className="pt-2 border-t border-white/[0.04]">
-          <span className="text-[7.5px] uppercase tracking-wider text-white/30 font-bold block mb-2">Playlist da Aula Executiva</span>
-          <div className="flex flex-wrap gap-2">
-            {BUSINESS_PLAYLIST.map((item, idx) => {
-              const isSelected = idx === activeLessonIndex
-              const isGold = idx % 2 === 0
-              const itemColor = isGold ? '#d4b87a' : '#cbd5e1'
-              const itemBgSelected = isGold ? 'rgba(212,184,122,0.12)' : 'rgba(203,213,225,0.12)'
-              
-              return (
-                <button
-                  key={item.id}
-                  onClick={() => handleLessonSelect(idx)}
-                  className="flex items-center gap-2 px-3 py-2 rounded-lg border text-left cursor-pointer transition-all duration-300"
-                  style={{
-                    background: isSelected ? itemBgSelected : 'rgba(255,255,255,0.01)',
-                    borderColor: isSelected ? itemColor : 'rgba(255,255,255,0.04)',
-                  }}
-                >
-                  <span className="font-mono text-[8px] font-bold" style={{ color: isSelected ? itemColor : 'rgba(255,255,255,0.3)' }}>
-                    {String(idx + 1).padStart(2, '0')}
-                  </span>
-                  <div className="flex flex-col">
-                    <span className={`text-[9px] font-semibold leading-tight truncate max-w-[110px] ${isSelected ? 'text-white' : 'text-white/60'}`}>
-                      {item.title}
-                    </span>
-                    <span className="text-[6.5px] text-white/35 font-mono mt-0.5">{item.duration} · {isGold ? 'OURO' : 'PRATA'}</span>
-                  </div>
-                </button>
-              )
-            })}
-          </div>
-        </div>      </div>
-    </div>
-  )
-}
-
-function ExecutivePerformanceDashboard({ moduleId }: { moduleId?: string }) {
-  const theme = MODULE_THEMES[moduleId ?? 'M4'] || MODULE_THEMES.M4
-  const [activeKpi, setActiveKpi] = useState<'ie' | 'fiq' | 'lpc' | 'goc' | 'mme' | 'isi'>('ie')
-
-  const kpis = {
-    ie: {
-      title: 'Inovação & Estratégia',
-      metric: '94.2%',
-      desc: 'Competitividade e Transformação Digital',
-      detail: 'Mapeamento de modelagens disruptivas e agilidade cultural corporativa baseada em novas tecnologias.',
-      badge: 'Transformação Exponencial',
-      icon: Zap,
-      subjects: [
-        'Inovação, Criatividade e Sustentabilidade',
-        'Inovação, Transformação e Ferramentas Digitais',
-        'Pensamento Criativo',
-        'Empreendedorismo e Inovação',
-        'Empreendedorismo e Estratégia'
-      ],
-      progress: '94.2%'
-    },
-    fiq: {
-      title: 'Finanças & Quantitativa',
-      metric: '+18.4%',
-      desc: 'Valuation, Margens e Decisões Financeiras',
-      detail: 'Análise de investimentos sob incerteza mercadológica, otimização marginal e modelagens de demonstrações contábeis robustas.',
-      badge: 'High ROI & Margins',
-      icon: TrendingUp,
-      subjects: [
-        'Finanças Avançadas',
-        'Análise Financeira',
-        'Matemática Financeira',
-        'Demonstrações Contábeis',
-        'Precificação',
-        'Cálculo Aplicado a Negócios',
-        'Análise Estatística'
-      ],
-      progress: '85%'
-    },
-    lpc: {
-      title: 'Liderança, Pessoas & Cultura',
-      metric: 'AAA',
-      desc: 'Segurança Psicológica, DEI e Ética de Liderança',
-      detail: 'Construção de times de alta performance fundamentados em transparência extrema, equidade social e conduta ética Tone-from-the-Top.',
-      badge: 'Cultura Altamente Segura',
-      icon: Users,
-      subjects: [
-        'Liderança e Gestão de Equipes',
-        'Mercado e Pessoas',
-        'Educação, Identidade e Solidariedade',
-        'Ética'
-      ],
-      progress: '100%'
-    },
-    goc: {
-      title: 'Gestão & Operações',
-      metric: '91.5%',
-      desc: 'Balanced Scorecard, OKRs e Circularidade',
-      detail: 'Desenho de processos táticos altamente eficientes com acompanhamento de metas ágeis e transições completas para a economia circular.',
-      badge: 'Operação de Alta Eficiência',
-      icon: Target,
-      subjects: [
-        'Fundamentos de Gestão',
-        'Gestão de Negócios',
-        'Sustentabilidade em Negócios'
-      ],
-      progress: '91.5%'
-    },
-    mme: {
-      title: 'Mercado & Macroeconomia',
-      metric: 'A+',
-      desc: 'Ciclos Monetários e Análise de Ecossistema',
-      detail: 'Compreensão aprofundada de concorrência setorial, forças mercadológicas de Porter e proteção contra oscilações de juros ou PIBs globais.',
-      badge: 'Inteligência de Mercado',
-      icon: Shield,
-      subjects: [
-        'Economia de Empresa e Análise Mercadológica',
-        'Ambiente Macroeconômico',
-        'Lógica e Humanidades',
-        'Filosofia'
-      ],
-      progress: '93%'
-    },
-    isi: {
-      title: 'Impacto Social & Intervenção',
-      metric: '88.6%',
-      desc: 'Projetos Transversais e SROI Sustentável',
-      detail: 'Solução tática de mazelas comunitárias através de extensão social ativa e pesquisas científicas de validação estatística de campo.',
-      badge: 'Social Impact Certified',
-      icon: Award,
-      subjects: [
-        'Pesquisa Aplicada a Negócios',
-        'Projeto de Intervenção em Negócios',
-        'Empreendedorismo Social',
-        'Intervenção e Sociedade',
-        'Teologia e Sociedade',
-        'Pesquisa e Identidade',
-        'Leitura e Escrita Acadêmica'
-      ],
-      progress: '88.6%'
-    }
-  }
-
-  const ActiveIcon = kpis[activeKpi].icon
-
-  return (
-    <div className="ipb-glass-card p-4 flex flex-col justify-between h-full transition-all duration-300">
-      <div>
-        <div className="flex justify-between items-center">
-          <span className="text-[7.5px] uppercase tracking-wider font-bold" style={{ color: theme.primary }}>KPIs Estratégicos</span>
-          <span className="text-[8px] px-1.5 py-0.5 rounded bg-[#d4b87a]/10 border border-[#d4b87a]/20 text-[#d4b87a] font-mono">Executive Mode</span>
-        </div>
-        <h4 className="text-[12px] font-bold text-white/90 mt-1">Indicadores de Competência (30 Disciplinas)</h4>
-      </div>
-
-      {/* Grid: 2 rows of 3 columns for 6 KPIs */}
-      <div className="grid grid-cols-2 gap-2 mt-4">
-        {Object.entries(kpis).map(([key, kpi]) => {
-          const isSelected = activeKpi === key
-          const Icon = kpi.icon
-          return (
-            <button
-              key={key}
-              onClick={() => setActiveKpi(key as any)}
-              className="p-2 rounded-lg border text-left transition-all duration-300 flex flex-col justify-between cursor-pointer"
-              style={{
-                background: isSelected ? 'rgba(212,184,122,0.08)' : 'rgba(255,255,255,0.01)',
-                borderColor: isSelected ? theme.primary : 'rgba(255,255,255,0.04)',
-                boxShadow: isSelected ? `0 0 12px ${theme.glow}` : 'none'
-              }}
-            >
-              <div className="flex justify-between items-start w-full">
-                <span className="text-[7px] uppercase tracking-wider text-white/35 font-bold truncate max-w-[80px]">
-                  {kpi.title.split(' ')[0]}
-                </span>
-                <Icon className="h-2.5 w-2.5 opacity-30" style={{ color: theme.primary }} />
-              </div>
-              <span className="text-[12.5px] font-extrabold text-white mt-1 leading-none">{kpi.metric}</span>
-              <div className="w-full h-0.5 bg-white/10 rounded-full mt-2 overflow-hidden">
-                <motion.div 
-                  className="h-full" 
-                  style={{ backgroundColor: theme.primary }}
-                  initial={{ width: 0 }}
-                  animate={{ width: kpi.progress.includes('%') ? kpi.progress : '90%' }}
-                  transition={{ duration: 1 }}
-                />
-              </div>
-            </button>
-          )
-        })}
-      </div>
-
-      {/* Sleek and Compact KPI Details */}
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={activeKpi}
-          initial={{ opacity: 0, y: 4 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -4 }}
-          transition={{ duration: 0.2 }}
-          className="mt-3 p-3 rounded-lg bg-black/40 border border-white/[0.03] flex items-center justify-between"
-        >
-          <div className="flex items-center gap-2 min-w-0">
-            <ActiveIcon className="h-3.5 w-3.5 shrink-0" style={{ color: theme.primary }} />
-            <div className="flex flex-col min-w-0">
-              <span className="text-[9px] font-bold text-white/80 truncate leading-none">{kpis[activeKpi].title}</span>
-              <span className="text-[7.5px] font-mono text-white/40 truncate mt-1 leading-none">{kpis[activeKpi].badge}</span>
-            </div>
-          </div>
-          <div className="flex flex-col items-end shrink-0">
-            <span className="text-[11px] font-mono font-bold" style={{ color: theme.primary }}>{kpis[activeKpi].metric}</span>
-            <span className="text-[6.5px] font-mono text-white/30 uppercase mt-1 leading-none">{kpis[activeKpi].subjects.length} DISCIPLINAS</span>
-          </div>
-        </motion.div>
-      </AnimatePresence>
-
-    </div>
-  )
-}
-
-const STRATEGIC_NODES = [
-  { id: 'N1', label: 'Liderança', x: 18, y: 22, desc: 'Comportamento regulatório & clareza de OKRs de alta performance' },
-  { id: 'N2', label: 'Segurança', x: 34, y: 72, desc: 'Segurança psicológica (Modelo Aristotle do Google)' },
-  { id: 'N3', label: 'Dados', x: 50, y: 28, desc: 'Inteligência competitiva & modelagem preditiva baseada em dados' },
-  { id: 'N4', label: 'ESG', x: 66, y: 68, desc: 'Mitigação rigorosa de riscos ambientais, sociais e de governança' },
-  { id: 'N5', label: 'Governança', x: 82, y: 24, desc: 'Controle de documentação, conformidade regulatória e LGPD' },
-]
 
 function StrategicRoadmapBoard({ moduleId }: { moduleId?: string }) {
-  const theme = MODULE_THEMES[moduleId ?? 'M4'] || MODULE_THEMES.M4
+  const theme = MODULE_THEMES[moduleId ?? 'M1'] || MODULE_THEMES.M1
   const [hoveredNode, setHoveredNode] = useState<string | null>(null)
+  const nodes = STRATEGIC_NODES_MAPPING(moduleId ?? 'M1')
 
   return (
     <div className="relative w-full h-[142px] rounded-lg overflow-hidden bg-radial-glow mt-2" style={{
@@ -761,15 +501,15 @@ function StrategicRoadmapBoard({ moduleId }: { moduleId?: string }) {
       
       <svg className="absolute inset-0 w-full h-full pointer-events-none">
         <path
-          d="M 18,33 Q 26,70 34,108 T 50,42 T 66,102 T 82,36"
+          d="M 18,35 Q 28,70 38,70 T 50,25 T 68,65 T 82,30"
           fill="none"
-          stroke={`url(#pathGradient-${moduleId || 'M4'})`}
+          stroke={`url(#pathGradient-${moduleId || 'M1'})`}
           strokeWidth="0.8"
           strokeDasharray="3 2"
         />
 
         <defs>
-          <linearGradient id={`pathGradient-${moduleId || 'M4'}`} x1="0%" y1="0%" x2="100%" y2="100%">
+          <linearGradient id={`pathGradient-${moduleId || 'M1'}`} x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" stopColor={theme.primary} stopOpacity="0.2" />
             <stop offset="50%" stopColor={theme.secondary} stopOpacity="0.7" />
             <stop offset="100%" stopColor={theme.primary} stopOpacity="0.2" />
@@ -781,14 +521,14 @@ function StrategicRoadmapBoard({ moduleId }: { moduleId?: string }) {
         className="absolute w-2 h-2 rounded-full animate-pulse"
         style={{
           left: `calc(50% - 4px)`,
-          top: `calc(32% - 4px)`,
+          top: `calc(25% - 4px)`,
           background: `radial-gradient(circle, ${theme.secondary}, ${theme.primary})`,
           boxShadow: `0 0 12px ${theme.primary}`,
           zIndex: 10
         }}
       />
 
-      {STRATEGIC_NODES.map((node, i) => {
+      {nodes.map((node, i) => {
         const isHovered = hoveredNode === node.id
         return (
           <div key={node.id}>
@@ -844,17 +584,577 @@ function StrategicRoadmapBoard({ moduleId }: { moduleId?: string }) {
           >
             <div className="flex justify-between items-center">
               <span className="text-[8px] font-bold text-white uppercase tracking-wider">
-                Fluxo {STRATEGIC_NODES.findIndex(n => n.id === hoveredNode) + 1}: {STRATEGIC_NODES.find(n => n.id === hoveredNode)?.label}
+                Fluxo {nodes.findIndex(n => n.id === hoveredNode) + 1}: {nodes.find(n => n.id === hoveredNode)?.label}
               </span>
               <span className="text-[7px] font-mono text-[#d4b87a] font-semibold">Foco Estratégico</span>
             </div>
             <p className="text-[8.5px] text-white/70 leading-snug">
-              {STRATEGIC_NODES.find(n => n.id === hoveredNode)?.desc}
+              {nodes.find(n => n.id === hoveredNode)?.desc}
             </p>
           </motion.div>
         )}
       </AnimatePresence>
 
+    </div>
+  )
+}
+
+function InteractiveSimulation({ subjectCode, theme }: { subjectCode: string; theme: any }) {
+  const [val1, setVal1] = useState(50)
+  const [val2, setVal2] = useState(50)
+  const [toggle, setToggle] = useState(false)
+  const [okrs, setOkrs] = useState([false, false, false])
+  const [scamper, setScamper] = useState('S')
+
+  if (subjectCode === 'M1-0') {
+    const phases = [
+      { name: 'Infraestrutura', gap: 'R$ 9.2M', cagr: '+5%', uptime: '99.9%', desc: 'TI de bastidor, foco em estabilidade, servidores e uptime de suporte comercial.' },
+      { name: 'Processos', gap: 'R$ 4.8M', cagr: '+18%', uptime: '99.99%', desc: 'TI de processo, integração total de sistemas via ERP, CRM e fluxos corporativos.' },
+      { name: 'Estratégia', gap: 'R$ 0.0M (Você Lidera)', cagr: '+42%', uptime: '99.999% + Realtime', desc: 'TI estratégica core, criação de produtos de rede digitais altamente lucrativos e ágeis.' }
+    ]
+    const idx = Math.min(2, Math.floor((val1 / 101) * 3))
+    const currentPhase = phases[idx]
+    return (
+      <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5 flex flex-col gap-3 font-sans">
+        <span className="text-[8px] uppercase tracking-wider text-[#d4b87a] font-bold">Simulação: Fases da TI & Transformação Digital</span>
+        <div className="flex justify-between text-[10px] text-white/80">
+          <span>Nível de Maturidade: <strong style={{ color: theme.primary }}>{currentPhase.name}</strong></span>
+          <span>Gap Concorrencial: <strong>{currentPhase.gap}</strong></span>
+        </div>
+        <input 
+          type="range" 
+          value={val1} 
+          onChange={(e) => setVal1(Number(e.target.value))}
+          className="w-full h-1 bg-white/10 rounded-lg appearance-none cursor-pointer accent-[#d4b87a]"
+        />
+        <div className="grid grid-cols-3 gap-2 text-center mt-1">
+          <div className="p-2 rounded bg-black/40 border border-white/5">
+            <span className="text-[7.5px] text-white/45 block">Uptime</span>
+            <span className="text-[10px] font-bold text-white/90">{currentPhase.uptime}</span>
+          </div>
+          <div className="p-2 rounded bg-black/40 border border-white/5">
+            <span className="text-[7.5px] text-white/45 block">Efeito CAGR</span>
+            <span className="text-[10px] font-bold text-white/90">{currentPhase.cagr}</span>
+          </div>
+          <div className="p-2 rounded bg-black/40 border border-white/5">
+            <span className="text-[7.5px] text-white/45 block">Foco Core</span>
+            <span className="text-[10px] font-bold text-[#d4b87a]">99%</span>
+          </div>
+        </div>
+        <p className="text-[9px] text-white/55 leading-relaxed italic text-justify">{currentPhase.desc}</p>
+      </div>
+    )
+  }
+  
+  if (subjectCode === 'M1-1') {
+    const prompts: Record<string, string> = {
+      S: 'Substituir: E se substituíssemos a equipe humana de atendimento telefônico por agentes cognitivos de IA integrados, utilizando humanos apenas para negociações complexas de alto valor?',
+      C: 'Combinar: E se combinássemos o seu serviço de mentoria empresarial clássico com uma plataforma SaaS de acompanhamento de telemetria, gerando receita dupla combinada?',
+      A: 'Adaptar: Como podemos adaptar o modelo de vendas rápidas de varejo (supermarket checkout) para a contratação de planos educacionais corporativos premium?',
+      M: 'Modificar: E se modificássemos a frequência de pagamento de assinaturas recorrentes tradicionais para royalties de sucesso partilhados trimestralmente?',
+      P: 'Propor outros usos: Como podemos reaproveitar a infraestrutura física de escritórios de TI ociosos aos finais de semana para realizar hackathons e open-innovation?',
+      E: 'Eliminar: E se eliminássemos inteiramente a burocracia de cadastros longos integrando APIs automáticas de Open Finance na jornada do cliente?',
+      R: 'Reverter: E se revertermos o fluxo de vendas tradicional e fizermos o cliente receber e usar o produto ANTES de pagar, faturando-o proporcionalmente após 15 dias?'
+    }
+    return (
+      <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5 flex flex-col gap-3 font-sans">
+        <span className="text-[8px] uppercase tracking-wider text-[#d4b87a] font-bold">Simulação: SCAMPER / Lógica Lateral</span>
+        <div className="flex gap-1 justify-between">
+          {['S','C','A','M','P','E','R'].map(letter => (
+            <button
+              key={letter}
+              onClick={() => setScamper(letter)}
+              className="w-7 h-7 rounded border text-[9px] font-bold transition cursor-pointer"
+              style={{
+                borderColor: scamper === letter ? theme.primary : 'rgba(255,255,255,0.06)',
+                background: scamper === letter ? theme.accent : 'rgba(255,255,255,0.02)',
+                color: scamper === letter ? '#fff' : 'rgba(255,255,255,0.4)'
+              }}
+            >
+              {letter}
+            </button>
+          ))}
+        </div>
+        <div className="p-3 rounded-lg bg-black/40 border border-white/5 min-h-[70px]">
+          <p className="text-[9.5px] text-white/80 leading-relaxed text-justify">{prompts[scamper]}</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (subjectCode === 'M1-2') {
+    return (
+      <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5 flex flex-col gap-3 font-sans">
+        <span className="text-[8px] uppercase tracking-wider text-[#d4b87a] font-bold">Simulação: Economia Circular (Cradle-to-Cradle)</span>
+        <div className="flex justify-between items-center text-[10px]">
+          <span>Modelo de Cadeia: <strong style={{ color: theme.primary }}>{toggle ? 'CIRCULAR (Loop)' : 'LINEAR (Descarte)'}</strong></span>
+          <button 
+            onClick={() => setToggle(!toggle)}
+            className="px-2 py-0.5 rounded text-[8px] bg-white/5 border border-white/10 text-white/70 cursor-pointer hover:bg-white/10 transition"
+          >
+            Mudar
+          </button>
+        </div>
+        <div className="p-3 rounded bg-black/40 border border-white/5 grid grid-cols-2 gap-3 text-center">
+          <div>
+            <span className="text-[7.5px] text-white/45 block">Resíduos Mitigados</span>
+            <span className="text-[11px] font-bold text-white/90">{toggle ? '88.5% (AAA)' : '0.0% (Alto Risco)'}</span>
+          </div>
+          <div>
+            <span className="text-[7.5px] text-white/45 block">Margem Operacional</span>
+            <span className="text-[11px] font-bold text-white/90" style={{ color: toggle ? theme.primary : '#fff' }}>{toggle ? '+6.4% (Reciclagem)' : '0.0% (Linear)'}</span>
+          </div>
+        </div>
+        <p className="text-[9px] text-white/55 leading-relaxed text-justify">
+          {toggle 
+            ? 'O modelo circular reintegra subprodutos de volta ao ciclo de fabricação, reduzindo a compra de matéria-prima virgem e eliminando multas regulatórias.'
+            : 'O modelo linear tradicional (extrair, fabricar, descartar) acumula despesas crescentes com gerenciamento de resíduos industriais e impostos ecológicos.'
+          }
+        </p>
+      </div>
+    )
+  }
+
+  if (subjectCode === 'M2-0') {
+    const handleToggleOkr = (idx: number) => {
+      const copy = [...okrs]
+      copy[idx] = !copy[idx]
+      setOkrs(copy)
+    }
+    const score = Math.round((okrs.filter(Boolean).length / 3) * 100)
+    return (
+      <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5 flex flex-col gap-3 font-sans">
+        <span className="text-[8px] uppercase tracking-wider text-[#d4b87a] font-bold">Simulação: Painel Cascating OKR</span>
+        <div className="flex justify-between items-center text-[10px] text-white/80">
+          <span>Objetivo: <strong>Maximização Operacional</strong></span>
+          <span className="font-mono text-xs font-bold animate-pulse" style={{ color: theme.primary }}>{score}%</span>
+        </div>
+        <div className="space-y-2">
+          {[
+            'KR 1: Conectar 90% dos PDVs ativos via plataforma dinâmica (BEES)',
+            'KR 2: Reduzir custos logísticos de last-mile em 20%',
+            'KR 3: Alcançar eNPS de alta segurança psicológica de equipe (+75)'
+          ].map((kr, idx) => (
+            <div 
+              key={idx}
+              onClick={() => handleToggleOkr(idx)}
+              className="p-2 rounded bg-black/40 border border-white/5 flex items-center justify-between cursor-pointer hover:border-white/10 transition"
+            >
+              <span className={`text-[9.5px] max-w-[200px] truncate ${okrs[idx] ? 'line-through text-white/40' : 'text-white/80'}`}>{kr}</span>
+              <div className="w-3.5 h-3.5 rounded-sm border border-white/20 flex items-center justify-center shrink-0">
+                {okrs[idx] && <span className="text-[8px] font-bold" style={{ color: theme.primary }}>✓</span>}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    )
+  }
+
+  if (subjectCode === 'M2-2') {
+    const rate = val1 / 500
+    const principal = 100000
+    const pricePayment = (principal * rate * Math.pow(1 + rate, 12)) / (Math.pow(1 + rate, 12) - 1)
+    const priceTotal = pricePayment * 12
+    const sacTotal = principal + (principal * rate * 13) / 2
+    return (
+      <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5 flex flex-col gap-3 font-sans">
+        <span className="text-[8px] uppercase tracking-wider text-[#d4b87a] font-bold">Simulação: SAC vs PRICE Amortization</span>
+        <div className="flex justify-between text-[10px] text-white/80">
+          <span>Principal: <strong>R$ 100.000 (12m)</strong></span>
+          <span>Taxa a.m: <strong style={{ color: theme.primary }}>{Math.round(rate * 100 * 100)/100}%</strong></span>
+        </div>
+        <input 
+          type="range" 
+          value={val1} 
+          min={10}
+          max={100}
+          onChange={(e) => setVal1(Number(e.target.value))}
+          className="w-full h-1 bg-white/10 rounded-lg appearance-none cursor-pointer accent-[#d4b87a]"
+        />
+        <div className="grid grid-cols-2 gap-2 text-center mt-1">
+          <div className="p-2 rounded bg-black/40 border border-white/5">
+            <span className="text-[7.5px] text-[#cbd5e1] block">Sistema Price (Total)</span>
+            <span className="text-[10px] font-bold text-white/90 font-mono">R$ {Math.round(priceTotal).toLocaleString('pt-BR')}</span>
+          </div>
+          <div className="p-2 rounded bg-black/40 border border-white/5">
+            <span className="text-[7.5px] text-[#d4b87a] block">Sistema SAC (Total)</span>
+            <span className="text-[10px] font-bold text-white/90 font-mono">R$ {Math.round(sacTotal).toLocaleString('pt-BR')}</span>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  if (subjectCode === 'M6-0') {
+    const ke = val1 / 5
+    const kd = 6
+    const tc = 34
+    const equityWeight = 0.6
+    const debtWeight = 0.4
+    const wacc = (ke * equityWeight) + (kd * (1 - tc/100) * debtWeight)
+    const initialFlow = 5000000
+    const growth = 3
+    const valuation = initialFlow / ((wacc/100) - (growth/100))
+    return (
+      <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5 flex flex-col gap-3 font-sans">
+        <span className="text-[8px] uppercase tracking-wider text-[#d4b87a] font-bold">Simulação: WACC & DCF Valuation</span>
+        <div className="flex justify-between text-[10px] text-white/80">
+          <span>Custo do Capital (Ke): <strong style={{ color: theme.primary }}>{Math.round(ke * 10)/10}%</strong></span>
+          <span>WACC: <strong>{Math.round(wacc * 100)/100}%</strong></span>
+        </div>
+        <input 
+          type="range" 
+          value={val1} 
+          min={25}
+          max={95}
+          onChange={(e) => setVal1(Number(e.target.value))}
+          className="w-full h-1 bg-white/10 rounded-lg appearance-none cursor-pointer accent-[#d4b87a]"
+        />
+        <div className="p-2.5 rounded bg-black/40 border border-white/5 flex flex-col items-center justify-center">
+          <span className="text-[7.5px] text-white/45 block">Valuation DCF Estimado</span>
+          <span className="text-[13px] font-bold text-white mt-0.5 font-mono animate-pulse" style={{ color: theme.primary }}>
+            {valuation > 0 ? `R$ ${Math.round(valuation / 1000000).toLocaleString('pt-BR')} Milhões` : 'Taxa Inviável'}
+          </span>
+        </div>
+      </div>
+    )
+  }
+
+  if (subjectCode === 'M6-1') {
+    const cost = 100
+    const markup = val1 / 50
+    const price = cost * (1 + markup)
+    const baseDemand = 1000
+    const elasticity = 1.8
+    const priceIncreaseRatio = price / 150
+    const dynamicDemand = Math.round(baseDemand / Math.pow(priceIncreaseRatio, elasticity))
+    const totalRev = dynamicDemand * price
+    return (
+      <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5 flex flex-col gap-3 font-sans">
+        <span className="text-[8px] uppercase tracking-wider text-[#d4b87a] font-bold">Simulação: Elasticidade de Preços & Markup</span>
+        <div className="flex justify-between text-[10px] text-white/80">
+          <span>Markup Adicionado: <strong style={{ color: theme.primary }}>{Math.round(markup * 100)/100}x</strong></span>
+          <span>Preço Final: <strong>R$ {Math.round(price).toLocaleString('pt-BR')}</strong></span>
+        </div>
+        <input 
+          type="range" 
+          value={val1} 
+          min={25}
+          max={95}
+          onChange={(e) => setVal1(Number(e.target.value))}
+          className="w-full h-1 bg-white/10 rounded-lg appearance-none cursor-pointer accent-[#d4b87a]"
+        />
+        <div className="grid grid-cols-2 gap-2 text-center mt-1">
+          <div className="p-2 rounded bg-black/40 border border-white/5">
+            <span className="text-[7.5px] text-white/45 block">Volume de Demanda</span>
+            <span className="text-[10px] font-bold text-white/90">{dynamicDemand} un</span>
+          </div>
+          <div className="p-2 rounded bg-black/40 border border-white/5">
+            <span className="text-[7.5px] text-[#d4b87a] block">Receita Total</span>
+            <span className="text-[10px] font-bold text-white/90 font-mono">R$ {Math.round(totalRev).toLocaleString('pt-BR')}</span>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  // Default GUT matrix
+  const gut = Math.round((val1 / 20) * (val2 / 20) * 4)
+  let status = 'MODERADO'
+  let color = '#fff'
+  if (gut >= 16) {
+    status = 'IMEDIATO'
+    color = '#f43f5e'
+  } else if (gut >= 9) {
+    status = 'ALTO'
+    color = '#fb923c'
+  }
+  return (
+    <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5 flex flex-col gap-3 font-sans">
+      <span className="text-[8px] uppercase tracking-wider text-[#d4b87a] font-bold">Simulação: Matriz de Priorização GUT</span>
+      <div className="flex justify-between text-[10px] text-white/80">
+        <span>Gravidade (G): <strong>{Math.round(val1/20)}/5</strong></span>
+        <span>Urgência (U): <strong>{Math.round(val2/20)}/5</strong></span>
+      </div>
+      <div className="flex flex-col gap-2">
+        <input 
+          type="range" 
+          value={val1} 
+          min={20}
+          max={100}
+          onChange={(e) => setVal1(Number(e.target.value))}
+          className="w-full h-0.5 bg-white/10 rounded appearance-none cursor-pointer accent-[#cbd5e1]"
+        />
+        <input 
+          type="range" 
+          value={val2} 
+          min={20}
+          max={100}
+          onChange={(e) => setVal2(Number(e.target.value))}
+          className="w-full h-0.5 bg-white/10 rounded appearance-none cursor-pointer accent-[#cbd5e1]"
+        />
+      </div>
+      <div className="p-2.5 rounded bg-black/40 border border-white/5 flex items-center justify-between mt-1">
+        <div className="flex flex-col">
+          <span className="text-[7.5px] text-white/45 block">Prioridade</span>
+          <span className="text-[10px] font-bold leading-tight" style={{ color }}>{status}</span>
+        </div>
+        <div className="flex flex-col items-end">
+          <span className="text-[7.5px] text-white/45 block">GUT Score</span>
+          <span className="text-[11px] font-bold text-white font-mono" style={{ color: theme.primary }}>{gut} pts</span>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function ExecutiveMasterclassTheater({ 
+  moduleTitle, 
+  moduleId,
+  onSelectTopic,
+  activeTopicId,
+  activeLessonIndex,
+  onChangeLessonIndex
+}: { 
+  moduleTitle: string; 
+  moduleId?: string;
+  onSelectTopic?: (topicId: string) => void;
+  activeTopicId?: string | null;
+  activeLessonIndex: number;
+  onChangeLessonIndex: (index: number) => void;
+}) {
+  const theme = MODULE_THEMES[moduleId ?? 'M1'] || MODULE_THEMES.M1
+  const [playing, setPlaying] = useState(false)
+  const [progress, setProgress] = useState(0)
+
+  const activeSubjectsList = SUBJECTS_DB.filter(s => s.id.startsWith(moduleId ?? 'M1'))
+  const activeSubject = activeSubjectsList[activeLessonIndex] ?? activeSubjectsList[0]
+
+  useEffect(() => {
+    setProgress(0)
+    setPlaying(false)
+  }, [activeLessonIndex, moduleId])
+
+  useEffect(() => {
+    if (!playing) return
+    const interval = setInterval(() => {
+      setProgress((prev) => (prev >= 100 ? 0 : prev + 0.5))
+    }, 500)
+    return () => clearInterval(interval)
+  }, [playing])
+
+  const currentVideo = activeSubject.videoUrls[0]
+
+  const handleLessonSelect = (index: number) => {
+    onChangeLessonIndex(index)
+    setProgress(0)
+    setPlaying(false)
+    if (onSelectTopic) {
+      onSelectTopic(activeSubjectsList[index].id)
+    }
+  }
+
+  return (
+    <div className="ipb-glass-card w-full flex flex-col pointer-events-auto transition-all duration-300">
+      <div className="relative aspect-[21/9] bg-black flex items-center justify-center overflow-hidden rounded-t-xl">
+        <div className="absolute inset-0" style={{
+          background: `radial-gradient(circle at 50% 50%, ${theme.glow}, transparent 80%)`
+        }} />
+        
+        {playing && (
+          <div className="absolute bottom-6 left-6 flex gap-1 items-end h-5 z-10 opacity-70">
+            {[0.5, 0.9, 0.3, 0.7, 0.4, 0.8, 0.2].map((val, i) => (
+              <motion.div
+                key={i}
+                className="w-0.5 rounded-sm"
+                style={{ backgroundColor: theme.primary }}
+                animate={{ height: ['4px', '20px', '4px'] }}
+                transition={{ duration: 0.8 + i * 0.1, repeat: Infinity, ease: 'easeInOut' }}
+              />
+            ))}
+          </div>
+        )}
+
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/30 pointer-events-none" />
+
+        <div className="absolute top-4 left-4 z-10 flex gap-2">
+          <span className="text-[7.5px] uppercase tracking-widest font-bold px-2 py-0.5 rounded bg-black/50 border border-white/10" style={{ color: theme.primary }}>
+            {moduleId} · Aula {activeLessonIndex + 1}
+          </span>
+          <span className="text-[7.5px] uppercase tracking-widest font-bold px-2 py-0.5 rounded bg-black/50 border border-white/10 text-white/50">
+            {activeSubject.code}
+          </span>
+        </div>
+
+        {currentVideo && playing ? (
+          <video 
+            src={currentVideo.url} 
+            controls 
+            autoPlay 
+            className="absolute inset-0 w-full h-full object-cover z-0"
+            onEnded={() => setPlaying(false)}
+          />
+        ) : (
+          <div className="absolute inset-0 flex flex-col items-center justify-center z-0 p-4 text-center">
+            <div className="w-10 h-10 rounded-full flex items-center justify-center bg-white/5 border border-white/10 text-white/40 mb-2">
+              {moduleId === 'M1' ? <Lightbulb className="h-5 w-5" /> : moduleId === 'M6' ? <LineChart className="h-5 w-5" /> : <Briefcase className="h-5 w-5" />}
+            </div>
+            <span className="text-[8.5px] uppercase tracking-widest text-[#d4b87a] font-semibold">Briefing de Mídia</span>
+            <span className="text-[10px] text-white/40 mt-1 max-w-[280px]">{currentVideo ? 'Vídeo Disponível. Clique para iniciar.' : 'Sem transmissão de vídeo. Clique para simular Briefing de Áudio.'}</span>
+          </div>
+        )}
+
+        {!playing && (
+          <motion.button 
+            onClick={() => setPlaying(true)}
+            whileHover={{ scale: 1.08, boxShadow: `0 0 24px ${theme.accent}` }}
+            whileTap={{ scale: 0.95 }}
+            className="relative z-10 w-12 h-12 rounded-full flex items-center justify-center cursor-pointer"
+            style={{
+              background: `radial-gradient(circle at 30% 25%, ${theme.accent} 0%, rgba(15,12,8,0.95) 100%)`,
+              border: `0.5px solid ${theme.primary}`,
+              boxShadow: `0 0 20px ${theme.accent}, inset 0 1px 1px rgba(255,255,255,0.2)`
+            }}
+          >
+            <Play className="h-4.5 w-4.5 text-white/95 fill-white/80 ml-0.5" />
+          </motion.button>
+        )}
+      </div>
+
+      <div className="p-4 flex flex-col justify-between bg-black/30 border-t border-white/[0.04] space-y-4">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-2.5">
+          <div className="min-w-0">
+            <span className="text-[7.5px] uppercase tracking-widest font-bold" style={{ color: theme.primary }}>Execução de Masterclass</span>
+            <h4 className="text-[11.5px] font-bold text-white/90 leading-tight mt-0.5 truncate">{activeSubject.title}</h4>
+            <p className="text-[9px] text-white/40 truncate mt-0.5">{currentVideo ? `Vídeo Aula: ${currentVideo.title}` : 'Sem transmissão de vídeo · Briefing de áudio ativado'}</p>
+          </div>
+          
+          <div className="flex items-center gap-4 shrink-0 mt-2 md:mt-0">
+            <div className="flex justify-between items-center text-[9px] text-white/40 font-mono gap-3">
+              <span className="px-1.5 py-0.5 rounded bg-white/5 border border-white/10 text-[8.5px]" style={{ color: playing ? theme.primary : 'inherit' }}>
+                {playing ? 'Reproduzindo' : 'Pausado'}
+              </span>
+              <span>{playing ? `${Math.floor((progress/100)*22)}:15` : '00:00'} / {ACADEMIC_SYLLABUS.find(s => s.id === activeSubject.id)?.duration ?? '22:00'}</span>
+            </div>
+          </div>
+        </div>
+        
+        <div className="relative">
+          <div className="h-1 bg-white/10 rounded-full overflow-hidden cursor-pointer">
+            <div className="h-full transition-all duration-300" style={{ 
+              width: `${progress}%`,
+              background: `linear-gradient(to right, ${theme.primary}, ${theme.secondary})`
+            }} />
+          </div>
+        </div>
+
+        <div className="pt-2 border-t border-white/[0.04]">
+          <span className="text-[7.5px] uppercase tracking-wider text-white/30 font-bold block mb-2">Playlist da Trilha Selecionada</span>
+          <div className="flex flex-wrap gap-2">
+            {activeSubjectsList.map((item, idx) => {
+              const isSelected = idx === activeLessonIndex
+              const isGold = ['M1-S1', 'M1-S3', 'M2-S1', 'M3-S1', 'M4-S1', 'M5-S2', 'M6-S1', 'M7-S1', 'M8-S1'].includes(item.id)
+              const itemColor = isGold ? '#d4b87a' : '#cbd5e1'
+              const itemBgSelected = isGold ? 'rgba(212,184,122,0.12)' : 'rgba(203,213,225,0.12)'
+              const itemDuration = ACADEMIC_SYLLABUS.find(s => s.id === item.id)?.duration ?? '22:00'
+              
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => handleLessonSelect(idx)}
+                  className="flex items-center gap-2 px-3 py-2 rounded-lg border text-left cursor-pointer transition-all duration-300"
+                  style={{
+                    background: isSelected ? itemBgSelected : 'rgba(255,255,255,0.01)',
+                    borderColor: isSelected ? itemColor : 'rgba(255,255,255,0.04)',
+                  }}
+                >
+                  <span className="font-mono text-[8px] font-bold" style={{ color: isSelected ? itemColor : 'rgba(255,255,255,0.3)' }}>
+                    {String(idx + 1).padStart(2, '0')}
+                  </span>
+                  <div className="flex flex-col">
+                    <span className={`text-[9px] font-semibold leading-tight truncate max-w-[110px] ${isSelected ? 'text-white' : 'text-white/60'}`}>
+                      {item.title}
+                    </span>
+                    <span className="text-[6.5px] text-white/35 font-mono mt-0.5">{itemDuration} · {isGold ? 'OURO' : 'PRATA'}</span>
+                  </div>
+                </button>
+              )
+            })}
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function ExecutivePerformanceDashboard({ moduleId, activeSubjectId }: { moduleId?: string; activeSubjectId: string }) {
+  const theme = MODULE_THEMES[moduleId ?? 'M1'] || MODULE_THEMES.M1
+  const kpiData = SUBJECT_KPIS[activeSubjectId] || SUBJECT_KPIS['M1-S1']
+
+  return (
+    <div className="ipb-glass-card w-full flex flex-col p-5 pointer-events-auto transition-all duration-300 relative overflow-hidden justify-between">
+      <div className="absolute inset-0 opacity-[0.02]" style={{
+        background: `radial-gradient(circle at 100% 0%, ${theme.primary}, transparent 50%)`
+      }} />
+
+      <div className="relative z-10 space-y-4">
+        <div>
+          <span className="text-[7.5px] uppercase tracking-wider font-bold" style={{ color: theme.primary }}>KPI de Performance Ativa</span>
+          <h4 className="text-[12px] font-bold text-white/90 leading-tight mt-0.5">Telemetria da Disciplina</h4>
+        </div>
+
+        <div className="p-3 rounded-xl bg-white/[0.01] border border-white/[0.04]">
+          <div className="flex justify-between items-center text-[9px] text-white/40">
+            <span>{kpiData.metric1.label}</span>
+            <span className="font-mono text-white/90 font-bold" style={{ color: theme.primary }}>{kpiData.metric1.value}</span>
+          </div>
+          <div className="h-1 w-full bg-white/5 rounded-full overflow-hidden mt-1.5">
+            <div className="h-full" style={{ width: `${kpiData.metric1.progress}%`, backgroundColor: theme.primary }} />
+          </div>
+        </div>
+
+        <div className="p-3 rounded-xl bg-white/[0.01] border border-white/[0.04] flex items-center justify-between">
+          <div className="flex flex-col">
+            <span className="text-[8px] text-white/45 block">{kpiData.metric2.label}</span>
+            <span className="text-xs font-mono font-bold text-white/90 mt-0.5">{kpiData.metric2.value}</span>
+          </div>
+          <div className="flex gap-1 items-end h-6 pr-1">
+            {kpiData.metric2.chartData.map((h, idx) => (
+              <div 
+                key={idx}
+                className="w-0.5 rounded-t"
+                style={{
+                  height: `${h * 5}%`,
+                  backgroundColor: theme.primary,
+                  opacity: 0.3 + (idx * 0.12)
+                }}
+              />
+            ))}
+          </div>
+        </div>
+
+        <div className="p-3 rounded-xl bg-white/[0.01] border border-white/[0.04] flex items-center justify-between">
+          <div className="flex flex-col">
+            <span className="text-[8px] text-white/45 block">{kpiData.metric3.label}</span>
+            <span className="text-[10px] font-bold text-white/90 mt-0.5">{kpiData.metric3.value}</span>
+          </div>
+          <span className="text-[7.5px] px-2 py-0.5 rounded font-mono font-bold border shrink-0"
+            style={{
+              color: theme.primary,
+              borderColor: `${theme.primary}30`,
+              backgroundColor: `${theme.primary}08`
+            }}
+          >
+            {kpiData.metric3.badge}
+          </span>
+        </div>
+      </div>
+
+      <div className="text-[7.5px] text-white/30 mt-4 border-t border-white/[0.04] pt-2 flex justify-between font-mono shrink-0">
+        <span>GOVERNANÇA: ALTO RIGOR</span>
+        <span>STATUS: EXCELENTE</span>
+      </div>
     </div>
   )
 }
@@ -872,40 +1172,20 @@ function ExecutiveStudyBriefing({
   activeSubjectIndex: number
   onChangeSubjectIndex: (index: number) => void
 }) {
-  const [module, setModule] = useState<any>(null)
-  const [activeTab, setActiveTab] = useState<'summary' | 'tutor' | 'notes' | 'map'>('summary')
-  const [showFullSummary, setShowFullSummary] = useState(false)
+  const [activeTab, setActiveTab] = useState<'summary' | 'tutor' | 'notes' | 'sim'>('summary')
   const [tutorInput, setTutorInput] = useState('')
   const [isTutorLoading, setIsTutorLoading] = useState(false)
   const [tutorHistory, setTutorHistory] = useState<any[]>([
     { role: 'assistant', content: 'Bem-vindo ao Advisor de Diretoria IA. Como seu consultor estratégico de negócios, estou pronto para detalhar WACC, valuation, segurança psicológica, frameworks organizacionais ou metodologias científicas de sua trilha. O que deseja analisar hoje?' }
   ])
+  const [userNotes, setUserNotes] = useState<Record<string, string>>({})
 
-  useEffect(() => {
-    import('@/data/caderno-content-m4').then(m => {
-      setModule(m.M4_CONTENT)
-    })
-  }, [])
+  const activeSubjectsList = SUBJECTS_DB.filter(s => s.id.startsWith(moduleId))
+  const activeSubject = activeSubjectsList[activeSubjectIndex] ?? activeSubjectsList[0]
 
-  if (!module) return <div className="h-48 flex items-center justify-center text-white/30 font-mono text-[10px]">Carregando briefing estratégico...</div>
+  if (!activeSubject) return <div className="h-48 flex items-center justify-center text-white/30 font-mono text-[10px]">Carregando briefing estratégico...</div>
 
-  // Flatten slide blocks to easily locate our active subject (0-29)
-  const allBlocks = module.topics.flatMap((t: any) => 
-    t.blocks.filter((b: any) => b.type === 'slides').map((b: any) => ({
-      ...b,
-      topicId: t.id,
-      topicTitle: t.title
-    }))
-  )
-
-  const activeBlock = allBlocks[activeSubjectIndex] ?? allBlocks[0]
-  if (!activeBlock) return null
-
-  const activeSlide = activeBlock.slides?.[0]
-
-  // Extract texts/notes of the active topic
-  const currentTopic = module.topics.find((t: any) => t.id === activeBlock.topicId) ?? module.topics[0]
-  const textBlocks = currentTopic.blocks.filter((b: any) => b.type === 'text')
+  const activeChapter = activeSubject.chapters?.[0]
 
   const handleAskTutor = async (question: string) => {
     if (!question.trim()) return
@@ -934,7 +1214,6 @@ function ExecutiveStudyBriefing({
   return (
     <div className="ipb-soft relative overflow-hidden rounded-[2rem] p-6 space-y-6">
       
-      {/* Top Strategic Navigation Header */}
       <div className="flex items-center justify-between pb-4 border-b border-white/[0.04] flex-wrap gap-3" style={{ borderBottom: '0.2px solid rgba(255,255,255,0.04)' }}>
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 rounded-lg bg-[#d4b87a]/10 border border-[#d4b87a]/20 flex items-center justify-center">
@@ -942,17 +1221,16 @@ function ExecutiveStudyBriefing({
           </div>
           <div>
             <span className="text-[7.5px] uppercase tracking-[0.25em] font-bold text-[#d4b87a]">MBA Executive Cockpit</span>
-            <h3 className="text-[14px] font-bold text-white/90 leading-none mt-0.5">{activeBlock.title}</h3>
+            <h3 className="text-[14px] font-bold text-white/90 leading-none mt-0.5">{activeSubject.title}</h3>
           </div>
         </div>
         
-        {/* Navigation Tabs (SUMÁRIO, IA TUTOR, NOTAS, MAPA) */}
         <div className="flex items-center gap-1 bg-white/5 border border-white/10 rounded-lg p-0.5">
           {[
             { id: 'summary', label: 'SUMÁRIO', icon: BookOpen },
             { id: 'tutor', label: 'ADVISOR IA', icon: MessageSquare },
-            { id: 'notes', label: 'MEMORANDO', icon: FileText },
-            { id: 'map', label: 'ROADMAP', icon: Target }
+            { id: 'notes', label: 'NOTAS', icon: FileText },
+            { id: 'sim', label: 'SIMULAÇÕES', icon: Target }
           ].map((tab) => {
             const isSelected = activeTab === tab.id
             const TabIcon = tab.icon
@@ -976,19 +1254,17 @@ function ExecutiveStudyBriefing({
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch">
         
-        {/* Main Work Panel: Tab content (takes 2 cols) */}
-        <div className="lg:col-span-2 space-y-6 flex flex-col justify-between">
+        <div className="lg:col-span-2 space-y-6 flex flex-col justify-between min-w-0">
           
           <AnimatePresence mode="wait">
             
-            {/* Tab 1: Briefing Slide Summary */}
-            {activeTab === 'summary' && activeSlide && (
+            {activeTab === 'summary' && activeChapter && (
               <motion.div
                 key="summary-tab"
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
-                className="space-y-4 flex-1 flex flex-col justify-between"
+                className="space-y-4 flex-1 flex flex-col justify-between min-w-0"
               >
                 <div className="p-6 rounded-2xl bg-white/[0.015] border border-white/[0.04] backdrop-blur-md relative overflow-hidden transition-all duration-300 hover:border-[#d4b87a]/20 flex flex-col justify-between h-full group"
                   style={{ boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.02), 0 8px 24px rgba(0,0,0,0.15)' }}
@@ -997,53 +1273,68 @@ function ExecutiveStudyBriefing({
                     background: 'radial-gradient(circle at 0% 0%, #d4b87a, transparent 50%)'
                   }} />
 
-                  <div>
+                  <div className="space-y-4">
                     <div className="flex justify-between items-center border-b border-white/[0.06] pb-2.5 w-full">
-                      <h4 className="text-[11.5px] font-bold text-white/90 leading-tight tracking-tight uppercase">
-                        {activeSlide.title}
+                      <h4 className="text-[11.5px] font-bold text-white/90 leading-tight tracking-tight uppercase truncate max-w-[240px]">
+                        {activeChapter.title}
                       </h4>
-                      <span className="text-[8px] px-1.5 py-0.5 rounded font-mono bg-[#d4b87a]/10 border border-[#d4b87a]/20 text-[#d4b87a]">SLIDE DE ESTRATÉGIA</span>
+                      <span className="text-[8px] px-1.5 py-0.5 rounded font-mono bg-[#d4b87a]/10 border border-[#d4b87a]/20 text-[#d4b87a] shrink-0">TEXTBOOK ESTRATÉGICO</span>
                     </div>
 
-                    <ul className="space-y-3.5 mt-4">
-                      {activeSlide.bullets.map((bullet: string, bIdx: number) => (
-                        <li key={bIdx} className="text-[10.5px] text-white/60 leading-relaxed flex items-start gap-2.5 text-justify">
-                          <span className="mt-1.5 w-1.5 h-1.5 rounded-full shrink-0 bg-[#d4b87a]" />
-                          <span>{bullet}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  {activeSlide.highlight && (
-                    <div className="mt-6 rounded-xl p-3.5 bg-[#d4b87a]/5 border border-[#d4b87a]/15">
-                      <p className="text-[9.5px] italic text-[#d4b87a]/70 leading-relaxed text-justify">
-                        {activeSlide.highlight}
+                    {activeChapter.description && (
+                      <p className="text-[10px] text-white/40 italic leading-relaxed text-justify">
+                        &ldquo;{activeChapter.description}&rdquo;
                       </p>
+                    )}
+
+                    <div className="space-y-4 mt-2">
+                      {activeChapter.subsections.slice(0, 3).map((sub, sIdx) => (
+                        <div key={sIdx} className="space-y-1.5">
+                          <h5 className="text-[10.5px] font-bold text-white/90 flex items-center gap-2">
+                            <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: activeTheme.primary }} />
+                            {sub.title}
+                          </h5>
+                          <p className="text-[10px] text-white/60 leading-relaxed text-justify pl-3.5">
+                            {sub.content}
+                          </p>
+
+                          {sub.studyCase && (
+                            <div className="ml-3.5 mt-2 p-3 rounded-lg bg-black/40 border border-[#d4b87a]/15 text-[9px] text-white/80 leading-relaxed text-justify">
+                              <strong className="text-[#d4b87a] block mb-1">Estudo de Caso — {sub.studyCase.title}:</strong>
+                              {sub.studyCase.body}
+                            </div>
+                          )}
+
+                          {sub.deepDive && (
+                            <div className="ml-3.5 mt-2 p-2.5 rounded-lg bg-white/[0.015] border border-white/[0.05] text-[9px] text-white/44 leading-relaxed text-justify">
+                              <strong className="text-white/60 block mb-1">✎ Exploração Avançada:</strong>
+                              {sub.deepDive}
+                            </div>
+                          )}
+                        </div>
+                      ))}
                     </div>
-                  )}
+                  </div>
                 </div>
               </motion.div>
             )}
 
-            {/* Tab 2: AI Advisor Chatbot */}
             {activeTab === 'tutor' && (
               <motion.div
                 key="tutor-tab"
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
-                className="space-y-4 flex-1 flex flex-col justify-between"
+                className="space-y-4 flex-1 flex flex-col justify-between min-w-0"
               >
                 <div className="p-5 rounded-2xl bg-white/[0.015] border border-white/[0.04] backdrop-blur-md flex flex-col justify-between h-[360px] relative overflow-hidden"
                   style={{ boxShadow: '0 8px 24px rgba(0,0,0,0.15)' }}
                 >
-                  {/* Messages log */}
                   <div className="flex-1 overflow-y-auto space-y-3.5 pr-2 ipb-thinscroll">
                     {tutorHistory.map((msg, i) => (
                       <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                         <div 
-                          className="max-w-[85%] rounded-xl p-3 text-[10px] leading-relaxed text-justify"
+                          className="max-w-[85%] rounded-xl p-3 text-[10px] leading-relaxed text-justify font-sans"
                           style={{
                             background: msg.role === 'user' ? 'rgba(212,184,122,0.12)' : 'rgba(255,255,255,0.03)',
                             border: msg.role === 'user' ? '1px solid rgba(212,184,122,0.22)' : '1px solid rgba(255,255,255,0.05)',
@@ -1063,12 +1354,11 @@ function ExecutiveStudyBriefing({
                     )}
                   </div>
 
-                  {/* Suggestion Chips */}
-                  <div className="flex flex-wrap gap-1.5 my-3">
+                  <div className="flex flex-wrap gap-1.5 my-3 shrink-0">
                     {['Explicar Conceito', 'Aplicar ao meu Negócio', 'Análise SWOT'].map((chip) => (
                       <button
                         key={chip}
-                        onClick={() => handleAskTutor(`${chip} da disciplina ${activeBlock.title}`)}
+                        onClick={() => handleAskTutor(`${chip} da disciplina ${activeSubject.title}`)}
                         className="px-2 py-1 rounded bg-white/5 border border-white/10 text-white/50 text-[8px] hover:bg-white/10 cursor-pointer transition-all"
                       >
                         {chip}
@@ -1076,7 +1366,6 @@ function ExecutiveStudyBriefing({
                     ))}
                   </div>
 
-                  {/* Input form */}
                   <div className="flex gap-2 border-t border-white/[0.06] pt-3 shrink-0">
                     <input
                       value={tutorInput}
@@ -1096,59 +1385,57 @@ function ExecutiveStudyBriefing({
               </motion.div>
             )}
 
-            {/* Tab 3: Memorando / Extra notes */}
             {activeTab === 'notes' && (
               <motion.div
                 key="notes-tab"
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
-                className="space-y-4 flex-1 flex flex-col justify-between"
+                className="space-y-4 flex-1 flex flex-col justify-between min-w-0"
               >
                 <div className="p-5 rounded-2xl bg-white/[0.015] border border-white/[0.04] relative overflow-hidden min-h-[300px] flex flex-col justify-between">
                   <div className="absolute inset-0 opacity-[0.01] pointer-events-none" style={{
                     background: 'radial-gradient(circle at 100% 100%, #d4b87a, transparent 50%)'
                   }} />
-                  <div>
-                    <div className="flex items-center gap-2 mb-3">
-                      <FileText className="h-4 w-4 text-[#d4b87a]" />
-                      <span className="text-[8.5px] uppercase tracking-widest font-bold text-white/40">Notas de Implementação Operacional</span>
+                  <div className="space-y-4 flex-1 flex flex-col justify-between">
+                    <div className="flex items-center justify-between border-b border-white/[0.06] pb-2">
+                      <div className="flex items-center gap-2">
+                        <FileText className="h-4 w-4 text-[#d4b87a]" />
+                        <span className="text-[8.5px] uppercase tracking-widest font-bold text-white/40">Notas de Implementação Operacional</span>
+                      </div>
+                      <span className="text-[7.5px] text-white/30 font-mono">AUTOSAVE ATIVO</span>
                     </div>
-                    {textBlocks.length > 0 ? (
-                      textBlocks.map((block: any) => (
-                        <div key={block.id} className="space-y-2 mt-2">
-                          {block.title && <h5 className="text-[11px] font-bold text-white/90">{block.title}</h5>}
-                          <p className="text-[10px] text-white/55 leading-relaxed text-justify">{block.body}</p>
-                        </div>
-                      ))
-                    ) : (
-                      <p className="text-[10px] text-white/40 italic mt-6 text-center">Nenhuma anotação extra cadastrada para este tópico. Utilize o IA Advisor para elaborar resumos específicos.</p>
-                    )}
+
+                    <textarea
+                      value={userNotes[activeSubject.id] ?? ''}
+                      onChange={(e) => setUserNotes({ ...userNotes, [activeSubject.id]: e.target.value })}
+                      placeholder={`Escreva suas notas e planos estratégicos específicos para a disciplina ${activeSubject.title}...`}
+                      className="flex-1 w-full min-h-[200px] bg-transparent border-0 outline-none text-[10px] leading-relaxed text-white/80 placeholder:text-white/20 resize-none font-mono"
+                    />
+
+                    <p className="text-[7.5px] text-white/30 leading-snug">
+                      As notas adicionadas neste bloco são salvas localmente em cache para a sua trilha de inteligência acadêmica corporativa.
+                    </p>
                   </div>
                 </div>
               </motion.div>
             )}
 
-            {/* Tab 4: Strategic Node Map */}
-            {activeTab === 'map' && (
+            {activeTab === 'sim' && (
               <motion.div
-                key="map-tab"
+                key="sim-tab"
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
-                className="space-y-4 flex-1 flex flex-col justify-between"
+                className="space-y-4 flex-1 flex flex-col justify-between min-w-0"
               >
                 <div className="p-5 rounded-2xl bg-white/[0.015] border border-white/[0.04] relative overflow-hidden min-h-[300px] flex flex-col justify-between">
-                  <div>
-                    <span className="text-[8px] uppercase tracking-wider font-bold text-[#d4b87a]">Fluxo de Valor</span>
-                    <h3 className="text-[12px] font-bold text-white/90 mt-0.5">Alinhamento Estratégico</h3>
-                    <p className="text-[9.5px] text-white/40 leading-relaxed text-justify mt-1 mb-4">
-                      Mapeamento dinâmico das conexões táticas corporativas e fluxo de governança executiva.
-                    </p>
-                  </div>
-
-                  <div className="my-2">
-                    <StrategicRoadmapBoard moduleId="M4" />
+                  <div className="space-y-4">
+                    <div className="border-b border-white/[0.06] pb-2">
+                      <span className="text-[8px] uppercase tracking-wider font-bold text-[#d4b87a]">Estação de Simulação Interativa</span>
+                      <h3 className="text-[12px] font-bold text-white/90 mt-0.5">{activeSubject.title}</h3>
+                    </div>
+                    <InteractiveSimulation subjectCode={activeSubject.code} theme={activeTheme} />
                   </div>
                 </div>
               </motion.div>
@@ -1157,7 +1444,6 @@ function ExecutiveStudyBriefing({
           </AnimatePresence>
         </div>
 
-        {/* Sidebar Index (Right 1 col on lg): SUMÁRIO GERAL / ÍNDICE DO CADERNO (30 Disciplinas) */}
         <div className="lg:col-span-1 flex flex-col p-5 rounded-2xl bg-white/[0.015] border border-white/[0.04] relative overflow-hidden h-[360px] lg:h-[400px]">
           <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{
             background: `radial-gradient(circle at 100% 0%, #d4b87a, transparent 50%)`
@@ -1166,58 +1452,55 @@ function ExecutiveStudyBriefing({
           <div className="relative z-10 mb-3 shrink-0">
             <div className="flex justify-between items-center border-b border-white/[0.06] pb-2">
               <span className="text-[8px] uppercase tracking-wider font-bold text-[#d4b87a]">Sumário do Caderno</span>
-              <span className="text-[8px] px-1.5 py-0.2 rounded bg-white/5 border border-white/10 text-white/40 font-mono">30 AULAS</span>
+              <span className="text-[8px] px-1.5 py-0.2 rounded bg-white/5 border border-white/10 text-white/40 font-mono">{activeSubjectsList.length} MATÉRIAS</span>
             </div>
-            <h3 className="text-[12px] font-bold text-white/90 mt-1">Índice do Caderno</h3>
+            <h3 className="text-[12px] font-bold text-white/90 mt-1 font-sans">Índice do Caderno</h3>
           </div>
 
-          {/* List of 30 Disciplines */}
           <div className="flex-1 overflow-y-auto space-y-1.5 pr-2 ipb-thinscroll shrink-0">
-            {ACADEMIC_SYLLABUS.map((item, idx) => {
+            {activeSubjectsList.map((item, idx) => {
               const isSelected = idx === activeSubjectIndex
-              const isGold = idx % 2 === 0
+              const isGold = ['M1-S1', 'M1-S3', 'M2-S1', 'M3-S1', 'M4-S1', 'M5-S2', 'M6-S1', 'M7-S1', 'M8-S1'].includes(item.id)
               const itemColor = isGold ? '#d4b87a' : '#cbd5e1'
               
               return (
                 <button
                   key={item.id}
                   onClick={() => onChangeSubjectIndex(idx)}
-                  className="w-full text-left p-2 rounded-lg transition-all duration-200 cursor-pointer flex items-center justify-between gap-2 border border-transparent"
+                  className="flex items-center justify-between w-full p-2.5 rounded-xl border text-left cursor-pointer transition-all duration-300"
                   style={{
-                    background: isSelected ? 'rgba(255,255,255,0.03)' : 'transparent',
-                    borderColor: isSelected ? 'rgba(212,184,122,0.15)' : 'transparent'
+                    borderColor: isSelected ? itemColor : 'rgba(255,255,255,0.02)',
+                    background: isSelected ? 'rgba(255,255,255,0.03)' : 'rgba(255,255,255,0.005)'
                   }}
                 >
-                  <div className="flex items-center gap-2 min-w-0">
-                    <span className="font-mono text-[8px] shrink-0" style={{ color: isSelected ? itemColor : 'rgba(255,255,255,0.2)' }}>
-                      {String(idx + 1).padStart(2, '0')}
-                    </span>
-                    <span className={`text-[9px] truncate ${isSelected ? 'text-white font-medium' : 'text-white/55'}`}>
-                      {item.title}
-                    </span>
+                  <div className="flex items-center gap-2">
+                    <span 
+                      className="w-1.5 h-1.5 rounded-full shrink-0" 
+                      style={{ 
+                        backgroundColor: isSelected ? itemColor : 'rgba(255,255,255,0.15)',
+                        boxShadow: isSelected ? `0 0 6px ${itemColor}` : 'none'
+                      }} 
+                    />
+                    <div className="flex flex-col">
+                      <span className={`text-[9.5px] font-bold font-sans ${isSelected ? 'text-white' : 'text-white/50'}`}>
+                        {item.title}
+                      </span>
+                      <span className="text-[7px] text-white/25 mt-0.5">{ACADEMIC_SYLLABUS.find(s => s.id === item.id)?.subtitle ?? ''}</span>
+                    </div>
                   </div>
-                  <span className="text-[6.5px] font-mono px-1 py-0.2 rounded uppercase shrink-0 scale-90 border" style={{
-                    background: `${itemColor}10`,
-                    borderColor: `${itemColor}155`,
-                    color: itemColor
-                  }}>
-                    {isGold ? 'OURO' : 'PRATA'}
-                  </span>
+                  
+                  <ChevronRight className="h-3 w-3 shrink-0 text-white/20" style={{ color: isSelected ? itemColor : 'inherit' }} />
                 </button>
               )
             })}
           </div>
         </div>
-
       </div>
     </div>
   )
 }
 
-// ── Workspace Sidebar — lógica IPB Intelligence Kit ──────────────────────────
-
-type TopicSummary = { id: string; title: string }
-type ModuleTopicsMap = Record<string, TopicSummary[]>
+// ── Sidebar ──────────────────────────────────────────────────────────────────
 
 function WorkspaceSidebar({
   modules,
@@ -1241,7 +1524,6 @@ function WorkspaceSidebar({
 
   return (
     <div className="workspace-sidebar-stretch ipb-soft flex flex-col overflow-hidden rounded-[1.2rem] h-full lg:rounded-[1.65rem]">
-      {/* Header: label + busca + close */}
       <div
         className="shrink-0 rounded-t-[1.65rem] px-2 pb-2 pt-2.5 lg:px-4 lg:pb-3 lg:pt-4"
         style={{ borderBottom: '1px solid rgba(212,184,122,0.12)' }}
@@ -1256,7 +1538,6 @@ function WorkspaceSidebar({
             <PanelLeftClose className="h-3 w-3 lg:h-3.5 lg:w-3.5" />
           </button>
         </div>
-        {/* Busca */}
         <div
           className="hidden lg:flex items-center gap-2 rounded-[0.85rem] px-3 py-2"
           style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.10)' }}
@@ -1271,7 +1552,6 @@ function WorkspaceSidebar({
         </div>
       </div>
 
-      {/* Árvore */}
       <div className="ipb-thinscroll flex-1 overflow-y-auto px-2 py-2">
         {modules.map((mod, idx) => {
           const isActive = activeIndex === idx
@@ -1298,74 +1578,62 @@ function WorkspaceSidebar({
                 style={
                   isActive
                     ? {
-                        background: 'linear-gradient(135deg, rgba(212,184,122,0.12), rgba(20,16,8,0.7))',
-                        border: '1px solid rgba(212,184,122,0.32)',
-                        boxShadow: 'inset 0 1px 0 rgba(212,184,122,0.18)',
+                        background: 'rgba(212,184,122,0.08)',
+                        color: '#fff',
+                        boxShadow: 'inset 0 1px 0 rgba(255,235,180,0.08)',
                       }
-                    : { border: '1px solid transparent' }
+                    : { color: 'rgba(255,255,255,0.45)' }
                 }
               >
-                <div className={`module-icon flex h-6 w-6 items-center justify-center rounded-[6px] shrink-0 ${isActive ? 'bg-[#d4b87a]/15 text-[#d4b87a]' : 'bg-white/5 text-white/32'}`}>
-                  <ModIcon className="h-3.5 w-3.5" />
+                <div
+                  className="flex h-6 w-6 shrink-0 items-center justify-center rounded-[0.5rem] border transition duration-200 lg:h-7 lg:w-7 lg:rounded-[0.6rem]"
+                  style={
+                    isActive
+                      ? {
+                          borderColor: 'rgba(212,184,122,0.35)',
+                          background: 'rgba(212,184,122,0.14)',
+                          color: '#d4b87a',
+                        }
+                      : {
+                          borderColor: 'rgba(255,255,255,0.06)',
+                          background: 'rgba(255,255,255,0.01)',
+                          color: 'rgba(255,255,255,0.3)',
+                        }
+                  }
+                >
+                  <ModIcon className="h-3.5 w-3.5 lg:h-4 lg:w-4" />
                 </div>
+
                 <div className="min-w-0 flex-1">
-                  <p
-                    className={`text-[7px] uppercase tracking-[0.16em] lg:text-[8px] lg:tracking-[0.22em] ${
-                      isActive ? 'text-[#d4b87a]/80' : 'text-white/20'
-                    }`}
-                  >
-                    {mod.id} · {topics.length || '…'}
-                  </p>
-                  <p
-                    className={`hidden lg:block truncate text-[9.5px] font-medium leading-snug lg:text-[10px] ${
-                      isActive ? 'text-white/92' : 'text-white/55'
-                    }`}
-                  >
+                  <div className="flex items-center justify-between">
+                    <span className="font-mono text-[7px] font-bold text-white/30 lg:text-[8px]">{mod.id}</span>
+                  </div>
+                  <p className="truncate text-[9.5px] font-bold tracking-tight text-white/80 lg:text-[10.5px]">
                     {mod.title}
                   </p>
                 </div>
-                <div
-                  className={`h-1.5 w-1.5 shrink-0 rounded-full transition ${
-                    isActive ? 'bg-[#d4b87a] shadow-[0_0_6px_rgba(212,184,122,0.8)]' : 'bg-white/16'
-                  }`}
-                />
               </button>
 
-              {visibleTopics.length > 0 && (
-                <div className="relative mt-1 ml-[0.9rem] space-y-0.5 border-l border-white/[0.07] pl-1.5 lg:mt-1.5 lg:ml-[1.45rem] lg:pl-2.5">
-                  {visibleTopics.map((t, ti) => {
-                    const isTopicActive = activeTopicId === t.id && isActive
+              {isActive && visibleTopics.length > 0 && (
+                <div className="mt-1 pl-6 space-y-1">
+                  {visibleTopics.map((topic) => {
+                    const isTopicActive = activeTopicId === topic.id
                     return (
                       <button
-                        key={t.id}
-                        onClick={() => onSelectTopic(idx, t.id)}
-                        className="flex w-full items-center gap-1 rounded-[0.5rem] px-1.5 py-1 text-left transition lg:gap-1.5 lg:rounded-[0.6rem] lg:px-1.5 lg:py-1"
-                        style={
-                          isTopicActive
-                            ? {
-                                background: 'rgba(212,184,122,0.06)',
-                                boxShadow: 'inset 0 0 0 1px rgba(212,184,122,0.18)',
-                              }
-                            : { background: 'transparent' }
-                        }
+                        key={topic.id}
+                        onClick={() => onSelectTopic(idx, topic.id)}
+                        className="flex w-full items-center gap-1.5 rounded-[0.55rem] py-1 pl-2 pr-1 text-left text-[9px] font-semibold transition hover:bg-white/[0.03] lg:text-[9.5px]"
+                        style={{
+                          color: isTopicActive ? '#d4b87a' : 'rgba(255,255,255,0.36)',
+                        }}
                       >
-                        <FileText
-                          className={`h-2.5 w-2.5 shrink-0 lg:h-3 lg:w-3 ${isTopicActive ? 'text-[#d4b87a]' : 'text-white/28'}`}
+                        <span
+                          className="h-1 w-1 shrink-0 rounded-full"
+                          style={{
+                            backgroundColor: isTopicActive ? '#d4b87a' : 'rgba(255,255,255,0.15)',
+                          }}
                         />
-                        <span
-                          className={`shrink-0 font-mono text-[7px] tracking-[0.04em] lg:text-[7.5px] lg:tracking-[0.06em] ${
-                            isTopicActive ? 'text-[#d4b87a]/70' : 'text-white/26'
-                          }`}
-                        >
-                          {String(ti + 1).padStart(2, '0')}
-                        </span>
-                        <span
-                          className={`hidden lg:inline truncate text-[8.5px] leading-snug lg:text-[9.5px] ${
-                            isTopicActive ? 'text-white/90' : 'text-white/52'
-                          }`}
-                        >
-                          {t.title}
-                        </span>
+                        <span className="truncate flex-1">{topic.title}</span>
                       </button>
                     )
                   })}
@@ -1392,7 +1660,6 @@ function ModuleRail({
 }) {
   return (
     <div className="ipb-soft relative overflow-hidden rounded-[1.8rem] px-5 py-6 md:px-8">
-      {/* Header */}
       <div className="mb-6 flex items-center justify-between">
         <div className="flex items-center gap-2.5">
           <div
@@ -1409,7 +1676,6 @@ function ModuleRail({
         </div>
       </div>
 
-      {/* Unified Rail nodes with parallel gold and silver tracks layered vertically */}
       <div className="relative px-2 md:px-4">
         {/* Upper Track Line (Gold - Dourado) */}
         <div className="pointer-events-none absolute inset-x-0 top-[2.05rem] h-[1.5px]" style={{
@@ -1428,14 +1694,14 @@ function ModuleRail({
             const active = index === activeIndex
             const done = activeIndex !== null && index < activeIndex
             const ModuleIcon = module.icon
-            const isGold = module.id === 'M4'
+            const isGold = ['M1', 'M3', 'M5', 'M7'].includes(module.id)
             const itemColor = isGold ? '#d4b87a' : '#cbd5e1'
 
             return (
               <button
                 key={module.id}
                 onClick={() => onSelect(index)}
-                className="group flex min-w-0 flex-1 flex-col items-center gap-2 text-center cursor-pointer"
+                className="group flex min-w-0 flex-1 flex-col items-center gap-2 text-center cursor-pointer font-sans"
                 title={module.title}
               >
                 <div className="flex flex-col items-center gap-2">
@@ -1458,39 +1724,41 @@ function ModuleRail({
                         : done
                         ? {
                             borderColor: isGold ? 'rgba(212, 184, 122, 0.32)' : 'rgba(203, 213, 225, 0.32)',
-                            background: isGold
-                              ? 'linear-gradient(180deg, rgba(212,184,122,0.18) 0%, rgba(20,16,8,0.92) 100%)'
-                              : 'linear-gradient(180deg, rgba(203,213,225,0.18) 0%, rgba(12,14,18,0.92) 100%)',
-                            color: 'rgba(255,255,255,0.8)',
+                            background: isGold ? 'rgba(212,184,122,0.06)' : 'rgba(203,213,225,0.06)',
+                            color: itemColor,
                           }
                         : {
-                            borderColor: 'rgba(200,205,215,0.14)',
-                            background: 'linear-gradient(180deg, rgba(200,205,215,0.06) 0%, rgba(20,22,28,0.92) 100%)',
-                            color: 'rgba(255,255,255,0.4)',
+                            borderColor: 'rgba(255,255,255,0.05)',
+                            background: 'rgba(5,5,5,0.5)',
+                            color: 'rgba(255,255,255,0.22)',
                           }
                     }
                   >
-                    <ModuleIcon className="h-3.5 w-3.5" />
+                    <ModuleIcon className="h-4 w-4 md:h-4.5 md:w-4.5" />
+
+                    {active && (
+                      <div className="absolute inset-0 rounded-full border border-white/20 animate-ping" />
+                    )}
                   </motion.div>
+
+                  <div
+                    className="h-1.5 w-1.5 rounded-full transition-all duration-300"
+                    style={
+                      active
+                        ? { background: itemColor, boxShadow: `0 0 8px ${itemColor}` }
+                        : done
+                        ? { background: `${itemColor}80` }
+                        : { background: 'rgba(200,205,215,0.20)' }
+                    }
+                  />
+
+                  <span
+                    className="max-w-[5rem] text-center text-[9px] leading-tight tracking-[0.06em] mt-1 transition-colors duration-200"
+                    style={{ color: active ? 'rgba(255,255,255,0.72)' : 'rgba(255,255,255,0.28)' }}
+                  >
+                    {module.title}
+                  </span>
                 </div>
-
-                <div
-                  className="h-1.5 w-1.5 rounded-full transition-all duration-300 mt-1"
-                  style={
-                    active
-                      ? { background: itemColor, boxShadow: `0 0 8px ${itemColor}` }
-                      : done
-                      ? { background: `${itemColor}80` }
-                      : { background: 'rgba(200,205,215,0.20)' }
-                  }
-                />
-
-                <span
-                  className="max-w-[5rem] text-center text-[9px] leading-tight tracking-[0.06em] mt-1 transition-colors duration-200"
-                  style={{ color: active ? 'rgba(255,255,255,0.72)' : 'rgba(255,255,255,0.28)' }}
-                >
-                  {module.title}
-                </span>
               </button>
             )
           })}
@@ -1505,13 +1773,12 @@ function ModuleRail({
 export default function ConteudosPageClient() {
   const [activeIndex, setActiveIndex] = useState<number | null>(null)
   const [sidebarOpen, setSidebarOpen] = useState(true)
-  const [topicsMap, setTopicsMap] = useState<ModuleTopicsMap>({})
+  const [topicsMap, setTopicsMap] = useState<ModuleTopicsMap>(INITIAL_TOPICS_MAP)
   const [activeTopicId, setActiveTopicId] = useState<string | null>(null)
   const [clockTime, setClockTime] = useState('14:45')
   const [activeLessonIndex, setActiveLessonIndex] = useState(0)
   const [activeSubjectIndex, setActiveSubjectIndex] = useState(0)
 
-  // Real-time clock update (mounting only)
   useEffect(() => {
     const update = () => {
       const d = new Date()
@@ -1524,26 +1791,8 @@ export default function ConteudosPageClient() {
     return () => clearInterval(timer)
   }, [])
 
-  // Dynamic loader
-  useEffect(() => {
-    let cancelled = false
-    MODULES.forEach((mod) => {
-      loadModuleContent(mod.id).then((content) => {
-        if (cancelled || !content) return
-        setTopicsMap((prev) =>
-          prev[mod.id]
-            ? prev
-            : { ...prev, [mod.id]: content.topics.map((t) => ({ id: t.id, title: t.title })) },
-        )
-      })
-    })
-    return () => {
-      cancelled = true
-    }
-  }, [])
-
   const current = activeIndex !== null ? MODULES[activeIndex] : null
-  const activeTheme = current ? MODULE_THEMES[current.id] : MODULE_THEMES.M4
+  const activeTheme = current ? MODULE_THEMES[current.id] : MODULE_THEMES.M1
   const CurrentIcon = current?.icon
 
   function handleSelectModule(index: number) {
@@ -1553,53 +1802,42 @@ export default function ConteudosPageClient() {
     } else {
       setActiveIndex(index)
       setActiveTopicId(null)
+      setActiveLessonIndex(0)
+      setActiveSubjectIndex(0)
     }
   }
 
   function handleSelectTopic(moduleIndex: number, topicId: string) {
     setActiveIndex(moduleIndex)
-    setActiveTopicId(null)
-    requestAnimationFrame(() => {
-      setActiveTopicId(topicId)
-      // Automatically jump to the first lesson belonging to this topic/KPI
-      const idx = BUSINESS_PLAYLIST.findIndex(item => item.topicId === topicId)
-      if (idx !== -1) {
-        setActiveLessonIndex(idx)
-      }
-    })
+    setActiveTopicId(topicId)
+    const activeModule = MODULES[moduleIndex]
+    const activeSubjectsList = SUBJECTS_DB.filter(s => s.id.startsWith(activeModule.id))
+    const subjectIdx = activeSubjectsList.findIndex(s => s.id === topicId)
+    if (subjectIdx !== -1) {
+      setActiveLessonIndex(subjectIdx)
+      setActiveSubjectIndex(subjectIdx)
+    }
   }
 
-  // Sync masterclass video with the academic syllabus subjects
-  useEffect(() => {
-    const lesson = BUSINESS_PLAYLIST[activeLessonIndex]
-    if (lesson) {
-      const firstSubjectIdx = ACADEMIC_SYLLABUS.findIndex(s => s.topicId === lesson.topicId)
-      if (firstSubjectIdx !== -1) {
-        setActiveSubjectIndex(firstSubjectIdx)
-      }
-    }
-  }, [activeLessonIndex])
-
-  // Sync academic subject back to masterclass video if they click on the index
   function handleSubjectIndexChange(idx: number) {
     setActiveSubjectIndex(idx)
-    const subject = ACADEMIC_SYLLABUS[idx]
+    setActiveLessonIndex(idx)
+    const activeModule = MODULES[activeIndex!]
+    const activeSubjectsList = SUBJECTS_DB.filter(s => s.id.startsWith(activeModule.id))
+    const subject = activeSubjectsList[idx]
     if (subject) {
-      // Find which masterclass video maps to this topic
-      const lessonIdx = BUSINESS_PLAYLIST.findIndex(l => l.topicId === subject.topicId)
-      if (lessonIdx !== -1 && lessonIdx !== activeLessonIndex) {
-        setActiveLessonIndex(lessonIdx)
-        setActiveTopicId(subject.topicId)
-      }
+      setActiveTopicId(subject.id)
     }
   }
+
+  // Active Subject details for KPI matching
+  const activeSubjectsList = current ? SUBJECTS_DB.filter(s => s.id.startsWith(current.id)) : []
+  const activeSubject = activeSubjectsList[activeSubjectIndex] ?? activeSubjectsList[0]
 
   return (
     <div className="relative min-h-screen overflow-hidden text-white">
-      {/* Space environment starry background */}
       <IpbBackground subtle={true} />
 
-      {/* Embedded CSS rules for premium glass and borders */}
       <style dangerouslySetInnerHTML={{
         __html: `
           .ipb-soft {
@@ -1739,9 +1977,9 @@ export default function ConteudosPageClient() {
                       
                       {/* Sub-Header / Topbar */}
                       <div className="flex items-center justify-between px-6 py-3.5 border-bottom border-white/[0.04]" style={{ borderBottom: '0.2px solid rgba(255,255,255,0.04)' }}>
-                        <div className="flex items-center gap-2 text-white/30 text-[9px] uppercase tracking-widest">
-                          <Radar className="h-3.5 w-3.5 text-[#d4b87a]" />
-                          <span>Operational Module System</span>
+                        <div className="flex items-center gap-2 text-white/30 text-[9px] uppercase tracking-widest font-mono">
+                          <Radar className="h-3.5 w-3.5 text-[#d4b87a] animate-pulse" />
+                          <span>Operational Module System · Active: {clockTime}</span>
                         </div>
                       </div>
 
@@ -1752,9 +1990,9 @@ export default function ConteudosPageClient() {
                           <div 
                             className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
                             style={{
-                              background: 'radial-gradient(circle at 30% 25%, rgba(212,184,122,0.35) 0%, rgba(212,184,122,0.20) 50%, rgba(20,16,8,0.95) 100%)',
-                              border: '0.2px solid rgba(212, 184, 122, 0.40)',
-                              boxShadow: 'inset 0 1px 1px rgba(255,235,180,0.22), 0 0 16px rgba(212,184,122,0.18)'
+                              background: `radial-gradient(circle at 30% 25%, ${activeTheme.accent} 0%, rgba(20,16,8,0.95) 50%, rgba(5,5,5,0.98) 100%)`,
+                              border: `0.5px solid ${activeTheme.primary}`,
+                              boxShadow: `inset 0 1px 1px rgba(255,255,255,0.22), 0 0 16px ${activeTheme.accent}`
                             }}
                           >
                             <span className="text-[12px] font-bold text-white tracking-wider">{current.id}</span>
@@ -1778,150 +2016,36 @@ export default function ConteudosPageClient() {
                       </div>
 
                       {/* Sub-cards Dashboard Grid */}
-                      {current.id === 'M4' ? (
-                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 px-6 pb-6 items-stretch">
-                          {/* Card 1: Masterclass playlist cinema spans 2 cols on lg screens */}
-                          <div className="lg:col-span-2 flex">
-                            <ExecutiveMasterclassTheater 
-                              moduleTitle={current.title} 
-                              moduleId={current.id} 
-                              onSelectTopic={(topicId) => handleSelectTopic(activeIndex!, topicId)}
-                              activeTopicId={activeTopicId}
-                              activeLessonIndex={activeLessonIndex}
-                              onChangeLessonIndex={setActiveLessonIndex}
-                            />
-                          </div>
-
-                          {/* Card 2: Executive Performance Dashboard */}
-                          <div className="lg:col-span-1 flex">
-                            <ExecutivePerformanceDashboard moduleId={current.id} />
-                          </div>
+                      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 px-6 pb-6 items-stretch">
+                        <div className="lg:col-span-2 flex">
+                          <ExecutiveMasterclassTheater 
+                            moduleTitle={current.title} 
+                            moduleId={current.id} 
+                            onSelectTopic={(topicId) => handleSelectTopic(activeIndex!, topicId)}
+                            activeTopicId={activeTopicId}
+                            activeLessonIndex={activeLessonIndex}
+                            onChangeLessonIndex={setActiveLessonIndex}
+                          />
                         </div>
-                      ) : (
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 px-6 pb-6 items-stretch">
-                          {/* Card 1: Vídeo Aula */}
-                          <div className="flex">
-                            <FloatingVideoPlayer moduleTitle={current.title} moduleId={current.id} />
-                          </div>
 
-                          {/* Card 2: Sumário e Telemetria */}
-                          <div className="ipb-glass-card p-4 flex flex-col justify-between">
-                            <div>
-                              <span className="text-[7.5px] uppercase tracking-wider font-medium" style={{ color: activeTheme.primary }}>Sumário</span>
-                              <h4 className="text-xs font-semibold text-white/90 mt-1">Mapeamento e Telemetria</h4>
-                            </div>
-                            <TelemetriaSparkline moduleId={current.id} />
-                          </div>
+                        <div className="lg:col-span-1 flex">
+                          <ExecutivePerformanceDashboard 
+                            moduleId={current.id} 
+                            activeSubjectId={activeSubject ? activeSubject.id : 'M1-S1'} 
+                          />
                         </div>
-                      )}
-
-
+                      </div>
 
                     </div>
 
                     {/* Operational Notebook Content Viewer / Estação Unificada de Estudos */}
-                    {current.id === 'M4' ? (
-                      <ExecutiveStudyBriefing 
-                        moduleId={current.id} 
-                        activeTopicId={activeTopicId} 
-                        activeTheme={activeTheme} 
-                        activeSubjectIndex={activeSubjectIndex}
-                        onChangeSubjectIndex={handleSubjectIndexChange}
-                      />
-                    ) : (
-                      <div className="ipb-soft relative overflow-hidden rounded-[2rem]">
-                        <div className="p-5 md:p-6">
-                          
-                          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
-                            
-                            {/* Left Column: Fundamentos & Caderno (takes 2 cols) */}
-                            <div className="lg:col-span-2 space-y-6">
-                              
-                              {/* Fundamentos Header & Overview */}
-                              <div className="p-5 rounded-2xl bg-white/[0.02] border border-white/[0.04] relative overflow-hidden">
-                                <div className="absolute inset-0 opacity-[0.03]" style={{
-                                  background: `radial-gradient(circle at 0% 0%, ${activeTheme.primary}, transparent 50%)`
-                                }} />
-                                
-                                <div className="space-y-3 relative z-10">
-                                  <div className="flex items-center justify-between">
-                                    <span className="text-[8px] uppercase tracking-wider font-bold" style={{ color: activeTheme.primary }}>
-                                      {current.id === 'M4' ? 'Diretoria Executiva' : 'Fundamentos'}
-                                    </span>
-                                    <span className="text-[9px] text-white/30 font-mono">{current.id} · Core Concepts</span>
-                                  </div>
-                                  <h3 className="text-base font-bold text-white/90">
-                                    {current.id === 'M4' ? 'Estação de Inteligência Acadêmica' : `Conceito de ${current.title}`}
-                                  </h3>
-                                  <p className="text-[11px] text-white/50 leading-relaxed">
-                                    {current.overview}
-                                  </p>
-                                </div>
-                              </div>
-
-                              {/* Interactive Notebook */}
-                              <div className="space-y-4">
-                                <div className="flex items-center gap-2 pb-1">
-                                  <BookOpen className="h-4 w-4" style={{ color: activeTheme.primary }} />
-                                  <span className="text-[10px] uppercase tracking-wider text-white/60 font-semibold">Caderno Interativo de Conteúdo</span>
-                                </div>
-                                <CadernoModulePanel moduleId={current.id} openTopicId={activeTopicId} />
-                              </div>
-
-                            </div>
-
-                            {/* Right Column: Mapa de Conexões / Simulações (takes 1 col) */}
-                            <div className="space-y-6 lg:sticky lg:top-4">
-                              
-                              {/* Connection Map & Simulation Panel */}
-                              <div className="p-5 rounded-2xl bg-white/[0.02] border border-white/[0.04] flex flex-col justify-between h-full relative overflow-hidden">
-                                <div className="absolute inset-0 opacity-[0.03]" style={{
-                                  background: `radial-gradient(circle at 100% 0%, ${activeTheme.primary}, transparent 50%)`
-                                }} />
-                                
-                                <div className="relative z-10 mb-4">
-                                  <span className="text-[8px] uppercase tracking-wider font-bold" style={{ color: activeTheme.primary }}>
-                                    {current.id === 'M4' ? 'Fluxo de Valor' : 'Mapa de Conexões'}
-                                  </span>
-                                  <h3 className="text-sm font-bold text-white/90 mt-1">
-                                    {current.id === 'M4' ? 'Alinhamento Estratégico' : 'Rede Neuronal & Simulações'}
-                                  </h3>
-                                  <p className="text-[10.5px] text-white/44 leading-relaxed mt-1.5">
-                                    {current.id === 'M4' 
-                                      ? 'Mapeamento dinâmico das conexões táticas corporativas e fluxo de governança executiva.'
-                                      : 'Estrutura neuronal dinâmica que simula o fluxo cognitivo e as correlações teóricas do módulo.'}
-                                  </p>
-                                </div>
-
-                                {current.id === 'M4' ? (
-                                  <StrategicRoadmapBoard moduleId={current.id} />
-                                ) : (
-                                  <MiniNetworkGraph moduleId={current.id} />
-                                )}
-                                
-                                {/* Pillars of Knowledge inside Connection Map */}
-                                <div className="mt-6 pt-4 border-t border-white/[0.04]">
-                                  <span className="text-[8px] uppercase tracking-wider font-bold text-white/30 block mb-2.5">
-                                    {current.id === 'M4' ? 'Pilares Corporativos' : 'Pilares do Conhecimento'}
-                                  </span>
-                                  <ul className="space-y-2">
-                                    {current.concepts.map((concept, idx) => (
-                                      <li key={idx} className="text-[9.5px] text-white/60 flex items-start gap-2">
-                                        <span className="mt-1.5 w-1.5 h-1.5 rounded-full shrink-0 animate-pulse" style={{ backgroundColor: activeTheme.primary }} />
-                                        <span className="leading-snug">{concept}</span>
-                                      </li>
-                                    ))}
-                                  </ul>
-                                </div>
-                              </div>
-
-                            </div>
-
-                          </div>
-
-                        </div>
-                      </div>
-                    )}
+                    <ExecutiveStudyBriefing 
+                      moduleId={current.id} 
+                      activeTopicId={activeTopicId} 
+                      activeTheme={activeTheme} 
+                      activeSubjectIndex={activeSubjectIndex}
+                      onChangeSubjectIndex={handleSubjectIndexChange}
+                    />
 
                   </motion.div>
                 ) : (
