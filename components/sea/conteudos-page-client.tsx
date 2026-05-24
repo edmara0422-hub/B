@@ -799,6 +799,186 @@ function StrategicRoadmapBoard({ moduleId }: { moduleId?: string }) {
   )
 }
 
+function ExecutiveStudyBriefing({
+  moduleId,
+  activeTopicId,
+  activeTheme
+}: {
+  moduleId: string
+  activeTopicId: string | null
+  activeTheme: any
+}) {
+  const [module, setModule] = useState<any>(null)
+
+  useEffect(() => {
+    import('@/data/caderno-content-m4').then(m => {
+      setModule(m.M4_CONTENT)
+    })
+  }, [])
+
+  if (!module) return <div className="h-48 flex items-center justify-center text-white/30 font-mono text-[10px]">Carregando briefing estratégico...</div>
+
+  const resolvedTopicId = activeTopicId || module.topics[0]?.id || ''
+  const activeTopic = module.topics.find((t: any) => t.id === resolvedTopicId) ?? module.topics[0]
+
+  if (!activeTopic) return null
+
+  const slideBlocks = activeTopic.blocks.filter((b: any) => b.type === 'slides')
+  const textBlocks = activeTopic.blocks.filter((b: any) => b.type === 'text')
+
+  return (
+    <div className="ipb-soft relative overflow-hidden rounded-[2rem] p-6 space-y-6">
+      
+      {/* Top strategic header */}
+      <div className="flex items-center justify-between pb-4 border-b border-white/[0.04]" style={{ borderBottom: '0.2px solid rgba(255,255,255,0.04)' }}>
+        <div className="flex items-center gap-3">
+          <div className="w-8 h-8 rounded-lg bg-[#d4b87a]/10 border border-[#d4b87a]/20 flex items-center justify-center">
+            <BookOpen className="h-4 w-4 text-[#d4b87a]" />
+          </div>
+          <div>
+            <span className="text-[7.5px] uppercase tracking-[0.25em] font-bold text-[#d4b87a]">Estação de Inteligência Acadêmica</span>
+            <h3 className="text-[14px] font-bold text-white/90 leading-none mt-0.5">Briefing Estratégico: {activeTopic.title}</h3>
+          </div>
+        </div>
+        <div className="flex items-center gap-2 font-mono text-[9px] text-white/35 bg-white/5 border border-white/10 rounded px-2.5 py-1">
+          <Clock className="h-3 w-3 text-[#d4b87a]" />
+          <span>Etapa M4 · T{module.topics.indexOf(activeTopic) + 1}</span>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch">
+        
+        {/* Left Columns: Executive Briefing Deck & Notes */}
+        <div className="lg:col-span-2 space-y-6 flex flex-col justify-between">
+          
+          {/* Slides Executive Deck */}
+          <div className="space-y-4">
+            <div className="flex justify-between items-center">
+              <span className="text-[8.5px] uppercase tracking-widest text-white/40 font-bold">Resumo Analítico (Diretoria)</span>
+              <span className="text-[8.5px] font-mono text-white/35">Base Conceitual</span>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {slideBlocks.map((block: any) => 
+                block.slides.map((slide: any, idx: number) => (
+                  <div 
+                    key={`${block.id}-slide-${idx}`} 
+                    className="p-5 rounded-2xl bg-white/[0.015] border border-white/[0.04] backdrop-blur-md relative overflow-hidden transition-all duration-300 hover:border-white/10 flex flex-col justify-between h-full group"
+                    style={{
+                      boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.02), 0 8px 24px rgba(0,0,0,0.15)'
+                    }}
+                  >
+                    <div className="absolute inset-0 opacity-[0.015] pointer-events-none group-hover:opacity-[0.03] transition-all" style={{
+                      background: 'radial-gradient(circle at 0% 0%, #d4b87a, transparent 50%)'
+                    }} />
+
+                    <div>
+                      <h4 className="text-[11.5px] font-bold text-white/90 leading-tight tracking-tight uppercase border-b border-white/[0.06] pb-1.5 w-full" style={{ borderBottom: '0.2px solid rgba(255,255,255,0.06)' }}>
+                        {slide.title}
+                      </h4>
+                      <ul className="space-y-2 mt-3.5">
+                        {slide.bullets.map((bullet: string, bIdx: number) => (
+                          <li key={bIdx} className="text-[10px] text-white/55 leading-relaxed flex items-start gap-2 text-justify">
+                            <span className="mt-1.5 w-1.5 h-1.5 rounded-full shrink-0 bg-[#d4b87a]" />
+                            <span>{bullet}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    {slide.highlight && (
+                      <div className="mt-4 rounded-xl p-3 bg-[#d4b87a]/5 border border-[#d4b87a]/15">
+                        <p className="text-[9.5px] italic text-[#d4b87a]/70 leading-relaxed text-justify">
+                          {slide.highlight}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+
+          {/* Texts Extra Notes */}
+          {textBlocks.length > 0 && (
+            <div className="p-4 rounded-2xl bg-white/[0.01] border border-white/[0.04] relative overflow-hidden mt-2">
+              <div className="absolute inset-0 opacity-[0.01] pointer-events-none" style={{
+                background: 'radial-gradient(circle at 100% 100%, #d4b87a, transparent 50%)'
+              }} />
+              <div className="flex items-center gap-2 mb-2">
+                <FileText className="h-3.5 w-3.5 text-[#d4b87a]" />
+                <span className="text-[8px] uppercase tracking-widest font-bold text-white/40">Notas de Implementação Operacional</span>
+              </div>
+              {textBlocks.map((block: any) => (
+                <div key={block.id} className="space-y-1">
+                  {block.title && <h5 className="text-[10.5px] font-bold text-white/80">{block.title}</h5>}
+                  <p className="text-[10px] text-white/45 leading-relaxed text-justify">{block.body}</p>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Right Column: Strategic connection map & Pillars connected */}
+        <div className="lg:col-span-1 flex flex-col justify-between p-5 rounded-2xl bg-white/[0.015] border border-white/[0.04] relative overflow-hidden">
+          <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{
+            background: `radial-gradient(circle at 100% 0%, #d4b87a, transparent 50%)`
+          }} />
+          
+          <div className="relative z-10 mb-2">
+            <span className="text-[8px] uppercase tracking-wider font-bold text-[#d4b87a]">Fluxo de Valor</span>
+            <h3 className="text-[13px] font-bold text-white/90 mt-0.5">Alinhamento Estratégico</h3>
+            <p className="text-[10px] text-white/44 leading-relaxed text-justify mt-1">
+              Mapeamento dinâmico das conexões táticas corporativas e fluxo de governança executiva.
+            </p>
+          </div>
+
+          <div className="my-2">
+            <StrategicRoadmapBoard moduleId="M4" />
+          </div>
+          
+          {/* Pillars of Knowledge inside Connection Map */}
+          <div className="pt-4 border-t border-white/[0.04]" style={{ borderTop: '0.2px solid rgba(255,255,255,0.04)' }}>
+            <span className="text-[8px] uppercase tracking-wider font-bold text-white/30 block mb-2.5">Pilares Corporativos</span>
+            <ul className="space-y-2">
+              {activeTopic.title ? (
+                // Highlight concepts matching active topic
+                activeTopic.id === 'M4-T1' ? [
+                  'Liderança de impacto e escuta ativa regulatória',
+                  'Construção de segurança psicológica nos times',
+                  'Redução de entropia e alinhamento de OKRs'
+                ] : activeTopic.id === 'M4-T2' ? [
+                  'Análise dinâmica de ecossistema concorrencial',
+                  'Cultura orientada a dados (Data-Driven)',
+                  'Matriz SWOT Dinâmica e 5 Forças de Porter'
+                ] : activeTopic.id === 'M4-T3' ? [
+                  'Mitigação de pegada de carbono operacional',
+                  'Equidade social e direitos humanos na cadeia',
+                  'Ética e compliance vinculados a metas executivas'
+                ] : activeTopic.id === 'M4-T4' ? [
+                  'Especificidade e foco em fatos observáveis',
+                  'Modelo SBI (Situation-Behavior-Impact)',
+                  'Feedback bidirecional contínuo de regulação'
+                ] : [
+                  'Classificação de dados sensíveis (confidencialidade)',
+                  'Controle de versão unificado e segurança LGPD',
+                  'Estruturação de repositórios baseados em RBAC'
+                ]
+              ).map((concept: string, idx: number) => (
+                <li key={idx} className="text-[9.5px] text-white/55 flex items-start gap-2 text-justify">
+                  <span className="mt-1.5 w-1.5 h-1.5 rounded-full shrink-0 bg-[#d4b87a]" />
+                  <span className="leading-snug">{concept}</span>
+                </li>
+              )) : null}
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  )
+}
+
 // ── Workspace Sidebar — lógica IPB Intelligence Kit ──────────────────────────
 
 type TopicSummary = { id: string; title: string }
@@ -1399,94 +1579,102 @@ export default function ConteudosPageClient() {
                     </div>
 
                     {/* Operational Notebook Content Viewer / Estação Unificada de Estudos */}
-                    <div className="ipb-soft relative overflow-hidden rounded-[2rem]">
-                      <div className="p-5 md:p-6">
-                        
-                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+                    {current.id === 'M4' ? (
+                      <ExecutiveStudyBriefing 
+                        moduleId={current.id} 
+                        activeTopicId={activeTopicId} 
+                        activeTheme={activeTheme} 
+                      />
+                    ) : (
+                      <div className="ipb-soft relative overflow-hidden rounded-[2rem]">
+                        <div className="p-5 md:p-6">
                           
-                          {/* Left Column: Fundamentos & Caderno (takes 2 cols) */}
-                          <div className="lg:col-span-2 space-y-6">
+                          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
                             
-                            {/* Fundamentos Header & Overview */}
-                            <div className="p-5 rounded-2xl bg-white/[0.02] border border-white/[0.04] relative overflow-hidden">
-                              <div className="absolute inset-0 opacity-[0.03]" style={{
-                                background: `radial-gradient(circle at 0% 0%, ${activeTheme.primary}, transparent 50%)`
-                              }} />
+                            {/* Left Column: Fundamentos & Caderno (takes 2 cols) */}
+                            <div className="lg:col-span-2 space-y-6">
                               
-                              <div className="space-y-3 relative z-10">
-                                <div className="flex items-center justify-between">
-                                  <span className="text-[8px] uppercase tracking-wider font-bold" style={{ color: activeTheme.primary }}>Fundamentos</span>
-                                  <span className="text-[9px] text-white/30 font-mono">{current.id} · Core Concepts</span>
+                              {/* Fundamentos Header & Overview */}
+                              <div className="p-5 rounded-2xl bg-white/[0.02] border border-white/[0.04] relative overflow-hidden">
+                                <div className="absolute inset-0 opacity-[0.03]" style={{
+                                  background: `radial-gradient(circle at 0% 0%, ${activeTheme.primary}, transparent 50%)`
+                                }} />
+                                
+                                <div className="space-y-3 relative z-10">
+                                  <div className="flex items-center justify-between">
+                                    <span className="text-[8px] uppercase tracking-wider font-bold" style={{ color: activeTheme.primary }}>Fundamentos</span>
+                                    <span className="text-[9px] text-white/30 font-mono">{current.id} · Core Concepts</span>
+                                  </div>
+                                  <h3 className="text-base font-bold text-white/90">Conceito de {current.title}</h3>
+                                  <p className="text-[11px] text-white/50 leading-relaxed">
+                                    {current.overview}
+                                  </p>
                                 </div>
-                                <h3 className="text-base font-bold text-white/90">Conceito de {current.title}</h3>
-                                <p className="text-[11px] text-white/50 leading-relaxed">
-                                  {current.overview}
-                                </p>
                               </div>
+
+                              {/* Interactive Notebook */}
+                              <div className="space-y-4">
+                                <div className="flex items-center gap-2 pb-1">
+                                  <BookOpen className="h-4 w-4" style={{ color: activeTheme.primary }} />
+                                  <span className="text-[10px] uppercase tracking-wider text-white/60 font-semibold">Caderno Interativo de Conteúdo</span>
+                                </div>
+                                <CadernoModulePanel moduleId={current.id} openTopicId={activeTopicId} />
+                              </div>
+
                             </div>
 
-                            {/* Interactive Notebook */}
-                            <div className="space-y-4">
-                              <div className="flex items-center gap-2 pb-1">
-                                <BookOpen className="h-4 w-4" style={{ color: activeTheme.primary }} />
-                                <span className="text-[10px] uppercase tracking-wider text-white/60 font-semibold">Caderno Interativo de Conteúdo</span>
-                              </div>
-                              <CadernoModulePanel moduleId={current.id} openTopicId={activeTopicId} />
-                            </div>
-
-                          </div>
-
-                          {/* Right Column: Mapa de Conexões / Simulações (takes 1 col) */}
-                          <div className="space-y-6 lg:sticky lg:top-4">
-                            
-                            {/* Connection Map & Simulation Panel */}
-                            <div className="p-5 rounded-2xl bg-white/[0.02] border border-white/[0.04] flex flex-col justify-between h-full relative overflow-hidden">
-                              <div className="absolute inset-0 opacity-[0.03]" style={{
-                                background: `radial-gradient(circle at 100% 0%, ${activeTheme.primary}, transparent 50%)`
-                              }} />
+                            {/* Right Column: Mapa de Conexões / Simulações (takes 1 col) */}
+                            <div className="space-y-6 lg:sticky lg:top-4">
                               
-                              <div className="relative z-10 mb-4">
-                                <span className="text-[8px] uppercase tracking-wider font-bold" style={{ color: activeTheme.primary }}>
-                                  {current.id === 'M4' ? 'Fluxo de Valor' : 'Mapa de Conexões'}
-                                </span>
-                                <h3 className="text-sm font-bold text-white/90 mt-1">
-                                  {current.id === 'M4' ? 'Alinhamento Estratégico' : 'Rede Neuronal & Simulações'}
-                                </h3>
-                                <p className="text-[10.5px] text-white/44 leading-relaxed mt-1.5">
-                                  {current.id === 'M4' 
-                                    ? 'Mapeamento dinâmico das conexões táticas corporativas e fluxo de governança executiva.'
-                                    : 'Estrutura neuronal dinâmica que simula o fluxo cognitivo e as correlações teóricas do módulo.'}
-                                </p>
+                              {/* Connection Map & Simulation Panel */}
+                              <div className="p-5 rounded-2xl bg-white/[0.02] border border-white/[0.04] flex flex-col justify-between h-full relative overflow-hidden">
+                                <div className="absolute inset-0 opacity-[0.03]" style={{
+                                  background: `radial-gradient(circle at 100% 0%, ${activeTheme.primary}, transparent 50%)`
+                                }} />
+                                
+                                <div className="relative z-10 mb-4">
+                                  <span className="text-[8px] uppercase tracking-wider font-bold" style={{ color: activeTheme.primary }}>
+                                    {current.id === 'M4' ? 'Fluxo de Valor' : 'Mapa de Conexões'}
+                                  </span>
+                                  <h3 className="text-sm font-bold text-white/90 mt-1">
+                                    {current.id === 'M4' ? 'Alinhamento Estratégico' : 'Rede Neuronal & Simulações'}
+                                  </h3>
+                                  <p className="text-[10.5px] text-white/44 leading-relaxed mt-1.5">
+                                    {current.id === 'M4' 
+                                      ? 'Mapeamento dinâmico das conexões táticas corporativas e fluxo de governança executiva.'
+                                      : 'Estrutura neuronal dinâmica que simula o fluxo cognitivo e as correlações teóricas do módulo.'}
+                                  </p>
+                                </div>
+
+                                {current.id === 'M4' ? (
+                                  <StrategicRoadmapBoard moduleId={current.id} />
+                                ) : (
+                                  <MiniNetworkGraph moduleId={current.id} />
+                                )}
+                                
+                                {/* Pillars of Knowledge inside Connection Map */}
+                                <div className="mt-6 pt-4 border-t border-white/[0.04]">
+                                  <span className="text-[8px] uppercase tracking-wider font-bold text-white/30 block mb-2.5">
+                                    {current.id === 'M4' ? 'Pilares Corporativos' : 'Pilares do Conhecimento'}
+                                  </span>
+                                  <ul className="space-y-2">
+                                    {current.concepts.map((concept, idx) => (
+                                      <li key={idx} className="text-[9.5px] text-white/60 flex items-start gap-2">
+                                        <span className="mt-1.5 w-1.5 h-1.5 rounded-full shrink-0 animate-pulse" style={{ backgroundColor: activeTheme.primary }} />
+                                        <span className="leading-snug">{concept}</span>
+                                      </li>
+                                    ))}
+                                  </ul>
+                                </div>
                               </div>
 
-                              {current.id === 'M4' ? (
-                                <StrategicRoadmapBoard moduleId={current.id} />
-                              ) : (
-                                <MiniNetworkGraph moduleId={current.id} />
-                              )}
-                              
-                              {/* Pillars of Knowledge inside Connection Map */}
-                              <div className="mt-6 pt-4 border-t border-white/[0.04]">
-                                <span className="text-[8px] uppercase tracking-wider font-bold text-white/30 block mb-2.5">
-                                  {current.id === 'M4' ? 'Pilares Corporativos' : 'Pilares do Conhecimento'}
-                                </span>
-                                <ul className="space-y-2">
-                                  {current.concepts.map((concept, idx) => (
-                                    <li key={idx} className="text-[9.5px] text-white/60 flex items-start gap-2">
-                                      <span className="mt-1.5 w-1.5 h-1.5 rounded-full shrink-0 animate-pulse" style={{ backgroundColor: activeTheme.primary }} />
-                                      <span className="leading-snug">{concept}</span>
-                                    </li>
-                                  ))}
-                                </ul>
-                              </div>
                             </div>
 
                           </div>
 
                         </div>
-
                       </div>
-                    </div>
+                    )}
 
                   </motion.div>
                 ) : (
