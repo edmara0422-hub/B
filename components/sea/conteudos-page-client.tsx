@@ -1000,8 +1000,8 @@ function ExecutiveStudyBriefing({
             <BookOpen className="h-4 w-4 text-[#d4b87a]" />
           </div>
           <div>
-            <span className="text-[7.5px] uppercase tracking-[0.25em] font-bold text-[#d4b87a]">MBA Executive Cockpit</span>
-            <h3 className="text-[12px] font-bold text-white/95 leading-none mt-0.5">{syllabusItem.title}</h3>
+            <span className="text-xs uppercase tracking-[0.25em] font-bold text-[#d4b87a]">MBA Executive Cockpit</span>
+            <h3 className="text-base font-bold text-white/95 leading-none mt-1">{syllabusItem.title}</h3>
           </div>
         </div>
         
@@ -1018,13 +1018,13 @@ function ExecutiveStudyBriefing({
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id as any)}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[8.5px] font-mono tracking-wider transition-all duration-300 cursor-pointer"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-mono tracking-wider transition-all duration-300 cursor-pointer"
                 style={{
                   background: isSelected ? 'rgba(212,184,122,0.12)' : 'transparent',
                   color: isSelected ? '#d4b87a' : 'rgba(255,255,255,0.4)'
                 }}
               >
-                <TabIcon className="h-3 w-3" />
+                <TabIcon className="h-3.5 w-3.5" />
                 <span>{tab.label}</span>
               </button>
             )
@@ -1032,143 +1032,223 @@ function ExecutiveStudyBriefing({
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch">
+      {/* 30-Discipline Horizontal Rail Selector (Replaces Vertical Sidebar) */}
+      <div className="border-b border-white/[0.04] pb-4">
+        <div className="flex items-center justify-between mb-2">
+          <span className="text-xs uppercase tracking-wider font-bold text-[#d4b87a]">Grade de Disciplinas (30 Aulas)</span>
+          <span className="text-[10px] px-2 py-0.5 rounded bg-white/5 border border-white/10 text-white/40 font-mono uppercase">Mapeamento Integrado</span>
+        </div>
         
-        {/* Main Work Panel */}
-        <div className="lg:col-span-2 space-y-6 flex flex-col justify-between">
+        <div className="flex gap-2 overflow-x-auto pb-2 pr-2 ipb-thinscroll select-none scroll-smooth">
+          {ACADEMIC_SYLLABUS.map((item, idx) => {
+            const isSelected = idx === activeSubjectIndex
+            const isGold = idx % 2 === 0
+            const itemColor = isGold ? '#d4b87a' : '#cbd5e1'
+            
+            return (
+              <button
+                key={item.id}
+                onClick={() => onChangeSubjectIndex(idx)}
+                className="flex-shrink-0 px-4 py-2.5 rounded-xl border transition-all duration-300 flex items-center gap-2.5 cursor-pointer text-left"
+                style={{
+                  background: isSelected 
+                    ? 'rgba(255, 255, 255, 0.04)' 
+                    : 'rgba(255, 255, 255, 0.01)',
+                  borderColor: isSelected 
+                    ? '#d4b87a' 
+                    : 'rgba(255, 255, 255, 0.05)',
+                  boxShadow: isSelected 
+                    ? '0 0 12px rgba(212, 184, 122, 0.15)' 
+                    : 'none'
+                }}
+              >
+                <span className="font-mono text-xs" style={{ color: isSelected ? itemColor : 'rgba(255,255,255,0.3)' }}>
+                  {String(idx + 1).padStart(2, '0')}
+                </span>
+                <div className="flex flex-col">
+                  <span className={`text-xs ${isSelected ? 'text-white font-semibold' : 'text-white/60'}`}>
+                    {item.title}
+                  </span>
+                  <span className="text-[8px] font-mono tracking-wider opacity-50 uppercase mt-0.5" style={{ color: itemColor }}>
+                    {isGold ? 'OURO' : 'PRATA'}
+                  </span>
+                </div>
+              </button>
+            )
+          })}
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 gap-6 items-stretch">
+        
+        {/* Main Work Panel (Takes full width now) */}
+        <div className="space-y-6 flex flex-col justify-between w-full">
           
           <AnimatePresence mode="wait">
             
-            {/* Tab 1: Detailed parsed textbook */}
+            {/* Tab 1: Detailed split textbook + simulation side-by-side on lg */}
             {activeTab === 'summary' && activeSubjectData && (
               <motion.div
                 key="summary-tab"
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
-                className="space-y-4 flex-1 flex flex-col justify-between"
+                className="space-y-4 flex-1 w-full"
               >
-                <div className="p-6 rounded-2xl bg-[#0c0905]/40 border border-white/[0.04] backdrop-blur-md relative overflow-hidden transition-all duration-300 hover:border-[#d4b87a]/20 flex flex-col justify-between h-[600px] lg:h-[720px] group"
-                  style={{ boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.02), 0 8px 24px rgba(0,0,0,0.15)' }}
-                >
-                  <div className="absolute inset-0 opacity-[0.015] pointer-events-none group-hover:opacity-[0.03] transition-all" style={{
-                    background: 'radial-gradient(circle at 0% 0%, #d4b87a, transparent 50%)'
-                  }} />
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+                  
+                  {/* Left Column: Textbook content (Spacious text) */}
+                  <div className="lg:col-span-7 p-6 rounded-2xl bg-[#0c0905]/40 border border-white/[0.04] backdrop-blur-md relative overflow-hidden transition-all duration-300 hover:border-[#d4b87a]/20 flex flex-col h-[600px] lg:h-[720px] group"
+                    style={{ boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.02), 0 8px 24px rgba(0,0,0,0.15)' }}
+                  >
+                    <div className="absolute inset-0 opacity-[0.015] pointer-events-none group-hover:opacity-[0.03] transition-all" style={{
+                      background: 'radial-gradient(circle at 0% 0%, #d4b87a, transparent 50%)'
+                    }} />
 
-                  <div className="overflow-y-auto space-y-6 pr-2 ipb-thinscroll h-full">
-                    <div className="flex justify-between items-start border-b border-white/[0.06] pb-3 w-full sticky top-0 bg-[#0c0905]/90 backdrop-blur-md z-10">
-                      <div>
-                        <span className="text-[8px] px-1.5 py-0.5 rounded font-mono bg-[#d4b87a]/10 border border-[#d4b87a]/20 text-[#d4b87a] uppercase">SUMÁRIO COMPLETO</span>
-                        <h4 className="text-[12px] font-bold text-white/90 leading-tight mt-1 uppercase">
-                          {syllabusItem.title}
-                        </h4>
-                        <span className="text-[9px] text-white/40 block mt-0.5">{activeSubjectData.title}</span>
+                    <div className="overflow-y-auto space-y-6 pr-2 ipb-thinscroll h-full">
+                      <div className="flex justify-between items-start border-b border-white/[0.06] pb-3 w-full sticky top-0 bg-[#0c0905]/95 backdrop-blur-md z-10">
+                        <div>
+                          <span className="text-xs px-2 py-0.5 rounded font-mono bg-[#d4b87a]/10 border border-[#d4b87a]/20 text-[#d4b87a] uppercase">SUMÁRIO ACADÊMICO</span>
+                          <h4 className="text-base font-bold text-white/95 leading-tight mt-1 uppercase">
+                            {syllabusItem.title}
+                          </h4>
+                          <span className="text-xs text-white/50 block mt-0.5">{activeSubjectData.title}</span>
+                        </div>
                       </div>
-                    </div>
 
-                    <div className="space-y-6 mt-4">
-                      {activeSubjectData.chapters.map((chapter: any, cIdx: number) => (
-                        <div key={cIdx} className="space-y-4 pb-4 border-b border-white/[0.04] last:border-b-0">
-                          <div className="flex items-start gap-2">
-                            <span className="text-[10px] font-mono font-bold text-[#d4b87a] mt-0.5">Cap {cIdx + 1}</span>
-                            <div>
-                              <h5 className="text-[11px] font-bold text-white/90 leading-tight uppercase">
-                                {chapter.title}
-                              </h5>
-                              {chapter.description && (
-                                <p className="text-[9px] text-white/40 italic mt-0.5 leading-relaxed">{chapter.description}</p>
+                      <div className="space-y-6 mt-4">
+                        {activeSubjectData.chapters.map((chapter: any, cIdx: number) => (
+                          <div key={cIdx} className="space-y-4 pb-4 border-b border-white/[0.04] last:border-b-0">
+                            <div className="flex items-start gap-2.5">
+                              <span className="text-xs font-mono font-bold text-[#d4b87a] mt-0.5">Cap {cIdx + 1}</span>
+                              <div>
+                                <h5 className="text-sm font-bold text-white/90 leading-tight uppercase">
+                                  {chapter.title}
+                                </h5>
+                                {chapter.description && (
+                                  <p className="text-xs text-white/50 italic mt-1 leading-relaxed">{chapter.description}</p>
+                                )}
+                              </div>
+                            </div>
+
+                            <div className="space-y-4 pl-3 border-l border-white/[0.06] ml-2 mt-3">
+                              {chapter.subsections.map((sub: any, sIdx: number) => (
+                                <div key={sIdx} className="space-y-2">
+                                  {sub.title && (
+                                    <h6 className="text-xs font-bold text-white/80 leading-snug flex items-center gap-1.5">
+                                      <span className="w-1.5 h-1.5 rounded-full bg-[#cbd5e1]" />
+                                      {sub.title}
+                                    </h6>
+                                  )}
+                                  <p className="text-xs lg:text-sm text-white/60 leading-relaxed text-justify whitespace-pre-line">
+                                    {sub.content}
+                                  </p>
+
+                                  {sub.studyCase && (
+                                    <div className="mt-3 rounded-xl p-4 bg-[#d4b87a]/5 border-l-2 border-[#d4b87a] border border-[#d4b87a]/10 space-y-1.5">
+                                      <span className="text-[10px] uppercase tracking-wider font-bold text-[#d4b87a] block">Estudo de Caso · {sub.studyCase.title}</span>
+                                      <p className="text-xs text-[#d4b87a]/80 leading-relaxed text-justify whitespace-pre-line">
+                                        {sub.studyCase.body}
+                                      </p>
+                                    </div>
+                                  )}
+
+                                  {sub.deepDive && (
+                                    <div className="mt-3 rounded-xl p-3.5 bg-white/[0.02] border border-white/[0.04] space-y-1.5">
+                                      <span className="text-[10px] uppercase tracking-wider font-bold text-[#cbd5e1]/50 block">Aprofundamento Técnico</span>
+                                      <p className="text-xs text-white/50 leading-relaxed text-justify whitespace-pre-line">
+                                        {sub.deepDive}
+                                      </p>
+                                    </div>
+                                  )}
+                                </div>
+                              ))}
+
+                              {chapter.synthesis && (
+                                <div className="mt-4 rounded-xl p-4 bg-white/[0.01] border border-white/[0.04] space-y-2.5">
+                                  <span className="text-[10px] uppercase tracking-wider font-bold text-[#d4b87a]/80 block">Síntese Estratégica & Insights</span>
+                                  <ul className="space-y-2">
+                                    {chapter.synthesis.bullets.map((bullet: string, bIdx: number) => (
+                                      <li key={bIdx} className="text-xs text-white/60 leading-relaxed flex items-start gap-2.5 text-justify">
+                                        <span className="mt-1.5 w-1.5 h-1.5 rounded-full shrink-0 bg-[#cbd5e1]" />
+                                        <span>{bullet}</span>
+                                      </li>
+                                    ))}
+                                  </ul>
+                                </div>
                               )}
                             </div>
                           </div>
-
-                          <div className="space-y-3.5 pl-3 border-l border-white/[0.06] ml-2 mt-3">
-                            {chapter.subsections.map((sub: any, sIdx: number) => (
-                              <div key={sIdx} className="space-y-2">
-                                {sub.title && (
-                                  <h6 className="text-[9.5px] font-bold text-white/80 leading-snug flex items-center gap-1.5">
-                                    <span className="w-1 h-1 rounded-full bg-[#cbd5e1]" />
-                                    {sub.title}
-                                  </h6>
-                                )}
-                                <p className="text-[9.5px] text-white/55 leading-relaxed text-justify whitespace-pre-line">
-                                  {sub.content}
-                                </p>
-
-                                {sub.studyCase && (
-                                  <div className="mt-2.5 rounded-xl p-3.5 bg-[#d4b87a]/5 border-l-2 border-[#d4b87a] border border-[#d4b87a]/10 space-y-1">
-                                    <span className="text-[7.5px] uppercase tracking-wider font-bold text-[#d4b87a] block">Estudo de Caso · {sub.studyCase.title}</span>
-                                    <p className="text-[9px] text-[#d4b87a]/80 leading-relaxed text-justify whitespace-pre-line">
-                                      {sub.studyCase.body}
-                                    </p>
-                                  </div>
-                                )}
-
-                                {sub.deepDive && (
-                                  <div className="mt-2.5 rounded-xl p-3 bg-white/[0.02] border border-white/[0.04] space-y-1">
-                                    <span className="text-[7.5px] uppercase tracking-wider font-bold text-[#cbd5e1]/50 block">Aprofundamento Técnico</span>
-                                    <p className="text-[9px] text-white/40 leading-relaxed text-justify whitespace-pre-line">
-                                      {sub.deepDive}
-                                    </p>
-                                  </div>
-                                )}
-                              </div>
-                            ))}
-
-                            {chapter.synthesis && (
-                              <div className="mt-4 rounded-xl p-3 bg-white/[0.01] border border-white/[0.04] space-y-2">
-                                <span className="text-[7.5px] uppercase tracking-wider font-bold text-[#d4b87a]/80 block">Síntese Estratégica & Insights</span>
-                                <ul className="space-y-1.5">
-                                  {chapter.synthesis.bullets.map((bullet: string, bIdx: number) => (
-                                    <li key={bIdx} className="text-[9px] text-white/50 leading-relaxed flex items-start gap-2 text-justify">
-                                      <span className="mt-1.5 w-1 h-1 rounded-full shrink-0 bg-[#cbd5e1]" />
-                                      <span>{bullet}</span>
-                                    </li>
-                                  ))}
-                                </ul>
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      ))}
-
-                      {/* Interactive Simulation & Strategic Node Map */}
-                      <div className="mt-8 pt-6 border-t border-white/[0.06] space-y-4">
-                        <div className="flex justify-between items-center">
-                          <div>
-                            <span className="text-[8px] uppercase tracking-wider font-bold text-[#d4b87a]">Simulador de Alinhamento</span>
-                            <h5 className="text-[11px] font-bold text-white/90">Mapa de Fluxo & Impacto Estratégico</h5>
-                          </div>
-                          <span className="text-[8px] px-1.5 py-0.5 rounded font-mono bg-white/5 border border-white/10 text-white/40 uppercase">Simulação Ativa</span>
-                        </div>
-                        <p className="text-[9.5px] text-white/55 leading-relaxed text-justify">
-                          Interaja com os nós operacionais abaixo para simular as conexões de valor e fluxos de governança aplicados à disciplina de *{syllabusItem.title}*.
-                        </p>
-                        <StrategicRoadmapBoard moduleId="M4" />
+                        ))}
                       </div>
-
                     </div>
                   </div>
+
+                  {/* Right Column: Simulation Board & Pillars inside the content */}
+                  <div className="lg:col-span-5 p-6 rounded-2xl bg-white/[0.015] border border-white/[0.04] backdrop-blur-md relative overflow-hidden flex flex-col justify-between h-[600px] lg:h-[720px]"
+                    style={{ boxShadow: '0 8px 24px rgba(0,0,0,0.15)' }}
+                  >
+                    <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{
+                      background: 'radial-gradient(circle at 100% 0%, #d4b87a, transparent 50%)'
+                    }} />
+
+                    <div className="space-y-4">
+                      <div>
+                        <span className="text-[10px] uppercase tracking-wider font-bold text-[#d4b87a]">Simulador Ativo</span>
+                        <h4 className="text-sm font-bold text-white/95 mt-1">Conexões Estratégicas de Negócios</h4>
+                        <p className="text-xs text-white/50 leading-relaxed mt-1 text-justify">
+                          Mapeamento dinâmico que simula o fluxo cognitivo, as correlações teóricas e o impacto prático na disciplina de *{syllabusItem.title}*. Interaja com os nós operacionais abaixo para visualizar as dependências transversais de governança.
+                        </p>
+                      </div>
+
+                      <div className="my-2 border border-white/5 rounded-xl overflow-hidden bg-black/40">
+                        <StrategicRoadmapBoard moduleId="M4" />
+                      </div>
+                    </div>
+
+                    <div className="pt-4 border-t border-white/[0.06] mt-4">
+                      <span className="text-[10px] uppercase tracking-wider font-bold text-[#d4b87a] block mb-2">
+                        Diretrizes de Governança
+                      </span>
+                      <ul className="space-y-2">
+                        <li className="text-xs text-white/60 flex items-start gap-2">
+                          <span className="mt-1.5 w-1.5 h-1.5 rounded-full shrink-0 bg-[#d4b87a]" />
+                          <span className="leading-relaxed">Alinhamento entre governança corporativa e operações eficientes.</span>
+                        </li>
+                        <li className="text-xs text-white/60 flex items-start gap-2">
+                          <span className="mt-1.5 w-1.5 h-1.5 rounded-full shrink-0 bg-[#d4b87a]" />
+                          <span className="leading-relaxed">Validação ágil de hipóteses no framework de tomada de decisão.</span>
+                        </li>
+                        <li className="text-xs text-white/60 flex items-start gap-2">
+                          <span className="mt-1.5 w-1.5 h-1.5 rounded-full shrink-0 bg-[#cbd5e1]" />
+                          <span className="leading-relaxed">Mitigação de custos de capital com foco em escalabilidade sustentável.</span>
+                        </li>
+                      </ul>
+                    </div>
+
+                  </div>
+
                 </div>
               </motion.div>
             )}
 
-            {/* Tab 2: AI Advisor Chatbot */}
+            {/* Tab 2: AI Advisor Chatbot (Spacious full width) */}
             {activeTab === 'tutor' && (
               <motion.div
                 key="tutor-tab"
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
-                className="space-y-4 flex-1 flex flex-col justify-between"
+                className="space-y-4 flex-1 flex flex-col justify-between w-full"
               >
-                <div className="p-5 rounded-2xl bg-white/[0.015] border border-white/[0.04] backdrop-blur-md flex flex-col justify-between h-[600px] lg:h-[720px] relative overflow-hidden"
+                <div className="p-6 rounded-2xl bg-white/[0.015] border border-white/[0.04] backdrop-blur-md flex flex-col justify-between h-[600px] lg:h-[720px] relative overflow-hidden"
                   style={{ boxShadow: '0 8px 24px rgba(0,0,0,0.15)' }}
                 >
-                  <div className="flex-1 overflow-y-auto space-y-3.5 pr-2 ipb-thinscroll">
+                  <div className="flex-1 overflow-y-auto space-y-4 pr-2 ipb-thinscroll">
                     {tutorHistory.map((msg, i) => (
                       <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                         <div 
-                          className="max-w-[85%] rounded-xl p-3 text-[10px] leading-relaxed text-justify whitespace-pre-line"
+                          className="max-w-[75%] rounded-xl p-4 text-xs lg:text-sm leading-relaxed text-justify whitespace-pre-line"
                           style={{
                             background: msg.role === 'user' ? 'rgba(212,184,122,0.12)' : 'rgba(255,255,255,0.03)',
                             border: msg.role === 'user' ? '1px solid rgba(212,184,122,0.22)' : '1px solid rgba(255,255,255,0.05)',
@@ -1181,71 +1261,71 @@ function ExecutiveStudyBriefing({
                     ))}
                     {isTutorLoading && (
                       <div className="flex justify-start">
-                        <div className="rounded-xl p-3 bg-white/5 border border-white/10 text-[9px] text-white/40 font-mono">
+                        <div className="rounded-xl p-3 bg-white/5 border border-white/10 text-xs text-white/40 font-mono">
                           Advisor analisando dados...
                         </div>
                       </div>
                     )}
                   </div>
 
-                  <div className="flex flex-wrap gap-1.5 my-3">
+                  <div className="flex flex-wrap gap-2 my-3">
                     {['Explicar Conceito', 'Aplicar ao meu Negócio', 'Análise SWOT'].map((chip) => (
                       <button
                         key={chip}
                         onClick={() => handleAskTutor(`${chip} da disciplina ${syllabusItem.title}`)}
-                        className="px-2 py-1 rounded bg-white/5 border border-white/10 text-white/50 text-[8px] hover:bg-white/10 cursor-pointer transition-all"
+                        className="px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-white/60 text-xs hover:bg-white/10 cursor-pointer transition-all"
                       >
                         {chip}
                       </button>
                     ))}
                   </div>
 
-                  <div className="flex gap-2 border-t border-white/[0.06] pt-3 shrink-0">
+                  <div className="flex gap-3 border-t border-white/[0.06] pt-4 shrink-0">
                     <input
                       value={tutorInput}
                       onChange={(e) => setTutorInput(e.target.value)}
                       onKeyDown={(e) => e.key === 'Enter' && handleAskTutor(tutorInput)}
                       placeholder="Faça uma pergunta sobre o sumário executivo..."
-                      className="flex-1 bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-[10px] text-white outline-none focus:border-[#d4b87a]/40"
+                      className="flex-1 bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-xs lg:text-sm text-white outline-none focus:border-[#d4b87a]/40"
                     />
                     <button
                       onClick={() => handleAskTutor(tutorInput)}
-                      className="p-2 rounded-lg bg-[#d4b87a] hover:bg-[#d4b87a]/80 text-black flex items-center justify-center shrink-0 cursor-pointer transition-all"
+                      className="px-4 py-2.5 rounded-lg bg-[#d4b87a] hover:bg-[#d4b87a]/80 text-black flex items-center justify-center shrink-0 cursor-pointer transition-all"
                     >
-                      <Send className="h-3.5 w-3.5" />
+                      <Send className="h-4 w-4" />
                     </button>
                   </div>
                 </div>
               </motion.div>
             )}
 
-            {/* Tab 3: Memorando / Custom notes */}
+            {/* Tab 3: Memorando / Custom notes (Spacious full width) */}
             {activeTab === 'notes' && (
               <motion.div
                 key="notes-tab"
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
-                className="space-y-4 flex-1 flex flex-col justify-between"
+                className="space-y-4 flex-1 flex flex-col justify-between w-full"
               >
-                <div className="p-5 rounded-2xl bg-white/[0.015] border border-white/[0.04] relative overflow-hidden h-[600px] lg:h-[720px] flex flex-col justify-between">
+                <div className="p-6 rounded-2xl bg-white/[0.015] border border-white/[0.04] relative overflow-hidden h-[600px] lg:h-[720px] flex flex-col justify-between">
                   <div className="absolute inset-0 opacity-[0.01] pointer-events-none" style={{
                     background: 'radial-gradient(circle at 100% 100%, #d4b87a, transparent 50%)'
                   }} />
-                  <div className="flex flex-col h-full space-y-3">
+                  <div className="flex flex-col h-full space-y-4">
                     <div className="flex items-center justify-between shrink-0">
-                      <div className="flex items-center gap-2">
-                        <FileText className="h-4 w-4 text-[#d4b87a]" />
-                        <span className="text-[8.5px] uppercase tracking-widest font-bold text-white/40">Notas de Implementação Operacional</span>
+                      <div className="flex items-center gap-2.5">
+                        <FileText className="h-5 w-5 text-[#d4b87a]" />
+                        <span className="text-xs uppercase tracking-widest font-bold text-white/40">Notas de Implementação Operacional</span>
                       </div>
-                      <span className="text-[7.5px] text-white/30 font-mono">Salvo automaticamente</span>
+                      <span className="text-xs text-white/30 font-mono">Salvo automaticamente</span>
                     </div>
 
                     <textarea
                       value={notes}
                       onChange={(e) => handleSaveNotes(e.target.value)}
                       placeholder={`Escreva suas notas estratégicas e memorandos de implementação para a disciplina: ${syllabusItem.title}...`}
-                      className="flex-1 bg-white/[0.02] border border-white/[0.05] rounded-xl p-3 text-[10px] text-white/80 leading-relaxed outline-none focus:border-[#d4b87a]/30 resize-none placeholder:text-white/20 ipb-thinscroll"
+                      className="flex-1 bg-white/[0.02] border border-white/[0.05] rounded-xl p-4 text-xs lg:text-sm text-white/80 leading-relaxed outline-none focus:border-[#d4b87a]/30 resize-none placeholder:text-white/20 ipb-thinscroll"
                     />
                   </div>
                 </div>
@@ -1253,58 +1333,6 @@ function ExecutiveStudyBriefing({
             )}
 
           </AnimatePresence>
-        </div>
-
-        {/* Sidebar Index (Right 1 col on lg): SUMÁRIO GERAL / ÍNDICE DO CADERNO (30 Disciplinas) */}
-        <div className="lg:col-span-1 flex flex-col p-5 rounded-2xl bg-white/[0.015] border border-white/[0.04] relative overflow-hidden h-[600px] lg:h-[720px]">
-          <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{
-            background: `radial-gradient(circle at 100% 0%, #d4b87a, transparent 50%)`
-          }} />
-          
-          <div className="relative z-10 mb-3 shrink-0">
-            <div className="flex justify-between items-center border-b border-white/[0.06] pb-2">
-              <span className="text-[8px] uppercase tracking-wider font-bold text-[#d4b87a]">Sumário do Caderno</span>
-              <span className="text-[8px] px-1.5 py-0.2 rounded bg-white/5 border border-white/10 text-white/40 font-mono">30 AULAS</span>
-            </div>
-            <h3 className="text-[12px] font-bold text-white/90 mt-1">Índice do Caderno</h3>
-          </div>
-
-          {/* List of 30 Disciplines */}
-          <div className="flex-1 overflow-y-auto space-y-1.5 pr-2 ipb-thinscroll shrink-0">
-            {ACADEMIC_SYLLABUS.map((item, idx) => {
-              const isSelected = idx === activeSubjectIndex
-              const isGold = idx % 2 === 0
-              const itemColor = isGold ? '#d4b87a' : '#cbd5e1'
-              
-              return (
-                <button
-                  key={item.id}
-                  onClick={() => onChangeSubjectIndex(idx)}
-                  className="w-full text-left p-2 rounded-lg transition-all duration-200 cursor-pointer flex items-center justify-between gap-2 border border-transparent"
-                  style={{
-                    background: isSelected ? 'rgba(255,255,255,0.03)' : 'transparent',
-                    borderColor: isSelected ? 'rgba(212,184,122,0.15)' : 'transparent'
-                  }}
-                >
-                  <div className="flex items-center gap-2 min-w-0">
-                    <span className="font-mono text-[8px] shrink-0" style={{ color: isSelected ? itemColor : 'rgba(255,255,255,0.2)' }}>
-                      {String(idx + 1).padStart(2, '0')}
-                    </span>
-                    <span className={`text-[9px] truncate ${isSelected ? 'text-white font-medium' : 'text-white/55'}`}>
-                      {item.title}
-                    </span>
-                  </div>
-                  <span className="text-[6.5px] font-mono px-1 py-0.2 rounded uppercase shrink-0 scale-90 border" style={{
-                    background: `${itemColor}10`,
-                    borderColor: `${itemColor}155`,
-                    color: itemColor
-                  }}>
-                    {isGold ? 'OURO' : 'PRATA'}
-                  </span>
-                </button>
-              )
-            })}
-          </div>
         </div>
       </div>
     </div>
