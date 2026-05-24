@@ -1629,7 +1629,7 @@ function ModuleRail({
 
 export default function ConteudosPageClient() {
   const [activeIndex, setActiveIndex] = useState<number | null>(null)
-  const [sidebarOpen, setSidebarOpen] = useState(true)
+
   const [topicsMap, setTopicsMap] = useState<ModuleTopicsMap>({})
   const [activeTopicId, setActiveTopicId] = useState<string | null>(null)
   const [clockTime, setClockTime] = useState('14:45')
@@ -1810,15 +1810,7 @@ export default function ConteudosPageClient() {
                 </motion.div>
               </Link>
               <div className="h-px w-24 bg-[linear-gradient(90deg,rgba(255,255,255,0.08),transparent)]" />
-              {!sidebarOpen && (
-                <button
-                  onClick={() => setSidebarOpen(true)}
-                  className="flex items-center gap-2 rounded-[0.85rem] border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-[10px] uppercase tracking-[0.2em] text-white/60 transition hover:text-white"
-                >
-                  <PanelLeftOpen className="h-3.5 w-3.5" />
-                  Trilha
-                </button>
-              )}
+
             </div>
             <div className="flex items-center gap-2">
               <BookOpen className="h-4 w-4 text-[#d4b87a]" />
@@ -1826,24 +1818,8 @@ export default function ConteudosPageClient() {
             </div>
           </div>
 
-          {/* Content Layout */}
-          <div className={sidebarOpen ? 'grid grid-cols-[86px_1fr] items-stretch gap-2 sm:grid-cols-[140px_1fr] sm:gap-3 lg:grid-cols-[240px_1fr] lg:gap-4' : ''}>
-            
-            {/* Left Sidebar */}
-            {sidebarOpen && (
-              <WorkspaceSidebar
-                modules={MODULES}
-                activeIndex={activeIndex}
-                topicsMap={topicsMap}
-                activeTopicId={activeTopicId}
-                onSelectModule={handleSelectModule}
-                onSelectTopic={handleSelectTopic}
-                onClose={() => setSidebarOpen(false)}
-              />
-            )}
-
-            {/* Right Container: Rail + Dynamic Cockpit */}
-            <div className="min-w-0 flex flex-col gap-6">
+          {/* Content Layout — Full Width */}
+          <div className="flex flex-col gap-6">
               
               {/* Timeline Track */}
               <ModuleRail modules={MODULES} activeIndex={activeIndex} onSelect={handleSelectModule} />
@@ -2083,7 +2059,6 @@ export default function ConteudosPageClient() {
               </AnimatePresence>
 
             </div>
-          </div>
 
         </div>
       </main>
