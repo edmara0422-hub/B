@@ -338,6 +338,14 @@ function FloatingVideoPlayer({ moduleTitle, moduleId }: { moduleTitle: string; m
 // ── Business Module Custom High-Fidelity Components ──────────────────────────
 
 const BUSINESS_PLAYLIST = [
+  { id: 'M4-T1', topicId: 'M4-T1', title: 'Liderança e Gestão de Times', subtitle: 'Aula 01 · Estratégia de Equipes e Propósito', duration: '28:30' },
+  { id: 'M4-T2', topicId: 'M4-T2', title: 'Inteligência de Mercado e Empresas', subtitle: 'Aula 02 · Concorrência e Análise do Ecossistema', duration: '32:15' },
+  { id: 'M4-T3', topicId: 'M4-T3', title: 'Sustentabilidade e ESG Corporativo', subtitle: 'Aula 03 · Logística Reversa e Pegada Ecológica', duration: '25:40' },
+  { id: 'M4-T4', topicId: 'M4-T4', title: 'Feedback Estratégico', subtitle: 'Aula 04 · Modelo SBI e Regulação de Performance', duration: '19:20' },
+  { id: 'M4-T5', topicId: 'M4-T5', title: 'Gestão de Arquivos corporativos', subtitle: 'Aula 05 · Repositórios baseados em RBAC e Segurança', duration: '22:15' }
+]
+
+const ACADEMIC_SYLLABUS = [
   // Pilar 1: Inovação e Estratégia
   { id: 'M4-T1-S1', topicId: 'M4-T1', title: 'Inovação, Criatividade e Sustentabilidade', subtitle: 'IE · Design Thinking e Economia Circular', duration: '18:20' },
   { id: 'M4-T1-S2', topicId: 'M4-T1', title: 'Inovação, Transformação e Ferramentas Digitais', subtitle: 'IE · Automação e Inteligência Artificial', duration: '22:15' },
@@ -378,7 +386,7 @@ const BUSINESS_PLAYLIST = [
   { id: 'M4-T6-S4', topicId: 'M4-T6', title: 'Intervenção e Sociedade', subtitle: 'ISI · Projetos de Extensão e Desenvolvimento Comunitário', duration: '20:50' },
   { id: 'M4-T6-S5', topicId: 'M4-T6', title: 'Teologia e Sociedade', subtitle: 'ISI · Dimensão Transcendental e o Papel Ético na Comunidade', duration: '22:15' },
   { id: 'M4-T6-S6', topicId: 'M4-T6', title: 'Pesquisa e Identidade', subtitle: 'ISI · Autoconhecimento, História Social e Propósito', duration: '21:40' },
-  { id: 'M4-T6-S7', topicId: 'M4-T6', title: 'Leitura e Escrita Acadêmica', subtitle: 'ISI · Comunicação Científica e Redação de Alto Impacto', duration: '18:55' },
+  { id: 'M4-T6-S7', topicId: 'M4-T6', title: 'Leitura e Escrita Acadêmica', subtitle: 'ISI · Comunicação Científica e Redação de Alto Impacto', duration: '18:55' }
 ]
 
 function ExecutiveMasterclassTheater({ 
@@ -434,114 +442,61 @@ function ExecutiveMasterclassTheater({
 
   return (
     <div className="ipb-glass-card w-full flex flex-col pointer-events-auto transition-all duration-300">
-      <div className="grid grid-cols-1 lg:grid-cols-5 bg-black/60">
+      {/* Video Cinema screen occupies full width (100%) */}
+      <div className="relative aspect-[21/9] bg-black flex items-center justify-center overflow-hidden rounded-t-xl">
+        <div className="absolute inset-0" style={{
+          background: `radial-gradient(circle at 50% 50%, ${theme.glow}, transparent 80%)`
+        }} />
         
-        {/* Visual Screen Area */}
-        <div className="lg:col-span-3 relative aspect-[16/10] bg-black flex items-center justify-center overflow-hidden border-r border-white/[0.04]">
-          <div className="absolute inset-0" style={{
-            background: `radial-gradient(circle at 50% 50%, ${theme.glow}, transparent 80%)`
-          }} />
-          
-          {playing && (
-            <div className="absolute bottom-6 left-6 flex gap-1 items-end h-5 z-10 opacity-70">
-              {[0.5, 0.9, 0.3, 0.7, 0.4, 0.8, 0.2].map((val, i) => (
-                <motion.div
-                  key={i}
-                  className="w-0.5 rounded-sm"
-                  style={{ backgroundColor: theme.primary }}
-                  animate={{ height: ['4px', '20px', '4px'] }}
-                  transition={{ duration: 0.8 + i * 0.1, repeat: Infinity, ease: 'easeInOut' }}
-                />
-              ))}
+        {playing && (
+          <div className="absolute bottom-6 left-6 flex gap-1 items-end h-5 z-10 opacity-70">
+            {[0.5, 0.9, 0.3, 0.7, 0.4, 0.8, 0.2].map((val, i) => (
+              <motion.div
+                key={i}
+                className="w-0.5 rounded-sm"
+                style={{ backgroundColor: theme.primary }}
+                animate={{ height: ['4px', '20px', '4px'] }}
+                transition={{ duration: 0.8 + i * 0.1, repeat: Infinity, ease: 'easeInOut' }}
+              />
+            ))}
+          </div>
+        )}
+
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/30 pointer-events-none" />
+
+        <div className="absolute top-4 left-4 z-10 flex gap-2">
+          <span className="text-[7.5px] uppercase tracking-widest font-bold px-2 py-0.5 rounded bg-black/50 border border-white/10" style={{ color: theme.primary }}>
+            Masterclass M4 · Aula {activeLessonIndex + 1}
+          </span>
+          <span className="text-[7.5px] uppercase tracking-widest font-bold px-2 py-0.5 rounded bg-black/50 border border-white/10 text-white/50">
+            {activeLesson.duration}
+          </span>
+        </div>
+
+        <motion.button 
+          onClick={() => setPlaying(!playing)}
+          whileHover={{ scale: 1.08, boxShadow: `0 0 24px ${theme.accent}` }}
+          whileTap={{ scale: 0.95 }}
+          className="relative z-10 w-14 h-14 rounded-full flex items-center justify-center cursor-pointer"
+          style={{
+            background: `radial-gradient(circle at 30% 25%, ${theme.accent} 0%, rgba(15,12,8,0.95) 100%)`,
+            border: `0.5px solid ${theme.primary}`,
+            boxShadow: `0 0 20px ${theme.accent}, inset 0 1px 1px rgba(255,255,255,0.2)`
+          }}
+        >
+          {playing ? (
+            <div className="flex gap-1.5 justify-center items-center">
+              <div className="w-1.5 h-4 bg-white/95 rounded-sm" />
+              <div className="w-1.5 h-4 bg-white/95 rounded-sm" />
             </div>
+          ) : (
+            <Play className="h-5 w-5 text-white/95 fill-white/80 ml-1" />
           )}
-
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/30 pointer-events-none" />
-
-          <div className="absolute top-4 left-4 z-10">
-            <span className="text-[7px] uppercase tracking-widest font-bold px-2 py-0.5 rounded bg-black/50 border border-white/10" style={{ color: theme.primary }}>
-              Masterclass M4 · Aula {activeLessonIndex + 1}
-            </span>
-          </div>
-
-          <motion.button 
-            onClick={() => setPlaying(!playing)}
-            whileHover={{ scale: 1.08, boxShadow: `0 0 24px ${theme.accent}` }}
-            whileTap={{ scale: 0.95 }}
-            className="relative z-10 w-14 h-14 rounded-full flex items-center justify-center cursor-pointer"
-            style={{
-              background: `radial-gradient(circle at 30% 25%, ${theme.accent} 0%, rgba(15,12,8,0.95) 100%)`,
-              border: `0.5px solid ${theme.primary}`,
-              boxShadow: `0 0 20px ${theme.accent}, inset 0 1px 1px rgba(255,255,255,0.2)`
-            }}
-          >
-            {playing ? (
-              <div className="flex gap-1.5 justify-center items-center">
-                <div className="w-1.5 h-4 bg-white/95 rounded-sm" />
-                <div className="w-1.5 h-4 bg-white/95 rounded-sm" />
-              </div>
-            ) : (
-              <Play className="h-5 w-5 text-white/95 fill-white/80 ml-1" />
-            )}
-          </motion.button>
-        </div>
-
-        {/* Playlist Panel */}
-        <div className="lg:col-span-2 flex flex-col border-t lg:border-t-0 border-white/[0.04] bg-black/40 h-full max-h-[300px] lg:max-h-[none] overflow-y-auto ipb-thinscroll">
-          <div className="px-4 py-3 border-b border-white/[0.04] bg-black/30 flex justify-between items-center">
-            <span className="text-[9px] uppercase tracking-widest text-white/40 font-bold">Conteúdo da Trilha</span>
-            <span className="text-[8px] px-1.5 py-0.5 rounded bg-white/5 border border-white/10 text-white/50">{BUSINESS_PLAYLIST.length} Aulas</span>
-          </div>
-          <div className="flex-1 divide-y divide-white/[0.02]">
-            {BUSINESS_PLAYLIST.map((item, idx) => {
-              const isSelected = idx === activeLessonIndex
-              const isGold = idx % 2 === 0
-              const itemColor = isGold ? '#d4b87a' : '#cbd5e1'
-              const itemBgSelected = isGold ? 'rgba(212,184,122,0.08)' : 'rgba(203,213,225,0.08)'
-              const itemBgHover = isGold ? 'hover:bg-[#d4b87a]/[0.02]' : 'hover:bg-[#cbd5e1]/[0.02]'
-              
-              return (
-                <button
-                  key={item.id}
-                  onClick={() => handleLessonSelect(idx)}
-                  className={`w-full text-left p-3.5 flex gap-3 transition-all duration-200 cursor-pointer relative pl-5 ${itemBgHover}`}
-                  style={{
-                    background: isSelected ? itemBgSelected : 'transparent',
-                    borderLeft: `3px solid ${isSelected ? itemColor : 'rgba(255,255,255,0.02)'}`
-                  }}
-                >
-                  <span className="font-mono text-[9px] mt-0.5" style={{ color: isSelected ? itemColor : 'rgba(255,255,255,0.3)' }}>
-                    {String(idx + 1).padStart(2, '0')}
-                  </span>
-                  <div className="flex-1 min-w-0">
-                    <p className={`text-[10px] font-semibold truncate leading-tight ${isSelected ? 'text-white' : 'text-white/60'}`}>
-                      {item.title}
-                    </p>
-                    <p className="text-[8.5px] text-white/30 truncate mt-0.5 leading-normal">
-                      {item.subtitle}
-                    </p>
-                  </div>
-                  <div className="flex flex-col items-end gap-1.5 shrink-0 self-center">
-                    <span className="text-[8px] font-mono text-white/30">
-                      {item.duration}
-                    </span>
-                    <span className="text-[6.5px] tracking-wider px-1 py-0.2 rounded font-mono uppercase scale-90 border" style={{
-                      background: `${itemColor}10`,
-                      borderColor: `${itemColor}20`,
-                      color: itemColor
-                    }}>
-                      {isGold ? 'OURO · T' + (idx + 1) : 'PRATA · T' + (idx + 1)}
-                    </span>
-                  </div>
-                </button>
-              )
-            })}
-          </div>
-        </div>
+        </motion.button>
       </div>
 
       {/* Control bar and timeline progress */}
-      <div className="p-4 flex flex-col justify-between bg-black/30 border-t border-white/[0.04]">
+      <div className="p-4 flex flex-col justify-between bg-black/30 border-t border-white/[0.04] space-y-4">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-2.5">
           <div className="min-w-0">
             <span className="text-[7.5px] uppercase tracking-widest font-bold" style={{ color: theme.primary }}>Execução de Masterclass</span>
@@ -554,13 +509,13 @@ function ExecutiveMasterclassTheater({
               <span className="px-1.5 py-0.5 rounded bg-white/5 border border-white/10 text-[8.5px]" style={{ color: playing ? theme.primary : 'inherit' }}>
                 {playing ? 'Reproduzindo' : 'Pausado'}
               </span>
-              <span>{Math.floor((progress/100)*35)}:14 / {activeLesson.duration}</span>
+              <span>{Math.floor((progress/100)*28)}:14 / {activeLesson.duration}</span>
             </div>
           </div>
         </div>
         
         {/* Timeline Bar */}
-        <div className="mt-3 relative">
+        <div className="relative">
           <div className="h-1 bg-white/10 rounded-full overflow-hidden cursor-pointer">
             <div className="h-full transition-all duration-300" style={{ 
               width: `${progress}%`,
@@ -568,7 +523,41 @@ function ExecutiveMasterclassTheater({
             }} />
           </div>
         </div>
-      </div>
+
+        {/* Masterclass Ribbon Selector (Replacing the bulky right playlist column) */}
+        <div className="pt-2 border-t border-white/[0.04]">
+          <span className="text-[7.5px] uppercase tracking-wider text-white/30 font-bold block mb-2">Playlist da Aula Executiva</span>
+          <div className="flex flex-wrap gap-2">
+            {BUSINESS_PLAYLIST.map((item, idx) => {
+              const isSelected = idx === activeLessonIndex
+              const isGold = idx % 2 === 0
+              const itemColor = isGold ? '#d4b87a' : '#cbd5e1'
+              const itemBgSelected = isGold ? 'rgba(212,184,122,0.12)' : 'rgba(203,213,225,0.12)'
+              
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => handleLessonSelect(idx)}
+                  className="flex items-center gap-2 px-3 py-2 rounded-lg border text-left cursor-pointer transition-all duration-300"
+                  style={{
+                    background: isSelected ? itemBgSelected : 'rgba(255,255,255,0.01)',
+                    borderColor: isSelected ? itemColor : 'rgba(255,255,255,0.04)',
+                  }}
+                >
+                  <span className="font-mono text-[8px] font-bold" style={{ color: isSelected ? itemColor : 'rgba(255,255,255,0.3)' }}>
+                    {String(idx + 1).padStart(2, '0')}
+                  </span>
+                  <div className="flex flex-col">
+                    <span className={`text-[9px] font-semibold leading-tight truncate max-w-[110px] ${isSelected ? 'text-white' : 'text-white/60'}`}>
+                      {item.title}
+                    </span>
+                    <span className="text-[6.5px] text-white/35 font-mono mt-0.5">{item.duration} · {isGold ? 'OURO' : 'PRATA'}</span>
+                  </div>
+                </button>
+              )
+            })}
+          </div>
+        </div>      </div>
     </div>
   )
 }
@@ -725,43 +714,26 @@ function ExecutivePerformanceDashboard({ moduleId }: { moduleId?: string }) {
         })}
       </div>
 
-      {/* KPI Dynamic Details with Subject List Tags */}
+      {/* Sleek and Compact KPI Details */}
       <AnimatePresence mode="wait">
         <motion.div
           key={activeKpi}
-          initial={{ opacity: 0, y: 6 }}
+          initial={{ opacity: 0, y: 4 }}
           animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -6 }}
+          exit={{ opacity: 0, y: -4 }}
           transition={{ duration: 0.2 }}
-          className="mt-4 p-3.5 rounded-lg bg-black/40 border border-white/[0.04] flex flex-col gap-1.5"
+          className="mt-3 p-3 rounded-lg bg-black/40 border border-white/[0.03] flex items-center justify-between"
         >
-          <div className="flex justify-between items-center">
-            <div className="flex items-center gap-2">
-              <ActiveIcon className="h-3.5 w-3.5" style={{ color: theme.primary }} />
-              <span className="text-[9.5px] font-bold text-white/80">{kpis[activeKpi].title}</span>
+          <div className="flex items-center gap-2 min-w-0">
+            <ActiveIcon className="h-3.5 w-3.5 shrink-0" style={{ color: theme.primary }} />
+            <div className="flex flex-col min-w-0">
+              <span className="text-[9px] font-bold text-white/80 truncate leading-none">{kpis[activeKpi].title}</span>
+              <span className="text-[7.5px] font-mono text-white/40 truncate mt-1 leading-none">{kpis[activeKpi].badge}</span>
             </div>
-            <span className="text-[7.5px] font-mono font-bold uppercase px-1.5 py-0.5 rounded bg-white/5 border border-white/10 text-white/40">
-              {kpis[activeKpi].badge}
-            </span>
           </div>
-          <span className="text-[8px] font-mono text-white/35">{kpis[activeKpi].desc}</span>
-          <p className="text-[9.5px] text-white/50 leading-relaxed text-justify mt-1 border-b border-white/[0.04] pb-2" style={{ borderBottom: '0.2px solid rgba(255,255,255,0.04)' }}>
-            {kpis[activeKpi].detail}
-          </p>
-          
-          {/* Subjects Sub-list */}
-          <div className="mt-1.5">
-            <span className="text-[7px] uppercase tracking-widest text-[#d4b87a] font-bold block mb-1">Disciplinas Integradas ({kpis[activeKpi].subjects.length})</span>
-            <div className="flex flex-wrap gap-1 max-h-[72px] overflow-y-auto ipb-thinscroll pr-1">
-              {kpis[activeKpi].subjects.map((sub, sIdx) => (
-                <span 
-                  key={sIdx} 
-                  className="text-[7.5px] px-1.5 py-0.5 rounded bg-white/5 border border-white/10 text-white/60 hover:text-white transition duration-150"
-                >
-                  {sub}
-                </span>
-              ))}
-            </div>
+          <div className="flex flex-col items-end shrink-0">
+            <span className="text-[11px] font-mono font-bold" style={{ color: theme.primary }}>{kpis[activeKpi].metric}</span>
+            <span className="text-[6.5px] font-mono text-white/30 uppercase mt-1 leading-none">{kpis[activeKpi].subjects.length} DISCIPLINAS</span>
           </div>
         </motion.div>
       </AnimatePresence>
@@ -891,14 +863,14 @@ function ExecutiveStudyBriefing({
   moduleId,
   activeTopicId,
   activeTheme,
-  activeLessonIndex,
-  onChangeLessonIndex
+  activeSubjectIndex,
+  onChangeSubjectIndex
 }: {
   moduleId: string
   activeTopicId: string | null
   activeTheme: any
-  activeLessonIndex: number
-  onChangeLessonIndex: (index: number) => void
+  activeSubjectIndex: number
+  onChangeSubjectIndex: (index: number) => void
 }) {
   const [module, setModule] = useState<any>(null)
   const [activeTab, setActiveTab] = useState<'summary' | 'tutor' | 'notes' | 'map'>('summary')
@@ -926,7 +898,7 @@ function ExecutiveStudyBriefing({
     }))
   )
 
-  const activeBlock = allBlocks[activeLessonIndex] ?? allBlocks[0]
+  const activeBlock = allBlocks[activeSubjectIndex] ?? allBlocks[0]
   if (!activeBlock) return null
 
   const activeSlide = activeBlock.slides?.[0]
@@ -1201,15 +1173,15 @@ function ExecutiveStudyBriefing({
 
           {/* List of 30 Disciplines */}
           <div className="flex-1 overflow-y-auto space-y-1.5 pr-2 ipb-thinscroll shrink-0">
-            {BUSINESS_PLAYLIST.map((item, idx) => {
-              const isSelected = idx === activeLessonIndex
+            {ACADEMIC_SYLLABUS.map((item, idx) => {
+              const isSelected = idx === activeSubjectIndex
               const isGold = idx % 2 === 0
               const itemColor = isGold ? '#d4b87a' : '#cbd5e1'
               
               return (
                 <button
                   key={item.id}
-                  onClick={() => onChangeLessonIndex(idx)}
+                  onClick={() => onChangeSubjectIndex(idx)}
                   className="w-full text-left p-2 rounded-lg transition-all duration-200 cursor-pointer flex items-center justify-between gap-2 border border-transparent"
                   style={{
                     background: isSelected ? 'rgba(255,255,255,0.03)' : 'transparent',
@@ -1419,9 +1391,9 @@ function ModuleRail({
   onSelect: (i: number) => void
 }) {
   return (
-    <div className="ipb-soft relative overflow-hidden rounded-[1.8rem] px-5 py-6 md:px-8">
+    <div className="ipb-soft relative overflow-hidden rounded-[1.8rem] px-5 py-6 md:px-8 space-y-6">
       {/* Header */}
-      <div className="mb-6 flex items-center justify-between">
+      <div className="flex items-center justify-between">
         <div className="flex items-center gap-2.5">
           <div
             className="flex h-8 w-8 items-center justify-center rounded-[0.7rem] border border-white/10"
@@ -1429,81 +1401,162 @@ function ModuleRail({
           >
             <BookOpen className="h-4 w-4 text-[#d4b87a]" />
           </div>
-          <span className="text-[10px] font-semibold uppercase tracking-[0.28em] text-[#d4b87a]">Trilha de Módulos</span>
+          <span className="text-[10px] font-semibold uppercase tracking-[0.28em] text-[#d4b87a]">Trilhas Acadêmicas</span>
         </div>
-        <span className="text-[10px] font-semibold tracking-wider text-white/30 uppercase">{modules.length} Módulos</span>
+        <div className="flex gap-4 items-center">
+          <span className="text-[8px] px-2 py-0.5 rounded font-mono bg-[#d4b87a]/10 border border-[#d4b87a]/20 text-[#d4b87a]">TRILHA OURO: 1 MÓDULO</span>
+          <span className="text-[8px] px-2 py-0.5 rounded font-mono bg-[#cbd5e1]/10 border border-[#cbd5e1]/20 text-[#cbd5e1]">TRILHA PRATA: 3 MÓDULOS</span>
+        </div>
       </div>
 
-      {/* Rail nodes */}
-      <div className="relative px-2 md:px-4">
-        {/* Horizontal glowing line */}
-        <div className="pointer-events-none absolute inset-x-0 top-[2.25rem] h-[1px]" style={{
-          background: 'linear-gradient(90deg, transparent 0%, rgba(200,205,215,0.10) 8%, rgba(212,184,122,0.28) 35%, rgba(212,184,122,0.40) 50%, rgba(212,184,122,0.28) 65%, rgba(200,205,215,0.10) 92%, transparent 100%)'
-        }} />
+      <div className="space-y-6 relative">
+        {/* UPPER TRACK: TRILHA OURO */}
+        <div className="relative rounded-xl p-3.5 bg-gradient-to-r from-[#d4b87a]/5 to-transparent border border-[#d4b87a]/10">
+          <div className="absolute top-2 left-3 flex items-center gap-1.5">
+            <span className="text-[7.5px] uppercase tracking-widest font-mono font-bold text-[#d4b87a]">Trilha Ouro (Gestão & Estratégia)</span>
+          </div>
+          <div className="relative mt-5 px-4">
+            {/* Gold horizontal glowing line */}
+            <div className="pointer-events-none absolute inset-x-0 top-[2.25rem] h-[1px]" style={{
+              background: 'linear-gradient(90deg, transparent 0%, rgba(212,184,122,0.1) 10%, rgba(212,184,122,0.4) 50%, rgba(212,184,122,0.1) 90%, transparent 100%)'
+            }} />
+            
+            <div className="relative flex items-start justify-center">
+              {modules.filter(m => m.id === 'M4').map((module) => {
+                const index = modules.findIndex(m => m.id === module.id)
+                const active = index === activeIndex
+                const ModuleIcon = module.icon
 
-        <div className="relative flex items-start justify-between gap-2 md:gap-4">
-          {modules.map((module, index) => {
-            const active = index === activeIndex
-            const done = activeIndex !== null && index < activeIndex
-            const ModuleIcon = module.icon
-
-            return (
-              <button
-                key={module.id}
-                onClick={() => onSelect(index)}
-                className="group flex min-w-0 flex-1 flex-col items-center gap-2 text-center cursor-pointer"
-                title={module.title}
-              >
-                <div className="flex flex-col items-center gap-2">
-                  <motion.div
-                    whileHover={{ y: -2, scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="relative flex h-10 w-10 items-center justify-center rounded-full border transition-all duration-300 md:h-11 md:w-11"
-                    style={
-                      active
-                        ? {
-                            borderColor: 'rgba(212, 184, 122, 0.55)',
-                            background: 'radial-gradient(circle at 30% 28%, rgba(212,184,122,0.55) 0%, rgba(212,184,122,0.35) 45%, rgba(40,28,8,0.95) 100%)',
-                            boxShadow: '0 0 16px rgba(212, 184, 122, 0.32), 0 0 32px rgba(212, 184, 122, 0.16), inset 0 0.2px 0.2px rgba(255,235,180,0.32)',
-                            color: '#fff',
-                          }
-                        : done
-                        ? {
-                            borderColor: 'rgba(212, 184, 122, 0.32)',
-                            background: 'linear-gradient(180deg, rgba(212,184,122,0.20) 0%, rgba(20,16,8,0.92) 100%)',
-                            color: 'rgba(255,255,255,0.85)',
-                          }
-                        : {
-                            borderColor: 'rgba(200,205,215,0.14)',
-                            background: 'linear-gradient(180deg, rgba(200,205,215,0.10) 0%, rgba(20,22,28,0.92) 100%)',
-                            color: 'rgba(255,255,255,0.5)',
-                          }
-                    }
+                return (
+                  <button
+                    key={module.id}
+                    onClick={() => onSelect(index)}
+                    className="group flex min-w-0 max-w-[120px] flex-col items-center gap-2 text-center cursor-pointer"
+                    title={module.title}
                   >
-                    <ModuleIcon className="h-3.5 w-3.5" />
-                  </motion.div>
-                </div>
+                    <div className="flex flex-col items-center gap-2">
+                      <motion.div
+                        whileHover={{ y: -2, scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        className="relative flex h-10 w-10 items-center justify-center rounded-full border transition-all duration-300 md:h-11 md:w-11"
+                        style={
+                          active
+                            ? {
+                                borderColor: 'rgba(212, 184, 122, 0.55)',
+                                background: 'radial-gradient(circle at 30% 28%, rgba(212,184,122,0.55) 0%, rgba(212,184,122,0.35) 45%, rgba(40,28,8,0.95) 100%)',
+                                boxShadow: '0 0 16px rgba(212, 184, 122, 0.32), 0 0 32px rgba(212, 184, 122, 0.16), inset 0 0.2px 0.2px rgba(255,235,180,0.32)',
+                                color: '#fff',
+                              }
+                            : {
+                                borderColor: 'rgba(212,184,122,0.14)',
+                                background: 'linear-gradient(180deg, rgba(212,184,122,0.06) 0%, rgba(20,20,20,0.92) 100%)',
+                                color: 'rgba(255,255,255,0.4)',
+                              }
+                        }
+                      >
+                        <ModuleIcon className="h-3.5 w-3.5" />
+                      </motion.div>
+                    </div>
 
-                <div
-                  className="h-1.5 w-1.5 rounded-full transition-all duration-300 mt-1"
-                  style={
-                    active
-                      ? { background: '#d4b87a', boxShadow: '0 0 8px rgba(212,184,122,0.8)' }
-                      : done
-                      ? { background: 'rgba(212,184,122,0.45)' }
-                      : { background: 'rgba(200,205,215,0.20)' }
-                  }
-                />
+                    <div
+                      className="h-1.5 w-1.5 rounded-full transition-all duration-300 mt-1"
+                      style={
+                        active
+                          ? { background: '#d4b87a', boxShadow: '0 0 8px rgba(212,184,122,0.8)' }
+                          : { background: 'rgba(212,184,122,0.15)' }
+                      }
+                    />
 
-                <span
-                  className="max-w-[5rem] text-center text-[9px] leading-tight tracking-[0.06em] mt-1 transition-colors duration-200"
-                  style={{ color: active ? 'rgba(255,255,255,0.72)' : 'rgba(255,255,255,0.28)' }}
-                >
-                  {module.title}
-                </span>
-              </button>
-            )
-          })}
+                    <span
+                      className="text-center text-[9px] leading-tight tracking-[0.06em] mt-1 transition-colors duration-200"
+                      style={{ color: active ? 'rgba(255,255,255,0.8)' : 'rgba(255,255,255,0.35)' }}
+                    >
+                      {module.id} · {module.title}
+                    </span>
+                  </button>
+                )
+              })}
+            </div>
+          </div>
+        </div>
+
+        {/* LOWER TRACK: TRILHA PRATA */}
+        <div className="relative rounded-xl p-3.5 bg-gradient-to-r from-[#cbd5e1]/5 to-transparent border border-white/[0.04]">
+          <div className="absolute top-2 left-3 flex items-center gap-1.5">
+            <span className="text-[7.5px] uppercase tracking-widest font-mono font-bold text-[#cbd5e1]/60">Trilha Prata (Ciências Clínicas)</span>
+          </div>
+          <div className="relative mt-5 px-4">
+            {/* Silver horizontal glowing line */}
+            <div className="pointer-events-none absolute inset-x-0 top-[2.25rem] h-[1px]" style={{
+              background: 'linear-gradient(90deg, transparent 0%, rgba(203,213,225,0.1) 10%, rgba(203,213,225,0.3) 50%, rgba(203,213,225,0.1) 90%, transparent 100%)'
+            }} />
+            
+            <div className="relative flex items-start justify-around gap-2 md:gap-4">
+              {modules.filter(m => m.id !== 'M4').map((module) => {
+                const index = modules.findIndex(m => m.id === module.id)
+                const active = index === activeIndex
+                const done = activeIndex !== null && index < activeIndex
+                const ModuleIcon = module.icon
+
+                return (
+                  <button
+                    key={module.id}
+                    onClick={() => onSelect(index)}
+                    className="group flex min-w-0 flex-1 flex-col items-center gap-2 text-center cursor-pointer"
+                    title={module.title}
+                  >
+                    <div className="flex flex-col items-center gap-2">
+                      <motion.div
+                        whileHover={{ y: -2, scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        className="relative flex h-10 w-10 items-center justify-center rounded-full border transition-all duration-300 md:h-11 md:w-11"
+                        style={
+                          active
+                            ? {
+                                borderColor: 'rgba(203, 213, 225, 0.55)',
+                                background: 'radial-gradient(circle at 30% 28%, rgba(203,213,225,0.45) 0%, rgba(203,213,225,0.25) 45%, rgba(12,14,18,0.95) 100%)',
+                                boxShadow: '0 0 16px rgba(203, 213, 225, 0.28), 0 0 32px rgba(203, 213, 225, 0.14), inset 0 0.2px 0.2px rgba(255,255,255,0.22)',
+                                color: '#fff',
+                              }
+                            : done
+                            ? {
+                                borderColor: 'rgba(203, 213, 225, 0.22)',
+                                background: 'linear-gradient(180deg, rgba(203,213,225,0.12) 0%, rgba(10,12,15,0.92) 100%)',
+                                color: 'rgba(255,255,255,0.65)',
+                              }
+                            : {
+                                borderColor: 'rgba(200,205,215,0.1)',
+                                background: 'linear-gradient(180deg, rgba(200,205,215,0.04) 0%, rgba(15,15,15,0.92) 100%)',
+                                color: 'rgba(255,255,255,0.3)',
+                              }
+                        }
+                      >
+                        <ModuleIcon className="h-3.5 w-3.5" />
+                      </motion.div>
+                    </div>
+
+                    <div
+                      className="h-1.5 w-1.5 rounded-full transition-all duration-300 mt-1"
+                      style={
+                        active
+                          ? { background: '#cbd5e1', boxShadow: '0 0 8px rgba(203,213,225,0.8)' }
+                          : done
+                          ? { background: 'rgba(203,213,225,0.45)' }
+                          : { background: 'rgba(200,205,215,0.15)' }
+                      }
+                    />
+
+                    <span
+                      className="max-w-[6.5rem] text-center text-[9px] leading-tight tracking-[0.06em] mt-1 transition-colors duration-200 truncate"
+                      style={{ color: active ? 'rgba(255,255,255,0.8)' : 'rgba(255,255,255,0.3)' }}
+                    >
+                      {module.id} · {module.title}
+                    </span>
+                  </button>
+                )
+              })}
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -1519,6 +1572,7 @@ export default function ConteudosPageClient() {
   const [activeTopicId, setActiveTopicId] = useState<string | null>(null)
   const [clockTime, setClockTime] = useState('14:45')
   const [activeLessonIndex, setActiveLessonIndex] = useState(0)
+  const [activeSubjectIndex, setActiveSubjectIndex] = useState(0)
 
   // Real-time clock update (mounting only)
   useEffect(() => {
@@ -1576,6 +1630,31 @@ export default function ConteudosPageClient() {
         setActiveLessonIndex(idx)
       }
     })
+  }
+
+  // Sync masterclass video with the academic syllabus subjects
+  useEffect(() => {
+    const lesson = BUSINESS_PLAYLIST[activeLessonIndex]
+    if (lesson) {
+      const firstSubjectIdx = ACADEMIC_SYLLABUS.findIndex(s => s.topicId === lesson.topicId)
+      if (firstSubjectIdx !== -1) {
+        setActiveSubjectIndex(firstSubjectIdx)
+      }
+    }
+  }, [activeLessonIndex])
+
+  // Sync academic subject back to masterclass video if they click on the index
+  function handleSubjectIndexChange(idx: number) {
+    setActiveSubjectIndex(idx)
+    const subject = ACADEMIC_SYLLABUS[idx]
+    if (subject) {
+      // Find which masterclass video maps to this topic
+      const lessonIdx = BUSINESS_PLAYLIST.findIndex(l => l.topicId === subject.topicId)
+      if (lessonIdx !== -1 && lessonIdx !== activeLessonIndex) {
+        setActiveLessonIndex(lessonIdx)
+        setActiveTopicId(subject.topicId)
+      }
+    }
   }
 
   return (
@@ -1857,8 +1936,8 @@ export default function ConteudosPageClient() {
                         moduleId={current.id} 
                         activeTopicId={activeTopicId} 
                         activeTheme={activeTheme} 
-                        activeLessonIndex={activeLessonIndex}
-                        onChangeLessonIndex={setActiveLessonIndex}
+                        activeSubjectIndex={activeSubjectIndex}
+                        onChangeSubjectIndex={handleSubjectIndexChange}
                       />
                     ) : (
                       <div className="ipb-soft relative overflow-hidden rounded-[2rem]">
