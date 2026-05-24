@@ -825,7 +825,7 @@ function ExecutivePerformanceDashboard({ moduleId }: { moduleId?: string }) {
   const ActiveIcon = kpis[activeKpi].icon
 
   return (
-    <div className="ipb-glass-card p-4 flex flex-col justify-between h-full transition-all duration-300 pointer-events-auto">
+    <div className="w-full flex-1 ipb-glass-card p-4 flex flex-col justify-between h-full transition-all duration-300 pointer-events-auto">
       <div>
         <div className="flex justify-between items-center">
           <span className="text-[7.5px] uppercase tracking-wider font-bold" style={{ color: theme.primary }}>KPIs Estratégicos</span>
@@ -837,8 +837,8 @@ function ExecutivePerformanceDashboard({ moduleId }: { moduleId?: string }) {
       {/* Futuristic Competency Radar Chart */}
       <CompetencyRadarChart activeKpi={activeKpi} theme={theme} />
 
-      {/* Grid: 2 rows of 3 columns for 6 KPIs */}
-      <div className="grid grid-cols-2 gap-2 mt-1">
+      {/* Grid: Responsive columns for 6 KPIs */}
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2 mt-1">
         {Object.entries(kpis).map(([key, kpi]) => {
           const isSelected = activeKpi === key
           const Icon = kpi.icon
@@ -2575,9 +2575,9 @@ export default function ConteudosPageClient() {
 
                       {/* Sub-cards Dashboard Grid */}
                       {current.id === 'M4' ? (
-                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 px-6 pb-6 items-stretch">
-                          {/* Card 1: Masterclass playlist cinema spans 2 cols on lg screens */}
-                          <div className="lg:col-span-2 flex">
+                        <div className="flex flex-col gap-4 px-6 pb-6 items-stretch w-full">
+                          {/* Card 1: Masterclass playlist cinema */}
+                          <div className="flex w-full">
                             <ExecutiveMasterclassTheater 
                               moduleTitle={current.title} 
                               moduleId={current.id} 
@@ -2589,7 +2589,7 @@ export default function ConteudosPageClient() {
                           </div>
 
                           {/* Card 2: Executive Performance Dashboard */}
-                          <div className="lg:col-span-1 flex">
+                          <div className="flex w-full">
                             <ExecutivePerformanceDashboard moduleId={current.id} />
                           </div>
                         </div>
