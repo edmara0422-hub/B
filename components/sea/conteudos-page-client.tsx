@@ -26,7 +26,9 @@ import {
   Users,
   Zap,
   Target,
-  Layers
+  Layers,
+  MessageSquare,
+  Send
 } from 'lucide-react'
 import Link from 'next/link'
 import type { LucideIcon } from 'lucide-react'
@@ -336,66 +338,77 @@ function FloatingVideoPlayer({ moduleTitle, moduleId }: { moduleTitle: string; m
 // ── Business Module Custom High-Fidelity Components ──────────────────────────
 
 const BUSINESS_PLAYLIST = [
-  {
-    id: 'M4-T1',
-    title: 'Inovação & Estratégia',
-    subtitle: 'IE · Transformação Digital e Novos Negócios',
-    duration: '42:10',
-  },
-  {
-    id: 'M4-T2',
-    title: 'Finanças & Inteligência Quantitativa',
-    subtitle: 'FIQ · Valuation, Análise e Estatística',
-    duration: '56:15',
-  },
-  {
-    id: 'M4-T3',
-    title: 'Liderança, Pessoas & Cultura',
-    subtitle: 'LPC · Segurança Psicológica, DEI e Ética',
-    duration: '38:40',
-  },
-  {
-    id: 'M4-T4',
-    title: 'Gestão & Operações Corporativas',
-    subtitle: 'GOC · Métricas OKR e Economia Circular',
-    duration: '34:25',
-  },
-  {
-    id: 'M4-T5',
-    title: 'Mercado & Macroeconomia',
-    subtitle: 'MME · Ciclos de Mercado e Lógica Analítica',
-    duration: '48:50',
-  },
-  {
-    id: 'M4-T6',
-    title: 'Impacto Social & Intervenção',
-    subtitle: 'ISI · Projetos de Extensão e SROI',
-    duration: '52:15',
-  },
+  // Pilar 1: Inovação e Estratégia
+  { id: 'M4-T1-S1', topicId: 'M4-T1', title: 'Inovação, Criatividade e Sustentabilidade', subtitle: 'IE · Design Thinking e Economia Circular', duration: '18:20' },
+  { id: 'M4-T1-S2', topicId: 'M4-T1', title: 'Inovação, Transformação e Ferramentas Digitais', subtitle: 'IE · Automação e Inteligência Artificial', duration: '22:15' },
+  { id: 'M4-T1-S3', topicId: 'M4-T1', title: 'Pensamento Criativo', subtitle: 'IE · Lógica Lateral e Habilidades Cognitivas', duration: '15:40' },
+  { id: 'M4-T1-S4', topicId: 'M4-T1', title: 'Empreendedorismo e Inovação', subtitle: 'IE · Canvas e Modelos de Negócio Exponenciais', duration: '24:10' },
+  { id: 'M4-T1-S5', topicId: 'M4-T1', title: 'Empreendedorismo e Estratégia', subtitle: 'IE · Posicionamento e Vantagem Competitiva', duration: '28:50' },
+
+  // Pilar 2: Finanças e Inteligência Quantitativa
+  { id: 'M4-T2-S1', topicId: 'M4-T2', title: 'Finanças Avançadas', subtitle: 'FIQ · Estrutura de Capital e Valuation', duration: '32:15' },
+  { id: 'M4-T2-S2', topicId: 'M4-T2', title: 'Análise Financeira', subtitle: 'FIQ · Demonstrações de Performance e EBITDA', duration: '26:40' },
+  { id: 'M4-T2-S3', topicId: 'M4-T2', title: 'Matemática Financeira', subtitle: 'FIQ · Juros Compostos e Equivalência de Fluxos', duration: '20:10' },
+  { id: 'M4-T2-S4', topicId: 'M4-T2', title: 'Demonstrações Contábeis', subtitle: 'FIQ · Balanço Patrimonial e DRE (IFRS)', duration: '25:30' },
+  { id: 'M4-T2-S5', topicId: 'M4-T2', title: 'Precificação', subtitle: 'FIQ · Estratégias de Margem e Valor Percebido', duration: '19:45' },
+  { id: 'M4-T2-S6', topicId: 'M4-T2', title: 'Cálculo Aplicado a Negócios', subtitle: 'FIQ · Otimização de Limites Operacionais e Derivadas', duration: '22:15' },
+  { id: 'M4-T2-S7', topicId: 'M4-T2', title: 'Análise Estatística', subtitle: 'FIQ · Inferência de Dados e Modelos de Previsão', duration: '27:30' },
+
+  // Pilar 3: Liderança, Pessoas e Cultura
+  { id: 'M4-T3-S1', topicId: 'M4-T3', title: 'Liderança e Gestão de Equipes', subtitle: 'LPC · Segurança Psicológica e Performance', duration: '24:10' },
+  { id: 'M4-T3-S2', topicId: 'M4-T3', title: 'Mercado e Pessoas', subtitle: 'LPC · Employer Branding e Captação de Talentos', duration: '21:30' },
+  { id: 'M4-T3-S3', topicId: 'M4-T3', title: 'Educação, Identidade e Solidariedade', subtitle: 'LPC · Cultura Inclusiva e Responsabilidade Coletiva', duration: '18:15' },
+  { id: 'M4-T3-S4', topicId: 'M4-T3', title: 'Ética', subtitle: 'LPC · Compliance e Valores Universais nos Negócios', duration: '15:50' },
+
+  // Pilar 4: Gestão e Operações Corporativas
+  { id: 'M4-T4-S1', topicId: 'M4-T4', title: 'Fundamentos de Gestão', subtitle: 'GOC · Funções Administrativas Clássicas e Processos', duration: '16:40' },
+  { id: 'M4-T4-S2', topicId: 'M4-T4', title: 'Gestão de Negócios', subtitle: 'GOC · Métricas Ágeis OKR e KPIs Operacionais', duration: '22:10' },
+  { id: 'M4-T4-S3', topicId: 'M4-T4', title: 'Sustentabilidade em Negócios', subtitle: 'GOC · Economia Circular e Pegada Ecológica', duration: '20:45' },
+
+  // Pilar 5: Mercado e Macroeconomia
+  { id: 'M4-T5-S1', topicId: 'M4-T5', title: 'Economia de Empresa e Análise Mercadológica', subtitle: 'MME · Microeconomia e Forças do Mercado (Porter)', duration: '28:15' },
+  { id: 'M4-T5-S2', topicId: 'M4-T5', title: 'Ambiente Macroeconômico', subtitle: 'MME · Indicadores Globais e Políticas Monetárias', duration: '25:40' },
+  { id: 'M4-T5-S3', topicId: 'M4-T5', title: 'Lógica e Humanidades', subtitle: 'MME · Estruturação de Argumentos e Lógica Proposicional', duration: '19:20' },
+  { id: 'M4-T5-S4', topicId: 'M4-T5', title: 'Filosofia', subtitle: 'MME · Pensamento Crítico, Ética e Dilemas Modernos', duration: '22:15' },
+
+  // Pilar 6: Impacto Social e Intervenção
+  { id: 'M4-T6-S1', topicId: 'M4-T6', title: 'Pesquisa Aplicada a Negócios', subtitle: 'ISI · Metodologias Científicas de Validação e Mercado', duration: '23:45' },
+  { id: 'M4-T6-S2', topicId: 'M4-T6', title: 'Projeto de Intervenção em Negócios', subtitle: 'ISI · Diagnóstico Operacional e Resolução de Dores Reais', duration: '29:10' },
+  { id: 'M4-T6-S3', topicId: 'M4-T6', title: 'Empreendedorismo Social', subtitle: 'ISI · Negócios de Impacto e Valor Compartilhado (SROI)', duration: '26:30' },
+  { id: 'M4-T6-S4', topicId: 'M4-T6', title: 'Intervenção e Sociedade', subtitle: 'ISI · Projetos de Extensão e Desenvolvimento Comunitário', duration: '20:50' },
+  { id: 'M4-T6-S5', topicId: 'M4-T6', title: 'Teologia e Sociedade', subtitle: 'ISI · Dimensão Transcendental e o Papel Ético na Comunidade', duration: '22:15' },
+  { id: 'M4-T6-S6', topicId: 'M4-T6', title: 'Pesquisa e Identidade', subtitle: 'ISI · Autoconhecimento, História Social e Propósito', duration: '21:40' },
+  { id: 'M4-T6-S7', topicId: 'M4-T6', title: 'Leitura e Escrita Acadêmica', subtitle: 'ISI · Comunicação Científica e Redação de Alto Impacto', duration: '18:55' },
 ]
 
 function ExecutiveMasterclassTheater({ 
   moduleTitle, 
   moduleId,
   onSelectTopic,
-  activeTopicId
+  activeTopicId,
+  activeLessonIndex,
+  onChangeLessonIndex
 }: { 
   moduleTitle: string; 
   moduleId?: string;
   onSelectTopic?: (topicId: string) => void;
   activeTopicId?: string | null;
+  activeLessonIndex: number;
+  onChangeLessonIndex: (index: number) => void;
 }) {
   const theme = MODULE_THEMES[moduleId ?? 'M4'] || MODULE_THEMES.M4
   const [playing, setPlaying] = useState(false)
   const [progress, setProgress] = useState(24)
-  const [activeItemIndex, setActiveItemIndex] = useState(0)
 
   // Sync with activeTopicId if set from outside
   useEffect(() => {
     if (activeTopicId) {
-      const idx = BUSINESS_PLAYLIST.findIndex(item => item.id === activeTopicId)
-      if (idx !== -1) {
-        setActiveItemIndex(idx)
+      const activeItem = BUSINESS_PLAYLIST[activeLessonIndex]
+      if (activeItem?.topicId !== activeTopicId) {
+        const idx = BUSINESS_PLAYLIST.findIndex(item => item.topicId === activeTopicId)
+        if (idx !== -1) {
+          onChangeLessonIndex(idx)
+        }
       }
     }
   }, [activeTopicId])
@@ -408,14 +421,14 @@ function ExecutiveMasterclassTheater({
     return () => clearInterval(interval)
   }, [playing])
 
-  const activeLesson = BUSINESS_PLAYLIST[activeItemIndex]
+  const activeLesson = BUSINESS_PLAYLIST[activeLessonIndex] ?? BUSINESS_PLAYLIST[0]
 
   const handleLessonSelect = (index: number) => {
-    setActiveItemIndex(index)
+    onChangeLessonIndex(index)
     setProgress(0)
     setPlaying(false)
     if (onSelectTopic) {
-      onSelectTopic(BUSINESS_PLAYLIST[index].id)
+      onSelectTopic(BUSINESS_PLAYLIST[index].topicId)
     }
   }
 
@@ -447,7 +460,7 @@ function ExecutiveMasterclassTheater({
 
           <div className="absolute top-4 left-4 z-10">
             <span className="text-[7px] uppercase tracking-widest font-bold px-2 py-0.5 rounded bg-black/50 border border-white/10" style={{ color: theme.primary }}>
-              Masterclass M4 · Aula {activeItemIndex + 1}
+              Masterclass M4 · Aula {activeLessonIndex + 1}
             </span>
           </div>
 
@@ -464,8 +477,8 @@ function ExecutiveMasterclassTheater({
           >
             {playing ? (
               <div className="flex gap-1.5 justify-center items-center">
-                <div className="w-1.5 h-4 bg-white/90 rounded-sm" />
-                <div className="w-1.5 h-4 bg-white/90 rounded-sm" />
+                <div className="w-1.5 h-4 bg-white/95 rounded-sm" />
+                <div className="w-1.5 h-4 bg-white/95 rounded-sm" />
               </div>
             ) : (
               <Play className="h-5 w-5 text-white/95 fill-white/80 ml-1" />
@@ -481,7 +494,7 @@ function ExecutiveMasterclassTheater({
           </div>
           <div className="flex-1 divide-y divide-white/[0.02]">
             {BUSINESS_PLAYLIST.map((item, idx) => {
-              const isSelected = idx === activeItemIndex
+              const isSelected = idx === activeLessonIndex
               const isGold = idx % 2 === 0
               const itemColor = isGold ? '#d4b87a' : '#cbd5e1'
               const itemBgSelected = isGold ? 'rgba(212,184,122,0.08)' : 'rgba(203,213,225,0.08)'
@@ -877,14 +890,24 @@ function StrategicRoadmapBoard({ moduleId }: { moduleId?: string }) {
 function ExecutiveStudyBriefing({
   moduleId,
   activeTopicId,
-  activeTheme
+  activeTheme,
+  activeLessonIndex,
+  onChangeLessonIndex
 }: {
   moduleId: string
   activeTopicId: string | null
   activeTheme: any
+  activeLessonIndex: number
+  onChangeLessonIndex: (index: number) => void
 }) {
   const [module, setModule] = useState<any>(null)
+  const [activeTab, setActiveTab] = useState<'summary' | 'tutor' | 'notes' | 'map'>('summary')
   const [showFullSummary, setShowFullSummary] = useState(false)
+  const [tutorInput, setTutorInput] = useState('')
+  const [isTutorLoading, setIsTutorLoading] = useState(false)
+  const [tutorHistory, setTutorHistory] = useState<any[]>([
+    { role: 'assistant', content: 'Bem-vindo ao Advisor de Diretoria IA. Como seu consultor estratégico de negócios, estou pronto para detalhar WACC, valuation, segurança psicológica, frameworks organizacionais ou metodologias científicas de sua trilha. O que deseja analisar hoje?' }
+  ])
 
   useEffect(() => {
     import('@/data/caderno-content-m4').then(m => {
@@ -894,236 +917,323 @@ function ExecutiveStudyBriefing({
 
   if (!module) return <div className="h-48 flex items-center justify-center text-white/30 font-mono text-[10px]">Carregando briefing estratégico...</div>
 
-  const resolvedTopicId = activeTopicId || module.topics[0]?.id || ''
-  const activeTopic = module.topics.find((t: any) => t.id === resolvedTopicId) ?? module.topics[0]
+  // Flatten slide blocks to easily locate our active subject (0-29)
+  const allBlocks = module.topics.flatMap((t: any) => 
+    t.blocks.filter((b: any) => b.type === 'slides').map((b: any) => ({
+      ...b,
+      topicId: t.id,
+      topicTitle: t.title
+    }))
+  )
 
-  if (!activeTopic) return null
+  const activeBlock = allBlocks[activeLessonIndex] ?? allBlocks[0]
+  if (!activeBlock) return null
 
-  const slideBlocks = activeTopic.blocks.filter((b: any) => b.type === 'slides')
-  const textBlocks = activeTopic.blocks.filter((b: any) => b.type === 'text')
+  const activeSlide = activeBlock.slides?.[0]
+
+  // Extract texts/notes of the active topic
+  const currentTopic = module.topics.find((t: any) => t.id === activeBlock.topicId) ?? module.topics[0]
+  const textBlocks = currentTopic.blocks.filter((b: any) => b.type === 'text')
+
+  const handleAskTutor = async (question: string) => {
+    if (!question.trim()) return
+    setTutorInput('')
+    const updated = [...tutorHistory, { role: 'user', content: question }]
+    setTutorHistory(updated)
+    setIsTutorLoading(true)
+
+    setTimeout(() => {
+      let reply = 'Interessante questão estratégica. Alinhar o fluxo de processos operacionais com os objetivos transversais de OKR é a recomendação para o presente cenário, minimizando gargalos cognitivos nos times.'
+      const q = question.toLowerCase()
+
+      if (q.includes('wacc') || q.includes('valuation') || q.includes('finanças') || q.includes('calculo') || q.includes('ebitda')) {
+        reply = 'Excelente ponto quantitativo. A maximização de retorno exige governança rigorosa sobre o custo de capital (WACC) e o cálculo das margens de contribuição operacional. No valuation via DCF, a modelagem de crescimento estável deve respeitar a elasticidade mercadológica observada.'
+      } else if (q.includes('segurança') || q.includes('liderança') || q.includes('aristotle') || q.includes('equipe') || q.includes('cultura')) {
+        reply = 'O maior fator de alavancagem operacional é a densidade de talentos aliada à segurança psicológica (Modelo Aristotle do Google). Recomendo instituir canais transparentes e feedbacks estruturados via modelo SBI para mitigar desalinhamentos cognitivos de equipe.'
+      } else if (q.includes('lean') || q.includes('startup') || q.includes('inovação') || q.includes('canvas') || q.includes('estratégia')) {
+        reply = 'Compreendo sua meta de aceleração. Para consolidar este ecossistema disruptivo, recomendo implementar o framework Lean Startup com ciclos curtos de feedback e validação rápida. Focar no mapeamento de core capabilities e oceanos azuis blindará a empresa contra concorrência agressiva.'
+      }
+
+      setTutorHistory([...updated, { role: 'assistant', content: reply }])
+      setIsTutorLoading(false)
+    }, 1000)
+  }
 
   return (
     <div className="ipb-soft relative overflow-hidden rounded-[2rem] p-6 space-y-6">
       
-      {/* Top strategic header */}
+      {/* Top Strategic Navigation Header */}
       <div className="flex items-center justify-between pb-4 border-b border-white/[0.04] flex-wrap gap-3" style={{ borderBottom: '0.2px solid rgba(255,255,255,0.04)' }}>
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 rounded-lg bg-[#d4b87a]/10 border border-[#d4b87a]/20 flex items-center justify-center">
             <BookOpen className="h-4 w-4 text-[#d4b87a]" />
           </div>
           <div>
-            <span className="text-[7.5px] uppercase tracking-[0.25em] font-bold text-[#d4b87a]">Estação de Inteligência Acadêmica</span>
-            <h3 className="text-[14px] font-bold text-white/90 leading-none mt-0.5">Briefing Estratégico: {activeTopic.title}</h3>
+            <span className="text-[7.5px] uppercase tracking-[0.25em] font-bold text-[#d4b87a]">MBA Executive Cockpit</span>
+            <h3 className="text-[14px] font-bold text-white/90 leading-none mt-0.5">{activeBlock.title}</h3>
           </div>
         </div>
         
-        <div className="flex items-center gap-2">
-          <button 
-            onClick={() => setShowFullSummary(!showFullSummary)}
-            className="flex items-center gap-1.5 font-mono text-[9px] bg-[#d4b87a]/10 hover:bg-[#d4b87a]/20 border border-[#d4b87a]/30 rounded px-2.5 py-1 text-[#d4b87a] cursor-pointer transition-all duration-300 shadow-[0_0_10px_rgba(212,184,122,0.05)]"
-          >
-            <Layers className="h-3.5 w-3.5" />
-            <span>{showFullSummary ? 'FECHAR SUMÁRIO GERAL' : 'SUMÁRIO GERAL (30 DISCIPLINAS)'}</span>
-          </button>
-
-          <div className="flex items-center gap-2 font-mono text-[9px] text-white/35 bg-white/5 border border-white/10 rounded px-2.5 py-1">
-            <Clock className="h-3 w-3 text-[#d4b87a]" />
-            <span>Etapa M4 · T{module.topics.indexOf(activeTopic) + 1}</span>
-          </div>
+        {/* Navigation Tabs (SUMÁRIO, IA TUTOR, NOTAS, MAPA) */}
+        <div className="flex items-center gap-1 bg-white/5 border border-white/10 rounded-lg p-0.5">
+          {[
+            { id: 'summary', label: 'SUMÁRIO', icon: BookOpen },
+            { id: 'tutor', label: 'ADVISOR IA', icon: MessageSquare },
+            { id: 'notes', label: 'MEMORANDO', icon: FileText },
+            { id: 'map', label: 'ROADMAP', icon: Target }
+          ].map((tab) => {
+            const isSelected = activeTab === tab.id
+            const TabIcon = tab.icon
+            return (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id as any)}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[8.5px] font-mono tracking-wider transition-all duration-300 cursor-pointer"
+                style={{
+                  background: isSelected ? 'rgba(212,184,122,0.12)' : 'transparent',
+                  color: isSelected ? '#d4b87a' : 'rgba(255,255,255,0.4)'
+                }}
+              >
+                <TabIcon className="h-3 w-3" />
+                <span>{tab.label}</span>
+              </button>
+            )
+          })}
         </div>
       </div>
 
-      <AnimatePresence mode="wait">
-        {showFullSummary && (
-          <motion.div 
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            className="p-5 rounded-2xl bg-white/[0.01] border border-[#d4b87a]/20 relative overflow-hidden backdrop-blur-xl space-y-4"
-            style={{ boxShadow: '0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.02)' }}
-          >
-            <div className="absolute inset-0 opacity-[0.02] pointer-events-none" style={{
-              background: 'radial-gradient(circle at 50% 50%, #d4b87a, transparent 70%)'
-            }} />
-            
-            <div className="flex justify-between items-center pb-2 border-b border-white/[0.06] flex-wrap gap-2">
-              <div>
-                <span className="text-[7.5px] uppercase tracking-wider font-bold text-[#d4b87a]">Mapeamento Completo</span>
-                <h4 className="text-[12px] font-bold text-white/90">Sumário Geral do MBA Executive M4 (30 Disciplinas)</h4>
-              </div>
-              <span className="text-[8px] px-2 py-0.5 rounded-full bg-white/5 border border-white/10 text-white/50 font-mono">6 Pilares Acadêmicos</span>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {module.topics.map((topic: any, tIdx: number) => {
-                const isTopicGold = tIdx % 2 === 0
-                const topicColor = isTopicGold ? '#d4b87a' : '#cbd5e1'
-                
-                return (
-                  <div 
-                    key={topic.id} 
-                    className="p-4 rounded-xl bg-white/[0.015] border border-white/[0.04] flex flex-col justify-between h-full hover:border-white/10 transition-all duration-300 group"
-                  >
-                    <div>
-                      <div className="flex justify-between items-start mb-2">
-                        <span className="text-[8px] font-mono" style={{ color: topicColor }}>PILAR 0{tIdx + 1}</span>
-                        <span className="text-[7px] font-mono px-1 py-0.2 rounded" style={{
-                          background: `${topicColor}10`,
-                          border: `1px solid ${topicColor}20`,
-                          color: topicColor
-                        }}>
-                          {isTopicGold ? 'GOLD' : 'SILVER'}
-                        </span>
-                      </div>
-                      <h5 className="text-[10.5px] font-bold text-white/90 group-hover:text-white transition-colors">{topic.title}</h5>
-                      
-                      <ul className="space-y-2 mt-3 border-t border-white/[0.03] pt-3">
-                        {topic.blocks.filter((b: any) => b.type === 'slides').map((block: any, bIdx: number) => {
-                          const isSubGold = bIdx % 2 === 0
-                          const subColor = isSubGold ? '#d4b87a' : '#cbd5e1'
-                          
-                          return (
-                            <li key={block.id} className="flex items-start gap-2 text-[9.5px] text-white/60 leading-normal">
-                              <span className="mt-1.5 w-1 h-1 rounded-full shrink-0" style={{ backgroundColor: subColor }} />
-                              <span className="hover:text-white transition-colors text-justify">{block.title}</span>
-                            </li>
-                          )
-                        })}
-                      </ul>
-                    </div>
-                  </div>
-                )
-              })}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch">
         
-        {/* Left Columns: Executive Briefing Deck & Notes */}
+        {/* Main Work Panel: Tab content (takes 2 cols) */}
         <div className="lg:col-span-2 space-y-6 flex flex-col justify-between">
           
-          {/* Slides Executive Deck */}
-          <div className="space-y-4">
-            <div className="flex justify-between items-center">
-              <span className="text-[8.5px] uppercase tracking-widest text-white/40 font-bold">Resumo Analítico (Diretoria)</span>
-              <span className="text-[8.5px] font-mono text-white/35">Base Conceitual</span>
-            </div>
+          <AnimatePresence mode="wait">
+            
+            {/* Tab 1: Briefing Slide Summary */}
+            {activeTab === 'summary' && activeSlide && (
+              <motion.div
+                key="summary-tab"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                className="space-y-4 flex-1 flex flex-col justify-between"
+              >
+                <div className="p-6 rounded-2xl bg-white/[0.015] border border-white/[0.04] backdrop-blur-md relative overflow-hidden transition-all duration-300 hover:border-[#d4b87a]/20 flex flex-col justify-between h-full group"
+                  style={{ boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.02), 0 8px 24px rgba(0,0,0,0.15)' }}
+                >
+                  <div className="absolute inset-0 opacity-[0.015] pointer-events-none group-hover:opacity-[0.03] transition-all" style={{
+                    background: 'radial-gradient(circle at 0% 0%, #d4b87a, transparent 50%)'
+                  }} />
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {slideBlocks.map((block: any) => 
-                block.slides.map((slide: any, idx: number) => (
-                  <div 
-                    key={`${block.id}-slide-${idx}`} 
-                    className="p-5 rounded-2xl bg-white/[0.015] border border-white/[0.04] backdrop-blur-md relative overflow-hidden transition-all duration-300 hover:border-white/10 flex flex-col justify-between h-full group"
-                    style={{
-                      boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.02), 0 8px 24px rgba(0,0,0,0.15)'
-                    }}
-                  >
-                    <div className="absolute inset-0 opacity-[0.015] pointer-events-none group-hover:opacity-[0.03] transition-all" style={{
-                      background: 'radial-gradient(circle at 0% 0%, #d4b87a, transparent 50%)'
-                    }} />
-
-                    <div>
-                      <h4 className="text-[11.5px] font-bold text-white/90 leading-tight tracking-tight uppercase border-b border-white/[0.06] pb-1.5 w-full" style={{ borderBottom: '0.2px solid rgba(255,255,255,0.06)' }}>
-                        {slide.title}
+                  <div>
+                    <div className="flex justify-between items-center border-b border-white/[0.06] pb-2.5 w-full">
+                      <h4 className="text-[11.5px] font-bold text-white/90 leading-tight tracking-tight uppercase">
+                        {activeSlide.title}
                       </h4>
-                      <ul className="space-y-2 mt-3.5">
-                        {slide.bullets.map((bullet: string, bIdx: number) => (
-                          <li key={bIdx} className="text-[10px] text-white/55 leading-relaxed flex items-start gap-2 text-justify">
-                            <span className="mt-1.5 w-1.5 h-1.5 rounded-full shrink-0 bg-[#d4b87a]" />
-                            <span>{bullet}</span>
-                          </li>
-                        ))}
-                      </ul>
+                      <span className="text-[8px] px-1.5 py-0.5 rounded font-mono bg-[#d4b87a]/10 border border-[#d4b87a]/20 text-[#d4b87a]">SLIDE DE ESTRATÉGIA</span>
                     </div>
 
-                    {slide.highlight && (
-                      <div className="mt-4 rounded-xl p-3 bg-[#d4b87a]/5 border border-[#d4b87a]/15">
-                        <p className="text-[9.5px] italic text-[#d4b87a]/70 leading-relaxed text-justify">
-                          {slide.highlight}
-                        </p>
+                    <ul className="space-y-3.5 mt-4">
+                      {activeSlide.bullets.map((bullet: string, bIdx: number) => (
+                        <li key={bIdx} className="text-[10.5px] text-white/60 leading-relaxed flex items-start gap-2.5 text-justify">
+                          <span className="mt-1.5 w-1.5 h-1.5 rounded-full shrink-0 bg-[#d4b87a]" />
+                          <span>{bullet}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  {activeSlide.highlight && (
+                    <div className="mt-6 rounded-xl p-3.5 bg-[#d4b87a]/5 border border-[#d4b87a]/15">
+                      <p className="text-[9.5px] italic text-[#d4b87a]/70 leading-relaxed text-justify">
+                        {activeSlide.highlight}
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </motion.div>
+            )}
+
+            {/* Tab 2: AI Advisor Chatbot */}
+            {activeTab === 'tutor' && (
+              <motion.div
+                key="tutor-tab"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                className="space-y-4 flex-1 flex flex-col justify-between"
+              >
+                <div className="p-5 rounded-2xl bg-white/[0.015] border border-white/[0.04] backdrop-blur-md flex flex-col justify-between h-[360px] relative overflow-hidden"
+                  style={{ boxShadow: '0 8px 24px rgba(0,0,0,0.15)' }}
+                >
+                  {/* Messages log */}
+                  <div className="flex-1 overflow-y-auto space-y-3.5 pr-2 ipb-thinscroll">
+                    {tutorHistory.map((msg, i) => (
+                      <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                        <div 
+                          className="max-w-[85%] rounded-xl p-3 text-[10px] leading-relaxed text-justify"
+                          style={{
+                            background: msg.role === 'user' ? 'rgba(212,184,122,0.12)' : 'rgba(255,255,255,0.03)',
+                            border: msg.role === 'user' ? '1px solid rgba(212,184,122,0.22)' : '1px solid rgba(255,255,255,0.05)',
+                            color: msg.role === 'user' ? '#fff' : 'rgba(255,255,255,0.75)'
+                          }}
+                        >
+                          {msg.content}
+                        </div>
+                      </div>
+                    ))}
+                    {isTutorLoading && (
+                      <div className="flex justify-start">
+                        <div className="rounded-xl p-3 bg-white/5 border border-white/10 text-[9px] text-white/40 font-mono">
+                          Advisor analisando dados...
+                        </div>
                       </div>
                     )}
                   </div>
-                ))
-              )}
-            </div>
-          </div>
 
-          {/* Texts Extra Notes */}
-          {textBlocks.length > 0 && (
-            <div className="p-4 rounded-2xl bg-white/[0.01] border border-white/[0.04] relative overflow-hidden mt-2">
-              <div className="absolute inset-0 opacity-[0.01] pointer-events-none" style={{
-                background: 'radial-gradient(circle at 100% 100%, #d4b87a, transparent 50%)'
-              }} />
-              <div className="flex items-center gap-2 mb-2">
-                <FileText className="h-3.5 w-3.5 text-[#d4b87a]" />
-                <span className="text-[8px] uppercase tracking-widest font-bold text-white/40">Notas de Implementação Operacional</span>
-              </div>
-              {textBlocks.map((block: any) => (
-                <div key={block.id} className="space-y-1">
-                  {block.title && <h5 className="text-[10.5px] font-bold text-white/80">{block.title}</h5>}
-                  <p className="text-[10px] text-white/45 leading-relaxed text-justify">{block.body}</p>
+                  {/* Suggestion Chips */}
+                  <div className="flex flex-wrap gap-1.5 my-3">
+                    {['Explicar Conceito', 'Aplicar ao meu Negócio', 'Análise SWOT'].map((chip) => (
+                      <button
+                        key={chip}
+                        onClick={() => handleAskTutor(`${chip} da disciplina ${activeBlock.title}`)}
+                        className="px-2 py-1 rounded bg-white/5 border border-white/10 text-white/50 text-[8px] hover:bg-white/10 cursor-pointer transition-all"
+                      >
+                        {chip}
+                      </button>
+                    ))}
+                  </div>
+
+                  {/* Input form */}
+                  <div className="flex gap-2 border-t border-white/[0.06] pt-3 shrink-0">
+                    <input
+                      value={tutorInput}
+                      onChange={(e) => setTutorInput(e.target.value)}
+                      onKeyDown={(e) => e.key === 'Enter' && handleAskTutor(tutorInput)}
+                      placeholder="Faça uma pergunta sobre o sumário executivo..."
+                      className="flex-1 bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-[10px] text-white outline-none focus:border-[#d4b87a]/40"
+                    />
+                    <button
+                      onClick={() => handleAskTutor(tutorInput)}
+                      className="p-2 rounded-lg bg-[#d4b87a] hover:bg-[#d4b87a]/80 text-black flex items-center justify-center shrink-0 cursor-pointer transition-all"
+                    >
+                      <Send className="h-3.5 w-3.5" />
+                    </button>
+                  </div>
                 </div>
-              ))}
-            </div>
-          )}
+              </motion.div>
+            )}
+
+            {/* Tab 3: Memorando / Extra notes */}
+            {activeTab === 'notes' && (
+              <motion.div
+                key="notes-tab"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                className="space-y-4 flex-1 flex flex-col justify-between"
+              >
+                <div className="p-5 rounded-2xl bg-white/[0.015] border border-white/[0.04] relative overflow-hidden min-h-[300px] flex flex-col justify-between">
+                  <div className="absolute inset-0 opacity-[0.01] pointer-events-none" style={{
+                    background: 'radial-gradient(circle at 100% 100%, #d4b87a, transparent 50%)'
+                  }} />
+                  <div>
+                    <div className="flex items-center gap-2 mb-3">
+                      <FileText className="h-4 w-4 text-[#d4b87a]" />
+                      <span className="text-[8.5px] uppercase tracking-widest font-bold text-white/40">Notas de Implementação Operacional</span>
+                    </div>
+                    {textBlocks.length > 0 ? (
+                      textBlocks.map((block: any) => (
+                        <div key={block.id} className="space-y-2 mt-2">
+                          {block.title && <h5 className="text-[11px] font-bold text-white/90">{block.title}</h5>}
+                          <p className="text-[10px] text-white/55 leading-relaxed text-justify">{block.body}</p>
+                        </div>
+                      ))
+                    ) : (
+                      <p className="text-[10px] text-white/40 italic mt-6 text-center">Nenhuma anotação extra cadastrada para este tópico. Utilize o IA Advisor para elaborar resumos específicos.</p>
+                    )}
+                  </div>
+                </div>
+              </motion.div>
+            )}
+
+            {/* Tab 4: Strategic Node Map */}
+            {activeTab === 'map' && (
+              <motion.div
+                key="map-tab"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                className="space-y-4 flex-1 flex flex-col justify-between"
+              >
+                <div className="p-5 rounded-2xl bg-white/[0.015] border border-white/[0.04] relative overflow-hidden min-h-[300px] flex flex-col justify-between">
+                  <div>
+                    <span className="text-[8px] uppercase tracking-wider font-bold text-[#d4b87a]">Fluxo de Valor</span>
+                    <h3 className="text-[12px] font-bold text-white/90 mt-0.5">Alinhamento Estratégico</h3>
+                    <p className="text-[9.5px] text-white/40 leading-relaxed text-justify mt-1 mb-4">
+                      Mapeamento dinâmico das conexões táticas corporativas e fluxo de governança executiva.
+                    </p>
+                  </div>
+
+                  <div className="my-2">
+                    <StrategicRoadmapBoard moduleId="M4" />
+                  </div>
+                </div>
+              </motion.div>
+            )}
+
+          </AnimatePresence>
         </div>
 
-        {/* Right Column: Strategic connection map & Pillars connected */}
-        <div className="lg:col-span-1 flex flex-col justify-between p-5 rounded-2xl bg-white/[0.015] border border-white/[0.04] relative overflow-hidden">
+        {/* Sidebar Index (Right 1 col on lg): SUMÁRIO GERAL / ÍNDICE DO CADERNO (30 Disciplinas) */}
+        <div className="lg:col-span-1 flex flex-col p-5 rounded-2xl bg-white/[0.015] border border-white/[0.04] relative overflow-hidden h-[360px] lg:h-[400px]">
           <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{
             background: `radial-gradient(circle at 100% 0%, #d4b87a, transparent 50%)`
           }} />
           
-          <div className="relative z-10 mb-2">
-            <span className="text-[8px] uppercase tracking-wider font-bold text-[#d4b87a]">Fluxo de Valor</span>
-            <h3 className="text-[13px] font-bold text-white/90 mt-0.5">Alinhamento Estratégico</h3>
-            <p className="text-[10px] text-white/44 leading-relaxed text-justify mt-1">
-              Mapeamento dinâmico das conexões táticas corporativas e fluxo de governança executiva.
-            </p>
+          <div className="relative z-10 mb-3 shrink-0">
+            <div className="flex justify-between items-center border-b border-white/[0.06] pb-2">
+              <span className="text-[8px] uppercase tracking-wider font-bold text-[#d4b87a]">Sumário do Caderno</span>
+              <span className="text-[8px] px-1.5 py-0.2 rounded bg-white/5 border border-white/10 text-white/40 font-mono">30 AULAS</span>
+            </div>
+            <h3 className="text-[12px] font-bold text-white/90 mt-1">Índice do Caderno</h3>
           </div>
 
-          <div className="my-2">
-            <StrategicRoadmapBoard moduleId="M4" />
-          </div>
-          
-          {/* Pillars of Knowledge inside Connection Map */}
-          <div className="pt-4 border-t border-white/[0.04]" style={{ borderTop: '0.2px solid rgba(255,255,255,0.04)' }}>
-            <span className="text-[8px] uppercase tracking-wider font-bold text-white/30 block mb-2.5">Pilares Corporativos</span>
-            <ul className="space-y-2">
-              {activeTopic.title ? (
-                // Highlight concepts matching active topic
-                activeTopic.id === 'M4-T1' ? [
-                  'Liderança de impacto e escuta ativa regulatória',
-                  'Construção de segurança psicológica nos times',
-                  'Redução de entropia e alinhamento de OKRs'
-                ] : activeTopic.id === 'M4-T2' ? [
-                  'Análise dinâmica de ecossistema concorrencial',
-                  'Cultura orientada a dados (Data-Driven)',
-                  'Matriz SWOT Dinâmica e 5 Forças de Porter'
-                ] : activeTopic.id === 'M4-T3' ? [
-                  'Mitigação de pegada de carbono operacional',
-                  'Equidade social e direitos humanos na cadeia',
-                  'Ética e compliance vinculados a metas executivas'
-                ] : activeTopic.id === 'M4-T4' ? [
-                  'Especificidade e foco em fatos observáveis',
-                  'Modelo SBI (Situation-Behavior-Impact)',
-                  'Feedback bidirecional contínuo de regulação'
-                ] : [
-                  'Classificação de dados sensíveis (confidencialidade)',
-                  'Controle de versão unificado e segurança LGPD',
-                  'Estruturação de repositórios baseados em RBAC'
-                ]
-              ).map((concept: string, idx: number) => (
-                <li key={idx} className="text-[9.5px] text-white/55 flex items-start gap-2 text-justify">
-                  <span className="mt-1.5 w-1.5 h-1.5 rounded-full shrink-0 bg-[#d4b87a]" />
-                  <span className="leading-snug">{concept}</span>
-                </li>
-              )) : null}
-            </ul>
+          {/* List of 30 Disciplines */}
+          <div className="flex-1 overflow-y-auto space-y-1.5 pr-2 ipb-thinscroll shrink-0">
+            {BUSINESS_PLAYLIST.map((item, idx) => {
+              const isSelected = idx === activeLessonIndex
+              const isGold = idx % 2 === 0
+              const itemColor = isGold ? '#d4b87a' : '#cbd5e1'
+              
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => onChangeLessonIndex(idx)}
+                  className="w-full text-left p-2 rounded-lg transition-all duration-200 cursor-pointer flex items-center justify-between gap-2 border border-transparent"
+                  style={{
+                    background: isSelected ? 'rgba(255,255,255,0.03)' : 'transparent',
+                    borderColor: isSelected ? 'rgba(212,184,122,0.15)' : 'transparent'
+                  }}
+                >
+                  <div className="flex items-center gap-2 min-w-0">
+                    <span className="font-mono text-[8px] shrink-0" style={{ color: isSelected ? itemColor : 'rgba(255,255,255,0.2)' }}>
+                      {String(idx + 1).padStart(2, '0')}
+                    </span>
+                    <span className={`text-[9px] truncate ${isSelected ? 'text-white font-medium' : 'text-white/55'}`}>
+                      {item.title}
+                    </span>
+                  </div>
+                  <span className="text-[6.5px] font-mono px-1 py-0.2 rounded uppercase shrink-0 scale-90 border" style={{
+                    background: `${itemColor}10`,
+                    borderColor: `${itemColor}155`,
+                    color: itemColor
+                  }}>
+                    {isGold ? 'OURO' : 'PRATA'}
+                  </span>
+                </button>
+              )
+            })}
           </div>
         </div>
 
@@ -1408,6 +1518,7 @@ export default function ConteudosPageClient() {
   const [topicsMap, setTopicsMap] = useState<ModuleTopicsMap>({})
   const [activeTopicId, setActiveTopicId] = useState<string | null>(null)
   const [clockTime, setClockTime] = useState('14:45')
+  const [activeLessonIndex, setActiveLessonIndex] = useState(0)
 
   // Real-time clock update (mounting only)
   useEffect(() => {
@@ -1457,7 +1568,14 @@ export default function ConteudosPageClient() {
   function handleSelectTopic(moduleIndex: number, topicId: string) {
     setActiveIndex(moduleIndex)
     setActiveTopicId(null)
-    requestAnimationFrame(() => setActiveTopicId(topicId))
+    requestAnimationFrame(() => {
+      setActiveTopicId(topicId)
+      // Automatically jump to the first lesson belonging to this topic/KPI
+      const idx = BUSINESS_PLAYLIST.findIndex(item => item.topicId === topicId)
+      if (idx !== -1) {
+        setActiveLessonIndex(idx)
+      }
+    })
   }
 
   return (
@@ -1653,6 +1771,8 @@ export default function ConteudosPageClient() {
                               moduleId={current.id} 
                               onSelectTopic={(topicId) => handleSelectTopic(activeIndex!, topicId)}
                               activeTopicId={activeTopicId}
+                              activeLessonIndex={activeLessonIndex}
+                              onChangeLessonIndex={setActiveLessonIndex}
                             />
                           </div>
 
@@ -1737,6 +1857,8 @@ export default function ConteudosPageClient() {
                         moduleId={current.id} 
                         activeTopicId={activeTopicId} 
                         activeTheme={activeTheme} 
+                        activeLessonIndex={activeLessonIndex}
+                        onChangeLessonIndex={setActiveLessonIndex}
                       />
                     ) : (
                       <div className="ipb-soft relative overflow-hidden rounded-[2rem]">
