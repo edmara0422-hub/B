@@ -108,31 +108,31 @@ const MODULE_THEMES: Record<string, {
   gradient: string
 }> = {
   M1: {
-    primary: '#a855f7', // purple
-    secondary: '#06b6d4', // cyan
-    accent: 'rgba(168, 85, 247, 0.35)',
-    glow: 'rgba(6, 182, 212, 0.18)',
-    badgeBg: 'rgba(168, 85, 247, 0.14)',
-    badgeText: '#c084fc',
-    gradient: 'linear-gradient(90deg, #06b6d4 0%, #a855f7 100%)'
+    primary: '#10b981', // green (emerald)
+    secondary: '#059669', // mint green
+    accent: 'rgba(16, 185, 129, 0.35)',
+    glow: 'rgba(5, 150, 105, 0.18)',
+    badgeBg: 'rgba(16, 185, 129, 0.14)',
+    badgeText: '#34d399',
+    gradient: 'linear-gradient(90deg, #059669 0%, #10b981 100%)'
   },
   M2: {
     primary: '#3b82f6', // blue
-    secondary: '#14b8a6', // teal
-    accent: 'rgba(59, 82, 246, 0.35)',
-    glow: 'rgba(20, 184, 166, 0.18)',
-    badgeBg: 'rgba(59, 82, 246, 0.14)',
+    secondary: '#06b6d4', // cyan
+    accent: 'rgba(59, 130, 246, 0.35)',
+    glow: 'rgba(6, 182, 212, 0.18)',
+    badgeBg: 'rgba(59, 130, 246, 0.14)',
     badgeText: '#60a5fa',
-    gradient: 'linear-gradient(90deg, #14b8a6 0%, #3b82f6 100%)'
+    gradient: 'linear-gradient(90deg, #06b6d4 0%, #3b82f6 100%)'
   },
   M3: {
     primary: '#ef4444', // red
-    secondary: '#10b981', // emerald
+    secondary: '#f43f5e', // rose
     accent: 'rgba(239, 68, 68, 0.35)',
-    glow: 'rgba(16, 185, 129, 0.18)',
+    glow: 'rgba(244, 63, 94, 0.18)',
     badgeBg: 'rgba(239, 68, 68, 0.14)',
     badgeText: '#f87171',
-    gradient: 'linear-gradient(90deg, #10b981 0%, #ef4444 100%)'
+    gradient: 'linear-gradient(90deg, #f43f5e 0%, #ef4444 100%)'
   },
   M4: {
     primary: '#d4b87a', // gold
@@ -1868,98 +1868,108 @@ export default function ConteudosPageClient() {
                     </div>
 
                     {/* Operational Notebook Content Viewer / Estação Unificada de Estudos */}
-                    <div className="ipb-soft relative overflow-hidden rounded-[2rem]">
-                      <div className="p-5 md:p-6">
-                        
-                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+                    {current.id === 'M4' ? (
+                      <ExecutiveStudyBriefing 
+                        moduleId={current.id} 
+                        activeTopicId={activeTopicId} 
+                        activeTheme={activeTheme} 
+                        activeSubjectIndex={activeSubjectIndex}
+                        onChangeSubjectIndex={handleSubjectIndexChange}
+                      />
+                    ) : (
+                      <div className="ipb-soft relative overflow-hidden rounded-[2rem]">
+                        <div className="p-5 md:p-6">
                           
-                          {/* Left Column: Fundamentos & Caderno (takes 2 cols) */}
-                          <div className="lg:col-span-2 space-y-6">
+                          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
                             
-                            {/* Fundamentos Header & Overview */}
-                            <div className="p-5 rounded-2xl bg-white/[0.02] border border-white/[0.04] relative overflow-hidden">
-                              <div className="absolute inset-0 opacity-[0.03]" style={{
-                                background: `radial-gradient(circle at 0% 0%, ${activeTheme.primary}, transparent 50%)`
-                              }} />
+                            {/* Left Column: Fundamentos & Caderno (takes 2 cols) */}
+                            <div className="lg:col-span-2 space-y-6">
                               
-                              <div className="space-y-3 relative z-10">
-                                <div className="flex items-center justify-between">
-                                  <span className="text-[8px] uppercase tracking-wider font-bold" style={{ color: activeTheme.primary }}>
-                                    {current.id === 'M4' ? 'Diretoria Executiva' : 'Fundamentos'}
-                                  </span>
-                                  <span className="text-[9px] text-white/30 font-mono">{current.id} · Core Concepts</span>
+                              {/* Fundamentos Header & Overview */}
+                              <div className="p-5 rounded-2xl bg-white/[0.02] border border-white/[0.04] relative overflow-hidden">
+                                <div className="absolute inset-0 opacity-[0.03]" style={{
+                                  background: `radial-gradient(circle at 0% 0%, ${activeTheme.primary}, transparent 50%)`
+                                }} />
+                                
+                                <div className="space-y-3 relative z-10">
+                                  <div className="flex items-center justify-between">
+                                    <span className="text-[8px] uppercase tracking-wider font-bold" style={{ color: activeTheme.primary }}>
+                                      {current.id === 'M4' ? 'Diretoria Executiva' : 'Fundamentos'}
+                                    </span>
+                                    <span className="text-[9px] text-white/30 font-mono">{current.id} · Core Concepts</span>
+                                  </div>
+                                  <h3 className="text-base font-bold text-white/90">
+                                    {current.id === 'M4' ? 'Estação de Inteligência Acadêmica' : `Conceito de ${current.title}`}
+                                  </h3>
+                                  <p className="text-[11px] text-white/50 leading-relaxed">
+                                    {current.overview}
+                                  </p>
                                 </div>
-                                <h3 className="text-base font-bold text-white/90">
-                                  {current.id === 'M4' ? 'Estação de Inteligência Acadêmica' : `Conceito de ${current.title}`}
-                                </h3>
-                                <p className="text-[11px] text-white/50 leading-relaxed">
-                                  {current.overview}
-                                </p>
                               </div>
+
+                              {/* Interactive Notebook */}
+                              <div className="space-y-4">
+                                <div className="flex items-center gap-2 pb-1">
+                                  <BookOpen className="h-4 w-4" style={{ color: activeTheme.primary }} />
+                                  <span className="text-[10px] uppercase tracking-wider text-white/60 font-semibold">Caderno Interativo de Conteúdo</span>
+                                </div>
+                                <CadernoModulePanel moduleId={current.id} openTopicId={activeTopicId} />
+                              </div>
+
                             </div>
 
-                            {/* Interactive Notebook */}
-                            <div className="space-y-4">
-                              <div className="flex items-center gap-2 pb-1">
-                                <BookOpen className="h-4 w-4" style={{ color: activeTheme.primary }} />
-                                <span className="text-[10px] uppercase tracking-wider text-white/60 font-semibold">Caderno Interativo de Conteúdo</span>
-                              </div>
-                              <CadernoModulePanel moduleId={current.id} openTopicId={activeTopicId} />
-                            </div>
-
-                          </div>
-
-                          {/* Right Column: Mapa de Conexões / Simulações (takes 1 col) */}
-                          <div className="space-y-6 lg:sticky lg:top-4">
-                            
-                            {/* Connection Map & Simulation Panel */}
-                            <div className="p-5 rounded-2xl bg-white/[0.02] border border-white/[0.04] flex flex-col justify-between h-full relative overflow-hidden">
-                              <div className="absolute inset-0 opacity-[0.03]" style={{
-                                background: `radial-gradient(circle at 100% 0%, ${activeTheme.primary}, transparent 50%)`
-                              }} />
+                            {/* Right Column: Mapa de Conexões / Simulações (takes 1 col) */}
+                            <div className="space-y-6 lg:sticky lg:top-4">
                               
-                              <div className="relative z-10 mb-4">
-                                <span className="text-[8px] uppercase tracking-wider font-bold" style={{ color: activeTheme.primary }}>
-                                  {current.id === 'M4' ? 'Fluxo de Valor' : 'Mapa de Conexões'}
-                                </span>
-                                <h3 className="text-sm font-bold text-white/90 mt-1">
-                                  {current.id === 'M4' ? 'Alinhamento Estratégico' : 'Rede Neuronal & Simulações'}
-                                </h3>
-                                <p className="text-[10.5px] text-white/44 leading-relaxed mt-1.5">
-                                  {current.id === 'M4' 
-                                    ? 'Mapeamento dinâmico das conexões táticas corporativas e fluxo de governança executiva.'
-                                    : 'Estrutura neuronal dinâmica que simula o fluxo cognitivo e as correlações teóricas do módulo.'}
-                                </p>
+                              {/* Connection Map & Simulation Panel */}
+                              <div className="p-5 rounded-2xl bg-white/[0.02] border border-white/[0.04] flex flex-col justify-between h-full relative overflow-hidden">
+                                <div className="absolute inset-0 opacity-[0.03]" style={{
+                                  background: `radial-gradient(circle at 100% 0%, ${activeTheme.primary}, transparent 50%)`
+                                }} />
+                                
+                                <div className="relative z-10 mb-4">
+                                  <span className="text-[8px] uppercase tracking-wider font-bold" style={{ color: activeTheme.primary }}>
+                                    {current.id === 'M4' ? 'Fluxo de Valor' : 'Mapa de Conexões'}
+                                  </span>
+                                  <h3 className="text-sm font-bold text-white/90 mt-1">
+                                    {current.id === 'M4' ? 'Alinhamento Estratégico' : 'Rede Neuronal & Simulações'}
+                                  </h3>
+                                  <p className="text-[10.5px] text-white/44 leading-relaxed mt-1.5">
+                                    {current.id === 'M4' 
+                                      ? 'Mapeamento dinâmico das conexões táticas corporativas e fluxo de governança executiva.'
+                                      : 'Estrutura neuronal dinâmica que simula o fluxo cognitivo e as correlações teóricas do módulo.'}
+                                  </p>
+                                </div>
+
+                                {current.id === 'M4' ? (
+                                  <StrategicRoadmapBoard moduleId={current.id} />
+                                ) : (
+                                  <MiniNetworkGraph moduleId={current.id} />
+                                )}
+                                
+                                {/* Pillars of Knowledge inside Connection Map */}
+                                <div className="mt-6 pt-4 border-t border-white/[0.04]">
+                                  <span className="text-[8px] uppercase tracking-wider font-bold text-white/30 block mb-2.5">
+                                    {current.id === 'M4' ? 'Pilares Corporativos' : 'Pilares do Conhecimento'}
+                                  </span>
+                                  <ul className="space-y-2">
+                                    {current.concepts.map((concept, idx) => (
+                                      <li key={idx} className="text-[9.5px] text-white/60 flex items-start gap-2">
+                                        <span className="mt-1.5 w-1.5 h-1.5 rounded-full shrink-0 animate-pulse" style={{ backgroundColor: activeTheme.primary }} />
+                                        <span className="leading-snug">{concept}</span>
+                                      </li>
+                                    ))}
+                                  </ul>
+                                </div>
                               </div>
 
-                              {current.id === 'M4' ? (
-                                <StrategicRoadmapBoard moduleId={current.id} />
-                              ) : (
-                                <MiniNetworkGraph moduleId={current.id} />
-                              )}
-                              
-                              {/* Pillars of Knowledge inside Connection Map */}
-                              <div className="mt-6 pt-4 border-t border-white/[0.04]">
-                                <span className="text-[8px] uppercase tracking-wider font-bold text-white/30 block mb-2.5">
-                                  {current.id === 'M4' ? 'Pilares Corporativos' : 'Pilares do Conhecimento'}
-                                </span>
-                                <ul className="space-y-2">
-                                  {current.concepts.map((concept, idx) => (
-                                    <li key={idx} className="text-[9.5px] text-white/60 flex items-start gap-2">
-                                      <span className="mt-1.5 w-1.5 h-1.5 rounded-full shrink-0 animate-pulse" style={{ backgroundColor: activeTheme.primary }} />
-                                      <span className="leading-snug">{concept}</span>
-                                    </li>
-                                  ))}
-                                </ul>
-                              </div>
                             </div>
 
                           </div>
 
                         </div>
-
                       </div>
-                    </div>
+                    )}
 
                   </motion.div>
                 ) : (
