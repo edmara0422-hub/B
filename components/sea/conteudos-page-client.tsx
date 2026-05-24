@@ -1815,55 +1815,7 @@ export default function ConteudosPageClient() {
                         </div>
                       )}
 
-                      {/* Material de Apoio Support Grid */}
-                      <div className="border-t border-white/[0.04] px-6 py-5 bg-black/20">
-                        <h4 className="text-[10px] uppercase tracking-widest text-white/30 font-semibold mb-3">Material de Apoio</h4>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                          
-                           {/* Tutor Card */}
-                           <div className="ipb-glass-card p-3 flex items-center justify-between cursor-pointer group">
-                             <div className="flex items-center gap-3">
-                               <div className="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-white/40 group-hover:text-white transition-all duration-300" style={{
-                                 borderColor: activeTheme.accent,
-                                 color: activeTheme.primary
-                               }}>
-                                 {current.id === 'M4' ? (
-                                   <Briefcase className="h-4 w-4" />
-                                 ) : (
-                                   <Brain className="h-4 w-4" />
-                                 )}
-                               </div>
-                               <div className="flex flex-col">
-                                 <span className="text-[10.5px] font-semibold text-white/90 leading-tight">
-                                   {current.id === 'M4' ? 'Executive Board Advisor IA' : 'Tutor Acadêmico IA'}
-                                 </span>
-                                 <span className="text-[9px] text-white/30">
-                                   {current.id === 'M4' ? 'Briefing estratégico e mentoria de negócios' : 'Apoio clínico e cognitivo via IA'}
-                                 </span>
-                               </div>
-                             </div>
-                             <ChevronRight className="h-3.5 w-3.5 opacity-50 group-hover:opacity-100 transition-all" style={{ color: activeTheme.primary }} />
-                           </div>
 
-                          {/* Slides Card */}
-                          <div className="ipb-glass-card p-3 flex items-center justify-between cursor-pointer group">
-                            <div className="flex items-center gap-3">
-                              <div className="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-white/40 group-hover:text-white transition-all duration-300" style={{
-                                borderColor: activeTheme.accent,
-                                color: activeTheme.primary
-                              }}>
-                                <FileText className="h-4 w-4" />
-                              </div>
-                              <div className="flex flex-col">
-                                <span className="text-[10.5px] font-semibold text-white/90 leading-tight">Notas de Aula</span>
-                                <span className="text-[9px] text-white/30">Esquemas e anotações resumidas</span>
-                              </div>
-                            </div>
-                            <ChevronRight className="h-3.5 w-3.5 opacity-50 group-hover:opacity-100 transition-all" style={{ color: activeTheme.primary }} />
-                          </div>
-
-                        </div>
-                      </div>
 
                     </div>
 
