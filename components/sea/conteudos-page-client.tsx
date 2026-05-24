@@ -602,7 +602,119 @@ function ExecutiveMasterclassTheater({
               )
             })}
           </div>
-        </div>      </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function CompetencyRadarChart({ activeKpi, theme }: { activeKpi: string; theme: any }) {
+  const cx = 100
+  const cy = 82
+  const R = 54
+
+  const axes = [
+    { key: 'ie', label: 'IE', score: 0.942 },
+    { key: 'fiq', label: 'FIQ', score: 0.85 },
+    { key: 'lpc', label: 'LPC', score: 1.0 },
+    { key: 'goc', label: 'GOC', score: 0.915 },
+    { key: 'mme', label: 'MME', score: 0.93 },
+    { key: 'isi', label: 'ISI', score: 0.886 }
+  ]
+
+  const getHexPath = (radius: number) => {
+    return axes.map((_, i) => {
+      const angle = (i * 2 * Math.PI) / 6 - Math.PI / 2
+      const x = cx + radius * Math.cos(angle)
+      const y = cy + radius * Math.sin(angle)
+      return `${i === 0 ? 'M' : 'L'} ${x} ${y}`
+    }).join(' ') + ' Z'
+  }
+
+  const scorePath = axes.map((axis, i) => {
+    const angle = (i * 2 * Math.PI) / 6 - Math.PI / 2
+    const x = cx + R * axis.score * Math.cos(angle)
+    const y = cy + R * axis.score * Math.sin(angle)
+    return `${i === 0 ? 'M' : 'L'} ${x} ${y}`
+  }).join(' ') + ' Z'
+
+  return (
+    <div className="relative w-full flex items-center justify-center py-1.5 bg-black/35 rounded-xl border border-white/[0.03] overflow-hidden my-2.5">
+      <div className="absolute inset-0 opacity-[0.02] pointer-events-none" style={{
+        background: `radial-gradient(circle at 50% 50%, ${theme.primary}, transparent 75%)`,
+        backgroundImage: 'radial-gradient(rgba(255,255,255,0.15) 1px, transparent 1px)',
+        backgroundSize: '6px 6px'
+      }} />
+
+      <svg width="200" height="152" className="relative overflow-visible">
+        <path d={getHexPath(R)} fill="none" stroke="rgba(212,184,122,0.14)" strokeWidth="0.8" />
+        <path d={getHexPath(R * 0.75)} fill="none" stroke="rgba(212,184,122,0.06)" strokeWidth="0.5" strokeDasharray="2 2" />
+        <path d={getHexPath(R * 0.5)} fill="none" stroke="rgba(212,184,122,0.06)" strokeWidth="0.5" strokeDasharray="2 2" />
+        <path d={getHexPath(R * 0.25)} fill="none" stroke="rgba(212,184,122,0.06)" strokeWidth="0.5" />
+
+        {axes.map((_, i) => {
+          const angle = (i * 2 * Math.PI) / 6 - Math.PI / 2
+          const x = cx + R * Math.cos(angle)
+          const y = cy + R * Math.sin(angle)
+          return (
+            <line
+              key={i}
+              x1={cx}
+              y1={cy}
+              x2={x}
+              y2={y}
+              stroke="rgba(255,255,255,0.04)"
+              strokeWidth="0.8"
+            />
+          )
+        })}
+
+        <motion.path
+          d={scorePath}
+          fill="rgba(212,184,122,0.15)"
+          stroke={theme.primary}
+          strokeWidth="1.5"
+          initial={{ pathLength: 0 }}
+          animate={{ pathLength: 1 }}
+          transition={{ duration: 1.2, ease: 'easeOut' }}
+          style={{ filter: `drop-shadow(0 0 3px ${theme.glow})` }}
+        />
+
+        {axes.map((axis, i) => {
+          const angle = (i * 2 * Math.PI) / 6 - Math.PI / 2
+          const isSelected = activeKpi === axis.key
+          
+          const labelDist = R + 12
+          const lx = cx + labelDist * Math.cos(angle)
+          const ly = cy + labelDist * Math.sin(angle) + 2.5
+
+          const dx = cx + R * axis.score * Math.cos(angle)
+          const dy = cy + R * axis.score * Math.sin(angle)
+
+          return (
+            <g key={axis.key}>
+              <circle
+                cx={dx}
+                cy={dy}
+                r={isSelected ? 3.5 : 2}
+                fill={isSelected ? '#fff' : theme.primary}
+                stroke={theme.accent}
+                strokeWidth={isSelected ? 1.5 : 0}
+                style={{ filter: isSelected ? `drop-shadow(0 0 5px ${theme.primary})` : 'none' }}
+              />
+              <text
+                x={lx}
+                y={ly}
+                textAnchor="middle"
+                className="text-[7px] font-mono font-bold leading-none select-none pointer-events-none"
+                fill={isSelected ? '#fff' : 'rgba(255,255,255,0.35)'}
+              >
+                {axis.label}
+              </text>
+            </g>
+          )
+        })}
+      </svg>
     </div>
   )
 }
@@ -713,7 +825,7 @@ function ExecutivePerformanceDashboard({ moduleId }: { moduleId?: string }) {
   const ActiveIcon = kpis[activeKpi].icon
 
   return (
-    <div className="ipb-glass-card p-4 flex flex-col justify-between h-full transition-all duration-300">
+    <div className="ipb-glass-card p-4 flex flex-col justify-between h-full transition-all duration-300 pointer-events-auto">
       <div>
         <div className="flex justify-between items-center">
           <span className="text-[7.5px] uppercase tracking-wider font-bold" style={{ color: theme.primary }}>KPIs Estratégicos</span>
@@ -722,8 +834,11 @@ function ExecutivePerformanceDashboard({ moduleId }: { moduleId?: string }) {
         <h4 className="text-[12px] font-bold text-white/90 mt-1">Indicadores de Competência (30 Disciplinas)</h4>
       </div>
 
+      {/* Futuristic Competency Radar Chart */}
+      <CompetencyRadarChart activeKpi={activeKpi} theme={theme} />
+
       {/* Grid: 2 rows of 3 columns for 6 KPIs */}
-      <div className="grid grid-cols-2 gap-2 mt-4">
+      <div className="grid grid-cols-2 gap-2 mt-1">
         {Object.entries(kpis).map(([key, kpi]) => {
           const isSelected = activeKpi === key
           const Icon = kpi.icon
@@ -731,11 +846,11 @@ function ExecutivePerformanceDashboard({ moduleId }: { moduleId?: string }) {
             <button
               key={key}
               onClick={() => setActiveKpi(key as any)}
-              className="p-2 rounded-lg border text-left transition-all duration-300 flex flex-col justify-between cursor-pointer"
+              className="p-1.5 rounded-lg border text-left transition-all duration-300 flex flex-col justify-between cursor-pointer"
               style={{
                 background: isSelected ? 'rgba(212,184,122,0.08)' : 'rgba(255,255,255,0.01)',
                 borderColor: isSelected ? theme.primary : 'rgba(255,255,255,0.04)',
-                boxShadow: isSelected ? `0 0 12px ${theme.glow}` : 'none'
+                boxShadow: isSelected ? `0 0 10px ${theme.glow}` : 'none'
               }}
             >
               <div className="flex justify-between items-start w-full">
@@ -744,8 +859,8 @@ function ExecutivePerformanceDashboard({ moduleId }: { moduleId?: string }) {
                 </span>
                 <Icon className="h-2.5 w-2.5 opacity-30" style={{ color: theme.primary }} />
               </div>
-              <span className="text-[12.5px] font-extrabold text-white mt-1 leading-none">{kpi.metric}</span>
-              <div className="w-full h-0.5 bg-white/10 rounded-full mt-2 overflow-hidden">
+              <span className="text-[11.5px] font-extrabold text-white mt-0.5 leading-none">{kpi.metric}</span>
+              <div className="w-full h-0.5 bg-white/10 rounded-full mt-1.5 overflow-hidden">
                 <motion.div 
                   className="h-full" 
                   style={{ backgroundColor: theme.primary }}
@@ -767,22 +882,21 @@ function ExecutivePerformanceDashboard({ moduleId }: { moduleId?: string }) {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -4 }}
           transition={{ duration: 0.2 }}
-          className="mt-3 p-3 rounded-lg bg-black/40 border border-white/[0.03] flex items-center justify-between"
+          className="mt-2.5 p-2 rounded-lg bg-black/40 border border-white/[0.03] flex items-center justify-between"
         >
           <div className="flex items-center gap-2 min-w-0">
             <ActiveIcon className="h-3.5 w-3.5 shrink-0" style={{ color: theme.primary }} />
             <div className="flex flex-col min-w-0">
               <span className="text-[9px] font-bold text-white/80 truncate leading-none">{kpis[activeKpi].title}</span>
-              <span className="text-[7.5px] font-mono text-white/40 truncate mt-1 leading-none">{kpis[activeKpi].badge}</span>
+              <span className="text-[7.5px] font-mono text-white/45 truncate mt-1 leading-none">{kpis[activeKpi].badge}</span>
             </div>
           </div>
           <div className="flex flex-col items-end shrink-0">
             <span className="text-[11px] font-mono font-bold" style={{ color: theme.primary }}>{kpis[activeKpi].metric}</span>
-            <span className="text-[6.5px] font-mono text-white/30 uppercase mt-1 leading-none">{kpis[activeKpi].subjects.length} DISCIPLINAS</span>
+            <span className="text-[6.5px] font-mono text-white/35 uppercase mt-1 leading-none">{kpis[activeKpi].subjects.length} DISCIPLINAS</span>
           </div>
         </motion.div>
       </AnimatePresence>
-
     </div>
   )
 }
@@ -904,6 +1018,551 @@ function StrategicRoadmapBoard({ moduleId }: { moduleId?: string }) {
   )
 }
 
+function NASA6DSimulator({ dbId, chapterIndex, theme }: { dbId: string; chapterIndex: number; theme: any }) {
+  const [logs, setLogs] = useState<string[]>([
+    'NASA 6D Core Online. Pronto para testes de impacto cognitivo.',
+    'Aguardando telemetria do caderno de estudos...'
+  ])
+
+  const addLog = (msg: string) => {
+    const time = new Date().toLocaleTimeString()
+    setLogs(prev => [`[${time}] ${msg}`, ...prev.slice(0, 4)])
+  }
+
+  const [c1Phase, setC1Phase] = useState(2) 
+  const [c2CxFocus, setC2CxFocus] = useState(60)
+  const [c2Agile, setC2Agile] = useState(50)
+  const [c3Params, setC3Params] = useState(7) 
+  const [c3Quant, setC3Quant] = useState<'FP16' | 'INT8' | 'INT4'>('INT8')
+  const [c4Scaling, setC4Scaling] = useState(true)
+  const [c4Edge, setC4Edge] = useState(false)
+  const [c4Cache, setC4Cache] = useState(true)
+  const [c5Accelerator, setC5Accelerator] = useState(false)
+  const [c5SuccessRate, setC5SuccessRate] = useState(65)
+  const [c6H1, setC6H1] = useState(70)
+  const [c6H2, setC6H2] = useState(20)
+  const [c6H3, setC6H3] = useState(10)
+  const [c7Safety, setC7Safety] = useState(80)
+  const [c8ActiveLayer, setC8ActiveLayer] = useState<number>(0)
+  const [c8Transferring, setC8Transferring] = useState(false)
+
+  const handleC6Change = (horizon: 'h1' | 'h2' | 'h3', val: number) => {
+    if (horizon === 'h1') {
+      const remaining = 100 - val
+      setC6H1(val)
+      setC6H2(Math.round(remaining * 0.7))
+      setC6H3(Math.round(remaining * 0.3))
+    } else if (horizon === 'h2') {
+      const remaining = 100 - val
+      setC6H2(val)
+      setC6H1(Math.round(remaining * 0.8))
+      setC6H3(Math.round(remaining * 0.2))
+    } else {
+      const remaining = 100 - val
+      setC6H3(val)
+      setC6H1(Math.round(remaining * 0.7))
+      setC6H2(Math.round(remaining * 0.3))
+    }
+  }
+
+  const triggerPrototype = () => {
+    setC5Accelerator(true)
+    addLog('ACELERADOR LIGADO: Injetando feixe de ideias no vácuo de prototipagem...')
+    setTimeout(() => {
+      setC5Accelerator(false)
+      const rolled = Math.random() * 100
+      if (rolled < c5SuccessRate) {
+        addLog(`SUCESSO COGNITIVO: Protótipo validado! Margem Est: +350%, Tempo: 12 dias.`)
+      } else {
+        const pivots = ['Canibalização de Produto', 'Pivoteamento B2B', 'Adequação de UI/UX', 'Ajuste de Preço']
+        const randomPivot = pivots[Math.floor(Math.random() * pivots.length)]
+        addLog(`PIVOT DETECTADO: Validação falhou, mas mitigada cedo. Pivotado para: ${randomPivot}.`)
+      }
+    }, 1500)
+  }
+
+  const triggerCrisis = () => {
+    addLog('CRISE ACADÊMICA: Simulando erro grave no pipeline operacional do time...')
+    setTimeout(() => {
+      if (c7Safety > 70) {
+        addLog('SBI RETORNOU: O time reportou o erro de imediato. Resolvido em 8 minutos via Radical Candor!')
+      } else {
+        addLog('SILÊNCIO TÓXICO: Time ocultou a falha por medo de feedback. Retrabalho gerou prejuízo est. de R$ 42K.')
+      }
+    }, 1000)
+  }
+
+  const triggerETL = () => {
+    setC8Transferring(true)
+    addLog(`ETL INGESTÃO: Injetando dados transacionais no Lakehouse Layer ${c8ActiveLayer + 1}...`)
+    setTimeout(() => {
+      setC8Transferring(false)
+      const stages = ['Raw Layer Ingested', 'Kimball Star Schema Balanced', 'Gold Datamart Optimized', 'BI Telemetry Refreshed']
+      addLog(`STATUS LAYER: ${stages[c8ActiveLayer]} successfully calculated. Query: < 12ms.`)
+    }, 1200)
+  }
+
+  const isM4S1 = dbId === 'M4-S1'
+
+  return (
+    <div className="flex flex-col justify-between h-full w-full space-y-4">
+      <div className="flex-1 min-h-[320px] bg-black/40 border border-white/[0.03] rounded-2xl p-4 flex flex-col justify-between relative overflow-hidden">
+        <div className="absolute inset-0 opacity-[0.01] pointer-events-none" style={{
+          background: `radial-gradient(circle at 50% 50%, ${theme.primary}, transparent 80%)`,
+          backgroundImage: 'radial-gradient(rgba(255,255,255,0.15) 1px, transparent 1px)',
+          backgroundSize: '10px 10px'
+        }} />
+
+        {!isM4S1 ? (
+          <div className="flex flex-col justify-between h-full">
+            <div>
+              <span className="text-[8px] px-1.5 py-0.5 rounded font-mono bg-white/5 border border-white/10 text-white/45 uppercase tracking-widest">TACTICAL DECISION BOARD</span>
+              <h5 className="text-xs font-bold text-white/80 mt-1">Conexões de Governança Estratégica</h5>
+            </div>
+            
+            <div className="my-auto">
+              <StrategicRoadmapBoard moduleId={dbId} />
+            </div>
+
+            <p className="text-[10px] text-white/40 text-justify mt-2 leading-relaxed">
+              Consolo telemétrico integrado. Módulos clínicos operam em topologia linear clássica, enquanto o Módulo Business (M4) utiliza simuladores ativos 6D de tomada de decisão executiva em tempo real.
+            </p>
+          </div>
+        ) : (
+          <div className="flex flex-col justify-between h-full space-y-3">
+            <div className="flex justify-between items-start">
+              <div>
+                <span className="text-[8.5px] px-2 py-0.5 rounded font-mono bg-[#d4b87a]/10 border border-[#d4b87a]/20 text-[#d4b87a] uppercase font-bold tracking-wider">
+                  NASA 6D CORE · CAPÍTULO {chapterIndex + 1}
+                </span>
+                <h5 className="text-xs font-bold text-white/95 mt-1">
+                  {chapterIndex === 0 && 'Simulador de Alinhamento e Fases da TI'}
+                  {chapterIndex === 1 && 'Reator de 4 Domínios de Rogers'}
+                  {chapterIndex === 2 && 'Matriz de Redes Neurais e IA'}
+                  {chapterIndex === 3 && 'Pipeline Serverless & Cloud Optimizer'}
+                  {chapterIndex === 4 && 'Innovation Prototyping Accelerator'}
+                  {chapterIndex === 5 && 'Balanceador 3 Horizontes (McKinsey)'}
+                  {chapterIndex === 6 && 'Vigilância e Segurança Psicológica Aristotle'}
+                  {chapterIndex === 7 && 'Kimball Lakehouse Data Ingestion Cube'}
+                </h5>
+              </div>
+              <div className="flex items-center gap-1.5 text-[#d4b87a]">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#d4b87a] animate-ping" />
+                <span className="text-[7.5px] font-mono font-bold tracking-wider">TELEMETRIA ATIVA</span>
+              </div>
+            </div>
+
+            <div className="flex-1 flex flex-col justify-center">
+              {chapterIndex === 0 && (
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center gap-4">
+                    <span className="text-[10px] text-white/50 font-mono">Fase Operacional:</span>
+                    <div className="flex bg-white/5 p-0.5 rounded-lg border border-white/10 shrink-0">
+                      {[1, 2, 3].map(phase => (
+                        <button
+                          key={phase}
+                          onClick={() => {
+                            setC1Phase(phase)
+                            const names = ['Infraestrutura (Capex/Uptime)', 'Processos Integrados (ERP/CRM)', 'Estratégia Exponencial (Plataforma)']
+                            addLog(`MUDANÇA DE FASE: Acoplado em Fase ${phase} — ${names[phase-1]}`)
+                          }}
+                          className={`px-3 py-1 rounded text-[10px] font-mono font-bold cursor-pointer transition ${c1Phase === phase ? 'bg-[#d4b87a] text-black shadow-lg' : 'text-white/60 hover:text-white'}`}
+                        >
+                          Fase {phase}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="h-20 w-full flex items-center justify-around bg-black/35 rounded-xl border border-white/[0.02] relative px-4">
+                    <div className={`w-8 h-8 rounded-full border flex items-center justify-center transition-all duration-500 font-mono text-[10px] font-bold ${c1Phase >= 1 ? 'border-[#d4b87a] bg-[#d4b87a]/15 text-[#d4b87a] shadow-[0_0_12px_rgba(212,184,122,0.2)]' : 'border-white/10 text-white/30'}`}>
+                      F1
+                    </div>
+                    <div className={`h-0.5 flex-1 mx-2 transition-all duration-700 ${c1Phase >= 2 ? 'bg-[#d4b87a] shadow-[0_0_8px_#d4b87a]' : 'bg-white/5'}`} />
+                    <div className={`w-8 h-8 rounded-full border flex items-center justify-center transition-all duration-500 font-mono text-[10px] font-bold ${c1Phase >= 2 ? 'border-[#d4b87a] bg-[#d4b87a]/15 text-[#d4b87a] shadow-[0_0_12px_rgba(212,184,122,0.2)]' : 'border-white/10 text-white/30'}`}>
+                      F2
+                    </div>
+                    <div className={`h-0.5 flex-1 mx-2 transition-all duration-700 ${c1Phase >= 3 ? 'bg-[#d4b87a] shadow-[0_0_8px_#d4b87a]' : 'bg-white/5'}`} />
+                    <div className={`w-8 h-8 rounded-full border flex items-center justify-center transition-all duration-500 font-mono text-[10px] font-bold ${c1Phase >= 3 ? 'border-[#d4b87a] bg-[#d4b87a]/15 text-[#d4b87a] shadow-[0_0_12px_rgba(212,184,122,0.2)]' : 'border-white/10 text-white/30'}`}>
+                      F3
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-3 gap-2">
+                    <div className="p-2 rounded-lg bg-white/[0.01] border border-white/5 text-center">
+                      <span className="text-[7.5px] text-white/40 block uppercase">Latência</span>
+                      <span className="text-xs font-mono font-bold" style={{ color: c1Phase === 3 ? '#d4b87a' : '#fff' }}>
+                        {c1Phase === 1 && '380ms'}
+                        {c1Phase === 2 && '45ms'}
+                        {c1Phase === 3 && '2ms (Active)'}
+                      </span>
+                    </div>
+                    <div className="p-2 rounded-lg bg-white/[0.01] border border-white/5 text-center">
+                      <span className="text-[7.5px] text-white/40 block uppercase">Uptime</span>
+                      <span className="text-xs font-mono font-bold text-white">
+                        {c1Phase === 1 && '98.40%'}
+                        {c1Phase === 2 && '99.85%'}
+                        {c1Phase === 3 && '99.999%'}
+                      </span>
+                    </div>
+                    <div className="p-2 rounded-lg bg-white/[0.01] border border-white/5 text-center">
+                      <span className="text-[7.5px] text-white/40 block uppercase">ROI Alavancado</span>
+                      <span className="text-xs font-mono font-bold text-green-400">
+                        {c1Phase === 1 && '+12.4%'}
+                        {c1Phase === 2 && '+32.8%'}
+                        {c1Phase === 3 && '+248.5%'}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {chapterIndex === 1 && (
+                <div className="space-y-4">
+                  <div className="space-y-3">
+                    <div className="flex flex-col gap-1">
+                      <div className="flex justify-between items-center text-[10px] font-mono">
+                        <span className="text-white/60">Experiência do Cliente (CX):</span>
+                        <span className="text-[#d4b87a] font-bold">{c2CxFocus}%</span>
+                      </div>
+                      <input
+                        type="range"
+                        min="20"
+                        max="100"
+                        value={c2CxFocus}
+                        onChange={(e) => {
+                          const val = Number(e.target.value)
+                          setC2CxFocus(val)
+                          addLog(`DOMÍNIO CLIENTE: Ajustado foco de CX para ${val}%. CAC: R$ ${Math.round(400 - val*3.5)} / LTV aumentado.`)
+                        }}
+                        className="w-full accent-[#d4b87a] cursor-pointer h-1 rounded bg-white/10"
+                      />
+                    </div>
+
+                    <div className="flex flex-col gap-1">
+                      <div className="flex justify-between items-center text-[10px] font-mono">
+                        <span className="text-white/60">Inovação e MVP Rápido:</span>
+                        <span className="text-[#d4b87a] font-bold">{c2Agile}%</span>
+                      </div>
+                      <input
+                        type="range"
+                        min="10"
+                        max="100"
+                        value={c2Agile}
+                        onChange={(e) => {
+                          const val = Number(e.target.value)
+                          setC2Agile(val)
+                          addLog(`DOMÍNIO INOVAÇÃO: Ciclo de MVP encurtado para ${Math.round(45 - val*0.35)} dias.`)
+                        }}
+                        className="w-full accent-[#d4b87a] cursor-pointer h-1 rounded bg-white/10"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="p-3 rounded-xl bg-[#d4b87a]/5 border border-[#d4b87a]/15 flex items-center justify-between">
+                    <div>
+                      <span className="text-[8px] uppercase tracking-wider font-bold text-[#d4b87a] block">ESTIMATIVA DIGITAL ROI</span>
+                      <span className="text-xs text-white/50 block mt-0.5">Baseado em LTV/CAC e ciclo MVP</span>
+                    </div>
+                    <span className="text-lg font-mono font-black text-[#d4b87a]">
+                      +{Math.round((c2CxFocus * 1.5) + (c2Agile * 2.2))}%
+                    </span>
+                  </div>
+                </div>
+              )}
+
+              {chapterIndex === 2 && (
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center">
+                    <span className="text-[10px] text-white/50 font-mono">Tamanho do Modelo (Params):</span>
+                    <span className="text-xs font-mono font-bold text-[#d4b87a]">{c3Params}B LLM</span>
+                  </div>
+                  <input
+                    type="range"
+                    min="1"
+                    max="70"
+                    value={c3Params}
+                    onChange={(e) => {
+                      const val = Number(e.target.value)
+                      setC3Params(val)
+                      addLog(`NEURAL MATRIX: Inicializado modelo LLM de ${val} Bilhões de parâmetros.`)
+                    }}
+                    className="w-full accent-[#d4b87a] cursor-pointer h-1 rounded bg-white/10"
+                  />
+
+                  <div className="flex justify-between items-center gap-2">
+                    <span className="text-[10px] text-white/50 font-mono">Quantização:</span>
+                    <div className="flex gap-1.5">
+                      {(['FP16', 'INT8', 'INT4'] as const).map(q => (
+                        <button
+                          key={q}
+                          onClick={() => {
+                            setC3Quant(q)
+                            addLog(`QUANTIZAÇÃO: Ajustado pipeline neural para compressão ${q}`)
+                          }}
+                          className={`px-2 py-0.5 rounded text-[8px] font-mono font-bold transition border cursor-pointer ${c3Quant === q ? 'bg-[#d4b87a] text-black border-[#d4b87a]' : 'border-white/10 text-white/50 hover:text-white'}`}
+                        >
+                          {q}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-2 pt-1">
+                    <div className="p-2 rounded-lg bg-black/45 border border-white/5 flex flex-col justify-between">
+                      <span className="text-[7px] text-white/35 block uppercase font-mono">Memória VRAM</span>
+                      <span className="text-xs font-mono font-bold text-white mt-1">
+                        {c3Quant === 'FP16' && `${c3Params * 2} GB`}
+                        {c3Quant === 'INT8' && `${c3Params} GB`}
+                        {c3Quant === 'INT4' && `${Math.round(c3Params * 0.55)} GB`}
+                      </span>
+                    </div>
+                    <div className="p-2 rounded-lg bg-black/45 border border-white/5 flex flex-col justify-between">
+                      <span className="text-[7px] text-white/35 block uppercase font-mono">Alucinação Est.</span>
+                      <span className="text-xs font-mono font-bold mt-1" style={{ color: c3Params > 30 ? '#4ade80' : '#f87171' }}>
+                        {Math.max(1, Math.round(35 - c3Params * 0.4))}%
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {chapterIndex === 3 && (
+                <div className="space-y-4">
+                  <div className="grid grid-cols-3 gap-2">
+                    {[
+                      { id: 'scaling', label: 'Auto-Scaling', state: c4Scaling, setter: setC4Scaling },
+                      { id: 'edge', label: 'Edge Nodes', state: c4Edge, setter: setC4Edge },
+                      { id: 'cache', label: 'Global Cache', state: c4Cache, setter: setC4Cache }
+                    ].map(sw => (
+                      <button
+                        key={sw.id}
+                        onClick={() => {
+                          const next = !sw.state
+                          sw.setter(next)
+                          addLog(`SERVERLESS CORE: Alterado booster ${sw.label} para: ${next ? 'LIGADO' : 'DESLIGADO'}`)
+                        }}
+                        className="p-2 rounded-lg border text-left flex flex-col justify-between cursor-pointer transition"
+                        style={{
+                          background: sw.state ? 'rgba(212,184,122,0.1)' : 'rgba(255,255,255,0.01)',
+                          borderColor: sw.state ? '#d4b87a' : 'rgba(255,255,255,0.05)'
+                        }}
+                      >
+                        <span className="text-[7.5px] uppercase font-mono font-bold block" style={{ color: sw.state ? '#d4b87a' : 'rgba(255,255,255,0.3)' }}>
+                          {sw.label}
+                        </span>
+                        <span className="text-[9px] font-mono mt-1 font-bold" style={{ color: sw.state ? '#d4b87a' : 'rgba(255,255,255,0.2)' }}>
+                          {sw.state ? 'ACTIVE' : 'STANDBY'}
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+
+                  <div className="p-3 bg-black/45 border border-white/5 rounded-xl flex items-center justify-between">
+                    <div>
+                      <span className="text-[8px] text-white/40 block font-mono">VAZÃO DO PIPELINE</span>
+                      <span className="text-xs font-mono font-bold text-white mt-1 block">
+                        {c4Scaling ? (c4Cache ? (c4Edge ? '14.5K req/s' : '9.8K req/s') : '5.1K req/s') : '850 req/s'}
+                      </span>
+                    </div>
+                    <div className="text-right">
+                      <span className="text-[8px] text-white/40 block font-mono">LATÊNCIA DO CONSUMIDOR</span>
+                      <span className="text-xs font-mono font-bold text-green-400 mt-1 block">
+                        {c4Edge ? (c4Cache ? '8ms' : '22ms') : (c4Cache ? '45ms' : '185ms')}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {chapterIndex === 4 && (
+                <div className="space-y-4 text-center">
+                  <div className="flex justify-between items-center mb-1 text-[10px] font-mono px-1">
+                    <span className="text-white/60">Foco de validação com usuários:</span>
+                    <span className="text-[#d4b87a] font-bold">{c5SuccessRate}%</span>
+                  </div>
+                  <input
+                    type="range"
+                    min="30"
+                    max="95"
+                    value={c5SuccessRate}
+                    onChange={(e) => {
+                      const val = Number(e.target.value)
+                      setC5SuccessRate(val)
+                      addLog(`REATOR AJUSTE: Taxa de acerto projetada do MVP alterada para ${val}% via testes rápidos.`)
+                    }}
+                    className="w-full accent-[#d4b87a] cursor-pointer h-1 rounded bg-white/10"
+                  />
+
+                  <div className="relative w-full h-24 bg-black/40 rounded-xl border border-white/[0.03] flex items-center justify-center overflow-hidden">
+                    {c5Accelerator ? (
+                      <div className="flex flex-col items-center">
+                        <div className="w-8 h-8 rounded-full border-2 border-t-transparent border-[#d4b87a] animate-spin" />
+                        <span className="text-[8px] font-mono text-[#d4b87a] mt-2 uppercase tracking-widest animate-pulse">Acelerando Protótipo...</span>
+                      </div>
+                    ) : (
+                      <div className="flex flex-col items-center">
+                        <span className="text-[7.5px] uppercase font-mono text-white/30 tracking-widest">Innovation Core Chamber</span>
+                        <button
+                          onClick={triggerPrototype}
+                          className="mt-2.5 px-4 py-2 rounded-lg bg-[#d4b87a] text-black font-bold font-mono text-[9px] hover:bg-[#c2a76b] active:scale-95 transition cursor-pointer shadow-lg"
+                        >
+                          FAZER IGNIÇÃO DO PROTÓTIPO
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {chapterIndex === 5 && (
+                <div className="space-y-4">
+                  <div className="space-y-3">
+                    <div className="flex flex-col gap-1">
+                      <div className="flex justify-between items-center text-[10px] font-mono">
+                        <span className="text-white/60">Horizonte 1 (Melhorar o Core):</span>
+                        <span className="text-white font-bold">{c6H1}%</span>
+                      </div>
+                      <input
+                        type="range"
+                        min="30"
+                        max="90"
+                        value={c6H1}
+                        onChange={(e) => handleC6Change('h1', Number(e.target.value))}
+                        className="w-full accent-[#d4b87a] cursor-pointer h-1 rounded bg-white/10"
+                      />
+                    </div>
+
+                    <div className="flex flex-col gap-1">
+                      <div className="flex justify-between items-center text-[10px] font-mono">
+                        <span className="text-white/60">Horizonte 3 (Disrupção Radical):</span>
+                        <span className="text-white font-bold">{c6H3}%</span>
+                      </div>
+                      <input
+                        type="range"
+                        min="5"
+                        max="40"
+                        value={c6H3}
+                        onChange={(e) => handleC6Change('h3', Number(e.target.value))}
+                        className="w-full accent-[#d4b87a] cursor-pointer h-1 rounded bg-white/10"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="p-3 rounded-xl bg-black/45 border border-white/5 flex items-center justify-between">
+                    <div>
+                      <span className="text-[7.5px] uppercase font-mono text-white/35 block">DIAGNOSTICO MCKINSEY</span>
+                      <span className="text-[10px] font-bold mt-1 block" style={{
+                        color: Math.abs(c6H1 - 70) < 10 && Math.abs(c6H3 - 10) < 5 ? '#4ade80' : '#d4b87a'
+                      }}>
+                        {Math.abs(c6H1 - 70) < 10 && Math.abs(c6H3 - 10) < 5 ? 'OPTIMAL PORTFOLIO ALLOCATION' : 'BALANCED MIX OK'}
+                      </span>
+                    </div>
+                    <div className="text-right">
+                      <span className="text-[7.5px] uppercase font-mono text-white/35 block">Horizonte 2</span>
+                      <span className="text-xs font-mono font-bold text-white mt-1 block">{c6H2}%</span>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {chapterIndex === 6 && (
+                <div className="space-y-4">
+                  <div className="flex flex-col gap-1.5">
+                    <div className="flex justify-between items-center text-[10px] font-mono">
+                      <span className="text-white/60">Segurança Psicológica do Time:</span>
+                      <span className="text-[#d4b87a] font-bold">{c7Safety}%</span>
+                    </div>
+                    <input
+                      type="range"
+                      min="20"
+                      max="100"
+                      value={c7Safety}
+                      onChange={(e) => {
+                        const val = Number(e.target.value)
+                        setC7Safety(val)
+                        addLog(`CULTURA MONITOR: Segurança psicológica alterada para ${val}%.`)
+                      }}
+                      className="w-full accent-[#d4b87a] cursor-pointer h-1 rounded bg-white/10"
+                    />
+                  </div>
+
+                  <div className="relative w-full h-24 bg-black/40 rounded-xl border border-white/[0.03] flex items-center justify-center overflow-hidden">
+                    <div className="flex flex-col items-center">
+                      <span className="text-[7.5px] uppercase font-mono text-white/30 tracking-widest">Simular Crise no Projeto</span>
+                      <button
+                        onClick={triggerCrisis}
+                        className="mt-2.5 px-4 py-2 rounded-lg border border-red-500/20 bg-red-500/5 text-red-400 font-bold font-mono text-[9px] hover:bg-red-500/10 active:scale-95 transition cursor-pointer"
+                      >
+                        SIMULAR ERRO / CRISE NO TIME
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {chapterIndex === 7 && (
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center">
+                    <span className="text-[10px] text-white/50 font-mono">Ativar Camada Data Lakehouse:</span>
+                    <span className="text-xs font-mono font-bold text-[#d4b87a]">Layer {c8ActiveLayer + 1}</span>
+                  </div>
+                  <div className="grid grid-cols-4 gap-1.5">
+                    {['Ingestão', 'Staging', 'Warehouse', 'BI Dash'].map((label, idx) => (
+                      <button
+                        key={idx}
+                        onClick={() => {
+                          setC8ActiveLayer(idx)
+                          addLog(`BI PIPELINE: Foco alterado para camada: ${label.toUpperCase()}`)
+                        }}
+                        className={`p-1.5 rounded border text-[9px] font-mono font-bold text-center cursor-pointer transition ${c8ActiveLayer === idx ? 'bg-[#d4b87a]/15 border-[#d4b87a] text-[#d4b87a]' : 'border-white/5 text-white/40 hover:text-white bg-white/[0.01]'}`}
+                      >
+                        {label}
+                      </button>
+                    ))}
+                  </div>
+
+                  <div className="relative w-full h-20 bg-black/40 rounded-xl border border-white/[0.03] flex items-center justify-center overflow-hidden">
+                    {c8Transferring ? (
+                      <div className="flex flex-col items-center">
+                        <div className="w-6 h-6 rounded-full border border-t-transparent border-[#d4b87a] animate-spin" />
+                        <span className="text-[8px] font-mono text-[#d4b87a] mt-1.5 animate-pulse">INGESTÃO EM CURSO...</span>
+                      </div>
+                    ) : (
+                      <div className="flex flex-col items-center">
+                        <button
+                          onClick={triggerETL}
+                          className="px-4 py-1.5 rounded bg-[#d4b87a] text-black font-bold font-mono text-[9px] hover:bg-[#c2a76b] transition active:scale-95 cursor-pointer shadow-lg"
+                        >
+                          DISPARAR CARGA DE DADOS (ETL)
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+      </div>
+
+      <div className="p-3 bg-black/60 rounded-xl border border-white/[0.04] font-mono h-[96px] overflow-hidden shrink-0 flex flex-col justify-between">
+        <div className="flex justify-between items-center pb-1.5 border-b border-white/[0.04]">
+          <span className="text-[7.5px] uppercase font-bold text-white/35">Advisor Terminal Diagnostic Logs</span>
+          <span className="text-[7px] text-[#d4b87a] font-bold">STATUS: OK</span>
+        </div>
+        <div className="flex-1 flex flex-col justify-start space-y-1 mt-1.5 select-none pointer-events-none">
+          {logs.map((log, idx) => (
+            <div key={idx} className="text-[7.5px] truncate text-white/40 leading-normal" style={{ color: idx === 0 ? '#d4b87a' : undefined }}>
+              {log}
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
+
 function ExecutiveStudyBriefing({
   moduleId,
   activeTopicId,
@@ -918,6 +1577,7 @@ function ExecutiveStudyBriefing({
   onChangeSubjectIndex: (index: number) => void
 }) {
   const [activeTab, setActiveTab] = useState<'summary' | 'tutor' | 'notes'>('summary')
+  const [activeChapterIndex, setActiveChapterIndex] = useState(0)
   const [tutorInput, setTutorInput] = useState('')
   const [isTutorLoading, setIsTutorLoading] = useState(false)
   const [tutorHistory, setTutorHistory] = useState<any[]>([
@@ -928,6 +1588,10 @@ function ExecutiveStudyBriefing({
   const syllabusItem = ACADEMIC_SYLLABUS[activeSubjectIndex] ?? ACADEMIC_SYLLABUS[0]
   const dbId = SYLLABUS_TO_DB_MAP[syllabusItem.id] ?? 'M1-S1'
   const activeSubjectData = SUBJECTS_DB.find(s => s.id === dbId) ?? SUBJECTS_DB[0]
+
+  useEffect(() => {
+    setActiveChapterIndex(0)
+  }, [activeSubjectIndex])
 
   useEffect(() => {
     const saved = localStorage.getItem(`ipb-notes-${syllabusItem.id}`)
@@ -1105,7 +1769,7 @@ function ExecutiveStudyBriefing({
                       background: 'radial-gradient(circle at 0% 0%, #d4b87a, transparent 50%)'
                     }} />
 
-                    <div className="overflow-y-auto space-y-6 pr-2 ipb-thinscroll h-full">
+                    <div className="overflow-y-auto space-y-4 pr-2 ipb-thinscroll h-full">
                       <div className="flex justify-between items-start border-b border-white/[0.06] pb-3 w-full sticky top-0 bg-[#0c0905]/95 backdrop-blur-md z-10">
                         <div>
                           <span className="text-xs px-2 py-0.5 rounded font-mono bg-[#d4b87a]/10 border border-[#d4b87a]/20 text-[#d4b87a] uppercase">SUMÁRIO ACADÊMICO</span>
@@ -1116,70 +1780,95 @@ function ExecutiveStudyBriefing({
                         </div>
                       </div>
 
+                      {/* Chapter Pagination Pills */}
+                      <div className="flex gap-2 overflow-x-auto pb-2 border-b border-white/[0.06] ipb-thinscroll sticky top-[57px] bg-[#0c0905]/95 backdrop-blur-md z-10">
+                        {activeSubjectData.chapters.map((chap: any, idx: number) => {
+                          const isSelected = activeChapterIndex === idx
+                          return (
+                            <button
+                              key={idx}
+                              onClick={() => setActiveChapterIndex(idx)}
+                              className={`px-3 py-1.5 rounded-lg text-xs font-mono transition-all duration-200 whitespace-nowrap flex items-center gap-1.5 ${
+                                isSelected
+                                  ? 'bg-[#d4b87a]/15 text-[#d4b87a] border border-[#d4b87a]/30 font-bold'
+                                  : 'bg-white/[0.02] text-white/60 border border-white/[0.04] hover:bg-white/[0.05] hover:text-white/80'
+                              }`}
+                            >
+                              <span>Cap {idx + 1}</span>
+                            </button>
+                          )
+                        })}
+                      </div>
+
                       <div className="space-y-6 mt-4">
-                        {activeSubjectData.chapters.map((chapter: any, cIdx: number) => (
-                          <div key={cIdx} className="space-y-4 pb-4 border-b border-white/[0.04] last:border-b-0">
-                            <div className="flex items-start gap-2.5">
-                              <span className="text-xs font-mono font-bold text-[#d4b87a] mt-0.5">Cap {cIdx + 1}</span>
-                              <div>
-                                <h5 className="text-sm font-bold text-white/90 leading-tight uppercase">
-                                  {chapter.title}
-                                </h5>
-                                {chapter.description && (
-                                  <p className="text-xs text-white/50 italic mt-1 leading-relaxed">{chapter.description}</p>
+                        {(() => {
+                          const chapter = activeSubjectData.chapters[activeChapterIndex] ?? activeSubjectData.chapters[0]
+                          if (!chapter) return null
+                          const cIdx = activeSubjectData.chapters.indexOf(chapter)
+                          return (
+                            <div key={cIdx} className="space-y-4 pb-4">
+                              <div className="flex items-start gap-2.5">
+                                <span className="text-xs font-mono font-bold text-[#d4b87a] mt-0.5">Cap {cIdx + 1}</span>
+                                <div>
+                                  <h5 className="text-sm font-bold text-white/90 leading-tight uppercase">
+                                    {chapter.title}
+                                  </h5>
+                                  {chapter.description && (
+                                    <p className="text-xs text-white/50 italic mt-1 leading-relaxed">{chapter.description}</p>
+                                  )}
+                                </div>
+                              </div>
+
+                              <div className="space-y-4 pl-3 border-l border-white/[0.06] ml-2 mt-3">
+                                {chapter.subsections.map((sub: any, sIdx: number) => (
+                                  <div key={sIdx} className="space-y-2">
+                                    {sub.title && (
+                                      <h6 className="text-xs font-bold text-white/80 leading-snug flex items-center gap-1.5">
+                                        <span className="w-1.5 h-1.5 rounded-full bg-[#cbd5e1]" />
+                                        {sub.title}
+                                      </h6>
+                                    )}
+                                    <p className="text-xs lg:text-sm text-white/60 leading-relaxed text-justify whitespace-pre-line">
+                                      {sub.content}
+                                    </p>
+
+                                    {sub.studyCase && (
+                                      <div className="mt-3 rounded-xl p-4 bg-[#d4b87a]/5 border-l-2 border-[#d4b87a] border border-[#d4b87a]/10 space-y-1.5">
+                                        <span className="text-[10px] uppercase tracking-wider font-bold text-[#d4b87a] block">Estudo de Caso · {sub.studyCase.title}</span>
+                                        <p className="text-xs text-[#d4b87a]/80 leading-relaxed text-justify whitespace-pre-line">
+                                          {sub.studyCase.body}
+                                        </p>
+                                      </div>
+                                    )}
+
+                                    {sub.deepDive && (
+                                      <div className="mt-3 rounded-xl p-3.5 bg-white/[0.02] border border-white/[0.04] space-y-1.5">
+                                        <span className="text-[10px] uppercase tracking-wider font-bold text-[#cbd5e1]/50 block">Aprofundamento Técnico</span>
+                                        <p className="text-xs text-white/50 leading-relaxed text-justify whitespace-pre-line">
+                                          {sub.deepDive}
+                                        </p>
+                                      </div>
+                                    )}
+                                  </div>
+                                ))}
+
+                                {chapter.synthesis && (
+                                  <div className="mt-4 rounded-xl p-4 bg-white/[0.01] border border-white/[0.04] space-y-2.5">
+                                    <span className="text-[10px] uppercase tracking-wider font-bold text-[#d4b87a]/80 block">Síntese Estratégica & Insights</span>
+                                    <ul className="space-y-2">
+                                      {chapter.synthesis.bullets.map((bullet: string, bIdx: number) => (
+                                        <li key={bIdx} className="text-xs text-white/60 leading-relaxed flex items-start gap-2.5 text-justify">
+                                          <span className="mt-1.5 w-1.5 h-1.5 rounded-full shrink-0 bg-[#cbd5e1]" />
+                                          <span>{bullet}</span>
+                                        </li>
+                                      ))}
+                                    </ul>
+                                  </div>
                                 )}
                               </div>
                             </div>
-
-                            <div className="space-y-4 pl-3 border-l border-white/[0.06] ml-2 mt-3">
-                              {chapter.subsections.map((sub: any, sIdx: number) => (
-                                <div key={sIdx} className="space-y-2">
-                                  {sub.title && (
-                                    <h6 className="text-xs font-bold text-white/80 leading-snug flex items-center gap-1.5">
-                                      <span className="w-1.5 h-1.5 rounded-full bg-[#cbd5e1]" />
-                                      {sub.title}
-                                    </h6>
-                                  )}
-                                  <p className="text-xs lg:text-sm text-white/60 leading-relaxed text-justify whitespace-pre-line">
-                                    {sub.content}
-                                  </p>
-
-                                  {sub.studyCase && (
-                                    <div className="mt-3 rounded-xl p-4 bg-[#d4b87a]/5 border-l-2 border-[#d4b87a] border border-[#d4b87a]/10 space-y-1.5">
-                                      <span className="text-[10px] uppercase tracking-wider font-bold text-[#d4b87a] block">Estudo de Caso · {sub.studyCase.title}</span>
-                                      <p className="text-xs text-[#d4b87a]/80 leading-relaxed text-justify whitespace-pre-line">
-                                        {sub.studyCase.body}
-                                      </p>
-                                    </div>
-                                  )}
-
-                                  {sub.deepDive && (
-                                    <div className="mt-3 rounded-xl p-3.5 bg-white/[0.02] border border-white/[0.04] space-y-1.5">
-                                      <span className="text-[10px] uppercase tracking-wider font-bold text-[#cbd5e1]/50 block">Aprofundamento Técnico</span>
-                                      <p className="text-xs text-white/50 leading-relaxed text-justify whitespace-pre-line">
-                                        {sub.deepDive}
-                                      </p>
-                                    </div>
-                                  )}
-                                </div>
-                              ))}
-
-                              {chapter.synthesis && (
-                                <div className="mt-4 rounded-xl p-4 bg-white/[0.01] border border-white/[0.04] space-y-2.5">
-                                  <span className="text-[10px] uppercase tracking-wider font-bold text-[#d4b87a]/80 block">Síntese Estratégica & Insights</span>
-                                  <ul className="space-y-2">
-                                    {chapter.synthesis.bullets.map((bullet: string, bIdx: number) => (
-                                      <li key={bIdx} className="text-xs text-white/60 leading-relaxed flex items-start gap-2.5 text-justify">
-                                        <span className="mt-1.5 w-1.5 h-1.5 rounded-full shrink-0 bg-[#cbd5e1]" />
-                                        <span>{bullet}</span>
-                                      </li>
-                                    ))}
-                                  </ul>
-                                </div>
-                              )}
-                            </div>
-                          </div>
-                        ))}
+                          )
+                        })()}
                       </div>
                     </div>
                   </div>
@@ -1192,17 +1881,23 @@ function ExecutiveStudyBriefing({
                       background: 'radial-gradient(circle at 100% 0%, #d4b87a, transparent 50%)'
                     }} />
 
-                    <div className="space-y-4">
+                    <div className="space-y-4 flex-1 flex flex-col">
                       <div>
-                        <span className="text-[10px] uppercase tracking-wider font-bold text-[#d4b87a]">Simulador Ativo</span>
-                        <h4 className="text-sm font-bold text-white/95 mt-1">Conexões Estratégicas de Negócios</h4>
+                        <span className="text-[10px] uppercase tracking-wider font-bold text-[#d4b87a]">
+                          {dbId === 'M4-S1' ? 'Simulador NASA 6D Ativo' : 'Simulador Ativo'}
+                        </span>
+                        <h4 className="text-sm font-bold text-white/95 mt-1">
+                          {dbId === 'M4-S1' ? 'Ambiente Realista de Simulação de Negócios' : 'Conexões Estratégicas de Negócios'}
+                        </h4>
                         <p className="text-xs text-white/50 leading-relaxed mt-1 text-justify">
-                          Mapeamento dinâmico que simula o fluxo cognitivo, as correlações teóricas e o impacto prático na disciplina de *{syllabusItem.title}*. Interaja com os nós operacionais abaixo para visualizar as dependências transversais de governança.
+                          {dbId === 'M4-S1' 
+                            ? `Simulador executivo de alto realismo com base em equações de modelagem e dinâmica de sistemas para a disciplina de *${syllabusItem.title}*. Ajuste os parâmetros operacionais abaixo para observar o impacto em tempo real.`
+                            : `Mapeamento dinâmico que simula o fluxo cognitivo, as correlações teóricas e o impacto prático na disciplina de *${syllabusItem.title}*. Interaja com os nós operacionais abaixo para visualizar as dependências transversais de governança.`}
                         </p>
                       </div>
 
-                      <div className="my-2 border border-white/5 rounded-xl overflow-hidden bg-black/40">
-                        <StrategicRoadmapBoard moduleId="M4" />
+                      <div className="my-2 border border-white/5 rounded-xl overflow-hidden bg-black/40 flex-1 flex flex-col min-h-[380px]">
+                        <NASA6DSimulator dbId={dbId} chapterIndex={activeChapterIndex} theme={activeTheme} />
                       </div>
                     </div>
 
