@@ -25,7 +25,8 @@ import {
   Shield,
   Users,
   Zap,
-  Target
+  Target,
+  Layers
 } from 'lucide-react'
 import Link from 'next/link'
 import type { LucideIcon } from 'lucide-react'
@@ -481,16 +482,22 @@ function ExecutiveMasterclassTheater({
           <div className="flex-1 divide-y divide-white/[0.02]">
             {BUSINESS_PLAYLIST.map((item, idx) => {
               const isSelected = idx === activeItemIndex
+              const isGold = idx % 2 === 0
+              const itemColor = isGold ? '#d4b87a' : '#cbd5e1'
+              const itemBgSelected = isGold ? 'rgba(212,184,122,0.08)' : 'rgba(203,213,225,0.08)'
+              const itemBgHover = isGold ? 'hover:bg-[#d4b87a]/[0.02]' : 'hover:bg-[#cbd5e1]/[0.02]'
+              
               return (
                 <button
                   key={item.id}
                   onClick={() => handleLessonSelect(idx)}
-                  className="w-full text-left p-3.5 flex gap-3 transition-all duration-200 cursor-pointer hover:bg-white/[0.02]"
+                  className={`w-full text-left p-3.5 flex gap-3 transition-all duration-200 cursor-pointer relative pl-5 ${itemBgHover}`}
                   style={{
-                    background: isSelected ? 'rgba(212,184,122,0.06)' : 'transparent',
+                    background: isSelected ? itemBgSelected : 'transparent',
+                    borderLeft: `3px solid ${isSelected ? itemColor : 'rgba(255,255,255,0.02)'}`
                   }}
                 >
-                  <span className="font-mono text-[9px] mt-0.5" style={{ color: isSelected ? theme.primary : 'rgba(255,255,255,0.2)' }}>
+                  <span className="font-mono text-[9px] mt-0.5" style={{ color: isSelected ? itemColor : 'rgba(255,255,255,0.3)' }}>
                     {String(idx + 1).padStart(2, '0')}
                   </span>
                   <div className="flex-1 min-w-0">
@@ -501,9 +508,18 @@ function ExecutiveMasterclassTheater({
                       {item.subtitle}
                     </p>
                   </div>
-                  <span className="text-[8px] font-mono text-white/30 shrink-0 self-center">
-                    {item.duration}
-                  </span>
+                  <div className="flex flex-col items-end gap-1.5 shrink-0 self-center">
+                    <span className="text-[8px] font-mono text-white/30">
+                      {item.duration}
+                    </span>
+                    <span className="text-[6.5px] tracking-wider px-1 py-0.2 rounded font-mono uppercase scale-90 border" style={{
+                      background: `${itemColor}10`,
+                      borderColor: `${itemColor}20`,
+                      color: itemColor
+                    }}>
+                      {isGold ? 'OURO · T' + (idx + 1) : 'PRATA · T' + (idx + 1)}
+                    </span>
+                  </div>
                 </button>
               )
             })}
@@ -868,6 +884,7 @@ function ExecutiveStudyBriefing({
   activeTheme: any
 }) {
   const [module, setModule] = useState<any>(null)
+  const [showFullSummary, setShowFullSummary] = useState(false)
 
   useEffect(() => {
     import('@/data/caderno-content-m4').then(m => {
@@ -889,7 +906,7 @@ function ExecutiveStudyBriefing({
     <div className="ipb-soft relative overflow-hidden rounded-[2rem] p-6 space-y-6">
       
       {/* Top strategic header */}
-      <div className="flex items-center justify-between pb-4 border-b border-white/[0.04]" style={{ borderBottom: '0.2px solid rgba(255,255,255,0.04)' }}>
+      <div className="flex items-center justify-between pb-4 border-b border-white/[0.04] flex-wrap gap-3" style={{ borderBottom: '0.2px solid rgba(255,255,255,0.04)' }}>
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 rounded-lg bg-[#d4b87a]/10 border border-[#d4b87a]/20 flex items-center justify-center">
             <BookOpen className="h-4 w-4 text-[#d4b87a]" />
@@ -899,11 +916,88 @@ function ExecutiveStudyBriefing({
             <h3 className="text-[14px] font-bold text-white/90 leading-none mt-0.5">Briefing Estratégico: {activeTopic.title}</h3>
           </div>
         </div>
-        <div className="flex items-center gap-2 font-mono text-[9px] text-white/35 bg-white/5 border border-white/10 rounded px-2.5 py-1">
-          <Clock className="h-3 w-3 text-[#d4b87a]" />
-          <span>Etapa M4 · T{module.topics.indexOf(activeTopic) + 1}</span>
+        
+        <div className="flex items-center gap-2">
+          <button 
+            onClick={() => setShowFullSummary(!showFullSummary)}
+            className="flex items-center gap-1.5 font-mono text-[9px] bg-[#d4b87a]/10 hover:bg-[#d4b87a]/20 border border-[#d4b87a]/30 rounded px-2.5 py-1 text-[#d4b87a] cursor-pointer transition-all duration-300 shadow-[0_0_10px_rgba(212,184,122,0.05)]"
+          >
+            <Layers className="h-3.5 w-3.5" />
+            <span>{showFullSummary ? 'FECHAR SUMÁRIO GERAL' : 'SUMÁRIO GERAL (30 DISCIPLINAS)'}</span>
+          </button>
+
+          <div className="flex items-center gap-2 font-mono text-[9px] text-white/35 bg-white/5 border border-white/10 rounded px-2.5 py-1">
+            <Clock className="h-3 w-3 text-[#d4b87a]" />
+            <span>Etapa M4 · T{module.topics.indexOf(activeTopic) + 1}</span>
+          </div>
         </div>
       </div>
+
+      <AnimatePresence mode="wait">
+        {showFullSummary && (
+          <motion.div 
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            className="p-5 rounded-2xl bg-white/[0.01] border border-[#d4b87a]/20 relative overflow-hidden backdrop-blur-xl space-y-4"
+            style={{ boxShadow: '0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.02)' }}
+          >
+            <div className="absolute inset-0 opacity-[0.02] pointer-events-none" style={{
+              background: 'radial-gradient(circle at 50% 50%, #d4b87a, transparent 70%)'
+            }} />
+            
+            <div className="flex justify-between items-center pb-2 border-b border-white/[0.06] flex-wrap gap-2">
+              <div>
+                <span className="text-[7.5px] uppercase tracking-wider font-bold text-[#d4b87a]">Mapeamento Completo</span>
+                <h4 className="text-[12px] font-bold text-white/90">Sumário Geral do MBA Executive M4 (30 Disciplinas)</h4>
+              </div>
+              <span className="text-[8px] px-2 py-0.5 rounded-full bg-white/5 border border-white/10 text-white/50 font-mono">6 Pilares Acadêmicos</span>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {module.topics.map((topic: any, tIdx: number) => {
+                const isTopicGold = tIdx % 2 === 0
+                const topicColor = isTopicGold ? '#d4b87a' : '#cbd5e1'
+                
+                return (
+                  <div 
+                    key={topic.id} 
+                    className="p-4 rounded-xl bg-white/[0.015] border border-white/[0.04] flex flex-col justify-between h-full hover:border-white/10 transition-all duration-300 group"
+                  >
+                    <div>
+                      <div className="flex justify-between items-start mb-2">
+                        <span className="text-[8px] font-mono" style={{ color: topicColor }}>PILAR 0{tIdx + 1}</span>
+                        <span className="text-[7px] font-mono px-1 py-0.2 rounded" style={{
+                          background: `${topicColor}10`,
+                          border: `1px solid ${topicColor}20`,
+                          color: topicColor
+                        }}>
+                          {isTopicGold ? 'GOLD' : 'SILVER'}
+                        </span>
+                      </div>
+                      <h5 className="text-[10.5px] font-bold text-white/90 group-hover:text-white transition-colors">{topic.title}</h5>
+                      
+                      <ul className="space-y-2 mt-3 border-t border-white/[0.03] pt-3">
+                        {topic.blocks.filter((b: any) => b.type === 'slides').map((block: any, bIdx: number) => {
+                          const isSubGold = bIdx % 2 === 0
+                          const subColor = isSubGold ? '#d4b87a' : '#cbd5e1'
+                          
+                          return (
+                            <li key={block.id} className="flex items-start gap-2 text-[9.5px] text-white/60 leading-normal">
+                              <span className="mt-1.5 w-1 h-1 rounded-full shrink-0" style={{ backgroundColor: subColor }} />
+                              <span className="hover:text-white transition-colors text-justify">{block.title}</span>
+                            </li>
+                          )
+                        })}
+                      </ul>
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch">
         
