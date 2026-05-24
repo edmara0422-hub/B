@@ -35,6 +35,51 @@ import type { LucideIcon } from 'lucide-react'
 import { CadernoModulePanel } from '@/components/caderno/caderno-module'
 import { loadModuleContent } from '@/data/caderno-content-loader'
 import { IpbBackground } from '@/components/sea/ipb-background'
+import { SUBJECTS_DB } from '@/data/caderno-content-m1-m8'
+
+const SYLLABUS_TO_DB_MAP: Record<string, string> = {
+  // Pilar 1: Inovação e Estratégia
+  'M4-T1-S1': 'M1-S3', // Sustentabilidade em Negócios
+  'M4-T1-S2': 'M1-S1', // Gestão da Inovação e Ferramentas Digitais
+  'M4-T1-S3': 'M1-S2', // Pensamento Criativo
+  'M4-T1-S4': 'M5-S2', // Empreendedorismo e Inovação Exponencial (M5-S2 no BD)
+  'M4-T1-S5': 'M5-S2', // Empreendedorismo e Inovação Exponencial (M5-S2 no BD)
+  
+  // Pilar 2: Finanças e Inteligência Quantitativa
+  'M4-T2-S1': 'M6-S1', // Análise Financeira (M6-S1 no BD)
+  'M4-T2-S2': 'M6-S1', // Análise Financeira (M6-S1 no BD)
+  'M4-T2-S3': 'M2-S3', // Matemática Financeira (M2-S3 no BD)
+  'M4-T2-S4': 'M2-S2', // Demonstrações Contábeis (M2-S2 no BD)
+  'M4-T2-S5': 'M6-S2', // Precificação (M6-S2 no BD)
+  'M4-T2-S6': 'M4-S2', // Cálculo Aplicado a Negócios (M4-S2 no BD)
+  'M4-T2-S7': 'M4-S3', // Análise Estatística (M4-S3 no BD)
+  
+  // Pilar 3: Liderança, Pessoas e Cultura
+  'M4-T3-S1': 'M3-S2', // Liderança e Gestão de Equipes (M3-S2 no BD)
+  'M4-T3-S2': 'M3-S2', // Liderança e Gestão de Equipes (M3-S2 no BD)
+  'M4-T3-S3': 'M8-S1', // Educação, Identidade e Solidariedade (M8-S1 no BD)
+  'M4-T3-S4': 'M6-S3', // Ética (M6-S3 no BD)
+  
+  // Pilar 4: Gestão e Operações Corporativas
+  'M4-T4-S1': 'M2-S1', // Gestão de Negócios (M2-S1 no BD)
+  'M4-T4-S2': 'M2-S1', // Gestão de Negócios (M2-S1 no BD)
+  'M4-T4-S3': 'M1-S3', // Sustentabilidade em Negócios (M1-S3 no BD)
+  
+  // Pilar 5: Mercado e Macroeconomia
+  'M4-T5-S1': 'M3-S1', // Economia de Empresa e Análise Mercadológica (M3-S1 no BD)
+  'M4-T5-S2': 'M5-S3', // Ambiente Macroeconômico (M5-S3 no BD)
+  'M4-T5-S3': 'M4-S1', // Filosofia (M4-S1 no BD)
+  'M4-T5-S4': 'M4-S1', // Filosofia (M4-S1 no BD)
+  
+  // Pilar 6: Impacto Social e Intervenção
+  'M4-T6-S1': 'M8-S2', // Pesquisa Aplicada a Negócios (M8-S2 no BD)
+  'M4-T6-S2': 'M7-S3', // Projeto de Intervenção em Negócios (M7-S3 no BD)
+  'M4-T6-S3': 'M7-S1', // Empreendedorismo Social (M7-S1 no BD)
+  'M4-T6-S4': 'M7-S1', // Empreendedorismo Social (M7-S1 no BD)
+  'M4-T6-S5': 'M7-S2', // Teologia e Sociedade (M7-S2 no BD)
+  'M4-T6-S6': 'M8-S1', // Educação, Identidade e Solidariedade (M8-S1 no BD)
+  'M4-T6-S7': 'M5-S1', // Leitura e Escrita Acadêmica (M5-S1 no BD)
+}
 
 // ── Module data ───────────────────────────────────────────────────────────────
 
@@ -872,40 +917,27 @@ function ExecutiveStudyBriefing({
   activeSubjectIndex: number
   onChangeSubjectIndex: (index: number) => void
 }) {
-  const [module, setModule] = useState<any>(null)
   const [activeTab, setActiveTab] = useState<'summary' | 'tutor' | 'notes' | 'map'>('summary')
-  const [showFullSummary, setShowFullSummary] = useState(false)
   const [tutorInput, setTutorInput] = useState('')
   const [isTutorLoading, setIsTutorLoading] = useState(false)
   const [tutorHistory, setTutorHistory] = useState<any[]>([
     { role: 'assistant', content: 'Bem-vindo ao Advisor de Diretoria IA. Como seu consultor estratégico de negócios, estou pronto para detalhar WACC, valuation, segurança psicológica, frameworks organizacionais ou metodologias científicas de sua trilha. O que deseja analisar hoje?' }
   ])
+  const [notes, setNotes] = useState('')
+
+  const syllabusItem = ACADEMIC_SYLLABUS[activeSubjectIndex] ?? ACADEMIC_SYLLABUS[0]
+  const dbId = SYLLABUS_TO_DB_MAP[syllabusItem.id] ?? 'M1-S1'
+  const activeSubjectData = SUBJECTS_DB.find(s => s.id === dbId) ?? SUBJECTS_DB[0]
 
   useEffect(() => {
-    import('@/data/caderno-content-m4').then(m => {
-      setModule(m.M4_CONTENT)
-    })
-  }, [])
+    const saved = localStorage.getItem(`ipb-notes-${syllabusItem.id}`)
+    setNotes(saved ?? '')
+  }, [syllabusItem.id])
 
-  if (!module) return <div className="h-48 flex items-center justify-center text-white/30 font-mono text-[10px]">Carregando briefing estratégico...</div>
-
-  // Flatten slide blocks to easily locate our active subject (0-29)
-  const allBlocks = module.topics.flatMap((t: any) => 
-    t.blocks.filter((b: any) => b.type === 'slides').map((b: any) => ({
-      ...b,
-      topicId: t.id,
-      topicTitle: t.title
-    }))
-  )
-
-  const activeBlock = allBlocks[activeSubjectIndex] ?? allBlocks[0]
-  if (!activeBlock) return null
-
-  const activeSlide = activeBlock.slides?.[0]
-
-  // Extract texts/notes of the active topic
-  const currentTopic = module.topics.find((t: any) => t.id === activeBlock.topicId) ?? module.topics[0]
-  const textBlocks = currentTopic.blocks.filter((b: any) => b.type === 'text')
+  const handleSaveNotes = (val: string) => {
+    setNotes(val)
+    localStorage.setItem(`ipb-notes-${syllabusItem.id}`, val)
+  }
 
   const handleAskTutor = async (question: string) => {
     if (!question.trim()) return
@@ -915,20 +947,47 @@ function ExecutiveStudyBriefing({
     setIsTutorLoading(true)
 
     setTimeout(() => {
-      let reply = 'Interessante questão estratégica. Alinhar o fluxo de processos operacionais com os objetivos transversais de OKR é a recomendação para o presente cenário, minimizando gargalos cognitivos nos times.'
+      let reply = ''
       const q = question.toLowerCase()
 
-      if (q.includes('wacc') || q.includes('valuation') || q.includes('finanças') || q.includes('calculo') || q.includes('ebitda')) {
-        reply = 'Excelente ponto quantitativo. A maximização de retorno exige governança rigorosa sobre o custo de capital (WACC) e o cálculo das margens de contribuição operacional. No valuation via DCF, a modelagem de crescimento estável deve respeitar a elasticidade mercadológica observada.'
-      } else if (q.includes('segurança') || q.includes('liderança') || q.includes('aristotle') || q.includes('equipe') || q.includes('cultura')) {
-        reply = 'O maior fator de alavancagem operacional é a densidade de talentos aliada à segurança psicológica (Modelo Aristotle do Google). Recomendo instituir canais transparentes e feedbacks estruturados via modelo SBI para mitigar desalinhamentos cognitivos de equipe.'
-      } else if (q.includes('lean') || q.includes('startup') || q.includes('inovação') || q.includes('canvas') || q.includes('estratégia')) {
-        reply = 'Compreendo sua meta de aceleração. Para consolidar este ecossistema disruptivo, recomendo implementar o framework Lean Startup com ciclos curtos de feedback e validação rápida. Focar no mapeamento de core capabilities e oceanos azuis blindará a empresa contra concorrência agressiva.'
+      let bestMatch = ''
+      let matchScore = 0
+
+      activeSubjectData.chapters.forEach(ch => {
+        ch.subsections.forEach(sub => {
+          let score = 0
+          const words = q.split(/\s+/)
+          words.forEach(w => {
+            if (w.length > 2 && sub.content.toLowerCase().includes(w)) score += 1
+            if (w.length > 2 && sub.title.toLowerCase().includes(w)) score += 2
+          })
+
+          if (score > matchScore) {
+            matchScore = score
+            bestMatch = sub.content
+            if (sub.deepDive) bestMatch += '\n\n**Aprofundamento:** ' + sub.deepDive
+            if (sub.studyCase) bestMatch += `\n\n**Estudo de Caso — ${sub.studyCase.title}:** ${sub.studyCase.body}`
+          }
+        })
+      })
+
+      if (matchScore > 1) {
+        reply = `Com base no material oficial da disciplina *${activeSubjectData.title}*:\n\n${bestMatch}`
+      } else {
+        if (q.includes('wacc') || q.includes('valuation') || q.includes('finanças') || q.includes('calculo') || q.includes('ebitda')) {
+          reply = 'Excelente ponto quantitativo. A maximização de retorno exige governança rigorosa sobre o custo de capital (WACC) e o cálculo das margens de contribuição operacional. No valuation via DCF, a modelagem de crescimento estável deve respeitar a elasticidade mercadológica observada.'
+        } else if (q.includes('segurança') || q.includes('liderança') || q.includes('aristotle') || q.includes('equipe') || q.includes('cultura')) {
+          reply = 'O maior fator de alavancagem operacional é a densidade de talentos aliada à segurança psicológica (Modelo Aristotle do Google). Recomendo instituir canais transparentes e feedbacks estruturados via modelo SBI para mitigar desalinhamentos cognitivos de equipe.'
+        } else if (q.includes('lean') || q.includes('startup') || q.includes('inovação') || q.includes('canvas') || q.includes('estratégia')) {
+          reply = 'Compreendo sua meta de aceleração. Para consolidar este ecossistema disruptivo, recomendo implementar o framework Lean Startup com ciclos curtos de feedback e validação rápida. Focar no mapeamento de core capabilities e oceanos azuis blindará a empresa contra concorrência agressiva.'
+        } else {
+          reply = `Como seu consultor estratégico de negócios para a disciplina *${activeSubjectData.title}*, analisei sua pergunta. Para obtermos maior eficiência operacional e impacto estratégico, recomendo cruzar os dados de desempenho com o roadmap tático do módulo. Se desejar, posso aprofundar em algum capítulo específico do nosso Sumário.`
+        }
       }
 
       setTutorHistory([...updated, { role: 'assistant', content: reply }])
       setIsTutorLoading(false)
-    }, 1000)
+    }, 800)
   }
 
   return (
@@ -942,11 +1001,11 @@ function ExecutiveStudyBriefing({
           </div>
           <div>
             <span className="text-[7.5px] uppercase tracking-[0.25em] font-bold text-[#d4b87a]">MBA Executive Cockpit</span>
-            <h3 className="text-[14px] font-bold text-white/90 leading-none mt-0.5">{activeBlock.title}</h3>
+            <h3 className="text-[12px] font-bold text-white/95 leading-none mt-0.5">{syllabusItem.title}</h3>
           </div>
         </div>
         
-        {/* Navigation Tabs (SUMÁRIO, IA TUTOR, NOTAS, MAPA) */}
+        {/* Navigation Tabs */}
         <div className="flex items-center gap-1 bg-white/5 border border-white/10 rounded-lg p-0.5">
           {[
             { id: 'summary', label: 'SUMÁRIO', icon: BookOpen },
@@ -976,13 +1035,13 @@ function ExecutiveStudyBriefing({
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch">
         
-        {/* Main Work Panel: Tab content (takes 2 cols) */}
+        {/* Main Work Panel */}
         <div className="lg:col-span-2 space-y-6 flex flex-col justify-between">
           
           <AnimatePresence mode="wait">
             
-            {/* Tab 1: Briefing Slide Summary */}
-            {activeTab === 'summary' && activeSlide && (
+            {/* Tab 1: Detailed parsed textbook */}
+            {activeTab === 'summary' && activeSubjectData && (
               <motion.div
                 key="summary-tab"
                 initial={{ opacity: 0, y: 10 }}
@@ -990,38 +1049,90 @@ function ExecutiveStudyBriefing({
                 exit={{ opacity: 0, y: -10 }}
                 className="space-y-4 flex-1 flex flex-col justify-between"
               >
-                <div className="p-6 rounded-2xl bg-white/[0.015] border border-white/[0.04] backdrop-blur-md relative overflow-hidden transition-all duration-300 hover:border-[#d4b87a]/20 flex flex-col justify-between h-full group"
+                <div className="p-6 rounded-2xl bg-[#0c0905]/40 border border-white/[0.04] backdrop-blur-md relative overflow-hidden transition-all duration-300 hover:border-[#d4b87a]/20 flex flex-col justify-between h-[360px] lg:h-[400px] group"
                   style={{ boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.02), 0 8px 24px rgba(0,0,0,0.15)' }}
                 >
                   <div className="absolute inset-0 opacity-[0.015] pointer-events-none group-hover:opacity-[0.03] transition-all" style={{
                     background: 'radial-gradient(circle at 0% 0%, #d4b87a, transparent 50%)'
                   }} />
 
-                  <div>
-                    <div className="flex justify-between items-center border-b border-white/[0.06] pb-2.5 w-full">
-                      <h4 className="text-[11.5px] font-bold text-white/90 leading-tight tracking-tight uppercase">
-                        {activeSlide.title}
-                      </h4>
-                      <span className="text-[8px] px-1.5 py-0.5 rounded font-mono bg-[#d4b87a]/10 border border-[#d4b87a]/20 text-[#d4b87a]">SLIDE DE ESTRATÉGIA</span>
+                  <div className="overflow-y-auto space-y-6 pr-2 ipb-thinscroll h-full">
+                    <div className="flex justify-between items-start border-b border-white/[0.06] pb-3 w-full sticky top-0 bg-[#0c0905]/90 backdrop-blur-md z-10">
+                      <div>
+                        <span className="text-[8px] px-1.5 py-0.5 rounded font-mono bg-[#d4b87a]/10 border border-[#d4b87a]/20 text-[#d4b87a] uppercase">SUMÁRIO COMPLETO</span>
+                        <h4 className="text-[12px] font-bold text-white/90 leading-tight mt-1 uppercase">
+                          {syllabusItem.title}
+                        </h4>
+                        <span className="text-[9px] text-white/40 block mt-0.5">{activeSubjectData.title}</span>
+                      </div>
                     </div>
 
-                    <ul className="space-y-3.5 mt-4">
-                      {activeSlide.bullets.map((bullet: string, bIdx: number) => (
-                        <li key={bIdx} className="text-[10.5px] text-white/60 leading-relaxed flex items-start gap-2.5 text-justify">
-                          <span className="mt-1.5 w-1.5 h-1.5 rounded-full shrink-0 bg-[#d4b87a]" />
-                          <span>{bullet}</span>
-                        </li>
+                    <div className="space-y-6 mt-4">
+                      {activeSubjectData.chapters.map((chapter: any, cIdx: number) => (
+                        <div key={cIdx} className="space-y-4 pb-4 border-b border-white/[0.04] last:border-b-0">
+                          <div className="flex items-start gap-2">
+                            <span className="text-[10px] font-mono font-bold text-[#d4b87a] mt-0.5">Cap {cIdx + 1}</span>
+                            <div>
+                              <h5 className="text-[11px] font-bold text-white/90 leading-tight uppercase">
+                                {chapter.title}
+                              </h5>
+                              {chapter.description && (
+                                <p className="text-[9px] text-white/40 italic mt-0.5 leading-relaxed">{chapter.description}</p>
+                              )}
+                            </div>
+                          </div>
+
+                          <div className="space-y-3.5 pl-3 border-l border-white/[0.06] ml-2 mt-3">
+                            {chapter.subsections.map((sub: any, sIdx: number) => (
+                              <div key={sIdx} className="space-y-2">
+                                {sub.title && (
+                                  <h6 className="text-[9.5px] font-bold text-white/80 leading-snug flex items-center gap-1.5">
+                                    <span className="w-1 h-1 rounded-full bg-[#cbd5e1]" />
+                                    {sub.title}
+                                  </h6>
+                                )}
+                                <p className="text-[9.5px] text-white/55 leading-relaxed text-justify whitespace-pre-line">
+                                  {sub.content}
+                                </p>
+
+                                {sub.studyCase && (
+                                  <div className="mt-2.5 rounded-xl p-3.5 bg-[#d4b87a]/5 border-l-2 border-[#d4b87a] border border-[#d4b87a]/10 space-y-1">
+                                    <span className="text-[7.5px] uppercase tracking-wider font-bold text-[#d4b87a] block">Estudo de Caso · {sub.studyCase.title}</span>
+                                    <p className="text-[9px] text-[#d4b87a]/80 leading-relaxed text-justify whitespace-pre-line">
+                                      {sub.studyCase.body}
+                                    </p>
+                                  </div>
+                                )}
+
+                                {sub.deepDive && (
+                                  <div className="mt-2.5 rounded-xl p-3 bg-white/[0.02] border border-white/[0.04] space-y-1">
+                                    <span className="text-[7.5px] uppercase tracking-wider font-bold text-[#cbd5e1]/50 block">Aprofundamento Técnico</span>
+                                    <p className="text-[9px] text-white/40 leading-relaxed text-justify whitespace-pre-line">
+                                      {sub.deepDive}
+                                    </p>
+                                  </div>
+                                )}
+                              </div>
+                            ))}
+
+                            {chapter.synthesis && (
+                              <div className="mt-4 rounded-xl p-3 bg-white/[0.01] border border-white/[0.04] space-y-2">
+                                <span className="text-[7.5px] uppercase tracking-wider font-bold text-[#d4b87a]/80 block">Síntese Estratégica & Insights</span>
+                                <ul className="space-y-1.5">
+                                  {chapter.synthesis.bullets.map((bullet: string, bIdx: number) => (
+                                    <li key={bIdx} className="text-[9px] text-white/50 leading-relaxed flex items-start gap-2 text-justify">
+                                      <span className="mt-1.5 w-1 h-1 rounded-full shrink-0 bg-[#cbd5e1]" />
+                                      <span>{bullet}</span>
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+                            )}
+                          </div>
+                        </div>
                       ))}
-                    </ul>
-                  </div>
-
-                  {activeSlide.highlight && (
-                    <div className="mt-6 rounded-xl p-3.5 bg-[#d4b87a]/5 border border-[#d4b87a]/15">
-                      <p className="text-[9.5px] italic text-[#d4b87a]/70 leading-relaxed text-justify">
-                        {activeSlide.highlight}
-                      </p>
                     </div>
-                  )}
+                  </div>
                 </div>
               </motion.div>
             )}
@@ -1035,15 +1146,14 @@ function ExecutiveStudyBriefing({
                 exit={{ opacity: 0, y: -10 }}
                 className="space-y-4 flex-1 flex flex-col justify-between"
               >
-                <div className="p-5 rounded-2xl bg-white/[0.015] border border-white/[0.04] backdrop-blur-md flex flex-col justify-between h-[360px] relative overflow-hidden"
+                <div className="p-5 rounded-2xl bg-white/[0.015] border border-white/[0.04] backdrop-blur-md flex flex-col justify-between h-[360px] lg:h-[400px] relative overflow-hidden"
                   style={{ boxShadow: '0 8px 24px rgba(0,0,0,0.15)' }}
                 >
-                  {/* Messages log */}
                   <div className="flex-1 overflow-y-auto space-y-3.5 pr-2 ipb-thinscroll">
                     {tutorHistory.map((msg, i) => (
                       <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                         <div 
-                          className="max-w-[85%] rounded-xl p-3 text-[10px] leading-relaxed text-justify"
+                          className="max-w-[85%] rounded-xl p-3 text-[10px] leading-relaxed text-justify whitespace-pre-line"
                           style={{
                             background: msg.role === 'user' ? 'rgba(212,184,122,0.12)' : 'rgba(255,255,255,0.03)',
                             border: msg.role === 'user' ? '1px solid rgba(212,184,122,0.22)' : '1px solid rgba(255,255,255,0.05)',
@@ -1063,12 +1173,11 @@ function ExecutiveStudyBriefing({
                     )}
                   </div>
 
-                  {/* Suggestion Chips */}
                   <div className="flex flex-wrap gap-1.5 my-3">
                     {['Explicar Conceito', 'Aplicar ao meu Negócio', 'Análise SWOT'].map((chip) => (
                       <button
                         key={chip}
-                        onClick={() => handleAskTutor(`${chip} da disciplina ${activeBlock.title}`)}
+                        onClick={() => handleAskTutor(`${chip} da disciplina ${syllabusItem.title}`)}
                         className="px-2 py-1 rounded bg-white/5 border border-white/10 text-white/50 text-[8px] hover:bg-white/10 cursor-pointer transition-all"
                       >
                         {chip}
@@ -1076,7 +1185,6 @@ function ExecutiveStudyBriefing({
                     ))}
                   </div>
 
-                  {/* Input form */}
                   <div className="flex gap-2 border-t border-white/[0.06] pt-3 shrink-0">
                     <input
                       value={tutorInput}
@@ -1096,7 +1204,7 @@ function ExecutiveStudyBriefing({
               </motion.div>
             )}
 
-            {/* Tab 3: Memorando / Extra notes */}
+            {/* Tab 3: Memorando / Custom notes */}
             {activeTab === 'notes' && (
               <motion.div
                 key="notes-tab"
@@ -1105,25 +1213,25 @@ function ExecutiveStudyBriefing({
                 exit={{ opacity: 0, y: -10 }}
                 className="space-y-4 flex-1 flex flex-col justify-between"
               >
-                <div className="p-5 rounded-2xl bg-white/[0.015] border border-white/[0.04] relative overflow-hidden min-h-[300px] flex flex-col justify-between">
+                <div className="p-5 rounded-2xl bg-white/[0.015] border border-white/[0.04] relative overflow-hidden h-[360px] lg:h-[400px] flex flex-col justify-between">
                   <div className="absolute inset-0 opacity-[0.01] pointer-events-none" style={{
                     background: 'radial-gradient(circle at 100% 100%, #d4b87a, transparent 50%)'
                   }} />
-                  <div>
-                    <div className="flex items-center gap-2 mb-3">
-                      <FileText className="h-4 w-4 text-[#d4b87a]" />
-                      <span className="text-[8.5px] uppercase tracking-widest font-bold text-white/40">Notas de Implementação Operacional</span>
+                  <div className="flex flex-col h-full space-y-3">
+                    <div className="flex items-center justify-between shrink-0">
+                      <div className="flex items-center gap-2">
+                        <FileText className="h-4 w-4 text-[#d4b87a]" />
+                        <span className="text-[8.5px] uppercase tracking-widest font-bold text-white/40">Notas de Implementação Operacional</span>
+                      </div>
+                      <span className="text-[7.5px] text-white/30 font-mono">Salvo automaticamente</span>
                     </div>
-                    {textBlocks.length > 0 ? (
-                      textBlocks.map((block: any) => (
-                        <div key={block.id} className="space-y-2 mt-2">
-                          {block.title && <h5 className="text-[11px] font-bold text-white/90">{block.title}</h5>}
-                          <p className="text-[10px] text-white/55 leading-relaxed text-justify">{block.body}</p>
-                        </div>
-                      ))
-                    ) : (
-                      <p className="text-[10px] text-white/40 italic mt-6 text-center">Nenhuma anotação extra cadastrada para este tópico. Utilize o IA Advisor para elaborar resumos específicos.</p>
-                    )}
+
+                    <textarea
+                      value={notes}
+                      onChange={(e) => handleSaveNotes(e.target.value)}
+                      placeholder={`Escreva suas notas estratégicas e memorandos de implementação para a disciplina: ${syllabusItem.title}...`}
+                      className="flex-1 bg-white/[0.02] border border-white/[0.05] rounded-xl p-3 text-[10px] text-white/80 leading-relaxed outline-none focus:border-[#d4b87a]/30 resize-none placeholder:text-white/20 ipb-thinscroll"
+                    />
                   </div>
                 </div>
               </motion.div>
@@ -1208,7 +1316,6 @@ function ExecutiveStudyBriefing({
             })}
           </div>
         </div>
-
       </div>
     </div>
   )
