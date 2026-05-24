@@ -1391,9 +1391,9 @@ function ModuleRail({
   onSelect: (i: number) => void
 }) {
   return (
-    <div className="ipb-soft relative overflow-hidden rounded-[1.8rem] px-5 py-6 md:px-8 space-y-6">
+    <div className="ipb-soft relative overflow-hidden rounded-[1.8rem] px-5 py-6 md:px-8">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="mb-6 flex items-center justify-between">
         <div className="flex items-center gap-2.5">
           <div
             className="flex h-8 w-8 items-center justify-center rounded-[0.7rem] border border-white/10"
@@ -1403,160 +1403,97 @@ function ModuleRail({
           </div>
           <span className="text-[10px] font-semibold uppercase tracking-[0.28em] text-[#d4b87a]">Trilhas Acadêmicas</span>
         </div>
-        <div className="flex gap-4 items-center">
-          <span className="text-[8px] px-2 py-0.5 rounded font-mono bg-[#d4b87a]/10 border border-[#d4b87a]/20 text-[#d4b87a]">TRILHA OURO: 1 MÓDULO</span>
-          <span className="text-[8px] px-2 py-0.5 rounded font-mono bg-[#cbd5e1]/10 border border-[#cbd5e1]/20 text-[#cbd5e1]">TRILHA PRATA: 3 MÓDULOS</span>
+        <div className="flex items-center gap-3">
+          <span className="text-[8.5px] px-2 py-0.5 rounded font-mono bg-[#d4b87a]/10 border border-[#d4b87a]/20 text-[#d4b87a]">TRILHA OURO</span>
+          <span className="text-[8.5px] px-2 py-0.5 rounded font-mono bg-[#cbd5e1]/10 border border-[#cbd5e1]/20 text-[#cbd5e1]">TRILHA PRATA</span>
         </div>
       </div>
 
-      <div className="space-y-6 relative">
-        {/* UPPER TRACK: TRILHA OURO */}
-        <div className="relative rounded-xl p-3.5 bg-gradient-to-r from-[#d4b87a]/5 to-transparent border border-[#d4b87a]/10">
-          <div className="absolute top-2 left-3 flex items-center gap-1.5">
-            <span className="text-[7.5px] uppercase tracking-widest font-mono font-bold text-[#d4b87a]">Trilha Ouro (Gestão & Estratégia)</span>
-          </div>
-          <div className="relative mt-5 px-4">
-            {/* Gold horizontal glowing line */}
-            <div className="pointer-events-none absolute inset-x-0 top-[2.25rem] h-[1px]" style={{
-              background: 'linear-gradient(90deg, transparent 0%, rgba(212,184,122,0.1) 10%, rgba(212,184,122,0.4) 50%, rgba(212,184,122,0.1) 90%, transparent 100%)'
-            }} />
-            
-            <div className="relative flex items-start justify-center">
-              {modules.filter(m => m.id === 'M4').map((module) => {
-                const index = modules.findIndex(m => m.id === module.id)
-                const active = index === activeIndex
-                const ModuleIcon = module.icon
+      {/* Unified Rail nodes with parallel gold and silver tracks layered vertically */}
+      <div className="relative px-2 md:px-4">
+        {/* Upper Track Line (Gold - Dourado) */}
+        <div className="pointer-events-none absolute inset-x-0 top-[2.05rem] h-[1.5px]" style={{
+          background: 'linear-gradient(90deg, transparent 0%, rgba(212,184,122,0.08) 12%, rgba(212,184,122,0.38) 45%, rgba(212,184,122,0.48) 50%, rgba(212,184,122,0.38) 55%, rgba(212,184,122,0.08) 88%, transparent 100%)',
+          boxShadow: '0 0 4px rgba(212, 184, 122, 0.2)'
+        }} />
 
-                return (
-                  <button
-                    key={module.id}
-                    onClick={() => onSelect(index)}
-                    className="group flex min-w-0 max-w-[120px] flex-col items-center gap-2 text-center cursor-pointer"
-                    title={module.title}
+        {/* Lower Track Line (Silver - Prata) */}
+        <div className="pointer-events-none absolute inset-x-0 top-[2.45rem] h-[1.5px]" style={{
+          background: 'linear-gradient(90deg, transparent 0%, rgba(203,213,225,0.08) 12%, rgba(203,213,225,0.28) 45%, rgba(203,213,225,0.38) 50%, rgba(203,213,225,0.28) 55%, rgba(203,213,225,0.08) 88%, transparent 100%)',
+          boxShadow: '0 0 4px rgba(203, 213, 225, 0.15)'
+        }} />
+
+        <div className="relative flex items-start justify-between gap-2 md:gap-4">
+          {modules.map((module, index) => {
+            const active = index === activeIndex
+            const done = activeIndex !== null && index < activeIndex
+            const ModuleIcon = module.icon
+            const isGold = module.id === 'M4'
+            const itemColor = isGold ? '#d4b87a' : '#cbd5e1'
+
+            return (
+              <button
+                key={module.id}
+                onClick={() => onSelect(index)}
+                className="group flex min-w-0 flex-1 flex-col items-center gap-2 text-center cursor-pointer"
+                title={module.title}
+              >
+                <div className="flex flex-col items-center gap-2">
+                  <motion.div
+                    whileHover={{ y: -2, scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="relative flex h-10 w-10 items-center justify-center rounded-full border transition-all duration-300 md:h-11 md:w-11"
+                    style={
+                      active
+                        ? {
+                            borderColor: isGold ? 'rgba(212, 184, 122, 0.55)' : 'rgba(203, 213, 225, 0.55)',
+                            background: isGold 
+                              ? 'radial-gradient(circle at 30% 28%, rgba(212,184,122,0.55) 0%, rgba(212,184,122,0.35) 45%, rgba(40,28,8,0.95) 100%)'
+                              : 'radial-gradient(circle at 30% 28%, rgba(203,213,225,0.45) 0%, rgba(203,213,225,0.25) 45%, rgba(15,18,22,0.95) 100%)',
+                            boxShadow: isGold
+                              ? '0 0 16px rgba(212, 184, 122, 0.32), 0 0 32px rgba(212, 184, 122, 0.16), inset 0 0.2px 0.2px rgba(255,235,180,0.32)'
+                              : '0 0 16px rgba(203, 213, 225, 0.22), 0 0 32px rgba(203, 213, 225, 0.11), inset 0 0.2px 0.2px rgba(255,255,255,0.22)',
+                            color: '#fff',
+                          }
+                        : done
+                        ? {
+                            borderColor: isGold ? 'rgba(212, 184, 122, 0.32)' : 'rgba(203, 213, 225, 0.32)',
+                            background: isGold
+                              ? 'linear-gradient(180deg, rgba(212,184,122,0.18) 0%, rgba(20,16,8,0.92) 100%)'
+                              : 'linear-gradient(180deg, rgba(203,213,225,0.18) 0%, rgba(12,14,18,0.92) 100%)',
+                            color: 'rgba(255,255,255,0.8)',
+                          }
+                        : {
+                            borderColor: 'rgba(200,205,215,0.14)',
+                            background: 'linear-gradient(180deg, rgba(200,205,215,0.06) 0%, rgba(20,22,28,0.92) 100%)',
+                            color: 'rgba(255,255,255,0.4)',
+                          }
+                    }
                   >
-                    <div className="flex flex-col items-center gap-2">
-                      <motion.div
-                        whileHover={{ y: -2, scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        className="relative flex h-10 w-10 items-center justify-center rounded-full border transition-all duration-300 md:h-11 md:w-11"
-                        style={
-                          active
-                            ? {
-                                borderColor: 'rgba(212, 184, 122, 0.55)',
-                                background: 'radial-gradient(circle at 30% 28%, rgba(212,184,122,0.55) 0%, rgba(212,184,122,0.35) 45%, rgba(40,28,8,0.95) 100%)',
-                                boxShadow: '0 0 16px rgba(212, 184, 122, 0.32), 0 0 32px rgba(212, 184, 122, 0.16), inset 0 0.2px 0.2px rgba(255,235,180,0.32)',
-                                color: '#fff',
-                              }
-                            : {
-                                borderColor: 'rgba(212,184,122,0.14)',
-                                background: 'linear-gradient(180deg, rgba(212,184,122,0.06) 0%, rgba(20,20,20,0.92) 100%)',
-                                color: 'rgba(255,255,255,0.4)',
-                              }
-                        }
-                      >
-                        <ModuleIcon className="h-3.5 w-3.5" />
-                      </motion.div>
-                    </div>
+                    <ModuleIcon className="h-3.5 w-3.5" />
+                  </motion.div>
+                </div>
 
-                    <div
-                      className="h-1.5 w-1.5 rounded-full transition-all duration-300 mt-1"
-                      style={
-                        active
-                          ? { background: '#d4b87a', boxShadow: '0 0 8px rgba(212,184,122,0.8)' }
-                          : { background: 'rgba(212,184,122,0.15)' }
-                      }
-                    />
+                <div
+                  className="h-1.5 w-1.5 rounded-full transition-all duration-300 mt-1"
+                  style={
+                    active
+                      ? { background: itemColor, boxShadow: `0 0 8px ${itemColor}` }
+                      : done
+                      ? { background: `${itemColor}80` }
+                      : { background: 'rgba(200,205,215,0.20)' }
+                  }
+                />
 
-                    <span
-                      className="text-center text-[9px] leading-tight tracking-[0.06em] mt-1 transition-colors duration-200"
-                      style={{ color: active ? 'rgba(255,255,255,0.8)' : 'rgba(255,255,255,0.35)' }}
-                    >
-                      {module.id} · {module.title}
-                    </span>
-                  </button>
-                )
-              })}
-            </div>
-          </div>
-        </div>
-
-        {/* LOWER TRACK: TRILHA PRATA */}
-        <div className="relative rounded-xl p-3.5 bg-gradient-to-r from-[#cbd5e1]/5 to-transparent border border-white/[0.04]">
-          <div className="absolute top-2 left-3 flex items-center gap-1.5">
-            <span className="text-[7.5px] uppercase tracking-widest font-mono font-bold text-[#cbd5e1]/60">Trilha Prata (Ciências Clínicas)</span>
-          </div>
-          <div className="relative mt-5 px-4">
-            {/* Silver horizontal glowing line */}
-            <div className="pointer-events-none absolute inset-x-0 top-[2.25rem] h-[1px]" style={{
-              background: 'linear-gradient(90deg, transparent 0%, rgba(203,213,225,0.1) 10%, rgba(203,213,225,0.3) 50%, rgba(203,213,225,0.1) 90%, transparent 100%)'
-            }} />
-            
-            <div className="relative flex items-start justify-around gap-2 md:gap-4">
-              {modules.filter(m => m.id !== 'M4').map((module) => {
-                const index = modules.findIndex(m => m.id === module.id)
-                const active = index === activeIndex
-                const done = activeIndex !== null && index < activeIndex
-                const ModuleIcon = module.icon
-
-                return (
-                  <button
-                    key={module.id}
-                    onClick={() => onSelect(index)}
-                    className="group flex min-w-0 flex-1 flex-col items-center gap-2 text-center cursor-pointer"
-                    title={module.title}
-                  >
-                    <div className="flex flex-col items-center gap-2">
-                      <motion.div
-                        whileHover={{ y: -2, scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        className="relative flex h-10 w-10 items-center justify-center rounded-full border transition-all duration-300 md:h-11 md:w-11"
-                        style={
-                          active
-                            ? {
-                                borderColor: 'rgba(203, 213, 225, 0.55)',
-                                background: 'radial-gradient(circle at 30% 28%, rgba(203,213,225,0.45) 0%, rgba(203,213,225,0.25) 45%, rgba(12,14,18,0.95) 100%)',
-                                boxShadow: '0 0 16px rgba(203, 213, 225, 0.28), 0 0 32px rgba(203, 213, 225, 0.14), inset 0 0.2px 0.2px rgba(255,255,255,0.22)',
-                                color: '#fff',
-                              }
-                            : done
-                            ? {
-                                borderColor: 'rgba(203, 213, 225, 0.22)',
-                                background: 'linear-gradient(180deg, rgba(203,213,225,0.12) 0%, rgba(10,12,15,0.92) 100%)',
-                                color: 'rgba(255,255,255,0.65)',
-                              }
-                            : {
-                                borderColor: 'rgba(200,205,215,0.1)',
-                                background: 'linear-gradient(180deg, rgba(200,205,215,0.04) 0%, rgba(15,15,15,0.92) 100%)',
-                                color: 'rgba(255,255,255,0.3)',
-                              }
-                        }
-                      >
-                        <ModuleIcon className="h-3.5 w-3.5" />
-                      </motion.div>
-                    </div>
-
-                    <div
-                      className="h-1.5 w-1.5 rounded-full transition-all duration-300 mt-1"
-                      style={
-                        active
-                          ? { background: '#cbd5e1', boxShadow: '0 0 8px rgba(203,213,225,0.8)' }
-                          : done
-                          ? { background: 'rgba(203,213,225,0.45)' }
-                          : { background: 'rgba(200,205,215,0.15)' }
-                      }
-                    />
-
-                    <span
-                      className="max-w-[6.5rem] text-center text-[9px] leading-tight tracking-[0.06em] mt-1 transition-colors duration-200 truncate"
-                      style={{ color: active ? 'rgba(255,255,255,0.8)' : 'rgba(255,255,255,0.3)' }}
-                    >
-                      {module.id} · {module.title}
-                    </span>
-                  </button>
-                )
-              })}
-            </div>
-          </div>
+                <span
+                  className="max-w-[5rem] text-center text-[9px] leading-tight tracking-[0.06em] mt-1 transition-colors duration-200"
+                  style={{ color: active ? 'rgba(255,255,255,0.72)' : 'rgba(255,255,255,0.28)' }}
+                >
+                  {module.title}
+                </span>
+              </button>
+            )
+          })}
         </div>
       </div>
     </div>
@@ -1931,104 +1868,98 @@ export default function ConteudosPageClient() {
                     </div>
 
                     {/* Operational Notebook Content Viewer / Estação Unificada de Estudos */}
-                    {current.id === 'M4' ? (
-                      <ExecutiveStudyBriefing 
-                        moduleId={current.id} 
-                        activeTopicId={activeTopicId} 
-                        activeTheme={activeTheme} 
-                        activeSubjectIndex={activeSubjectIndex}
-                        onChangeSubjectIndex={handleSubjectIndexChange}
-                      />
-                    ) : (
-                      <div className="ipb-soft relative overflow-hidden rounded-[2rem]">
-                        <div className="p-5 md:p-6">
+                    <div className="ipb-soft relative overflow-hidden rounded-[2rem]">
+                      <div className="p-5 md:p-6">
+                        
+                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
                           
-                          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+                          {/* Left Column: Fundamentos & Caderno (takes 2 cols) */}
+                          <div className="lg:col-span-2 space-y-6">
                             
-                            {/* Left Column: Fundamentos & Caderno (takes 2 cols) */}
-                            <div className="lg:col-span-2 space-y-6">
+                            {/* Fundamentos Header & Overview */}
+                            <div className="p-5 rounded-2xl bg-white/[0.02] border border-white/[0.04] relative overflow-hidden">
+                              <div className="absolute inset-0 opacity-[0.03]" style={{
+                                background: `radial-gradient(circle at 0% 0%, ${activeTheme.primary}, transparent 50%)`
+                              }} />
                               
-                              {/* Fundamentos Header & Overview */}
-                              <div className="p-5 rounded-2xl bg-white/[0.02] border border-white/[0.04] relative overflow-hidden">
-                                <div className="absolute inset-0 opacity-[0.03]" style={{
-                                  background: `radial-gradient(circle at 0% 0%, ${activeTheme.primary}, transparent 50%)`
-                                }} />
-                                
-                                <div className="space-y-3 relative z-10">
-                                  <div className="flex items-center justify-between">
-                                    <span className="text-[8px] uppercase tracking-wider font-bold" style={{ color: activeTheme.primary }}>Fundamentos</span>
-                                    <span className="text-[9px] text-white/30 font-mono">{current.id} · Core Concepts</span>
-                                  </div>
-                                  <h3 className="text-base font-bold text-white/90">Conceito de {current.title}</h3>
-                                  <p className="text-[11px] text-white/50 leading-relaxed">
-                                    {current.overview}
-                                  </p>
+                              <div className="space-y-3 relative z-10">
+                                <div className="flex items-center justify-between">
+                                  <span className="text-[8px] uppercase tracking-wider font-bold" style={{ color: activeTheme.primary }}>
+                                    {current.id === 'M4' ? 'Diretoria Executiva' : 'Fundamentos'}
+                                  </span>
+                                  <span className="text-[9px] text-white/30 font-mono">{current.id} · Core Concepts</span>
                                 </div>
+                                <h3 className="text-base font-bold text-white/90">
+                                  {current.id === 'M4' ? 'Estação de Inteligência Acadêmica' : `Conceito de ${current.title}`}
+                                </h3>
+                                <p className="text-[11px] text-white/50 leading-relaxed">
+                                  {current.overview}
+                                </p>
                               </div>
-
-                              {/* Interactive Notebook */}
-                              <div className="space-y-4">
-                                <div className="flex items-center gap-2 pb-1">
-                                  <BookOpen className="h-4 w-4" style={{ color: activeTheme.primary }} />
-                                  <span className="text-[10px] uppercase tracking-wider text-white/60 font-semibold">Caderno Interativo de Conteúdo</span>
-                                </div>
-                                <CadernoModulePanel moduleId={current.id} openTopicId={activeTopicId} />
-                              </div>
-
                             </div>
 
-                            {/* Right Column: Mapa de Conexões / Simulações (takes 1 col) */}
-                            <div className="space-y-6 lg:sticky lg:top-4">
-                              
-                              {/* Connection Map & Simulation Panel */}
-                              <div className="p-5 rounded-2xl bg-white/[0.02] border border-white/[0.04] flex flex-col justify-between h-full relative overflow-hidden">
-                                <div className="absolute inset-0 opacity-[0.03]" style={{
-                                  background: `radial-gradient(circle at 100% 0%, ${activeTheme.primary}, transparent 50%)`
-                                }} />
-                                
-                                <div className="relative z-10 mb-4">
-                                  <span className="text-[8px] uppercase tracking-wider font-bold" style={{ color: activeTheme.primary }}>
-                                    {current.id === 'M4' ? 'Fluxo de Valor' : 'Mapa de Conexões'}
-                                  </span>
-                                  <h3 className="text-sm font-bold text-white/90 mt-1">
-                                    {current.id === 'M4' ? 'Alinhamento Estratégico' : 'Rede Neuronal & Simulações'}
-                                  </h3>
-                                  <p className="text-[10.5px] text-white/44 leading-relaxed mt-1.5">
-                                    {current.id === 'M4' 
-                                      ? 'Mapeamento dinâmico das conexões táticas corporativas e fluxo de governança executiva.'
-                                      : 'Estrutura neuronal dinâmica que simula o fluxo cognitivo e as correlações teóricas do módulo.'}
-                                  </p>
-                                </div>
+                            {/* Interactive Notebook */}
+                            <div className="space-y-4">
+                              <div className="flex items-center gap-2 pb-1">
+                                <BookOpen className="h-4 w-4" style={{ color: activeTheme.primary }} />
+                                <span className="text-[10px] uppercase tracking-wider text-white/60 font-semibold">Caderno Interativo de Conteúdo</span>
+                              </div>
+                              <CadernoModulePanel moduleId={current.id} openTopicId={activeTopicId} />
+                            </div>
 
-                                {current.id === 'M4' ? (
-                                  <StrategicRoadmapBoard moduleId={current.id} />
-                                ) : (
-                                  <MiniNetworkGraph moduleId={current.id} />
-                                )}
-                                
-                                {/* Pillars of Knowledge inside Connection Map */}
-                                <div className="mt-6 pt-4 border-t border-white/[0.04]">
-                                  <span className="text-[8px] uppercase tracking-wider font-bold text-white/30 block mb-2.5">
-                                    {current.id === 'M4' ? 'Pilares Corporativos' : 'Pilares do Conhecimento'}
-                                  </span>
-                                  <ul className="space-y-2">
-                                    {current.concepts.map((concept, idx) => (
-                                      <li key={idx} className="text-[9.5px] text-white/60 flex items-start gap-2">
-                                        <span className="mt-1.5 w-1.5 h-1.5 rounded-full shrink-0 animate-pulse" style={{ backgroundColor: activeTheme.primary }} />
-                                        <span className="leading-snug">{concept}</span>
-                                      </li>
-                                    ))}
-                                  </ul>
-                                </div>
+                          </div>
+
+                          {/* Right Column: Mapa de Conexões / Simulações (takes 1 col) */}
+                          <div className="space-y-6 lg:sticky lg:top-4">
+                            
+                            {/* Connection Map & Simulation Panel */}
+                            <div className="p-5 rounded-2xl bg-white/[0.02] border border-white/[0.04] flex flex-col justify-between h-full relative overflow-hidden">
+                              <div className="absolute inset-0 opacity-[0.03]" style={{
+                                background: `radial-gradient(circle at 100% 0%, ${activeTheme.primary}, transparent 50%)`
+                              }} />
+                              
+                              <div className="relative z-10 mb-4">
+                                <span className="text-[8px] uppercase tracking-wider font-bold" style={{ color: activeTheme.primary }}>
+                                  {current.id === 'M4' ? 'Fluxo de Valor' : 'Mapa de Conexões'}
+                                </span>
+                                <h3 className="text-sm font-bold text-white/90 mt-1">
+                                  {current.id === 'M4' ? 'Alinhamento Estratégico' : 'Rede Neuronal & Simulações'}
+                                </h3>
+                                <p className="text-[10.5px] text-white/44 leading-relaxed mt-1.5">
+                                  {current.id === 'M4' 
+                                    ? 'Mapeamento dinâmico das conexões táticas corporativas e fluxo de governança executiva.'
+                                    : 'Estrutura neuronal dinâmica que simula o fluxo cognitivo e as correlações teóricas do módulo.'}
+                                </p>
                               </div>
 
+                              {current.id === 'M4' ? (
+                                <StrategicRoadmapBoard moduleId={current.id} />
+                              ) : (
+                                <MiniNetworkGraph moduleId={current.id} />
+                              )}
+                              
+                              {/* Pillars of Knowledge inside Connection Map */}
+                              <div className="mt-6 pt-4 border-t border-white/[0.04]">
+                                <span className="text-[8px] uppercase tracking-wider font-bold text-white/30 block mb-2.5">
+                                  {current.id === 'M4' ? 'Pilares Corporativos' : 'Pilares do Conhecimento'}
+                                </span>
+                                <ul className="space-y-2">
+                                  {current.concepts.map((concept, idx) => (
+                                    <li key={idx} className="text-[9.5px] text-white/60 flex items-start gap-2">
+                                      <span className="mt-1.5 w-1.5 h-1.5 rounded-full shrink-0 animate-pulse" style={{ backgroundColor: activeTheme.primary }} />
+                                      <span className="leading-snug">{concept}</span>
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
                             </div>
 
                           </div>
 
                         </div>
+
                       </div>
-                    )}
+                    </div>
 
                   </motion.div>
                 ) : (
