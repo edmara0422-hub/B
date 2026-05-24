@@ -917,7 +917,7 @@ function ExecutiveStudyBriefing({
   activeSubjectIndex: number
   onChangeSubjectIndex: (index: number) => void
 }) {
-  const [activeTab, setActiveTab] = useState<'summary' | 'tutor' | 'notes' | 'map'>('summary')
+  const [activeTab, setActiveTab] = useState<'summary' | 'tutor' | 'notes'>('summary')
   const [tutorInput, setTutorInput] = useState('')
   const [isTutorLoading, setIsTutorLoading] = useState(false)
   const [tutorHistory, setTutorHistory] = useState<any[]>([
@@ -1010,8 +1010,7 @@ function ExecutiveStudyBriefing({
           {[
             { id: 'summary', label: 'SUMÁRIO', icon: BookOpen },
             { id: 'tutor', label: 'ADVISOR IA', icon: MessageSquare },
-            { id: 'notes', label: 'MEMORANDO', icon: FileText },
-            { id: 'map', label: 'ROADMAP', icon: Target }
+            { id: 'notes', label: 'MEMORANDO', icon: FileText }
           ].map((tab) => {
             const isSelected = activeTab === tab.id
             const TabIcon = tab.icon
@@ -1049,7 +1048,7 @@ function ExecutiveStudyBriefing({
                 exit={{ opacity: 0, y: -10 }}
                 className="space-y-4 flex-1 flex flex-col justify-between"
               >
-                <div className="p-6 rounded-2xl bg-[#0c0905]/40 border border-white/[0.04] backdrop-blur-md relative overflow-hidden transition-all duration-300 hover:border-[#d4b87a]/20 flex flex-col justify-between h-[360px] lg:h-[400px] group"
+                <div className="p-6 rounded-2xl bg-[#0c0905]/40 border border-white/[0.04] backdrop-blur-md relative overflow-hidden transition-all duration-300 hover:border-[#d4b87a]/20 flex flex-col justify-between h-[600px] lg:h-[720px] group"
                   style={{ boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.02), 0 8px 24px rgba(0,0,0,0.15)' }}
                 >
                   <div className="absolute inset-0 opacity-[0.015] pointer-events-none group-hover:opacity-[0.03] transition-all" style={{
@@ -1131,6 +1130,22 @@ function ExecutiveStudyBriefing({
                           </div>
                         </div>
                       ))}
+
+                      {/* Interactive Simulation & Strategic Node Map */}
+                      <div className="mt-8 pt-6 border-t border-white/[0.06] space-y-4">
+                        <div className="flex justify-between items-center">
+                          <div>
+                            <span className="text-[8px] uppercase tracking-wider font-bold text-[#d4b87a]">Simulador de Alinhamento</span>
+                            <h5 className="text-[11px] font-bold text-white/90">Mapa de Fluxo & Impacto Estratégico</h5>
+                          </div>
+                          <span className="text-[8px] px-1.5 py-0.5 rounded font-mono bg-white/5 border border-white/10 text-white/40 uppercase">Simulação Ativa</span>
+                        </div>
+                        <p className="text-[9.5px] text-white/55 leading-relaxed text-justify">
+                          Interaja com os nós operacionais abaixo para simular as conexões de valor e fluxos de governança aplicados à disciplina de *{syllabusItem.title}*.
+                        </p>
+                        <StrategicRoadmapBoard moduleId="M4" />
+                      </div>
+
                     </div>
                   </div>
                 </div>
@@ -1146,7 +1161,7 @@ function ExecutiveStudyBriefing({
                 exit={{ opacity: 0, y: -10 }}
                 className="space-y-4 flex-1 flex flex-col justify-between"
               >
-                <div className="p-5 rounded-2xl bg-white/[0.015] border border-white/[0.04] backdrop-blur-md flex flex-col justify-between h-[360px] lg:h-[400px] relative overflow-hidden"
+                <div className="p-5 rounded-2xl bg-white/[0.015] border border-white/[0.04] backdrop-blur-md flex flex-col justify-between h-[600px] lg:h-[720px] relative overflow-hidden"
                   style={{ boxShadow: '0 8px 24px rgba(0,0,0,0.15)' }}
                 >
                   <div className="flex-1 overflow-y-auto space-y-3.5 pr-2 ipb-thinscroll">
@@ -1213,7 +1228,7 @@ function ExecutiveStudyBriefing({
                 exit={{ opacity: 0, y: -10 }}
                 className="space-y-4 flex-1 flex flex-col justify-between"
               >
-                <div className="p-5 rounded-2xl bg-white/[0.015] border border-white/[0.04] relative overflow-hidden h-[360px] lg:h-[400px] flex flex-col justify-between">
+                <div className="p-5 rounded-2xl bg-white/[0.015] border border-white/[0.04] relative overflow-hidden h-[600px] lg:h-[720px] flex flex-col justify-between">
                   <div className="absolute inset-0 opacity-[0.01] pointer-events-none" style={{
                     background: 'radial-gradient(circle at 100% 100%, #d4b87a, transparent 50%)'
                   }} />
@@ -1237,36 +1252,11 @@ function ExecutiveStudyBriefing({
               </motion.div>
             )}
 
-            {/* Tab 4: Strategic Node Map */}
-            {activeTab === 'map' && (
-              <motion.div
-                key="map-tab"
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                className="space-y-4 flex-1 flex flex-col justify-between"
-              >
-                <div className="p-5 rounded-2xl bg-white/[0.015] border border-white/[0.04] relative overflow-hidden min-h-[300px] flex flex-col justify-between">
-                  <div>
-                    <span className="text-[8px] uppercase tracking-wider font-bold text-[#d4b87a]">Fluxo de Valor</span>
-                    <h3 className="text-[12px] font-bold text-white/90 mt-0.5">Alinhamento Estratégico</h3>
-                    <p className="text-[9.5px] text-white/40 leading-relaxed text-justify mt-1 mb-4">
-                      Mapeamento dinâmico das conexões táticas corporativas e fluxo de governança executiva.
-                    </p>
-                  </div>
-
-                  <div className="my-2">
-                    <StrategicRoadmapBoard moduleId="M4" />
-                  </div>
-                </div>
-              </motion.div>
-            )}
-
           </AnimatePresence>
         </div>
 
         {/* Sidebar Index (Right 1 col on lg): SUMÁRIO GERAL / ÍNDICE DO CADERNO (30 Disciplinas) */}
-        <div className="lg:col-span-1 flex flex-col p-5 rounded-2xl bg-white/[0.015] border border-white/[0.04] relative overflow-hidden h-[360px] lg:h-[400px]">
+        <div className="lg:col-span-1 flex flex-col p-5 rounded-2xl bg-white/[0.015] border border-white/[0.04] relative overflow-hidden h-[600px] lg:h-[720px]">
           <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{
             background: `radial-gradient(circle at 100% 0%, #d4b87a, transparent 50%)`
           }} />
