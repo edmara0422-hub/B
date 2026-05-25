@@ -1519,7 +1519,7 @@ function BusinessManifestoPage() {
               maxWidth: '450px'
             }}>
               <img 
-                src="/business_cube_final.png" 
+                src="/business_cube_straight.png" 
                 alt="IPB Business Cube" 
                 style={{ 
                   width: '100%', 
