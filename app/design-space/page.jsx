@@ -1439,7 +1439,7 @@ function BusinessManifestoPage() {
   return (
     <div style={{
       minHeight: '100vh',
-      backgroundColor: '#010101',
+      backgroundColor: '#000000',
       color: '#f4f4f6',
       fontFamily: 'var(--sans)',
       paddingBottom: '10vh',
@@ -1506,7 +1506,7 @@ function BusinessManifestoPage() {
             </p>
           </motion.div>
 
-          {/* Imagem do Cubo de Vidro (a gerada bonita) com blend-mode para eliminar o fundo! */}
+          {/* Imagem do Cubo de Vidro */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -1516,17 +1516,17 @@ function BusinessManifestoPage() {
             <div style={{
               position: 'relative',
               width: '100%',
-              maxWidth: '450px'
+              maxWidth: '450px',
+              WebkitMaskImage: 'radial-gradient(circle at center, black 40%, transparent 70%)',
+              maskImage: 'radial-gradient(circle at center, black 40%, transparent 70%)'
             }}>
               <img 
-                src="/business_cube.png" 
+                src="/business_cube_pure_black.png" 
                 alt="IPB Business Cube" 
                 style={{ 
                   width: '100%', 
                   height: 'auto', 
-                  display: 'block',
-                  /* Isso remove qualquer fundo que não seja preto puro, integrando perfeitamente */
-                  mixBlendMode: 'screen' 
+                  display: 'block'
                 }} 
               />
             </div>

@@ -53,6 +53,7 @@ import {
   SimMacroIndicatorsPanel, SimEconomicCyclesWave, SimBrazilStructuralChallenges, SimWorkforceFinanceSystem,
   SimFinancialAnalysisVH, SimValuationTriangulation, SimWorkingCapitalCycle, SimIntegratedDiagnostics
 } from '@/components/sea/simulations-6d'
+import { NEURO_SIMS } from '@/components/caderno/sim-registry-neuro'
 import { SUBJECTS_DB } from '@/data/caderno-content-m1-m8'
 
 const SYLLABUS_TO_DB_MAP: Record<string, string> = {
@@ -1246,23 +1247,31 @@ function NASA6DSimulator({ dbId, chapterIndex, theme }: { dbId: string; chapterI
 
           <div className="flex-1 flex flex-col justify-center">
             {dbId === 'N1-S1' && (
-              <div className="h-full flex items-center justify-center p-8 text-center text-white/50 text-xs border border-white/5 bg-white/5 rounded-xl">
-                [Neuro Simulation Rendering Engine - {chapterIndex === 0 ? 'neuro-pump' : chapterIndex === 1 ? 'neuro-action-potential' : chapterIndex === 2 ? 'neuro-tube' : 'neuro-synapse-timeline'}]
+              <div className="h-full w-full relative">
+                {chapterIndex === 0 && (() => { const C = NEURO_SIMS['neuro-pump']; return <C /> })()}
+                {chapterIndex === 1 && (() => { const C = NEURO_SIMS['neuro-action-potential']; return <C /> })()}
+                {chapterIndex === 2 && (() => { const C = NEURO_SIMS['neuro-tube']; return <C /> })()}
+                {chapterIndex === 3 && (() => { const C = NEURO_SIMS['neuro-synapse-timeline']; return <C /> })()}
               </div>
             )}
             {dbId === 'N1-S2' && (
-              <div className="h-full flex items-center justify-center p-8 text-center text-white/50 text-xs border border-white/5 bg-white/5 rounded-xl">
-                [Neuro Simulation Rendering Engine - {chapterIndex === 0 ? 'neuro-tube' : chapterIndex === 1 ? 'neuro-synapse-timeline' : 'neuro-neuron-anatomy'}]
+              <div className="h-full w-full relative">
+                {chapterIndex === 0 && (() => { const C = NEURO_SIMS['neuro-tube']; return <C /> })()}
+                {chapterIndex === 1 && (() => { const C = NEURO_SIMS['neuro-synapse-timeline']; return <C /> })()}
+                {chapterIndex === 2 && (() => { const C = NEURO_SIMS['neuro-neuron-anatomy']; return <C /> })()}
               </div>
             )}
             {dbId === 'N1-S3' && (
-              <div className="h-full flex items-center justify-center p-8 text-center text-white/50 text-xs border border-white/5 bg-white/5 rounded-xl">
-                [Neuro Simulation Rendering Engine - {chapterIndex === 0 ? 'neuro-neuron-anatomy' : chapterIndex === 1 ? 'neuro-axon-transport' : 'neuro-glia-ecosystem'}]
+              <div className="h-full w-full relative">
+                {chapterIndex === 0 && (() => { const C = NEURO_SIMS['neuro-neuron-anatomy']; return <C /> })()}
+                {chapterIndex === 1 && (() => { const C = NEURO_SIMS['neuro-axon-transport']; return <C /> })()}
+                {chapterIndex === 2 && (() => { const C = NEURO_SIMS['neuro-saltatory-conduction']; return <C /> })()}
               </div>
             )}
             {dbId === 'N1-S4' && (
-              <div className="h-full flex items-center justify-center p-8 text-center text-white/50 text-xs border border-white/5 bg-white/5 rounded-xl">
-                [Neuro Simulation Rendering Engine - {chapterIndex === 0 ? 'neuro-metabolic-chain' : 'neuro-bhe'}]
+              <div className="h-full w-full relative">
+                {chapterIndex === 0 && (() => { const C = NEURO_SIMS['neuro-metabolic-chain']; return <C /> })()}
+                {chapterIndex === 1 && (() => { const C = NEURO_SIMS['neuro-bhe']; return <C /> })()}
               </div>
             )}
             {dbId === 'M1-S1' && (
@@ -1763,26 +1772,6 @@ function ExecutiveStudyBriefing({
                       <div className="my-2 border border-white/5 rounded-xl overflow-hidden bg-black/40 flex-1 flex flex-col min-h-[380px]">
                         <NASA6DSimulator dbId={dbId} chapterIndex={activeChapterIndex} theme={activeTheme} />
                       </div>
-                    </div>
-
-                    <div className="pt-4 border-t border-white/[0.06] mt-4">
-                      <span className="text-[10px] uppercase tracking-wider font-bold text-[#d4b87a] [.theme-silver_&]:text-[#cbd5e1] block mb-2">
-                        Diretrizes de Governança
-                      </span>
-                      <ul className="space-y-2">
-                        <li className="text-xs text-white/60 flex items-start gap-2">
-                          <span className="mt-1.5 w-1.5 h-1.5 rounded-full shrink-0 bg-[#d4b87a] [.theme-silver_&]:bg-[#cbd5e1]" />
-                          <span className="leading-relaxed">Alinhamento entre governança corporativa e operações eficientes.</span>
-                        </li>
-                        <li className="text-xs text-white/60 flex items-start gap-2">
-                          <span className="mt-1.5 w-1.5 h-1.5 rounded-full shrink-0 bg-[#d4b87a] [.theme-silver_&]:bg-[#cbd5e1]" />
-                          <span className="leading-relaxed">Validação ágil de hipóteses no framework de tomada de decisão.</span>
-                        </li>
-                        <li className="text-xs text-white/60 flex items-start gap-2">
-                          <span className="mt-1.5 w-1.5 h-1.5 rounded-full shrink-0 bg-[#cbd5e1]" />
-                          <span className="leading-relaxed">Mitigação de custos de capital com foco em escalabilidade sustentável.</span>
-                        </li>
-                      </ul>
                     </div>
 
                   </div>
