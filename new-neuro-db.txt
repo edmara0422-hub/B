@@ -1,0 +1,462 @@
+  {
+    id: 'N1-S1',
+    code: 'NEURO-01',
+    title: "O Organismo e o SN",
+    videoUrls: [],
+    chapters: [
+      {
+        title: "Fundamentos Biológicos",
+        subsections: [
+          {
+            title: "Organismo e Termodinâmica",
+            content: "• Um organismo não existe porque pensa — ele pensa porque consegue manter estrutura\n• Todo sistema vivo enfrenta manter organização interna em um universo que tende à desordem\n• Sistemas vivos são dissipativos: não estão em equilíbrio, lutam contra a entropia\n• Colapsam rapidamente quando o suprimento energético cessa",
+            deepDive: "O cérebro como sistema regulatório distribuído sob restrição energética e incerteza ambiental."
+          },
+          {
+            title: "ATP — A Moeda Universal",
+            content: "• Toda energia utilizável nas células é intermediada por ATP (adenosina trifosfato)\n• ATP → ADP + Pi + energia\n• Mitocôndrias produzem ATP por fosforilação oxidativa: glicose + O₂ → ATP + calor + CO₂\n• Sem ATP não há: síntese de proteínas, transporte ativo, manutenção estrutural, gradientes, sinal elétrico, vida",
+            deepDive: "Sem ATP, nenhum processo biológico se sustenta."
+          },
+          {
+            title: "Membrana — O Nascimento da Vida",
+            content: "• A vida celular só é possível porque existe membrana\n• Sem membrana: não existe dentro e fora, não existe gradiente, não existe metabolismo, não existe vida\n• A membrana cria a fronteira que permite ao organismo ser um sistema — separado do ambiente\n• É a estrutura que torna possível acumular energia e manter organização",
+            deepDive: "Membrana = nascimento da vida como sistema."
+          },
+          {
+            title: "Bomba Na⁺/K⁺-ATPase",
+            content: "• Expulsa 3 Na⁺ para fora, traz 2 K⁺ para dentro, consome 1 ATP por ciclo\n• Funciona 24h por dia sem parar — o motor silencioso da vida\n• 60–80% da energia cerebral é consumida apenas para manter essas bombas funcionando\n• Isso antes mesmo de qualquer processamento, pensamento ou sinalização",
+            deepDive: "3 Na⁺ (out) + 2 K⁺ (in) + 1 ATP → gradiente eletroquímico — Attwell & Laughlin, 2001."
+          },
+          {
+            title: "Potencial de Repouso",
+            content: "• Uma célula excitável não está \"em repouso\" — gasta energia continuamente para permanecer pronta\n• O chamado potencial de repouso é um estado de tensão elétrica mantida artificialmente\n• Repouso: ~-70mV · Pico: +40mV · Hiperpolarização · Retorno\n• Estar vivo é estar em dívida energética constante",
+            deepDive: "O cérebro não é caro porque pensa. Ele pensa porque já é caro para existir."
+          },
+        ]
+      },
+      {
+        title: "Seção 1.0 — O que é o Sistema Nervoso",
+        subsections: [
+          {
+            title: "Definição",
+            content: "• Rede complexa e especializada de células distribuída por todo o organismo\n• Coordena todas as funções vitais e comportamentais\n• Capta informações, processa dados, integra sinais e gera respostas para sobrevivência",
+            deepDive: ""
+          },
+          {
+            title: "Funções Fundamentais",
+            content: "• Captar estímulos sensoriais do ambiente externo e meio interno\n• Processar e integrar informações em múltiplos níveis de complexidade\n• Coordenar respostas motoras voluntárias e involuntárias\n• Regular funções viscerais e autonômicas essenciais à homeostase\n• Permitir processos cognitivos: memória, linguagem e consciência",
+            deepDive: ""
+          },
+          {
+            title: "SNC e SNP",
+            content: "• SNC: encéfalo (cérebro, cerebelo, tronco) + medula espinhal\n• Protegido por crânio, coluna, meninges, LCR e barreira hematoencefálica\n• SNP: nervos cranianos e espinhais → somático (voluntário) + autônomo (simpático/parassimpático)",
+            deepDive: "Sistema Nervoso = SNC + SNP — sistema integrado de detecção, processamento e resposta."
+          },
+        ]
+      },
+      {
+        title: "Seção 1.1 — O Lugar do Cérebro",
+        subsections: [
+          {
+            title: "Perspectiva Clássica",
+            content: "• Em Guyton & Hall: SN como integração regulatória subordinada ao meio interno\n• Em Kandel: inicia na membrana e potencial de repouso, não em conceitos psicológicos\n• O SN existe para manter viabilidade do organismo em ambiente incerto",
+            deepDive: "Abordagens que colocam vontade consciente como motor primário partem de premissa biologicamente incorreta."
+          },
+          {
+            title: "Funções Integradas",
+            content: "• Homeostase: regula trilhões de células para equilíbrio interno\n• Estímulos: monitora conscientes (visão, tato) e inconscientes (pH, gases, PA)\n• Integração: encéfalo/medula → resposta, memória ou descarte\n• Motor: esqueléticos, lisos, cardíaco e secreção glandular\n• Mental: consciência, pensamento, memória e emoções",
+            deepDive: ""
+          },
+        ]
+      },
+      {
+        title: "Seções 1.2–1.5 — Regulação, Racionalidade e Predição",
+        subsections: [
+          {
+            title: "1.2 Sistema Regulatório Distribuído",
+            content: "• O SN deve ser compreendido como um sistema de regulação distribuída\n• Sua função central é integrar sinais internos e externos e produzir respostas que mantenham o organismo dentro de faixas fisiológicas compatíveis com a vida\n• Não existe centro único de comando — múltiplos sistemas interconectados operam em paralelo\n• Operação limitada por recursos metabólicos e temporais\n• O cérebro não \"pensa\" e depois \"manda\" o corpo agir",
+            deepDive: "Ele é parte de um sistema corpo–cérebro cuja função primária é regular estados internos e reduzir risco biológico."
+          },
+          {
+            title: "1.3 Racionalidade como Emergência",
+            content: "• Se o SN existe para regular e garantir viabilidade, racionalidade não pode ser processo primário\n• Ela emerge de sistemas regulatórios mais antigos\n• \"Decisão racional\" é frequentemente justificativa post-hoc de processos já ocorridos em nível implícito\n• Aproximação heurística sob restrição temporal e computacional\n• Narrativa construída para tornar o comportamento coerente com a autoimagem",
+            deepDive: ""
+          },
+          {
+            title: "1.4 Predição e Free Energy",
+            content: "• Free Energy e Predictive Processing: cérebro como máquina de inferência bayesiana\n• O cérebro tenta continuamente minimizar a surpresa (prediction error)\n• A maior parte da atividade neural é gerativa — prevê o que vai acontecer antes que aconteça",
+            deepDive: "O cérebro não reage. Ele antecipa."
+          },
+          {
+            title: "1.4 Vantagens da Antecipação",
+            content: "• Permite ação eficiente sem esperar pelo estímulo completo\n• Poupa energia metabólica ao preparar respostas antecipadas\n• Protege o organismo de riscos ao antecipar ameaças\n• Quando a predição falha (surpresa), o sistema gera aprendizado e atualiza seus modelos",
+            deepDive: ""
+          },
+          {
+            title: "1.5 Conclusão Preliminar",
+            content: "• O SN não existe para implementar racionalidade, mas para garantir sobrevivência metabólica\n• Regulação interna sob incerteza é a função primária\n• Racionalidade é ferramenta tardia e limitada, subordinada a funções mais antigas\n• Não existe \"eu\" central que decide — existe uma rede distribuída de processos\n• Essa rede negocia constantemente recursos limitados para manter um organismo viável",
+            deepDive: "Compreender isso é essencial para não projetar sobre o sistema nervoso propriedades que ele não possui."
+          },
+        ]
+      },
+    ]
+  },
+  {
+    id: 'N1-S2',
+    code: 'NEURO-02',
+    title: "Neurodesenvolvimento",
+    videoUrls: [],
+    chapters: [
+      {
+        title: "Decisões Moleculares que Constroem o Cérebro",
+        subsections: [
+          {
+            title: "O que é Neurodesenvolvimento",
+            content: "• Processo de formação e maturação do SN, da 3ª semana de gestação até o início da vida adulta\n• Não é crescimento passivo nem proliferação desordenada\n• Coreografia molecular rigorosamente orquestrada\n• Transforma uma camada de células ectodérmicas em ~86 bilhões de neurônios + número equivalente de glia\n• Interconectados por trilhões de sinapses",
+            deepDive: "O neurodesenvolvimento é uma sequência de decisões moleculares que transformam uma única camada de células no órgão mais complexo do universo conhecido."
+          },
+        ]
+      },
+      {
+        title: "Indução e Neurulação (Semanas 3–4)",
+        subsections: [
+          {
+            title: "O Sinalizador",
+            content: "• Após fecundação e formação do disco embrionário, o SN começa a ser \"escrito\"\n• A notocorda (bastão de células mesodérmicas) libera Sonic Hedgehog (SHH)\n• SHH inibe a BMP-4, forçando o ectoderma a se diferenciar",
+            deepDive: ""
+          },
+          {
+            title: "Placa → Tubo → Crista",
+            content: "• O sinal força o ectoderma a se espessar → Placa Neural\n• A placa se dobra em sulco que se fecha → Tubo Neural (futuro SNC)\n• Células nas bordas formam a Crista Neural → migram para criar o SNP (nervos e gânglios)",
+            deepDive: "Semanas 3–4: o primeiro corte irreversível — define encéfalo, medula e hierarquia estrutural."
+          },
+        ]
+      },
+      {
+        title: "Arquitetura das Vesículas (Semanas 4–6)",
+        subsections: [
+          {
+            title: "De 3 para 5 Vesículas",
+            content: "• O tubo neural não cresce por igual — a parte frontal se expande em 3 vesículas primárias\n• Que se subdividem em 5 vesículas secundárias",
+            deepDive: ""
+          },
+          {
+            title: "As 5 Vesículas",
+            content: "• Telencéfalo — hemisférios cerebrais e córtex\n• Diencéfalo — tálamo e hipotálamo (comando hormonal)\n• Mesencéfalo — reflexos visuais e auditivos\n• Metencéfalo — ponte e cerebelo (equilíbrio e coordenação)\n• Mielencéfalo — bulbo (respiração e batimentos cardíacos)",
+            deepDive: ""
+          },
+        ]
+      },
+      {
+        title: "Proliferação e Migração",
+        subsections: [
+          {
+            title: "A Explosão Celular",
+            content: "• 250.000 neurônios fabricados por minuto no pico da neurogênese\n• Produz muito mais neurônios que o necessário\n• 30–70% morrem por apoptose (morte celular programada)\n• Falha em receber fatores tróficos = morte celular",
+            deepDive: "Seleção, não expansão — o cérebro elimina o que não é necessário."
+          },
+          {
+            title: "Migração via Glia Radial",
+            content: "• Glia radial funciona como \"andaime\" ou trilho para neurônios recém-nascidos\n• Neurônios escalam as fibras gliais para chegar ao topo do córtex\n• Formação de camadas de dentro para fora (inside-out)\n• Se o \"trilho\" falha → malformações corticais graves",
+            deepDive: "Erro = camada errada, função errada. Arquitetura define função."
+          },
+        ]
+      },
+      {
+        title: "Conectividade e Refinamento",
+        subsections: [
+          {
+            title: "Sinaptogênese (0–3 anos)",
+            content: "• Criação de trilhões de sinapses entre neurônios\n• 10.000+ sinapses por neurônio\n• Fase exploratória: alta instabilidade e custo energético\n• Liberdade alta + custo alto",
+            deepDive: ""
+          },
+          {
+            title: "Poda Sináptica (3–10 anos)",
+            content: "• O cérebro produz conexões em excesso e depois \"corta\" as não usadas\n• ≈70% das sinapses são eliminadas\n• Competição por atividade e metabolismo\n• Microglia marca e elimina sinapses fracas\n• No autismo, acredita-se em falha nesse processo de limpeza",
+            deepDive: "Eficiência sobre quantidade — esculpido por células imunes."
+          },
+          {
+            title: "Mielinização (20–25 anos)",
+            content: "• Neurônios encapados com mielina (gordura isolante)\n• Células de Schwann (SNP) e Oligodendrócitos (SNC) envolvem axônios\n• Acelera condução saltatória em até 100x\n• Reduz custo energético por sinal\n• Última área: córtex pré-frontal (julgamento e controle de impulsos)\n• Explica a impulsividade na adolescência",
+            deepDive: "Regime de eficiência vs. flexibilidade — mielina reduz plasticidade."
+          },
+        ]
+      },
+      {
+        title: "Linha do Tempo Completa",
+        subsections: [
+          {
+            title: "Tubo Neural (3ª–4ª semana)",
+            content: "• Define encéfalo e medula\n• Estabelece eixos rostro-caudal e dorso-ventral\n• Cria hierarquia estrutural",
+            deepDive: "Arquitetura antes da experiência."
+          },
+          {
+            title: "Neurogênese & Apoptose (2º trimestre)",
+            content: "• Produção massiva e eliminação seletiva de neurônios\n• Produz muito mais que necessário\n• 30–70% morrem por apoptose\n• Falha em receber fatores tróficos = morte",
+            deepDive: "Seleção, não expansão."
+          },
+          {
+            title: "Sinaptogênese → Poda (0–10 anos)",
+            content: "• Trilhões de sinapses formadas (0–3 anos)\n• Alta instabilidade e custo energético\n• Eliminação de sinapses fracas pela microglia (3–10 anos)",
+            deepDive: ""
+          },
+          {
+            title: "Adolescência (11–20 anos)",
+            content: "• Maturação descompassada: emoção vs. razão\n• Sistema límbico hiper-reativo\n• Pré-frontal ainda maturando\n• Pertencimento social = prioridade biológica",
+            deepDive: "Emoção > razão (adaptativo, não defeito)."
+          },
+          {
+            title: "Mielinização → Adulto (20–25+ anos)",
+            content: "• Otimização de circuitos pré-frontais pela bainha de mielina\n• Circuitos estabilizados — mudança exige mais energia\n• Identidade = circuito vencedor\n• Alta eficiência, baixo ruído, alto custo de mudança",
+            deepDive: "Estabilidade sináptica."
+          },
+        ]
+      },
+      {
+        title: "Períodos Críticos e Relevância Clínica",
+        subsections: [
+          {
+            title: "Períodos Críticos / Sensíveis",
+            content: "• Janelas temporais em que o cérebro é maximamente responsivo a estímulos específicos\n• Visão binocular: primeiros 2 anos — privação causa ambliopia irreversível\n• Linguagem: pico até 5–7 anos — após essa janela, aquisição é muito mais difícil\n• Motricidade fina: moldada nos primeiros anos por interação sensório-motora\n• Após o período crítico, o circuito se estabiliza — a plasticidade diminui drasticamente",
+            deepDive: "O que não é estimulado na janela certa pode não se desenvolver plenamente."
+          },
+          {
+            title: "Falhas no Neurodesenvolvimento",
+            content: "• Defeitos de fechamento do tubo neural → anencefalia, espinha bífida\n• Falha na migração neuronal → lissencefalia (córtex liso, sem giros)\n• Déficit na poda sináptica → implicado no Transtorno do Espectro Autista\n• Mielinização incompleta → disfunção executiva, TDAH\n• Lesão perinatal → paralisia cerebral (PC), alvo central da fisioterapia neuropediátrica",
+            deepDive: ""
+          },
+          {
+            title: "Relevância para Fisioterapia",
+            content: "• Intervenção precoce aproveita janelas de plasticidade máxima\n• Estimulação sensório-motora guiada pode redirecionar circuitos em formação\n• Na PC, a fisioterapia trabalha com o que o neurodesenvolvimento preservou\n• Conhecer a timeline é essencial para definir metas realistas de reabilitação\n• O cérebro infantil é plástico mas não infinitamente — timing importa",
+            deepDive: "Compreender o neurodesenvolvimento é a base para toda intervenção neurológica precoce."
+          },
+        ]
+      },
+      {
+        title: "Marcos Pós-Natais",
+        subsections: [
+          {
+            title: "Desenvolvimento Motor",
+            content: "• Ao nascer: reflexos primitivos (sucção, marcha reflexa)\n• Reflexos devem desaparecer para dar lugar a movimentos voluntários\n• Direção céfalo-caudal: da cabeça para os pés\n• Direção próximo-distal: do centro para as pontas",
+            deepDive: ""
+          },
+        ]
+      },
+    ]
+  },
+  {
+    id: 'N1-S3',
+    code: 'NEURO-03',
+    title: "Base Celular e Fisiológica",
+    videoUrls: [],
+    chapters: [
+      {
+        title: "O Que é Uma Célula Excitável?",
+        subsections: [
+          {
+            title: "Célula Excitável — Definição",
+            content: "• Nem toda célula viva é capaz de gerar sinais elétricos rápidos\n• Uma célula excitável é aquela cuja membrana consegue alterar rapidamente seu potencial elétrico em resposta a estímulos físicos ou químicos\n• Exemplos: neurônios, fibras musculares, células secretoras especializadas\n• O neurônio não é especial porque \"pensa\" — é especial porque transmite variação elétrica rapidamente e a longa distância",
+            deepDive: "Excitabilidade nasce de: membrana isolante + gradientes iônicos + canais reguláveis."
+          },
+          {
+            title: "A Base Física da Excitabilidade",
+            content: "• 1. Membrana Isolante — separação de cargas (capacitor biológico)\n• 2. Gradientes Iônicos — mantidos ativamente pela bomba Na⁺/K⁺-ATPase\n• 3. Canais Iônicos — reguláveis por voltagem ou ligante\n• A membrana lipídica funciona como um capacitor: separa cargas, armazena diferença de potencial e permite descargas controladas\n• Sem qualquer uma dessas três propriedades, não existe sinal elétrico",
+            deepDive: "A membrana como capacitor biológico — o fundamento de toda sinalização neural."
+          },
+        ]
+      },
+      {
+        title: "Estrutura Celular do Sistema Nervoso",
+        subsections: [
+          {
+            title: "Dois Tipos Fundamentais de Células",
+            content: "• Neurônios — unidades sinalizadoras básicas do sistema nervoso\n• Neuróglia (glia) — células de suporte que auxiliam e protegem os neurônios\n• A neuróglia representa mais da metade do peso encefálico\n• Pode haver 10 a 50 vezes mais neuróglia do que neurônios\n• O neurônio é a unidade funcional: menor estrutura que realiza as funções do sistema",
+            deepDive: "Neurônios + Neuróglia = os dois pilares celulares do sistema nervoso."
+          },
+          {
+            title: "O Cérebro como Sistema Regulatório",
+            content: "• Não é uma \"máquina de pensamento\" — é um sistema regulatório distribuído\n• Neurônios recebem estímulos, conduzem potenciais de ação e transmitem sinais\n• Neuróglia fornece suporte físico e bioquímico essencial\n• Ambos os tipos celulares são indispensáveis para o funcionamento neural",
+            deepDive: ""
+          },
+        ]
+      },
+      {
+        title: "O Neurônio: Unidade Funcional",
+        subsections: [
+          {
+            title: "Corpo Celular (Soma)",
+            content: "• Centro metabólico do neurônio — essencial para o bem-estar celular\n• Núcleo com DNA: molde para toda a síntese proteica\n• Retículo Endoplasmático: síntese de proteínas e lipídios\n• Mitocôndrias: produção de ATP — energia para o neurônio\n• Aparelho de Golgi: processamento e empacotamento de proteínas",
+            deepDive: "O soma é o \"centro de comando\" — sem ele, o neurônio morre."
+          },
+          {
+            title: "Dendritos — Receptores de Sinais",
+            content: "• Processos finos e ramificados que recebem informação de células vizinhas\n• Aumentam a área de superfície → comunicação com muitos outros neurônios\n• Variam de um único dendrito até ramificações de incrível complexidade\n• Espinhos dendríticos: variam de finos até formato de cogumelo\n• Espinhos podem alterar tamanho e formato em resposta a sinais (plasticidade)",
+            deepDive: "Dendritos no SNC podem funcionar como compartimentos independentes — enviando sinais bidirecionais."
+          },
+          {
+            title: "Funções Dendríticas por Localização",
+            content: "• SNP: receber informação de entrada e transferir para região integradora\n• SNC: função mais complexa — espinhos como compartimentos independentes\n• Espinhos dendríticos enviam sinais de ida e volta com outros neurônios\n• Muitos contêm polirribossomos e podem produzir suas próprias proteínas\n• Plasticidade dendrítica: base celular da aprendizagem e memória",
+            deepDive: ""
+          },
+          {
+            title: "Axônio — Condutor de Informação",
+            content: "• Forma, número e comprimento variam entre neurônios\n• Maioria dos neurônios periféricos: único axônio originado do cone axonal\n• Comprimento: de mais de 1 metro até poucos micrômetros\n• Função primária: transmitir sinais elétricos de saída até as células-alvo\n• Na porção distal: sinal elétrico → secreção de molécula mensageira (neurotransmissor)",
+            deepDive: "O axônio NÃO possui ribossomos nem RE — proteínas são transportadas do soma via transporte axonal."
+          },
+        ]
+      },
+      {
+        title: "Transporte Axonal",
+        subsections: [
+          {
+            title: "Transporte Lento — Fluxo Axoplasmático",
+            content: "• Velocidade: 0,2 – 2,5 mm/dia\n• Transporta enzimas e proteínas do citoesqueleto\n• Componentes que não são consumidos rapidamente\n• Movimento por fluxo citoplasmático contínuo",
+            deepDive: ""
+          },
+          {
+            title: "Transporte Rápido — Via Microtúbulos",
+            content: "• Velocidade: até 400 mm/dia (≈ 15,75 polegadas/dia)\n• Utiliza proteínas motoras (cinesina e dineína) sobre microtúbulos\n• Transporta organelas: mitocôndrias, vesículas sinápticas\n• O transporte rápido é 160× mais rápido que o lento!\n• Essencial para entregar componentes vitais aos terminais axonais distantes",
+            deepDive: "160× — transporte rápido vs. lento. Sem microtúbulos, o terminal sináptico morre."
+          },
+        ]
+      },
+      {
+        title: "Condução Saltatória e Mielina",
+        subsections: [
+          {
+            title: "Bainha de Mielina",
+            content: "• Isolante lipídico que envolve axônios em segmentos (internodos)\n• SNC: formada por oligodendrócitos (1 célula → até 50 axônios)\n• SNP: formada por células de Schwann (1 célula → 1 internodo)\n• Entre os segmentos: nós de Ranvier — gaps com canais iônicos expostos\n• A mielina impede a dissipação da corrente iônica ao longo do axônio",
+            deepDive: "Mielina = velocidade + eficiência energética. Doenças desmielinizantes (ex: esclerose múltipla) destroem essa vantagem."
+          },
+          {
+            title: "Condução Saltatória vs. Contínua",
+            content: "• Saltatória (mielinizada): sinal \"salta\" entre nós de Ranvier — até 120 m/s\n• Contínua (não-mielinizada): despolarização ponto a ponto — 0,5 a 2 m/s\n• Saltatória é ≈60× mais rápida e gasta menos energia (menos canais ativados)\n• Nós de Ranvier: concentração de canais de Na⁺ voltagem-dependentes\n• Entre os nós: corrente passiva (eletrotônica) sob a mielina",
+            deepDive: "Condução saltatória: velocidade de 120 m/s com economia energética — evolução em ação."
+          },
+        ]
+      },
+      {
+        title: "Classificação dos Neurônios",
+        subsections: [
+          {
+            title: "Classificação Funcional",
+            content: "• Sensoriais (aferentes): conduzem potenciais de ação em direção ao SNC\n• Motores (eferentes): conduzem do SNC para músculos ou glândulas\n• Interneurônios: conduzem de um neurônio para outro dentro do SNC",
+            deepDive: ""
+          },
+          {
+            title: "Classificação Estrutural",
+            content: "• Multipolares: vários dendritos + 1 axônio longo — tipo mais comum no SNC\n• Pseudounipolares: corpo celular lateral em processo único em T (neurônios sensoriais)\n• Bipolares: 1 axônio + 1 dendrito — retina e epitélio olfatório\n• Anaxônicos: sem axônio identificável, dendritos difusos — células amácrinas na retina",
+            deepDive: "Estrutura define função: a forma de cada neurônio é adaptada ao seu papel no circuito."
+          },
+        ]
+      },
+      {
+        title: "Neuróglia — Células de Suporte",
+        subsections: [
+          {
+            title: "Neuróglia do SNC",
+            content: "• Oligodendrócitos: produzem mielina no SNC (1 célula → até 50 axônios)\n• Astrócitos: sustentação, barreira hematoencefálica, regulação de K⁺, captação de neurotransmissores\n• Microglia: fagocitose, poda sináptica, resposta inflamatória — o \"sistema imune\" do SNC\n• Células ependimárias: revestem ventrículos, cílios circulam o LCR",
+            deepDive: ""
+          },
+          {
+            title: "Neuróglia do SNP",
+            content: "• Células de Schwann: produzem mielina no SNP (1 célula → 1 internodo)\n• Participam na regeneração axonal — formam tubos de regeneração\n• Células Satélite (anfícitos): envolvem corpos celulares nos gânglios\n• Regulação do microambiente ganglionar e suporte nutricional",
+            deepDive: ""
+          },
+          {
+            title: "Funções Integradas da Neuróglia",
+            content: "• Formação e permeabilidade da barreira hematoencefálica\n• Fagocitose de substâncias estranhas e debris celulares\n• Produção e circulação de líquido cerebrospinal (LCR)\n• Formação de bainha de mielina ao redor dos axônios\n• Apesar de não transmitirem sinais elétricos a longa distância, comunicam-se com neurônios\n• Fornecem suporte físico e bioquímico indispensável",
+            deepDive: "Neuróglia: >50% do peso encefálico, 10–50× mais numerosas que neurônios — o sistema nervoso NÃO funciona sem elas."
+          },
+        ]
+      },
+    ]
+  },
+  {
+    id: 'N1-S4',
+    code: 'NEURO-04',
+    title: "Suporte, Nutrição e Proteção",
+    videoUrls: [],
+    chapters: [
+      {
+        title: "Princípio Fundamental",
+        subsections: [
+          {
+            title: "O Cérebro Não É Um Processador Abstrato",
+            content: "• Os tratados clássicos (Guyton & Hall, Kandel, Purves, Bear) convergem:\n• O cérebro é um órgão biológico — metabolicamente caro, altamente vulnerável\n• Dependente de suprimento contínuo de O₂ e glicose\n• Pensar, decidir, aprender e regular emoção NÃO são propriedades \"mágicas\" da mente\n• São efeitos emergentes de uma cadeia de suporte metabólico",
+            deepDive: "Não existe \"vontade\" forte o suficiente para superar falta de O₂ ou glicose. Não existe \"força mental\" capaz de substituir ATP."
+          },
+          {
+            title: "A Cadeia Metabólica Neural",
+            content: "• O₂ + Glicose → ATP (fosforilação oxidativa)\n• ATP → Gradientes iônicos (Na⁺/K⁺-ATPase)\n• Gradientes → Potencial de Ação\n• Potencial de Ação → Função Neural\n• Quebrou qualquer elo → o sistema colapsa",
+            deepDive: "Função cerebral não é produto da vontade. É produto de viabilidade metabólica."
+          },
+          {
+            title: "Os Números da Dependência",
+            content: "• Cérebro = 2% do peso corporal total\n• Consome 20% de todo o O₂ do organismo\n• Consome 25% de toda a glicose circulante\n• 60–80% do ATP cerebral vai para as bombas iônicas (Attwell & Laughlin, 2001)\n• Sem reserva significativa de glicose ou O₂ — dependência contínua do sangue",
+            deepDive: "O cérebro é o órgão mais caro do corpo — e não tem reserva."
+          },
+        ]
+      },
+      {
+        title: "Barreira Hematoencefálica (BHE)",
+        subsections: [
+          {
+            title: "O Que é a BHE",
+            content: "• Não é uma \"parede\" — é uma interface regulatória ativa\n• Formada por células endoteliais altamente especializadas nos capilares cerebrais\n• Junções apertadas (tight junctions) entre células endoteliais\n• Pericitos e pés astrocitários completam a barreira\n• Forma a unidade neurovascular junto com neurônios e glia",
+            deepDive: "A BHE é a fronteira inteligente entre o sangue e o tecido neural."
+          },
+          {
+            title: "O Que Passa e o Que Não Passa",
+            content: "• ✓ PASSA: O₂ (difusão livre), glicose (GLUT-1), aminoácidos essenciais (transportadores)\n• ✓ PASSA: Hormônios lipofílicos, moléculas pequenas e apolares\n• ✕ BLOQUEIA: Patógenos (bactérias, vírus), toxinas circulantes\n• ✕ BLOQUEIA: Moléculas grandes, proteínas plasmáticas, maioria dos fármacos\n• Por isso muitos medicamentos não chegam ao cérebro — desafio farmacológico",
+            deepDive: ""
+          },
+          {
+            title: "Quando a BHE Falha",
+            content: "• Danos à BHE → entrada de substâncias neurotóxicas\n• Edema cerebral: acúmulo de líquido no tecido neural\n• Neuroinflamação: ativação descontrolada de micróglia\n• Presente em: esclerose múltipla, AVC, trauma craniano, meningite\n• Comprometimento funcional pode ser irreversível",
+            deepDive: "BHE intacta = proteção. BHE comprometida = neurotoxicidade, edema, inflamação."
+          },
+        ]
+      },
+      {
+        title: "Glia: A Infraestrutura Invisível",
+        subsections: [
+          {
+            title: "Glia NÃO São Células Auxiliares Passivas",
+            content: "• Historicamente subestimadas — \"cola\" neural\n• Na realidade: sistemas ativos de suporte sem os quais neurônios NÃO funcionam\n• Representam >50% do peso encefálico\n• 10 a 50× mais numerosas que neurônios\n• A função neural é emergência de um sistema INTEGRADO neurônio-glia",
+            deepDive: "Sem glia funcional, o neurônio mais \"inteligente\" colapsa."
+          },
+          {
+            title: "Astrócitos — O Sistema de Suporte Metabólico",
+            content: "• Regulação do K⁺ extracelular (previne hiperexcitabilidade)\n• Recaptação de glutamato (previne excitotoxicidade)\n• Fornecimento de lactato como combustível para neurônios\n• Manutenção do pH extracelular\n• Pés astrocitários formam parte da BHE\n• Sem astrócitos: K⁺ acumula → crises epilépticas, glutamato mata neurônios",
+            deepDive: "Astrócitos: do capilar ao neurônio — a ponte metabólica essencial."
+          },
+          {
+            title: "Oligodendrócitos e Schwann — Eficiência",
+            content: "• Oligodendrócitos (SNC): 1 célula mieliniza até 50 axônios\n• Células de Schwann (SNP): 1 célula → 1 internodo\n• Mielina: isolante lipídico que permite condução saltatória\n• Sem mielina: velocidade cai de 120 m/s para ~2 m/s\n• Esclerose múltipla: destruição autoimune da mielina do SNC",
+            deepDive: ""
+          },
+          {
+            title: "Micróglia — Vigilância e Manutenção",
+            content: "• Sistema imune residente do SNC\n• Vigilância contínua: monitora o microambiente 24h\n• Fagocitose: remove debris celulares e patógenos\n• Poda sináptica: marca e elimina sinapses fracas no desenvolvimento\n• Resposta inflamatória: ativação em lesão ou infecção\n• Ativação crônica: associada a doenças neurodegenerativas (Alzheimer, Parkinson)",
+            deepDive: "Micróglia: zeladora, guardiã e escultora do cérebro."
+          },
+        ]
+      },
+      {
+        title: "Síntese: Infraestrutura como Pré-Requisito",
+        subsections: [
+          {
+            title: "Conclusão do Capítulo",
+            content: "• Função cerebral NÃO é produto da vontade — é produto de viabilidade metabólica\n• Sem oxigênio, glicose, barreira e glia, não há cognição, decisão ou comportamento\n• O₂ + Glicose → ATP → Gradientes → PA → Função → Comportamento\n• A BHE protege mas também limita: desafio para tratamentos farmacológicos\n• Glia é infraestrutura ativa, não passiva — co-protagonista da função neural",
+            deepDive: "Não existe função neural sem infraestrutura. O cérebro é um órgão biológico, não uma abstração."
+          },
+          {
+            title: "Relevância Clínica",
+            content: "• AVC: interrupção de O₂ → morte neuronal em minutos\n• Hipoglicemia severa: sem glicose → convulsões, coma\n• Esclerose múltipla: perda de mielina → déficit motor e cognitivo\n• Meningite: BHE comprometida → neuroinflamação grave\n• Alzheimer: micróglia cronicamente ativada → neurodegeneração\n• Entender infraestrutura = entender vulnerabilidades do SN",
+            deepDive: "Para o fisioterapeuta: conhecer a infraestrutura neural é saber ONDE e POR QUE o sistema falha."
+          },
+        ]
+      },
+    ]
+  },

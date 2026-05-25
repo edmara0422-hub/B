@@ -1500,9 +1500,9 @@ function BusinessManifestoPage() {
               dos <i style={{ color: 'var(--gold)' }}>negócios.</i>
             </h1>
             <p style={{ fontSize: '1.1rem', lineHeight: 1.7, color: 'var(--ink-soft)', fontWeight: 300, maxWidth: '500px' }}>
-              No mercado corporativo atual, muito se fala sobre processos, empresas e infraestruturas tecnológicas. Mas a verdade é que negócios, gestão e liderança são, no fim do dia, <b>pessoas falando com outras pessoas</b>.
+              No mercado corporativo global, processos e infraestruturas são apenas o meio. A verdadeira inovação acontece quando entendemos que negócios, liderança e gestão são, na essência, <b>pessoas conectando-se com outras pessoas</b>.
               <br/><br/>
-              A Intelligence Platform Business transcende qualquer rótulo de "aplicativo" ou nicho específico. Ela é o reflexo de uma visão multidisciplinar que entende que o verdadeiro diferencial de mercado não é a tecnologia pela tecnologia, mas a liderança humana que a impulsiona.
+              A Intelligence Platform Business é o reflexo de uma visão executiva e multidisciplinar. É a convicção de que o verdadeiro diferencial de mercado não é a tecnologia isolada, mas a visão estratégica e a liderança humana que a conduzem.
             </p>
           </motion.div>
 
@@ -1516,12 +1516,10 @@ function BusinessManifestoPage() {
             <div style={{
               position: 'relative',
               width: '100%',
-              maxWidth: '450px',
-              WebkitMaskImage: 'radial-gradient(circle at center, black 40%, transparent 70%)',
-              maskImage: 'radial-gradient(circle at center, black 40%, transparent 70%)'
+              maxWidth: '450px'
             }}>
               <img 
-                src="/business_cube_pure_black.png" 
+                src="/business_cube_final.png" 
                 alt="IPB Business Cube" 
                 style={{ 
                   width: '100%', 
