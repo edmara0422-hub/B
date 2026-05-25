@@ -41,7 +41,8 @@ import {
   SimNeuroCreativity, SimIdeationFunnel, SimSixHatsMatrix,
   SimNestedSustainability, SimESGScanner, SimFrameworkConstellation, SimGreenwashingFilter, SimSMARTLock, SimBPMNFlow, SimCertGlobe,
   SimPDCACycle, SimBusinessCanvas, SimStrategicTripod, SimValueChain, SimTaxMatrix,
-  SimAccountingLedger, SimBalanceScale, SimIncomeWaterfall, SimCashflowTanks, SimDoubleEntryOrbit
+  SimAccountingLedger, SimBalanceScale, SimIncomeWaterfall, SimCashflowTanks, SimDoubleEntryOrbit,
+  SimTimeDilator, SimCompoundGravity, SimVPLSpectrometer, SimCorporateGyroscope
 } from '@/components/sea/simulations-6d'
 import { SUBJECTS_DB } from '@/data/caderno-content-m1-m8'
 
@@ -1074,7 +1075,7 @@ function NASA6DSimulator({ dbId, chapterIndex, theme }: { dbId: string; chapterI
     }, 1200)
   }
 
-  const has6DSimulations = dbId === 'M4-S1' || dbId === 'M1-S1' || dbId === 'M1-S2' || dbId === 'M1-S3' || dbId === 'M2-S1' || dbId === 'M2-S2'
+  const has6DSimulations = dbId === 'M4-S1' || dbId === 'M1-S1' || dbId === 'M1-S2' || dbId === 'M1-S3' || dbId === 'M2-S1' || dbId === 'M2-S2' || dbId === 'M2-S3'
 
   return (
     <div className="flex flex-col justify-between h-full w-full space-y-4">
@@ -1211,6 +1212,15 @@ function NASA6DSimulator({ dbId, chapterIndex, theme }: { dbId: string; chapterI
                 {chapterIndex === 2 && <SimIncomeWaterfall theme={theme} addLog={addLog} />}
                 {chapterIndex === 3 && <SimCashflowTanks theme={theme} addLog={addLog} />}
                 {chapterIndex === 4 && <SimDoubleEntryOrbit theme={theme} addLog={addLog} />}
+              </>
+            )}
+
+            {dbId === 'M2-S3' && (
+              <>
+                {chapterIndex === 0 && <SimTimeDilator theme={theme} addLog={addLog} />}
+                {chapterIndex === 1 && <SimCompoundGravity theme={theme} addLog={addLog} />}
+                {chapterIndex === 2 && <SimVPLSpectrometer theme={theme} addLog={addLog} />}
+                {chapterIndex === 3 && <SimCorporateGyroscope theme={theme} addLog={addLog} />}
               </>
             )}
           </div>
