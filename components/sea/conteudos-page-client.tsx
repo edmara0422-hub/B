@@ -225,16 +225,16 @@ function MiniNetworkGraph({ moduleId }: { moduleId?: string }) {
           
           <div className="relative w-12 h-12 flex items-center justify-center">
             <motion.div 
-              className="absolute inset-0 rounded-full border border-white/5 border-t-[#d4b87a] border-r-[#d4b87a]"
+              className="absolute inset-0 rounded-full border border-white/5 border-t-[#d4b87a] [.theme-silver_&]:border-t-[#cbd5e1] border-r-[#d4b87a] [.theme-silver_&]:border-r-[#cbd5e1]"
               animate={{ rotate: 360 }}
               transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}
             />
             <motion.div 
-              className="absolute inset-2 rounded-full border border-white/10 border-b-[#d4b87a]"
+              className="absolute inset-2 rounded-full border border-white/10 border-b-[#d4b87a] [.theme-silver_&]:border-b-[#cbd5e1]"
               animate={{ rotate: -360 }}
               transition={{ duration: 6, repeat: Infinity, ease: 'linear' }}
             />
-            <div className="w-1.5 h-1.5 rounded-full bg-[#d4b87a] shadow-[0_0_10px_#d4b87a] animate-pulse" />
+            <div className="w-1.5 h-1.5 rounded-full bg-[#d4b87a] [.theme-silver_&]:bg-[#cbd5e1] shadow-[0_0_10px_#d4b87a] [.theme-silver_&]:shadow-[0_0_10px_#cbd5e1] animate-pulse" />
           </div>
         </div>
 
@@ -549,7 +549,7 @@ function ExecutiveMasterclassTheater({
               const isSelected = idx === activeLessonIndex
               const isGold = idx % 2 === 0
               const itemColor = isGold ? '#d4b87a' : '#cbd5e1'
-              const itemBgSelected = isGold ? 'rgba(212,184,122,0.12)' : 'rgba(203,213,225,0.12)'
+              const itemBgSelected = isGold ? 'rgba(var(--theme-primary-rgb),0.12)' : 'rgba(203,213,225,0.12)'
               
               return (
                 <button
@@ -619,10 +619,10 @@ function CompetencyRadarChart({ activeKpi, theme }: { activeKpi: string; theme: 
       }} />
 
       <svg width="200" height="152" className="relative overflow-visible">
-        <path d={getHexPath(R)} fill="none" stroke="rgba(212,184,122,0.14)" strokeWidth="0.8" />
-        <path d={getHexPath(R * 0.75)} fill="none" stroke="rgba(212,184,122,0.06)" strokeWidth="0.5" strokeDasharray="2 2" />
-        <path d={getHexPath(R * 0.5)} fill="none" stroke="rgba(212,184,122,0.06)" strokeWidth="0.5" strokeDasharray="2 2" />
-        <path d={getHexPath(R * 0.25)} fill="none" stroke="rgba(212,184,122,0.06)" strokeWidth="0.5" />
+        <path d={getHexPath(R)} fill="none" stroke="rgba(var(--theme-primary-rgb),0.14)" strokeWidth="0.8" />
+        <path d={getHexPath(R * 0.75)} fill="none" stroke="rgba(var(--theme-primary-rgb),0.06)" strokeWidth="0.5" strokeDasharray="2 2" />
+        <path d={getHexPath(R * 0.5)} fill="none" stroke="rgba(var(--theme-primary-rgb),0.06)" strokeWidth="0.5" strokeDasharray="2 2" />
+        <path d={getHexPath(R * 0.25)} fill="none" stroke="rgba(var(--theme-primary-rgb),0.06)" strokeWidth="0.5" />
 
         {axes.map((_, i) => {
           const angle = (i * 2 * Math.PI) / 6 - Math.PI / 2
@@ -643,7 +643,7 @@ function CompetencyRadarChart({ activeKpi, theme }: { activeKpi: string; theme: 
 
         <motion.path
           d={scorePath}
-          fill="rgba(212,184,122,0.15)"
+          fill="rgba(var(--theme-primary-rgb),0.15)"
           stroke={theme.primary}
           strokeWidth="1.5"
           initial={{ pathLength: 0 }}
@@ -801,7 +801,7 @@ function ExecutivePerformanceDashboard({ moduleId }: { moduleId?: string }) {
       <div>
         <div className="flex justify-between items-center">
           <span className="text-[7.5px] uppercase tracking-wider font-bold" style={{ color: theme.primary }}>KPIs Estratégicos</span>
-          <span className="text-[8px] px-1.5 py-0.5 rounded bg-[#d4b87a]/10 [.theme-silver_&]:bg-[#cbd5e1]/10 border border-[#d4b87a]/20 [.theme-silver_&]:border-[#cbd5e1]/20 text-[#d4b87a] font-mono">Executive Mode</span>
+          <span className="text-[8px] px-1.5 py-0.5 rounded bg-[#d4b87a]/10 [.theme-silver_&]:bg-[#cbd5e1]/10 border border-[#d4b87a]/20 [.theme-silver_&]:border-[#cbd5e1]/20 text-[#d4b87a] [.theme-silver_&]:text-[#cbd5e1] font-mono">Executive Mode</span>
         </div>
         <h4 className="text-[12px] font-bold text-white/90 mt-1">Indicadores de Competência (30 Disciplinas)</h4>
       </div>
@@ -820,7 +820,7 @@ function ExecutivePerformanceDashboard({ moduleId }: { moduleId?: string }) {
               onClick={() => setActiveKpi(key as any)}
               className="p-1.5 rounded-lg border text-left transition-all duration-300 flex flex-col justify-between cursor-pointer"
               style={{
-                background: isSelected ? 'rgba(212,184,122,0.08)' : 'rgba(255,255,255,0.01)',
+                background: isSelected ? 'rgba(var(--theme-primary-rgb),0.08)' : 'rgba(255,255,255,0.01)',
                 borderColor: isSelected ? theme.primary : 'rgba(255,255,255,0.04)',
                 boxShadow: isSelected ? `0 0 10px ${theme.glow}` : 'none'
               }}
@@ -977,7 +977,7 @@ function StrategicRoadmapBoard({ moduleId }: { moduleId?: string }) {
               <span className="text-[8px] font-bold text-white uppercase tracking-wider">
                 Fluxo {STRATEGIC_NODES.findIndex(n => n.id === hoveredNode) + 1}: {STRATEGIC_NODES.find(n => n.id === hoveredNode)?.label}
               </span>
-              <span className="text-[7px] font-mono text-[#d4b87a] font-semibold">Foco Estratégico</span>
+              <span className="text-[7px] font-mono text-[#d4b87a] [.theme-silver_&]:text-[#cbd5e1] font-semibold">Foco Estratégico</span>
             </div>
             <p className="text-[8.5px] text-white/70 leading-snug">
               {STRATEGIC_NODES.find(n => n.id === hoveredNode)?.desc}
@@ -1104,7 +1104,7 @@ function NASA6DSimulator({ dbId, chapterIndex, theme }: { dbId: string; chapterI
           <div className="flex flex-col justify-between h-full space-y-3">
             <div className="flex justify-between items-start">
               <div>
-                <span className="text-[8.5px] px-2 py-0.5 rounded font-mono bg-[#d4b87a]/10 [.theme-silver_&]:bg-[#cbd5e1]/10 border border-[#d4b87a]/20 [.theme-silver_&]:border-[#cbd5e1]/20 text-[#d4b87a] uppercase font-bold tracking-wider">
+                <span className="text-[8.5px] px-2 py-0.5 rounded font-mono bg-[#d4b87a]/10 [.theme-silver_&]:bg-[#cbd5e1]/10 border border-[#d4b87a]/20 [.theme-silver_&]:border-[#cbd5e1]/20 text-[#d4b87a] [.theme-silver_&]:text-[#cbd5e1] uppercase font-bold tracking-wider">
                   NASA 6D CORE · CAPÍTULO {chapterIndex + 1}
                 </span>
                 <h5 className="text-xs font-bold text-white/95 mt-1">
@@ -1158,8 +1158,8 @@ function NASA6DSimulator({ dbId, chapterIndex, theme }: { dbId: string; chapterI
                 )}
               </h5>
             </div>
-            <div className="flex items-center gap-1.5 text-[#d4b87a]">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#d4b87a] animate-ping" />
+            <div className="flex items-center gap-1.5 text-[#d4b87a] [.theme-silver_&]:text-[#cbd5e1]">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#d4b87a] [.theme-silver_&]:bg-[#cbd5e1] animate-ping" />
               <span className="text-[7.5px] font-mono font-bold tracking-wider">TELEMETRIA ATIVA</span>
             </div>
           </div>
@@ -1221,11 +1221,11 @@ function NASA6DSimulator({ dbId, chapterIndex, theme }: { dbId: string; chapterI
       <div className="p-3 bg-black/60 rounded-xl border border-white/[0.04] font-mono h-[96px] overflow-hidden shrink-0 flex flex-col justify-between">
         <div className="flex justify-between items-center pb-1.5 border-b border-white/[0.04]">
           <span className="text-[7.5px] uppercase font-bold text-white/35">Advisor Terminal Diagnostic Logs</span>
-          <span className="text-[7px] text-[#d4b87a] font-bold">STATUS: OK</span>
+          <span className="text-[7px] text-[#d4b87a] [.theme-silver_&]:text-[#cbd5e1] font-bold">STATUS: OK</span>
         </div>
         <div className="flex-1 flex flex-col justify-start space-y-1 mt-1.5 select-none pointer-events-none">
           {logs.map((log, idx) => (
-            <div key={idx} className="text-[7.5px] truncate text-white/40 leading-normal" style={{ color: idx === 0 ? '#d4b87a' : undefined }}>
+            <div key={idx} className="text-[7.5px] truncate text-white/40 leading-normal" style={{ color: idx === 0 ? 'var(--theme-primary)' : undefined }}>
               {log}
             </div>
           ))}
@@ -1334,10 +1334,10 @@ function ExecutiveStudyBriefing({
       <div className="flex items-center justify-between pb-4 border-b border-white/[0.04] flex-wrap gap-3" style={{ borderBottom: '0.2px solid rgba(255,255,255,0.04)' }}>
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 rounded-lg bg-[#d4b87a]/10 [.theme-silver_&]:bg-[#cbd5e1]/10 border border-[#d4b87a]/20 [.theme-silver_&]:border-[#cbd5e1]/20 flex items-center justify-center">
-            <BookOpen className="h-4 w-4 text-[#d4b87a]" />
+            <BookOpen className="h-4 w-4 text-[#d4b87a] [.theme-silver_&]:text-[#cbd5e1]" />
           </div>
           <div>
-            <span className="text-xs uppercase tracking-[0.25em] font-bold text-[#d4b87a]">MBA Executive Cockpit</span>
+            <span className="text-xs uppercase tracking-[0.25em] font-bold text-[#d4b87a] [.theme-silver_&]:text-[#cbd5e1]">MBA Executive Cockpit</span>
             <h3 className="text-base font-bold text-white/95 leading-none mt-1">{syllabusItem.title}</h3>
           </div>
         </div>
@@ -1357,8 +1357,8 @@ function ExecutiveStudyBriefing({
                 onClick={() => setActiveTab(tab.id as any)}
                 className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-mono tracking-wider transition-all duration-300 cursor-pointer"
                 style={{
-                  background: isSelected ? 'rgba(212,184,122,0.12)' : 'transparent',
-                  color: isSelected ? '#d4b87a' : 'rgba(255,255,255,0.4)'
+                  background: isSelected ? 'rgba(var(--theme-primary-rgb),0.12)' : 'transparent',
+                  color: isSelected ? activeTheme.primary : 'rgba(255,255,255,0.4)'
                 }}
               >
                 <TabIcon className="h-3.5 w-3.5" />
@@ -1372,7 +1372,7 @@ function ExecutiveStudyBriefing({
       {/* 30-Discipline Horizontal Rail Selector (Replaces Vertical Sidebar) */}
       <div className="border-b border-white/[0.04] pb-4">
         <div className="flex items-center justify-between mb-2">
-          <span className="text-xs uppercase tracking-wider font-bold text-[#d4b87a]">Grade de Disciplinas</span>
+          <span className="text-xs uppercase tracking-wider font-bold text-[#d4b87a] [.theme-silver_&]:text-[#cbd5e1]">Grade de Disciplinas</span>
           <span className="text-[10px] px-2 py-0.5 rounded bg-white/5 border border-white/10 text-white/40 font-mono uppercase">Mapeamento Integrado</span>
         </div>
         
@@ -1392,7 +1392,7 @@ function ExecutiveStudyBriefing({
                     ? 'rgba(255, 255, 255, 0.04)' 
                     : 'rgba(255, 255, 255, 0.01)',
                   borderColor: isSelected 
-                    ? '#d4b87a' 
+                    ? activeTheme.primary 
                     : 'rgba(255, 255, 255, 0.05)',
                   boxShadow: isSelected 
                     ? '0 0 12px rgba(212, 184, 122, 0.15)' 
@@ -1445,7 +1445,7 @@ function ExecutiveStudyBriefing({
                     <div className="overflow-y-auto space-y-4 pr-2 ipb-thinscroll h-full">
                       <div className="flex justify-between items-start border-b border-white/[0.06] pb-3 w-full sticky top-0 bg-[#0c0905]/95 backdrop-blur-md z-10">
                         <div>
-                          <span className="text-xs px-2 py-0.5 rounded font-mono bg-[#d4b87a]/10 [.theme-silver_&]:bg-[#cbd5e1]/10 border border-[#d4b87a]/20 [.theme-silver_&]:border-[#cbd5e1]/20 text-[#d4b87a] uppercase">SUMÁRIO ACADÊMICO</span>
+                          <span className="text-xs px-2 py-0.5 rounded font-mono bg-[#d4b87a]/10 [.theme-silver_&]:bg-[#cbd5e1]/10 border border-[#d4b87a]/20 [.theme-silver_&]:border-[#cbd5e1]/20 text-[#d4b87a] [.theme-silver_&]:text-[#cbd5e1] uppercase">SUMÁRIO ACADÊMICO</span>
                           <h4 className="text-base font-bold text-white/95 leading-tight mt-1 uppercase">
                             {syllabusItem.title}
                           </h4>
@@ -1481,7 +1481,7 @@ function ExecutiveStudyBriefing({
                           return (
                             <div key={cIdx} className="space-y-4 pb-4">
                               <div className="flex items-start gap-2.5">
-                                <span className="text-xs font-mono font-bold text-[#d4b87a] mt-0.5">Cap {cIdx + 1}</span>
+                                <span className="text-xs font-mono font-bold text-[#d4b87a] [.theme-silver_&]:text-[#cbd5e1] mt-0.5">Cap {cIdx + 1}</span>
                                 <div>
                                   <h5 className="text-sm font-bold text-white/90 leading-tight uppercase">
                                     {chapter.title}
@@ -1506,8 +1506,8 @@ function ExecutiveStudyBriefing({
                                     </p>
 
                                     {sub.studyCase && (
-                                      <div className="mt-3 rounded-xl p-4 bg-[#d4b87a]/5 [.theme-silver_&]:bg-[#cbd5e1]/5 border-l-2 border-[#d4b87a] border border-[#d4b87a]/10 [.theme-silver_&]:border-[#cbd5e1]/10 space-y-1.5">
-                                        <span className="text-[10px] uppercase tracking-wider font-bold text-[#d4b87a] block">Estudo de Caso · {sub.studyCase.title}</span>
+                                      <div className="mt-3 rounded-xl p-4 bg-[#d4b87a]/5 [.theme-silver_&]:bg-[#cbd5e1]/5 border-l-2 border-[#d4b87a] [.theme-silver_&]:border-[#cbd5e1] border border-[#d4b87a]/10 [.theme-silver_&]:border-[#cbd5e1]/10 space-y-1.5">
+                                        <span className="text-[10px] uppercase tracking-wider font-bold text-[#d4b87a] [.theme-silver_&]:text-[#cbd5e1] block">Estudo de Caso · {sub.studyCase.title}</span>
                                         <p className="text-xs text-[#d4b87a]/80 [.theme-silver_&]:text-[#cbd5e1]/80 leading-relaxed text-justify whitespace-pre-line">
                                           {sub.studyCase.body}
                                         </p>
@@ -1556,7 +1556,7 @@ function ExecutiveStudyBriefing({
 
                     <div className="space-y-4 flex-1 flex flex-col">
                       <div>
-                        <span className="text-[10px] uppercase tracking-wider font-bold text-[#d4b87a]">
+                        <span className="text-[10px] uppercase tracking-wider font-bold text-[#d4b87a] [.theme-silver_&]:text-[#cbd5e1]">
                           {dbId === 'M4-S1' ? 'Simulador NASA 6D Ativo' : 'Simulador Ativo'}
                         </span>
                         <h4 className="text-sm font-bold text-white/95 mt-1">
@@ -1575,16 +1575,16 @@ function ExecutiveStudyBriefing({
                     </div>
 
                     <div className="pt-4 border-t border-white/[0.06] mt-4">
-                      <span className="text-[10px] uppercase tracking-wider font-bold text-[#d4b87a] block mb-2">
+                      <span className="text-[10px] uppercase tracking-wider font-bold text-[#d4b87a] [.theme-silver_&]:text-[#cbd5e1] block mb-2">
                         Diretrizes de Governança
                       </span>
                       <ul className="space-y-2">
                         <li className="text-xs text-white/60 flex items-start gap-2">
-                          <span className="mt-1.5 w-1.5 h-1.5 rounded-full shrink-0 bg-[#d4b87a]" />
+                          <span className="mt-1.5 w-1.5 h-1.5 rounded-full shrink-0 bg-[#d4b87a] [.theme-silver_&]:bg-[#cbd5e1]" />
                           <span className="leading-relaxed">Alinhamento entre governança corporativa e operações eficientes.</span>
                         </li>
                         <li className="text-xs text-white/60 flex items-start gap-2">
-                          <span className="mt-1.5 w-1.5 h-1.5 rounded-full shrink-0 bg-[#d4b87a]" />
+                          <span className="mt-1.5 w-1.5 h-1.5 rounded-full shrink-0 bg-[#d4b87a] [.theme-silver_&]:bg-[#cbd5e1]" />
                           <span className="leading-relaxed">Validação ágil de hipóteses no framework de tomada de decisão.</span>
                         </li>
                         <li className="text-xs text-white/60 flex items-start gap-2">
@@ -1618,8 +1618,8 @@ function ExecutiveStudyBriefing({
                         <div 
                           className="max-w-[75%] rounded-xl p-4 text-xs lg:text-sm leading-relaxed text-justify whitespace-pre-line"
                           style={{
-                            background: msg.role === 'user' ? 'rgba(212,184,122,0.12)' : 'rgba(255,255,255,0.03)',
-                            border: msg.role === 'user' ? '1px solid rgba(212,184,122,0.22)' : '1px solid rgba(255,255,255,0.05)',
+                            background: msg.role === 'user' ? 'rgba(var(--theme-primary-rgb),0.12)' : 'rgba(255,255,255,0.03)',
+                            border: msg.role === 'user' ? '1px solid rgba(var(--theme-primary-rgb),0.22)' : '1px solid rgba(255,255,255,0.05)',
                             color: msg.role === 'user' ? '#fff' : 'rgba(255,255,255,0.75)'
                           }}
                         >
@@ -1658,7 +1658,7 @@ function ExecutiveStudyBriefing({
                     />
                     <button
                       onClick={() => handleAskTutor(tutorInput)}
-                      className="px-4 py-2.5 rounded-lg bg-[#d4b87a] hover:bg-[#d4b87a]/80 [.theme-silver_&]:hover:bg-[#cbd5e1]/80 text-black flex items-center justify-center shrink-0 cursor-pointer transition-all"
+                      className="px-4 py-2.5 rounded-lg bg-[#d4b87a] [.theme-silver_&]:bg-[#cbd5e1] hover:bg-[#d4b87a]/80 [.theme-silver_&]:hover:bg-[#cbd5e1]/80 text-black flex items-center justify-center shrink-0 cursor-pointer transition-all"
                     >
                       <Send className="h-4 w-4" />
                     </button>
@@ -1683,7 +1683,7 @@ function ExecutiveStudyBriefing({
                   <div className="flex flex-col h-full space-y-4">
                     <div className="flex items-center justify-between shrink-0">
                       <div className="flex items-center gap-2.5">
-                        <FileText className="h-5 w-5 text-[#d4b87a]" />
+                        <FileText className="h-5 w-5 text-[#d4b87a] [.theme-silver_&]:text-[#cbd5e1]" />
                         <span className="text-xs uppercase tracking-widest font-bold text-white/40">Notas de Implementação Operacional</span>
                       </div>
                       <span className="text-xs text-white/30 font-mono">Salvo automaticamente</span>
@@ -1737,10 +1737,10 @@ function WorkspaceSidebar({
       {/* Header: label + busca + close */}
       <div
         className="shrink-0 rounded-t-[1.65rem] px-2 pb-2 pt-2.5 lg:px-4 lg:pb-3 lg:pt-4"
-        style={{ borderBottom: '1px solid rgba(212,184,122,0.12)' }}
+        style={{ borderBottom: '1px solid rgba(var(--theme-primary-rgb),0.12)' }}
       >
         <div className="mb-2 flex items-center justify-between lg:mb-3">
-          <p className="text-[7px] uppercase tracking-[0.22em] text-[#d4b87a] lg:text-[9px] lg:tracking-[0.44em]">Academic Trilha</p>
+          <p className="text-[7px] uppercase tracking-[0.22em] text-[#d4b87a] [.theme-silver_&]:text-[#cbd5e1] lg:text-[9px] lg:tracking-[0.44em]">Academic Trilha</p>
           <button
             onClick={onClose}
             title="Fechar sidebar"
@@ -1791,14 +1791,14 @@ function WorkspaceSidebar({
                 style={
                   isActive
                     ? {
-                        background: 'linear-gradient(135deg, rgba(212,184,122,0.12), rgba(20,16,8,0.7))',
-                        border: '1px solid rgba(212,184,122,0.32)',
-                        boxShadow: 'inset 0 1px 0 rgba(212,184,122,0.18)',
+                        background: 'linear-gradient(135deg, rgba(var(--theme-primary-rgb),0.12), rgba(20,16,8,0.7))',
+                        border: '1px solid rgba(var(--theme-primary-rgb),0.32)',
+                        boxShadow: 'inset 0 1px 0 rgba(var(--theme-primary-rgb),0.18)',
                       }
                     : { border: '1px solid transparent' }
                 }
               >
-                <div className={`module-icon flex h-6 w-6 items-center justify-center rounded-[6px] shrink-0 ${isActive ? 'bg-[#d4b87a]/15 [.theme-silver_&]:bg-[#cbd5e1]/15 text-[#d4b87a]' : 'bg-white/5 text-white/32'}`}>
+                <div className={`module-icon flex h-6 w-6 items-center justify-center rounded-[6px] shrink-0 ${isActive ? 'bg-[#d4b87a]/15 [.theme-silver_&]:bg-[#cbd5e1]/15 text-[#d4b87a] [.theme-silver_&]:text-[#cbd5e1]' : 'bg-white/5 text-white/32'}`}>
                   <ModIcon className="h-3.5 w-3.5" />
                 </div>
                 <div className="min-w-0 flex-1">
@@ -1817,11 +1817,9 @@ function WorkspaceSidebar({
                     {mod.title}
                   </p>
                 </div>
-                <div
-                  className={`h-1.5 w-1.5 shrink-0 rounded-full transition ${
-                    isActive ? 'bg-[#d4b87a] shadow-[0_0_6px_rgba(212,184,122,0.8)]' : 'bg-white/16'
-                  }`}
-                />
+                <div className={`h-[1px] w-[1px] rounded-full transition-all duration-300 lg:h-1 lg:w-1 ${
+                    isActive ? 'bg-[#d4b87a] [.theme-silver_&]:bg-[#cbd5e1] shadow-[0_0_6px_rgba(var(--theme-primary-rgb),0.8)] [.theme-silver_&]:shadow-[0_0_6px_rgba(203,213,225,0.8)]' : 'bg-white/16'
+                  }`} />
               </button>
 
               {visibleTopics.length > 0 && (
@@ -1836,8 +1834,8 @@ function WorkspaceSidebar({
                         style={
                           isTopicActive
                             ? {
-                                background: 'rgba(212,184,122,0.06)',
-                                boxShadow: 'inset 0 0 0 1px rgba(212,184,122,0.18)',
+                                background: 'rgba(var(--theme-primary-rgb),0.06)',
+                                boxShadow: 'inset 0 0 0 1px rgba(var(--theme-primary-rgb),0.18)',
                               }
                             : { background: 'transparent' }
                         }
@@ -1892,9 +1890,9 @@ function ModuleRail({
             className="flex h-8 w-8 items-center justify-center rounded-[0.7rem] border border-white/10"
             style={{ background: 'rgba(255,255,255,0.05)' }}
           >
-            <BookOpen className="h-4 w-4 text-[#d4b87a]" />
+            <BookOpen className="h-4 w-4 text-[#d4b87a] [.theme-silver_&]:text-[#cbd5e1]" />
           </div>
-          <span className="text-[10px] font-semibold uppercase tracking-[0.28em] text-[#d4b87a]">Trilhas Acadêmicas</span>
+          <span className="text-[10px] font-semibold uppercase tracking-[0.28em] text-[#d4b87a] [.theme-silver_&]:text-[#cbd5e1]">Trilhas Acadêmicas</span>
         </div>
         <div className="flex items-center gap-3">
           <span className="text-[8.5px] px-2 py-0.5 rounded font-mono bg-[#d4b87a]/10 [.theme-silver_&]:bg-[#cbd5e1]/10 border border-[#d4b87a]/20 [.theme-silver_&]:border-[#cbd5e1]/20 text-[#d4b87a] [.theme-silver_&]:text-[#cbd5e1]">TRILHA OURO</span>
@@ -1906,7 +1904,7 @@ function ModuleRail({
       <div className="relative px-2 md:px-4">
         {/* Upper Track Line (Gold - Dourado) */}
         <div className="pointer-events-none absolute inset-x-0 top-[2.05rem] h-[1.5px]" style={{
-          background: 'linear-gradient(90deg, transparent 0%, rgba(212,184,122,0.08) 12%, rgba(212,184,122,0.38) 45%, rgba(212,184,122,0.48) 50%, rgba(212,184,122,0.38) 55%, rgba(212,184,122,0.08) 88%, transparent 100%)',
+          background: 'linear-gradient(90deg, transparent 0%, rgba(var(--theme-primary-rgb),0.08) 12%, rgba(var(--theme-primary-rgb),0.38) 45%, rgba(var(--theme-primary-rgb),0.48) 50%, rgba(var(--theme-primary-rgb),0.38) 55%, rgba(var(--theme-primary-rgb),0.08) 88%, transparent 100%)',
           boxShadow: '0 0 4px rgba(212, 184, 122, 0.2)'
         }} />
 
@@ -1941,7 +1939,7 @@ function ModuleRail({
                         ? {
                             borderColor: isGold ? 'rgba(212, 184, 122, 0.55)' : 'rgba(203, 213, 225, 0.55)',
                             background: isGold 
-                              ? 'radial-gradient(circle at 30% 28%, rgba(212,184,122,0.55) 0%, rgba(212,184,122,0.35) 45%, rgba(40,28,8,0.95) 100%)'
+                              ? 'radial-gradient(circle at 30% 28%, rgba(var(--theme-primary-rgb),0.55) 0%, rgba(var(--theme-primary-rgb),0.35) 45%, rgba(40,28,8,0.95) 100%)'
                               : 'radial-gradient(circle at 30% 28%, rgba(203,213,225,0.45) 0%, rgba(203,213,225,0.25) 45%, rgba(15,18,22,0.95) 100%)',
                             boxShadow: isGold
                               ? '0 0 16px rgba(212, 184, 122, 0.32), 0 0 32px rgba(212, 184, 122, 0.16), inset 0 0.2px 0.2px rgba(255,235,180,0.32)'
@@ -1952,7 +1950,7 @@ function ModuleRail({
                         ? {
                             borderColor: isGold ? 'rgba(212, 184, 122, 0.32)' : 'rgba(203, 213, 225, 0.32)',
                             background: isGold
-                              ? 'linear-gradient(180deg, rgba(212,184,122,0.18) 0%, rgba(20,16,8,0.92) 100%)'
+                              ? 'linear-gradient(180deg, rgba(var(--theme-primary-rgb),0.18) 0%, rgba(20,16,8,0.92) 100%)'
                               : 'linear-gradient(180deg, rgba(203,213,225,0.18) 0%, rgba(12,14,18,0.92) 100%)',
                             color: 'rgba(255,255,255,0.8)',
                           }
@@ -2036,9 +2034,15 @@ export default function ConteudosPageClient() {
   }, [])
 
   const current = activeIndex !== null ? MODULES[activeIndex] : null
-  const activeTheme = current ? MODULE_THEMES[current.id] : MODULE_THEMES.M4
+  const baseTheme = current ? MODULE_THEMES[current.id] : MODULE_THEMES.M4
+  const isGlobalGold = activeSubjectIndex % 2 === 0
+  const activeTheme = {
+    ...baseTheme,
+    primary: isGlobalGold ? baseTheme.primary : '#cbd5e1',
+    badgeText: isGlobalGold ? baseTheme.badgeText : '#cbd5e1',
+    gradient: isGlobalGold ? baseTheme.gradient : 'linear-gradient(90deg, #94a3b8 0%, #cbd5e1 100%)'
+  }
   const CurrentIcon = current?.icon
-
   function handleSelectModule(index: number) {
     if (activeIndex === index) {
       setActiveIndex(null)
@@ -2088,7 +2092,13 @@ export default function ConteudosPageClient() {
   }
 
   return (
-    <div className="relative min-h-screen overflow-hidden text-white">
+    <div 
+      className={`relative min-h-screen overflow-hidden text-white ${!isGlobalGold ? 'theme-silver' : ''}`}
+      style={{
+        '--theme-primary': activeTheme.primary,
+        '--theme-primary-rgb': !isGlobalGold ? '203, 213, 225' : '212, 184, 122',
+      } as React.CSSProperties}
+    >
       {/* Space environment starry background */}
       <IpbBackground subtle={true} />
 
@@ -2181,8 +2191,8 @@ export default function ConteudosPageClient() {
 
             </div>
             <div className="flex items-center gap-2">
-              <BookOpen className="h-4 w-4 text-[#d4b87a]" />
-              <span className="text-[10px] font-semibold uppercase tracking-[0.28em] text-[#d4b87a]">Academic Cockpit</span>
+              <BookOpen className="h-4 w-4 text-[#d4b87a] [.theme-silver_&]:text-[#cbd5e1]" />
+              <span className="text-[10px] font-semibold uppercase tracking-[0.28em] text-[#d4b87a] [.theme-silver_&]:text-[#cbd5e1]">Academic Cockpit</span>
             </div>
           </div>
 
@@ -2209,7 +2219,7 @@ export default function ConteudosPageClient() {
                       {/* Sub-Header / Topbar */}
                       <div className="flex items-center justify-between px-6 py-3.5 border-bottom border-white/[0.04]" style={{ borderBottom: '0.2px solid rgba(255,255,255,0.04)' }}>
                         <div className="flex items-center gap-2 text-white/30 text-[9px] uppercase tracking-widest">
-                          <Radar className="h-3.5 w-3.5 text-[#d4b87a]" />
+                          <Radar className="h-3.5 w-3.5 text-[#d4b87a] [.theme-silver_&]:text-[#cbd5e1]" />
                           <span>Operational Module System</span>
                         </div>
                       </div>
@@ -2221,15 +2231,15 @@ export default function ConteudosPageClient() {
                           <div 
                             className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
                             style={{
-                              background: 'radial-gradient(circle at 30% 25%, rgba(212,184,122,0.35) 0%, rgba(212,184,122,0.20) 50%, rgba(20,16,8,0.95) 100%)',
+                              background: 'radial-gradient(circle at 30% 25%, rgba(var(--theme-primary-rgb),0.35) 0%, rgba(var(--theme-primary-rgb),0.20) 50%, rgba(20,16,8,0.95) 100%)',
                               border: '0.2px solid rgba(212, 184, 122, 0.40)',
-                              boxShadow: 'inset 0 1px 1px rgba(255,235,180,0.22), 0 0 16px rgba(212,184,122,0.18)'
+                              boxShadow: 'inset 0 1px 1px rgba(255,235,180,0.22), 0 0 16px rgba(var(--theme-primary-rgb),0.18)'
                             }}
                           >
                             <span className="text-[12px] font-bold text-white tracking-wider">{current.id}</span>
                           </div>
                           <div>
-                            <span className="text-[8px] text-[#d4b87a] uppercase tracking-[0.25em] font-semibold">{current.eyebrow}</span>
+                            <span className="text-[8px] text-[#d4b87a] [.theme-silver_&]:text-[#cbd5e1] uppercase tracking-[0.25em] font-semibold">{current.eyebrow}</span>
                             <h1 className="text-xl md:text-2xl font-bold tracking-tight text-white/90 leading-tight mt-0.5">
                               {current.title}
                             </h1>
@@ -2414,10 +2424,10 @@ export default function ConteudosPageClient() {
                         transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
                         className="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-white/30 mb-2"
                       >
-                        <BookOpen className="h-7 w-7 text-[#d4b87a]" />
+                        <BookOpen className="h-7 w-7 text-[#d4b87a] [.theme-silver_&]:text-[#cbd5e1]" />
                       </motion.div>
                       <div className="h-px w-12 bg-gradient-to-r from-transparent via-white/20 to-transparent" />
-                      <p className="text-[10px] uppercase tracking-[0.38em] text-[#d4b87a] font-semibold">Plataforma Acadêmica IPB</p>
+                      <p className="text-[10px] uppercase tracking-[0.38em] text-[#d4b87a] [.theme-silver_&]:text-[#cbd5e1] font-semibold">Plataforma Acadêmica IPB</p>
                       <p className="max-w-xs text-[12px] leading-relaxed text-white/44">
                         Selecione um dos módulos acadêmicos acima na trilha para inicializar o cockpit operacional e carregar o caderno de estudos.
                       </p>
