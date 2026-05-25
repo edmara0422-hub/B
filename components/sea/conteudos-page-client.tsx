@@ -37,7 +37,8 @@ import { loadModuleContent } from '@/data/caderno-content-loader'
 import { IpbBackground } from '@/components/sea/ipb-background'
 import { 
   SimAlignIT, SimRogersReactor, SimNeuralMatrix, SimServerlessFlow,
-  SimInnovationIgnition, SimHorizonsBalancer, SimPsychologicalShield, SimDataLakehouse
+  SimInnovationIgnition, SimHorizonsBalancer, SimPsychologicalShield, SimDataLakehouse,
+  SimNeuroCreativity, SimIdeationFunnel, SimSixHatsMatrix
 } from '@/components/sea/simulations-6d'
 import { SUBJECTS_DB } from '@/data/caderno-content-m1-m8'
 
@@ -1063,7 +1064,7 @@ function NASA6DSimulator({ dbId, chapterIndex, theme }: { dbId: string; chapterI
     }, 1200)
   }
 
-  const isM4S1 = dbId === 'M4-S1'
+  const has6DSimulations = dbId === 'M4-S1' || dbId === 'M1-S1' || dbId === 'M1-S2'
 
   return (
     <div className="flex flex-col justify-between h-full w-full space-y-4">
@@ -1074,7 +1075,7 @@ function NASA6DSimulator({ dbId, chapterIndex, theme }: { dbId: string; chapterI
           backgroundSize: '10px 10px'
         }} />
 
-        {!isM4S1 ? (
+        {!has6DSimulations ? (
           <div className="flex flex-col justify-between h-full">
             <div>
               <span className="text-[8px] px-1.5 py-0.5 rounded font-mono bg-white/5 border border-white/10 text-white/45 uppercase tracking-widest">TACTICAL DECISION BOARD</span>
@@ -1097,32 +1098,54 @@ function NASA6DSimulator({ dbId, chapterIndex, theme }: { dbId: string; chapterI
                   NASA 6D CORE · CAPÍTULO {chapterIndex + 1}
                 </span>
                 <h5 className="text-xs font-bold text-white/95 mt-1">
-                  {chapterIndex === 0 && 'Simulador de Alinhamento e Fases da TI'}
-                  {chapterIndex === 1 && 'Reator de 4 Domínios de Rogers'}
-                  {chapterIndex === 2 && 'Matriz de Redes Neurais e IA'}
-                  {chapterIndex === 3 && 'Pipeline Serverless & Cloud Optimizer'}
-                  {chapterIndex === 4 && 'Innovation Prototyping Accelerator'}
-                  {chapterIndex === 5 && 'Balanceador 3 Horizontes (McKinsey)'}
-                  {chapterIndex === 6 && 'Vigilância e Segurança Psicológica Aristotle'}
-                  {chapterIndex === 7 && 'Kimball Lakehouse Data Ingestion Cube'}
-                </h5>
-              </div>
-              <div className="flex items-center gap-1.5 text-[#d4b87a]">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#d4b87a] animate-ping" />
-                <span className="text-[7.5px] font-mono font-bold tracking-wider">TELEMETRIA ATIVA</span>
-              </div>
+                {dbId === 'M1-S1' && (
+                  <>
+                    {chapterIndex === 0 && 'Simulador de Alinhamento e Fases da TI'}
+                    {chapterIndex === 1 && 'Reator de 4 Domínios de Rogers'}
+                    {chapterIndex === 2 && 'Matriz de Redes Neurais e IA'}
+                    {chapterIndex === 3 && 'Pipeline Serverless & Cloud Optimizer'}
+                    {chapterIndex === 4 && 'Innovation Prototyping Accelerator'}
+                    {chapterIndex === 5 && 'Balanceador 3 Horizontes (McKinsey)'}
+                    {chapterIndex === 6 && 'Vigilância e Segurança Psicológica Aristotle'}
+                    {chapterIndex === 7 && 'Kimball Lakehouse Data Ingestion Cube'}
+                  </>
+                )}
+                {dbId === 'M1-S2' && (
+                  <>
+                    {chapterIndex === 0 && 'Neuro-Criatividade (3 Redes Cerebrais)'}
+                    {chapterIndex === 1 && 'Funil de Ideação (Design Thinking & SCAMPER)'}
+                    {chapterIndex === 2 && 'Matriz de Bloqueios & 6 Chapéus (De Bono)'}
+                  </>
+                )}
+              </h5>
             </div>
+            <div className="flex items-center gap-1.5 text-[#d4b87a]">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#d4b87a] animate-ping" />
+              <span className="text-[7.5px] font-mono font-bold tracking-wider">TELEMETRIA ATIVA</span>
+            </div>
+          </div>
 
-            <div className="flex-1 flex flex-col justify-center">
-              {chapterIndex === 0 && <SimAlignIT theme={theme} addLog={addLog} />}
-              {chapterIndex === 1 && <SimRogersReactor theme={theme} addLog={addLog} />}
-              {chapterIndex === 2 && <SimNeuralMatrix theme={theme} addLog={addLog} />}
-              {chapterIndex === 3 && <SimServerlessFlow theme={theme} addLog={addLog} />}
-              {chapterIndex === 4 && <SimInnovationIgnition theme={theme} addLog={addLog} />}
-              {chapterIndex === 5 && <SimHorizonsBalancer theme={theme} addLog={addLog} />}
-              {chapterIndex === 6 && <SimPsychologicalShield theme={theme} addLog={addLog} />}
-              {chapterIndex === 7 && <SimDataLakehouse theme={theme} addLog={addLog} />}
-            </div>
+          <div className="flex-1 flex flex-col justify-center">
+            {dbId === 'M1-S1' && (
+              <>
+                {chapterIndex === 0 && <SimAlignIT theme={theme} addLog={addLog} />}
+                {chapterIndex === 1 && <SimRogersReactor theme={theme} addLog={addLog} />}
+                {chapterIndex === 2 && <SimNeuralMatrix theme={theme} addLog={addLog} />}
+                {chapterIndex === 3 && <SimServerlessFlow theme={theme} addLog={addLog} />}
+                {chapterIndex === 4 && <SimInnovationIgnition theme={theme} addLog={addLog} />}
+                {chapterIndex === 5 && <SimHorizonsBalancer theme={theme} addLog={addLog} />}
+                {chapterIndex === 6 && <SimPsychologicalShield theme={theme} addLog={addLog} />}
+                {chapterIndex === 7 && <SimDataLakehouse theme={theme} addLog={addLog} />}
+              </>
+            )}
+            {dbId === 'M1-S2' && (
+              <>
+                {chapterIndex === 0 && <SimNeuroCreativity theme={theme} addLog={addLog} />}
+                {chapterIndex === 1 && <SimIdeationFunnel theme={theme} addLog={addLog} />}
+                {chapterIndex === 2 && <SimSixHatsMatrix theme={theme} addLog={addLog} />}
+              </>
+            )}
+          </div>
           </div>
         )}
       </div>
@@ -1280,7 +1303,7 @@ function ExecutiveStudyBriefing({
       {/* 30-Discipline Horizontal Rail Selector (Replaces Vertical Sidebar) */}
       <div className="border-b border-white/[0.04] pb-4">
         <div className="flex items-center justify-between mb-2">
-          <span className="text-xs uppercase tracking-wider font-bold text-[#d4b87a]">Grade de Disciplinas (30 Aulas)</span>
+          <span className="text-xs uppercase tracking-wider font-bold text-[#d4b87a]">Grade de Disciplinas</span>
           <span className="text-[10px] px-2 py-0.5 rounded bg-white/5 border border-white/10 text-white/40 font-mono uppercase">Mapeamento Integrado</span>
         </div>
         
