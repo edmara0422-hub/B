@@ -9,8 +9,8 @@ export const viewport: Viewport = {
 }
 
 export const metadata: Metadata = {
-  title: 'SEA - Sistema de Estudo Avancado',
-  description: 'Plataforma imersiva de aprendizado com simulacoes avancadas em Fisioterapia, Marketing, Branding e Neurociencia.',
+  title: 'IPB - Innovation Prototyping Board',
+  description: 'Plataforma imersiva de aprendizado com simulacoes avancadas.',
   icons: {
     icon: '/icon.svg',
     shortcut: '/icon.svg',
