@@ -5,7 +5,6 @@ import "../../app/design-space/design.css";
 /* IPB Walkthrough screens — replicate the actual app design tokens
    Tokens lifted from: app/globals.css of edmara0422-hub/IPB-FISIO
    ────────────────────────────────────────────────────────────────────────── */
-const { useState, useMemo } = React;
 
 // ── Shared ───────────────────────────────────────────────────────────────
 function IpbBg({ children }) {
