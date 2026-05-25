@@ -491,6 +491,1388 @@ export const SUBJECTS_DB: SubjectContent[] = [
     ]
   },
   {
+    id: 'P2-S1',
+    code: 'PNEUMO-01',
+    title: "Anatomofisiologia Respiratória",
+    videoUrls: [],
+    chapters: [
+      {
+        title: "O Que é Respiração?",
+        subsections: [
+          {
+            title: "Quatro Processos da Respiração",
+            content: "• 1. Ventilação: movimento de entrada e saída de ar dos pulmões\n• 2. Hematose (respiração externa): troca gasosa entre ar alveolar e sangue nos capilares pulmonares\n• 3. Transporte: O₂ e CO₂ carregados pelo sangue (hemoglobina e plasma)\n• 4. Respiração interna: troca gasosa entre sangue e tecidos\n• Esses 4 processos são distintos porém interdependentes",
+            deepDive: "A respiração supre o O₂ para produção de ATP e elimina o CO₂ — ligação direta com respiração celular."
+          },
+          {
+            title: "Hematose Alveolar",
+            content: "• Ponto central da respiração: alvéolos ⇄ capilares pulmonares\n• O₂ difunde do ar alveolar para o sangue (PO₂: 104 → 40 mmHg)\n• CO₂ difunde do sangue para o ar alveolar (PCO₂: 45 → 40 mmHg)\n• Difusão por gradiente de pressão parcial (Lei de Fick)\n• Membrana respiratória: apenas 0,2 µm de espessura",
+            deepDive: ""
+          },
+          {
+            title: "Transporte de O₂ no Sangue",
+            content: "• Hemoglobina (Hb): proteína com 4 sítios de ligação ao O₂\n• Hb + 4O₂ ⇄ Hb(O₂)₄ — reação reversível\n• 98,5% do O₂ transportado ligado à Hb\n• 1,5% dissolvido no plasma\n• CO₂ transportado: 7% dissolvido, 23% ligado à Hb, 70% como HCO₃⁻",
+            deepDive: "Sem hemoglobina, o sangue carregaria apenas 1,5% do O₂ necessário."
+          },
+        ]
+      },
+      {
+        title: "Além da Respiração: 5 Funções Extras",
+        subsections: [
+          {
+            title: "Funções Adicionais do Sistema Respiratório",
+            content: "• 1. Regulação do pH sanguíneo — alterando níveis de CO₂ (tampão bicarbonato)\n• 2. Produção de mediadores químicos — ECA (enzima conversora da angiotensina) → regulação da PA\n• 3. Produção da voz — passagem do ar pelas pregas vocais gera som\n• 4. Olfação — moléculas do ar alcançam epitélio olfatório na cavidade nasal\n• 5. Proteção — barreiras contra microrganismos e partículas",
+            deepDive: "O pulmão não é apenas para respirar — é órgão endócrino, imunológico e regulador de pH."
+          },
+        ]
+      },
+      {
+        title: "Componentes do Sistema Respiratório",
+        subsections: [
+          {
+            title: "Estruturas Anatômicas",
+            content: "• Nariz externo e cavidade nasal: filtração, aquecimento, umidificação\n• Faringe: via comum para ar e alimento (naso, oro e laringofaringe)\n• Laringe: pregas vocais + epiglote (proteção contra aspiração)\n• Traqueia: 16-20 anéis cartilaginosos em C, epitélio mucociliar\n• Brônquios: ramificação dicotômica em 23 gerações\n• Pulmões: direito (3 lobos) e esquerdo (2 lobos + incisura cardíaca)",
+            deepDive: ""
+          },
+          {
+            title: "Músculos da Respiração",
+            content: "• Diafragma: principal músculo inspiratório (inervação: nervo frênico C3-C5)\n• Intercostais externos: elevam as costelas na inspiração\n• Intercostais internos: auxiliam na expiração forçada\n• Músculos acessórios: escalenos, esternocleidomastóideo (inspiração forçada)\n• Abdominais: reto, oblíquos, transverso (expiração forçada/tosse)",
+            deepDive: "A expiração em repouso é PASSIVA — retorno elástico dos pulmões. Apenas a inspiração requer contração muscular ativa."
+          },
+        ]
+      },
+      {
+        title: "Classificação Funcional: Zonas",
+        subsections: [
+          {
+            title: "Zona Condutora",
+            content: "• Do nariz até os bronquíolos terminais\n• Função: movimento, limpeza, aquecimento e umidificação do ar\n• NÃO realiza troca gasosa — apenas conduz\n• Constitui o \"espaço morto anatômico\" (~150 mL)\n• Epitélio pseudoestratificado colunar ciliado com células caliciformes",
+            deepDive: ""
+          },
+          {
+            title: "Zona Respiratória",
+            content: "• Bronquíolos respiratórios → ductos alveolares → sacos alveolares → alvéolos\n• Local da hematose: troca gasosa entre ar e sangue\n• 300-500 milhões de alvéolos nos dois pulmões\n• Superfície total de troca: ~70 m² (tamanho de quadra de tênis)\n• Pneumócitos tipo I (troca gasosa) e tipo II (surfactante)",
+            deepDive: "Zona condutora = passagem e limpeza. Zona respiratória = hematose. São funcionalmente complementares."
+          },
+        ]
+      },
+      {
+        title: "Mecanismos de Defesa Respiratória",
+        subsections: [
+          {
+            title: "1ª Barreira: Nariz e Nasofaringe",
+            content: "• Pelos nasais (vibrissas): filtram partículas grossas\n• Muco: cobre septo e conchas nasais — aprisiona partículas e patógenos\n• Imunoglobulina A (IgA): primeira linha de defesa imunológica\n• Aquecimento: ar frio → temperatura corporal em milissegundos\n• Umidificação: ar seco → saturação de vapor (~100% umidade)",
+            deepDive: ""
+          },
+          {
+            title: "2ª Barreira: Aparato Mucociliar",
+            content: "• Epitélio colunar pseudoestratificado ciliado\n• Células caliciformes produzem muco (camada gel + sol)\n• Cílios batem a 600-900 batimentos/min\n• Movimento rápido ascendente: \"escada rolante mucociliar\"\n• Transporta muco + partículas presas até a faringe (deglutição ou expectoração)\n• Fumo e poluição paralisam os cílios → comprometimento grave da defesa",
+            deepDive: ""
+          },
+          {
+            title: "3ª Barreira: Defesa Bioquímica/Imunológica",
+            content: "• IgA: predominante nas mucosas — neutraliza patógenos na superfície\n• IgG: opsonização e ativação do complemento\n• IgM: resposta primária a novos patógenos\n• Macrófagos alveolares: \"células de poeira\" — fagocitose no alvéolo\n• Surfactante: além de reduzir tensão superficial, tem propriedades antimicrobianas",
+            deepDive: "3 barreiras integradas: física (pelos/muco) + mecânica (cílios) + bioquímica (imunoglobulinas + macrófagos)."
+          },
+        ]
+      },
+      {
+        title: "Síntese do Capítulo",
+        subsections: [
+          {
+            title: "A Respiração como Processo Vital",
+            content: "• Não é apenas \"inspirar e expirar\" — são 4 processos integrados\n• Ventilação → Hematose → Transporte → Troca tecidual\n• O sistema tem dupla classificação: condutor (limpeza) + respiratório (troca)\n• 3 camadas de defesa protegem contra invasão e contaminação\n• O pulmão produz ECA, regula pH e participa do sistema imunológico",
+            deepDive: "Compreender anatomia e fisiologia respiratória é pré-requisito para toda intervenção em fisioterapia pneumofuncional."
+          },
+        ]
+      },
+    ]
+  },
+  {
+    id: 'P2-S2',
+    code: 'PNEUMO-02',
+    title: "Zona Condutora e Respiratória",
+    videoUrls: [],
+    chapters: [
+      {
+        title: "Nariz e Cavidade Nasal",
+        subsections: [
+          {
+            title: "Estrutura do Nariz",
+            content: "• Nariz externo: cartilagem hialina + osso nasal + extensões frontal e maxilar\n• Cavidade nasal: estende-se das narinas (externas) até as coanas (aberturas para faringe)\n• Vestíbulo: parte anterior, epitélio escamoso estratificado contínuo com a pele\n• Septo nasal: divisória — parte anterior cartilaginosa, posterior óssea (vômer + etmoide)\n• Palato duro: separa cavidade nasal da oral",
+            deepDive: ""
+          },
+          {
+            title: "5 Funções da Cavidade Nasal",
+            content: "• 1. Passagem de ar — permanece aberta mesmo com boca cheia de comida\n• 2. Filtração — pelos no vestíbulo capturam partículas; conchas tornam fluxo turbulento\n• 3. Aquecimento e umidificação — sangue aquecido nas conchas + muco + lágrimas do canal nasolacrimal\n• 4. Olfato — células receptoras olfatórias na parte superior\n• 5. Ressonância vocal — cavidade nasal e seios paranasais são câmaras de ressonância",
+            deepDive: "Conchas nasais: 3 cristas ósseas que triplicam a área de superfície e criam fluxo turbulento para máximo contato com a mucosa."
+          },
+          {
+            title: "Conchas e Meatos",
+            content: "• Conchas Superior, Média e Inferior — modificam paredes laterais da cavidade nasal\n• Abaixo de cada concha: meato (passagem) — superior, médio e inferior\n• Aumentam turbulência do ar inspirado → maior contato com mucosa\n• Mucosa: epitélio colunar pseudoestratificado ciliado com células caliciformes\n• Muco captura resíduos → cílios movem muco até faringe → deglutido",
+            deepDive: ""
+          },
+        ]
+      },
+      {
+        title: "Faringe — Via Comum",
+        subsections: [
+          {
+            title: "Nasofaringe (Somente AR)",
+            content: "• Atrás das coanas, acima do palato mole\n• Úvula: extensão do palato mole — impede alimento de entrar na nasofaringe\n• Epitélio: colunar pseudoestratificado ciliado com caliciformes\n• Tubas auditivas: abrem-se aqui para equalizar pressão na orelha média\n• Tonsila faríngea (adenoide): defesa contra infecções",
+            deepDive: ""
+          },
+          {
+            title: "Orofaringe e Laringofaringe",
+            content: "• Orofaringe: do palato mole até epiglote — AR + ALIMENTO passam aqui\n• Epitélio: escamoso estratificado úmido (proteção contra abrasão)\n• Tonsilas palatinas e linguais nas fauces\n• Laringofaringe: da epiglote ao esôfago — BIFURCAÇÃO final\n• Anterior → Laringe (via aérea) | Posterior → Esôfago (via digestiva)",
+            deepDive: "Deglutição: língua empurra → palato mole fecha nasofaringe → epiglote fecha laringe → alimento vai pro esôfago."
+          },
+        ]
+      },
+      {
+        title: "Laringe — 9 Cartilagens",
+        subsections: [
+          {
+            title: "Cartilagens Não-Pareadas (3)",
+            content: "• Tireoide: formato de escudo, maior cartilagem (pomo de Adão). Hialina\n• Cricoide: formato de anel completo, base da laringe. Hialina\n• Epiglote: aba livre que fecha a glote na deglutição. ÚNICA cartilagem ELÁSTICA",
+            deepDive: ""
+          },
+          {
+            title: "Cartilagens Pareadas (3 pares = 6)",
+            content: "• Aritenoides (2): formato de concha, articulam com cricoide. Movem pregas vocais\n• Corniculadas (2): formato de corno, sobre as aritenoides\n• Cuneiformes (2): formato de cunha, na membrana mucosa anterior às corniculadas",
+            deepDive: ""
+          },
+          {
+            title: "4 Funções da Laringe",
+            content: "• 1. Manter passagem livre — cartilagens tireoide e cricoide sustentam via aérea aberta\n• 2. Proteção na deglutição — epiglote fecha a abertura da laringe\n• 3. Fonação — pregas vocais vibram com passagem do ar; amplitude = intensidade, frequência = tom\n• 4. Limpeza mucociliar — epitélio ciliado produz muco que captura detritos",
+            deepDive: "Homens: pregas vocais maiores → voz mais grave. Sem laringe: possível produzir som com vibração do esôfago."
+          },
+        ]
+      },
+      {
+        title: "Traqueia — Anéis em C",
+        subsections: [
+          {
+            title: "Estrutura da Traqueia",
+            content: "• 15-20 anéis de cartilagem hialina em formato de \"C\"\n• Parede anterior/lateral: cartilagem sustenta via aérea aberta\n• Parede posterior: SEM cartilagem — membrana elástica + músculo traqueal\n• Músculo traqueal: contrai na tosse → estreita diâmetro → ar move mais rápido\n• Esôfago localizado logo atrás da parede posterior",
+            deepDive: ""
+          },
+          {
+            title: "Dimensões e Carina",
+            content: "• Diâmetro: ~12mm | Comprimento: 10-12cm\n• Bifurcação: nível da 5ª vértebra torácica (T5)\n• Carina: cartilagem mais inferior, forma \"quilha\" que separa brônquios principais\n• Mucosa da carina: MUITO sensível — estimula reflexo de tosse intenso\n• Partículas abaixo da carina NÃO estimulam esse reflexo tão intenso",
+            deepDive: "Fumantes: epitélio traqueal se transforma em escamoso estratificado → perda de cílios e caliciformes → função de limpeza destruída."
+          },
+        ]
+      },
+      {
+        title: "Reflexos de Proteção",
+        subsections: [
+          {
+            title: "Espirro e Tosse",
+            content: "• Espirro: receptores nasais/nasofaringe → velocidade até 150 km/h\n• Tosse: 5 fases — 1) Irritativa 2) Inspiratória (~2,5L) 3) Compressiva (glote fecha, pressão ↑300mmHg)\n• 4) Expulsiva (glote abre, ar até 160 km/h) 5) Relaxamento\n• Tosse reflexa (involuntária) vs. voluntária | Produtiva vs. seca\n• Receptores mais sensíveis: laringe > traqueia > brônquios",
+            deepDive: ""
+          },
+          {
+            title: "Outros Mecanismos",
+            content: "• Broncoconstrição: contração da musculatura lisa brônquica, reduz passagem de ar\n• Reflexo epiglótico: interrompe ventilação brevemente durante deglutição\n• Na asma: contrações da musculatura lisa → ↓diâmetro → ↑resistência → ↓fluxo\n• Tratamento: albuterol relaxa musculatura lisa dos bronquíolos terminais\n• Exercício: diâmetro ↑ → resistência ↓ → volume de ar ↑",
+            deepDive: "Asma grave: movimento de ar tão restrito que pode ser fatal. Medicamentos broncodilatadores são essenciais."
+          },
+        ]
+      },
+      {
+        title: "Árvore Traqueobronquial — 23 Gerações",
+        subsections: [
+          {
+            title: "Divisões da Árvore Bronquial",
+            content: "• Brônquios principais: traqueia divide-se em D (mais vertical/largo) e E\n• Brônquios lobares (secundários): D tem 3, E tem 2\n• Brônquios segmentares (terciários): suprem segmentos broncopulmonares (10D + 9E)\n• Bronquíolos: <1mm diâmetro, se subdividem até bronquíolos terminais\n• Total: ~16 gerações de ramificação da traqueia aos bronquíolos terminais",
+            deepDive: "Brônquio D mais vertical e largo → substâncias aspiradas se alojam mais facilmente no lado direito."
+          },
+          {
+            title: "Mudanças nas Paredes",
+            content: "• Brônquios principais: cartilagens em C + musculatura lisa\n• Brônquios lobares: placas de cartilagem substituem anéis em C\n• À medida que diminuem: cartilagem ↓, musculatura lisa ↑\n• Bronquíolos terminais: SEM cartilagem, camada muscular proeminente\n• Relaxamento/contração da musculatura lisa → modifica fluxo aéreo",
+            deepDive: ""
+          },
+          {
+            title: "3 Zonas Funcionais",
+            content: "• Zona Condutora (gerações 0-16): condução, filtração, aquecimento — SEM troca gasosa\n• Zona de Transição (gerações 17-19): bronquíolos respiratórios, primeiros alvéolos\n• Zona Respiratória (gerações 20-23): ductos alveolares, sacos alveolares — TROCA GASOSA\n• Total: 2²³ = ~8 milhões de vias terminais\n• Área de superfície alveolar: 70-100 m²",
+            deepDive: "23 gerações: da traqueia (Ø12mm) até alvéolos (Ø250µm) — 300-500 milhões de unidades de troca."
+          },
+        ]
+      },
+      {
+        title: "Alvéolos e Membrana Respiratória",
+        subsections: [
+          {
+            title: "Estrutura dos Alvéolos",
+            content: "• 300-500 milhões nos dois pulmões\n• Diâmetro: ~250 µm | Área total: 70-100 m² (quadra de tênis)\n• Pneumócitos tipo I: células finas escamosas — 90% da superfície — TROCA GASOSA\n• Pneumócitos tipo II: células cuboides — produzem SURFACTANTE pulmonar\n• Surfactante: reduz tensão superficial → facilita expansão na inspiração",
+            deepDive: ""
+          },
+          {
+            title: "Membrana Respiratória — 6 Camadas",
+            content: "• 1. Fluido alveolar (surfactante)\n• 2. Epitélio alveolar (pneumócito tipo I)\n• 3. Membrana basal do epitélio\n• 4. Espaço intersticial\n• 5. Membrana basal do endotélio\n• 6. Endotélio capilar",
+            deepDive: "Espessura total: ~0,5 µm. Difusão ∝ Área × ΔP / Espessura (Lei de Fick)."
+          },
+          {
+            title: "Limpeza na Zona Respiratória",
+            content: "• Epitélio dos alvéolos NÃO é ciliado\n• Macrófagos alveolares (\"células de poeira\"): fagocitam detritos na superfície\n• Macrófagos migram para vasos linfáticos ou bronquíolos terminais\n• Nos bronquíolos: ficam retidos no muco → \"varridos\" até a faringe\n• Fibras elásticas ao redor: expansão na inspiração, retração na expiração",
+            deepDive: ""
+          },
+        ]
+      },
+      {
+        title: "Pulmões — Anatomia Macroscópica",
+        subsections: [
+          {
+            title: "Estrutura dos Pulmões",
+            content: "• Formato cônico: base no diafragma, ápice ~2,5cm acima da clavícula\n• Pulmão Direito: 3 lobos (sup, méd, inf) — 2 fissuras — 10 segmentos — ~620g\n• Pulmão Esquerdo: 2 lobos (sup, inf) — 1 fissura — 9 segmentos — ~565g\n• Incisura cardíaca: acomodação do coração no pulmão esquerdo\n• Hilo: região medial onde entram/saem brônquios, vasos, nervos, linfáticos",
+            deepDive: ""
+          },
+          {
+            title: "Divisões Funcionais",
+            content: "• Lobos: separados por fissuras profundas, supridos por brônquios lobares\n• Segmentos broncopulmonares: 10D + 9E, separados por septos de tecido conectivo\n• Segmentos podem ser removidos cirurgicamente sem comprometer o restante\n• Lóbulos: subdivisão dos segmentos, supridos por bronquíolos\n• Pulmões muito elásticos — quando inflados, expelem ar e retornam ao estado original",
+            deepDive: "Capacidade total: ~6L. Frequência respiratória em repouso: ~15 rpm. Volume corrente: ~500 mL."
+          },
+        ]
+      },
+    ]
+  },
+  {
+    id: 'P2-S3',
+    code: 'PNEUMO-03',
+    title: "Mecânica Respiratória",
+    videoUrls: [],
+    chapters: [
+      {
+        title: "Dinâmica do Ciclo Ventilatório",
+        subsections: [
+          {
+            title: "Inspiração — Processo ATIVO",
+            content: "• Músculos inspiratórios contraem (diafragma principal)\n• Volume torácico e alveolar AUMENTA\n• Pressão alveolar DIMINUI (fica negativa)\n• P.alveolar < P.atmosférica → ar ENTRA nos pulmões\n• Volume corrente: ~500 mL de ar inspirado",
+            deepDive: "Inspiração = contração muscular ativa. Sem contração, não há entrada de ar."
+          },
+          {
+            title: "Expiração — Processo PASSIVO",
+            content: "• Músculos inspiratórios RELAXAM\n• Retração elástica dos pulmões e da caixa torácica\n• Volume torácico e alveolar DIMINUI\n• Pressão alveolar AUMENTA (fica positiva)\n• P.alveolar > P.atmosférica → ar SAI dos pulmões",
+            deepDive: "Expiração em repouso é PASSIVA — não requer contração muscular. Apenas a expiração forçada (tosse, exercício) usa músculos."
+          },
+        ]
+      },
+      {
+        title: "Pressões Respiratórias",
+        subsections: [
+          {
+            title: "Pressão Pleural",
+            content: "• Pressão do líquido no espaço entre pleura visceral e parietal\n• Normalmente NEGATIVA (sucção que mantém pulmões expandidos)\n• Início da inspiração: -5 cmH₂O\n• Durante inspiração normal: -7,5 cmH₂O (mais negativa)\n• A expansão da caixa torácica cria pressão mais negativa → puxa pulmões",
+            deepDive: ""
+          },
+          {
+            title: "Pressão Alveolar",
+            content: "• Pressão do ar dentro dos alvéolos\n• Com glote aberta e sem fluxo: igual à P.atmosférica (0 cmH₂O)\n• Inspiração: -1 cmH₂O (ligeiramente negativa → ar entra)\n• Expiração: +1 cmH₂O (positiva → empurra 500mL em 2-3 segundos)\n• O gradiente de pressão é PEQUENO: apenas ±1 cmH₂O move meio litro de ar",
+            deepDive: "Apenas 1 cmH₂O de diferença é suficiente para mover 500mL de ar — a engenharia pulmonar é extraordinariamente eficiente."
+          },
+        ]
+      },
+      {
+        title: "Músculos Respiratórios",
+        subsections: [
+          {
+            title: "Músculos Inspiratórios",
+            content: "• Diafragma (C3-C5): PRINCIPAL músculo inspiratório. Movimento crânio-caudal\n• Intercostais Externos (T1-T12): elevam as costelas. Movimento ântero-posterior\n• Escalenos: elevam as duas primeiras costelas (acessório)\n• Esternocleidomastóideo (ECM): eleva o esterno (acessório)\n• Serráteis Anteriores: elevam várias costelas (acessório)",
+            deepDive: "Diafragma = 75% do trabalho inspiratório. Lesão do nervo frênico (C3-C5) = paralisia diafragmática."
+          },
+          {
+            title: "Músculos Expiratórios",
+            content: "• Em repouso: expiração é PASSIVA (retração elástica)\n• Expiração FORÇADA usa músculos ativamente:\n• Reto Abdominal: puxa costelas inferiores para baixo + comprime abdômen contra diafragma\n• Intercostais Internos: puxam a caixa torácica para baixo\n• Oblíquos e Transverso do Abdômen: comprimem conteúdo abdominal",
+            deepDive: ""
+          },
+          {
+            title: "Mecanismo Integrado",
+            content: "• Inspiração: diafragma desce + costelas sobem → ↑ volume → ↓ pressão → ar entra\n• Expiração: diafragma sobe + costelas descem → ↓ volume → ↑ pressão → ar sai\n• Lei de Boyle: P × V = constante (a mesma massa de gás)\n• O pulmão NÃO se expande sozinho — é puxado pela caixa torácica via pleura\n• O acoplamento pleural é essencial: pneumotórax rompe essa ligação → pulmão colapsa",
+            deepDive: "Lei de Boyle: ↑Volume = ↓Pressão. ↓Volume = ↑Pressão. Toda a ventilação depende dessa relação."
+          },
+        ]
+      },
+    ]
+  },
+  {
+    id: 'P2-S4',
+    code: 'PNEUMO-04',
+    title: "Difusão e Transporte de Gases",
+    videoUrls: [],
+    chapters: [
+      {
+        title: "Leis da Difusão Gasosa",
+        subsections: [
+          {
+            title: "Lei de Fick",
+            content: "• Quantidade de gás que difunde é PROPORCIONAL à área de superfície da membrana\n• E INVERSAMENTE proporcional à espessura da membrana\n• Membrana respiratória: ~70-100 m² de área × 0,5 µm de espessura\n• Design evolutivo otimizado: máxima área, mínima espessura\n• Edema pulmonar: ↑ espessura → ↓ difusão → hipoxemia",
+            deepDive: "Fick: Difusão ∝ (Área × ΔP × Solubilidade) / (Espessura × √Peso Molecular)"
+          },
+          {
+            title: "Lei de Henry e Coeficiente de Difusão",
+            content: "• Henry: quantidade de gás dissolvido é proporcional à pressão parcial\n• Diferença de pressão parcial = motor da difusão\n• ΔPO₂ = 104 (alveolar) - 40 (venoso) = 64 mmHg\n• ΔPCO₂ = 45 (venoso) - 40 (alveolar) = 5 mmHg\n• Coeficiente de difusão: depende da solubilidade e peso molecular",
+            deepDive: ""
+          },
+          {
+            title: "CO₂ vs O₂: Velocidade de Difusão",
+            content: "• CO₂ difunde ~20× mais rápido que O₂ (alta solubilidade)\n• Por isso, mesmo com ΔP pequeno (5 mmHg), CO₂ se equilibra facilmente\n• O₂ difunde ~2× mais rápido que N₂\n• Tempo de equilíbrio nos capilares: ~0,25 s (sangue fica ~0,75 s)\n• Há reserva funcional: mesmo em exercício, equilíbrio é alcançado",
+            deepDive: "CO₂ difunde 20× mais rápido que O₂ — por isso, a retenção de CO₂ só ocorre em falha ventilatória grave."
+          },
+        ]
+      },
+      {
+        title: "Transporte de O₂",
+        subsections: [
+          {
+            title: "Duas Formas de Transporte",
+            content: "• O₂ DISSOLVIDO no plasma: PaO₂ × 0,003 = 0,3 vol% (apenas 1,5% do total)\n• O₂ LIGADO à Hemoglobina: 98,5% do total — forma oxi-hemoglobina (HbO₂)\n• Cada molécula de Hb liga até 4 moléculas de O₂\n• HbA (adultos): 2 cadeias α + 2 cadeias β\n• HbF (fetal): 2 cadeias α + 2 cadeias γ — maior afinidade pelo O₂",
+            deepDive: "Sem hemoglobina, o sangue carregaria apenas 0,3 vol% de O₂ — insuficiente para a vida."
+          },
+          {
+            title: "Curva de Dissociação da Oxi-Hemoglobina",
+            content: "• Formato SIGMOIDE: cooperatividade positiva (ligação de 1 O₂ facilita as próximas)\n• P50 = 26-27 mmHg: PO₂ na qual Hb está 50% saturada (referência)\n• Pulmões (PO₂ ~100 mmHg): SaO₂ ~97-98% — carga eficiente\n• Tecidos (PO₂ ~40 mmHg): SaO₂ ~75% — liberação de ~22-23% do O₂\n• Equação de Hill: SaO₂ = PO₂ⁿ / (P50ⁿ + PO₂ⁿ), n ≈ 2,7",
+            deepDive: "O formato sigmoide é genial: platô no topo protege contra variações da PO₂ alveolar; parte íngreme facilita liberação nos tecidos."
+          },
+          {
+            title: "Desvios da Curva",
+            content: "• DESVIO DIREITA (Efeito Bohr): ↑P50, ↓afinidade → FACILITA LIBERAÇÃO nos tecidos\n• Causas: ↑temperatura, ↑PCO₂, ↑H⁺ (↓pH), ↑2,3-DPG\n• Ocorre nos tecidos metabolicamente ativos — exatamente onde O₂ é mais necessário\n• DESVIO ESQUERDA (Haldane): ↓P50, ↑afinidade → FACILITA CAPTAÇÃO nos pulmões\n• Causas: ↓temperatura, ↓PCO₂, ↓H⁺ (↑pH), HbF, monóxido de carbono (CO)",
+            deepDive: ""
+          },
+          {
+            title: "Graus de Hipoxemia",
+            content: "• Normal: PaO₂ 80-100 mmHg\n• Hipoxemia Leve: PaO₂ 60-80 mmHg\n• Hipoxemia Moderada: PaO₂ 40-60 mmHg\n• Hipoxemia Grave: PaO₂ 20-40 mmHg\n• Abaixo de 60 mmHg: SaO₂ cai rapidamente (parte íngreme da curva)",
+            deepDive: "PaO₂ < 60 mmHg é o limiar crítico: a partir daí, pequenas quedas de PO₂ causam grandes quedas de saturação."
+          },
+        ]
+      },
+      {
+        title: "Transporte de CO₂",
+        subsections: [
+          {
+            title: "Três Formas de Transporte",
+            content: "• CO₂ DISSOLVIDO no plasma (~8%): coeficiente 0,063 vol%/mmHg — muito mais solúvel que O₂\n• CARBAMINO-HEMOGLOBINA (~12%): CO₂ liga-se à Hb formando HbCO₂\n• BICARBONATO HCO₃⁻ (~80%): PRINCIPAL forma de transporte\n• Reação: CO₂ + H₂O ⇄ H₂CO₃ ⇄ HCO₃⁻ + H⁺\n• Catalisada pela anidrase carbônica dentro das hemácias",
+            deepDive: "80% do CO₂ viaja como bicarbonato (HCO₃⁻) — conecta diretamente a ventilação ao equilíbrio ácido-base."
+          },
+          {
+            title: "Mecanismo do Bicarbonato",
+            content: "• CO₂ entra na hemácia → anidrase carbônica acelera reação (10.000×)\n• CO₂ + H₂O → H₂CO₃ (ácido carbônico, instável)\n• H₂CO₃ → HCO₃⁻ + H⁺ (dissociação rápida)\n• HCO₃⁻ sai da hemácia para o plasma (troca por Cl⁻ — shift de cloreto)\n• H⁺ é tamponado pela própria hemoglobina (Hb atua como tampão)",
+            deepDive: ""
+          },
+          {
+            title: "Integração Ventilação × Ácido-Base",
+            content: "• Hiperventilação → ↓PCO₂ → ↓H⁺ → alcalose respiratória\n• Hipoventilação → ↑PCO₂ → ↑H⁺ → acidose respiratória\n• O pulmão é o regulador RÁPIDO do pH sanguíneo\n• Rim é o regulador LENTO (horas/dias) — reabsorve/excreta HCO₃⁻\n• pH normal: 7,35-7,45 | PaCO₂ normal: 35-45 mmHg",
+            deepDive: "Ventilação = controle rápido do pH. Toda alteração ventilatória tem consequência ácido-base imediata."
+          },
+        ]
+      },
+    ]
+  },
+  {
+    id: 'P2-S5',
+    code: 'PNEUMO-05',
+    title: "Controle Respiratório",
+    videoUrls: [],
+    chapters: [
+      {
+        title: "Centro Respiratório no Tronco Cerebral",
+        subsections: [
+          {
+            title: "Grupo Respiratório Dorsal (GRD)",
+            content: "• Localização: porção dorsal do bulbo (Núcleo do Trato Solitário — NTS)\n• Responsável principalmente pela INSPIRAÇÃO\n• Gera o \"sinal em rampa\": inicia fraco, eleva-se por ~2 segundos\n• Após 2s: interrompe abruptamente → expiração passiva por ~3 segundos\n• NTS recebe aferências dos nervos vago (X) e glossofaríngeo (IX)",
+            deepDive: "O ritmo básico da respiração é gerado no GRD do bulbo — inspiração de 2s + expiração de 3s = 12 ciclos/min."
+          },
+          {
+            title: "Grupo Respiratório Ventral (GRV)",
+            content: "• Localização: ventrolateral do bulbo\n• Encarregado basicamente da EXPIRAÇÃO\n• Contém neurônios inspiratórios E expiratórios\n• Inativo durante respiração tranquila (expiração é passiva)\n• Ativo na expiração FORÇADA: tosse, exercício, sopro",
+            deepDive: ""
+          },
+          {
+            title: "Centro Pneumotáxico (Ponte)",
+            content: "• Localização: dorsalmente no núcleo parabraquial da ponte superior\n• Controla o \"ponto de desligamento\" da rampa inspiratória\n• Sinal intenso → ↑frequência (30-40/min) — inspiração curta\n• Sinal débil → ↓frequência (3-5/min) — inspiração longa\n• Função: modular duração da fase inspiratória do ciclo",
+            deepDive: "Centro pneumotáxico = \"freio\" da inspiração. Controla quanto tempo o GRD fica ativo."
+          },
+        ]
+      },
+      {
+        title: "Reflexo de Hering-Breuer",
+        subsections: [
+          {
+            title: "Mecanismo de Proteção Pulmonar",
+            content: "• Receptores de estiramento nas paredes musculares de brônquios e bronquíolos\n• Sinais transmitidos via nervos vagos até o GRD no bulbo\n• Ativado quando volume corrente > 1,5L (3× o normal)\n• NÃO é ativado na respiração tranquila normal\n• Resposta: \"desativa\" a rampa inspiratória → interrompe inspiração",
+            deepDive: "Hering-Breuer: reflexo protetor contra distensão excessiva dos pulmões. Só ativado em volumes muito altos (>1,5L)."
+          },
+        ]
+      },
+      {
+        title: "Quimiorreceptores",
+        subsections: [
+          {
+            title: "Quimiorreceptores Centrais",
+            content: "• Localização: porção ventral do bulbo\n• Principal estímulo: aumento de H⁺ (acidose) no líquor (LCR)\n• CO₂ cruza a BHE → CO₂ + H₂O → H₂CO₃ → H⁺ + HCO₃⁻\n• H⁺ estimula diretamente os quimiorreceptores centrais\n• São o principal regulador TÔNICO da ventilação",
+            deepDive: "CO₂ é o principal regulador da ventilação em condições normais — via conversão em H⁺ no LCR."
+          },
+          {
+            title: "Quimiorreceptores Periféricos",
+            content: "• Corpos carotídeos: bifurcação da artéria carótida comum → nervo glossofaríngeo (IX)\n• Corpos aórticos: arco aórtico → nervo vago (X)\n• Principal estímulo: diminuição de PaO₂ (hipoxemia)\n• Ativação significativa quando PaO₂ < 60 mmHg\n• Também respondem a ↑PCO₂ e ↑H⁺, mas são secundários nisso",
+            deepDive: "Periféricos = sensor de O₂. Centrais = sensor de CO₂/H⁺. Juntos garantem homeostase dos gases sanguíneos."
+          },
+          {
+            title: "Controle Voluntário vs. Automático",
+            content: "• Automático: centros no bulbo e ponte — opera 24h sem consciência\n• Voluntário: córtex cerebral pode sobrepor temporariamente (fala, canto, mergulho)\n• Limitação: controle voluntário NÃO supera o drive metabólico indefinidamente\n• Exemplo: é impossível se matar prendendo a respiração — acúmulo de CO₂ vence\n• Integração: quimiorreceptores + mecanorreceptores + córtex → resposta ventilatória final",
+            deepDive: ""
+          },
+        ]
+      },
+    ]
+  },
+  {
+    id: 'P2-S6',
+    code: 'PNEUMO-06',
+    title: "Volumes e Capacidades Pulmonares",
+    videoUrls: [],
+    chapters: [
+      {
+        title: "Os 4 Volumes Pulmonares",
+        subsections: [
+          {
+            title: "Volume Corrente e Reservas",
+            content: "• Volume Corrente (VC): ~500 mL — volume inspirado/expirado em cada respiração normal tranquila\n• Volume de Reserva Inspiratória (VRI): ~3.000 mL — volume EXTRA inspirável além do VC\n• Volume de Reserva Expiratória (VRE): ~1.100 mL — volume EXTRA expirável além do VC\n• Volume Residual (VR): ~1.200 mL — permanece nos pulmões MESMO após expiração máxima\n• VR NÃO pode ser medido por espirometria (pulmão nunca esvazia completamente)",
+            deepDive: "Os 4 volumes são medidas fundamentais. VC × frequência = ventilação minuto (~6 L/min em repouso)."
+          },
+        ]
+      },
+      {
+        title: "As 4 Capacidades Pulmonares",
+        subsections: [
+          {
+            title: "Capacidades = Soma de 2+ Volumes",
+            content: "• Capacidade Inspiratória (CI): VC + VRI = ~3.500 mL — máximo inspirável do nível expiratório normal\n• Capacidade Residual Funcional (CRF): VRE + VR = ~2.300 mL — volume nos pulmões após expiração normal\n• Capacidade Vital (CV): VRI + VC + VRE = ~4.600 mL — máximo de ar mobilizável\n• Capacidade Pulmonar Total (CPT): CV + VR = ~5.800 mL — TODO o ar que os pulmões comportam",
+            deepDive: "CV é a medida clínica mais importante na espirometria. CV reduzida indica doença restritiva."
+          },
+        ]
+      },
+      {
+        title: "Espaços Mortos",
+        subsections: [
+          {
+            title: "Ar Que Não Participa da Troca",
+            content: "• Espaço Morto Anatômico: ~150 mL — volume nas vias condutoras (nariz → bronquíolos terminais)\n• Espaço Morto Alveolar: ~0 mL em pessoa normal — alvéolos ventilados mas não perfundidos\n• Espaço Morto Fisiológico = Anatômico + Alveolar — em pessoa saudável ≈ anatômico\n• Em doença pulmonar: espaço morto fisiológico pode ser até 10× o anatômico (1-2 L)\n• Alvéolos não funcionantes (sem fluxo sanguíneo) aumentam o espaço morto alveolar",
+            deepDive: "Ventilação alveolar efetiva = (VC - espaço morto) × frequência = (500-150) × 12 = 4.200 mL/min."
+          },
+        ]
+      },
+      {
+        title: "Circulação Pulmonar",
+        subsections: [
+          {
+            title: "Sistêmica vs. Pulmonar",
+            content: "• Circulação Sistêmica: alta pressão (120/80 mmHg) — distribui sangue oxigenado ao corpo\n• Circulação Pulmonar: BAIXA pressão (25/10 mmHg) — leva sangue aos pulmões para hematose\n• Artéria pulmonar: sangue DESOXIGENADO (VD → pulmões)\n• Veias pulmonares: sangue OXIGENADO (pulmões → AE)\n• Baixa pressão pulmonar: evita edema, facilita troca gasosa",
+            deepDive: "A circulação pulmonar opera com 1/5 da pressão sistêmica — design otimizado para troca gasosa sem edema."
+          },
+        ]
+      },
+    ]
+  },
+  {
+    id: 'P2-S7',
+    code: 'PNEUMO-07',
+    title: "Oxigenoterapia",
+    videoUrls: [],
+    chapters: [
+      {
+        title: "Fundamentos da Oxigenoterapia",
+        subsections: [
+          {
+            title: "Definição e Objetivo",
+            content: "• Definição: administrar O₂ em FiO₂ > 21% (acima da atmosférica)\n• Objetivo: aumentar SaO₂ > 90%, corrigindo hipoxemia\n• FiO₂ atmosférica normal: 21% (fração inspirada de oxigênio)\n• Meta terapêutica: SaO₂ entre 92-96% (maioria dos pacientes)\n• Em DPOC: meta SaO₂ 88-92% (evitar supressão do drive hipóxico)",
+            deepDive: "Oxigenoterapia NÃO é \"quanto mais, melhor\". Hiperóxia causa toxicidade pulmonar e supressão ventilatória."
+          },
+          {
+            title: "Definições Importantes",
+            content: "• Hipoxemia: redução de O₂ no sangue arterial (PaO₂ < 80 mmHg)\n• Hipóxia: redução de O₂ nos tecidos — consequência da hipoxemia\n• Disóxia: O₂ celular insuficiente para fosforilação oxidativa (produção de ATP)\n• Hiperoxemia: aumento excessivo de O₂ no sangue arterial (PaO₂ > 120 mmHg)\n• Hiperóxia: excesso de O₂ nos tecidos → toxicidade por radicais livres",
+            deepDive: ""
+          },
+          {
+            title: "Causas de Hipoxemia",
+            content: "• Altitude: pressão barométrica reduzida → ↓PiO₂\n• Distúrbios de difusão: espessamento da membrana alvéolo-capilar (edema, fibrose)\n• Alteração da relação V/Q: desequilíbrio ventilação-perfusão\n• Shunt: sangue passa pelo pulmão sem realizar hematose\n• Redução do débito cardíaco: ↓fluxo sanguíneo pulmonar",
+            deepDive: "Sintomas: agitação, irritabilidade, dispneia, confusão mental, cianose, taquicardia, taquipneia."
+          },
+        ]
+      },
+      {
+        title: "Classificação dos Dispositivos",
+        subsections: [
+          {
+            title: "Baixo Fluxo — FiO₂ Variável",
+            content: "• Cânula Nasal: 1-6 L/min → FiO₂ 24-44%. Cada 1L/min ≈ +4% FiO₂\n• Máscara Facial Simples: 5-10 L/min → FiO₂ 40-60%. Mín. 5L (evitar reinalação CO₂)\n• Máscara com Reservatório: 10-15 L/min → FiO₂ 60-100%. Válvulas unidirecionais\n• Bolsa Reanimadora (AMBÚ): 15 L/min → FiO₂ 21-100%. Ventilação manual de emergência\n• Característica: FiO₂ VARIÁVEL, depende do padrão respiratório do paciente",
+            deepDive: ""
+          },
+          {
+            title: "Alto Fluxo — FiO₂ Controlada",
+            content: "• Máscara de Venturi: FiO₂ PRECISA (24-50%). Princípio Venturi: mescla O₂ com ar ambiente\n• Peças coloridas: Azul=24%, Amarelo=28%, Laranja=31%, Vermelho=35%, Rosa=40%, Roxo=50%\n• Dispositivo de ESCOLHA para DPOC com hipercapnia — evita supressão do drive hipóxico\n• Cateter Nasal de Alto Fluxo: até 60 L/min, FiO₂ 21-100%, aquecido e umidificado\n• Alto fluxo gera PEEP ~2-5 cmH₂O, reduz espaço morto, melhora mucociliar",
+            deepDive: "Venturi = DPOC. Alto Fluxo = alternativa à VNI. Baixo Fluxo = maioria dos casos de hipoxemia leve-moderada."
+          },
+        ]
+      },
+      {
+        title: "Máscara de Venturi — Detalhes",
+        subsections: [
+          {
+            title: "Princípio de Funcionamento",
+            content: "• O₂ sob pressão passa por um orifício estreito (jato)\n• Cria zona de baixa pressão que ASPIRA ar ambiente (efeito Venturi)\n• Mistura O₂ puro + ar ambiente = FiO₂ precisa e constante\n• Tamanho do orifício determina a FiO₂: menor orifício = mais ar aspirado = menor FiO₂\n• Independe do padrão respiratório do paciente (diferença do baixo fluxo)",
+            deepDive: ""
+          },
+          {
+            title: "Peças e Manejo Clínico",
+            content: "• Azul: 24% (3L/min) — início em DPOC grave\n• Amarelo: 28% (6L/min) — DPOC moderado\n• Laranja: 31% (8L/min) | Vermelho: 35% (10L/min)\n• Rosa: 40% (12L/min) | Roxo: 50% (15L/min)\n• Se SaO₂ não melhora: trocar para peça com maior FiO₂",
+            deepDive: "Em DPOC com CO₂ retido: SEMPRE iniciar com FiO₂ baixa (24-28%) e titular conforme gasometria."
+          },
+        ]
+      },
+    ]
+  },
+  {
+    id: 'P2-S8',
+    code: 'PNEUMO-08',
+    title: "Semiologia Pulmonar",
+    videoUrls: [],
+    chapters: [
+      {
+        title: "Dispneia — Classificação",
+        subsections: [
+          {
+            title: "Graus de Dispneia",
+            content: "• Grandes esforços: dispneia apenas em atividades intensas (corrida, escada)\n• Médios esforços: dispneia em atividades moderadas (caminhada rápida)\n• Pequenos esforços: dispneia em atividades leves (vestir-se, caminhar devagar)\n• Repouso: dispneia SEM qualquer esforço — gravidade máxima",
+            deepDive: ""
+          },
+          {
+            title: "Tipos Especiais de Dispneia",
+            content: "• Dispneia Paroxística Noturna: episódio súbito durante o sono (insuficiência cardíaca)\n• Ortopneia: piora em decúbito dorsal, melhora sentado/em pé (↑ retorno venoso → congestão pulmonar)\n• Trepopneia: piora em decúbito lateral específico\n• Platipneia: piora sentado/em pé, melhora deitado (rara, shunt intracardíaco)",
+            deepDive: "Dispneia é SUBJETIVA — é o que o paciente sente. Não depende apenas da SpO₂ ou gasometria."
+          },
+        ]
+      },
+      {
+        title: "Inspeção do Tórax",
+        subsections: [
+          {
+            title: "Inspeção Estática",
+            content: "• Expressão do paciente: sinais de angústia, desconforto, uso de musculatura acessória\n• Estrutura do tórax: simetria, deformidades (barril, escavatum, carinatum)\n• Características anatômicas: formato, postura, posicionamento preferencial",
+            deepDive: ""
+          },
+          {
+            title: "Inspeção Dinâmica",
+            content: "• Frequência Respiratória: normal 12-20 irpm. Taquipneia >20, bradipneia <12\n• Sincronismo: coordenação tóraco-abdominal (respiração paradoxal = fadiga)\n• Ritmo: regular ou irregular (Cheyne-Stokes, Biot, Kussmaul)\n• Tipo respiratório: torácico (costal), abdominal (diafragmático), misto\n• Tiragem: retração intercostal, subcostal, supraclavicular = esforço aumentado\n• Expansibilidade: simétrica ou assimétrica",
+            deepDive: "Tiragem + uso de acessórios + respiração paradoxal = sinais de insuficiência respiratória."
+          },
+        ]
+      },
+      {
+        title: "Espirometria — Distúrbios Ventilatórios",
+        subsections: [
+          {
+            title: "Parâmetros Principais",
+            content: "• CVF (Capacidade Vital Forçada): volume máximo exalado com esforço máximo\n• VEF₁ (Vol. Expiratório Forçado 1s): volume exalado no 1º segundo da CVF\n• VEF₁/CVF: relação — principal índice para classificar o distúrbio\n• PFE (Pico de Fluxo Expiratório): fluxo máximo durante a manobra\n• FEF₂₅₋₇₅%: fluxo médio (sensível para pequenas vias aéreas)",
+            deepDive: ""
+          },
+          {
+            title: "Distúrbio Obstrutivo (DVO)",
+            content: "• VEF₁/CVF REDUZIDA (< LIN — Limite Inferior da Normalidade)\n• Estreitamento de vias aéreas → resistência ao fluxo ↑\n• Curva volume-tempo: ascensão LENTA, achatada\n• Curva fluxo-volume: concavidade característica (scooped out)\n• Exemplos: DPOC, asma, bronquite crônica, bronquiectasias",
+            deepDive: ""
+          },
+          {
+            title: "Distúrbio Restritivo (DVR)",
+            content: "• VEF₁/CVF NORMAL ou aumentada\n• CVF REDUZIDA — pulmão não consegue expandir adequadamente\n• CPT reduzida (confirmação definitiva requer pletismografia)\n• Curva volume-tempo: curva CURTA (menos volume total)\n• Exemplos: fibrose pulmonar, doenças neuromusculares, cifoescoliose",
+            deepDive: "Obstrutivo = dificuldade de SAÍDA do ar (VEF₁/CVF↓). Restritivo = dificuldade de ENTRADA (CVF↓, ratio normal)."
+          },
+        ]
+      },
+      {
+        title: "Manovacuometria e Peak Flow",
+        subsections: [
+          {
+            title: "PImáx — Pressão Inspiratória Máxima",
+            content: "• Avalia força dos músculos INSPIRATÓRIOS (diafragma)\n• Técnica: expiração até VR → esforço inspiratório máximo contra válvula\n• Normal: -80 a -120 cmH₂O\n• Fraqueza: -70 a -45 cmH₂O\n• Fadiga: -45 a -25 cmH₂O | Falência: < -20 cmH₂O",
+            deepDive: ""
+          },
+          {
+            title: "PEmáx — Pressão Expiratória Máxima",
+            content: "• Avalia força dos músculos EXPIRATÓRIOS (abdominais)\n• Técnica: inspiração até CPT → esforço expiratório máximo contra válvula\n• Importante para avaliar capacidade de TOSSE e eliminação de secreções\n• 3 repetições → considerar MAIOR valor\n• PEmáx baixa = risco de retenção de secreções",
+            deepDive: ""
+          },
+          {
+            title: "Peak Flow (PFE)",
+            content: "• Pico de fluxo expiratório — velocidade máxima do ar na expiração forçada\n• Técnica: inspirar profundamente → soprar o mais forte e rápido possível\n• 3 medições → anotar MAIOR valor ou média\n• Uso clínico: monitorização de asma, resposta ao broncodilatador\n• Em VM: PFT > 60 L/min indica força adequada para desmame",
+            deepDive: "PImáx avalia diafragma. PEmáx avalia tosse. Peak flow monitora asma. Os três são ferramentas essenciais do fisioterapeuta."
+          },
+        ]
+      },
+      {
+        title: "Ventilometria e VVM",
+        subsections: [
+          {
+            title: "Ventilação Voluntária Máxima (VVM)",
+            content: "• Reflete: cooperação, potência de via aérea, força muscular, expansão pulmonar\n• Técnica: respirar o mais rápido e profundamente possível por 12-15 segundos\n• Resultado extrapolado para 1 minuto (L/min)\n• Avalia capacidade de resposta ventilatória sob demanda\n• Valores de referência: CVL normal = 65-75 mL/Kg",
+            deepDive: "VVM reduzida = limitação ventilatória ao exercício. Fundamental para prescrição de exercícios."
+          },
+        ]
+      },
+    ]
+  },
+  {
+    id: 'P2-S9',
+    code: 'PNEUMO-09',
+    title: "Patologias Respiratórias",
+    videoUrls: [],
+    chapters: [
+    ]
+  },
+  {
+    id: 'P2-S10',
+    code: 'PNEUMO-010',
+    title: "VNI — Ventilação Não Invasiva",
+    videoUrls: [],
+    chapters: [
+      {
+        title: "Definição e Objetivos da VNI",
+        subsections: [
+          {
+            title: "O que é VNI?",
+            content: "• Suporte ventilatório através de máscara, sem necessidade de prótese (TOT/TQT)\n• Melhora ventilação e otimiza trocas gasosas\n• Promove repouso da musculatura respiratória\n• Reduz auto-PEEP e hiperinsuflação dinâmica\n• Alivia dispneia e desconforto respiratório",
+            deepDive: "VNI = suporte ventilatório SEM intubação. Interface por máscara nasal, oronasal ou facial total."
+          },
+          {
+            title: "Indicações da VNI",
+            content: "• Redução do trabalho respiratório (aumento de FR, uso de musculatura acessória)\n• Hipoxemia — SatO₂ < 90% ou PaO₂ < 60 mmHg\n• EAP — Edema Agudo de Pulmão (evidência forte)\n• DPOC exacerbada — acidose respiratória (pH < 7,35)\n• Asma grave — broncoespasmo refratário\n• SDRA leve — PaO₂/FiO₂ entre 200-300\n• PAC — Pneumonia Adquirida na Comunidade\n• Pós-operatório — prevenção de atelectasia",
+            deepDive: ""
+          },
+          {
+            title: "Critérios de Sucesso e Tempo",
+            content: "• Sessão recomendada: 30-120 minutos\n• ✅ Redução da FR (frequência respiratória)\n• ✅ Redução da PaCO₂\n• ✅ Aumento do VC (volume corrente)\n• ✅ Aumento da SatO₂\n• ✅ Redução de tiragens e uso de musculatura acessória\n• ⚠️ Reavaliar em 1-2 horas — se sem melhora → considerar IOT",
+            deepDive: "Avaliar resposta em 1-2h. Sem melhora clínica = risco de falha. Escala HACOR > 5 = alto risco."
+          },
+        ]
+      },
+      {
+        title: "Contraindicações da VNI",
+        subsections: [
+          {
+            title: "Contraindicações Relativas",
+            content: "• RNC — Rebaixamento do nível de consciência (Glasgow < 10 recomendado)\n• Vômitos recentes ou ativos\n• Excesso de secreção nas vias aéreas\n• HOA — Hemorragia de vias aéreas\n• Ansiedade extrema / paciente não tolera máscara\n• Obesidade mórbida (considerar ajuste de interface)",
+            deepDive: ""
+          },
+          {
+            title: "Contraindicações Absolutas",
+            content: "• ❌ PCR — Parada Cardiorrespiratória\n• ❌ Instabilidade hemodinâmica grave\n• ❌ Paciente totalmente não colaborativo\n• ❌ PO de face, esôfago ou via digestiva alta\n• ❌ Trauma ou queimadura de face\n• ❌ Risco iminente de broncoaspiração\n• ❌ Incapacidade de manter vias aéreas pérvias",
+            deepDive: "Contraindicações absolutas = IOT imediata. Não insistir em VNI quando o risco supera o benefício."
+          },
+        ]
+      },
+      {
+        title: "CPAP — Pressão Positiva Contínua",
+        subsections: [
+          {
+            title: "CPAP — Um Nível de Pressão",
+            content: "• CPAP = Continuous Positive Airway Pressure\n• Pressão positiva CONSTANTE durante todo o ciclo (insp + exp)\n• Ventilação espontânea — o paciente respira sozinho\n• Mantém resistência (pressão) no fim da expiração\n• Um ÚNICO nível de pressão = sem diferença insp/exp",
+            deepDive: ""
+          },
+          {
+            title: "Indicações e Efeitos do CPAP",
+            content: "• 🫁 Síndrome da Apneia Obstrutiva do Sono (SAOS)\n• ❤️ Edema Agudo de Pulmão (EAP) — evidência nível A\n• 🔴 Hipoxemia refratária\n• 💨 Atelectasias pós-operatórias\n• Efeito: recruta alvéolos colapsados, melhora CRF\n• Efeito: redistribui líquido extravascular pulmonar\n• Efeito: reduz pré-carga e pós-carga (benefício no EAP)",
+            deepDive: "CPAP no EAP: reduz edema + melhora oxigenação + reduz trabalho cardíaco. Triplo benefício."
+          },
+        ]
+      },
+      {
+        title: "BIPAP — Dois Níveis de Pressão",
+        subsections: [
+          {
+            title: "BIPAP — IPAP e EPAP",
+            content: "• BIPAP = Bilevel Positive Airway Pressure\n• Dois níveis pressóricos: IPAP (inspiração) e EPAP (expiração)\n• Fluxo contínuo e NÃO constante — alterna entre dois níveis\n• PS (Pressão de Suporte) = IPAP − EPAP\n• Exemplo: IPAP 15 / EPAP 5 → PS = 10 cmH₂O",
+            deepDive: ""
+          },
+          {
+            title: "IPAP — Pressão Inspiratória",
+            content: "• Pressão positiva durante a INSPIRAÇÃO\n• Provoca aumento do volume corrente (VC)\n• Melhora a ventilação alveolar\n• Diminui o trabalho respiratório\n• Profundidade relacionada ao nível de esforço\n• Quanto maior o IPAP → maior o suporte ventilatório",
+            deepDive: ""
+          },
+          {
+            title: "EPAP — Pressão Expiratória",
+            content: "• É uma das formas de aplicar PEEP\n• Pressão positiva durante a EXPIRAÇÃO\n• Mantém vias aéreas e alvéolos abertos\n• Melhora a oxigenação (recruta alvéolos)\n• Permite movimentação de ar por trás dos tampões mucosos\n• Aumenta ventilação colateral",
+            deepDive: "IPAP = ventilação (↑VC, ↓trabalho). EPAP = oxigenação (recruta alvéolos, ↓auto-PEEP)."
+          },
+        ]
+      },
+      {
+        title: "Escala HACOR — Predição de Falha",
+        subsections: [
+          {
+            title: "Escala HACOR",
+            content: "• H — Heart Rate (FC): taquicardia indica falha\n• A — Acidosis (pH): acidose não corrigida\n• C — Consciousness (Glasgow): rebaixamento\n• O — Oxygenation (PaO₂/FiO₂): oxigenação inadequada\n• R — Respiratory Rate (FR): taquipneia persistente\n• Pontuação > 5 após 1-2h de VNI = ALTO RISCO de falha\n• ⚠️ Considerar IOT precoce se HACOR > 5",
+            deepDive: "HACOR > 5 em 1-2h = falha provável. Não aguardar deterioração — IOT precoce salva vidas."
+          },
+        ]
+      },
+      {
+        title: "Protocolos por Patologia",
+        subsections: [
+          {
+            title: "DPOC Exacerbada",
+            content: "• Modo: BIPAP ou PS\n• VC: 6 mL/kg peso predito\n• PEEP: ajustar para reduzir auto-PEEP sem piorar hiperinsuflação\n• FR: ajustada pela gasometria (pH e PaCO₂)\n• I:E: fluxo alto → tempo expiratório prolongado\n• Rise time: baixo (fluxo alto, Ti baixo)\n• Objetivo: corrigir acidose respiratória (pH > 7,35)",
+            deepDive: ""
+          },
+          {
+            title: "EAP — Edema Agudo de Pulmão",
+            content: "• Modo: CPAP ou BIPAP ou PS\n• VC: 6 mL/kg peso predito\n• PEEP/EPAP: 10 cmH₂O (avaliar resposta)\n• FR: ajustada pela gasometria\n• Benefício hemodinâmico: ↓ pré-carga + ↓ pós-carga\n• CPAP isolado já tem forte evidência no EAP\n• Reavaliar em 30-60 min",
+            deepDive: ""
+          },
+          {
+            title: "Asma Grave",
+            content: "• Modo: BIPAP ou PS\n• VC: 6 mL/kg peso predito\n• PEEP: ajustar sem piorar hiperinsuflação (ZEEP ou PEEP baixa)\n• FR: ajustada pela gasometria\n• I:E: fluxo alto → tempo expiratório prolongado (↓air trapping)\n• Rise time: baixo — fluxo alto, Ti baixo\n• Cuidado: auto-PEEP pode estar muito elevada",
+            deepDive: "DPOC e Asma: priorizar tempo expiratório longo + PEEP que não piore hiperinsuflação. Rise time baixo = fluxo rápido."
+          },
+          {
+            title: "SDRA, Trauma, Pós-operatório",
+            content: "• SDRA leve: CPAP ou BIPAP — VC 6 mL/kg (leve) ou 4 mL/kg (moderada-grave)\n• SDRA: PEEP pela tabela ARDS Network (avaliar tipo)\n• Trauma torácico: avaliar pneumotórax, hemotórax, contusão antes de iniciar\n• PO: CPAP ou BIPAP — PEEP 5 cmH₂O, VC 6 mL/kg\n• TEP: CPAP ou BIPAP — PEEP 10 cmH₂O\n• Obesidade: CPAP ou BIPAP — PEEP 10 cmH₂O",
+            deepDive: ""
+          },
+          {
+            title: "Doenças Neuromusculares",
+            content: "• Miastenia: BIPAP ou PS — CV <40%, PImáx <30 cmH₂O → iniciar VNI\n• ELA: BIPAP ou PS — CV <50%, PImáx <30, pH ácido → VNI imediata\n• Distrofia: VNI para hipoventilação noturna ou CV <1L\n• EPAP/PEEP: <10 cmH₂O\n• Monitorar sinais de falha: piora da CV, PImáx, gasometria\n• AOS: CPAP — manter perviedade da via aérea durante sono",
+            deepDive: "Neuromusculares: CV e PImáx são indicadores-chave para iniciar VNI. Monitorar evolução da fraqueza."
+          },
+        ]
+      },
+    ]
+  },
+  {
+    id: 'P2-S11',
+    code: 'PNEUMO-011',
+    title: "VMI — Ventilação Mecânica Invasiva",
+    videoUrls: [],
+    chapters: [
+      {
+        title: "Objetivos e Ciclo da VM",
+        subsections: [
+          {
+            title: "Objetivos da Ventilação Mecânica",
+            content: "• Manutenção da troca gasosa — garantir oxigenação adequada e remoção de CO₂\n• Aliviar trabalho respiratório — reduzir esforço da musculatura respiratória\n• Correção hipoxemia/hipercapnia — normalizar níveis gasométricos\n• Reverter fadiga muscular — evitar e tratar falência muscular respiratória\n• Reduzir desconforto — melhorar confort e dispneia do paciente\n• Prevenir complicações — evitar barotrauma e lesões associadas",
+            deepDive: ""
+          },
+          {
+            title: "4 Fases do Ciclo Ventilatório",
+            content: "• 1. DISPARO — Início do ciclo: detecção do esforço (assistido) ou tempo programado (controlado)\n• 2. INSPIRAÇÃO — Ar entra nos pulmões por pressão positiva: entrega de VC ou atingir TI\n• 3. CICLAGEM — Transição inspiração → expiração: por volume, tempo, fluxo ou pressão\n• 4. EXPIRAÇÃO — Ar sai dos pulmões (PASSIVA): retração elástica até PEEP",
+            deepDive: "Sequência contínua: 4 → 1 → 2 → 3 → 4 → ..."
+          },
+          {
+            title: "Disparo (Trigger)",
+            content: "• Modo controlado: ventilador inicia pelo tempo programado\n• Modo assistido: detecta esforço inspiratório do paciente\n• Sensibilidade a pressão: −0,5 a −2 cmH₂O\n• Sensibilidade a fluxo: 2 a 4 L/min",
+            deepDive: ""
+          },
+          {
+            title: "Ciclagem",
+            content: "• VCV: cicla por VOLUME — quando VC programado é entregue\n• PCV: cicla por TEMPO — quando TI programado é atingido\n• PSV: cicla por FLUXO — quando fluxo cai a 25% do pico\n• Ciclagem por pressão: raramente usada, limite de segurança",
+            deepDive: ""
+          },
+        ]
+      },
+      {
+        title: "Modos Ventilatórios — VCV, PCV, PSV",
+        subsections: [
+          {
+            title: "VCV — Volume Controlado",
+            content: "• Volume corrente FIXO — entrega o VC programado a cada ciclo\n• Fluxo CONSTANTE (onda quadrada) durante a inspiração\n• Pressão VARIA conforme complacência e resistência do paciente\n• Vantagem: garante ventilação alveolar mínima\n• Desvantagem: pressão pode subir se complacência cair\n• Ciclagem: por VOLUME (quando VC é entregue)",
+            deepDive: "VCV: Volume fixo + Fluxo quadrado → Pressão varia"
+          },
+          {
+            title: "PCV — Pressão Controlada",
+            content: "• Pressão inspiratória FIXA (onda quadrada) — mantém PIP programada\n• Fluxo DESACELERANTE — pico no início da inspiração, decai exponencialmente\n• Volume VARIA conforme complacência e resistência do paciente\n• Vantagem: limita pressão alveolar, melhor distribuição de gás\n• Desvantagem: VC pode cair se complacência piorar\n• Ciclagem: por TEMPO (quando TI é atingido)",
+            deepDive: "PCV: Pressão fixa + Fluxo desacelerante → Volume varia"
+          },
+          {
+            title: "PSV — Pressão de Suporte",
+            content: "• Modo de ventilação ESPONTÂNEA assistida\n• Paciente DISPARA cada ciclo (sensibilidade)\n• Ventilador entrega pressão de suporte programada\n• Fluxo desacelerante — paciente controla FR, TI e VC\n• Ciclagem: por FLUXO — quando cai a 25% do pico inspiratório\n• Usado em desmame ventilatório e transição para extubação",
+            deepDive: "PSV: Paciente dispara + PS fixa → Cicla por fluxo (25% do pico)"
+          },
+        ]
+      },
+      {
+        title: "Efeitos Vasculares de CO₂ e O₂",
+        subsections: [
+          {
+            title: "CO₂ — Efeitos Vasculares",
+            content: "• CO₂ alto (hipercapnia) → vasodilatação cerebral → ↑ fluxo sanguíneo cerebral\n• CO₂ baixo (hipocapnia) → vasoconstrição cerebral → ↓ fluxo sanguíneo cerebral\n• Na circulação pulmonar: CO₂ alto → vasodilatação local\n• Hiperventilação excessiva → hipocapnia → isquemia cerebral",
+            deepDive: ""
+          },
+          {
+            title: "O₂ — Efeitos Vasculares",
+            content: "• O₂ alto (hiperóxia) → vasoconstrição cerebral\n• O₂ baixo (hipoxemia) → vasodilatação cerebral\n• Na circulação pulmonar: resposta OPOSTA ao sistêmico\n• Hipóxia alveolar → vasoconstrição pulmonar hipóxica (mecanismo de Euler-Liljestrand)\n• Hiperóxia → vasodilatação pulmonar",
+            deepDive: "Sistêmico: CO₂↑ = vasodilata, O₂↑ = vasocontrai | Pulmonar: O₂↓ = vasocontrai (HPV)"
+          },
+        ]
+      },
+      {
+        title: "Disparo, Ciclagem, TI e JT",
+        subsections: [
+          {
+            title: "Fórmulas do Ciclo Respiratório",
+            content: "• FR (f) = respiratory rate em bpm\n• JT (tempo total) = 60 / FR segundos por ciclo\n• Ex: FR = 15 bpm → JT = 60/15 = 4,00 s/ciclo\n• TI (tempo inspiratório): tempo entre disparo e ciclagem\n• TE (tempo expiratório): JT − TI\n• Relação I:E = TI : TE (ex: 1:2, 1:3)",
+            deepDive: ""
+          },
+          {
+            title: "Trigger & Cycle — Controle",
+            content: "• Control = Ventilator-triggered: ventilador controla início (trigger) e término (cycle)\n• Assistido = Patient-triggered: paciente inicia, ventilador completa o ciclo\n• A FR é determinada pelo tempo entre cada trigger\n• Sensibilidade: ajusta o limiar de detecção do esforço do paciente",
+            deepDive: ""
+          },
+        ]
+      },
+      {
+        title: "PEEP — Conceitos e Efeitos",
+        subsections: [
+          {
+            title: "PEEP — Pressão Expiratória Final Positiva",
+            content: "• Mantém alvéolos abertos ao final da expiração → previne colapso e atelectasia\n• Aumenta superfície de troca gasosa disponível (recrutamento)\n• Redistribui edema alveolar para espaços intersticiais\n• Torna a ventilação mais homogênea em zonas dependentes\n• Diminui o shunt intrapulmonar (↑ oxigenação)",
+            deepDive: ""
+          },
+          {
+            title: "PEEP e Hemodinâmica",
+            content: "• PEEP ↑ → ↑ pressão intratorácica → ↓ retorno venoso → ↓ DC\n• Principal mecanismo de comprometimento: ↓ retorno venoso pela ↑ PAD\n• Também: ↓ contratilidade, ↑ pós-carga VD e VE, mediadores humorais\n• Em SDRA: PEEP pode ↓ VS, ↓ DC, ↓ FC, ↑ RVS, ↑ RVP\n• Individualizar: balancear recrutamento alveolar vs efeito hemodinâmico",
+            deepDive: "PEEP elevada pode comprometer o DC — monitorar VS, DC e PAM ao ajustar."
+          },
+        ]
+      },
+      {
+        title: "Pressões, Complacências e Resistência",
+        subsections: [
+          {
+            title: "ΔP (Driving Pressure)",
+            content: "• Fórmula: ΔP = Platô − PEEP\n• Diferença entre pressão de platô e PEEP\n• Representa a pressão necessária para ventilar os pulmões\n• Alvo: < 15 cmH₂O (proteção pulmonar)\n• Melhor preditor de mortalidade em SDRA",
+            deepDive: "ΔP < 15 cmH₂O: associado a menor mortalidade em SDRA."
+          },
+          {
+            title: "Pressão Platô e Pressão de Pico",
+            content: "• Platô: pressão medida após pausa inspiratória — reflete pressão alveolar real\n• Alvo Platô: < 30 cmH₂O (evitar barotrauma)\n• Pico (PIP): pressão máxima no final da inspiração — inclui resistência VA + pressão alveolar\n• Diferença Pico − Platô: reflete a resistência das vias aéreas (RAW)",
+            deepDive: ""
+          },
+          {
+            title: "Complacência Estática (Cest)",
+            content: "• Fórmula: Cest = VC / (Platô − PEEP)\n• Componentes: Pulmão + Caixa Torácica\n• Precisa de pausa inspiratória para medir\n• Normal: > 50 mL/cmH₂O\n• Cest baixa: ↓ distensibilidade (SDRA, fibrose, atelectasia, edema)",
+            deepDive: ""
+          },
+          {
+            title: "Complacência Dinâmica (Cdyn)",
+            content: "• Fórmula: Cdyn = VC / (Pico − PEEP)\n• Inclui Vias Aéreas (não precisa pausa)\n• Referência: ~10 mL/cmH₂O abaixo da Cest\n• Cdyn baixa: indica ↑ resistência das vias aéreas (broncoespasmo, secreção)",
+            deepDive: ""
+          },
+          {
+            title: "RAW — Resistência das Vias Aéreas",
+            content: "• Fórmula: RAW = (Pico − Platô) / Fluxo (L/s)\n• Normal: 7−10 cmH₂O/L/s\n• RAW elevada: broncoconstrição, secreções, edema, tubo OT pequeno\n• Atenção: Fluxo em L/min precisa ser dividido por 60 para converter em L/s",
+            deepDive: ""
+          },
+        ]
+      },
+      {
+        title: "Interação Cardiopulmonar na VM",
+        subsections: [
+          {
+            title: "Pressão Intratorácica (PIT)",
+            content: "• Qualquer mudança na PIT interfere no retorno venoso ao VD e no fluxo do VE\n• ↑ PIT (pressão positiva): ↑ PAD, ↓ pressão transmural, ↓ retorno venoso\n• Respiração espontânea: PIT negativa → favorece retorno venoso\n• VM com pressão positiva: altera fundamentalmente a hemodinâmica cardíaca",
+            deepDive: ""
+          },
+          {
+            title: "Ventrículo Direito (VD)",
+            content: "• VM ↑ volumes pulmonares → ↑ RVP → ↑ pós-carga do VD\n• Inspiração: ↓ retorno venoso → ↓ VS do VD → ↓ dimensões VD\n• Expiração: ↑ retorno venoso → ↑ VS do VD → ↑ dimensões VD\n• Parede livre fina: não adaptado para pressões elevadas\n• Vulnerável a dissincronia e BRE",
+            deepDive: ""
+          },
+          {
+            title: "Ventrículo Esquerdo (VE)",
+            content: "• Alteração no retorno venoso do VD → altera pré-carga do VE\n• ↑ PIT pode reduzir enchimento VD → repercute no VS do VE\n• VS do VE afetado por: volume sanguíneo, FR e VC\n• Pressão positiva pode alterar geometria ventricular\n• Um único ciclo com pressão positiva pode provocar variação no DC",
+            deepDive: ""
+          },
+          {
+            title: "Lei de Frank-Starling e Compensações",
+            content: "• ↑ Pós-carga → aumenta contratilidade miocárdica\n• ↑ Pré-carga → recruta reserva contrátil (Lei de Frank-Starling)\n• VM com pressão positiva: ↑ pressão pleural e ↓ pressão vascular pulmonar transmural\n• Consequência: ↑ pós-carga VD, aumenta zonas de West 1 ou 2",
+            deepDive: "Monitorar VS, DC e PAM ao ajustar parâmetros ventilatórios. PEEP elevada + hipovolemia = risco."
+          },
+        ]
+      },
+      {
+        title: "P0.1 — Drive Respiratório",
+        subsections: [
+          {
+            title: "P0.1 — Pressão de Oclusão (100ms)",
+            content: "• Pressão de oclusão medida em 0,1 s após início do esforço inspiratório contra VA ocluída\n• Avalia atividade do centro respiratório → diretamente relacionada ao estímulo neural\n• Boa correlação com trabalho da respiração\n• Valores de referência: 2 a 4 cmH₂O\n• Normal/adulto saudável: 0,5 − 1,5 cmH₂O (~1 cmH₂O)",
+            deepDive: ""
+          },
+          {
+            title: "Interpretação do P0.1",
+            content: "• < 2 cmH₂O: drive diminuído — centro respiratório hipoestimulado\n• > 4 cmH₂O: drive aumentado — risco de fadiga e falha no desmame\n• > 3,5 cmH₂O: SUB-ASSISTÊNCIA — esforço excessivo, ↑ suporte\n• < 1,6 cmH₂O: SOBRE-ASSISTÊNCIA — esforço insuficiente, ↓ suporte\n• Início contração do ECMT: associado a P0.1 > 2,9 cmH₂O",
+            deepDive: "P0.1 é não-invasivo, reprodutível e preditor de sucesso no desmame (< 4 cmH₂O)."
+          },
+        ]
+      },
+      {
+        title: "P-SILI — Lesão Autoinfligida",
+        subsections: [
+          {
+            title: "P-SILI — Patient Self-Inflicted Lung Injury",
+            content: "• Lesão pulmonar causada pelo esforço respiratório excessivo do próprio paciente durante VM\n• 4 mecanismos principais:\n• 1. Pressão transpulmonar aumentada → hiperdistensão regional\n• 2. Duplo disparo + Pendelluft → volutrauma por empilhamento aéreo\n• 3. Pressão pleural negativa → extravasamento capilar → edema pulmonar\n• 4. VIDD (miotrauma diafragmático) → fraqueza muscular → dificulta desmame",
+            deepDive: "Ciclo vicioso: esforço excessivo → lesão → piora oxigenação → ↑ dependência de VM."
+          },
+          {
+            title: "Prevenção da P-SILI",
+            content: "• Monitorar esforço: P0.1, Pmusc, ΔPes, swing de pressão\n• Ajustar PS/PEEP: evitar sub-assistência (esforço excessivo)\n• Detectar assincronia: duplo disparo, reverse triggering\n• Sedação apropriada: controlar drive respiratório quando necessário\n• Ventilação protetora: VC baixo, Platô < 30, ΔP < 15\n• Bloqueio neuromuscular: SDRA grave com assincronia refratária",
+            deepDive: ""
+          },
+        ]
+      },
+      {
+        title: "VILI — Lesão Induzida pelo Ventilador",
+        subsections: [
+          {
+            title: "6 Mecanismos da VILI",
+            content: "• 1. Barotrauma: altas pressões → ruptura espaços aéreos → pneumotórax\n• 2. Volutrauma: VC alto → hiperdistensão alveolar (mais lesivo que pressão isolada)\n• 3. Atelectrauma: VM em baixos volumes → abertura/fechamento cíclicos de alvéolos\n• 4. Biotrauma: forças biofísicas → mediadores inflamatórios → lesão sistêmica (SIRS)\n• 5. Fratura por fadiga: altas FR → microfraturas progressivas no parênquima\n• 6. TI aumentado: piora V/Q, ↓ complacência, ↑ edema pulmonar",
+            deepDive: ""
+          },
+          {
+            title: "Ventilação Protetora — Prevenindo VILI",
+            content: "• VC: 6 mL/kg peso predito\n• Platô: < 30 cmH₂O\n• ΔP (Driving Pressure): < 15 cmH₂O\n• PEEP: individualizada (ARDSnet ou decremental)\n• FiO₂: menor possível (SpO₂ 88−95%)",
+            deepDive: "VILI é prevenível. Driving Pressure é o melhor preditor de mortalidade em SDRA."
+          },
+          {
+            title: "Stress e Strain",
+            content: "• Stress (tensão mecânica): distribuição de forças por unidade de área de pulmão\n• Strain (deformação): estiramento em relação ao estado de relaxamento (ΔV / V basal)\n• Deformação excessiva → morte celular\n• Pulmões doentes (SDRA): expansão heterogênea → concentração regional de forças\n• VILI disparada por: tensões elevadas globais OU tensões locais pela heterogeneidade",
+            deepDive: ""
+          },
+        ]
+      },
+      {
+        title: "Esforço Muscular Respiratório",
+        subsections: [
+          {
+            title: "Pmusc, Pdi, Pes — Medidas de Esforço",
+            content: "• Pmusc: pressão dos músculos respiratórios = 0,75 × Pocc\n• Normal: 3−15 cmH₂O | > 15: excessivo | < 3−5: insuficiente\n• Pdi (transdiafragmática): Pdi = Pga − Pes (requer 2 cateteres)\n• ΔPes (esofágica): monitoramento da interação paciente-ventilador\n• Normal: −2 a −8 cmH₂O | < −8 a −12: excessivo | > −2 a −3: insuficiente",
+            deepDive: ""
+          },
+          {
+            title: "TFdi e Pocc",
+            content: "• TFdi (Thickening Fraction): fração de espessamento diafragmático por ultrassom\n• Método não invasivo, à beira do leito\n• < 15%: esforço insuficiente / disfunção diafragmática | > 15%: normal\n• Pocc (pressão de oclusão): deflexão de pressão negativa durante oclusão expiratória\n• Pmusc ≈ 0,75 × Pocc — desmascara o esforço da musculatura respiratória",
+            deepDive: "Objetivo: detectar esforço excessivo (risco P-SILI) ou insuficiente (risco VIDD)."
+          },
+        ]
+      },
+      {
+        title: "Parâmetros Ventilatórios — VMI",
+        subsections: [
+          {
+            title: "Parâmetros de Entrada",
+            content: "• FiO₂: fração inspirada de O₂ (21% a 100%)\n• PEEP: pressão expiratória final positiva (0 a 20 cmH₂O típico)\n• FR: frequência respiratória (6−30 rpm)\n• Sensibilidade (Trigger): pressão (−0,5 a −2 cmH₂O) ou fluxo (2−4 L/min)\n• PI: pressão inspiratória (determinada pela complacência)\n• TI: tempo inspiratório (0,8 a 1,2 s)",
+            deepDive: ""
+          },
+          {
+            title: "Parâmetros de Saída e Derivados",
+            content: "• VC: volume corrente (450−500 mL, 6−8 mL/kg)\n• Fluxo: velocidade do ar na via aérea (40−60 L/min)\n• VM (volume minuto): VC × FR (5−8 L/min)\n• Drive respiratório: comando cerebral à musculatura respiratória\n• Auto-PEEP (intrínseca): pressão patológica por ar aprisionado (DPOC, asma)\n• PEEP extrínseca: pressão positiva gerada pelo ventilador no final da expiração",
+            deepDive: ""
+          },
+        ]
+      },
+    ]
+  },
+  {
+    id: 'P2-S12',
+    code: 'PNEUMO-012',
+    title: "Assincronias Paciente-Ventilador",
+    videoUrls: [],
+    chapters: [
+      {
+        title: "O que são Assincronias?",
+        subsections: [
+          {
+            title: "Assincronia Paciente-Ventilador",
+            content: "• Incoordenação entre esforços/necessidades do paciente e o suporte do ventilador\n• Prevalência: 25-80% dos pacientes ventilados mecanicamente\n• Consequências: ↑ trabalho respiratório, desconforto, maior tempo de VM\n• Risco de lesão pulmonar (VILI/P-SILI) e maior uso de sedação\n• Detecção: análise de curvas de pressão, fluxo e volume",
+            deepDive: "Assincronias são frequentes e subdiagnosticadas — monitorização contínua é essencial."
+          },
+        ]
+      },
+      {
+        title: "Disparo Ineficaz",
+        subsections: [
+          {
+            title: "Disparo Ineficaz",
+            content: "• Esforço do paciente NÃO inicia ciclo ventilatório\n• Na curva: deflexão negativa na pressão SEM fluxo correspondente\n• Fatores ventilador: mau ajuste de sensibilidade, TI prolongado\n• Fatores paciente: ↑ FR muscular, depleção VC, hiperinsuflação (auto-PEEP)\n• Correção: ajustar sensibilidade, ↓ TI, titular PEEP externa < auto-PEEP, ↓ PS no PSV",
+            deepDive: ""
+          },
+        ]
+      },
+      {
+        title: "Duplo Disparo",
+        subsections: [
+          {
+            title: "Duplo Disparo",
+            content: "• Dois ciclos ventilatórios consecutivos com intervalo muito curto\n• Segundo ciclo antes da expiração completa do primeiro → empilhamento aéreo\n• Fatores ventilador: TI muito curto vs tempo neural, VC baixo em VCV\n• Fator paciente: alto drive neural\n• Correção: ↑ TI (VCV/PCV) ou ↓ limiar de ciclagem (PSV), sedação em SDRA grave, PCV (volume variável)",
+            deepDive: "Duplo disparo → empilhamento aéreo (air stacking) → volutrauma"
+          },
+        ]
+      },
+      {
+        title: "Disparo Reverso",
+        subsections: [
+          {
+            title: "Disparo Reverso",
+            content: "• Contração muscular que ocorre DURANTE a expiração, como resposta reflexa à insuflação passiva\n• Reflexo induzido pela distensão pulmonar\n• Correção: ↓ Ti, ↓ FR, ↓ VC (minimizar distensão)\n• Diminuir sedação para permitir respirações espontâneas\n• BNM em casos graves de SDRA",
+            deepDive: ""
+          },
+        ]
+      },
+      {
+        title: "Autodisparo",
+        subsections: [
+          {
+            title: "Autodisparo",
+            content: "• Ventilador inicia ciclo SEM esforço do paciente\n• Causas: sensibilidade excessiva, vazamento no sistema, água no circuito\n• Fator paciente: oscilações de pressão/fluxo por batimentos cardíacos\n• Correção: otimizar sensibilidade, corrigir vazamentos, remover condensados",
+            deepDive: ""
+          },
+        ]
+      },
+      {
+        title: "Ciclagem Prematura",
+        subsections: [
+          {
+            title: "Ciclagem Prematura",
+            content: "• TI do ventilador < TI neural do paciente — ventilador cicla antes\n• Paciente continua esforço inspiratório após início da expiração\n• Padrão restritivo (fibrose pulmonar) em PSV\n• VCV: ↓ fluxo para ↑ TI, ↑ VC ou pausa inspiratória\n• PCV: ↑ TI\n• PSV: ↓ % de ciclagem ou ↑ PS ou ↑ Rise Time",
+            deepDive: ""
+          },
+        ]
+      },
+      {
+        title: "Ciclagem Tardia",
+        subsections: [
+          {
+            title: "Ciclagem Tardia",
+            content: "• TI do ventilador > TI neural — ventilador demora a ciclar\n• Paciente tenta expirar enquanto ventilador ainda insufla\n• Padrão obstrutivo (DPOC) em PSV — overshoot e fluxo excessivo\n• VCV: ↑ fluxo inspiratório\n• PCV: ↓ TI\n• PSV: ↑ % de ciclagem, ↓ PS, ↑ ou ↓ Rise Time",
+            deepDive: "Ciclagem tardia: PCV/PSV → ↓ PC ou ↓ PS ou ↑ Rise Time para reduzir fluxo."
+          },
+        ]
+      },
+      {
+        title: "Fluxo Insuficiente (Flow Starvation)",
+        subsections: [
+          {
+            title: "Fluxo Insuficiente (Flow Starvation)",
+            content: "• Demanda ventilatória > fluxo ofertado pelo ventilador\n• Curva de pressão com CONCAVIDADE (scooping) — assinatura clássica\n• VCV: fluxo ajustado muito baixo\n• PCV/PSV: pressão muito baixa ou Rise Time muito longo\n• Correção VCV: ↑ fluxo inspiratório ou mudar para PCV/PSV (fluxo livre)\n• Correção PCV/PSV: ↓ Rise Time e/ou ↑ pressões\n• Tratar causa: dor, acidose, ansiedade, febre → ↑ demanda",
+            deepDive: "Concavidade na curva de pressão (scooping) = fluxo insuficiente. Assinatura patognomônica."
+          },
+        ]
+      },
+      {
+        title: "Fluxo Excessivo",
+        subsections: [
+          {
+            title: "Fluxo Excessivo",
+            content: "• Fluxo/pressão aplicado excessivamente alto\n• Overshoot de pressão no início da inspiração\n• VCV: fluxo ajustado muito alto\n• PCV/PSV: pressão muito alta ou Rise Time muito curto\n• Correção VCV: ↓ fluxo inspiratório\n• Correção PCV/PSV: ↓ pressão, ↑ Rise Time",
+            deepDive: ""
+          },
+        ]
+      },
+      {
+        title: "Impacto Clínico e Manejo",
+        subsections: [
+          {
+            title: "Impacto Clínico das Assincronias",
+            content: "• ↑ Trabalho respiratório → fadiga muscular\n• Desconforto, agitação → maior necessidade de sedação\n• Maior tempo de VM → dificulta desmame\n• Lesão pulmonar (VILI/P-SILI) → barotrauma, volutrauma\n• Disfunção hemodinâmica → alteração PIT, retorno venoso, DC",
+            deepDive: ""
+          },
+          {
+            title: "Detecção e Monitorização",
+            content: "• Análise de curvas ventilatórias: pressão × fluxo × volume × tempo\n• Inspeção visual do paciente e do ventilador\n• Pressão esofágica (Pes): medida direta do esforço\n• EAdi (atividade elétrica do diafragma): NAVA\n• Ultrassonografia diafragmática: função e movimento",
+            deepDive: ""
+          },
+          {
+            title: "Estratégia Geral de Manejo",
+            content: "• 1. Identificação precoce: monitorização contínua + vigilância clínica\n• 2. Ajuste de parâmetros: sensibilidade, fluxo, TI, ciclagem\n• 3. Tratar causa base: dor, febre, ansiedade, acidose, auto-PEEP\n• 4. Mudança de modo se necessário: PAV, NAVA, modos adaptativos",
+            deepDive: "Assincronias são tratáveis: identificar tipo → corrigir parâmetros → tratar causa base."
+          },
+        ]
+      },
+    ]
+  },
+  {
+    id: 'P2-S13',
+    code: 'PNEUMO-013',
+    title: "Modalidades & Análise Gráfica",
+    videoUrls: [],
+    chapters: [
+      {
+        title: "Classificação dos Modos Ventilatórios",
+        subsections: [
+          {
+            title: "Modos Controlados, Assistidos e Mistos",
+            content: "• Controlados: ventilador controla tudo (VCV, PCV) — paciente passivo\n• Assistidos: paciente dispara, ventilador entrega suporte (A/C, PSV)\n• Mistos: ciclos mandatórios + respirações espontâneas (APRV, híbridos)",
+            deepDive: ""
+          },
+          {
+            title: "Regra de Ouro do Disparo",
+            content: "• Paciente PASSIVO (sedado/curarizado): modo CONTROLADO → disparo por TEMPO (JT)\n• Paciente ATIVO (drive respiratório): modo ASSISTIDO → disparo por SENSIBILIDADE\n• Sensibilidade: Fluxo (2-4 L/min) ou Pressão (-0,5 a -2 cmH₂O)",
+            deepDive: "Paciente ativo na VM? Disparo = Sensibilidade. Passivo? Disparo = Tempo."
+          },
+        ]
+      },
+      {
+        title: "VCV — Volume Controlado",
+        subsections: [
+          {
+            title: "VCV — Características",
+            content: "• Volume Corrente é a variável CONTROLADA — entrega VC programado\n• Fluxo CONSTANTE (onda quadrada) durante inspiração\n• Pressão VARIÁVEL — depende da complacência e resistência do paciente\n• Disparo: Tempo ou Fluxo ou Pressão | Ciclagem: Volume ou Tempo\n• Parâmetros: VC (6-8 mL/kg), FR, Fluxo (40-60 L/min), PEEP, Sensibilidade, FiO₂",
+            deepDive: "VCV: Volume garantido + Fluxo quadrado → Pressão varia. Risco de barotrauma se complacência cai."
+          },
+          {
+            title: "Análise Gráfica VCV",
+            content: "• Pressão × Tempo: ascensão progressiva até Pico, pausa para Platô\n• Stress Index: SI=1 linear (ideal), SI>1 côncava (sobredistensão), SI<1 convexa (recrutamento)\n• Fluxo × Tempo: onda QUADRADA constante (inspiração), exponencial (expiração)\n• Volume × Tempo: rampa ascendente LINEAR\n• Ppico = Resistência + Complacência | Pplatô = Complacência apenas",
+            deepDive: ""
+          },
+        ]
+      },
+      {
+        title: "PCV — Pressão Controlada",
+        subsections: [
+          {
+            title: "PCV — Características",
+            content: "• Pressão é a variável CONTROLADA — mantém pressão programada\n• Fluxo DESACELERANTE — pico alto que cai progressivamente\n• Volume VARIÁVEL — depende da complacência e resistência\n• Disparo: Tempo (CMV) ou Sensibilidade (ACV) | Ciclagem: sempre por TEMPO (Tinsp)\n• Parâmetros: PC (~15 cmH₂O acima PEEP), FR, Tinsp, PEEP, Rise Time, Sensibilidade, FiO₂",
+            deepDive: "PCV: Pressão limitada + Fluxo desacelerante → Volume varia. ↓ Risco barotrauma, volume não garantido."
+          },
+          {
+            title: "Rise Time em PCV",
+            content: "• Rise Time (RT): tempo de subida até atingir a pressão determinada\n• RT BAIXO → fluxo ALTO → Ti BAIXO → ↑ VC em PCV\n• RT ALTO → fluxo BAIXO → Ti ALTO\n• Rise Time NÃO altera o Tinsp em PCV\n• Cuidado: Pinsp é diferente de Pressão Controlada (PC) — PC = Pinsp - PEEP",
+            deepDive: ""
+          },
+        ]
+      },
+      {
+        title: "PSV — Pressão de Suporte",
+        subsections: [
+          {
+            title: "PSV — Características",
+            content: "• Modo 100% ESPONTÂNEO — paciente dispara e controla FR e Ti\n• Ventilador fornece pressão de suporte (PS) para auxiliar esforço\n• Fluxo desacelerante — cicla quando fluxo cai a 25% do pico\n• Disparo: sempre por SENSIBILIDADE | Ciclagem: sempre por FLUXO\n• Ideal para desmame — requer drive respiratório preservado",
+            deepDive: ""
+          },
+          {
+            title: "Ciclagem em PSV (% do Fluxo de Pico)",
+            content: "• Quanto MAIOR o % de ciclagem → MENOR o Ti (cicla mais cedo)\n• Quanto MENOR o % de ciclagem → MAIOR o Ti (cicla mais tarde)\n• 10%: ciclagem tardia → Ti aumentado → risco de assincronia\n• 25%: ciclagem padrão → Ti normal (recomendado)\n• 40%: ciclagem precoce → Ti diminuído → risco de assincronia",
+            deepDive: "Padrão típico: 25% do fluxo de pico inspiratório."
+          },
+        ]
+      },
+      {
+        title: "Loops P-V e Interpretação",
+        subsections: [
+          {
+            title: "Alça Pressão-Volume (P-V)",
+            content: "• Gráfico que relaciona Pressão (X) com Volume (Y) durante um ciclo completo\n• LIP (Lower Inflection Point): ponto de recrutamento alveolar\n• UIP (Upper Inflection Point): início da hiperdistensão\n• Complacência: inclinação da curva (ΔV/ΔP)\n• Histerese: diferença entre curvas inspiratória e expiratória",
+            deepDive: ""
+          },
+          {
+            title: "Aplicação Clínica dos Loops",
+            content: "• PEEP ideal: acima do LIP (manter recrutamento)\n• Pplatô seguro: abaixo do UIP (evitar hiperdistensão)\n• ↓ Complacência: curva achatada (SDRA, fibrose, edema)\n• ↑ Complacência: curva inclinada (DPOC, enfisema)\n• Driving Pressure < 15 cmH₂O: melhor preditor de mortalidade em SDRA",
+            deepDive: "PEEP acima do LIP + Pplatô abaixo do UIP = ventilação protetora otimizada."
+          },
+        ]
+      },
+      {
+        title: "Cálculos e Fórmulas",
+        subsections: [
+          {
+            title: "Parâmetros Derivados das Curvas",
+            content: "• Cest = VC / (Pplatô − PEEP) | Normal: 50-100 mL/cmH₂O\n• RAW = (Ppico − Pplatô) / Fluxo | Normal: 5-10 cmH₂O/L/s\n• ΔP = Pplatô − PEEP | Meta: < 15 cmH₂O (ideal < 12)\n• VM = VC × FR | Normal: 5-10 L/min (determina eliminação de CO₂)",
+            deepDive: ""
+          },
+          {
+            title: "Escolha do Modo Ventilatório",
+            content: "• Fase aguda / SDRA grave: VCV ou PCV — controle total, VC 6 mL/kg, Pplatô < 30\n• Fase de melhora: A/C ou SIMV+PSV — paciente desperta, redução gradual FR\n• Desmame: PSV — 100% espontâneo, PS progressivamente ↓, meta PS 5-8 cmH₂O\n• TRE (Teste Respiratório Espontâneo): avaliar capacidade de extubação",
+            deepDive: "Ventilação protetora: VC 6 mL/kg, Pplatô < 30, ΔP < 15, PEEP individualizada."
+          },
+        ]
+      },
+    ]
+  },
+  {
+    id: 'P2-S14',
+    code: 'PNEUMO-014',
+    title: "Desmame Ventilatório",
+    videoUrls: [],
+    chapters: [
+      {
+        title: "Classificação dos Tipos de Desmame",
+        subsections: [
+          {
+            title: "O que é Desmame Ventilatório",
+            content: "• Processo de transição da ventilação mecânica para a respiração espontânea\n• Classificado em 3 tipos com base no número de tentativas e tempo necessário\n• Objetivo: retirar o suporte ventilatório o mais rápido e seguro possível",
+            deepDive: "O desmame pode representar até 40-50% do tempo total de VM. Abreviá-lo reduz complicações."
+          },
+          {
+            title: "Desmame SIMPLES",
+            content: "• Sucesso no 1º TRE (Teste de Respiração Espontânea)\n• Paciente permanece 48h fora da VM sem necessidade de reintubação\n• Prevalência: ~70% dos casos\n• Geralmente não necessitam de preditores complexos",
+            deepDive: "70% dos pacientes desmamam no primeiro TRE — a busca ativa diária é essencial."
+          },
+          {
+            title: "Desmame DIFÍCIL",
+            content: "• Falha no 1º TRE\n• Necessita de até 3 TREs ou ≤ 7 dias após o primeiro TRE\n• Prevalência: ~20% dos casos\n• Requer avaliação cuidadosa das causas da falha",
+            deepDive: ""
+          },
+          {
+            title: "Desmame PROLONGADO",
+            content: "• Falha em > 3 TREs consecutivos\n• Ou necessidade de > 7 dias de desmame após o primeiro TRE\n• Prevalência: ~10% dos casos\n• Pior prognóstico, maior morbidade",
+            deepDive: "Simples 70% · Difícil 20% · Prolongado 10% — quanto mais prolongado, pior o desfecho."
+          },
+        ]
+      },
+      {
+        title: "Conceitos Fundamentais do Desmame",
+        subsections: [
+          {
+            title: "Busca Ativa Diária",
+            content: "• Triagem DIÁRIA identificando pacientes capazes de realizar o desmame\n• Avaliação sistemática dos critérios de elegibilidade em todos os pacientes ventilados\n• Deve ser realizada ao menos uma vez ao dia\n• Reduz tempo de VM e complicações associadas",
+            deepDive: ""
+          },
+          {
+            title: "Despertar Diário",
+            content: "• Interrupção diária da sedação para avaliação do nível de consciência\n• Permite avaliar a capacidade do paciente de manter drive respiratório\n• Avalia proteção de vias aéreas (tosse, deglutição)\n• Associado à busca ativa: SAT (Spontaneous Awakening Trial) + SBT",
+            deepDive: "SAT + SBT combinados reduzem tempo de VM e mortalidade."
+          },
+          {
+            title: "Sucesso de Desmame vs. Sucesso de Extubação",
+            content: "• Sucesso de Desmame: paciente tolera o TRE (ainda conectado ao ventilador)\n• Sucesso de Extubação: paciente extubado (ou desconectado se TQT) e NÃO reintubado em 48h\n• TOT: prótese endolaríngea retirada com sucesso\n• TQT: tolerou desconexão do ventilador por 48h",
+            deepDive: "Sucesso no TRE ≠ sucesso na extubação. A avaliação de via aérea é etapa separada."
+          },
+        ]
+      },
+      {
+        title: "Critérios de Elegibilidade para Desmame",
+        subsections: [
+          {
+            title: "Busca Ativa — Critérios Obrigatórios",
+            content: "• O paciente deve atender a TODOS os critérios para ser elegível ao TRE\n• Realizar a busca ativa DIÁRIA incluindo todos os seguintes\n• A ausência de qualquer critério adia o TRE",
+            deepDive: "TODOS os critérios devem ser atendidos simultaneamente."
+          },
+          {
+            title: "Oxigenação e Hemodinâmica",
+            content: "• Oxigenação adequada: PaO₂ ≥ 60 mmHg, FiO₂ ≤ 0,4 (40%), PEEP ≤ 5-8 cmH₂O\n• Estabilidade hemodinâmica: boa perfusão tecidual\n• Sem ou com doses baixas de vasopressores\n• Ausência de ICC descompensada\n• Ausência de arritmias graves",
+            deepDive: ""
+          },
+          {
+            title: "Causa, Drive e Balanço",
+            content: "• Resolução da causa: falência respiratória resolvida ou controlada\n• Drive respiratório: paciente capaz de iniciar esforços inspiratórios espontâneos\n• Balanço hídrico: zerado ou negativo nas últimas 24h\n• Equilíbrio metabólico: ácido-básico e eletrolítico normais",
+            deepDive: "Contraindicação relativa: adiar extubação quando houver transporte para exames programado."
+          },
+        ]
+      },
+      {
+        title: "TRE — Teste de Respiração Espontânea",
+        subsections: [
+          {
+            title: "O que é o TRE?",
+            content: "• Avalia a capacidade do paciente de manter ventilação espontânea adequada\n• Sem o suporte total do ventilador\n• Existem 5 formas principais de realizar o TRE\n• Duração: 30-120 minutos (estudos recentes: 30 min podem ser suficientes)",
+            deepDive: ""
+          },
+          {
+            title: "Método 1: Tubo T",
+            content: "• Desconexão total do ventilador\n• Paciente conectado a fonte de O₂ umidificado via TOT ou TQT\n• Simula condição real pós-extubação\n• Desvantagem: sem monitorização contínua, não compensa resistência do TOT",
+            deepDive: ""
+          },
+          {
+            title: "Método 2: PSV 5-8 cmH₂O + PEEP 5",
+            content: "• Pressão de suporte mínima — método MAIS UTILIZADO atualmente\n• PS 5-8 cmH₂O compensa resistência do TOT\n• PEEP 5 cmH₂O mantém recrutamento alveolar\n• Monitorização contínua pelo ventilador — mais seguro",
+            deepDive: "PSV é o método preferido: compensa o TOT, monitora continuamente e é mais seguro."
+          },
+          {
+            title: "Método 3: CPAP + ATC",
+            content: "• ATC = Automatic Tube Compensation\n• Mede pressão no início e final do tubo a cada ciclo\n• Calcula e compensa a resistência automaticamente\n• Mais fisiológico — compensa variações (secreções, posição do TOT)\n• Requer ventiladores modernos com essa tecnologia",
+            deepDive: ""
+          },
+          {
+            title: "Método 4: PS 0 + PEEP 5 (CPAP puro)",
+            content: "• PS = 0 (sem suporte pressórico na inspiração)\n• PEEP = 5 cmH₂O mantém recrutamento\n• Mais exigente que PSV (não compensa resistência do TOT)\n• Equivale ao CPAP",
+            deepDive: ""
+          },
+          {
+            title: "Método 5: PS 0 + PEEP 0 (ZEEP)",
+            content: "• Teste MAIS EXIGENTE — sem qualquer suporte\n• Apenas Bias Flow (fluxo contínuo)\n• Risco de atelectasia e dessaturação\n• Raramente utilizado",
+            deepDive: "Preferir métodos que mantenham ao menos PEEP 5 cmH₂O. ZEEP = maior risco."
+          },
+        ]
+      },
+      {
+        title: "Critérios de Sucesso e Falha do TRE",
+        subsections: [
+          {
+            title: "Critérios de SUCESSO do TRE",
+            content: "• FR < 35 ipm\n• SpO₂ > 90%\n• FC < 140 bpm ou variação < 20%\n• PAS 90-180 mmHg\n• Sem sinais de desconforto respiratório\n• Sem sudorese, agitação ou alteração do nível de consciência",
+            deepDive: "Manter observação contínua por 30-120 minutos. Sucesso = elegível para extubação."
+          },
+          {
+            title: "Critérios de FALHA — Interromper TRE",
+            content: "• FR > 35 ipm por > 5 minutos\n• SpO₂ < 90%\n• FC > 140 bpm ou variação > 20%\n• Arritmias graves\n• PAS > 180 ou < 90 mmHg\n• Sinais de desconforto respiratório\n• Sudorese, agitação, alteração do nível de consciência",
+            deepDive: "Na falha: retornar ao suporte anterior, investigar causa e reavaliar em 24h."
+          },
+        ]
+      },
+      {
+        title: "Estratégias para Otimizar o Desmame",
+        subsections: [
+          {
+            title: "Protocolo de Desmame",
+            content: "• 1. Busca ativa diária\n• 2. Despertar diário (SAT)\n• 3. Redução gradual do suporte ventilatório\n• 4. TRE quando critérios atingidos\n• 5. Extubação se sucesso no TRE",
+            deepDive: ""
+          },
+          {
+            title: "Preparo do Paciente",
+            content: "• Fisioterapia respiratória e motora\n• Mobilização precoce\n• Controle hídrico (balanço negativo)\n• Suporte nutricional adequado\n• Manejo da dor",
+            deepDive: ""
+          },
+          {
+            title: "Causas Comuns de Falha no Desmame",
+            content: "• Fraqueza muscular respiratória (VIDD — Ventilator-Induced Diaphragmatic Dysfunction)\n• Sobrecarga hídrica\n• Disfunção cardíaca (weaning-induced cardiac failure)\n• Broncoespasmo\n• Secreções excessivas\n• Delirium / agitação",
+            deepDive: "Avaliação multidisciplinar: médico, fisio, enfermagem, nutrição, fono."
+          },
+        ]
+      },
+      {
+        title: "Cuff-Leak Test — Teste de Vazamento do Balonete",
+        subsections: [
+          {
+            title: "O que é o Cuff-Leak Test?",
+            content: "• Avalia o risco de estridor pós-extubação por edema de laringe\n• Mede a diferença entre volume inspirado e expirado com o cuff desinsuflado\n• Realizado em modo VCV (volume controlado)",
+            deepDive: ""
+          },
+          {
+            title: "Como Realizar",
+            content: "• 1. Aspirar secreções traqueais e orais\n• 2. Ajustar ventilador para VCV\n• 3. Com cuff inflado: registrar VCi e VCe (devem ser similares)\n• 4. Desinsuflar o cuff\n• 5. Registrar VCe durante 6 ciclos (VCe atinge platô após poucos ciclos)\n• 6. Se VCe < VCi em > 10% → teste POSITIVO",
+            deepDive: ""
+          },
+          {
+            title: "Interpretação",
+            content: "• NEGATIVO (tem vazamento): diferença > 110 mL ou > 10%\n• → BAIXA possibilidade de estridor pós-extubação\n• POSITIVO (não tem vazamento): diferença < 110 mL ou < 10%\n• → PODEM desenvolver estridor pós-extubação",
+            deepDive: "Sensibilidade 27% · Especificidade 88% · Alta especificidade: reconhece quem NÃO tem obstrução."
+          },
+          {
+            title: "Fatores de Risco para Estridor",
+            content: "• Intubação traumática\n• VM > 6 dias\n• Tubo com calibre largo\n• Sexo feminino (pregas vocais mais finas, menos colágeno e ácido hialurônico)\n• Reintubação após extubação não planejada",
+            deepDive: ""
+          },
+          {
+            title: "Diferenças Anatômicas — Sexo Feminino",
+            content: "• Pregas vocais mais finas\n• Menor quantidade de colágeno nas pregas vocais\n• Menor quantidade de ácido hialurônico\n• Testosterona nos homens → músculos da laringe mais fortes\n• Colágeno e ácido hialurônico conferem maior resistência nos homens",
+            deepDive: "Mulheres têm maior risco de estridor pós-extubação por características anatômicas das pregas vocais."
+          },
+          {
+            title: "Limitações e Cuidados",
+            content: "• Baixa sensibilidade (27%) — pode não detectar todos os casos\n• Alta especificidade (88%) — útil para identificar quem NÃO terá estridor\n• Não é obrigatório para todos os pacientes\n• Risco: aspiração de secreção contaminada acima do cuff\n• Cuidado: aspirar secreções ANTES do teste\n• Inalação com adrenalina: recomendada como coadjuvante, baixa evidência",
+            deepDive: ""
+          },
+        ]
+      },
+    ]
+  },
+  {
   "id": "M4-S1",
   "code": "M4-0",
   "title": "Inovacao, Transformacao e Ferramentas Digitais",

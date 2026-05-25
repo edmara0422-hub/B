@@ -1,0 +1,119 @@
+const PNEUMO_PLAYLIST = [
+  { id: 'M2-T1', topicId: 'P2-S1', title: "Anatomofisiologia Respiratória", subtitle: 'Aula 01 · 12 slides · 3 simulações', duration: '20:00' },
+  { id: 'M2-T2', topicId: 'P2-S2', title: "Zona Condutora e Respiratória", subtitle: 'Aula 02 · 20 slides · 2 simulações', duration: '20:00' },
+  { id: 'M2-T3', topicId: 'P2-S3', title: "Mecânica Respiratória", subtitle: 'Aula 03 · 7 slides · 1 simulações', duration: '20:00' },
+  { id: 'M2-T4', topicId: 'P2-S4', title: "Difusão e Transporte de Gases", subtitle: 'Aula 04 · 10 slides · 1 simulações', duration: '20:00' },
+  { id: 'M2-T5', topicId: 'P2-S5', title: "Controle Respiratório", subtitle: 'Aula 05 · 7 slides · 1 simulações', duration: '20:00' },
+  { id: 'M2-T6', topicId: 'P2-S6', title: "Volumes e Capacidades Pulmonares", subtitle: 'Aula 06 · 4 slides · 1 simulações', duration: '20:00' },
+  { id: 'M2-T7', topicId: 'P2-S7', title: "Oxigenoterapia", subtitle: 'Aula 07 · 7 slides · 1 simulações', duration: '20:00' },
+  { id: 'M2-T8', topicId: 'P2-S8', title: "Semiologia Pulmonar", subtitle: 'Aula 08 · 11 slides · 1 simulações', duration: '20:00' },
+  { id: 'M2-T9', topicId: 'P2-S9', title: "Patologias Respiratórias", subtitle: 'Aula 09 · 0 slides · 0 simulações', duration: '20:00' },
+  { id: 'M2-T10', topicId: 'P2-S10', title: "VNI — Ventilação Não Invasiva", subtitle: 'Aula 10 · 16 slides · 1 simulações', duration: '20:00' },
+  { id: 'M2-T11', topicId: 'P2-S11', title: "VMI — Ventilação Mecânica Invasiva", subtitle: 'Aula 11 · 33 slides · 3 simulações', duration: '20:00' },
+  { id: 'M2-T12', topicId: 'P2-S12', title: "Assincronias Paciente-Ventilador", subtitle: 'Aula 12 · 12 slides · 9 simulações', duration: '20:00' },
+  { id: 'M2-T13', topicId: 'P2-S13', title: "Modalidades & Análise Gráfica", subtitle: 'Aula 13 · 12 slides · 5 simulações', duration: '20:00' },
+  { id: 'M2-T14', topicId: 'P2-S14', title: "Desmame Ventilatório", subtitle: 'Aula 14 · 27 slides · 1 simulações', duration: '20:00' },
+]
+
+const PNEUMO_SYLLABUS = [
+  // Pilar Pneumo (M2)
+  { id: 'M2-T1-S1', topicId: 'P2-S1', title: "Anatomofisiologia Respiratória", subtitle: 'Pneumo · 12 slides', duration: '20:00' },
+  { id: 'M2-T2-S1', topicId: 'P2-S2', title: "Zona Condutora e Respiratória", subtitle: 'Pneumo · 20 slides', duration: '20:00' },
+  { id: 'M2-T3-S1', topicId: 'P2-S3', title: "Mecânica Respiratória", subtitle: 'Pneumo · 7 slides', duration: '20:00' },
+  { id: 'M2-T4-S1', topicId: 'P2-S4', title: "Difusão e Transporte de Gases", subtitle: 'Pneumo · 10 slides', duration: '20:00' },
+  { id: 'M2-T5-S1', topicId: 'P2-S5', title: "Controle Respiratório", subtitle: 'Pneumo · 7 slides', duration: '20:00' },
+  { id: 'M2-T6-S1', topicId: 'P2-S6', title: "Volumes e Capacidades Pulmonares", subtitle: 'Pneumo · 4 slides', duration: '20:00' },
+  { id: 'M2-T7-S1', topicId: 'P2-S7', title: "Oxigenoterapia", subtitle: 'Pneumo · 7 slides', duration: '20:00' },
+  { id: 'M2-T8-S1', topicId: 'P2-S8', title: "Semiologia Pulmonar", subtitle: 'Pneumo · 11 slides', duration: '20:00' },
+  { id: 'M2-T9-S1', topicId: 'P2-S9', title: "Patologias Respiratórias", subtitle: 'Pneumo · 0 slides', duration: '20:00' },
+  { id: 'M2-T10-S1', topicId: 'P2-S10', title: "VNI — Ventilação Não Invasiva", subtitle: 'Pneumo · 16 slides', duration: '20:00' },
+  { id: 'M2-T11-S1', topicId: 'P2-S11', title: "VMI — Ventilação Mecânica Invasiva", subtitle: 'Pneumo · 33 slides', duration: '20:00' },
+  { id: 'M2-T12-S1', topicId: 'P2-S12', title: "Assincronias Paciente-Ventilador", subtitle: 'Pneumo · 12 slides', duration: '20:00' },
+  { id: 'M2-T13-S1', topicId: 'P2-S13', title: "Modalidades & Análise Gráfica", subtitle: 'Pneumo · 12 slides', duration: '20:00' },
+  { id: 'M2-T14-S1', topicId: 'P2-S14', title: "Desmame Ventilatório", subtitle: 'Pneumo · 27 slides', duration: '20:00' },
+]
+
+
+// -- Sim Mapping --
+            {dbId === 'P2-S1' && (
+              <div className="h-full w-full relative">
+                {chapterIndex === 2 && (() => { const C = PNEUMO_SIMS['respiratory-system']; return <C /> })()}
+                {chapterIndex === 3 && (() => { const C = PNEUMO_SIMS['respiratory-gas-exchange']; return <C /> })()}
+                {chapterIndex === 4 && (() => { const C = PNEUMO_SIMS['respiratory-defense']; return <C /> })()}
+              </div>
+            )}
+            {dbId === 'P2-S2' && (
+              <div className="h-full w-full relative">
+                {chapterIndex === 4 && (() => { const C = PNEUMO_SIMS['respiratory-cough']; return <C /> })()}
+                {chapterIndex === 6 && (() => { const C = PNEUMO_SIMS['respiratory-membrane']; return <C /> })()}
+              </div>
+            )}
+            {dbId === 'P2-S3' && (
+              <div className="h-full w-full relative">
+                {chapterIndex === 2 && (() => { const C = PNEUMO_SIMS['respiratory-ventilation']; return <C /> })()}
+              </div>
+            )}
+            {dbId === 'P2-S4' && (
+              <div className="h-full w-full relative">
+                {chapterIndex === 1 && (() => { const C = PNEUMO_SIMS['respiratory-oxyhb-curve']; return <C /> })()}
+              </div>
+            )}
+            {dbId === 'P2-S5' && (
+              <div className="h-full w-full relative">
+                {chapterIndex === 2 && (() => { const C = PNEUMO_SIMS['respiratory-control']; return <C /> })()}
+              </div>
+            )}
+            {dbId === 'P2-S6' && (
+              <div className="h-full w-full relative">
+                {chapterIndex === 3 && (() => { const C = PNEUMO_SIMS['respiratory-volumes']; return <C /> })()}
+              </div>
+            )}
+            {dbId === 'P2-S7' && (
+              <div className="h-full w-full relative">
+                {chapterIndex === 1 && (() => { const C = PNEUMO_SIMS['respiratory-oxytherapy']; return <C /> })()}
+              </div>
+            )}
+            {dbId === 'P2-S8' && (
+              <div className="h-full w-full relative">
+                {chapterIndex === 2 && (() => { const C = PNEUMO_SIMS['respiratory-spirometry']; return <C /> })()}
+              </div>
+            )}
+            {dbId === 'P2-S10' && (
+              <div className="h-full w-full relative">
+                {chapterIndex === 3 && (() => { const C = PNEUMO_SIMS['respiratory-vni-modes']; return <C /> })()}
+              </div>
+            )}
+            {dbId === 'P2-S11' && (
+              <div className="h-full w-full relative">
+                {chapterIndex === 0 && (() => { const C = PNEUMO_SIMS['respiratory-vmi-ventilator']; return <C /> })()}
+                {chapterIndex === 3 && (() => { const C = PNEUMO_SIMS['respiratory-vmi-peep']; return <C /> })()}
+                {chapterIndex === 4 && (() => { const C = PNEUMO_SIMS['respiratory-vmi-mechanics']; return <C /> })()}
+              </div>
+            )}
+            {dbId === 'P2-S12' && (
+              <div className="h-full w-full relative">
+                {chapterIndex === 1 && (() => { const C = PNEUMO_SIMS['async-ineffective']; return <C /> })()}
+                {chapterIndex === 2 && (() => { const C = PNEUMO_SIMS['async-double']; return <C /> })()}
+                {chapterIndex === 3 && (() => { const C = PNEUMO_SIMS['async-reverse']; return <C /> })()}
+                {chapterIndex === 4 && (() => { const C = PNEUMO_SIMS['async-auto']; return <C /> })()}
+                {chapterIndex === 5 && (() => { const C = PNEUMO_SIMS['async-premature']; return <C /> })()}
+                {chapterIndex === 6 && (() => { const C = PNEUMO_SIMS['async-delayed']; return <C /> })()}
+                {chapterIndex === 7 && (() => { const C = PNEUMO_SIMS['async-flow-starve']; return <C /> })()}
+                {chapterIndex === 8 && (() => { const C = PNEUMO_SIMS['async-flow-excess']; return <C /> })()}
+                {chapterIndex === 9 && (() => { const C = PNEUMO_SIMS['respiratory-vmi-asynchrony']; return <C /> })()}
+              </div>
+            )}
+            {dbId === 'P2-S13' && (
+              <div className="h-full w-full relative">
+                {chapterIndex === 1 && (() => { const C = PNEUMO_SIMS['respiratory-vmi-vcv-analysis']; return <C /> })()}
+                {chapterIndex === 2 && (() => { const C = PNEUMO_SIMS['respiratory-vmi-pcv-analysis']; return <C /> })()}
+                {chapterIndex === 3 && (() => { const C = PNEUMO_SIMS['respiratory-vmi-psv-analysis']; return <C /> })()}
+                {chapterIndex === 4 && (() => { const C = PNEUMO_SIMS['respiratory-vmi-loops']; return <C /> })()}
+                {chapterIndex === 4 && (() => { const C = PNEUMO_SIMS['respiratory-peep-test']; return <C /> })()}
+              </div>
+            )}
+            {dbId === 'P2-S14' && (
+              <div className="h-full w-full relative">
+                {chapterIndex === 6 && (() => { const C = PNEUMO_SIMS['respiratory-cuff-leak']; return <C /> })()}
+              </div>
+            )}

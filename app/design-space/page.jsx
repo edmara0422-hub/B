@@ -1461,20 +1461,25 @@ function BusinessManifestoPage() {
           transition={{ duration: 1.5, ease: "easeOut" }}
           style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
         >
-          {/* Logo Central */}
-          <div style={{ width: '280px', marginBottom: '2rem' }}>
-            <img 
-              src="/business_cube_straight.png" 
-              alt="IPB Logo" 
-              style={{ width: '100%', height: 'auto', display: 'block' }} 
-            />
+          {/* Logo Typography - IPB */}
+          <div style={{ 
+            fontFamily: 'var(--serif)', 
+            fontSize: '8rem', 
+            fontWeight: 300, 
+            lineHeight: 1,
+            background: 'linear-gradient(135deg, #fff, var(--gold), #fff)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            marginBottom: '1rem'
+          }}>
+            IPB
           </div>
           
           {/* Nome da Marca */}
           <h1 style={{ 
             fontFamily: 'var(--sans)', 
             fontWeight: 400, 
-            letterSpacing: '0.3em', 
+            letterSpacing: '0.4em', 
             fontSize: '1rem',
             color: '#fff',
             margin: 0,
@@ -1492,14 +1497,11 @@ function BusinessManifestoPage() {
           style={{ position: 'absolute', bottom: '40px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px' }}
         >
           <span style={{ fontSize: '0.7rem', letterSpacing: '0.2em', color: 'var(--ink-soft)', textTransform: 'uppercase' }}>
-            Conhecer a Fundação
+            Explorar
           </span>
           <div style={{ width: '1px', height: '40px', background: 'linear-gradient(to bottom, var(--gold), transparent)' }} />
         </motion.div>
-      </section>
-
-      {/* 2. O Manifesto (O texto que estava na capa veio pra cá) */}
-      <section style={{ 
+      </section><section style={{ 
         minHeight: '100vh', 
         display: 'flex', 
         flexDirection: 'column', 

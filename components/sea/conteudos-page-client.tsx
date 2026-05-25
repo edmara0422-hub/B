@@ -54,6 +54,7 @@ import {
   SimFinancialAnalysisVH, SimValuationTriangulation, SimWorkingCapitalCycle, SimIntegratedDiagnostics
 } from '@/components/sea/simulations-6d'
 import { NEURO_SIMS } from '@/components/caderno/sim-registry-neuro'
+import { RESPIRATORY_SIMS } from '@/components/caderno/sim-registry-respiratory'
 import { SUBJECTS_DB } from '@/data/caderno-content-m1-m8'
 
 const SYLLABUS_TO_DB_MAP: Record<string, string> = {
@@ -62,6 +63,20 @@ const SYLLABUS_TO_DB_MAP: Record<string, string> = {
   'M1-T2-S1': 'N1-S2',
   'M1-T3-S1': 'N1-S3',
   'M1-T4-S1': 'N1-S4',
+  'M2-T1-S1': 'P2-S1',
+  'M2-T2-S1': 'P2-S2',
+  'M2-T3-S1': 'P2-S3',
+  'M2-T4-S1': 'P2-S4',
+  'M2-T5-S1': 'P2-S5',
+  'M2-T6-S1': 'P2-S6',
+  'M2-T7-S1': 'P2-S7',
+  'M2-T8-S1': 'P2-S8',
+  'M2-T9-S1': 'P2-S9',
+  'M2-T10-S1': 'P2-S10',
+  'M2-T11-S1': 'P2-S11',
+  'M2-T12-S1': 'P2-S12',
+  'M2-T13-S1': 'P2-S13',
+  'M2-T14-S1': 'P2-S14',
 
   // Pilar 1: Inovação e Estratégia
   'M4-T1-S1': 'M4-S1', // Inovação, Transformação e Ferramentas Digitais
@@ -422,6 +437,43 @@ const BUSINESS_PLAYLIST = [
   { id: 'M4-T5', topicId: 'M4-T5', title: 'Gestão de Arquivos corporativos', subtitle: 'Aula 05 · Repositórios baseados em RBAC e Segurança', duration: '22:15' }
 ]
 
+const PNEUMO_PLAYLIST = [
+  { id: 'M2-T1', topicId: 'P2-S1', title: "Anatomofisiologia Respiratória", subtitle: 'Aula 01 · 12 slides · 3 simulações', duration: '20:00' },
+  { id: 'M2-T2', topicId: 'P2-S2', title: "Zona Condutora e Respiratória", subtitle: 'Aula 02 · 20 slides · 2 simulações', duration: '20:00' },
+  { id: 'M2-T3', topicId: 'P2-S3', title: "Mecânica Respiratória", subtitle: 'Aula 03 · 7 slides · 1 simulações', duration: '20:00' },
+  { id: 'M2-T4', topicId: 'P2-S4', title: "Difusão e Transporte de Gases", subtitle: 'Aula 04 · 10 slides · 1 simulações', duration: '20:00' },
+  { id: 'M2-T5', topicId: 'P2-S5', title: "Controle Respiratório", subtitle: 'Aula 05 · 7 slides · 1 simulações', duration: '20:00' },
+  { id: 'M2-T6', topicId: 'P2-S6', title: "Volumes e Capacidades Pulmonares", subtitle: 'Aula 06 · 4 slides · 1 simulações', duration: '20:00' },
+  { id: 'M2-T7', topicId: 'P2-S7', title: "Oxigenoterapia", subtitle: 'Aula 07 · 7 slides · 1 simulações', duration: '20:00' },
+  { id: 'M2-T8', topicId: 'P2-S8', title: "Semiologia Pulmonar", subtitle: 'Aula 08 · 11 slides · 1 simulações', duration: '20:00' },
+  { id: 'M2-T9', topicId: 'P2-S9', title: "Patologias Respiratórias", subtitle: 'Aula 09 · 0 slides · 0 simulações', duration: '20:00' },
+  { id: 'M2-T10', topicId: 'P2-S10', title: "VNI — Ventilação Não Invasiva", subtitle: 'Aula 10 · 16 slides · 1 simulações', duration: '20:00' },
+  { id: 'M2-T11', topicId: 'P2-S11', title: "VMI — Ventilação Mecânica Invasiva", subtitle: 'Aula 11 · 33 slides · 3 simulações', duration: '20:00' },
+  { id: 'M2-T12', topicId: 'P2-S12', title: "Assincronias Paciente-Ventilador", subtitle: 'Aula 12 · 12 slides · 9 simulações', duration: '20:00' },
+  { id: 'M2-T13', topicId: 'P2-S13', title: "Modalidades & Análise Gráfica", subtitle: 'Aula 13 · 12 slides · 5 simulações', duration: '20:00' },
+  { id: 'M2-T14', topicId: 'P2-S14', title: "Desmame Ventilatório", subtitle: 'Aula 14 · 27 slides · 1 simulações', duration: '20:00' },
+]
+
+const PNEUMO_SYLLABUS = [
+  // Pilar Pneumo (M2)
+  { id: 'M2-T1-S1', topicId: 'P2-S1', title: "Anatomofisiologia Respiratória", subtitle: 'Pneumo · 12 slides', duration: '20:00' },
+  { id: 'M2-T2-S1', topicId: 'P2-S2', title: "Zona Condutora e Respiratória", subtitle: 'Pneumo · 20 slides', duration: '20:00' },
+  { id: 'M2-T3-S1', topicId: 'P2-S3', title: "Mecânica Respiratória", subtitle: 'Pneumo · 7 slides', duration: '20:00' },
+  { id: 'M2-T4-S1', topicId: 'P2-S4', title: "Difusão e Transporte de Gases", subtitle: 'Pneumo · 10 slides', duration: '20:00' },
+  { id: 'M2-T5-S1', topicId: 'P2-S5', title: "Controle Respiratório", subtitle: 'Pneumo · 7 slides', duration: '20:00' },
+  { id: 'M2-T6-S1', topicId: 'P2-S6', title: "Volumes e Capacidades Pulmonares", subtitle: 'Pneumo · 4 slides', duration: '20:00' },
+  { id: 'M2-T7-S1', topicId: 'P2-S7', title: "Oxigenoterapia", subtitle: 'Pneumo · 7 slides', duration: '20:00' },
+  { id: 'M2-T8-S1', topicId: 'P2-S8', title: "Semiologia Pulmonar", subtitle: 'Pneumo · 11 slides', duration: '20:00' },
+  { id: 'M2-T9-S1', topicId: 'P2-S9', title: "Patologias Respiratórias", subtitle: 'Pneumo · 0 slides', duration: '20:00' },
+  { id: 'M2-T10-S1', topicId: 'P2-S10', title: "VNI — Ventilação Não Invasiva", subtitle: 'Pneumo · 16 slides', duration: '20:00' },
+  { id: 'M2-T11-S1', topicId: 'P2-S11', title: "VMI — Ventilação Mecânica Invasiva", subtitle: 'Pneumo · 33 slides', duration: '20:00' },
+  { id: 'M2-T12-S1', topicId: 'P2-S12', title: "Assincronias Paciente-Ventilador", subtitle: 'Pneumo · 12 slides', duration: '20:00' },
+  { id: 'M2-T13-S1', topicId: 'P2-S13', title: "Modalidades & Análise Gráfica", subtitle: 'Pneumo · 12 slides', duration: '20:00' },
+  { id: 'M2-T14-S1', topicId: 'P2-S14', title: "Desmame Ventilatório", subtitle: 'Pneumo · 27 slides', duration: '20:00' },
+]
+
+
+
 const NEURO_PLAYLIST = [
   { id: 'M1-T1', topicId: 'M1-S1', title: 'O Organismo e o SN', subtitle: 'Aula 01 · 15 slides · 2 simulações', duration: '20:00' },
   { id: 'M1-T2', topicId: 'M1-S2', title: 'Neurodesenvolvimento', subtitle: 'Aula 02 · 19 slides · 2 simulações', duration: '25:00' },
@@ -536,7 +588,7 @@ function ExecutiveMasterclassTheater({
 
         <div className="absolute top-4 left-4 z-10 flex gap-2">
           <span className="text-[7.5px] uppercase tracking-widest font-bold px-2 py-0.5 rounded bg-black/50 border border-white/10" style={{ color: theme.primary }}>
-            {moduleId === 'M1' ? 'Módulo 1 · Neurociência' : 'Masterclass M4 · Aula ' + (activeLessonIndex + 1)}
+            {moduleId === 'M1' ? 'Módulo 1 · Neurociência' : moduleId === 'M2' ? 'Módulo 2 · Pneumologia e VM' : 'Masterclass M4 · Aula ' + (activeLessonIndex + 1)}
           </span>
           <span className="text-[7.5px] uppercase tracking-widest font-bold px-2 py-0.5 rounded bg-black/50 border border-white/10 text-white/50">
             {activeLesson.duration}
@@ -1189,7 +1241,91 @@ function NASA6DSimulator({ dbId, chapterIndex, theme }: { dbId: string; chapterI
                     {chapterIndex === 1 && 'Barreira Hematoencefálica e Junções'}
                   </>
                 )}
-                {dbId === 'M1-S1' && (
+                
+            {dbId === 'P2-S1' && (
+              <div className="h-full w-full relative">
+                {chapterIndex === 2 && (() => { const C = RESPIRATORY_SIMS['respiratory-system']; return <C /> })()}
+                {chapterIndex === 3 && (() => { const C = RESPIRATORY_SIMS['respiratory-gas-exchange']; return <C /> })()}
+                {chapterIndex === 4 && (() => { const C = RESPIRATORY_SIMS['respiratory-defense']; return <C /> })()}
+              </div>
+            )}
+            {dbId === 'P2-S2' && (
+              <div className="h-full w-full relative">
+                {chapterIndex === 4 && (() => { const C = RESPIRATORY_SIMS['respiratory-cough']; return <C /> })()}
+                {chapterIndex === 6 && (() => { const C = RESPIRATORY_SIMS['respiratory-membrane']; return <C /> })()}
+              </div>
+            )}
+            {dbId === 'P2-S3' && (
+              <div className="h-full w-full relative">
+                {chapterIndex === 2 && (() => { const C = RESPIRATORY_SIMS['respiratory-ventilation']; return <C /> })()}
+              </div>
+            )}
+            {dbId === 'P2-S4' && (
+              <div className="h-full w-full relative">
+                {chapterIndex === 1 && (() => { const C = RESPIRATORY_SIMS['respiratory-oxyhb-curve']; return <C /> })()}
+              </div>
+            )}
+            {dbId === 'P2-S5' && (
+              <div className="h-full w-full relative">
+                {chapterIndex === 2 && (() => { const C = RESPIRATORY_SIMS['respiratory-control']; return <C /> })()}
+              </div>
+            )}
+            {dbId === 'P2-S6' && (
+              <div className="h-full w-full relative">
+                {chapterIndex === 3 && (() => { const C = RESPIRATORY_SIMS['respiratory-volumes']; return <C /> })()}
+              </div>
+            )}
+            {dbId === 'P2-S7' && (
+              <div className="h-full w-full relative">
+                {chapterIndex === 1 && (() => { const C = RESPIRATORY_SIMS['respiratory-oxytherapy']; return <C /> })()}
+              </div>
+            )}
+            {dbId === 'P2-S8' && (
+              <div className="h-full w-full relative">
+                {chapterIndex === 2 && (() => { const C = RESPIRATORY_SIMS['respiratory-spirometry']; return <C /> })()}
+              </div>
+            )}
+            {dbId === 'P2-S10' && (
+              <div className="h-full w-full relative">
+                {chapterIndex === 3 && (() => { const C = RESPIRATORY_SIMS['respiratory-vni-modes']; return <C /> })()}
+              </div>
+            )}
+            {dbId === 'P2-S11' && (
+              <div className="h-full w-full relative">
+                {chapterIndex === 0 && (() => { const C = RESPIRATORY_SIMS['respiratory-vmi-ventilator']; return <C /> })()}
+                {chapterIndex === 3 && (() => { const C = RESPIRATORY_SIMS['respiratory-vmi-peep']; return <C /> })()}
+                {chapterIndex === 4 && (() => { const C = RESPIRATORY_SIMS['respiratory-vmi-mechanics']; return <C /> })()}
+              </div>
+            )}
+            {dbId === 'P2-S12' && (
+              <div className="h-full w-full relative">
+                {chapterIndex === 1 && (() => { const C = RESPIRATORY_SIMS['async-ineffective']; return <C /> })()}
+                {chapterIndex === 2 && (() => { const C = RESPIRATORY_SIMS['async-double']; return <C /> })()}
+                {chapterIndex === 3 && (() => { const C = RESPIRATORY_SIMS['async-reverse']; return <C /> })()}
+                {chapterIndex === 4 && (() => { const C = RESPIRATORY_SIMS['async-auto']; return <C /> })()}
+                {chapterIndex === 5 && (() => { const C = RESPIRATORY_SIMS['async-premature']; return <C /> })()}
+                {chapterIndex === 6 && (() => { const C = RESPIRATORY_SIMS['async-delayed']; return <C /> })()}
+                {chapterIndex === 7 && (() => { const C = RESPIRATORY_SIMS['async-flow-starve']; return <C /> })()}
+                {chapterIndex === 8 && (() => { const C = RESPIRATORY_SIMS['async-flow-excess']; return <C /> })()}
+                {chapterIndex === 9 && (() => { const C = RESPIRATORY_SIMS['respiratory-vmi-asynchrony']; return <C /> })()}
+              </div>
+            )}
+            {dbId === 'P2-S13' && (
+              <div className="h-full w-full relative">
+                {chapterIndex === 1 && (() => { const C = RESPIRATORY_SIMS['respiratory-vmi-vcv-analysis']; return <C /> })()}
+                {chapterIndex === 2 && (() => { const C = RESPIRATORY_SIMS['respiratory-vmi-pcv-analysis']; return <C /> })()}
+                {chapterIndex === 3 && (() => { const C = RESPIRATORY_SIMS['respiratory-vmi-psv-analysis']; return <C /> })()}
+                {chapterIndex === 4 && (() => { const C = RESPIRATORY_SIMS['respiratory-vmi-loops']; return <C /> })()}
+                {chapterIndex === 4 && (() => { const C = RESPIRATORY_SIMS['respiratory-peep-test']; return <C /> })()}
+              </div>
+            )}
+            {dbId === 'P2-S14' && (
+              <div className="h-full w-full relative">
+                {chapterIndex === 6 && (() => { const C = RESPIRATORY_SIMS['respiratory-cuff-leak']; return <C /> })()}
+              </div>
+            )}
+
+{dbId === 'M1-S1' && (
                   <>
                     {chapterIndex === 0 && 'Simulador de Alinhamento e Fases da TI'}
                     {chapterIndex === 1 && 'Reator de 4 Domínios de Rogers'}
@@ -1458,7 +1594,7 @@ function ExecutiveStudyBriefing({
   ])
   const [notes, setNotes] = useState('')
 
-  const syllabusList = moduleId === 'M1' ? NEURO_SYLLABUS : BUSINESS_SYLLABUS
+  const syllabusList = moduleId === 'M1' ? NEURO_SYLLABUS : moduleId === 'M2' ? PNEUMO_SYLLABUS : BUSINESS_SYLLABUS
   const syllabusItem = syllabusList[activeSubjectIndex] ?? syllabusList[0]
   const dbId = SYLLABUS_TO_DB_MAP[syllabusItem.id] ?? 'M1-S1'
   const activeSubjectData = SUBJECTS_DB.find(s => s.id === dbId) ?? SUBJECTS_DB[0]
@@ -2241,7 +2377,7 @@ export default function ConteudosPageClient() {
       setActiveTopicId(topicId)
       // Automatically jump to the first lesson belonging to this topic/KPI
       const activeModuleId = MODULES[moduleIndex]?.id
-      const playlist = activeModuleId === 'M1' ? NEURO_PLAYLIST : BUSINESS_PLAYLIST
+      const playlist = activeModuleId === 'M1' ? NEURO_PLAYLIST : activeModuleId === 'M2' ? PNEUMO_PLAYLIST : BUSINESS_PLAYLIST
       const idx = playlist.findIndex(item => item.topicId === topicId)
       if (idx !== -1) {
         setActiveLessonIndex(idx)
@@ -2252,8 +2388,8 @@ export default function ConteudosPageClient() {
   // Sync masterclass video with the academic syllabus subjects
   useEffect(() => {
     const activeModuleId = MODULES[activeIndex ?? 0]?.id
-    const playlist = activeModuleId === 'M1' ? NEURO_PLAYLIST : BUSINESS_PLAYLIST
-    const syllabusList = activeModuleId === 'M1' ? NEURO_SYLLABUS : BUSINESS_SYLLABUS
+    const playlist = activeModuleId === 'M1' ? NEURO_PLAYLIST : activeModuleId === 'M2' ? PNEUMO_PLAYLIST : BUSINESS_PLAYLIST
+    const syllabusList = activeModuleId === 'M1' ? NEURO_SYLLABUS : activeModuleId === 'M2' ? PNEUMO_SYLLABUS : BUSINESS_SYLLABUS
     const lesson = playlist[activeLessonIndex]
     if (lesson) {
       const firstSubjectIdx = syllabusList.findIndex(s => s.topicId === lesson.topicId)
@@ -2267,7 +2403,7 @@ export default function ConteudosPageClient() {
   function handleSubjectIndexChange(idx: number) {
     setActiveSubjectIndex(idx)
     const activeModuleId = MODULES[activeIndex ?? 0]?.id
-    const syllabusList = activeModuleId === 'M1' ? NEURO_SYLLABUS : BUSINESS_SYLLABUS
+    const syllabusList = activeModuleId === 'M1' ? NEURO_SYLLABUS : activeModuleId === 'M2' ? PNEUMO_SYLLABUS : BUSINESS_SYLLABUS
     const subject = syllabusList[idx]
     if (subject) {
       // Find which masterclass video maps to this topic
@@ -2446,7 +2582,7 @@ export default function ConteudosPageClient() {
                       </div>
 
                       {/* Sub-cards Dashboard Grid */}
-                      {current.id === 'M4' || current.id === 'M1' ? (
+                      {(current.id === 'M4' || current.id === 'M1' || current.id === 'M2') ? (
                         <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 px-6 pb-6 items-stretch w-full">
                           {/* Card 1: Masterclass playlist cinema */}
                           <div className="flex w-full">
@@ -2488,7 +2624,7 @@ export default function ConteudosPageClient() {
                     </div>
 
                     {/* Operational Notebook Content Viewer / Estação Unificada de Estudos */}
-                    {(current.id === 'M4' || current.id === 'M1') ? (
+                    {(current.id === 'M4' || current.id === 'M1' || current.id === 'M2') ? (
                       <ExecutiveStudyBriefing 
                         moduleId={current.id} 
                         activeTopicId={activeTopicId} 
@@ -2570,7 +2706,7 @@ export default function ConteudosPageClient() {
                                 {/* Pillars of Knowledge inside Connection Map */}
                                 <div className="mt-6 pt-4 border-t border-white/[0.04]">
                                   <span className="text-[8px] uppercase tracking-wider font-bold text-white/30 block mb-2.5">
-                                    {(current.id === 'M4' || current.id === 'M1') ? 'Pilares Corporativos' : 'Pilares do Conhecimento'}
+                                    {(current.id === 'M4' || current.id === 'M1' || current.id === 'M2') ? 'Pilares Corporativos' : 'Pilares do Conhecimento'}
                                   </span>
                                   <ul className="space-y-2">
                                     {current.concepts.map((concept, idx) => (
