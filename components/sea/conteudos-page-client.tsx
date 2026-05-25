@@ -38,7 +38,8 @@ import { IpbBackground } from '@/components/sea/ipb-background'
 import { 
   SimAlignIT, SimRogersReactor, SimNeuralMatrix, SimServerlessFlow,
   SimInnovationIgnition, SimHorizonsBalancer, SimPsychologicalShield, SimDataLakehouse,
-  SimNeuroCreativity, SimIdeationFunnel, SimSixHatsMatrix
+  SimNeuroCreativity, SimIdeationFunnel, SimSixHatsMatrix,
+  SimNestedSustainability, SimESGScanner, SimFrameworkConstellation, SimGreenwashingFilter, SimSMARTLock, SimBPMNFlow, SimCertGlobe
 } from '@/components/sea/simulations-6d'
 import { SUBJECTS_DB } from '@/data/caderno-content-m1-m8'
 
@@ -46,6 +47,7 @@ const SYLLABUS_TO_DB_MAP: Record<string, string> = {
   // Pilar 1: Inovação e Estratégia
   'M4-T1-S1': 'M4-S1', // Inovação, Transformação e Ferramentas Digitais
   'M4-T1-S2': 'M1-S2', // Pensamento Criativo
+  'M4-T1-S3': 'M1-S3', // Sustentabilidade em Negócios
   'M4-T1-S4': 'M5-S2', // Empreendedorismo e Inovação Exponencial (M5-S2 no BD)
   'M4-T1-S5': 'M5-S2', // Empreendedorismo e Inovação Exponencial (M5-S2 no BD)
   
@@ -395,7 +397,8 @@ const BUSINESS_PLAYLIST = [
 const ACADEMIC_SYLLABUS = [
   // Pilar 1: Inovação e Estratégia
   { id: 'M4-T1-S1', topicId: 'M4-T1', title: 'Inovação, Transformação e Ferramentas Digitais', subtitle: 'IE · Era Digital e Automação', duration: '22:15' },
-  { id: 'M4-T1-S2', topicId: 'M4-T1', title: 'Pensamento Criativo', subtitle: 'IE · Neurociência e Ideação', duration: '18:45' }
+  { id: 'M4-T1-S2', topicId: 'M4-T1', title: 'Pensamento Criativo', subtitle: 'IE · Neurociência e Ideação', duration: '18:45' },
+  { id: 'M4-T1-S3', topicId: 'M4-T1', title: 'Sustentabilidade em Negócios', subtitle: 'IE · ESG e Valor Compartilhado', duration: '25:30' }
 ]
 
 function ExecutiveMasterclassTheater({ 
@@ -1066,7 +1069,7 @@ function NASA6DSimulator({ dbId, chapterIndex, theme }: { dbId: string; chapterI
     }, 1200)
   }
 
-  const has6DSimulations = dbId === 'M4-S1' || dbId === 'M1-S1' || dbId === 'M1-S2'
+  const has6DSimulations = dbId === 'M4-S1' || dbId === 'M1-S1' || dbId === 'M1-S2' || dbId === 'M1-S3'
 
   return (
     <div className="flex flex-col justify-between h-full w-full space-y-4">
@@ -1119,6 +1122,17 @@ function NASA6DSimulator({ dbId, chapterIndex, theme }: { dbId: string; chapterI
                     {chapterIndex === 2 && 'Matriz de Bloqueios & 6 Chapéus (De Bono)'}
                   </>
                 )}
+                {dbId === 'M1-S3' && (
+                  <>
+                    {chapterIndex === 0 && 'Círculos Aninhados de Sustentabilidade'}
+                    {chapterIndex === 1 && 'Scanner Biométrico de Risco ESG'}
+                    {chapterIndex === 2 && 'Constelação Orbital de Frameworks'}
+                    {chapterIndex === 3 && 'Radar Espectral de Greenwashing'}
+                    {chapterIndex === 4 && 'Cofre Criogênico de Políticas SMART'}
+                    {chapterIndex === 5 && 'Circuito BPMN de Processos'}
+                    {chapterIndex === 6 && 'Globo Tático de Certificações (C2C)'}
+                  </>
+                )}
               </h5>
             </div>
             <div className="flex items-center gap-1.5 text-[#d4b87a]">
@@ -1145,6 +1159,17 @@ function NASA6DSimulator({ dbId, chapterIndex, theme }: { dbId: string; chapterI
                 {chapterIndex === 0 && <SimNeuroCreativity theme={theme} addLog={addLog} />}
                 {chapterIndex === 1 && <SimIdeationFunnel theme={theme} addLog={addLog} />}
                 {chapterIndex === 2 && <SimSixHatsMatrix theme={theme} addLog={addLog} />}
+              </>
+            )}
+            {dbId === 'M1-S3' && (
+              <>
+                {chapterIndex === 0 && <SimNestedSustainability theme={theme} addLog={addLog} />}
+                {chapterIndex === 1 && <SimESGScanner theme={theme} addLog={addLog} />}
+                {chapterIndex === 2 && <SimFrameworkConstellation theme={theme} addLog={addLog} />}
+                {chapterIndex === 3 && <SimGreenwashingFilter theme={theme} addLog={addLog} />}
+                {chapterIndex === 4 && <SimSMARTLock theme={theme} addLog={addLog} />}
+                {chapterIndex === 5 && <SimBPMNFlow theme={theme} addLog={addLog} />}
+                {chapterIndex === 6 && <SimCertGlobe theme={theme} addLog={addLog} />}
               </>
             )}
           </div>
