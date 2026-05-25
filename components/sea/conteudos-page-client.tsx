@@ -56,6 +56,12 @@ import {
 import { SUBJECTS_DB } from '@/data/caderno-content-m1-m8'
 
 const SYLLABUS_TO_DB_MAP: Record<string, string> = {
+  // Pilar Neuro (M1)
+  'M1-T1-S1': 'N1-S1',
+  'M1-T2-S1': 'N1-S2',
+  'M1-T3-S1': 'N1-S3',
+  'M1-T4-S1': 'N1-S4',
+
   // Pilar 1: Inovação e Estratégia
   'M4-T1-S1': 'M4-S1', // Inovação, Transformação e Ferramentas Digitais
   'M4-T1-S2': 'M1-S2', // Pensamento Criativo
@@ -422,14 +428,15 @@ const NEURO_PLAYLIST = [
   { id: 'M1-T4', topicId: 'M1-S4', title: 'Suporte, Nutrição e Proteção', subtitle: 'Aula 04 · 12 slides · 3 simulações', duration: '18:00' }
 ]
 
-const ACADEMIC_SYLLABUS = [
+const NEURO_SYLLABUS = [
   // Pilar Neuro (M1)
   { id: 'M1-T1-S1', topicId: 'M1-S1', title: 'O Organismo e o SN', subtitle: 'Neuro · 15 slides', duration: '20:00' },
   { id: 'M1-T2-S1', topicId: 'M1-S2', title: 'Neurodesenvolvimento', subtitle: 'Neuro · 19 slides', duration: '25:00' },
   { id: 'M1-T3-S1', topicId: 'M1-S3', title: 'Base Celular e Fisiológica', subtitle: 'Neuro · 17 slides', duration: '30:00' },
-  { id: 'M1-T4-S1', topicId: 'M1-S4', title: 'Suporte, Nutrição e Proteção', subtitle: 'Neuro · 12 slides', duration: '18:00' },
+  { id: 'M1-T4-S1', topicId: 'M1-S4', title: 'Suporte, Nutrição e Proteção', subtitle: 'Neuro · 12 slides', duration: '18:00' }
+]
 
-  // Pilar 1: Inovação e Estratégia
+const BUSINESS_SYLLABUS = [
   { id: 'M4-T1-S1', topicId: 'M4-T1', title: 'Inovação, Transformação e Ferramentas Digitais', subtitle: 'IE · Era Digital e Automação', duration: '22:15' },
   { id: 'M4-T1-S2', topicId: 'M4-T1', title: 'Pensamento Criativo', subtitle: 'IE · Neurociência e Ideação', duration: '18:45' },
   { id: 'M4-T1-S3', topicId: 'M4-T1', title: 'Sustentabilidade em Negócios', subtitle: 'IE · ESG e Valor Compartilhado', duration: '25:30' },
@@ -1119,7 +1126,7 @@ function NASA6DSimulator({ dbId, chapterIndex, theme }: { dbId: string; chapterI
     }, 1200)
   }
 
-  const has6DSimulations = dbId === 'M4-S1' || dbId === 'M1-S1' || dbId === 'M1-S2' || dbId === 'M1-S3' || dbId === 'M2-S1' || dbId === 'M2-S2' || dbId === 'M2-S3' || dbId === 'M3-S1' || dbId === 'M3-S2' || dbId === 'M4-T1-S9' || dbId === 'M4-S2' || dbId === 'M4-S3' || dbId === 'M5-S1' || dbId === 'M5-S2' || dbId === 'M5-S3' || dbId === 'M6-S1'
+  const has6DSimulations = dbId.startsWith('N1-') || dbId === 'M4-S1' || dbId === 'M1-S1' || dbId === 'M1-S2' || dbId === 'M1-S3' || dbId === 'M2-S1' || dbId === 'M2-S2' || dbId === 'M2-S3' || dbId === 'M3-S1' || dbId === 'M3-S2' || dbId === 'M4-T1-S9' || dbId === 'M4-S2' || dbId === 'M4-S3' || dbId === 'M5-S1' || dbId === 'M5-S2' || dbId === 'M5-S3' || dbId === 'M6-S1'
 
   return (
     <div className="flex flex-col justify-between h-full w-full space-y-4">
@@ -1153,6 +1160,34 @@ function NASA6DSimulator({ dbId, chapterIndex, theme }: { dbId: string; chapterI
                   NASA 6D CORE · CAPÍTULO {chapterIndex + 1}
                 </span>
                 <h5 className="text-xs font-bold text-white/95 mt-1">
+                {dbId === 'N1-S1' && (
+                  <>
+                    {chapterIndex === 0 && 'Bomba Na⁺/K⁺-ATPase Interativa'}
+                    {chapterIndex === 1 && 'Potencial de Ação Interativo'}
+                    {chapterIndex === 2 && 'Topologia do Sistema Nervoso Central'}
+                    {chapterIndex === 3 && 'Predição Heurística e Free Energy'}
+                  </>
+                )}
+                {dbId === 'N1-S2' && (
+                  <>
+                    {chapterIndex === 0 && 'Formação do Tubo Neural (3D)'}
+                    {chapterIndex === 1 && 'Densidade Sináptica ao Longo da Vida'}
+                    {chapterIndex === 2 && 'Períodos Críticos e Ambliopia'}
+                  </>
+                )}
+                {dbId === 'N1-S3' && (
+                  <>
+                    {chapterIndex === 0 && 'Anatomia Interativa do Neurônio'}
+                    {chapterIndex === 1 && 'Transporte Axonal: Lento vs Rápido'}
+                    {chapterIndex === 2 && 'Ecossistema Neuroglial'}
+                  </>
+                )}
+                {dbId === 'N1-S4' && (
+                  <>
+                    {chapterIndex === 0 && 'Cadeia Metabólica Neural'}
+                    {chapterIndex === 1 && 'Barreira Hematoencefálica e Junções'}
+                  </>
+                )}
                 {dbId === 'M1-S1' && (
                   <>
                     {chapterIndex === 0 && 'Simulador de Alinhamento e Fases da TI'}
@@ -1210,6 +1245,26 @@ function NASA6DSimulator({ dbId, chapterIndex, theme }: { dbId: string; chapterI
           </div>
 
           <div className="flex-1 flex flex-col justify-center">
+            {dbId === 'N1-S1' && (
+              <div className="h-full flex items-center justify-center p-8 text-center text-white/50 text-xs border border-white/5 bg-white/5 rounded-xl">
+                [Neuro Simulation Rendering Engine - {chapterIndex === 0 ? 'neuro-pump' : chapterIndex === 1 ? 'neuro-action-potential' : chapterIndex === 2 ? 'neuro-tube' : 'neuro-synapse-timeline'}]
+              </div>
+            )}
+            {dbId === 'N1-S2' && (
+              <div className="h-full flex items-center justify-center p-8 text-center text-white/50 text-xs border border-white/5 bg-white/5 rounded-xl">
+                [Neuro Simulation Rendering Engine - {chapterIndex === 0 ? 'neuro-tube' : chapterIndex === 1 ? 'neuro-synapse-timeline' : 'neuro-neuron-anatomy'}]
+              </div>
+            )}
+            {dbId === 'N1-S3' && (
+              <div className="h-full flex items-center justify-center p-8 text-center text-white/50 text-xs border border-white/5 bg-white/5 rounded-xl">
+                [Neuro Simulation Rendering Engine - {chapterIndex === 0 ? 'neuro-neuron-anatomy' : chapterIndex === 1 ? 'neuro-axon-transport' : 'neuro-glia-ecosystem'}]
+              </div>
+            )}
+            {dbId === 'N1-S4' && (
+              <div className="h-full flex items-center justify-center p-8 text-center text-white/50 text-xs border border-white/5 bg-white/5 rounded-xl">
+                [Neuro Simulation Rendering Engine - {chapterIndex === 0 ? 'neuro-metabolic-chain' : 'neuro-bhe'}]
+              </div>
+            )}
             {dbId === 'M1-S1' && (
               <>
                 {chapterIndex === 0 && <SimAlignIT theme={theme} addLog={addLog} />}
@@ -1393,7 +1448,8 @@ function ExecutiveStudyBriefing({
   ])
   const [notes, setNotes] = useState('')
 
-  const syllabusItem = ACADEMIC_SYLLABUS[activeSubjectIndex] ?? ACADEMIC_SYLLABUS[0]
+  const syllabusList = moduleId === 'M1' ? NEURO_SYLLABUS : BUSINESS_SYLLABUS
+  const syllabusItem = syllabusList[activeSubjectIndex] ?? syllabusList[0]
   const dbId = SYLLABUS_TO_DB_MAP[syllabusItem.id] ?? 'M1-S1'
   const activeSubjectData = SUBJECTS_DB.find(s => s.id === dbId) ?? SUBJECTS_DB[0]
 
@@ -1512,7 +1568,7 @@ function ExecutiveStudyBriefing({
         </div>
         
         <div className="flex gap-2 overflow-x-auto pb-2 pr-2 ipb-thinscroll select-none scroll-smooth">
-          {ACADEMIC_SYLLABUS.map((item, idx) => {
+          {syllabusList.map((item, idx) => {
             const isSelected = idx === activeSubjectIndex
             const isGold = idx % 2 === 0
             const itemColor = isGold ? '#d4b87a' : '#cbd5e1'
@@ -2207,9 +2263,10 @@ export default function ConteudosPageClient() {
   useEffect(() => {
     const activeModuleId = MODULES[activeIndex ?? 0]?.id
     const playlist = activeModuleId === 'M1' ? NEURO_PLAYLIST : BUSINESS_PLAYLIST
+    const syllabusList = activeModuleId === 'M1' ? NEURO_SYLLABUS : BUSINESS_SYLLABUS
     const lesson = playlist[activeLessonIndex]
     if (lesson) {
-      const firstSubjectIdx = ACADEMIC_SYLLABUS.findIndex(s => s.topicId === lesson.topicId)
+      const firstSubjectIdx = syllabusList.findIndex(s => s.topicId === lesson.topicId)
       if (firstSubjectIdx !== -1) {
         setActiveSubjectIndex(firstSubjectIdx)
       }
@@ -2219,10 +2276,11 @@ export default function ConteudosPageClient() {
   // Sync academic subject back to masterclass video if they click on the index
   function handleSubjectIndexChange(idx: number) {
     setActiveSubjectIndex(idx)
-    const subject = ACADEMIC_SYLLABUS[idx]
+    const activeModuleId = MODULES[activeIndex ?? 0]?.id
+    const syllabusList = activeModuleId === 'M1' ? NEURO_SYLLABUS : BUSINESS_SYLLABUS
+    const subject = syllabusList[idx]
     if (subject) {
       // Find which masterclass video maps to this topic
-      const activeModuleId = MODULES[activeIndex ?? 0]?.id
       const playlist = activeModuleId === 'M1' ? NEURO_PLAYLIST : BUSINESS_PLAYLIST
       const lessonIdx = playlist.findIndex(l => l.topicId === subject.topicId)
       if (lessonIdx !== -1 && lessonIdx !== activeLessonIndex) {
@@ -2440,7 +2498,7 @@ export default function ConteudosPageClient() {
                     </div>
 
                     {/* Operational Notebook Content Viewer / Estação Unificada de Estudos */}
-                    {(current.id === 'M4' || current.id === 'M1') ? (
+                    {current.id === 'M4' ? (
                       <ExecutiveStudyBriefing 
                         moduleId={current.id} 
                         activeTopicId={activeTopicId} 

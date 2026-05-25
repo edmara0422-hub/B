@@ -1403,7 +1403,7 @@ function TopBar() {
 
 }
 
-export default function Story() {
+function StoryScroll() {
   return (
     <React.Fragment>
       <ProgressBar />
@@ -1418,4 +1418,117 @@ export default function Story() {
       </main>
     </React.Fragment>);
 
+}
+
+
+
+
+
+
+
+
+
+
+function BusinessManifestoPage() {
+  return (
+    <div style={{
+      minHeight: '100vh',
+      backgroundColor: '#010101',
+      color: '#f4f4f6',
+      fontFamily: 'var(--sans)',
+      paddingBottom: '10vh',
+      overflowX: 'hidden'
+    }}>
+      <header style={{
+        padding: '2rem 4rem',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        position: 'sticky',
+        top: 0,
+        backgroundColor: 'rgba(1,1,1,0.85)',
+        backdropFilter: 'blur(12px)',
+        zIndex: 50,
+        borderBottom: '1px solid rgba(255,255,255,0.05)'
+      }}>
+        <div style={{ fontFamily: 'var(--sans)', fontWeight: 500, letterSpacing: '0.2em', fontSize: '0.85rem' }}>
+          IPB BUSINESS
+        </div>
+        <button 
+          onClick={() => document.getElementById("story-start")?.scrollIntoView({ behavior: "smooth" })}
+          style={{
+            background: 'none',
+            border: '1px solid var(--gold)',
+            color: 'var(--gold)',
+            padding: '0.5rem 1.5rem',
+            borderRadius: '100px',
+            fontSize: '0.8rem',
+            letterSpacing: '0.1em',
+            textTransform: 'uppercase',
+            cursor: 'pointer'
+          }}
+        >
+          Explorar
+        </button>
+      </header>
+
+      <main style={{ maxWidth: '1000px', margin: '0 auto', padding: '0 2rem' }}>
+        <section style={{ marginTop: '15vh', marginBottom: '15vh', textAlign: 'center' }}>
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1 }}
+          >
+            <div style={{ 
+              fontSize: '12rem', 
+              fontFamily: 'var(--serif)', 
+              color: 'transparent',
+              WebkitTextStroke: '1px rgba(255,255,255,0.2)',
+              marginBottom: '2rem',
+              lineHeight: 1,
+              position: 'relative',
+              display: 'inline-block'
+            }}>
+              B
+              <div style={{
+                position: 'absolute',
+                inset: 0,
+                background: 'linear-gradient(135deg, rgba(210,175,90,0.5), transparent)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                filter: 'blur(2px)'
+              }}>B</div>
+            </div>
+
+            <h1 style={{
+              fontFamily: 'var(--serif)',
+              fontSize: 'clamp(3rem, 5vw, 4.5rem)',
+              fontWeight: 300,
+              lineHeight: 1.1,
+              letterSpacing: '-0.02em',
+              color: '#fff',
+              marginBottom: '2rem'
+            }}>
+              A fundação para construir <br/>
+              o <i style={{ color: 'var(--gold)' }}>impossível.</i>
+            </h1>
+            <p style={{ fontSize: '1.2rem', lineHeight: 1.7, color: 'var(--ink-soft)', fontWeight: 300, maxWidth: '700px', margin: '0 auto' }}>
+              Nós não somos um aplicativo. A <b>Intelligence Platform Business (IPB)</b> é uma infraestrutura infinita de inovação. É a base onde a visão corporativa se encontra com a tecnologia de altíssimo nível para arquitetar, escalar e redefinir modelos de negócios globais. 
+              Tudo o que podemos construir e inovar começa aqui.
+            </p>
+          </motion.div>
+        </section>
+      </main>
+    </div>
+  );
+}
+
+export default function Story() {
+  return (
+    <div style={{ display: "flex", flexDirection: "column", width: "100%", overflowX: "hidden" }}>
+      <BusinessManifestoPage />
+      <div id="story-start" />
+      <StoryScroll />
+    </div>
+  );
 }

@@ -1,0 +1,68 @@
+diff --git a/components/sea/conteudos-page-client.tsx b/components/sea/conteudos-page-client.tsx
+index a11264f..ec57a5e 100644
+--- a/components/sea/conteudos-page-client.tsx
++++ b/components/sea/conteudos-page-client.tsx
+@@ -422,14 +422,15 @@ const NEURO_PLAYLIST = [
+   { id: 'M1-T4', topicId: 'M1-S4', title: 'Suporte, Nutrição e Proteção', subtitle: 'Aula 04 · 12 slides · 3 simulações', duration: '18:00' }
+ ]
+ 
+-const ACADEMIC_SYLLABUS = [
++const NEURO_SYLLABUS = [
+   // Pilar Neuro (M1)
+   { id: 'M1-T1-S1', topicId: 'M1-S1', title: 'O Organismo e o SN', subtitle: 'Neuro · 15 slides', duration: '20:00' },
+   { id: 'M1-T2-S1', topicId: 'M1-S2', title: 'Neurodesenvolvimento', subtitle: 'Neuro · 19 slides', duration: '25:00' },
+   { id: 'M1-T3-S1', topicId: 'M1-S3', title: 'Base Celular e Fisiológica', subtitle: 'Neuro · 17 slides', duration: '30:00' },
+-  { id: 'M1-T4-S1', topicId: 'M1-S4', title: 'Suporte, Nutrição e Proteção', subtitle: 'Neuro · 12 slides', duration: '18:00' },
++  { id: 'M1-T4-S1', topicId: 'M1-S4', title: 'Suporte, Nutrição e Proteção', subtitle: 'Neuro · 12 slides', duration: '18:00' }
++]
+ 
+-  // Pilar 1: Inovação e Estratégia
++const BUSINESS_SYLLABUS = [
+   { id: 'M4-T1-S1', topicId: 'M4-T1', title: 'Inovação, Transformação e Ferramentas Digitais', subtitle: 'IE · Era Digital e Automação', duration: '22:15' },
+   { id: 'M4-T1-S2', topicId: 'M4-T1', title: 'Pensamento Criativo', subtitle: 'IE · Neurociência e Ideação', duration: '18:45' },
+   { id: 'M4-T1-S3', topicId: 'M4-T1', title: 'Sustentabilidade em Negócios', subtitle: 'IE · ESG e Valor Compartilhado', duration: '25:30' },
+@@ -1393,7 +1394,8 @@ function ExecutiveStudyBriefing({
+   ])
+   const [notes, setNotes] = useState('')
+ 
+-  const syllabusItem = ACADEMIC_SYLLABUS[activeSubjectIndex] ?? ACADEMIC_SYLLABUS[0]
++  const syllabusList = moduleId === 'M1' ? NEURO_SYLLABUS : BUSINESS_SYLLABUS
++  const syllabusItem = syllabusList[activeSubjectIndex] ?? syllabusList[0]
+   const dbId = SYLLABUS_TO_DB_MAP[syllabusItem.id] ?? 'M1-S1'
+   const activeSubjectData = SUBJECTS_DB.find(s => s.id === dbId) ?? SUBJECTS_DB[0]
+ 
+@@ -1512,7 +1514,7 @@ function ExecutiveStudyBriefing({
+         </div>
+         
+         <div className="flex gap-2 overflow-x-auto pb-2 pr-2 ipb-thinscroll select-none scroll-smooth">
+-          {ACADEMIC_SYLLABUS.map((item, idx) => {
++          {syllabusList.map((item, idx) => {
+             const isSelected = idx === activeSubjectIndex
+             const isGold = idx % 2 === 0
+             const itemColor = isGold ? '#d4b87a' : '#cbd5e1'
+@@ -2207,9 +2209,10 @@ export default function ConteudosPageClient() {
+   useEffect(() => {
+     const activeModuleId = MODULES[activeIndex ?? 0]?.id
+     const playlist = activeModuleId === 'M1' ? NEURO_PLAYLIST : BUSINESS_PLAYLIST
++    const syllabusList = activeModuleId === 'M1' ? NEURO_SYLLABUS : BUSINESS_SYLLABUS
+     const lesson = playlist[activeLessonIndex]
+     if (lesson) {
+-      const firstSubjectIdx = ACADEMIC_SYLLABUS.findIndex(s => s.topicId === lesson.topicId)
++      const firstSubjectIdx = syllabusList.findIndex(s => s.topicId === lesson.topicId)
+       if (firstSubjectIdx !== -1) {
+         setActiveSubjectIndex(firstSubjectIdx)
+       }
+@@ -2219,10 +2222,11 @@ export default function ConteudosPageClient() {
+   // Sync academic subject back to masterclass video if they click on the index
+   function handleSubjectIndexChange(idx: number) {
+     setActiveSubjectIndex(idx)
+-    const subject = ACADEMIC_SYLLABUS[idx]
++    const activeModuleId = MODULES[activeIndex ?? 0]?.id
++    const syllabusList = activeModuleId === 'M1' ? NEURO_SYLLABUS : BUSINESS_SYLLABUS
++    const subject = syllabusList[idx]
+     if (subject) {
+       // Find which masterclass video maps to this topic
+-      const activeModuleId = MODULES[activeIndex ?? 0]?.id
+       const playlist = activeModuleId === 'M1' ? NEURO_PLAYLIST : BUSINESS_PLAYLIST
+       const lessonIdx = playlist.findIndex(l => l.topicId === subject.topicId)
+       if (lessonIdx !== -1 && lessonIdx !== activeLessonIndex) {
