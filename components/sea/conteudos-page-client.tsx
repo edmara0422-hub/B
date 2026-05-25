@@ -196,65 +196,63 @@ const ease = [0.16, 1, 0.3, 1] as const
 
 function MiniNetworkGraph({ moduleId }: { moduleId?: string }) {
   const theme = MODULE_THEMES[moduleId ?? 'M4'] || MODULE_THEMES.M4
-  const center = { x: 50, y: 50 }
-  const nodes = [
-    { x: 18, y: 25 }, { x: 82, y: 22 }, { x: 14, y: 70 },
-    { x: 85, y: 75 }, { x: 50, y: 12 }, { x: 50, y: 88 },
-  ]
-
+  
   return (
-    <div className="relative w-full h-[130px] rounded-lg overflow-hidden bg-radial-glow mt-2" style={{
-      background: `radial-gradient(circle at 50% 50%, ${theme.glow} 0%, transparent 70%)`
-    }}>
-      <svg className="absolute inset-0 w-full h-full pointer-events-none">
-        {nodes.map((n, i) => (
-          <line
-            key={`line-${i}`}
-            x1={`${center.x}%`}
-            y1={`${center.y}%`}
-            x2={`${n.x}%`}
-            y2={`${n.y}%`}
-            stroke={`url(#lineGradient-${moduleId || 'M4'})`}
-            strokeWidth="0.8"
-            strokeDasharray="2 1"
-          />
-        ))}
-        <defs>
-          <linearGradient id={`lineGradient-${moduleId || 'M4'}`} x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor={theme.primary} stopOpacity="0.1" />
-            <stop offset="50%" stopColor={theme.secondary} stopOpacity="0.45" />
-            <stop offset="100%" stopColor={theme.primary} stopOpacity="0.1" />
-          </linearGradient>
-        </defs>
-      </svg>
+    <div className="mt-2 flex flex-col gap-3">
+      {/* Central Intelligence Board */}
+      <div className="relative w-full rounded-xl overflow-hidden bg-[#0c0905]/80 border border-white/[0.04] p-4 flex flex-col justify-between backdrop-blur-md">
+        <div className="absolute inset-0 pointer-events-none opacity-40" style={{
+          background: `radial-gradient(circle at 100% 0%, ${theme.glow} 0%, transparent 60%)`
+        }} />
+        
+        <div className="flex justify-between items-start z-10 mb-6">
+          <div>
+            <span className="text-[8px] uppercase tracking-[0.2em] font-bold text-white/40 block mb-1">Processamento Cognitivo</span>
+            <div className="flex items-baseline gap-1.5">
+              <span className="text-2xl font-mono font-black" style={{ color: theme.primary }}>98.4</span>
+              <span className="text-[10px] font-mono text-white/50 uppercase tracking-widest">TFlops</span>
+            </div>
+          </div>
+          
+          <div className="relative w-12 h-12 flex items-center justify-center">
+            <motion.div 
+              className="absolute inset-0 rounded-full border border-white/5 border-t-[#d4b87a] border-r-[#d4b87a]"
+              animate={{ rotate: 360 }}
+              transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}
+            />
+            <motion.div 
+              className="absolute inset-2 rounded-full border border-white/10 border-b-[#d4b87a]"
+              animate={{ rotate: -360 }}
+              transition={{ duration: 6, repeat: Infinity, ease: 'linear' }}
+            />
+            <div className="w-1.5 h-1.5 rounded-full bg-[#d4b87a] shadow-[0_0_10px_#d4b87a] animate-pulse" />
+          </div>
+        </div>
 
-      <div 
-        className="absolute w-3 h-3 rounded-full animate-pulse"
-        style={{
-          left: `calc(${center.x}% - 6px)`,
-          top: `calc(${center.y}% - 6px)`,
-          background: `radial-gradient(circle, ${theme.secondary}, ${theme.primary})`,
-          boxShadow: `0 0 10px ${theme.primary}`,
-          zIndex: 10
-        }}
-      />
-
-      {nodes.map((n, i) => (
-        <motion.div
-          key={`node-${i}`}
-          className="absolute w-1.5 h-1.5 rounded-full cursor-pointer"
-          animate={{ scale: [1, 1.15, 1] }}
-          transition={{ duration: 2 + i * 0.4, repeat: Infinity, ease: 'easeInOut' }}
-          style={{
-            left: `calc(${n.x}% - 3px)`,
-            top: `calc(${n.y}% - 3px)`,
-            background: `radial-gradient(circle, ${theme.primary}, ${theme.secondary})`,
-            boxShadow: `0 0 6px ${theme.accent}`,
-            zIndex: 5
-          }}
-          whileHover={{ scale: 1.4, boxShadow: `0 0 10px ${theme.primary}` }}
-        />
-      ))}
+        <div className="z-10 space-y-3">
+          {[
+            { label: 'Análise Preditiva de Cenários', val: 94 },
+            { label: 'Síntese de Modelos Mentais', val: 88 },
+            { label: 'Mapeamento de Correlações', val: 99 }
+          ].map((bar, i) => (
+            <div key={i} className="space-y-1.5">
+              <div className="flex justify-between items-center text-[8.5px] font-mono uppercase tracking-wider text-white/60">
+                <span>{bar.label}</span>
+                <span style={{ color: theme.primary }}>{bar.val}%</span>
+              </div>
+              <div className="h-1.5 w-full bg-white/5 rounded-full overflow-hidden border border-white/5">
+                <motion.div 
+                  className="h-full rounded-full"
+                  style={{ background: `linear-gradient(90deg, ${theme.secondary}, ${theme.primary})` }}
+                  initial={{ width: 0 }}
+                  animate={{ width: `${bar.val}%` }}
+                  transition={{ duration: 1.5, delay: i * 0.2, ease: "easeOut" }}
+                />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   )
 }

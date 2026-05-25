@@ -109,7 +109,7 @@ function TikTokMockup({ tag, title, description, Icon, gradient }) {
       
       <div className="mockup-device-tiktok relative z-10">
         {/* Fake Video Background */}
-        <div className={\`absolute inset-0 bg-gradient-to-br \${gradient}\`}>
+        <div className={`absolute inset-0 bg-gradient-to-br ${gradient}`}>
           {/* Background Decor */}
           <div className="absolute inset-0 opacity-20 flex items-center justify-center">
              <Icon size={180} className="text-white/5" />
