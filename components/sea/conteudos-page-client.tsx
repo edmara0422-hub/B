@@ -391,47 +391,8 @@ const BUSINESS_PLAYLIST = [
 ]
 
 const ACADEMIC_SYLLABUS = [
-  // Pilar 1: Inovação e Estratégia
-  { id: 'M4-T1-S1', topicId: 'M4-T1', title: 'Inovação, Criatividade e Sustentabilidade', subtitle: 'IE · Design Thinking e Economia Circular', duration: '18:20' },
-  { id: 'M4-T1-S2', topicId: 'M4-T1', title: 'Inovação, Transformação e Ferramentas Digitais', subtitle: 'IE · Automação e Inteligência Artificial', duration: '22:15' },
-  { id: 'M4-T1-S3', topicId: 'M4-T1', title: 'Pensamento Criativo', subtitle: 'IE · Lógica Lateral e Habilidades Cognitivas', duration: '15:40' },
-  { id: 'M4-T1-S4', topicId: 'M4-T1', title: 'Empreendedorismo e Inovação', subtitle: 'IE · Canvas e Modelos de Negócio Exponenciais', duration: '24:10' },
-  { id: 'M4-T1-S5', topicId: 'M4-T1', title: 'Empreendedorismo e Estratégia', subtitle: 'IE · Posicionamento e Vantagem Competitiva', duration: '28:50' },
-
-  // Pilar 2: Finanças e Inteligência Quantitativa
-  { id: 'M4-T2-S1', topicId: 'M4-T2', title: 'Finanças Avançadas', subtitle: 'FIQ · Estrutura de Capital e Valuation', duration: '32:15' },
-  { id: 'M4-T2-S2', topicId: 'M4-T2', title: 'Análise Financeira', subtitle: 'FIQ · Demonstrações de Performance e EBITDA', duration: '26:40' },
-  { id: 'M4-T2-S3', topicId: 'M4-T2', title: 'Matemática Financeira', subtitle: 'FIQ · Juros Compostos e Equivalência de Fluxos', duration: '20:10' },
-  { id: 'M4-T2-S4', topicId: 'M4-T2', title: 'Demonstrações Contábeis', subtitle: 'FIQ · Balanço Patrimonial e DRE (IFRS)', duration: '25:30' },
-  { id: 'M4-T2-S5', topicId: 'M4-T2', title: 'Precificação', subtitle: 'FIQ · Estratégias de Margem e Valor Percebido', duration: '19:45' },
-  { id: 'M4-T2-S6', topicId: 'M4-T2', title: 'Cálculo Aplicado a Negócios', subtitle: 'FIQ · Otimização de Limites Operacionais e Derivadas', duration: '22:15' },
-  { id: 'M4-T2-S7', topicId: 'M4-T2', title: 'Análise Estatística', subtitle: 'FIQ · Inferência de Dados e Modelos de Previsão', duration: '27:30' },
-
-  // Pilar 3: Liderança, Pessoas e Cultura
-  { id: 'M4-T3-S1', topicId: 'M4-T3', title: 'Liderança e Gestão de Equipes', subtitle: 'LPC · Segurança Psicológica e Performance', duration: '24:10' },
-  { id: 'M4-T3-S2', topicId: 'M4-T3', title: 'Mercado e Pessoas', subtitle: 'LPC · Employer Branding e Captação de Talentos', duration: '21:30' },
-  { id: 'M4-T3-S3', topicId: 'M4-T3', title: 'Educação, Identidade e Solidariedade', subtitle: 'LPC · Cultura Inclusiva e Responsabilidade Coletiva', duration: '18:15' },
-  { id: 'M4-T3-S4', topicId: 'M4-T3', title: 'Ética', subtitle: 'LPC · Compliance e Valores Universais nos Negócios', duration: '15:50' },
-
-  // Pilar 4: Gestão e Operações Corporativas
-  { id: 'M4-T4-S1', topicId: 'M4-T4', title: 'Fundamentos de Gestão', subtitle: 'GOC · Funções Administrativas Clássicas e Processos', duration: '16:40' },
-  { id: 'M4-T4-S2', topicId: 'M4-T4', title: 'Gestão de Negócios', subtitle: 'GOC · Métricas Ágeis OKR e KPIs Operacionais', duration: '22:10' },
-  { id: 'M4-T4-S3', topicId: 'M4-T4', title: 'Sustentabilidade em Negócios', subtitle: 'GOC · Economia Circular e Pegada Ecológica', duration: '20:45' },
-
-  // Pilar 5: Mercado e Macroeconomia
-  { id: 'M4-T5-S1', topicId: 'M4-T5', title: 'Economia de Empresa e Análise Mercadológica', subtitle: 'MME · Microeconomia e Forças do Mercado (Porter)', duration: '28:15' },
-  { id: 'M4-T5-S2', topicId: 'M4-T5', title: 'Ambiente Macroeconômico', subtitle: 'MME · Indicadores Globais e Políticas Monetárias', duration: '25:40' },
-  { id: 'M4-T5-S3', topicId: 'M4-T5', title: 'Lógica e Humanidades', subtitle: 'MME · Estruturação de Argumentos e Lógica Proposicional', duration: '19:20' },
-  { id: 'M4-T5-S4', topicId: 'M4-T5', title: 'Filosofia', subtitle: 'MME · Pensamento Crítico, Ética e Dilemas Modernos', duration: '22:15' },
-
-  // Pilar 6: Impacto Social e Intervenção
-  { id: 'M4-T6-S1', topicId: 'M4-T6', title: 'Pesquisa Aplicada a Negócios', subtitle: 'ISI · Metodologias Científicas de Validação e Mercado', duration: '23:45' },
-  { id: 'M4-T6-S2', topicId: 'M4-T6', title: 'Projeto de Intervenção em Negócios', subtitle: 'ISI · Diagnóstico Operacional e Resolução de Dores Reais', duration: '29:10' },
-  { id: 'M4-T6-S3', topicId: 'M4-T6', title: 'Empreendedorismo Social', subtitle: 'ISI · Negócios de Impacto e Valor Compartilhado (SROI)', duration: '26:30' },
-  { id: 'M4-T6-S4', topicId: 'M4-T6', title: 'Intervenção e Sociedade', subtitle: 'ISI · Projetos de Extensão e Desenvolvimento Comunitário', duration: '20:50' },
-  { id: 'M4-T6-S5', topicId: 'M4-T6', title: 'Teologia e Sociedade', subtitle: 'ISI · Dimensão Transcendental e o Papel Ético na Comunidade', duration: '22:15' },
-  { id: 'M4-T6-S6', topicId: 'M4-T6', title: 'Pesquisa e Identidade', subtitle: 'ISI · Autoconhecimento, História Social e Propósito', duration: '21:40' },
-  { id: 'M4-T6-S7', topicId: 'M4-T6', title: 'Leitura e Escrita Acadêmica', subtitle: 'ISI · Comunicação Científica e Redação de Alto Impacto', duration: '18:55' }
+  { id: 'M4-T1-S1', topicId: 'M4-T1', title: 'Aguardando Conteúdo 01...', subtitle: 'Aguardando pilar e subtítulo', duration: '00:00' },
+  { id: 'M4-T1-S2', topicId: 'M4-T1', title: 'Aguardando Conteúdo 02...', subtitle: 'Aguardando pilar e subtítulo', duration: '00:00' }
 ]
 
 function ExecutiveMasterclassTheater({ 
