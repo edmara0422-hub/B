@@ -1207,8 +1207,8 @@ const SECTIONS = [
 {
   type: "hero",
   eyebrow: "IPB INTELLIGENCE PLATFORM BUSINESS · 2026",
-  title: ["A UTI", "que cabe", "na sua mão."],
-  body: "Plataforma clínica e educacional para profissionais do INTELLIGENCE PLATFORM BUSINESS intensivistas. Feita por quem entende o plantão — porque já viveu.",
+  title: ["O ecossistema", "que conecta", "clínica e gestão."],
+  body: "Plataforma integral de inteligência clínica e educacional. Módulos avançados de capacitação, IA para escaneamento de parâmetros e gestão hospitalar em tempo real.",
   foot: ["Role pra ver", "▼"],
   phone: <AppLanding />,
   phoneLabel: "abertura · 13 frases ciclando",
@@ -1294,8 +1294,8 @@ const SECTIONS = [
 {
   type: "closing",
   eyebrow: "09",
-  title: ["O primeiro app de UTI", "feito por INTELLIGENCE PLATFORM BUSINESS,", "pra INTELLIGENCE PLATFORM BUSINESS."],
-  body: "A UTI que cabe na sua mão."
+  title: ["A primeira plataforma", "feita por INTELLIGENCE PLATFORM BUSINESS,", "pra INTELLIGENCE PLATFORM BUSINESS."],
+  body: "O ecossistema que conecta clínica, educação e gestão."
 }];
 
 
