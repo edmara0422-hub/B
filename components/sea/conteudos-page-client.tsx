@@ -1179,7 +1179,7 @@ function NASA6DSimulator({ dbId, chapterIndex, theme }: { dbId: string; chapterI
     }, 1200)
   }
 
-  const has6DSimulations = dbId.startsWith('N1-') || dbId === 'M4-S1' || dbId === 'M1-S1' || dbId === 'M1-S2' || dbId === 'M1-S3' || dbId === 'M2-S1' || dbId === 'M2-S2' || dbId === 'M2-S3' || dbId === 'M3-S1' || dbId === 'M3-S2' || dbId === 'M4-T1-S9' || dbId === 'M4-S2' || dbId === 'M4-S3' || dbId === 'M5-S1' || dbId === 'M5-S2' || dbId === 'M5-S3' || dbId === 'M6-S1'
+  const has6DSimulations = dbId.startsWith('N1-') || dbId.startsWith('P2-') || dbId === 'M4-S1' || dbId === 'M1-S1' || dbId === 'M1-S2' || dbId === 'M1-S3' || dbId === 'M2-S1' || dbId === 'M2-S2' || dbId === 'M2-S3' || dbId === 'M3-S1' || dbId === 'M3-S2' || dbId === 'M4-T1-S9' || dbId === 'M4-S2' || dbId === 'M4-S3' || dbId === 'M5-S1' || dbId === 'M5-S2' || dbId === 'M5-S3' || dbId === 'M6-S1'
 
   return (
     <div className="flex flex-col justify-between h-full w-full space-y-4">
