@@ -39,7 +39,8 @@ import {
   SimAlignIT, SimRogersReactor, SimNeuralMatrix, SimServerlessFlow,
   SimInnovationIgnition, SimHorizonsBalancer, SimPsychologicalShield, SimDataLakehouse,
   SimNeuroCreativity, SimIdeationFunnel, SimSixHatsMatrix,
-  SimNestedSustainability, SimESGScanner, SimFrameworkConstellation, SimGreenwashingFilter, SimSMARTLock, SimBPMNFlow, SimCertGlobe
+  SimNestedSustainability, SimESGScanner, SimFrameworkConstellation, SimGreenwashingFilter, SimSMARTLock, SimBPMNFlow, SimCertGlobe,
+  SimPDCACycle, SimBusinessCanvas, SimStrategicTripod, SimValueChain, SimTaxMatrix
 } from '@/components/sea/simulations-6d'
 import { SUBJECTS_DB } from '@/data/caderno-content-m1-m8'
 
@@ -48,7 +49,7 @@ const SYLLABUS_TO_DB_MAP: Record<string, string> = {
   'M4-T1-S1': 'M4-S1', // Inovação, Transformação e Ferramentas Digitais
   'M4-T1-S2': 'M1-S2', // Pensamento Criativo
   'M4-T1-S3': 'M1-S3', // Sustentabilidade em Negócios
-  'M4-T1-S4': 'M5-S2', // Empreendedorismo e Inovação Exponencial (M5-S2 no BD)
+  'M4-T1-S4': 'M2-S1', // Empreendedorismo e Inovação Exponencial
   'M4-T1-S5': 'M5-S2', // Empreendedorismo e Inovação Exponencial (M5-S2 no BD)
   
   // Pilar 2: Finanças e Inteligência Quantitativa
@@ -398,7 +399,8 @@ const ACADEMIC_SYLLABUS = [
   // Pilar 1: Inovação e Estratégia
   { id: 'M4-T1-S1', topicId: 'M4-T1', title: 'Inovação, Transformação e Ferramentas Digitais', subtitle: 'IE · Era Digital e Automação', duration: '22:15' },
   { id: 'M4-T1-S2', topicId: 'M4-T1', title: 'Pensamento Criativo', subtitle: 'IE · Neurociência e Ideação', duration: '18:45' },
-  { id: 'M4-T1-S3', topicId: 'M4-T1', title: 'Sustentabilidade em Negócios', subtitle: 'IE · ESG e Valor Compartilhado', duration: '25:30' }
+  { id: 'M4-T1-S3', topicId: 'M4-T1', title: 'Sustentabilidade em Negócios', subtitle: 'IE · ESG e Valor Compartilhado', duration: '25:30' },
+  { id: 'M4-T1-S4', topicId: 'M4-T1', title: 'Gestão de Negócios', subtitle: 'IE · Canvas e Estratégia Corporativa', duration: '35:40' }
 ]
 
 function ExecutiveMasterclassTheater({ 
@@ -1069,7 +1071,7 @@ function NASA6DSimulator({ dbId, chapterIndex, theme }: { dbId: string; chapterI
     }, 1200)
   }
 
-  const has6DSimulations = dbId === 'M4-S1' || dbId === 'M1-S1' || dbId === 'M1-S2' || dbId === 'M1-S3'
+  const has6DSimulations = dbId === 'M4-S1' || dbId === 'M1-S1' || dbId === 'M1-S2' || dbId === 'M1-S3' || dbId === 'M2-S1'
 
   return (
     <div className="flex flex-col justify-between h-full w-full space-y-4">
@@ -1133,6 +1135,15 @@ function NASA6DSimulator({ dbId, chapterIndex, theme }: { dbId: string; chapterI
                     {chapterIndex === 6 && 'Globo Tático de Certificações (C2C)'}
                   </>
                 )}
+                {dbId === 'M2-S1' && (
+                  <>
+                    {chapterIndex === 0 && 'Núcleo de Reator PDCA'}
+                    {chapterIndex === 1 && 'Mosaico Isométrico do Canvas'}
+                    {chapterIndex === 2 && 'Prisma Estratégico 3D (SWOT/BCG/Porter)'}
+                    {chapterIndex === 3 && 'Cadeia de Valor: Fibra Óptica'}
+                    {chapterIndex === 4 && 'Telemetria Tributária'}
+                  </>
+                )}
               </h5>
             </div>
             <div className="flex items-center gap-1.5 text-[#d4b87a]">
@@ -1170,6 +1181,15 @@ function NASA6DSimulator({ dbId, chapterIndex, theme }: { dbId: string; chapterI
                 {chapterIndex === 4 && <SimSMARTLock theme={theme} addLog={addLog} />}
                 {chapterIndex === 5 && <SimBPMNFlow theme={theme} addLog={addLog} />}
                 {chapterIndex === 6 && <SimCertGlobe theme={theme} addLog={addLog} />}
+              </>
+            )}
+            {dbId === 'M2-S1' && (
+              <>
+                {chapterIndex === 0 && <SimPDCACycle theme={theme} addLog={addLog} />}
+                {chapterIndex === 1 && <SimBusinessCanvas theme={theme} addLog={addLog} />}
+                {chapterIndex === 2 && <SimStrategicTripod theme={theme} addLog={addLog} />}
+                {chapterIndex === 3 && <SimValueChain theme={theme} addLog={addLog} />}
+                {chapterIndex === 4 && <SimTaxMatrix theme={theme} addLog={addLog} />}
               </>
             )}
           </div>
@@ -1856,7 +1876,7 @@ function ModuleRail({
           <span className="text-[10px] font-semibold uppercase tracking-[0.28em] text-[#d4b87a]">Trilhas Acadêmicas</span>
         </div>
         <div className="flex items-center gap-3">
-          <span className="text-[8.5px] px-2 py-0.5 rounded font-mono bg-[#d4b87a]/10 [.theme-silver_&]:bg-[#cbd5e1]/10 border border-[#d4b87a]/20 [.theme-silver_&]:border-[#cbd5e1]/20 text-[#d4b87a]">{isGoldTheme ? "TRILHA OURO" : "TRILHA PRATA"}</span>
+          <span className="text-[8.5px] px-2 py-0.5 rounded font-mono bg-[#d4b87a]/10 [.theme-silver_&]:bg-[#cbd5e1]/10 border border-[#d4b87a]/20 [.theme-silver_&]:border-[#cbd5e1]/20 text-[#d4b87a] [.theme-silver_&]:text-[#cbd5e1]">TRILHA OURO</span>
           <span className="text-[8.5px] px-2 py-0.5 rounded font-mono bg-[#cbd5e1]/10 border border-[#cbd5e1]/20 text-[#cbd5e1]">TRILHA PRATA</span>
         </div>
       </div>
