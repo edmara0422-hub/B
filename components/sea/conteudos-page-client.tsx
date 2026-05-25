@@ -2498,7 +2498,7 @@ export default function ConteudosPageClient() {
                     </div>
 
                     {/* Operational Notebook Content Viewer / Estação Unificada de Estudos */}
-                    {current.id === 'M4' ? (
+                    {(current.id === 'M4' || current.id === 'M1') ? (
                       <ExecutiveStudyBriefing 
                         moduleId={current.id} 
                         activeTopicId={activeTopicId} 
