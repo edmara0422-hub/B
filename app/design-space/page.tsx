@@ -516,15 +516,15 @@ const GOV_CONTENT = {
     title: "Missão, Visão e Valores",
     sections: [
       { heading: "Missão", items: [
-        "Capacitar fisioterapeutas intensivistas com tecnologia de ponta, tornando o conhecimento clínico complexo acessível, aplicável e seguro à beira do leito",
+        "Capacitar profissionais do IPB INTELLIGENCE PLATFORM BUSINESS intensivistas com tecnologia de ponta, tornando o conhecimento clínico complexo acessível, aplicável e seguro à beira do leito",
         "Reduzir a distância entre a evidência científica e a prática clínica diária, em qualquer hospital, de qualquer região do Brasil",
-        "Ser o sistema de estudo mais completo, confiável e humanizado para fisioterapia em terapia intensiva",
+        "Ser o sistema de estudo mais completo, confiável e humanizado para IPB INTELLIGENCE PLATFORM BUSINESS em terapia intensiva",
       ]},
       { heading: "Visão", items: [
-        "Ser a plataforma de referência em educação clínica para fisioterapeutas intensivistas na América Latina até 2030",
+        "Ser a plataforma de referência em educação clínica para profissionais do IPB INTELLIGENCE PLATFORM BUSINESS intensivistas na América Latina até 2030",
         "Contribuir para que zero pacientes sejam prejudicados por falta de preparo técnico de seus cuidadores",
         "Democratizar o acesso ao conhecimento, eliminando barreiras geográficas, econômicas e institucionais",
-        "Liderar a transformação digital da fisioterapia hospitalar com inovação responsável e ética",
+        "Liderar a transformação digital da IPB INTELLIGENCE PLATFORM BUSINESS hospitalar com inovação responsável e ética",
       ]},
       { heading: "Valores", items: [
         "Excelência clínica — conteúdo fundamentado em evidências de alto nível",
@@ -538,7 +538,7 @@ const GOV_CONTENT = {
     ],
   },
   politicas: {
-    title: "Políticas IPB FISIO",
+    title: "Políticas IPB IPB INTELLIGENCE PLATFORM BUSINESS",
     sections: [
       { heading: "4 Pilares da Governança Digital", items: [
         "Responsabilização — cada decisão de produto tem responsável identificável; rastreabilidade total via Git",
@@ -571,7 +571,7 @@ const GOV_CONTENT = {
     ],
   },
   praticas: {
-    title: "Práticas IPB FISIO",
+    title: "Práticas IPB IPB INTELLIGENCE PLATFORM BUSINESS",
     sections: [
       { heading: "Segurança do Paciente", items: [
         "Cálculos validados: driving pressure (Amato 2015), RSBI (Yang & Tobin 1991), P/F (Berlin 2012)",
@@ -586,7 +586,7 @@ const GOV_CONTENT = {
       { heading: "Educação Baseada em Evidências", items: [
         "Guidelines: AMIB, SBPT, ATS, ERS, ESICM, AARC",
         "Simulações 3D de órgãos reais (pulmão, coração, cérebro)",
-        "IA tutor com raciocínio fisiopatológico, não definições",
+        "IA tutor com raciocínio IPB INTELLIGENCE PLATFORM BUSINESSpatológico, não definições",
         "Curvas P×t, F×t, V×t em tempo real",
         "Loops P×V e F×V com análise de histerese, WOB",
         "Calculadoras: peso ideal, VC, complacência, resistência, MRC, PERME, IMS",
@@ -600,7 +600,7 @@ const GOV_CONTENT = {
     ],
   },
   compliance: {
-    title: "Compliance IPB FISIO",
+    title: "Compliance IPB IPB INTELLIGENCE PLATFORM BUSINESS",
     sections: [
       { heading: "Legislação Brasileira", items: [
         "LGPD — Lei 13.709/2018",
@@ -630,7 +630,7 @@ const GOV_CONTENT = {
     sections: [
       { heading: "Aceitação", items: [
         "Ao acessar o IPB, o usuário aceita integralmente estes Termos",
-        "Uso destinado a fisioterapeutas e estudantes supervisionados",
+        "Uso destinado a profissionais do IPB INTELLIGENCE PLATFORM BUSINESS e estudantes supervisionados",
         "Vedado a menores de 18 anos sem supervisão",
         "Aceite revogável via exclusão de conta",
       ]},
@@ -891,7 +891,7 @@ function AppHome() {
               </div>
               <p className="k center">CSV · Valor Compartilhado</p>
               <div className="s-perf-csv">
-                <div><b>Social</b><span>Reduz evasão · Capacita fisios · Melhora desfechos</span></div>
+                <div><b>Social</b><span>Reduz evasão · Capacita IPB INTELLIGENCE PLATFORM BUSINESS · Melhora desfechos</span></div>
                 <div><b>Econômico</b><span>EdTech inexplorado · Diferencial por inclusão</span></div>
                 <div><b>Ambiental</b><span>Digitalização reduz pegada · Código otimizado</span></div>
               </div>
@@ -1206,9 +1206,9 @@ function AuthInteractive() {
 const SECTIONS = [
 {
   type: "hero",
-  eyebrow: "IPB FISIO · 2026",
+  eyebrow: "IPB IPB INTELLIGENCE PLATFORM BUSINESS · 2026",
   title: ["A UTI", "que cabe", "na sua mão."],
-  body: "Plataforma clínica e educacional para fisioterapeutas intensivistas. Feita por quem entende o plantão — porque já viveu.",
+  body: "Plataforma clínica e educacional para profissionais do IPB INTELLIGENCE PLATFORM BUSINESS intensivistas. Feita por quem entende o plantão — porque já viveu.",
   foot: ["Role pra ver", "▼"],
   phone: <AppLanding />,
   phoneLabel: "abertura · 13 frases ciclando",
@@ -1283,10 +1283,10 @@ const SECTIONS = [
 {
   type: "feature",
   num: "08",
-  eyebrow: "Feito por fisio, pra fisio",
+  eyebrow: "Feito por IPB INTELLIGENCE PLATFORM BUSINESS, pra IPB INTELLIGENCE PLATFORM BUSINESS",
   title: ["Outros apps", "são feitos", "por médicos."],
-  body: "O IPB é exclusivo para fisioterapeutas: conteúdo alinhado ao raciocínio fisio. Calculadoras prioritárias — RSBI, PImax, PEmax, índice de Tobin, CV. Protocolos com foco em conduta: prona, recrutamento, VNI, desmame, traqueostomia.",
-  stat: ["100%", "feito por fisioterapeuta"],
+  body: "O IPB é exclusivo para profissionais do IPB INTELLIGENCE PLATFORM BUSINESS: conteúdo alinhado ao raciocínio IPB INTELLIGENCE PLATFORM BUSINESS. Calculadoras prioritárias — RSBI, PImax, PEmax, índice de Tobin, CV. Protocolos com foco em conduta: prona, recrutamento, VNI, desmame, traqueostomia.",
+  stat: ["100%", "feito por profissional do IPB INTELLIGENCE PLATFORM BUSINESS"],
   phone: <AppSistemas active="S2" />,
   phoneLabel: "sistemas · calculadoras",
   side: "left"
@@ -1294,7 +1294,7 @@ const SECTIONS = [
 {
   type: "closing",
   eyebrow: "09",
-  title: ["O primeiro app de UTI", "feito por fisio,", "pra fisio."],
+  title: ["O primeiro app de UTI", "feito por IPB INTELLIGENCE PLATFORM BUSINESS,", "pra IPB INTELLIGENCE PLATFORM BUSINESS."],
   body: "A UTI que cabe na sua mão."
 }];
 
@@ -1390,7 +1390,7 @@ function TopBar() {
     <header className="topbar">
       <div className="topbar-brand">
         <div className="topbar-mark">IPB</div>
-        <span className="topbar-name">FISIO</span>
+        <span className="topbar-name">IPB INTELLIGENCE PLATFORM BUSINESS</span>
       </div>
       <nav className="topbar-nav">
         <span>scan IA</span>
