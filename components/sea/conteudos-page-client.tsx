@@ -1249,23 +1249,24 @@ function NASA6DSimulator({ dbId, chapterIndex, theme }: { dbId: string; chapterI
             {dbId === 'N1-S1' && (
               <div className="h-full w-full relative">
                 {chapterIndex === 0 && (() => { const C = NEURO_SIMS['neuro-pump']; return <C /> })()}
-                {chapterIndex === 1 && (() => { const C = NEURO_SIMS['neuro-action-potential']; return <C /> })()}
-                {chapterIndex === 2 && (() => { const C = NEURO_SIMS['neuro-tube']; return <C /> })()}
-                {chapterIndex === 3 && (() => { const C = NEURO_SIMS['neuro-synapse-timeline']; return <C /> })()}
+                {chapterIndex > 0 && (() => { const C = NEURO_SIMS['neuro-action-potential']; return <C /> })()}
               </div>
             )}
             {dbId === 'N1-S2' && (
               <div className="h-full w-full relative">
-                {chapterIndex === 0 && (() => { const C = NEURO_SIMS['neuro-tube']; return <C /> })()}
-                {chapterIndex === 1 && (() => { const C = NEURO_SIMS['neuro-synapse-timeline']; return <C /> })()}
-                {chapterIndex === 2 && (() => { const C = NEURO_SIMS['neuro-neuron-anatomy']; return <C /> })()}
+                {chapterIndex === 1 && (() => { const C = NEURO_SIMS['neuro-tube']; return <C /> })()}
+                {chapterIndex === 4 && (() => { const C = NEURO_SIMS['neuro-synapse-timeline']; return <C /> })()}
+                {(chapterIndex !== 1 && chapterIndex !== 4) && (() => { const C = NEURO_SIMS['neuro-tube']; return <C /> })()}
               </div>
             )}
             {dbId === 'N1-S3' && (
               <div className="h-full w-full relative">
-                {chapterIndex === 0 && (() => { const C = NEURO_SIMS['neuro-neuron-anatomy']; return <C /> })()}
-                {chapterIndex === 1 && (() => { const C = NEURO_SIMS['neuro-axon-transport']; return <C /> })()}
-                {chapterIndex === 2 && (() => { const C = NEURO_SIMS['neuro-saltatory-conduction']; return <C /> })()}
+                {chapterIndex === 2 && (() => { const C = NEURO_SIMS['neuro-neuron-anatomy']; return <C /> })()}
+                {chapterIndex === 3 && (() => { const C = NEURO_SIMS['neuro-axon-transport']; return <C /> })()}
+                {chapterIndex === 4 && (() => { const C = NEURO_SIMS['neuro-saltatory-conduction']; return <C /> })()}
+                {chapterIndex === 5 && (() => { const C = NEURO_SIMS['neuro-neuron-types']; return <C /> })()}
+                {chapterIndex === 6 && (() => { const C = NEURO_SIMS['neuro-glia-ecosystem']; return <C /> })()}
+                {(chapterIndex < 2) && (() => { const C = NEURO_SIMS['neuro-neuron-anatomy']; return <C /> })()}
               </div>
             )}
             {dbId === 'N1-S4' && (

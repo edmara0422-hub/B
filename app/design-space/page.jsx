@@ -1435,61 +1435,95 @@ function StoryScroll() {
 
 
 
+
+
+
 function BusinessManifestoPage() {
   return (
     <div style={{
-      minHeight: '100vh',
       backgroundColor: '#000000',
       color: '#f4f4f6',
       fontFamily: 'var(--sans)',
-      paddingBottom: '10vh',
       overflowX: 'hidden'
     }}>
-      <header style={{
-        padding: '2rem 4rem',
-        display: 'flex',
-        justifyContent: 'space-between',
+      {/* 1. Splash Screen - Estilo WhatsApp Business (Capa Minimalista) */}
+      <section style={{ 
+        height: '100vh', 
+        display: 'flex', 
+        flexDirection: 'column', 
+        justifyContent: 'center', 
         alignItems: 'center',
-        position: 'sticky',
-        top: 0,
-        backgroundColor: 'rgba(1,1,1,0.85)',
-        backdropFilter: 'blur(12px)',
-        zIndex: 50,
-        borderBottom: '1px solid rgba(255,255,255,0.05)'
+        position: 'relative'
       }}>
-        <div style={{ fontFamily: 'var(--sans)', fontWeight: 500, letterSpacing: '0.2em', fontSize: '0.85rem' }}>
-          INTELLIGENCE PLATFORM BUSINESS
-        </div>
-        <button 
-          onClick={() => document.getElementById("story-start")?.scrollIntoView({ behavior: "smooth" })}
-          style={{
-            background: 'none',
-            border: '1px solid var(--gold)',
-            color: 'var(--gold)',
-            padding: '0.5rem 1.5rem',
-            borderRadius: '100px',
-            fontSize: '0.8rem',
-            letterSpacing: '0.1em',
-            textTransform: 'uppercase',
-            cursor: 'pointer'
-          }}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1.5, ease: "easeOut" }}
+          style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
         >
-          Explorar
-        </button>
-      </header>
-
-      <main style={{ maxWidth: '1000px', margin: '0 auto', padding: '0 2rem' }}>
-        <section style={{ marginTop: '10vh', marginBottom: '15vh', display: 'flex', alignItems: 'center', gap: '4rem' }}>
+          {/* Logo Central */}
+          <div style={{ width: '280px', marginBottom: '2rem' }}>
+            <img 
+              src="/business_cube_straight.png" 
+              alt="IPB Logo" 
+              style={{ width: '100%', height: 'auto', display: 'block' }} 
+            />
+          </div>
           
+          {/* Nome da Marca */}
+          <h1 style={{ 
+            fontFamily: 'var(--sans)', 
+            fontWeight: 400, 
+            letterSpacing: '0.3em', 
+            fontSize: '1rem',
+            color: '#fff',
+            margin: 0,
+            textTransform: 'uppercase'
+          }}>
+            Intelligence Platform Business
+          </h1>
+        </motion.div>
+
+        {/* Indicador de Scroll na base */}
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 2, duration: 1 }}
+          style={{ position: 'absolute', bottom: '40px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px' }}
+        >
+          <span style={{ fontSize: '0.7rem', letterSpacing: '0.2em', color: 'var(--ink-soft)', textTransform: 'uppercase' }}>
+            Conhecer a Fundação
+          </span>
+          <div style={{ width: '1px', height: '40px', background: 'linear-gradient(to bottom, var(--gold), transparent)' }} />
+        </motion.div>
+      </section>
+
+      {/* 2. O Manifesto (O texto que estava na capa veio pra cá) */}
+      <section style={{ 
+        minHeight: '100vh', 
+        display: 'flex', 
+        flexDirection: 'column', 
+        justifyContent: 'center',
+        maxWidth: '1000px', 
+        margin: '0 auto', 
+        padding: '0 2rem' 
+      }}>
+        <div style={{ display: 'flex', gap: '4rem', alignItems: 'center' }}>
+          <div style={{ flex: '0 0 200px' }}>
+            <span style={{ color: 'var(--gold)', fontSize: '0.85rem', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+              A Liderança
+            </span>
+          </div>
           <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            animate={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 1 }}
             style={{ flex: 1 }}
           >
-            <h1 style={{
+            <h2 style={{
               fontFamily: 'var(--serif)',
-              fontSize: 'clamp(3rem, 4vw, 4rem)',
+              fontSize: 'clamp(2.5rem, 4vw, 3.5rem)',
               fontWeight: 300,
               lineHeight: 1.1,
               letterSpacing: '-0.02em',
@@ -1498,61 +1532,16 @@ function BusinessManifestoPage() {
             }}>
               Pessoas por trás <br/>
               dos <i style={{ color: 'var(--gold)' }}>negócios.</i>
-            </h1>
-            <p style={{ fontSize: '1.1rem', lineHeight: 1.7, color: 'var(--ink-soft)', fontWeight: 300, maxWidth: '500px' }}>
+            </h2>
+            <p style={{ fontSize: '1.1rem', lineHeight: 1.7, color: 'var(--ink-soft)', fontWeight: 300, maxWidth: '600px' }}>
               No mercado corporativo global, processos e infraestruturas são apenas o meio. A verdadeira inovação acontece quando entendemos que negócios, liderança e gestão são, na essência, <b>pessoas conectando-se com outras pessoas</b>.
               <br/><br/>
               A Intelligence Platform Business é o reflexo de uma visão executiva e multidisciplinar. É a convicção de que o verdadeiro diferencial de mercado não é a tecnologia isolada, mas a visão estratégica e a liderança humana que a conduzem.
             </p>
           </motion.div>
+        </div>
+      </section>
 
-          {/* Imagem do Cubo de Vidro */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1.2, delay: 0.2 }}
-            style={{ flex: 1, display: 'flex', justifyContent: 'center' }}
-          >
-            <div style={{
-              position: 'relative',
-              width: '100%',
-              maxWidth: '450px'
-            }}>
-              <img 
-                src="/business_cube_straight.png" 
-                alt="IPB Business Cube" 
-                style={{ 
-                  width: '100%', 
-                  height: 'auto', 
-                  display: 'block'
-                }} 
-              />
-            </div>
-          </motion.div>
-
-        </section>
-
-        <section style={{ marginBottom: '12vh' }}>
-          <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '2rem', display: 'flex', gap: '4rem' }}>
-            <div style={{ flex: '0 0 200px' }}>
-              <span style={{ color: 'var(--gold)', fontSize: '0.85rem', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
-                A Liderança
-              </span>
-            </div>
-            <div style={{ flex: 1 }}>
-              <h2 style={{ fontFamily: 'var(--serif)', fontSize: '2.5rem', fontWeight: 300, marginBottom: '1.5rem', color: '#fff' }}>
-                A conexão genuína.
-              </h2>
-              <p style={{ fontSize: '1.1rem', lineHeight: 1.7, color: 'var(--ink-soft)', fontWeight: 300 }}>
-                O que falta hoje no ecossistema global de business é exatamente essa conexão. Quando esquecemos a pessoa por trás da marca, o modelo falha.
-                <br/><br/>
-                Por trás desta plataforma, existe uma pessoa construindo soluções para que outras pessoas possam liderar, gerir e transformar seus mercados. É sobre pessoas empoderando pessoas.
-              </p>
-            </div>
-          </div>
-        </section>
-
-      </main>
     </div>
   );
 }
