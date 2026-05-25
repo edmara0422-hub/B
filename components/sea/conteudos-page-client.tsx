@@ -40,7 +40,8 @@ import {
   SimInnovationIgnition, SimHorizonsBalancer, SimPsychologicalShield, SimDataLakehouse,
   SimNeuroCreativity, SimIdeationFunnel, SimSixHatsMatrix,
   SimNestedSustainability, SimESGScanner, SimFrameworkConstellation, SimGreenwashingFilter, SimSMARTLock, SimBPMNFlow, SimCertGlobe,
-  SimPDCACycle, SimBusinessCanvas, SimStrategicTripod, SimValueChain, SimTaxMatrix
+  SimPDCACycle, SimBusinessCanvas, SimStrategicTripod, SimValueChain, SimTaxMatrix,
+  SimAccountingLedger, SimBalanceScale, SimIncomeWaterfall, SimCashflowTanks, SimDoubleEntryOrbit
 } from '@/components/sea/simulations-6d'
 import { SUBJECTS_DB } from '@/data/caderno-content-m1-m8'
 
@@ -49,8 +50,9 @@ const SYLLABUS_TO_DB_MAP: Record<string, string> = {
   'M4-T1-S1': 'M4-S1', // Inovação, Transformação e Ferramentas Digitais
   'M4-T1-S2': 'M1-S2', // Pensamento Criativo
   'M4-T1-S3': 'M1-S3', // Sustentabilidade em Negócios
-  'M4-T1-S4': 'M2-S1', // Empreendedorismo e Inovação Exponencial
-  'M4-T1-S5': 'M5-S2', // Empreendedorismo e Inovação Exponencial (M5-S2 no BD)
+  'M4-T1-S4': 'M2-S1', // Gestão de Negócios
+  'M4-T1-S5': 'M2-S2', // Demonstrações Contábeis
+  'M4-T1-S6': 'M5-S2', // Empreendedorismo e Inovação Exponencial (M5-S2 no BD)
   
   // Pilar 2: Finanças e Inteligência Quantitativa
   'M4-T2-S1': 'M6-S1', // Análise Financeira (M6-S1 no BD)
@@ -400,7 +402,8 @@ const ACADEMIC_SYLLABUS = [
   { id: 'M4-T1-S1', topicId: 'M4-T1', title: 'Inovação, Transformação e Ferramentas Digitais', subtitle: 'IE · Era Digital e Automação', duration: '22:15' },
   { id: 'M4-T1-S2', topicId: 'M4-T1', title: 'Pensamento Criativo', subtitle: 'IE · Neurociência e Ideação', duration: '18:45' },
   { id: 'M4-T1-S3', topicId: 'M4-T1', title: 'Sustentabilidade em Negócios', subtitle: 'IE · ESG e Valor Compartilhado', duration: '25:30' },
-  { id: 'M4-T1-S4', topicId: 'M4-T1', title: 'Gestão de Negócios', subtitle: 'IE · Canvas e Estratégia Corporativa', duration: '35:40' }
+  { id: 'M4-T1-S4', topicId: 'M4-T1', title: 'Gestão de Negócios', subtitle: 'IE · Canvas e Estratégia Corporativa', duration: '35:40' },
+  { id: 'M4-T1-S5', topicId: 'M4-T1', title: 'Demonstrações Contábeis', subtitle: 'IE · Balanço, DRE e Fluxo de Caixa', duration: '31:20' }
 ]
 
 function ExecutiveMasterclassTheater({ 
@@ -1071,7 +1074,7 @@ function NASA6DSimulator({ dbId, chapterIndex, theme }: { dbId: string; chapterI
     }, 1200)
   }
 
-  const has6DSimulations = dbId === 'M4-S1' || dbId === 'M1-S1' || dbId === 'M1-S2' || dbId === 'M1-S3' || dbId === 'M2-S1'
+  const has6DSimulations = dbId === 'M4-S1' || dbId === 'M1-S1' || dbId === 'M1-S2' || dbId === 'M1-S3' || dbId === 'M2-S1' || dbId === 'M2-S2'
 
   return (
     <div className="flex flex-col justify-between h-full w-full space-y-4">
@@ -1144,6 +1147,15 @@ function NASA6DSimulator({ dbId, chapterIndex, theme }: { dbId: string; chapterI
                     {chapterIndex === 4 && 'Telemetria Tributária'}
                   </>
                 )}
+                {dbId === 'M2-S2' && (
+                  <>
+                    {chapterIndex === 0 && 'Livro-Razão Holográfico'}
+                    {chapterIndex === 1 && 'Balança Gyroscópica (Ativo=Passivo)'}
+                    {chapterIndex === 2 && 'Cachoeira Termodinâmica (DRE)'}
+                    {chapterIndex === 3 && 'Tanques Criogênicos (Fluxo de Caixa)'}
+                    {chapterIndex === 4 && 'Acelerador de Partículas (Partidas Dobradas)'}
+                  </>
+                )}
               </h5>
             </div>
             <div className="flex items-center gap-1.5 text-[#d4b87a]">
@@ -1190,6 +1202,15 @@ function NASA6DSimulator({ dbId, chapterIndex, theme }: { dbId: string; chapterI
                 {chapterIndex === 2 && <SimStrategicTripod theme={theme} addLog={addLog} />}
                 {chapterIndex === 3 && <SimValueChain theme={theme} addLog={addLog} />}
                 {chapterIndex === 4 && <SimTaxMatrix theme={theme} addLog={addLog} />}
+              </>
+            )}
+            {dbId === 'M2-S2' && (
+              <>
+                {chapterIndex === 0 && <SimAccountingLedger theme={theme} addLog={addLog} />}
+                {chapterIndex === 1 && <SimBalanceScale theme={theme} addLog={addLog} />}
+                {chapterIndex === 2 && <SimIncomeWaterfall theme={theme} addLog={addLog} />}
+                {chapterIndex === 3 && <SimCashflowTanks theme={theme} addLog={addLog} />}
+                {chapterIndex === 4 && <SimDoubleEntryOrbit theme={theme} addLog={addLog} />}
               </>
             )}
           </div>
