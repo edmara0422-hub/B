@@ -796,7 +796,7 @@ function ExecutivePerformanceDashboard({ moduleId }: { moduleId?: string }) {
       <div>
         <div className="flex justify-between items-center">
           <span className="text-[7.5px] uppercase tracking-wider font-bold" style={{ color: theme.primary }}>KPIs Estratégicos</span>
-          <span className="text-[8px] px-1.5 py-0.5 rounded bg-[#d4b87a]/10 border border-[#d4b87a]/20 text-[#d4b87a] font-mono">Executive Mode</span>
+          <span className="text-[8px] px-1.5 py-0.5 rounded bg-[#d4b87a]/10 [.theme-silver_&]:bg-[#cbd5e1]/10 border border-[#d4b87a]/20 [.theme-silver_&]:border-[#cbd5e1]/20 text-[#d4b87a] font-mono">Executive Mode</span>
         </div>
         <h4 className="text-[12px] font-bold text-white/90 mt-1">Indicadores de Competência (30 Disciplinas)</h4>
       </div>
@@ -966,7 +966,7 @@ function StrategicRoadmapBoard({ moduleId }: { moduleId?: string }) {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
-            className="absolute bottom-2 inset-x-2 p-2 rounded bg-black/85 border border-[#d4b87a]/30 backdrop-blur-md z-20 flex flex-col gap-0.5"
+            className="absolute bottom-2 inset-x-2 p-2 rounded bg-black/85 border border-[#d4b87a]/30 [.theme-silver_&]:border-[#cbd5e1]/30 backdrop-blur-md z-20 flex flex-col gap-0.5"
           >
             <div className="flex justify-between items-center">
               <span className="text-[8px] font-bold text-white uppercase tracking-wider">
@@ -1099,7 +1099,7 @@ function NASA6DSimulator({ dbId, chapterIndex, theme }: { dbId: string; chapterI
           <div className="flex flex-col justify-between h-full space-y-3">
             <div className="flex justify-between items-start">
               <div>
-                <span className="text-[8.5px] px-2 py-0.5 rounded font-mono bg-[#d4b87a]/10 border border-[#d4b87a]/20 text-[#d4b87a] uppercase font-bold tracking-wider">
+                <span className="text-[8.5px] px-2 py-0.5 rounded font-mono bg-[#d4b87a]/10 [.theme-silver_&]:bg-[#cbd5e1]/10 border border-[#d4b87a]/20 [.theme-silver_&]:border-[#cbd5e1]/20 text-[#d4b87a] uppercase font-bold tracking-wider">
                   NASA 6D CORE · CAPÍTULO {chapterIndex + 1}
                 </span>
                 <h5 className="text-xs font-bold text-white/95 mt-1">
@@ -1207,6 +1207,7 @@ function ExecutiveStudyBriefing({
   activeSubjectIndex: number
   onChangeSubjectIndex: (index: number) => void
 }) {
+  const isGoldTheme = activeSubjectIndex % 2 === 0
   const [activeTab, setActiveTab] = useState<'summary' | 'tutor' | 'notes'>('summary')
   const [activeChapterIndex, setActiveChapterIndex] = useState(0)
   const [tutorInput, setTutorInput] = useState('')
@@ -1291,7 +1292,7 @@ function ExecutiveStudyBriefing({
       {/* Top Strategic Navigation Header */}
       <div className="flex items-center justify-between pb-4 border-b border-white/[0.04] flex-wrap gap-3" style={{ borderBottom: '0.2px solid rgba(255,255,255,0.04)' }}>
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg bg-[#d4b87a]/10 border border-[#d4b87a]/20 flex items-center justify-center">
+          <div className="w-8 h-8 rounded-lg bg-[#d4b87a]/10 [.theme-silver_&]:bg-[#cbd5e1]/10 border border-[#d4b87a]/20 [.theme-silver_&]:border-[#cbd5e1]/20 flex items-center justify-center">
             <BookOpen className="h-4 w-4 text-[#d4b87a]" />
           </div>
           <div>
@@ -1393,17 +1394,17 @@ function ExecutiveStudyBriefing({
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
                   
                   {/* Left Column: Textbook content (Spacious text) */}
-                  <div className="lg:col-span-7 p-6 rounded-2xl bg-[#0c0905]/40 border border-white/[0.04] backdrop-blur-md relative overflow-hidden transition-all duration-300 hover:border-[#d4b87a]/20 flex flex-col h-[600px] lg:h-[720px] group"
+                  <div className="lg:col-span-7 p-6 rounded-2xl bg-[#0c0905]/40 border border-white/[0.04] backdrop-blur-md relative overflow-hidden transition-all duration-300 hover:border-[#d4b87a]/20 [.theme-silver_&]:hover:border-[#cbd5e1]/20 [.theme-silver_&]:border-[#cbd5e1]/20 flex flex-col h-[600px] lg:h-[720px] group"
                     style={{ boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.02), 0 8px 24px rgba(0,0,0,0.15)' }}
                   >
                     <div className="absolute inset-0 opacity-[0.015] pointer-events-none group-hover:opacity-[0.03] transition-all" style={{
-                      background: 'radial-gradient(circle at 0% 0%, #d4b87a, transparent 50%)'
+                      background: `radial-gradient(circle at 0% 0%, ${isGoldTheme ? '#d4b87a' : '#cbd5e1'}, transparent 50%)`
                     }} />
 
                     <div className="overflow-y-auto space-y-4 pr-2 ipb-thinscroll h-full">
                       <div className="flex justify-between items-start border-b border-white/[0.06] pb-3 w-full sticky top-0 bg-[#0c0905]/95 backdrop-blur-md z-10">
                         <div>
-                          <span className="text-xs px-2 py-0.5 rounded font-mono bg-[#d4b87a]/10 border border-[#d4b87a]/20 text-[#d4b87a] uppercase">SUMÁRIO ACADÊMICO</span>
+                          <span className="text-xs px-2 py-0.5 rounded font-mono bg-[#d4b87a]/10 [.theme-silver_&]:bg-[#cbd5e1]/10 border border-[#d4b87a]/20 [.theme-silver_&]:border-[#cbd5e1]/20 text-[#d4b87a] uppercase">SUMÁRIO ACADÊMICO</span>
                           <h4 className="text-base font-bold text-white/95 leading-tight mt-1 uppercase">
                             {syllabusItem.title}
                           </h4>
@@ -1421,7 +1422,7 @@ function ExecutiveStudyBriefing({
                               onClick={() => setActiveChapterIndex(idx)}
                               className={`px-3 py-1.5 rounded-lg text-xs font-mono transition-all duration-200 whitespace-nowrap flex items-center gap-1.5 ${
                                 isSelected
-                                  ? 'bg-[#d4b87a]/15 text-[#d4b87a] border border-[#d4b87a]/30 font-bold'
+                                  ? 'bg-[#d4b87a]/15 [.theme-silver_&]:bg-[#cbd5e1]/15 text-[#d4b87a] border border-[#d4b87a]/30 [.theme-silver_&]:border-[#cbd5e1]/30 font-bold'
                                   : 'bg-white/[0.02] text-white/60 border border-white/[0.04] hover:bg-white/[0.05] hover:text-white/80'
                               }`}
                             >
@@ -1464,9 +1465,9 @@ function ExecutiveStudyBriefing({
                                     </p>
 
                                     {sub.studyCase && (
-                                      <div className="mt-3 rounded-xl p-4 bg-[#d4b87a]/5 border-l-2 border-[#d4b87a] border border-[#d4b87a]/10 space-y-1.5">
+                                      <div className="mt-3 rounded-xl p-4 bg-[#d4b87a]/5 [.theme-silver_&]:bg-[#cbd5e1]/5 border-l-2 border-[#d4b87a] border border-[#d4b87a]/10 [.theme-silver_&]:border-[#cbd5e1]/10 space-y-1.5">
                                         <span className="text-[10px] uppercase tracking-wider font-bold text-[#d4b87a] block">Estudo de Caso · {sub.studyCase.title}</span>
-                                        <p className="text-xs text-[#d4b87a]/80 leading-relaxed text-justify whitespace-pre-line">
+                                        <p className="text-xs text-[#d4b87a]/80 [.theme-silver_&]:text-[#cbd5e1]/80 leading-relaxed text-justify whitespace-pre-line">
                                           {sub.studyCase.body}
                                         </p>
                                       </div>
@@ -1485,7 +1486,7 @@ function ExecutiveStudyBriefing({
 
                                 {chapter.synthesis && (
                                   <div className="mt-4 rounded-xl p-4 bg-white/[0.01] border border-white/[0.04] space-y-2.5">
-                                    <span className="text-[10px] uppercase tracking-wider font-bold text-[#d4b87a]/80 block">Síntese Estratégica & Insights</span>
+                                    <span className="text-[10px] uppercase tracking-wider font-bold text-[#d4b87a]/80 [.theme-silver_&]:text-[#cbd5e1]/80 block">Síntese Estratégica & Insights</span>
                                     <ul className="space-y-2">
                                       {chapter.synthesis.bullets.map((bullet: string, bIdx: number) => (
                                         <li key={bIdx} className="text-xs text-white/60 leading-relaxed flex items-start gap-2.5 text-justify">
@@ -1509,7 +1510,7 @@ function ExecutiveStudyBriefing({
                     style={{ boxShadow: '0 8px 24px rgba(0,0,0,0.15)' }}
                   >
                     <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{
-                      background: 'radial-gradient(circle at 100% 0%, #d4b87a, transparent 50%)'
+                      background: `radial-gradient(circle at 100% 0%, ${isGoldTheme ? '#d4b87a' : '#cbd5e1'}, transparent 50%)`
                     }} />
 
                     <div className="space-y-4 flex-1 flex flex-col">
@@ -1612,11 +1613,11 @@ function ExecutiveStudyBriefing({
                       onChange={(e) => setTutorInput(e.target.value)}
                       onKeyDown={(e) => e.key === 'Enter' && handleAskTutor(tutorInput)}
                       placeholder="Faça uma pergunta sobre o sumário executivo..."
-                      className="flex-1 bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-xs lg:text-sm text-white outline-none focus:border-[#d4b87a]/40"
+                      className="flex-1 bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-xs lg:text-sm text-white outline-none focus:border-[#d4b87a]/40 [.theme-silver_&]:focus:border-[#cbd5e1]/40 [.theme-silver_&]:border-[#cbd5e1]/40"
                     />
                     <button
                       onClick={() => handleAskTutor(tutorInput)}
-                      className="px-4 py-2.5 rounded-lg bg-[#d4b87a] hover:bg-[#d4b87a]/80 text-black flex items-center justify-center shrink-0 cursor-pointer transition-all"
+                      className="px-4 py-2.5 rounded-lg bg-[#d4b87a] hover:bg-[#d4b87a]/80 [.theme-silver_&]:hover:bg-[#cbd5e1]/80 text-black flex items-center justify-center shrink-0 cursor-pointer transition-all"
                     >
                       <Send className="h-4 w-4" />
                     </button>
@@ -1636,7 +1637,7 @@ function ExecutiveStudyBriefing({
               >
                 <div className="p-6 rounded-2xl bg-white/[0.015] border border-white/[0.04] relative overflow-hidden h-[600px] lg:h-[720px] flex flex-col justify-between">
                   <div className="absolute inset-0 opacity-[0.01] pointer-events-none" style={{
-                    background: 'radial-gradient(circle at 100% 100%, #d4b87a, transparent 50%)'
+                    background: `radial-gradient(circle at 100% 100%, ${isGoldTheme ? '#d4b87a' : '#cbd5e1'}, transparent 50%)`
                   }} />
                   <div className="flex flex-col h-full space-y-4">
                     <div className="flex items-center justify-between shrink-0">
@@ -1651,7 +1652,7 @@ function ExecutiveStudyBriefing({
                       value={notes}
                       onChange={(e) => handleSaveNotes(e.target.value)}
                       placeholder={`Escreva suas notas estratégicas e memorandos de implementação para a disciplina: ${syllabusItem.title}...`}
-                      className="flex-1 bg-white/[0.02] border border-white/[0.05] rounded-xl p-4 text-xs lg:text-sm text-white/80 leading-relaxed outline-none focus:border-[#d4b87a]/30 resize-none placeholder:text-white/20 ipb-thinscroll"
+                      className="flex-1 bg-white/[0.02] border border-white/[0.05] rounded-xl p-4 text-xs lg:text-sm text-white/80 leading-relaxed outline-none focus:border-[#d4b87a]/30 [.theme-silver_&]:focus:border-[#cbd5e1]/30 [.theme-silver_&]:border-[#cbd5e1]/30 resize-none placeholder:text-white/20 ipb-thinscroll"
                     />
                   </div>
                 </div>
@@ -1756,13 +1757,13 @@ function WorkspaceSidebar({
                     : { border: '1px solid transparent' }
                 }
               >
-                <div className={`module-icon flex h-6 w-6 items-center justify-center rounded-[6px] shrink-0 ${isActive ? 'bg-[#d4b87a]/15 text-[#d4b87a]' : 'bg-white/5 text-white/32'}`}>
+                <div className={`module-icon flex h-6 w-6 items-center justify-center rounded-[6px] shrink-0 ${isActive ? 'bg-[#d4b87a]/15 [.theme-silver_&]:bg-[#cbd5e1]/15 text-[#d4b87a]' : 'bg-white/5 text-white/32'}`}>
                   <ModIcon className="h-3.5 w-3.5" />
                 </div>
                 <div className="min-w-0 flex-1">
                   <p
                     className={`text-[7px] uppercase tracking-[0.16em] lg:text-[8px] lg:tracking-[0.22em] ${
-                      isActive ? 'text-[#d4b87a]/80' : 'text-white/20'
+                      isActive ? 'text-[#d4b87a]/80 [.theme-silver_&]:text-[#cbd5e1]/80' : 'text-white/20'
                     }`}
                   >
                     {mod.id} · {topics.length || '…'}
@@ -1805,7 +1806,7 @@ function WorkspaceSidebar({
                         />
                         <span
                           className={`shrink-0 font-mono text-[7px] tracking-[0.04em] lg:text-[7.5px] lg:tracking-[0.06em] ${
-                            isTopicActive ? 'text-[#d4b87a]/70' : 'text-white/26'
+                            isTopicActive ? 'text-[#d4b87a]/70 [.theme-silver_&]:text-[#cbd5e1]/70' : 'text-white/26'
                           }`}
                         >
                           {String(ti + 1).padStart(2, '0')}
@@ -1855,7 +1856,7 @@ function ModuleRail({
           <span className="text-[10px] font-semibold uppercase tracking-[0.28em] text-[#d4b87a]">Trilhas Acadêmicas</span>
         </div>
         <div className="flex items-center gap-3">
-          <span className="text-[8.5px] px-2 py-0.5 rounded font-mono bg-[#d4b87a]/10 border border-[#d4b87a]/20 text-[#d4b87a]">TRILHA OURO</span>
+          <span className="text-[8.5px] px-2 py-0.5 rounded font-mono bg-[#d4b87a]/10 [.theme-silver_&]:bg-[#cbd5e1]/10 border border-[#d4b87a]/20 [.theme-silver_&]:border-[#cbd5e1]/20 text-[#d4b87a]">{isGoldTheme ? "TRILHA OURO" : "TRILHA PRATA"}</span>
           <span className="text-[8.5px] px-2 py-0.5 rounded font-mono bg-[#cbd5e1]/10 border border-[#cbd5e1]/20 text-[#cbd5e1]">TRILHA PRATA</span>
         </div>
       </div>

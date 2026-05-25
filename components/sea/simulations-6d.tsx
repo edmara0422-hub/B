@@ -583,14 +583,14 @@ export function SimNeuroCreativity({ theme, addLog }: SimulationProps) {
       <div className="relative w-full h-48 md:h-56 bg-black rounded-2xl border border-white/10 flex flex-col items-center justify-center overflow-hidden shadow-[0_0_30px_rgba(0,0,0,0.8)]">
         <VideoBg ytId="Fhgn25C2IuM" />
         
-        <Brain className="relative z-20 w-24 h-24 drop-shadow-[0_0_20px_rgba(255,255,255,0.8)]" style={{ color: activeNetwork === 0 ? '#00ffd0' : activeNetwork === 1 ? '#ff00ff' : '#d4b87a' }} />
+        <Brain className="relative z-20 w-24 h-24 drop-shadow-[0_0_20px_rgba(255,255,255,0.8)]" style={{ color: activeNetwork === 0 ? '#00ffd0' : activeNetwork === 1 ? '#ff00ff' : '#c0c0c0' }} />
         
         <div className="absolute z-20 inset-0 pointer-events-none">
           {Array.from({ length: 15 }).map((_, i) => (
             <motion.div
               key={i}
               className="absolute w-2 h-2 rounded-full"
-              style={{ background: activeNetwork === 0 ? '#00ffd0' : activeNetwork === 1 ? '#ff00ff' : '#d4b87a' }}
+              style={{ background: activeNetwork === 0 ? '#00ffd0' : activeNetwork === 1 ? '#ff00ff' : '#c0c0c0' }}
               initial={{ left: '50%', top: '50%', opacity: 0 }}
               animate={{ 
                 left: `${10 + Math.random() * 80}%`, 
@@ -618,7 +618,7 @@ export function SimNeuroCreativity({ theme, addLog }: SimulationProps) {
         </button>
         <button 
           onClick={() => { setActiveNetwork(2); if(addLog) addLog('Ativando Salience Network (SN). Eureka! Conexão detectada.') }}
-          className={`p-2 rounded-lg border transition-all text-[9px] uppercase font-bold ${activeNetwork === 2 ? 'bg-[#d4b87a]/20 border-[#d4b87a] text-[#d4b87a]' : 'bg-black/60 border-white/10 text-white/40'}`}
+          className={`p-2 rounded-lg border transition-all text-[9px] uppercase font-bold ${activeNetwork === 2 ? 'bg-[#c0c0c0]/20 border-[#c0c0c0] text-[#c0c0c0]' : 'bg-black/60 border-white/10 text-white/40'}`}
         >
           SN (Eureka)
         </button>
