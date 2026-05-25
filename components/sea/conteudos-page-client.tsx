@@ -838,7 +838,7 @@ function ExecutivePerformanceDashboard({ moduleId }: { moduleId?: string }) {
       <CompetencyRadarChart activeKpi={activeKpi} theme={theme} />
 
       {/* Grid: Responsive columns for 6 KPIs */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2 mt-1">
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-2 mt-1">
         {Object.entries(kpis).map(([key, kpi]) => {
           const isSelected = activeKpi === key
           const Icon = kpi.icon
@@ -2575,7 +2575,7 @@ export default function ConteudosPageClient() {
 
                       {/* Sub-cards Dashboard Grid */}
                       {current.id === 'M4' ? (
-                        <div className="flex flex-col gap-4 px-6 pb-6 items-stretch w-full">
+                        <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 px-6 pb-6 items-stretch w-full">
                           {/* Card 1: Masterclass playlist cinema */}
                           <div className="flex w-full">
                             <ExecutiveMasterclassTheater 
