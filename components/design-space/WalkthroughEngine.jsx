@@ -1,6 +1,16 @@
 "use client";
 import React, { useState, useEffect, useCallback, useRef, useMemo, useLayoutEffect, Fragment } from "react";
 import "../../app/design-space/design.css";
+const icon = (path, size = 14) =>
+<svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">{path}</svg>;
+
+const IconUser = ({ s = 14 }) => icon(<><circle cx="12" cy="7" r="4" /><path d="M5 21v-2a4 4 0 0 1 4-4h6a4 4 0 0 1 4 4v2" /></>, s);
+const IconMail = ({ s = 14 }) => icon(<><rect x="2" y="4" width="20" height="16" rx="2" /><path d="m22 7-10 5L2 7" /></>, s);
+const IconLock = ({ s = 14 }) => icon(<><rect x="3" y="11" width="18" height="11" rx="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></>, s);
+const IconEye = ({ s = 14 }) => icon(<><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" /><circle cx="12" cy="12" r="3" /></>, s);
+const IconArrow = ({ s = 14 }) => icon(<path d="M5 12h14M13 5l7 7-7 7" />, s);
+const IconBack = ({ s = 14 }) => icon(<path d="M19 12H5M12 19l-7-7 7-7" />, s);
+const IconBell = ({ s = 14 }) => icon(<><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" /><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" /></>, s);
 
 /* IPB Walkthrough screens — replicate the actual app design tokens
    Tokens lifted from: app/globals.css of edmara0422-hub/IPB-FISIO
