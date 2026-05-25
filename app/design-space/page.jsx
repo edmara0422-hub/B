@@ -1,5 +1,6 @@
 "use client";
 // @ts-nocheck
+import { motion } from "framer-motion";
 import React, { useState, useEffect, useCallback, useRef, useMemo, useLayoutEffect, Fragment } from "react";
 import "./editorial.css";
 
@@ -1418,4 +1419,3 @@ export default function Story() {
     </React.Fragment>);
 
 }
-
