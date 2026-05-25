@@ -53,7 +53,7 @@ const SYLLABUS_TO_DB_MAP: Record<string, string> = {
   'M4-T1-S3': 'M1-S3', // Sustentabilidade em Negócios
   'M4-T1-S4': 'M2-S1', // Gestão de Negócios
   'M4-T1-S5': 'M2-S2', // Demonstrações Contábeis
-  'M4-T1-S6': 'M5-S2', // Empreendedorismo e Inovação Exponencial (M5-S2 no BD)
+  'M4-T1-S6': 'M2-S3', // Matemática Financeira
   
   // Pilar 2: Finanças e Inteligência Quantitativa
   'M4-T2-S1': 'M6-S1', // Análise Financeira (M6-S1 no BD)
@@ -404,7 +404,8 @@ const ACADEMIC_SYLLABUS = [
   { id: 'M4-T1-S2', topicId: 'M4-T1', title: 'Pensamento Criativo', subtitle: 'IE · Neurociência e Ideação', duration: '18:45' },
   { id: 'M4-T1-S3', topicId: 'M4-T1', title: 'Sustentabilidade em Negócios', subtitle: 'IE · ESG e Valor Compartilhado', duration: '25:30' },
   { id: 'M4-T1-S4', topicId: 'M4-T1', title: 'Gestão de Negócios', subtitle: 'IE · Canvas e Estratégia Corporativa', duration: '35:40' },
-  { id: 'M4-T1-S5', topicId: 'M4-T1', title: 'Demonstrações Contábeis', subtitle: 'IE · Balanço, DRE e Fluxo de Caixa', duration: '31:20' }
+  { id: 'M4-T1-S5', topicId: 'M4-T1', title: 'Demonstrações Contábeis', subtitle: 'IE · Balanço, DRE e Fluxo de Caixa', duration: '31:20' },
+  { id: 'M4-T1-S6', topicId: 'M4-T1', title: 'Matemática Financeira', subtitle: 'IE · O Valor do Dinheiro no Tempo', duration: '28:45' }
 ]
 
 function ExecutiveMasterclassTheater({ 
