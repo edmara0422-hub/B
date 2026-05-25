@@ -2,9 +2,9 @@
 export interface SubsectionContent {
   title: string
   content: string
-  quote?: string
+  quote?: string | null
   studyCase?: { title: string; body: string } | null
-  deepDive?: string
+  deepDive?: string | null
 }
 
 export interface ChapterContent {
