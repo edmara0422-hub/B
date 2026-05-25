@@ -42,7 +42,8 @@ import {
   SimNestedSustainability, SimESGScanner, SimFrameworkConstellation, SimGreenwashingFilter, SimSMARTLock, SimBPMNFlow, SimCertGlobe,
   SimPDCACycle, SimBusinessCanvas, SimStrategicTripod, SimValueChain, SimTaxMatrix,
   SimAccountingLedger, SimBalanceScale, SimIncomeWaterfall, SimCashflowTanks, SimDoubleEntryOrbit,
-  SimTimeDilator, SimCompoundGravity, SimVPLSpectrometer, SimCorporateGyroscope
+  SimTimeDilator, SimCompoundGravity, SimVPLSpectrometer, SimCorporateGyroscope,
+  SimMarketEras, SimValuePerception, SimNeedsDesiresDemand
 } from '@/components/sea/simulations-6d'
 import { SUBJECTS_DB } from '@/data/caderno-content-m1-m8'
 
@@ -54,6 +55,7 @@ const SYLLABUS_TO_DB_MAP: Record<string, string> = {
   'M4-T1-S4': 'M2-S1', // Gestão de Negócios
   'M4-T1-S5': 'M2-S2', // Demonstrações Contábeis
   'M4-T1-S6': 'M2-S3', // Matemática Financeira
+  'M4-T1-S7': 'M3-S1', // Economia de Empresa e Análise Mercadológica
   
   // Pilar 2: Finanças e Inteligência Quantitativa
   'M4-T2-S1': 'M6-S1', // Análise Financeira (M6-S1 no BD)
@@ -405,7 +407,8 @@ const ACADEMIC_SYLLABUS = [
   { id: 'M4-T1-S3', topicId: 'M4-T1', title: 'Sustentabilidade em Negócios', subtitle: 'IE · ESG e Valor Compartilhado', duration: '25:30' },
   { id: 'M4-T1-S4', topicId: 'M4-T1', title: 'Gestão de Negócios', subtitle: 'IE · Canvas e Estratégia Corporativa', duration: '35:40' },
   { id: 'M4-T1-S5', topicId: 'M4-T1', title: 'Demonstrações Contábeis', subtitle: 'IE · Balanço, DRE e Fluxo de Caixa', duration: '31:20' },
-  { id: 'M4-T1-S6', topicId: 'M4-T1', title: 'Matemática Financeira', subtitle: 'IE · O Valor do Dinheiro no Tempo', duration: '28:45' }
+  { id: 'M4-T1-S6', topicId: 'M4-T1', title: 'Matemática Financeira', subtitle: 'IE · O Valor do Dinheiro no Tempo', duration: '28:45' },
+  { id: 'M4-T1-S7', topicId: 'M4-T1', title: 'Economia e Análise Mercadológica', subtitle: 'IE · Fundamentos do Marketing e Criação de Valor', duration: '35:10' }
 ]
 
 function ExecutiveMasterclassTheater({ 
@@ -1076,7 +1079,7 @@ function NASA6DSimulator({ dbId, chapterIndex, theme }: { dbId: string; chapterI
     }, 1200)
   }
 
-  const has6DSimulations = dbId === 'M4-S1' || dbId === 'M1-S1' || dbId === 'M1-S2' || dbId === 'M1-S3' || dbId === 'M2-S1' || dbId === 'M2-S2' || dbId === 'M2-S3'
+  const has6DSimulations = dbId === 'M4-S1' || dbId === 'M1-S1' || dbId === 'M1-S2' || dbId === 'M1-S3' || dbId === 'M2-S1' || dbId === 'M2-S2' || dbId === 'M2-S3' || dbId === 'M3-S1'
 
   return (
     <div className="flex flex-col justify-between h-full w-full space-y-4">
@@ -1222,6 +1225,14 @@ function NASA6DSimulator({ dbId, chapterIndex, theme }: { dbId: string; chapterI
                 {chapterIndex === 1 && <SimCompoundGravity theme={theme} addLog={addLog} />}
                 {chapterIndex === 2 && <SimVPLSpectrometer theme={theme} addLog={addLog} />}
                 {chapterIndex === 3 && <SimCorporateGyroscope theme={theme} addLog={addLog} />}
+              </>
+            )}
+
+            {dbId === 'M3-S1' && (
+              <>
+                {chapterIndex === 0 && <SimMarketEras theme={theme} addLog={addLog} />}
+                {chapterIndex === 1 && <SimValuePerception theme={theme} addLog={addLog} />}
+                {chapterIndex === 2 && <SimNeedsDesiresDemand theme={theme} addLog={addLog} />}
               </>
             )}
           </div>
