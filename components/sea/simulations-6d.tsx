@@ -2830,7 +2830,7 @@ export function SimEthicsFrameworks({ theme, addLog }: { theme: any, addLog?: (m
           <div className="flex flex-col items-center text-[#00ffd0]">
             <div className="text-[12px] font-bold mb-2">DEVER INCONDICIONAL</div>
             <div className="w-32 h-[1px] bg-[#00ffd0] my-2" />
-            <div className="text-[10px] text-center max-w-[150px]">"É justificável envenenar clientes para economizar?" -> NÃO.</div>
+            <div className="text-[10px] text-center max-w-[150px]">"É justificável envenenar clientes para economizar?" -&gt; NÃO.</div>
             <div className="mt-4 text-[8px] tracking-widest border border-[#00ffd0] px-2 py-1">AÇÃO ESCOLHIDA: RECALL TOTAL ($100M)</div>
           </div>
         )}
