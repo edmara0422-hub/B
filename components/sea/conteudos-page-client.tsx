@@ -46,7 +46,8 @@ import {
   SimMarketEras, SimValuePerception, SimNeedsDesiresDemand,
   SimLeadershipTheories, SimTuckmanModel, SimMotivationPsychology, SimCommunicationChannels, SimTeamDysfunctions, SimVUCALeadership,
   SimCriticalThinking, SimEthicsFrameworks, SimPoliticalPhilosophy, SimEasternAesthetics,
-  SimCalculusOptimization, SimFinancialIntegrals, SimBreakEvenLeverage
+  SimCalculusOptimization, SimFinancialIntegrals, SimBreakEvenLeverage,
+  SimStatisticalFoundations, SimHypothesisTesting, SimCohortStorytelling, SimMachineLearningPredictive
 } from '@/components/sea/simulations-6d'
 import { SUBJECTS_DB } from '@/data/caderno-content-m1-m8'
 
@@ -62,6 +63,7 @@ const SYLLABUS_TO_DB_MAP: Record<string, string> = {
   'M4-T1-S8': 'M3-S2', // Liderança e Gestão de Equipes
   'M4-T1-S9': 'M4-T1-S9', // Filosofia Aplicada aos Negócios
   'M4-T1-S10': 'M4-S2', // Cálculo Aplicado a Negócios
+  'M4-T1-S11': 'M4-S3', // Análise Estatística
   
   // Pilar 2: Finanças e Inteligência Quantitativa
   'M4-T2-S1': 'M6-S1', // Análise Financeira (M6-S1 no BD)
@@ -417,7 +419,8 @@ const ACADEMIC_SYLLABUS = [
   { id: 'M4-T1-S7', topicId: 'M4-T1', title: 'Economia e Análise Mercadológica', subtitle: 'IE · Fundamentos do Marketing e Criação de Valor', duration: '35:10' },
   { id: 'M4-T1-S8', topicId: 'M4-T1', title: 'Liderança e Gestão de Equipes', subtitle: 'IE · Cultura, Conflito e Alta Performance', duration: '41:20' },
   { id: 'M4-T1-S9', topicId: 'M4-T1', title: 'Filosofia Aplicada aos Negócios', subtitle: 'IE · Ética, Lógica e Decisão', duration: '30:15' },
-  { id: 'M4-T1-S10', topicId: 'M4-T1', title: 'Cálculo Aplicado a Negócios', subtitle: 'IE · Derivadas, Integrais e Break-Even', duration: '29:40' }
+  { id: 'M4-T1-S10', topicId: 'M4-T1', title: 'Cálculo Aplicado a Negócios', subtitle: 'IE · Derivadas, Integrais e Break-Even', duration: '29:40' },
+  { id: 'M4-T1-S11', topicId: 'M4-T1', title: 'Análise Estatística', subtitle: 'IE · Regressão, Probabilidade e Data Storytelling', duration: '34:50' }
 ]
 
 function ExecutiveMasterclassTheater({ 
@@ -1088,7 +1091,7 @@ function NASA6DSimulator({ dbId, chapterIndex, theme }: { dbId: string; chapterI
     }, 1200)
   }
 
-  const has6DSimulations = dbId === 'M4-S1' || dbId === 'M1-S1' || dbId === 'M1-S2' || dbId === 'M1-S3' || dbId === 'M2-S1' || dbId === 'M2-S2' || dbId === 'M2-S3' || dbId === 'M3-S1' || dbId === 'M3-S2' || dbId === 'M4-T1-S9' || dbId === 'M4-S2'
+  const has6DSimulations = dbId === 'M4-S1' || dbId === 'M1-S1' || dbId === 'M1-S2' || dbId === 'M1-S3' || dbId === 'M2-S1' || dbId === 'M2-S2' || dbId === 'M2-S3' || dbId === 'M3-S1' || dbId === 'M3-S2' || dbId === 'M4-T1-S9' || dbId === 'M4-S2' || dbId === 'M4-S3'
 
   return (
     <div className="flex flex-col justify-between h-full w-full space-y-4">
@@ -1270,6 +1273,15 @@ function NASA6DSimulator({ dbId, chapterIndex, theme }: { dbId: string; chapterI
                 {chapterIndex === 0 && <SimCalculusOptimization theme={theme} addLog={addLog} />}
                 {chapterIndex === 1 && <SimFinancialIntegrals theme={theme} addLog={addLog} />}
                 {chapterIndex === 2 && <SimBreakEvenLeverage theme={theme} addLog={addLog} />}
+              </>
+            )}
+
+            {dbId === 'M4-S3' && (
+              <>
+                {chapterIndex === 0 && <SimStatisticalFoundations theme={theme} addLog={addLog} />}
+                {chapterIndex === 1 && <SimHypothesisTesting theme={theme} addLog={addLog} />}
+                {chapterIndex === 2 && <SimCohortStorytelling theme={theme} addLog={addLog} />}
+                {chapterIndex === 3 && <SimMachineLearningPredictive theme={theme} addLog={addLog} />}
               </>
             )}
           </div>
