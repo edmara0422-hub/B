@@ -50,7 +50,8 @@ import {
   SimStatisticalFoundations, SimHypothesisTesting, SimCohortStorytelling, SimMachineLearningPredictive,
   SimMintoPyramid, SimToulminModel, SimCriticalReadingSQ3R, SimDuarteStorytelling,
   SimEffectuationLogic, SimLeanStartupMVP, SimUnitEconomics, SimVCFundingJourney,
-  SimMacroIndicatorsPanel, SimEconomicCyclesWave, SimBrazilStructuralChallenges, SimWorkforceFinanceSystem
+  SimMacroIndicatorsPanel, SimEconomicCyclesWave, SimBrazilStructuralChallenges, SimWorkforceFinanceSystem,
+  SimFinancialAnalysisVH, SimValuationTriangulation, SimWorkingCapitalCycle, SimIntegratedDiagnostics
 } from '@/components/sea/simulations-6d'
 import { SUBJECTS_DB } from '@/data/caderno-content-m1-m8'
 
@@ -429,7 +430,10 @@ const ACADEMIC_SYLLABUS = [
   { id: 'M4-T1-S11', topicId: 'M4-T1', title: 'Análise Estatística', subtitle: 'IE · Regressão, Probabilidade e Data Storytelling', duration: '34:50' },
   { id: 'M4-T1-S12', topicId: 'M4-T1', title: 'Leitura e Escrita Corporativa', subtitle: 'IE · Comunicação, Argumentação e Impacto', duration: '28:15' },
   { id: 'M4-T1-S13', topicId: 'M4-T1', title: 'Empreendedorismo e Inovação', subtitle: 'IE · MVP, Causation vs Effectuation e Funding', duration: '36:45' },
-  { id: 'M4-T1-S14', topicId: 'M4-T1', title: 'Ambiente Macroeconômico', subtitle: 'IE · Ciclos, Taxa Selic e Vantagens do Brasil', duration: '31:20' }
+  { id: 'M4-T1-S14', topicId: 'M4-T1', title: 'Ambiente Macroeconômico', subtitle: 'IE · Ciclos, Taxa Selic e Vantagens do Brasil', duration: '31:20' },
+  
+  // Pilar 2: Finanças e Inteligência Quantitativa
+  { id: 'M4-T2-S1', topicId: 'M4-T2', title: 'Análise Financeira', subtitle: 'FQ · Análise Vertical, Valuation e Capital de Giro', duration: '38:10' }
 ]
 
 function ExecutiveMasterclassTheater({ 
@@ -1100,7 +1104,7 @@ function NASA6DSimulator({ dbId, chapterIndex, theme }: { dbId: string; chapterI
     }, 1200)
   }
 
-  const has6DSimulations = dbId === 'M4-S1' || dbId === 'M1-S1' || dbId === 'M1-S2' || dbId === 'M1-S3' || dbId === 'M2-S1' || dbId === 'M2-S2' || dbId === 'M2-S3' || dbId === 'M3-S1' || dbId === 'M3-S2' || dbId === 'M4-T1-S9' || dbId === 'M4-S2' || dbId === 'M4-S3' || dbId === 'M5-S1' || dbId === 'M5-S2' || dbId === 'M5-S3'
+  const has6DSimulations = dbId === 'M4-S1' || dbId === 'M1-S1' || dbId === 'M1-S2' || dbId === 'M1-S3' || dbId === 'M2-S1' || dbId === 'M2-S2' || dbId === 'M2-S3' || dbId === 'M3-S1' || dbId === 'M3-S2' || dbId === 'M4-T1-S9' || dbId === 'M4-S2' || dbId === 'M4-S3' || dbId === 'M5-S1' || dbId === 'M5-S2' || dbId === 'M5-S3' || dbId === 'M6-S1'
 
   return (
     <div className="flex flex-col justify-between h-full w-full space-y-4">
@@ -1318,6 +1322,15 @@ function NASA6DSimulator({ dbId, chapterIndex, theme }: { dbId: string; chapterI
                 {chapterIndex === 1 && <SimEconomicCyclesWave theme={theme} addLog={addLog} />}
                 {chapterIndex === 2 && <SimBrazilStructuralChallenges theme={theme} addLog={addLog} />}
                 {chapterIndex === 3 && <SimWorkforceFinanceSystem theme={theme} addLog={addLog} />}
+              </>
+            )}
+
+            {dbId === 'M6-S1' && (
+              <>
+                {chapterIndex === 0 && <SimFinancialAnalysisVH theme={theme} addLog={addLog} />}
+                {chapterIndex === 1 && <SimValuationTriangulation theme={theme} addLog={addLog} />}
+                {chapterIndex === 2 && <SimWorkingCapitalCycle theme={theme} addLog={addLog} />}
+                {chapterIndex === 3 && <SimIntegratedDiagnostics theme={theme} addLog={addLog} />}
               </>
             )}
           </div>
