@@ -41,6 +41,15 @@ const nextConfig = {
     },
   }),
 
+  
+  async rewrites() {
+    return [
+      {
+        source: '/design-space',
+        destination: '/walkthrough.html',
+      },
+    ];
+  },
   experimental: {
     // Correct Next.js schema location for allowedDevOrigins
     allowedDevOrigins: ['192.168.18.9', '127.0.0.1', 'localhost'],
