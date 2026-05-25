@@ -405,7 +405,7 @@ function FloatingVideoPlayer({ moduleTitle, moduleId }: { moduleTitle: string; m
   )
 }
 
-// ── Business Module Custom High-Fidelity Components ──────────────────────────
+// ── Module Playlists ───────────────────────────────────────────────────────────────
 
 const BUSINESS_PLAYLIST = [
   { id: 'M4-T1', topicId: 'M4-T1', title: 'Liderança e Gestão de Times', subtitle: 'Aula 01 · Estratégia de Equipes e Propósito', duration: '28:30' },
@@ -415,7 +415,20 @@ const BUSINESS_PLAYLIST = [
   { id: 'M4-T5', topicId: 'M4-T5', title: 'Gestão de Arquivos corporativos', subtitle: 'Aula 05 · Repositórios baseados em RBAC e Segurança', duration: '22:15' }
 ]
 
+const NEURO_PLAYLIST = [
+  { id: 'M1-T1', topicId: 'M1-S1', title: 'O Organismo e o SN', subtitle: 'Aula 01 · 15 slides · 2 simulações', duration: '20:00' },
+  { id: 'M1-T2', topicId: 'M1-S2', title: 'Neurodesenvolvimento', subtitle: 'Aula 02 · 19 slides · 2 simulações', duration: '25:00' },
+  { id: 'M1-T3', topicId: 'M1-S3', title: 'Base Celular e Fisiológica', subtitle: 'Aula 03 · 17 slides · 5 simulações', duration: '30:00' },
+  { id: 'M1-T4', topicId: 'M1-S4', title: 'Suporte, Nutrição e Proteção', subtitle: 'Aula 04 · 12 slides · 3 simulações', duration: '18:00' }
+]
+
 const ACADEMIC_SYLLABUS = [
+  // Pilar Neuro (M1)
+  { id: 'M1-T1-S1', topicId: 'M1-S1', title: 'O Organismo e o SN', subtitle: 'Neuro · 15 slides', duration: '20:00' },
+  { id: 'M1-T2-S1', topicId: 'M1-S2', title: 'Neurodesenvolvimento', subtitle: 'Neuro · 19 slides', duration: '25:00' },
+  { id: 'M1-T3-S1', topicId: 'M1-S3', title: 'Base Celular e Fisiológica', subtitle: 'Neuro · 17 slides', duration: '30:00' },
+  { id: 'M1-T4-S1', topicId: 'M1-S4', title: 'Suporte, Nutrição e Proteção', subtitle: 'Neuro · 12 slides', duration: '18:00' },
+
   // Pilar 1: Inovação e Estratégia
   { id: 'M4-T1-S1', topicId: 'M4-T1', title: 'Inovação, Transformação e Ferramentas Digitais', subtitle: 'IE · Era Digital e Automação', duration: '22:15' },
   { id: 'M4-T1-S2', topicId: 'M4-T1', title: 'Pensamento Criativo', subtitle: 'IE · Neurociência e Ideação', duration: '18:45' },
@@ -454,19 +467,21 @@ function ExecutiveMasterclassTheater({
   const theme = MODULE_THEMES[moduleId ?? 'M4'] || MODULE_THEMES.M4
   const [playing, setPlaying] = useState(false)
   const [progress, setProgress] = useState(24)
+  
+  const playlist = moduleId === 'M1' ? NEURO_PLAYLIST : BUSINESS_PLAYLIST
 
   // Sync with activeTopicId if set from outside
   useEffect(() => {
     if (activeTopicId) {
-      const activeItem = BUSINESS_PLAYLIST[activeLessonIndex]
+      const activeItem = playlist[activeLessonIndex]
       if (activeItem?.topicId !== activeTopicId) {
-        const idx = BUSINESS_PLAYLIST.findIndex(item => item.topicId === activeTopicId)
+        const idx = playlist.findIndex(item => item.topicId === activeTopicId)
         if (idx !== -1) {
           onChangeLessonIndex(idx)
         }
       }
     }
-  }, [activeTopicId])
+  }, [activeTopicId, playlist])
 
   useEffect(() => {
     if (!playing) return
@@ -476,14 +491,14 @@ function ExecutiveMasterclassTheater({
     return () => clearInterval(interval)
   }, [playing])
 
-  const activeLesson = BUSINESS_PLAYLIST[activeLessonIndex] ?? BUSINESS_PLAYLIST[0]
+  const activeLesson = playlist[activeLessonIndex] ?? playlist[0]
 
   const handleLessonSelect = (index: number) => {
     onChangeLessonIndex(index)
     setProgress(0)
     setPlaying(false)
     if (onSelectTopic) {
-      onSelectTopic(BUSINESS_PLAYLIST[index].topicId)
+      onSelectTopic(playlist[index].topicId)
     }
   }
 
@@ -513,7 +528,7 @@ function ExecutiveMasterclassTheater({
 
         <div className="absolute top-4 left-4 z-10 flex gap-2">
           <span className="text-[7.5px] uppercase tracking-widest font-bold px-2 py-0.5 rounded bg-black/50 border border-white/10" style={{ color: theme.primary }}>
-            Masterclass M4 · Aula {activeLessonIndex + 1}
+            {moduleId === 'M1' ? 'Módulo 1 · Neurociência' : 'Masterclass M4 · Aula ' + (activeLessonIndex + 1)}
           </span>
           <span className="text-[7.5px] uppercase tracking-widest font-bold px-2 py-0.5 rounded bg-black/50 border border-white/10 text-white/50">
             {activeLesson.duration}
@@ -575,7 +590,7 @@ function ExecutiveMasterclassTheater({
         <div className="pt-2 border-t border-white/[0.04]">
           <span className="text-[7.5px] uppercase tracking-wider text-white/30 font-bold block mb-2">Playlist da Aula Executiva</span>
           <div className="flex flex-wrap gap-2">
-            {BUSINESS_PLAYLIST.map((item, idx) => {
+            {playlist.map((item, idx) => {
               const isSelected = idx === activeLessonIndex
               const isGold = idx % 2 === 0
               const itemColor = isGold ? '#d4b87a' : '#cbd5e1'
@@ -2179,7 +2194,9 @@ export default function ConteudosPageClient() {
     requestAnimationFrame(() => {
       setActiveTopicId(topicId)
       // Automatically jump to the first lesson belonging to this topic/KPI
-      const idx = BUSINESS_PLAYLIST.findIndex(item => item.topicId === topicId)
+      const activeModuleId = MODULES[moduleIndex]?.id
+      const playlist = activeModuleId === 'M1' ? NEURO_PLAYLIST : BUSINESS_PLAYLIST
+      const idx = playlist.findIndex(item => item.topicId === topicId)
       if (idx !== -1) {
         setActiveLessonIndex(idx)
       }
@@ -2188,14 +2205,16 @@ export default function ConteudosPageClient() {
 
   // Sync masterclass video with the academic syllabus subjects
   useEffect(() => {
-    const lesson = BUSINESS_PLAYLIST[activeLessonIndex]
+    const activeModuleId = MODULES[activeIndex ?? 0]?.id
+    const playlist = activeModuleId === 'M1' ? NEURO_PLAYLIST : BUSINESS_PLAYLIST
+    const lesson = playlist[activeLessonIndex]
     if (lesson) {
       const firstSubjectIdx = ACADEMIC_SYLLABUS.findIndex(s => s.topicId === lesson.topicId)
       if (firstSubjectIdx !== -1) {
         setActiveSubjectIndex(firstSubjectIdx)
       }
     }
-  }, [activeLessonIndex])
+  }, [activeLessonIndex, activeIndex])
 
   // Sync academic subject back to masterclass video if they click on the index
   function handleSubjectIndexChange(idx: number) {
@@ -2203,7 +2222,9 @@ export default function ConteudosPageClient() {
     const subject = ACADEMIC_SYLLABUS[idx]
     if (subject) {
       // Find which masterclass video maps to this topic
-      const lessonIdx = BUSINESS_PLAYLIST.findIndex(l => l.topicId === subject.topicId)
+      const activeModuleId = MODULES[activeIndex ?? 0]?.id
+      const playlist = activeModuleId === 'M1' ? NEURO_PLAYLIST : BUSINESS_PLAYLIST
+      const lessonIdx = playlist.findIndex(l => l.topicId === subject.topicId)
       if (lessonIdx !== -1 && lessonIdx !== activeLessonIndex) {
         setActiveLessonIndex(lessonIdx)
         setActiveTopicId(subject.topicId)
@@ -2377,7 +2398,7 @@ export default function ConteudosPageClient() {
                       </div>
 
                       {/* Sub-cards Dashboard Grid */}
-                      {current.id === 'M4' ? (
+                      {current.id === 'M4' || current.id === 'M1' ? (
                         <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 px-6 pb-6 items-stretch w-full">
                           {/* Card 1: Masterclass playlist cinema */}
                           <div className="flex w-full">
@@ -2419,7 +2440,7 @@ export default function ConteudosPageClient() {
                     </div>
 
                     {/* Operational Notebook Content Viewer / Estação Unificada de Estudos */}
-                    {current.id === 'M4' ? (
+                    {(current.id === 'M4' || current.id === 'M1') ? (
                       <ExecutiveStudyBriefing 
                         moduleId={current.id} 
                         activeTopicId={activeTopicId} 
@@ -2501,7 +2522,7 @@ export default function ConteudosPageClient() {
                                 {/* Pillars of Knowledge inside Connection Map */}
                                 <div className="mt-6 pt-4 border-t border-white/[0.04]">
                                   <span className="text-[8px] uppercase tracking-wider font-bold text-white/30 block mb-2.5">
-                                    {current.id === 'M4' ? 'Pilares Corporativos' : 'Pilares do Conhecimento'}
+                                    {(current.id === 'M4' || current.id === 'M1') ? 'Pilares Corporativos' : 'Pilares do Conhecimento'}
                                   </span>
                                   <ul className="space-y-2">
                                     {current.concepts.map((concept, idx) => (

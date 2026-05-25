@@ -2,143 +2,137 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
+import "./design-space/editorial.css";
 
-export default function IntroPremiumPage() {
+export default function BusinessManifestoPage() {
   const router = useRouter();
 
   return (
     <div style={{
       minHeight: '100vh',
-      backgroundColor: '#050505',
-      color: '#f4f4f6',
-      fontFamily: 'var(--sans, "Poppins", sans-serif)',
-      display: 'flex',
-      flexDirection: 'column',
-      position: 'relative',
-      overflow: 'hidden'
+      backgroundColor: 'var(--bg, #050505)',
+      color: 'var(--ink, #f4f4f6)',
+      fontFamily: 'var(--sans)',
+      paddingBottom: '10vh',
+      overflowX: 'hidden'
     }}>
-      {/* Glow Backdrop */}
-      <div style={{
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        width: '120vw',
-        height: '120vw',
-        maxWidth: '1200px',
-        maxHeight: '1200px',
-        background: 'radial-gradient(circle, rgba(210,175,90,0.06) 0%, rgba(210,175,90,0.01) 30%, transparent 60%)',
-        borderRadius: '50%',
-        pointerEvents: 'none',
-        zIndex: 0
-      }} />
-      
-      {/* Faint Grid Overlay for texture */}
-      <div style={{
-        position: 'absolute',
-        inset: 0,
-        pointerEvents: 'none',
-        background: `
-          linear-gradient(110deg, transparent 0%, rgba(255,255,255,0.015) 18%, transparent 34%),
-          repeating-linear-gradient(90deg, rgba(255,255,255,0.008) 0 1px, transparent 1px 120px)`,
-        zIndex: 0
-      }} />
-
-      {/* Header */}
+      {/* Header Fixo Minimalista */}
       <header style={{
         padding: '2rem 4rem',
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        zIndex: 10,
-        position: 'relative'
+        position: 'sticky',
+        top: 0,
+        backgroundColor: 'rgba(5,5,5,0.85)',
+        backdropFilter: 'blur(12px)',
+        zIndex: 50,
+        borderBottom: '1px solid rgba(255,255,255,0.05)'
       }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#d2af5a" strokeWidth="1.5">
-            <path d="M12 2L2 22h20L12 2z" />
-            <path d="M12 2v20" />
-            <path d="M6 12h12" />
-          </svg>
-          <span style={{ 
-            fontFamily: 'var(--sans, "Inter", sans-serif)', 
-            fontWeight: 400, 
-            letterSpacing: '0.3em',
-            fontSize: '0.9rem',
-            color: '#e5e5e5'
-          }}>
-            INTELLIGENCE PLATFORM BUSINESS
-          </span>
+        <div style={{ fontFamily: 'var(--sans)', fontWeight: 500, letterSpacing: '0.2em', fontSize: '0.85rem' }}>
+          INTELLIGENCE PLATFORM BUSINESS
         </div>
-        
-        <div style={{ display: 'flex', gap: '2rem', fontSize: '0.85rem', color: 'rgba(255,255,255,0.6)' }}>
-          <span style={{ cursor: 'pointer' }}>Soluções</span>
-          <span style={{ cursor: 'pointer' }}>Recursos</span>
-          <span style={{ cursor: 'pointer' }}>Empresa</span>
-        </div>
-
-        <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center' }}>
-          <span style={{ fontSize: '0.85rem', cursor: 'pointer' }}>Entrar</span>
-          <button style={{
-            background: 'linear-gradient(135deg, #d2af5a 0%, #8a7034 100%)',
-            color: '#000',
-            border: 'none',
-            padding: '0.6rem 1.5rem',
-            borderRadius: '4px',
-            fontSize: '0.85rem',
-            fontWeight: 500,
+        <button 
+          onClick={() => router.push('/design-space')}
+          style={{
+            background: 'none',
+            border: '1px solid var(--gold)',
+            color: 'var(--gold)',
+            padding: '0.5rem 1.5rem',
+            borderRadius: '100px',
+            fontSize: '0.8rem',
+            letterSpacing: '0.1em',
+            textTransform: 'uppercase',
             cursor: 'pointer'
-          }}>
-            Começar
-          </button>
-        </div>
+          }}
+        >
+          Acessar Ecossistema
+        </button>
       </header>
 
-      {/* Main Content */}
-      <main style={{
-        flex: 1,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        textAlign: 'center',
-        zIndex: 10,
-        position: 'relative',
-        padding: '0 2rem'
-      }}>
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-          style={{ maxWidth: '800px' }}
-        >
-          <h1 style={{
-            fontFamily: 'var(--serif, "Cormorant Garamond", serif)',
-            fontSize: 'clamp(3rem, 6vw, 5.5rem)',
-            fontWeight: 300,
-            lineHeight: 1.1,
-            marginBottom: '2rem',
-            color: '#fff',
-            letterSpacing: '-0.02em'
-          }}>
-            Elevando o Padrão da <br />
-            Saúde com Inteligência
-          </h1>
+      <main style={{ maxWidth: '1000px', margin: '0 auto', padding: '0 2rem' }}>
+        
+        {/* Título e Imagem Business */}
+        <section style={{ marginTop: '10vh', marginBottom: '15vh', display: 'flex', alignItems: 'center', gap: '4rem' }}>
+          
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 1 }}
+            style={{ flex: 1 }}
+          >
+            <h1 style={{
+              fontFamily: 'var(--serif)',
+              fontSize: 'clamp(3rem, 5vw, 4.5rem)',
+              fontWeight: 300,
+              lineHeight: 1.1,
+              letterSpacing: '-0.02em',
+              color: '#fff',
+              marginBottom: '2rem'
+            }}>
+              Muito mais que um app.<br/>
+              Um motor para <i style={{ color: 'var(--gold)' }}>inovar.</i>
+            </h1>
+            <p style={{ fontSize: '1.1rem', lineHeight: 1.7, color: 'var(--ink-soft)', fontWeight: 300, maxWidth: '500px' }}>
+              A <b>Intelligence Platform Business (IPB)</b> ultrapassa os limites da clínica. Não construímos apenas calculadoras médicas; construímos um ecossistema. É sobre o poder de escalar conhecimento, inovar processos hospitalares e gerar novos negócios em saúde através da tecnologia de ponta.
+            </p>
+          </motion.div>
 
-          <p style={{
-            fontFamily: 'var(--sans, "Inter", sans-serif)',
-            fontSize: '1.1rem',
-            lineHeight: 1.6,
-            color: 'rgba(244,244,246,0.7)',
-            maxWidth: '650px',
-            margin: '0 auto 3.5rem',
-            fontWeight: 300
-          }}>
-            Transformando dados clínicos em conhecimento acionável. Nossa plataforma integral une educação avançada e gestão estratégica baseada em IA para impulsionar a excelência hospitalar e otimizar resultados.
-          </p>
+          {/* O Cubo "B" de Business */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1.2, delay: 0.2 }}
+            style={{ flex: 1, position: 'relative', display: 'flex', justifyContent: 'center' }}
+          >
+            <div style={{
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              width: '120%',
+              height: '120%',
+              background: 'radial-gradient(circle, rgba(210,175,90,0.15) 0%, transparent 70%)',
+              filter: 'blur(40px)',
+              zIndex: 0
+            }} />
+            <img 
+              src="/business_cube.png" 
+              alt="IPB Business Core" 
+              style={{ width: '100%', maxWidth: '450px', height: 'auto', zIndex: 1, position: 'relative' }} 
+            />
+          </motion.div>
 
-          <motion.button
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
+        </section>
+
+        {/* Visão de Construção e Inovação */}
+        <section style={{ marginBottom: '12vh' }}>
+          <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '2rem', display: 'flex', gap: '4rem' }}>
+            <div style={{ flex: '0 0 200px' }}>
+              <span style={{ color: 'var(--gold)', fontSize: '0.85rem', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+                O Ecossistema IPB
+              </span>
+            </div>
+            <div style={{ flex: 1 }}>
+              <h2 style={{ fontFamily: 'var(--serif)', fontSize: '2.5rem', fontWeight: 300, marginBottom: '1.5rem', color: '#fff' }}>
+                A Fundação para o Futuro.
+              </h2>
+              <p style={{ fontSize: '1.1rem', lineHeight: 1.7, color: 'var(--ink-soft)', fontWeight: 300 }}>
+                O mercado não precisa de mais um aplicativo isolado. O mercado precisa de uma fundação tecnológica onde educação avançada (M1 a M8), inteligência artificial preditiva e inteligência de negócios convirjam perfeitamente.
+                <br/><br/>
+                O IPB foi arquitetado para ser essa fundação. Cada linha de código, desde o Scan IA até o ambiente de simulação 3D, foi projetada não apenas para resolver a dor do plantão de hoje, mas para permitir que instituições de saúde <b>construam, dimensionem e inovem</b> a medicina de amanhã.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* Call to Action */}
+        <section style={{ textAlign: 'center', marginTop: '15vh' }}>
+          <h2 style={{ fontFamily: 'var(--serif)', fontSize: '3rem', fontWeight: 300, marginBottom: '2rem', color: '#fff' }}>
+            Descubra o potencial da plataforma.
+          </h2>
+          <button 
             onClick={() => router.push('/design-space')}
             style={{
               background: 'linear-gradient(135deg, #d2af5a 0%, #8a7034 100%)',
@@ -146,70 +140,18 @@ export default function IntroPremiumPage() {
               border: 'none',
               padding: '1.2rem 3rem',
               borderRadius: '100px',
-              fontSize: '0.9rem',
+              fontSize: '1rem',
               fontWeight: 600,
               cursor: 'pointer',
               letterSpacing: '0.1em',
               textTransform: 'uppercase',
-              boxShadow: '0 0 40px rgba(210,175,90,0.25), inset 0 1px 1px rgba(255,255,255,0.4)',
-              marginBottom: '5rem'
             }}
           >
-            Explorar a Plataforma
-          </motion.button>
+            Explorar Vitrine Interativa
+          </button>
+        </section>
 
-          {/* Features Row */}
-          <div style={{
-            display: 'flex',
-            justifyContent: 'center',
-            gap: '4rem',
-            borderTop: '1px solid rgba(255,255,255,0.05)',
-            paddingTop: '3rem'
-          }}>
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem' }}>
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#d2af5a" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
-                <path d="M6 12v5c3 3 9 3 12 0v-5"/>
-              </svg>
-              <span style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.7)', letterSpacing: '0.05em' }}>Educação Avançada</span>
-            </div>
-            
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem' }}>
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#d2af5a" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-                <path d="M3 9h18M9 21V9"/>
-                <path d="M14 14h2M14 18h2"/>
-              </svg>
-              <span style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.7)', letterSpacing: '0.05em' }}>Gestão com IA</span>
-            </div>
-
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem' }}>
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#d2af5a" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
-              </svg>
-              <span style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.7)', letterSpacing: '0.05em' }}>Precisão Clínica</span>
-            </div>
-          </div>
-        </motion.div>
       </main>
-      
-      {/* Footer */}
-      <footer style={{
-        padding: '2rem 4rem',
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        borderTop: '1px solid rgba(255,255,255,0.05)',
-        zIndex: 10,
-        position: 'relative'
-      }}>
-        <div style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.4)', letterSpacing: '0.05em' }}>
-          Idealizado por Edmara Rocha
-        </div>
-        <div style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.4)' }}>
-          © 2026 INTELLIGENCE PLATFORM BUSINESS. Todos os direitos reservados.
-        </div>
-      </footer>
     </div>
   );
 }
