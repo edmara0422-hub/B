@@ -12,9 +12,9 @@ export const metadata: Metadata = {
   title: 'IPB - Innovation Prototyping Board',
   description: 'Plataforma imersiva de aprendizado com simulacoes avancadas.',
   icons: {
-    icon: '/icon.svg?v=2',
-    shortcut: '/icon.svg?v=2',
-    apple: '/icon.svg?v=2',
+    icon: '/icon.svg?v=3',
+    shortcut: '/icon.svg?v=3',
+    apple: '/icon.svg?v=3',
   },
 }
 
