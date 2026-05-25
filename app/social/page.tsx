@@ -101,7 +101,7 @@ export default function SocialDesignSpace() {
 // COMPONENTES
 // ────────────────────────────────────────────────────────
 
-function TikTokMockup({ tag, title, description, Icon, gradient }) {
+function TikTokMockup({ tag, title, description, Icon, gradient }: { tag: string, title: string, description: string, Icon: any, gradient: string }) {
   return (
     <div className="relative group">
       {/* Glow effect behind the device */}
@@ -184,7 +184,7 @@ function TikTokMockup({ tag, title, description, Icon, gradient }) {
   );
 }
 
-function SidebarIcon({ Icon, count }) {
+function SidebarIcon({ Icon, count }: { Icon: any, count: string | number }) {
   return (
     <div className="flex flex-col items-center gap-1 group cursor-pointer">
       <div className="w-10 h-10 rounded-full bg-black/20 backdrop-blur-md flex items-center justify-center transition-colors group-hover:bg-black/40">
@@ -196,7 +196,7 @@ function SidebarIcon({ Icon, count }) {
 }
 
 
-function InstagramMockup({ category, title, body }) {
+function InstagramMockup({ category, title, body }: { category: string, title: string, body: string }) {
   return (
     <div className="mockup-post-ig flex flex-col">
       {/* Header */}

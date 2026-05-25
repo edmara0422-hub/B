@@ -1472,7 +1472,7 @@ function DCViewport({ children, minScale = 0.1, maxScale = 8, style = {} }) {
   // Persist viewport across reloads so the user lands back where they were
   // after an agent edit or browser refresh. The sandbox origin is already
   // per-project; pathname keeps multiple canvas files in one project apart.
-  const tfKey = 'dc-viewport:' + location.pathname;
+  const tfKey = 'dc-viewport:' + (typeof window !== "undefined" ? window.location.pathname : "");
   const saveT = React.useRef(0);
 
   const lastPostedScale = React.useRef();
@@ -1799,7 +1799,7 @@ async function dcExport(node, w, h, name, kind) {
     }
   };
   for (const ss of document.styleSheets) {
-    const base = ss.href || location.href;
+    const base = ss.href || (typeof window !== "undefined" ? window.location.href : "");
     try { walk(ss.cssRules, base); } catch { if (ss.href) scrapeCss(ss.href); }
   }
   while (pending.length) await pending.shift();
