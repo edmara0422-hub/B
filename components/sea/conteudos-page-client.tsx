@@ -39,8 +39,7 @@ import { SUBJECTS_DB } from '@/data/caderno-content-m1-m8'
 
 const SYLLABUS_TO_DB_MAP: Record<string, string> = {
   // Pilar 1: Inovação e Estratégia
-  'M4-T1-S1': 'M1-S3', // Sustentabilidade em Negócios
-  'M4-T1-S2': 'M4-S1', // Inovação, Transformação e Ferramentas Digitais (M4-S1 — conteúdo completo)
+  'M4-T1-S1': 'M4-S1', // Inovação, Transformação e Ferramentas Digitais
   'M4-T1-S3': 'M1-S2', // Pensamento Criativo
   'M4-T1-S4': 'M5-S2', // Empreendedorismo e Inovação Exponencial (M5-S2 no BD)
   'M4-T1-S5': 'M5-S2', // Empreendedorismo e Inovação Exponencial (M5-S2 no BD)
@@ -389,8 +388,7 @@ const BUSINESS_PLAYLIST = [
 ]
 
 const ACADEMIC_SYLLABUS = [
-  { id: 'M4-T1-S1', topicId: 'M4-T1', title: 'Aguardando Conteúdo 01...', subtitle: 'Aguardando pilar e subtítulo', duration: '00:00' },
-  { id: 'M4-T1-S2', topicId: 'M4-T1', title: 'Aguardando Conteúdo 02...', subtitle: 'Aguardando pilar e subtítulo', duration: '00:00' }
+  { id: 'M4-T1-S1', topicId: 'M4-T1', title: 'Inovação, Transformação e Ferramentas Digitais', subtitle: 'IE · Era Digital e Automação', duration: '22:15' }
 ]
 
 function ExecutiveMasterclassTheater({ 
