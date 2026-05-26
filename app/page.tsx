@@ -1,5 +1,11 @@
-import { redirect } from 'next/navigation';
+"use client";
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
 export default function Home() {
-  redirect('/design-space');
+  const router = useRouter();
+  useEffect(() => {
+    router.push('/design-space');
+  }, [router]);
+  return <div style={{ backgroundColor: '#000000', width: '100vw', height: '100vh' }}></div>;
 }

@@ -1449,37 +1449,42 @@ function BusinessManifestoPage() {
       {/* 1. Splash Screen - Estilo WhatsApp Business (Capa Minimalista) */}
       <section style={{ 
         height: '100vh', 
+        width: '100vw',
         display: 'flex', 
         flexDirection: 'column', 
         justifyContent: 'center', 
         alignItems: 'center',
-        position: 'relative'
+        position: 'relative',
+        backgroundColor: '#000'
       }}>
+        {/* Centro Absoluto: Apenas a Imagem do "B", elegante e nítida */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
+          initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1.5, ease: "easeOut" }}
-          style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
+          style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
         >
-          {/* Logo Typography - IPB */}
-          <div style={{ 
-            fontFamily: 'var(--serif)', 
-            fontSize: '8rem', 
-            fontWeight: 300, 
-            lineHeight: 1,
-            background: 'linear-gradient(135deg, #fff, var(--gold), #fff)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            marginBottom: '1rem'
-          }}>
-            IPB
-          </div>
-          
-          {/* Nome da Marca */}
+          <img 
+            src="/business_cube_straight.png" 
+            alt="IPB Logo" 
+            style={{ width: '300px', height: 'auto', display: 'block' }} 
+          />
+        </motion.div>
+
+        {/* Rodapé fixo estilo "from Meta" do WhatsApp Business */}
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1, duration: 1 }}
+          style={{ position: 'absolute', bottom: '50px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}
+        >
+          <span style={{ fontSize: '0.6rem', letterSpacing: '0.1em', color: '#666', textTransform: 'uppercase' }}>
+            From
+          </span>
           <h1 style={{ 
             fontFamily: 'var(--sans)', 
-            fontWeight: 400, 
-            letterSpacing: '0.4em', 
+            fontWeight: 500, 
+            letterSpacing: '0.2em', 
             fontSize: '1rem',
             color: '#fff',
             margin: 0,
@@ -1487,19 +1492,6 @@ function BusinessManifestoPage() {
           }}>
             Intelligence Platform Business
           </h1>
-        </motion.div>
-
-        {/* Indicador de Scroll na base */}
-        <motion.div 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 2, duration: 1 }}
-          style={{ position: 'absolute', bottom: '40px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px' }}
-        >
-          <span style={{ fontSize: '0.7rem', letterSpacing: '0.2em', color: 'var(--ink-soft)', textTransform: 'uppercase' }}>
-            Explorar
-          </span>
-          <div style={{ width: '1px', height: '40px', background: 'linear-gradient(to bottom, var(--gold), transparent)' }} />
         </motion.div>
       </section><section style={{ 
         minHeight: '100vh', 

@@ -17,6 +17,7 @@ export interface ChapterContent {
     insights: string[]
   }
 }
+import { SIG_PESSOAS } from './caderno-content-sig'
 
 export interface SubjectContent {
   id: string
@@ -27,6 +28,7 @@ export interface SubjectContent {
 }
 
 export const SUBJECTS_DB: SubjectContent[] = [
+  
 
   {
     id: 'N1-S1',
@@ -684,7 +686,7 @@ export const SUBJECTS_DB: SubjectContent[] = [
         subsections: [
           {
             title: "Divisões da Árvore Bronquial",
-            content: "• Brônquios principais: traqueia divide-se em D (mais vertical/largo) e E\n• Brônquios lobares (secundários): D tem 3, E tem 2\n• Brônquios segmentares (terciários): suprem segmentos broncopulmonares (10D + 9E)\n• Bronquíolos: <1mm diâmetro, se subdividem até bronquíolos terminais\n• Total: ~16 gerações de ramificação da traqueia aos bronquíolos terminais",
+            content: "• Brônquios principais: traqueia divide-se em D (mais vertical/largo) and E\n• Brônquios lobares (secundários): D tem 3, E tem 2\n• Brônquios segmentares (terciários): suprem segmentos broncopulmonares (10D + 9E)\n• Bronquíolos: <1mm diâmetro, se subdividem até bronquíolos terminais\n• Total: ~16 gerações de ramificação da traqueia aos bronquíolos terminais",
             deepDive: "Brônquio D mais vertical e largo → substâncias aspiradas se alojam mais facilmente no lado direito."
           },
           {
@@ -7679,4 +7681,5 @@ export const SUBJECTS_DB: SubjectContent[] = [
     ]
   }
 
+  , SIG_PESSOAS
 ]

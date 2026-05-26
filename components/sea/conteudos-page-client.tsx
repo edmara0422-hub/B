@@ -128,7 +128,16 @@ const SYLLABUS_TO_DB_MAP: Record<string, string> = {
   'M4-T6-S4': 'M7-S1', // Empreendedorismo Social (M7-S1 no BD)
   'M4-T6-S5': 'M7-S2', // Teologia e Sociedade (M7-S2 no BD)
   'M4-T6-S6': 'M8-S1', // Educação, Identidade e Solidariedade (M8-S1 no BD)
-  'M4-T6-S7': 'M5-S1', // Leitura e Escrita Acadêmica (M5-S1 no BD)
+  'M4-T6-S7': 'M5-S1',
+
+  // Pilar 7: SIG PESSOAS
+  'M5-T1': 'sig-pessoas',
+  'M5-T2': 'sig-pessoas',
+  'M5-T3': 'sig-pessoas',
+  'M5-T4': 'sig-pessoas',
+  'M5-T5': 'sig-pessoas',
+  'M5-T6': 'sig-pessoas',
+
 }
 
 // ── Module data ───────────────────────────────────────────────────────────────
@@ -237,6 +246,15 @@ const MODULE_THEMES: Record<string, {
     badgeBg: 'rgba(212, 184, 122, 0.14)',
     badgeText: '#d4b87a',
     gradient: 'linear-gradient(90deg, #cbd5e1 0%, #d4b87a 100%)'
+  },
+  M5: {
+    primary: '#a855f7', // purple
+    secondary: '#d8b4fe', // light purple
+    accent: 'rgba(168, 85, 247, 0.25)',
+    glow: 'rgba(168, 85, 247, 0.12)',
+    badgeBg: 'rgba(168, 85, 247, 0.10)',
+    badgeText: '#a855f7',
+    gradient: 'linear-gradient(90deg, #d8b4fe 0%, #a855f7 100%)'
   }
 }
 
@@ -429,6 +447,16 @@ function FloatingVideoPlayer({ moduleTitle, moduleId }: { moduleTitle: string; m
 }
 
 // ── Module Playlists ───────────────────────────────────────────────────────────────
+
+
+const SIG_PESSOAS_PLAYLIST = [
+  { id: 'M5-T1', topicId: 'sig-pessoas', title: 'Recrutamento e Formação', subtitle: 'Capítulo 1', duration: '15:00' },
+  { id: 'M5-T2', topicId: 'sig-pessoas', title: 'Gestão, Delegação e 6D', subtitle: 'Capítulo 2', duration: '20:00' },
+  { id: 'M5-T3', topicId: 'sig-pessoas', title: 'Equipe, Influência e OKRs', subtitle: 'Capítulo 3', duration: '18:00' },
+  { id: 'M5-T4', topicId: 'sig-pessoas', title: 'Comportamento e Impacto', subtitle: 'Capítulo 4', duration: '22:00' },
+  { id: 'M5-T5', topicId: 'sig-pessoas', title: 'Tuckman, Dados e ALX', subtitle: 'Capítulo 5', duration: '19:00' },
+  { id: 'M5-T6', topicId: 'sig-pessoas', title: 'Comunicação e Conflitos', subtitle: 'Capítulo 6', duration: '25:00' }
+]
 
 const BUSINESS_PLAYLIST = [
   { id: 'M4-T1', topicId: 'M4-T1', title: 'Liderança e Gestão de Times', subtitle: 'Aula 01 · Estratégia de Equipes e Propósito', duration: '28:30' },
