@@ -1926,7 +1926,7 @@ export function SigPessoasPanel() {
                   className="space-y-6"
                 >
                   <div className="dash-card bg-[#050505]/60 backdrop-blur-3xl border border-[#d4b87a]/20 relative overflow-hidden">
-                    <div className="absolute top-0 left-0 w-64 h-64 bg-[#d4b87a]/5 blur-[80px] mix-blend-screen pointer-events-none" />
+                    <div className="absolute top-0 right-0 w-64 h-64 bg-[#d4b87a]/5 blur-[80px] mix-blend-screen pointer-events-none" />
                     
                     <div className="relative z-10 mb-6">
                       <h4 className="text-[12px] font-mono text-[#d4b87a] font-bold tracking-widest uppercase mb-1">JORNADA DO LÍDER — FAÇA NESTA ORDEM</h4>
@@ -1939,15 +1939,19 @@ export function SigPessoasPanel() {
                       
                       {/* Step 1 */}
                       <div className="p-5 border border-[#d4b87a]/30 bg-[#d4b87a]/10 rounded-2xl relative">
-                        <div className="absolute -top-3 -left-3 w-8 h-8 rounded-full bg-[#d4b87a] text-black flex items-center justify-center font-bold font-mono text-[14px] shadow-[0_0_15px_rgba(212,184,122,0.4)]">1</div>
-                        <span className="px-2 py-0.5 bg-[#d4b87a] text-black text-[8px] font-bold uppercase tracking-widest rounded absolute top-3 right-3">COMECE AQUI</span>
+                        <div className="flex justify-between items-start mb-3 gap-2">
+                          <div className="flex items-center gap-3">
+                            <div className="w-8 h-8 rounded-full bg-[#d4b87a] text-black flex items-center justify-center font-bold font-mono text-[14px] shadow-[0_0_15px_rgba(212,184,122,0.4)] flex-shrink-0">1</div>
+                            <h5 className="text-[13px] font-bold text-white leading-tight">Autoconhecimento (PDI + IE)</h5>
+                          </div>
+                          <span className="px-2 py-0.5 bg-[#d4b87a] text-black text-[8px] font-bold uppercase tracking-widest rounded flex-shrink-0">COMECE AQUI</span>
+                        </div>
                         
-                        <h5 className="text-[13px] font-bold text-white mb-2 ml-4">Autoconhecimento (PDI + IE)</h5>
-                        <p className="text-[10px] text-white/60 mb-4 ml-4 leading-relaxed font-sans">
+                        <p className="text-[10px] text-white/60 mb-4 leading-relaxed font-sans">
                           Escreva sobre uma situação que gerou emoção intensa. Use o Diário IE (na aba Gerir) — a IA analisa o padrão e avança seu PDI automaticamente.
                         </p>
                         
-                        <div className="ml-4 space-y-2">
+                        <div className="space-y-2">
                           <button onClick={() => triggerToast('Abrindo Diário IE...', 'ok')} className="w-full text-left p-3 bg-black/40 border border-white/10 hover:border-[#d4b87a]/40 rounded-xl transition-all group flex justify-between items-center">
                             <div>
                               <span className="block text-[11px] text-white font-bold group-hover:text-[#d4b87a] transition-colors">▶ Escrever no Diário IE</span>
@@ -1960,14 +1964,15 @@ export function SigPessoasPanel() {
 
                       {/* Step 2 */}
                       <div className="p-5 border border-white/10 bg-black/40 rounded-2xl relative opacity-80 hover:opacity-100 transition-opacity">
-                        <div className="absolute -top-3 -left-3 w-8 h-8 rounded-full bg-[#1a1a1a] border border-white/20 text-white/50 flex items-center justify-center font-bold font-mono text-[14px]">2</div>
-                        
-                        <h5 className="text-[13px] font-bold text-white mb-2 ml-4">Fundamentos da Gestão</h5>
-                        <p className="text-[10px] text-white/60 mb-4 ml-4 leading-relaxed font-sans">
+                        <div className="flex items-center gap-3 mb-3">
+                          <div className="w-8 h-8 rounded-full bg-[#1a1a1a] border border-white/20 text-white/50 flex items-center justify-center font-bold font-mono text-[14px] flex-shrink-0">2</div>
+                          <h5 className="text-[13px] font-bold text-white leading-tight">Fundamentos da Gestão</h5>
+                        </div>
+                        <p className="text-[10px] text-white/60 mb-4 leading-relaxed font-sans">
                           Domine as ferramentas operacionais antes de tentar inspirar grandes mudanças. Recrutamento, Feedback, 1:1s, Delegação (M1-M4).
                         </p>
 
-                        <div className="ml-4 space-y-2">
+                        <div className="space-y-2">
                           <button onClick={() => setLideresTab('gerir')} className="w-full text-left p-3 bg-black/40 border border-white/10 hover:border-white/30 rounded-xl transition-all group flex justify-between items-center">
                             <div>
                               <span className="block text-[11px] text-white font-bold">▶ Ir para Gerir</span>
@@ -1980,23 +1985,26 @@ export function SigPessoasPanel() {
 
                       {/* Step 3 */}
                       <div className="p-5 border border-white/10 bg-black/40 rounded-2xl relative opacity-60">
-                        <div className="absolute -top-3 -left-3 w-8 h-8 rounded-full bg-[#1a1a1a] border border-white/20 text-white/30 flex items-center justify-center font-bold font-mono text-[14px]">3</div>
-                        
-                        <h5 className="text-[13px] font-bold text-white/70 mb-2 ml-4">Dinâmica de Equipe (Tuckman)</h5>
-                        <p className="text-[10px] text-white/40 mb-4 ml-4 leading-relaxed font-sans">
+                        <div className="flex items-center gap-3 mb-3">
+                          <div className="w-8 h-8 rounded-full bg-[#1a1a1a] border border-white/20 text-white/30 flex items-center justify-center font-bold font-mono text-[14px] flex-shrink-0">3</div>
+                          <h5 className="text-[13px] font-bold text-white/70 leading-tight">Dinâmica de Equipe (Tuckman)</h5>
+                        </div>
+                        <p className="text-[10px] text-white/40 mb-4 leading-relaxed font-sans">
                           Aprenda a formar alianças (Contrato de Aliança) e gerenciar conflitos construtivos. (Bloqueado: Requer 60% no PDI 2)
                         </p>
                       </div>
 
                       {/* Step 4 */}
                       <div className="p-5 border border-white/10 bg-black/40 rounded-2xl relative opacity-60">
-                        <div className="absolute -top-3 -left-3 w-8 h-8 rounded-full bg-[#1a1a1a] border border-white/20 text-white/30 flex items-center justify-center font-bold font-mono text-[14px]">4</div>
-                        
-                        <h5 className="text-[13px] font-bold text-white/70 mb-2 ml-4">Impacto Organizacional</h5>
-                        <p className="text-[10px] text-white/40 mb-4 ml-4 leading-relaxed font-sans">
+                        <div className="flex items-center gap-3 mb-3">
+                          <div className="w-8 h-8 rounded-full bg-[#1a1a1a] border border-white/20 text-white/30 flex items-center justify-center font-bold font-mono text-[14px] flex-shrink-0">4</div>
+                          <h5 className="text-[13px] font-bold text-white/70 leading-tight">Impacto Organizacional</h5>
+                        </div>
+                        <p className="text-[10px] text-white/40 mb-4 leading-relaxed font-sans">
                           Liderar mudanças estratégicas e influenciar cultura. Alpha-Linter e BI Avançado. (Bloqueado)
                         </p>
                       </div>
+
                     </div>
                   </div>
                 </motion.div>
