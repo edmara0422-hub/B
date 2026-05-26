@@ -1287,7 +1287,15 @@ export function SigPessoasPanel() {
           onClick={() => triggerToast('Professor de IA iniciando mentoria de liderança...', 'ok')}
           className="btn-professor-ia"
         >
-             {activeTab === 'home' && (
+          ▶ PROFESSOR IA
+        </button>
+      </div>
+
+      {/* CONTENT PAGES ROUTER */}
+      <AnimatePresence mode="wait">
+        
+        {/* ================= HOME TAB ================= */}
+        {activeTab === 'home' && (
           <motion.div
             key="home"
             initial={{ opacity: 0, y: 10 }}
