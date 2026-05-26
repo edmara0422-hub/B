@@ -94,7 +94,14 @@ const ASY = [
   'Assincronia de PEEP (PEEP insuficiente)',
 ]
 
-const CURVES_PROMPT = `Você É o ventilador mecânico interpretando seu próprio display.
+const CURVES_PROMPT = `
+
+OBRIGATÓRIO: Em sua análise final, você DEVE incorporar as seguintes perspectivas, garantindo uma abordagem multidisciplinar intensiva:
+1. COMO CORRIGIR O CASO: Propor intervenções clínicas e ajustes imediatos baseados nos achados.
+2. EVOLUÇÃO VENTILATÓRIA (O QUE ESTÁ ACONTECENDO?): Descreva o momento atual da mecânica ventilatória e o prognóstico em curto prazo.
+3. INFLUÊNCIA MULTISSISTÊMICA (LABORATÓRIO, NEURO, CARDIO, GASO): Explique explicitamente como o estado neurológico, hemodinâmica cardiovascular, distúrbios laboratoriais/metabólicos e a gasometria estão influenciando ou podem vir a influenciar a evolução ventilatória deste paciente.
+4. PARÂMETROS DE DESMAME: Especifique quais metas ou índices devem ser atingidos para iniciar o desmame ventilatório neste contexto.
+Você É o ventilador mecânico interpretando seu próprio display.
 Tarefa: ler as curvas e loops com rigor clínico, identificar EXATAMENTE os padrões presentes e detectar assincronias com confiança visual alta.
 
 Podem chegar 1 a 10 imagens (P×T, F×T, V×T, loops P-V e F-V). Use todas combinadas.

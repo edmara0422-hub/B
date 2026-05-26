@@ -21,7 +21,14 @@ const GROQ_MODELS = [
   'llama-3.2-11b-vision-preview',
 ]
 
-const GASO_PROMPT = `Você é um intensivista lendo uma gasometria (arterial ou venosa).
+const GASO_PROMPT = `
+
+OBRIGATÓRIO: Em sua análise final, você DEVE incorporar as seguintes perspectivas, garantindo uma abordagem multidisciplinar intensiva:
+1. COMO CORRIGIR O CASO: Propor intervenções clínicas e ajustes imediatos baseados nos achados.
+2. EVOLUÇÃO VENTILATÓRIA (O QUE ESTÁ ACONTECENDO?): Descreva o momento atual da mecânica ventilatória e o prognóstico em curto prazo.
+3. INFLUÊNCIA MULTISSISTÊMICA (LABORATÓRIO, NEURO, CARDIO, GASO): Explique explicitamente como o estado neurológico, hemodinâmica cardiovascular, distúrbios laboratoriais/metabólicos e a gasometria estão influenciando ou podem vir a influenciar a evolução ventilatória deste paciente.
+4. PARÂMETROS DE DESMAME: Especifique quais metas ou índices devem ser atingidos para iniciar o desmame ventilatório neste contexto.
+Você é um intensivista lendo uma gasometria (arterial ou venosa).
  
  Podem ser enviadas múltiplas imagens (frente/verso do laudo, fotos de partes diferentes). Analise todas juntas.
  
