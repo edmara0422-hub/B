@@ -2017,7 +2017,7 @@ export function SigPessoasPanel() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  className="p-sub-view active space-y-4"
+                  className="space-y-4 text-left"
                 >
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
                     <div className="dash-card p-5 text-center bg-black/40 backdrop-blur-xl border border-white/5 relative overflow-hidden">
@@ -2141,7 +2141,7 @@ export function SigPessoasPanel() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  className="p-sub-view active space-y-6 text-left"
+                  className="space-y-6 text-left"
                 >
                   {/* Matriz M1-M4 situational matrix explanation */}
                   <div className="dash-card bg-[#050505]/60 backdrop-blur-3xl border border-white/5 relative overflow-hidden">
@@ -2307,7 +2307,7 @@ export function SigPessoasPanel() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  className="p-sub-view active space-y-5 text-left"
+                  className="space-y-5 text-left"
                 >
                   {/* Top Highlight: Progress */}
                   <div className="p-5 bg-gradient-to-r from-black/60 to-black/30 border border-[#d4b87a]/20 rounded-2xl relative overflow-hidden backdrop-blur-3xl shadow-[0_0_40px_rgba(212,184,122,0.05)]">
