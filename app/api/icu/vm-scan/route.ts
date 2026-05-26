@@ -8,10 +8,10 @@ const gateway = createGateway({
 })
 
 const GATEWAY_MODELS = [
+  'google/gemini-1.5-pro',
   'google/gemini-1.5-flash',
   'openai/gpt-4o-mini',
   'openai/gpt-4o',
-  'google/gemini-1.5-pro',
   'anthropic/claude-3-5-sonnet',
 ]
 
@@ -307,9 +307,9 @@ export async function POST(req: NextRequest) {
         for (const modelId of GATEWAY_MODELS) {
           const controller = new AbortController()
           const idTimeout = setTimeout(() => {
-            console.log(`[VM Scan] Abortando ${modelId} devido a timeout de 3.5s`)
+            console.log(`[VM Scan] Abortando ${modelId} devido a timeout de 25s`)
             controller.abort()
-          }, 3500)
+          }, 25000)
 
           try {
             console.log(`[VM Scan] Gateway tentando: ${modelId}`)

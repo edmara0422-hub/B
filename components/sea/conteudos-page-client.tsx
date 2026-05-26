@@ -55,6 +55,7 @@ import {
 } from '@/components/sea/simulations-6d'
 import { NEURO_SIMS } from '@/components/caderno/sim-registry-neuro'
 import { RESPIRATORY_SIMS } from '@/components/caderno/sim-registry-respiratory'
+import { TTSPlayer } from '@/components/sea/tts-player'
 import { SUBJECTS_DB } from '@/data/caderno-content-m1-m8'
 
 const SYLLABUS_TO_DB_MAP: Record<string, string> = {
@@ -1817,16 +1818,19 @@ function ExecutiveStudyBriefing({
                           const cIdx = activeSubjectData.chapters.indexOf(chapter)
                           return (
                             <div key={cIdx} className="space-y-4 pb-4">
-                              <div className="flex items-start gap-2.5">
-                                <span className="text-xs font-mono font-bold text-[#d4b87a] [.theme-silver_&]:text-[#cbd5e1] mt-0.5">Cap {cIdx + 1}</span>
-                                <div>
-                                  <h5 className="text-sm font-bold text-white/90 leading-tight uppercase">
-                                    {chapter.title}
-                                  </h5>
-                                  {chapter.description && (
-                                    <p className="text-xs text-white/50 italic mt-1 leading-relaxed">{chapter.description}</p>
-                                  )}
+                              <div className="flex items-start justify-between gap-4">
+                                <div className="flex items-start gap-2.5">
+                                  <span className="text-xs font-mono font-bold text-[#d4b87a] [.theme-silver_&]:text-[#cbd5e1] mt-0.5">Cap {cIdx + 1}</span>
+                                  <div>
+                                    <h5 className="text-sm font-bold text-white/90 leading-tight uppercase">
+                                      {chapter.title}
+                                    </h5>
+                                    {chapter.description && (
+                                      <p className="text-xs text-white/50 italic mt-1 leading-relaxed">{chapter.description}</p>
+                                    )}
+                                  </div>
                                 </div>
+                                <TTSPlayer text={chapter.subsections.map((s: any) => s.content).join('. ')} className="shrink-0" />
                               </div>
 
                               <div className="space-y-4 pl-3 border-l border-white/[0.06] ml-2 mt-3">
