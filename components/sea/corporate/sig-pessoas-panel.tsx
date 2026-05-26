@@ -737,84 +737,6 @@ export function SigPessoasPanel() {
           transform: translateY(-2.5px);
         }
 
-        /* 6D Dimension Cards (Glowing custom borders & shadows) */
-        .dash-card-d1::before {
-          background: linear-gradient(135deg, rgba(93, 202, 165, 0.45) 0%, rgba(5, 5, 5, 0.6) 100%) !important;
-        }
-        .dash-card-d1:hover {
-          background: rgba(93, 202, 165, 0.04) !important;
-          box-shadow: 
-            inset 0 1px 0 rgba(93, 202, 165, 0.25),
-            0 16px 48px rgba(0, 0, 0, 0.85),
-            0 0 35px rgba(93, 202, 165, 0.15) !important;
-        }
-
-        .dash-card-d2::before {
-          background: linear-gradient(135deg, rgba(250, 199, 117, 0.45) 0%, rgba(5, 5, 5, 0.6) 100%) !important;
-        }
-        .dash-card-d2:hover {
-          background: rgba(250, 199, 117, 0.04) !important;
-          box-shadow: 
-            inset 0 1px 0 rgba(250, 199, 117, 0.25),
-            0 16px 48px rgba(0, 0, 0, 0.85),
-            0 0 35px rgba(250, 199, 117, 0.15) !important;
-        }
-
-        .dash-card-d3::before {
-          background: linear-gradient(135deg, rgba(226, 75, 74, 0.45) 0%, rgba(5, 5, 5, 0.6) 100%) !important;
-        }
-        .dash-card-d3:hover {
-          background: rgba(226, 75, 74, 0.04) !important;
-          box-shadow: 
-            inset 0 1px 0 rgba(226, 75, 74, 0.25),
-            0 16px 48px rgba(0, 0, 0, 0.85),
-            0 0 35px rgba(226, 75, 74, 0.15) !important;
-        }
-
-        .dash-card-d4::before {
-          background: linear-gradient(135deg, rgba(59, 130, 246, 0.45) 0%, rgba(5, 5, 5, 0.6) 100%) !important;
-        }
-        .dash-card-d4:hover {
-          background: rgba(59, 130, 246, 0.04) !important;
-          box-shadow: 
-            inset 0 1px 0 rgba(59, 130, 246, 0.25),
-            0 16px 48px rgba(0, 0, 0, 0.85),
-            0 0 35px rgba(59, 130, 246, 0.15) !important;
-        }
-
-        .dash-card-d5::before {
-          background: linear-gradient(135deg, rgba(14, 165, 233, 0.45) 0%, rgba(5, 5, 5, 0.6) 100%) !important;
-        }
-        .dash-card-d5:hover {
-          background: rgba(14, 165, 233, 0.04) !important;
-          box-shadow: 
-            inset 0 1px 0 rgba(14, 165, 233, 0.25),
-            0 16px 48px rgba(0, 0, 0, 0.85),
-            0 0 35px rgba(14, 165, 233, 0.15) !important;
-        }
-
-        .dash-card-d6::before {
-          background: linear-gradient(135deg, rgba(168, 85, 247, 0.45) 0%, rgba(5, 5, 5, 0.6) 100%) !important;
-        }
-        .dash-card-d6:hover {
-          background: rgba(168, 85, 247, 0.04) !important;
-          box-shadow: 
-            inset 0 1px 0 rgba(168, 85, 247, 0.25),
-            0 16px 48px rgba(0, 0, 0, 0.85),
-            0 0 35px rgba(168, 85, 247, 0.15) !important;
-        }
-
-        .dash-card-radar::before {
-          background: linear-gradient(135deg, rgba(212, 184, 122, 0.5) 0%, rgba(5, 5, 5, 0.6) 100%) !important;
-        }
-        .dash-card-radar:hover {
-          background: rgba(212, 184, 122, 0.04) !important;
-          box-shadow: 
-            inset 0 1px 0 rgba(212, 184, 122, 0.25),
-            0 16px 48px rgba(0, 0, 0, 0.85),
-            0 0 35px rgba(212, 184, 122, 0.2) !important;
-        }
-
         .panel-label {
           font-family: inherit; font-size: 8px; letter-spacing: 0.12em;
           color: #b8975a; text-transform: uppercase;
@@ -1370,8 +1292,8 @@ export function SigPessoasPanel() {
             <div className="home-row split-6040">
               
               {/* Visão Cruzada 6D - UNIFORM PREMIUM DARK GLASS CARD */}
-              <div className="dash-card dash-card-radar bg-[#050505]/60 backdrop-blur-3xl relative overflow-hidden p-6 rounded-2xl">
-                <div className="absolute top-0 right-0 w-64 h-64 bg-[#d4b87a]/[0.08] blur-[80px] pointer-events-none mix-blend-screen" />
+              <div className="dash-card bg-[#050505]/60 backdrop-blur-3xl border border-white/5 relative overflow-hidden p-6 rounded-2xl">
+                <div className="absolute top-0 right-0 w-64 h-64 bg-white/[0.02] blur-[80px] pointer-events-none mix-blend-screen" />
                 
                 <div className="flex justify-between items-center mb-6 relative z-10">
                   <div className="text-left">
@@ -1499,8 +1421,8 @@ export function SigPessoasPanel() {
               <div className="flex flex-col gap-4 text-left">
                 
                 {/* 4 Stage recruit bar */}
-                <div className="dash-card dash-card-d1 bg-[#050505]/60 backdrop-blur-3xl relative overflow-hidden p-5 rounded-2xl">
-                  <div className="absolute top-0 right-0 w-32 h-32 bg-[#5dcaa5]/[0.08] blur-[60px] pointer-events-none mix-blend-screen" />
+                <div className="dash-card bg-[#050505]/60 backdrop-blur-3xl border border-white/5 relative overflow-hidden p-5 rounded-2xl">
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-white/[0.01] blur-[60px] pointer-events-none mix-blend-screen" />
                   <div className="flex justify-between items-center mb-4">
                     <span className="font-mono text-[9px] text-[#d4b87a] tracking-widest block font-bold uppercase flex items-center gap-1.5"><Users className="w-3.5 h-3.5" /> RECRUTAMENTO · FLUXO LENCIONI</span>
                     <button className="text-[9px] uppercase tracking-wider text-[#d4b87a] font-bold hover:underline" onClick={() => setActiveTab('lideres')}>▶ Detalhes</button>
@@ -1534,8 +1456,8 @@ export function SigPessoasPanel() {
                 </div>
 
                 {/* Candidate list stack with custom subtle flows */}
-                <div className="dash-card dash-card-d1 flex-1 flex flex-col justify-between bg-[#050505]/60 backdrop-blur-3xl relative overflow-hidden p-5 rounded-2xl">
-                  <div className="absolute top-0 right-0 w-64 h-64 bg-[#5dcaa5]/[0.08] blur-[80px] pointer-events-none mix-blend-screen" />
+                <div className="dash-card flex-1 flex flex-col justify-between bg-[#050505]/60 backdrop-blur-3xl border border-white/5 relative overflow-hidden p-5 rounded-2xl">
+                  <div className="absolute top-0 right-0 w-64 h-64 bg-white/[0.01] blur-[80px] pointer-events-none mix-blend-screen" />
                   <div className="relative z-10">
                     <div className="flex justify-between items-center mb-4 border-b border-white/[0.04] pb-3">
                       <div>
@@ -1594,8 +1516,8 @@ export function SigPessoasPanel() {
             <div className="home-row cols-2 mt-6">
               
               {/* Mapa do Time - UNIFORM PREMIUM DARK GLASS CARD (Ties DOT colors to dynamic D6 values) */}
-              <div className="dash-card dash-card-d3 bg-[#050505]/60 backdrop-blur-3xl relative overflow-hidden p-6 rounded-2xl text-left">
-                <div className="absolute top-0 right-0 w-64 h-64 bg-[#e24b4a]/[0.08] blur-[85px] pointer-events-none mix-blend-screen" />
+              <div className="dash-card bg-[#050505]/60 backdrop-blur-3xl border border-white/5 relative overflow-hidden p-6 rounded-2xl text-left">
+                <div className="absolute top-0 right-0 w-64 h-64 bg-white/[0.01] blur-[85px] pointer-events-none mix-blend-screen" />
                 <div className="flex justify-between items-start mb-4 relative z-10">
                   <div>
                     <span className="font-mono text-[9px] text-[#d4b87a] tracking-widest block font-bold uppercase mb-1">D6 DIAGNÓSTICO · MAPA DO TIME</span>
@@ -1647,8 +1569,8 @@ export function SigPessoasPanel() {
               </div>
 
               {/* Você como Líder - UNIFORM PREMIUM DARK GLASS CARD */}
-              <div className="dash-card dash-card-d2 bg-[#050505]/60 backdrop-blur-3xl relative overflow-hidden p-6 rounded-2xl text-left">
-                <div className="absolute top-0 right-0 w-64 h-64 bg-[#fac775]/[0.08] blur-[85px] pointer-events-none mix-blend-screen" />
+              <div className="dash-card bg-[#050505]/60 backdrop-blur-3xl border border-white/5 relative overflow-hidden p-6 rounded-2xl text-left">
+                <div className="absolute top-0 right-0 w-64 h-64 bg-white/[0.01] blur-[85px] pointer-events-none mix-blend-screen" />
                 <div className="relative z-10 mb-5 flex justify-between items-center">
                   <div>
                     <span className="font-mono text-[9px] text-[#d4b87a] tracking-widest block font-bold uppercase mb-1">Perfil · Liderança</span>
@@ -1700,8 +1622,8 @@ export function SigPessoasPanel() {
             <div className="home-row cols-2 mt-6">
               
               {/* Primeiros Passos - UNIFORM PREMIUM DARK GLASS CARD (Tied explicitly to D6 dimensions) */}
-              <div className="dash-card dash-card-d5 bg-[#050505]/60 backdrop-blur-3xl relative overflow-hidden p-6 rounded-2xl text-left">
-                <div className="absolute top-0 right-0 w-64 h-64 bg-[#14a5e9]/[0.08] blur-[85px] pointer-events-none mix-blend-screen" />
+              <div className="dash-card bg-[#050505]/60 backdrop-blur-3xl border border-white/5 relative overflow-hidden p-6 rounded-2xl text-left">
+                <div className="absolute top-0 right-0 w-64 h-64 bg-white/[0.01] blur-[85px] pointer-events-none mix-blend-screen" />
                 <div className="flex justify-between items-center mb-5 relative z-10">
                   <div>
                     <span className="font-mono text-[9px] text-[#d4b87a] tracking-widest block font-bold uppercase mb-1">Onboarding · Sistema</span>
@@ -1740,8 +1662,8 @@ export function SigPessoasPanel() {
               </div>
 
               {/* Pulso Semanal - UNIFORM PREMIUM DARK GLASS CARD */}
-              <div className="dash-card dash-card-d6 bg-[#050505]/60 backdrop-blur-3xl relative overflow-hidden p-6 rounded-2xl text-left border border-white/[0.08] shadow-[0_0_40px_rgba(168,85,247,0.05)]">
-                <div className="absolute top-0 right-0 w-64 h-64 bg-[#a855f7]/[0.08] blur-[85px] pointer-events-none mix-blend-screen" />
+              <div className="dash-card bg-[#050505]/60 backdrop-blur-3xl border border-white/5 relative overflow-hidden p-6 rounded-2xl text-left">
+                <div className="absolute top-0 right-0 w-64 h-64 bg-white/[0.01] blur-[85px] pointer-events-none mix-blend-screen" />
                 <div className="flex justify-between items-center mb-5 relative z-10">
                   <div>
                     <span className="font-mono text-[9px] text-[#d4b87a] tracking-widest block font-bold uppercase mb-1">📊 PULSO SEMANAL</span>
@@ -1804,8 +1726,8 @@ export function SigPessoasPanel() {
               <div className="space-y-6">
                 
                 {/* Main Card: Recruiting Roles */}
-                <div className="dash-card dash-card-d1 bg-[#050505]/60 backdrop-blur-3xl relative overflow-hidden p-6 text-left">
-                  <div className="absolute top-0 left-0 w-96 h-96 bg-[#5dcaa5]/[0.08] blur-[120px] pointer-events-none mix-blend-screen" />
+                <div className="dash-card bg-[#050505]/60 backdrop-blur-3xl border border-white/5 relative overflow-hidden p-6 text-left">
+                  <div className="absolute top-0 left-0 w-96 h-96 bg-[#d4b87a]/5 blur-[120px] pointer-events-none mix-blend-screen" />
                   
                   <div className="mb-6 relative z-10">
                     <span className="font-mono text-[9px] text-[#d4b87a] tracking-widest block mb-2 font-bold uppercase">RECRUTAMENTO</span>
@@ -1877,8 +1799,8 @@ export function SigPessoasPanel() {
                 </div>
 
                 {/* Automations Row: Left (Recruiting), Right (General) */}
-                <div className="dash-card dash-card-d4 bg-[#050505]/60 backdrop-blur-3xl relative overflow-hidden p-6 text-left">
-                  <div className="absolute top-0 right-0 w-96 h-96 bg-[#3b82f6]/[0.08] blur-[120px] pointer-events-none mix-blend-screen" />
+                <div className="dash-card bg-[#050505]/60 backdrop-blur-3xl border border-[#d4b87a]/20 p-6 relative overflow-hidden text-left">
+                  <div className="absolute top-0 right-0 w-96 h-96 bg-[#d4b87a]/5 blur-[120px] pointer-events-none mix-blend-screen" />
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8 relative z-10">
                     <div>
