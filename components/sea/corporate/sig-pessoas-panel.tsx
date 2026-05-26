@@ -2727,75 +2727,96 @@ export function SigPessoasPanel() {
                 >
                   
                   {/* Algoritmo de Sucessor */}
-                  <div className="lg:col-span-6 dash-card space-y-3">
-                    <div>
-                      <h4 className="text-[11px] font-bold text-white uppercase font-mono">Algoritmo de Identificação de Sucessor</h4>
-                      <p className="text-[9.5px] text-white/40 font-sans">Parâmetros combinados de D6 + HHH + Propósito</p>
-                    </div>
+                  <div className="lg:col-span-6">
+                    <div className="dash-card space-y-3">
+                      <div>
+                        <h4 className="text-[11px] font-bold text-white uppercase font-mono">Algoritmo de Identificação de Sucessor</h4>
+                        <p className="text-[9.5px] text-white/40 font-sans">Parâmetros combinados de D6 + HHH + Propósito</p>
+                      </div>
 
-                    <div className="space-y-2">
-                      {rankedSuccessors.map((member, i) => (
-                        <div key={member.id} className="p-3 bg-black/35 border border-white/[0.06] rounded-lg flex items-center justify-between hover:border-[#d4b87a]/25 transition">
-                          <div className="flex items-center gap-3">
-                            <b className="text-[#d4b87a] font-mono text-[10px]">0{i + 1}</b>
-                            <div>
-                              <b className="text-[10.5px] text-white leading-none block font-bold">{member.name}</b>
-                              <span className="text-[8.5px] font-mono text-white/40">{member.role}</span>
+                      <div className="space-y-2">
+                        {rankedSuccessors.map((member, i) => (
+                          <div key={member.id} className="p-3 bg-black/40 border border-white/[0.05] rounded-xl flex items-center justify-between hover:border-[#d4b87a]/30 hover:bg-black/60 transition duration-300">
+                            <div className="flex items-center gap-3">
+                              <span className="w-5 h-5 rounded-full bg-[#d4b87a]/10 border border-[#d4b87a]/25 text-[#d4b87a] flex items-center justify-center font-bold font-mono text-[9px] flex-shrink-0">
+                                0{i + 1}
+                              </span>
+                              <div>
+                                <b className="text-[11px] text-white leading-none block font-bold">{member.name}</b>
+                                <span className="text-[8.5px] font-mono text-white/45 block mt-1">{member.role}</span>
+                              </div>
+                            </div>
+                            
+                            <div className="text-right">
+                              <span className="text-[10.5px] font-mono font-bold text-[#5dcaa5] block leading-none">{member.successionScore} pts</span>
+                              <span className="text-[8px] text-white/35 block mt-1.5">{member.wishes}</span>
                             </div>
                           </div>
-                          
-                          <div className="text-right">
-                            <span className="text-[10px] font-mono font-bold text-[#5dcaa5] block leading-none">{member.successionScore} pts</span>
-                            <span className="text-[8px] text-white/35 block mt-0.5">{member.wishes}</span>
-                          </div>
-                        </div>
-                      ))}
+                        ))}
+                      </div>
                     </div>
                   </div>
 
                   {/* Profiler detail */}
-                  <div className="lg:col-span-6 dash-card space-y-3">
-                    <div className="flex justify-between items-center border-b border-white/[0.04] pb-2">
-                      <div>
-                        <h4 className="text-[11px] font-bold text-white uppercase font-mono">Ficha de Perfil do Liderado</h4>
-                        <p className="text-[9.5px] text-white/40 font-sans">Visualização unificada de fit cultural</p>
-                      </div>
-                      
-                      <select
-                        value={selectedProfileId}
-                        onChange={(e) => setSelectedProfileId(e.target.value)}
-                        className="bg-black/40 border border-white/[0.08] rounded px-2.5 py-1 text-[9.5px] text-white outline-none focus:border-[#d4b87a]/40"
-                      >
-                        {teamMembers.map(m => <option key={m.id} value={m.id}>{m.name}</option>)}
-                      </select>
-                    </div>
-
-                    {/* Member detail print */}
-                    {(() => {
-                      const m = teamMembers.find(x => x.id === selectedProfileId)
-                      if (!m) return null
-                      return (
-                        <div className="space-y-3 font-sans text-[10px] text-white/70">
-                          <div className="flex items-center gap-3">
-                            <div className="h-10 w-10 rounded-full bg-[#d4b87a]/15 text-[#d4b87a] border border-[#d4b87a]/30 text-xs font-bold flex items-center justify-center">
-                              {m.name.split(' ').map(x => x[0]).join('')}
-                            </div>
-                            <div>
-                              <b className="text-white text-[12px] block leading-none font-bold">{m.name}</b>
-                              <span className="text-white/45 text-[9px] font-mono block mt-1">{m.role} · Maturidade {m.maturity}</span>
-                            </div>
-                          </div>
-
-                          <div className="grid grid-cols-2 gap-2 text-[9px] font-mono text-white/60 bg-black/35 p-3 rounded-lg border border-white/[0.06]">
-                            <div>D6 Health Index: <b className="text-white">{m.d6}%</b></div>
-                            <div>Alinhamento: <b className="text-[#5dcaa5]">{m.status}</b></div>
-                            <div>Humble: <b className="text-white">{m.hhh.humble}%</b></div>
-                            <div>Hungry: <b className="text-white">{m.hhh.hungry}%</b></div>
-                            <div className="col-span-2 mt-1 pt-1 border-t border-white/[0.04]">Desejo de Carreira: <b className="text-[#fac775]">{m.wishes}</b></div>
-                          </div>
+                  <div className="lg:col-span-6">
+                    <div className="dash-card space-y-3">
+                      <div className="flex justify-between items-center border-b border-white/[0.04] pb-2">
+                        <div>
+                          <h4 className="text-[11px] font-bold text-white uppercase font-mono">Ficha de Perfil do Liderado</h4>
+                          <p className="text-[9.5px] text-white/40 font-sans">Visualização unificada de fit cultural</p>
                         </div>
-                      )
-                    })()}
+                        
+                        <select
+                          value={selectedProfileId}
+                          onChange={(e) => setSelectedProfileId(e.target.value)}
+                          className="bg-black/40 border border-white/[0.08] rounded px-2.5 py-1 text-[9.5px] text-white outline-none focus:border-[#d4b87a]/40"
+                        >
+                          {teamMembers.map(m => <option key={m.id} value={m.id}>{m.name}</option>)}
+                        </select>
+                      </div>
+
+                      {/* Member detail print */}
+                      {(() => {
+                        const m = teamMembers.find(x => x.id === selectedProfileId)
+                        if (!m) return null
+                        return (
+                          <div className="space-y-4 font-sans text-[10px] text-white/70">
+                            <div className="flex items-center gap-3">
+                              <div className="h-10 w-10 rounded-full bg-[#d4b87a]/15 text-[#d4b87a] border border-[#d4b87a]/30 text-xs font-bold flex items-center justify-center">
+                                {m.name.split(' ').map(x => x[0]).join('')}
+                              </div>
+                              <div>
+                                <b className="text-white text-[12px] block leading-none font-bold">{m.name}</b>
+                                <span className="text-white/45 text-[9px] font-mono block mt-1">{m.role} · Maturidade {m.maturity}</span>
+                              </div>
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-2 mt-4">
+                              <div className="p-3 bg-black/40 border border-white/[0.05] rounded-xl flex flex-col gap-1 text-left">
+                                <span className="text-[8px] text-white/40 uppercase tracking-widest font-mono">D6 Health Index</span>
+                                <b className="text-[11px] font-mono font-bold text-white">{m.d6}%</b>
+                              </div>
+                              <div className="p-3 bg-black/40 border border-white/[0.05] rounded-xl flex flex-col gap-1 text-left">
+                                <span className="text-[8px] text-white/40 uppercase tracking-widest font-mono">Alinhamento</span>
+                                <b className="text-[11px] font-mono font-bold text-[#5dcaa5]">{m.status}</b>
+                              </div>
+                              <div className="p-3 bg-black/40 border border-white/[0.05] rounded-xl flex flex-col gap-1 text-left">
+                                <span className="text-[8px] text-white/40 uppercase tracking-widest font-mono">Humble (Coração)</span>
+                                <b className="text-[11px] font-mono font-bold text-white">{m.hhh.humble}%</b>
+                              </div>
+                              <div className="p-3 bg-black/40 border border-white/[0.05] rounded-xl flex flex-col gap-1 text-left">
+                                <span className="text-[8px] text-white/40 uppercase tracking-widest font-mono">Hungry (Mãos)</span>
+                                <b className="text-[11px] font-mono font-bold text-white">{m.hhh.hungry}%</b>
+                              </div>
+                              <div className="col-span-2 p-3 bg-[#d4b87a]/5 border border-[#d4b87a]/15 rounded-xl flex flex-col gap-1 text-left">
+                                <span className="text-[8px] text-[#d4b87a] uppercase tracking-widest font-mono font-bold">Desejo de Carreira</span>
+                                <b className="text-[10px] text-[#fac775] font-medium">{m.wishes}</b>
+                              </div>
+                            </div>
+                          </div>
+                        )
+                      })()}
+                    </div>
                   </div>
 
                 </motion.div>
@@ -2812,44 +2833,48 @@ export function SigPessoasPanel() {
                 >
                   
                   {/* Conflict Analyzer Thomas Kilmann */}
-                  <div className="lg:col-span-7 dash-card space-y-3">
-                    <div>
-                      <h4 className="text-[11px] font-bold text-white uppercase font-mono">Protocolo de Mediação ALX</h4>
-                      <p className="text-[9.5px] text-white/40 font-sans">IA-Assisted Thomas-Kilmann conflict resolver</p>
+                  <div className="lg:col-span-7">
+                    <div className="dash-card space-y-3">
+                      <div>
+                        <h4 className="text-[11px] font-bold text-white uppercase font-mono">Protocolo de Mediação ALX</h4>
+                        <p className="text-[9.5px] text-white/40 font-sans">IA-Assisted Thomas-Kilmann conflict resolver</p>
+                      </div>
+
+                      <textarea 
+                        value={conflictDesc}
+                        onChange={(e) => setConflictDesc(e.target.value)}
+                        placeholder="Descreva o conflito ocorrido na equipe de forma extremamente objetiva (ex: Discordância de metodologia de calibração bioneural)..."
+                        className="cnv-text-area h-20"
+                      />
+
+                      <button 
+                        onClick={handleMediationAnalysis}
+                        disabled={mediationAnalyzing}
+                        className="px-3.5 py-1.5 bg-[#d4b87a]/15 hover:bg-[#d4b87a]/30 border border-[#d4b87a]/45 rounded-lg text-[9px] font-bold text-[#d4b87a] font-mono transition disabled:opacity-50"
+                      >
+                        {mediationAnalyzing ? 'Processando Estruturas...' : '🪄 ANALISAR COM IA'}
+                      </button>
+
+                      {mediationResult && (
+                        <pre className="p-3 bg-black/40 border border-white/[0.06] rounded-lg font-mono text-[9px] leading-relaxed text-white/70 overflow-x-auto whitespace-pre-wrap">
+                          {mediationResult}
+                        </pre>
+                      )}
                     </div>
-
-                    <textarea 
-                      value={conflictDesc}
-                      onChange={(e) => setConflictDesc(e.target.value)}
-                      placeholder="Descreva o conflito ocorrido na equipe de forma extremamente objetiva (ex: Discordância de metodologia de calibração bioneural)..."
-                      className="cnv-text-area h-20"
-                    />
-
-                    <button 
-                      onClick={handleMediationAnalysis}
-                      disabled={mediationAnalyzing}
-                      className="px-3.5 py-1.5 bg-[#d4b87a]/15 hover:bg-[#d4b87a]/30 border border-[#d4b87a]/45 rounded-lg text-[9px] font-bold text-[#d4b87a] font-mono transition disabled:opacity-50"
-                    >
-                      {mediationAnalyzing ? 'Processando Estruturas...' : '🪄 ANALISAR COM IA'}
-                    </button>
-
-                    {mediationResult && (
-                      <pre className="p-3 bg-black/40 border border-white/[0.06] rounded-lg font-mono text-[9px] leading-relaxed text-white/70 overflow-x-auto whitespace-pre-wrap">
-                        {mediationResult}
-                      </pre>
-                    )}
                   </div>
 
                   {/* Small Matrix Info */}
-                  <div className="lg:col-span-5 dash-card">
-                    <h4 className="text-[11px] font-bold text-[#d4b87a] uppercase font-mono mb-2">Thomas-Kilmann Styles</h4>
-                    <p className="text-[9px] text-white/45 mb-3 font-sans">5 estilos de resolução para calibração</p>
-                    
-                    <div className="space-y-1.5 font-sans text-[9px] text-white/60">
-                      <div className="p-2 bg-black/20 border border-white/[0.06] rounded hover:border-[#d4b87a]/15 transition"><b>Competição:</b> Alta assertividade, baixa cooperação.</div>
-                      <div className="p-2 bg-black/20 border border-white/[0.06] rounded hover:border-[#d4b87a]/15 transition"><b>Colaboração:</b> Alta assertividade, alta cooperação. Win-win.</div>
-                      <div className="p-2 bg-black/20 border border-white/[0.06] rounded hover:border-[#d4b87a]/15 transition"><b>Compromisso:</b> Equilíbrio sutil de concessões.</div>
-                      <div className="p-2 bg-black/20 border border-white/[0.06] rounded hover:border-[#d4b87a]/15 transition"><b>Acomodação:</b> Baixa assertividade, alta cooperação.</div>
+                  <div className="lg:col-span-5">
+                    <div className="dash-card">
+                      <h4 className="text-[11px] font-bold text-[#d4b87a] uppercase font-mono mb-2">Thomas-Kilmann Styles</h4>
+                      <p className="text-[9px] text-white/45 mb-3 font-sans">5 estilos de resolução para calibração</p>
+                      
+                      <div className="space-y-1.5 font-sans text-[9px] text-white/60">
+                        <div className="p-2 bg-black/20 border border-white/[0.06] rounded hover:border-[#d4b87a]/15 transition"><b>Competição:</b> Alta assertividade, baixa cooperação.</div>
+                        <div className="p-2 bg-black/20 border border-white/[0.06] rounded hover:border-[#d4b87a]/15 transition"><b>Colaboração:</b> Alta assertividade, alta cooperação. Win-win.</div>
+                        <div className="p-2 bg-black/20 border border-white/[0.06] rounded hover:border-[#d4b87a]/15 transition"><b>Compromisso:</b> Equilíbrio sutil de concessões.</div>
+                        <div className="p-2 bg-black/20 border border-white/[0.06] rounded hover:border-[#d4b87a]/15 transition"><b>Acomodação:</b> Baixa assertividade, alta cooperação.</div>
+                      </div>
                     </div>
                   </div>
 
@@ -2946,25 +2971,31 @@ export function SigPessoasPanel() {
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-5 relative z-10">
                       {/* Fase 1 */}
                       <div className="p-5 bg-black/40 border border-white/10 hover:border-[#5dcaa5]/40 rounded-2xl transition-all group relative">
-                        <div className="absolute -top-3 -left-3 w-8 h-8 rounded-full bg-[#5dcaa5]/20 border border-[#5dcaa5]/50 text-[#5dcaa5] flex items-center justify-center font-bold font-mono text-[14px]">1</div>
-                        <h5 className="text-[12px] font-bold text-white mb-2 ml-4">Mapeamento PESTEL</h5>
-                        <p className="text-[10px] text-white/50 mb-4 ml-4 leading-relaxed font-sans">Análise Macroambiental. Identifique fatores Políticos, Econômicos e Tecnológicos que impactam a corporação.</p>
+                        <div className="flex items-center gap-3 mb-3">
+                          <div className="w-8 h-8 rounded-full bg-[#5dcaa5]/20 border border-[#5dcaa5]/50 text-[#5dcaa5] flex items-center justify-center font-bold font-mono text-[14px] flex-shrink-0">1</div>
+                          <h5 className="text-[12px] font-bold text-white leading-tight">Mapeamento PESTEL</h5>
+                        </div>
+                        <p className="text-[10px] text-white/50 mb-4 leading-relaxed font-sans">Análise Macroambiental. Identifique fatores Políticos, Econômicos e Tecnológicos que impactam a corporação.</p>
                         <button className="w-full py-2 bg-white/5 hover:bg-[#5dcaa5]/10 border border-white/10 hover:border-[#5dcaa5]/30 rounded-lg text-[9px] font-mono text-white/70 hover:text-[#5dcaa5] transition-all font-bold tracking-widest">INICIAR FASE 1</button>
                       </div>
 
                       {/* Fase 2 */}
                       <div className="p-5 bg-black/40 border border-white/10 hover:border-[#5dcaa5]/40 rounded-2xl transition-all group relative opacity-80">
-                        <div className="absolute -top-3 -left-3 w-8 h-8 rounded-full bg-white/5 border border-white/10 text-white/30 flex items-center justify-center font-bold font-mono text-[14px]">2</div>
-                        <h5 className="text-[12px] font-bold text-white mb-2 ml-4">Forças de Porter</h5>
-                        <p className="text-[10px] text-white/50 mb-4 ml-4 leading-relaxed font-sans">Análise Microambiental. Avalie a rivalidade, novos entrantes e poder de negociação para ajustar o posicionamento.</p>
+                        <div className="flex items-center gap-3 mb-3">
+                          <div className="w-8 h-8 rounded-full bg-white/5 border border-white/10 text-white/30 flex items-center justify-center font-bold font-mono text-[14px] flex-shrink-0">2</div>
+                          <h5 className="text-[12px] font-bold text-white leading-tight">Forças de Porter</h5>
+                        </div>
+                        <p className="text-[10px] text-white/50 mb-4 leading-relaxed font-sans">Análise Microambiental. Avalie a rivalidade, novos entrantes e poder de negociação para ajustar o posicionamento.</p>
                         <button className="w-full py-2 bg-black/40 border border-white/5 rounded-lg text-[9px] font-mono text-white/20 cursor-not-allowed tracking-widest font-bold">BLOQUEADO</button>
                       </div>
 
                       {/* Fase 3 */}
                       <div className="p-5 bg-black/40 border border-white/10 hover:border-[#5dcaa5]/40 rounded-2xl transition-all group relative opacity-80">
-                        <div className="absolute -top-3 -left-3 w-8 h-8 rounded-full bg-white/5 border border-white/10 text-white/30 flex items-center justify-center font-bold font-mono text-[14px]">3</div>
-                        <h5 className="text-[12px] font-bold text-white mb-2 ml-4">VRIO &amp; Cadeia de Valor</h5>
-                        <p className="text-[10px] text-white/50 mb-4 ml-4 leading-relaxed font-sans">Análise Interna. Identifique recursos Valiosos e Inimitáveis para sustentar a vantagem competitiva.</p>
+                        <div className="flex items-center gap-3 mb-3">
+                          <div className="w-8 h-8 rounded-full bg-white/5 border border-white/10 text-white/30 flex items-center justify-center font-bold font-mono text-[14px] flex-shrink-0">3</div>
+                          <h5 className="text-[12px] font-bold text-white leading-tight">VRIO &amp; Cadeia de Valor</h5>
+                        </div>
+                        <p className="text-[10px] text-white/50 mb-4 leading-relaxed font-sans">Análise Interna. Identifique recursos Valiosos e Inimitáveis para sustentar a vantagem competitiva.</p>
                         <button className="w-full py-2 bg-black/40 border border-white/5 rounded-lg text-[9px] font-mono text-white/20 cursor-not-allowed tracking-widest font-bold">BLOQUEADO</button>
                       </div>
                     </div>
