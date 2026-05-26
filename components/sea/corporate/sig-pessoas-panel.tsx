@@ -1304,7 +1304,7 @@ export function SigPessoasPanel() {
                 <div className="flex justify-between items-center mb-4 relative z-10">
                   <div>
                     <span className="font-mono text-[9px] text-[#d4b87a] tracking-widest block mb-2 font-bold uppercase">SIG · OS</span>
-                    <h3 className="text-[14px] font-bold text-white mb-1">Visão Cruzada · 4 Dimensões OS</h3>
+                    <h3 className="text-[14px] font-bold text-white mb-1">Visão Cruzada · Saúde 6D</h3>
                     <div className="text-[10px] text-white/50 font-sans">Radar multidimensional · n = {teamMembers.length} colaboradores</div>
                   </div>
                   <div className="flex gap-2 items-center">
@@ -1515,33 +1515,45 @@ export function SigPessoasPanel() {
               </div>
             </div>
 
-            {/* ROW 1.5: Status dos 4 Blocos OS */}
-            <div className="bg-[#050505]/60 backdrop-blur-3xl border border-white/5 p-5 rounded-2xl relative overflow-hidden">
+            {/* ROW 1.5: Status dos 4 Blocos OS (Redesigned Premium 6D Navigation) */}
+            <div className="bg-[#050505]/60 backdrop-blur-3xl border border-white/5 p-6 rounded-2xl relative overflow-hidden text-left">
               <div className="absolute top-0 left-0 w-64 h-64 bg-blue-500/5 blur-[80px] pointer-events-none mix-blend-screen" />
-              <span className="text-[9px] uppercase tracking-widest text-white/40 font-mono block mb-4 font-bold relative z-10">OS · STATUS</span>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 relative z-10">
+              <span className="text-[9px] uppercase tracking-widest text-[#d4b87a] font-mono block mb-4 font-bold relative z-10">OS · MAPA DA OPERAÇÃO DE LIDERANÇA</span>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 relative z-10">
                 {[
-                  { code: 'BLOCO 01', name: 'Líderes', action: 'Recrutar', status: '✓ ativo', color: 'text-[#5dcaa5] border-[#5dcaa5]/30 bg-[#5dcaa5]/5', tab: 'lideres', sub: 'recrutar' },
-                  { code: 'BLOCO 02', name: 'Time', action: 'Formar', status: '⚡ atenção', color: 'text-[#fac775] border-[#fac775]/30 bg-[#fac775]/5', tab: 'time', sub: 'formar' },
-                  { code: 'BLOCO 03', name: 'Gerir', action: 'Diário', status: '✓ calibrado', color: 'text-[#d4b87a] border-[#d4b87a]/30 bg-[#d4b87a]/5', tab: 'lideres', sub: 'gerir' },
-                  { code: 'BLOCO 04', name: 'Empresa', action: 'Estratégia', status: '✓ ativo', color: 'text-[#5dcaa5] border-[#5dcaa5]/30 bg-[#5dcaa5]/5', tab: 'empresa', sub: 'estrategia' }
-                ].map(b => (
-                  <div 
-                    key={b.code} 
-                    onClick={() => {
-                      setActiveTab(b.tab as TabOption)
-                      if (b.tab === 'lideres') setLideresTab(b.sub as LideresSubTab)
-                      if (b.tab === 'time') setTimeTab(b.sub as TimeSubTab)
-                      if (b.tab === 'empresa') setEmpresaTab(b.sub as EmpresaSubTab)
-                    }}
-                    className={`p-4 border rounded-xl cursor-pointer hover:-translate-y-1 transition-transform ${b.color.split(' ')[1]} ${b.color.split(' ')[2]} hover:shadow-[0_0_20px_rgba(255,255,255,0.02)]`}
-                  >
-                    <div className="text-[8px] font-mono font-bold text-white/40 mb-1">{b.code}</div>
-                    <div className="text-[12px] font-bold text-white mb-0.5">{b.name}</div>
-                    <div className="text-[10px] text-white/60 font-sans mb-3">{b.action}</div>
-                    <div className={`text-[9px] font-mono tracking-widest font-bold ${b.color.split(' ')[0]}`}>{b.status}</div>
-                  </div>
-                ))}
+                  { code: 'BLOCO 01', name: 'Líderes / Gestores', action: 'Recrutar · Gerir · Delegar', status: '✓ ativo', color: 'text-[#5dcaa5] border-[#5dcaa5]/30 bg-[#5dcaa5]/5', hoverColor: 'hover:border-[#5dcaa5]/60 hover:bg-[#5dcaa5]/10', icon: Award, tab: 'lideres', sub: 'recrutar' },
+                  { code: 'BLOCO 02', name: 'Time & Equipes', action: 'Formar · Pessoas · Influência', status: '⚡ atenção', color: 'text-[#fac775] border-[#fac775]/30 bg-[#fac775]/5', hoverColor: 'hover:border-[#fac775]/60 hover:bg-[#fac775]/10', icon: Users, tab: 'time', sub: 'formar' },
+                  { code: 'BLOCO 03', name: 'Gerir Diário', action: 'D6 · SBI · 1:1 · Config', status: '✓ calibrado', color: 'text-[#d4b87a] border-[#d4b87a]/30 bg-[#d4b87a]/5', hoverColor: 'hover:border-[#d4b87a]/60 hover:bg-[#d4b87a]/10', icon: BookOpen, tab: 'lideres', sub: 'gerir' },
+                  { code: 'BLOCO 04', name: 'Empresa & Cultura', action: 'Estratégia · BI · OKRs', status: '✓ ativo', color: 'text-[#5dcaa5] border-[#5dcaa5]/30 bg-[#5dcaa5]/5', hoverColor: 'hover:border-[#5dcaa5]/60 hover:bg-[#5dcaa5]/10', icon: Compass, tab: 'empresa', sub: 'estrategia' }
+                ].map(b => {
+                  const IconComponent = b.icon
+                  return (
+                    <div 
+                      key={b.code} 
+                      onClick={() => {
+                        setActiveTab(b.tab as TabOption)
+                        if (b.tab === 'lideres') setLideresTab(b.sub as LideresSubTab)
+                        if (b.tab === 'time') setTimeTab(b.sub as TimeSubTab)
+                        if (b.tab === 'empresa') setEmpresaTab(b.sub as EmpresaSubTab)
+                      }}
+                      className="group p-5 bg-black/40 border border-white/5 hover:border-white/20 rounded-2xl cursor-pointer hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between relative overflow-hidden"
+                    >
+                      <div className="absolute inset-0 bg-gradient-to-b from-white/[0.02] to-transparent pointer-events-none" />
+                      <div>
+                        <div className="flex justify-between items-start mb-3">
+                          <span className="text-[8.5px] font-mono font-bold text-white/40 tracking-wider uppercase">{b.code}</span>
+                          <IconComponent className={`w-4 h-4 ${b.color.split(' ')[0]} opacity-80`} />
+                        </div>
+                        <h4 className="text-[13px] font-bold text-white mb-1 font-sans">{b.name}</h4>
+                        <p className="text-[10px] text-white/50 font-sans leading-normal mb-4">{b.action}</p>
+                      </div>
+                      <div className={`text-[8.5px] font-mono tracking-widest font-bold uppercase mt-auto pt-2.5 border-t border-white/[0.04] w-full flex items-center justify-between ${b.color.split(' ')[0]}`}>
+                        <span>{b.status}</span>
+                        <span className="text-white opacity-40 group-hover:opacity-100 group-hover:translate-x-1 transition-all text-xs">→</span>
+                      </div>
+                    </div>
+                  )
+                })}
               </div>
             </div>
 
@@ -1732,44 +1744,6 @@ export function SigPessoasPanel() {
               </div>
             </div>
 
-            {/* ROW 4: OS 4 BLOCOS NAV */}
-            <div className="home-row full mt-6">
-              <div className="dash-card bg-[#050505]/60 backdrop-blur-3xl border border-white/5 relative overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent pointer-events-none" />
-                <div className="relative z-10 mb-6 text-center">
-                  <span className="font-mono text-[9px] text-[#d4b87a] tracking-widest block font-bold uppercase mb-1">Navegação · OS</span>
-                  <h3 className="text-[16px] font-bold text-white">Os 4 Blocos · Clica pra Entrar</h3>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 relative z-10">
-                  {[
-                    { title: 'Líderes / Gestores', icon: '👥', desc: 'Recrutar · Gerir · Delegar', tags: ['Recrutar', 'Gerir', 'Você'], info: 'lideres', sub: 'voce', count: `${candidates.length} cand` },
-                    { title: 'Time', icon: '🎯', desc: 'Formar · Pessoas · Influência', tags: ['Formar', 'Pessoas', 'Influência'], info: 'time', sub: 'formar', count: `${teamMembers.length} pess` },
-                    { title: 'Gerir Diário', icon: '📓', desc: 'D6 · SBI · 1:1 · Config', tags: ['D6', 'SBI', '1:1'], info: 'lideres', sub: 'gerir', count: 'diário IE' },
-                    { title: 'Empresa', icon: '🏢', desc: 'Estratégia · BI · OKRs', tags: ['Estratégia', 'BI', 'Canais'], info: 'empresa', sub: 'estrategia', count: 'configurar' }
-                  ].map(n => (
-                    <div 
-                      key={n.title}
-                      onClick={() => {
-                        setActiveTab(n.info as TabOption)
-                        if (n.info === 'lideres') setLideresTab(n.sub as LideresSubTab)
-                        if (n.info === 'time') setTimeTab(n.sub as TimeSubTab)
-                        if (n.info === 'empresa') setEmpresaTab(n.sub as EmpresaSubTab)
-                      }}
-                      className="group p-5 bg-black/40 hover:bg-[#d4b87a]/10 border border-white/5 hover:border-[#d4b87a]/40 rounded-2xl cursor-pointer transition-all flex flex-col items-center text-center relative overflow-hidden"
-                    >
-                      <div className="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                      <div className="text-3xl mb-3 relative z-10 filter drop-shadow-md">{n.icon}</div>
-                      <div className="text-[13px] font-bold text-white mb-1 relative z-10">{n.title}</div>
-                      <div className="text-[10px] text-white/50 font-sans mb-4 relative z-10">{n.desc}</div>
-                      <div className="flex flex-wrap justify-center gap-1.5 mb-4 relative z-10">
-                        {n.tags.map(t => <span key={t} className="px-2 py-0.5 bg-white/5 border border-white/10 rounded text-[8px] font-mono text-white/60 tracking-widest">{t}</span>)}
-                      </div>
-                      <div className="text-[9px] font-mono font-bold text-[#d4b87a] tracking-widest mt-auto pt-3 border-t border-white/5 w-full relative z-10">{n.count}</div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
 
             {/* RECRUTAR MOVED TO HOME */}
             <div className="home-row full mt-6">
