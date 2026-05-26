@@ -66,7 +66,7 @@ type OkrItem = {
 
 export function SigPessoasPanel() {
   const [activeTab, setActiveTab] = useState<TabOption>('home')
-  const [lideresTab, setLideresTab] = useState<LideresSubTab>('recrutar')
+  const [lideresTab, setLideresTab] = useState<LideresSubTab>('voce')
   const [timeTab, setTimeTab] = useState<TimeSubTab>('formar')
   const [empresaTab, setEmpresaTab] = useState<EmpresaSubTab>('diagnostico')
 
@@ -1299,19 +1299,20 @@ export function SigPessoasPanel() {
             <div className="home-row split-6040">
               
               {/* Visão Cruzada 4D/6D */}
-              <div className="dash-card gold-border">
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+              <div className="dash-card bg-[#050505]/60 backdrop-blur-3xl border border-[#d4b87a]/20 relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-64 h-64 bg-[#d4b87a]/5 blur-[80px] pointer-events-none mix-blend-screen" />
+                <div className="flex justify-between items-center mb-4 relative z-10">
                   <div>
-                    <span className="panel-label">SIG · OS</span>
-                    <h3 className="panel-title">Visão Cruzada · 4 Dimensões OS</h3>
-                    <div className="panel-sub">Radar multidimensional · n = {teamMembers.length} colaboradores</div>
+                    <span className="font-mono text-[9px] text-[#d4b87a] tracking-widest block mb-2 font-bold uppercase">SIG · OS</span>
+                    <h3 className="text-[14px] font-bold text-white mb-1">Visão Cruzada · 4 Dimensões OS</h3>
+                    <div className="text-[10px] text-white/50 font-sans">Radar multidimensional · n = {teamMembers.length} colaboradores</div>
                   </div>
-                  <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-                    <button onClick={handleResetRadar} className="btn-reset-sm">⟲ RESET</button>
+                  <div className="flex gap-2 items-center">
+                    <button onClick={handleResetRadar} className="px-3 py-1.5 bg-black/40 hover:bg-[#d4b87a]/10 border border-[#d4b87a]/30 rounded-lg text-[9px] font-bold text-[#d4b87a] font-mono transition-all">⟲ RESET</button>
                   </div>
                 </div>
 
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.2fr', gap: '20px', alignItems: 'center' }}>
+                <div className="grid grid-cols-[1fr_1.2fr] gap-5 items-center relative z-10">
                   
                   {/* Radar Stage SVG */}
                   <div style={{ maxWidth: '180px', margin: '0 auto', position: 'relative' }}>
@@ -1420,52 +1421,53 @@ export function SigPessoasPanel() {
               </div>
 
               {/* Recrutamento Funil Lencioni & Candidates */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              <div className="flex flex-col gap-4">
                 
                 {/* 5 Stage recruit bar */}
-                <div className="dash-card">
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
-                    <span className="panel-label">RECRUTAMENTO - 4 ESTÁGIOS</span>
+                <div className="dash-card bg-[#050505]/60 backdrop-blur-3xl border border-white/5">
+                  <div className="flex justify-between items-center mb-3">
+                    <span className="font-mono text-[9px] text-[#d4b87a] tracking-widest block font-bold uppercase">RECRUTAMENTO - 4 ESTÁGIOS</span>
                     <button className="text-[9px] uppercase tracking-wider text-[#d4b87a] font-bold hover:underline" onClick={() => setActiveTab('lideres')}>▶ Detalhes</button>
                   </div>
                   
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'rgba(0,0,0,0.3)', border: '0.2px solid rgba(255,255,255,0.05)', borderRadius: '8px', padding: '12px', fontSize: '9px', textAlign: 'center' }}>
+                  <div className="flex justify-between items-center bg-black/30 border border-white/5 rounded-xl p-3 text-[9px] text-center">
                     <div>
-                      <b style={{ color: '#d4b87a', fontSize: '15px', display: 'block' }}>{candidates.filter(c => c.stage === 'triagem').length}</b>
-                      <span style={{ color: '#8a9098', fontSize: '7.5px', display: 'block' }}>TRIAGEM</span>
+                      <b className="text-[15px] text-[#d4b87a] block">{candidates.filter(c => c.stage === 'triagem').length}</b>
+                      <span className="text-[7.5px] text-white/40 font-mono block mt-1">TRIAGEM</span>
                     </div>
-                    <div style={{ color: 'rgba(255,255,255,0.2)' }}>→</div>
+                    <div className="text-white/20 font-light">→</div>
                     <div>
-                      <b style={{ color: '#d4b87a', fontSize: '15px', display: 'block' }}>{candidates.filter(c => c.stage === 'entrevista').length}</b>
-                      <span style={{ color: '#8a9098', fontSize: '7.5px', display: 'block' }}>ENTREVISTA</span>
+                      <b className="text-[15px] text-[#d4b87a] block">{candidates.filter(c => c.stage === 'entrevista').length}</b>
+                      <span className="text-[7.5px] text-white/40 font-mono block mt-1">ENTREVISTA</span>
                     </div>
-                    <div style={{ color: 'rgba(255,255,255,0.2)' }}>→</div>
+                    <div className="text-white/20 font-light">→</div>
                     <div>
-                      <b style={{ color: '#d4b87a', fontSize: '15px', display: 'block' }}>{candidates.filter(c => c.stage === 'decisao').length}</b>
-                      <span style={{ color: '#8a9098', fontSize: '7.5px', display: 'block' }}>DECISÃO</span>
+                      <b className="text-[15px] text-[#d4b87a] block">{candidates.filter(c => c.stage === 'decisao').length}</b>
+                      <span className="text-[7.5px] text-white/40 font-mono block mt-1">DECISÃO</span>
                     </div>
-                    <div style={{ color: 'rgba(255,255,255,0.2)' }}>→</div>
+                    <div className="text-white/20 font-light">→</div>
                     <div>
-                      <b style={{ color: '#d4b87a', fontSize: '15px', display: 'block' }}>{candidates.filter(c => c.stage === 'onboarding').length}</b>
-                      <span style={{ color: '#8a9098', fontSize: '7.5px', display: 'block' }}>ONBOARD</span>
+                      <b className="text-[15px] text-[#d4b87a] block">{candidates.filter(c => c.stage === 'onboarding').length}</b>
+                      <span className="text-[7.5px] text-white/40 font-mono block mt-1">ONBOARD</span>
                     </div>
-                    <div style={{ color: 'rgba(255,255,255,0.2)' }}>→</div>
+                    <div className="text-white/20 font-light">→</div>
                     <div>
-                      <b style={{ color: '#5dcaa5', fontSize: '15px', display: 'block' }}>{teamMembers.length}</b>
-                      <span style={{ color: '#8a9098', fontSize: '7.5px', display: 'block' }}>HIRED</span>
+                      <b className="text-[15px] text-[#5dcaa5] block">{teamMembers.length}</b>
+                      <span className="text-[7.5px] text-white/40 font-mono block mt-1">HIRED</span>
                     </div>
                   </div>
                 </div>
 
                 {/* Candidate list stack */}
-                <div className="dash-card" style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-                  <div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px', borderBottom: '0.2px solid rgba(255,255,255,0.06)', paddingBottom: '8px' }}>
+                <div className="dash-card flex-1 flex flex-col justify-between bg-[#050505]/60 backdrop-blur-3xl border border-white/5 relative overflow-hidden">
+                  <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 blur-[80px] pointer-events-none mix-blend-screen" />
+                  <div className="relative z-10">
+                    <div className="flex justify-between items-center mb-4 border-b border-white/[0.04] pb-3">
                       <div>
-                        <span className="panel-label">HHS · SIG</span>
-                        <h3 className="panel-title" style={{ fontSize: '13px', fontWeight: 700, color: '#d4b87a', margin: '2px 0' }}>Funil Lencioni &amp; HHS</h3>
+                        <span className="font-mono text-[9px] text-[#d4b87a] tracking-widest block font-bold uppercase mb-1">HHS · SIG</span>
+                        <h3 className="text-[13px] font-bold text-[#d4b87a] m-0">Funil Lencioni &amp; HHS</h3>
                       </div>
-                      <button onClick={handleResetCandidates} className="btn-reset-fake">♻ Restaurar</button>
+                      <button onClick={handleResetCandidates} className="px-3 py-1 bg-black/40 hover:bg-[#d4b87a]/10 border border-white/10 hover:border-[#d4b87a]/30 rounded-lg text-[9px] text-white/70 hover:text-[#d4b87a] font-mono transition-colors">♻ Restaurar</button>
                     </div>
 
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', maxHeight: '180px', overflowY: 'auto', paddingRight: '4px' }}>
@@ -1514,14 +1516,15 @@ export function SigPessoasPanel() {
             </div>
 
             {/* ROW 1.5: Status dos 4 Blocos OS */}
-            <div className="ipb-soft p-4 rounded-[1.2rem]">
-              <span className="text-[7.5px] uppercase tracking-widest text-white/40 font-mono block mb-2">OS · STATUS</span>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            <div className="bg-[#050505]/60 backdrop-blur-3xl border border-white/5 p-5 rounded-2xl relative overflow-hidden">
+              <div className="absolute top-0 left-0 w-64 h-64 bg-blue-500/5 blur-[80px] pointer-events-none mix-blend-screen" />
+              <span className="text-[9px] uppercase tracking-widest text-white/40 font-mono block mb-4 font-bold relative z-10">OS · STATUS</span>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 relative z-10">
                 {[
-                  { code: 'BLOCO 01', name: 'Líderes', action: 'Recrutar', status: '✓ ativo', color: 'text-[#5dcaa5]', tab: 'lideres', sub: 'recrutar' },
-                  { code: 'BLOCO 02', name: 'Time', action: 'Formar', status: '⚡ atenção', color: 'text-[#fac775]', tab: 'time', sub: 'formar' },
-                  { code: 'BLOCO 03', name: 'Gerir', action: 'Diário', status: '✓ calibrado', style: 'ok', tab: 'lideres', sub: 'gerir' },
-                  { code: 'BLOCO 04', name: 'Empresa', action: 'Estratégia', status: '✓ ativo', style: 'ok', tab: 'empresa', sub: 'estrategia' }
+                  { code: 'BLOCO 01', name: 'Líderes', action: 'Recrutar', status: '✓ ativo', color: 'text-[#5dcaa5] border-[#5dcaa5]/30 bg-[#5dcaa5]/5', tab: 'lideres', sub: 'recrutar' },
+                  { code: 'BLOCO 02', name: 'Time', action: 'Formar', status: '⚡ atenção', color: 'text-[#fac775] border-[#fac775]/30 bg-[#fac775]/5', tab: 'time', sub: 'formar' },
+                  { code: 'BLOCO 03', name: 'Gerir', action: 'Diário', status: '✓ calibrado', color: 'text-[#d4b87a] border-[#d4b87a]/30 bg-[#d4b87a]/5', tab: 'lideres', sub: 'gerir' },
+                  { code: 'BLOCO 04', name: 'Empresa', action: 'Estratégia', status: '✓ ativo', color: 'text-[#5dcaa5] border-[#5dcaa5]/30 bg-[#5dcaa5]/5', tab: 'empresa', sub: 'estrategia' }
                 ].map(b => (
                   <div 
                     key={b.code} 
@@ -1531,31 +1534,30 @@ export function SigPessoasPanel() {
                       if (b.tab === 'time') setTimeTab(b.sub as TimeSubTab)
                       if (b.tab === 'empresa') setEmpresaTab(b.sub as EmpresaSubTab)
                     }}
-                    className="bloco-item"
+                    className={`p-4 border rounded-xl cursor-pointer hover:-translate-y-1 transition-transform ${b.color.split(' ')[1]} ${b.color.split(' ')[2]} hover:shadow-[0_0_20px_rgba(255,255,255,0.02)]`}
                   >
-                    <div className="b-code">{b.code}</div>
-                    <div className="b-name">{b.name}</div>
-                    <div className="b-sub">{b.action}</div>
-                    <div className={`b-status ${b.style}`}>{b.status}</div>
+                    <div className="text-[8px] font-mono font-bold text-white/40 mb-1">{b.code}</div>
+                    <div className="text-[12px] font-bold text-white mb-0.5">{b.name}</div>
+                    <div className="text-[10px] text-white/60 font-sans mb-3">{b.action}</div>
+                    <div className={`text-[9px] font-mono tracking-widest font-bold ${b.color.split(' ')[0]}`}>{b.status}</div>
                   </div>
                 ))}
               </div>
             </div>
 
             {/* ROW 2: Mapa do Time + Você como Líder */}
-            <div className="home-row cols-2">
+            <div className="home-row cols-2 mt-6">
               
               {/* Mapa do Time */}
-              <div className="dash-card">
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '4px' }}>
+              <div className="dash-card bg-[#050505]/60 backdrop-blur-3xl border border-white/5 relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-64 h-64 bg-red-500/5 blur-[80px] pointer-events-none mix-blend-screen" />
+                <div className="flex justify-between items-start mb-4 relative z-10">
                   <div>
-                    <span className="panel-label">Mapa · Time</span>
-                    <h3 className="panel-title">Influência × Impacto</h3>
-                    <div className="panel-sub">Mapeamento estratégico com base no capital social</div>
+                    <span className="font-mono text-[9px] text-[#e24b4a] tracking-widest block font-bold uppercase mb-1">MAPA · TIME</span>
+                    <h3 className="text-[14px] font-bold text-white mb-0.5">Influência × Impacto</h3>
+                    <div className="text-[10px] text-white/50 font-sans">Mapeamento estratégico com base no capital social</div>
                   </div>
-                  <button onClick={handleAddTeamMemberMap} className="btn-reset-sm" style={{ fontSize: '8px' }}>
-                    + add
-                  </button>
+                  <button onClick={handleAddTeamMemberMap} className="px-3 py-1.5 bg-black/40 hover:bg-[#d4b87a]/10 border border-white/10 hover:border-[#d4b87a]/30 rounded-lg text-[9px] text-[#d4b87a] font-mono transition-colors font-bold">+ ADD</button>
                 </div>
 
                 <div className="mapa-container">
@@ -1597,39 +1599,43 @@ export function SigPessoasPanel() {
               </div>
 
               {/* Você como Líder */}
-              <div className="dash-card">
-                <div className="panel-label">Perfil · Liderança</div>
-                <h3 className="panel-title">Você como Líder</h3>
+              <div className="dash-card bg-[#050505]/60 backdrop-blur-3xl border border-white/5 relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-64 h-64 bg-[#d4b87a]/5 blur-[80px] pointer-events-none mix-blend-screen" />
+                <div className="relative z-10 mb-5">
+                  <span className="font-mono text-[9px] text-[#d4b87a] tracking-widest block font-bold uppercase mb-1">Perfil · Liderança</span>
+                  <h3 className="text-[14px] font-bold text-white">Você como Líder</h3>
+                </div>
 
                 {/* Role selector */}
-                <div className="voce-role-row">
-                  <div className="role-card active">
-                    <span className="rc-label">Modo 1</span>
-                    <span className="rc-title">Gestor</span>
-                    <span className="rc-sub">Complexidade &amp; Processos</span>
+                <div className="flex gap-4 mb-6 relative z-10">
+                  <div className="flex-1 p-3 bg-[#d4b87a]/10 border border-[#d4b87a]/30 rounded-xl cursor-pointer text-center">
+                    <span className="text-[9px] font-mono font-bold text-[#d4b87a] block mb-1">Modo 1</span>
+                    <span className="text-[12px] font-bold text-white block">Gestor</span>
+                    <span className="text-[9px] text-white/50 block font-sans">Complexidade &amp; Processos</span>
                   </div>
-                  <div className="role-card">
-                    <span className="rc-label">Modo 2</span>
-                    <span className="rc-title">Líder</span>
-                    <span className="rc-sub">Mudança &amp; Propósito</span>
+                  <div className="flex-1 p-3 bg-black/40 border border-white/10 hover:border-white/30 rounded-xl cursor-pointer text-center transition-colors">
+                    <span className="text-[9px] font-mono font-bold text-white/40 block mb-1">Modo 2</span>
+                    <span className="text-[12px] font-bold text-white block">Líder</span>
+                    <span className="text-[9px] text-white/50 block font-sans">Mudança &amp; Propósito</span>
                   </div>
                 </div>
 
                 {/* Manifesto Checklist */}
-                <div style={{ fontFamily: 'inherit', fontSize: '8px', color: '#8a9098', textTransform: 'uppercase', letterSpacing: '0.08em', marginTop: '14px', marginBottom: '8px' }}>
+                <div className="font-mono text-[9px] text-white/40 font-bold uppercase tracking-widest mt-5 mb-3 relative z-10">
                   Saúde Manifesto · 5 Princípios
                 </div>
-                <div className="manifesto-list">
+                <div className="space-y-2 relative z-10">
                   {manifestoPrinciples.map((p, idx) => (
                     <div 
                       key={p.code}
                       onClick={() => handleToggleManifesto(idx)}
-                      className={`manifesto-item ${manifestoChecks[idx] ? 'done' : ''}`}
-                      style={{ cursor: 'pointer' }}
+                      className={`flex justify-between items-center p-3 rounded-lg border cursor-pointer transition-colors ${manifestoChecks[idx] ? 'bg-[#5dcaa5]/5 border-[#5dcaa5]/20' : 'bg-white/[0.02] border-white/[0.04] hover:border-white/[0.1]'}`}
                     >
-                      <div className="m-code">{p.code}</div>
-                      <div className="m-text">{p.text}</div>
-                      <div className="m-val">{manifestoChecks[idx] ? '✓ ativo' : '—'}</div>
+                      <div className="flex items-center gap-3">
+                        <div className={`text-[9px] font-mono font-bold ${manifestoChecks[idx] ? 'text-[#5dcaa5]' : 'text-white/40'}`}>{p.code}</div>
+                        <div className={`text-[10px] font-sans leading-snug ${manifestoChecks[idx] ? 'text-white' : 'text-white/60'}`}>{p.text}</div>
+                      </div>
+                      <div className={`text-[9px] font-mono font-bold whitespace-nowrap ${manifestoChecks[idx] ? 'text-[#5dcaa5]' : 'text-white/20'}`}>{manifestoChecks[idx] ? '✓ ATIVO' : '—'}</div>
                     </div>
                   ))}
                 </div>
@@ -1637,16 +1643,17 @@ export function SigPessoasPanel() {
             </div>
 
             {/* ROW 3: Primeiros Passos + Pulso Semanal */}
-            <div className="home-row cols-2">
+            <div className="home-row cols-2 mt-6">
               
               {/* Primeiros Passos */}
-              <div className="dash-card">
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
+              <div className="dash-card bg-[#050505]/60 backdrop-blur-3xl border border-white/5 relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 blur-[80px] pointer-events-none mix-blend-screen" />
+                <div className="flex justify-between items-center mb-5 relative z-10">
                   <div>
-                    <span className="panel-label">Onboarding · Sistema</span>
-                    <h3 className="panel-title">Primeiros Passos</h3>
+                    <span className="font-mono text-[9px] text-[#d4b87a] tracking-widest block font-bold uppercase mb-1">Onboarding · Sistema</span>
+                    <h3 className="text-[14px] font-bold text-white">Primeiros Passos</h3>
                   </div>
-                  <button onClick={handlePopularPassosExemplo} className="btn-reset-sm">popular com exemplo</button>
+                  <button onClick={handlePopularPassosExemplo} className="px-3 py-1.5 bg-black/40 hover:bg-[#d4b87a]/10 border border-white/10 hover:border-[#d4b87a]/30 rounded-lg text-[9px] text-white/70 hover:text-[#d4b87a] font-mono transition-colors">popular com exemplo</button>
                 </div>
                 <div className="primeiros-list">
                   {primeirosPassos.map((p, idx) => (
@@ -1667,68 +1674,75 @@ export function SigPessoasPanel() {
               </div>
 
               {/* Pulso Semanal */}
-              <div className="dash-card gold-border">
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
+              <div className="dash-card bg-[#050505]/60 backdrop-blur-3xl border border-[#d4b87a]/20 relative overflow-hidden">
+                <div className="absolute top-0 left-0 w-64 h-64 bg-[#d4b87a]/5 blur-[80px] pointer-events-none mix-blend-screen" />
+                <div className="flex justify-between items-center mb-5 relative z-10">
                   <div>
-                    <span className="panel-label">📊 Pulso Semanal</span>
-                    <h3 className="panel-title">Como está sua energia?</h3>
+                    <span className="font-mono text-[9px] text-[#d4b87a] tracking-widest block font-bold uppercase mb-1">📊 Pulso Semanal</span>
+                    <h3 className="text-[14px] font-bold text-white">Como está sua energia?</h3>
                   </div>
-                  <span className="pulso-semana-badge">Semana 21</span>
+                  <span className="px-2 py-1 bg-[#d4b87a]/10 border border-[#d4b87a]/30 rounded text-[#d4b87a] font-mono text-[9px] font-bold tracking-widest">Semana 21</span>
                 </div>
 
-                <div style={{ fontSize: '10px', color: '#8a9098', marginBottom: '6px', fontWeight: 600 }}>
-                  Energia esta semana:
-                </div>
-                <div className="pulso-rating-row">
-                  {[1, 2, 3, 4, 5].map(v => (
-                    <button
-                      key={v}
-                      onClick={() => setPulseEnergy(v)}
-                      className={`pulso-btn ${pulseEnergy === v ? 'active' : ''}`}
-                    >
-                      {v}
-                    </button>
-                  ))}
-                </div>
+                <div className="relative z-10 space-y-5">
+                  <div>
+                    <div className="text-[10px] text-white/60 font-sans mb-2 font-bold">Energia esta semana:</div>
+                    <div className="flex gap-2">
+                      {[1, 2, 3, 4, 5].map(v => (
+                        <button
+                          key={v}
+                          onClick={() => setPulseEnergy(v)}
+                          className={`flex-1 py-2 rounded-xl border text-[11px] font-bold transition-all ${pulseEnergy === v ? 'bg-[#d4b87a] border-[#d4b87a] text-black shadow-[0_0_15px_rgba(212,184,122,0.4)]' : 'bg-black/40 border-white/10 text-white/40 hover:border-white/30'}`}
+                        >
+                          {v}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
 
-                <div style={{ fontSize: '10px', color: '#8a9098', marginTop: '14px', marginBottom: '6px', fontWeight: 600 }}>
-                  E seu foco?
-                </div>
-                <div className="pulso-rating-row">
-                  {[1, 2, 3, 4, 5].map(v => (
-                    <button
-                      key={v}
-                      onClick={() => setPulseFocus(v)}
-                      className={`pulso-btn ${pulseFocus === v ? 'active' : ''}`}
-                    >
-                      {v}
-                    </button>
-                  ))}
-                </div>
+                  <div>
+                    <div className="text-[10px] text-white/60 font-sans mb-2 font-bold">E seu foco?</div>
+                    <div className="flex gap-2">
+                      {[1, 2, 3, 4, 5].map(v => (
+                        <button
+                          key={v}
+                          onClick={() => setPulseFocus(v)}
+                          className={`flex-1 py-2 rounded-xl border text-[11px] font-bold transition-all ${pulseFocus === v ? 'bg-[#5dcaa5] border-[#5dcaa5] text-black shadow-[0_0_15px_rgba(93,202,165,0.4)]' : 'bg-black/40 border-white/10 text-white/40 hover:border-white/30'}`}
+                        >
+                          {v}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
 
-                <div style={{ fontSize: '10px', color: '#8a9098', marginTop: '14px', marginBottom: '6px', fontWeight: 600 }}>
-                  Qual o maior bloqueio agora? <span style={{ opacity: 0.5 }}>(1 linha)</span>
+                  <div>
+                    <div className="text-[10px] text-white/60 font-sans mb-2 font-bold">Qual o maior bloqueio agora? <span className="opacity-50 font-normal">(1 linha)</span></div>
+                    <textarea 
+                      value={pulseBlocker}
+                      onChange={(e) => setPulseBlocker(e.target.value)}
+                      placeholder="Descreva seu bloqueio principal desta semana..."
+                      className="w-full bg-black/40 border border-white/[0.08] rounded-xl px-4 py-3 text-[11px] text-white font-sans leading-relaxed outline-none focus:border-[#d4b87a]/40 focus:ring-1 focus:ring-[#d4b87a]/20 min-h-[60px] resize-none"
+                    />
+                  </div>
+                  
+                  <button onClick={handleSavePulso} className="w-full py-3 bg-gradient-to-r from-[#d4b87a]/20 to-[#d4b87a]/5 hover:from-[#d4b87a]/30 hover:to-[#d4b87a]/10 border border-[#d4b87a]/40 rounded-xl text-[10px] font-bold text-[#d4b87a] font-mono tracking-widest transition-all shadow-[0_0_20px_rgba(212,184,122,0.1)]">
+                    ✓ SALVAR PULSO DA SEMANA
+                  </button>
                 </div>
-                <textarea 
-                  value={pulseBlocker}
-                  onChange={(e) => setPulseBlocker(e.target.value)}
-                  placeholder="Descreva seu bloqueio principal desta semana..."
-                  className="pulso-input-area"
-                />
-                <button className="btn-pulso-save" onClick={handleSavePulso}>
-                  ✓ Salvar Pulso da Semana
-                </button>
               </div>
             </div>
 
             {/* ROW 4: OS 4 BLOCOS NAV */}
-            <div className="home-row full">
-              <div className="dash-card">
-                <div className="panel-label">Navegação · OS</div>
-                <h3 className="panel-title">Os 4 Blocos · Clica pra Entrar</h3>
-                <div className="blocos-nav-grid">
+            <div className="home-row full mt-6">
+              <div className="dash-card bg-[#050505]/60 backdrop-blur-3xl border border-white/5 relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent pointer-events-none" />
+                <div className="relative z-10 mb-6 text-center">
+                  <span className="font-mono text-[9px] text-[#d4b87a] tracking-widest block font-bold uppercase mb-1">Navegação · OS</span>
+                  <h3 className="text-[16px] font-bold text-white">Os 4 Blocos · Clica pra Entrar</h3>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 relative z-10">
                   {[
-                    { title: 'Líderes / Gestores', icon: '👥', desc: 'Recrutar · Gerir · Delegar', tags: ['Recrutar', 'Gerir', 'Você'], info: 'lideres', sub: 'recrutar', count: `${candidates.length} cand` },
+                    { title: 'Líderes / Gestores', icon: '👥', desc: 'Recrutar · Gerir · Delegar', tags: ['Recrutar', 'Gerir', 'Você'], info: 'lideres', sub: 'voce', count: `${candidates.length} cand` },
                     { title: 'Time', icon: '🎯', desc: 'Formar · Pessoas · Influência', tags: ['Formar', 'Pessoas', 'Influência'], info: 'time', sub: 'formar', count: `${teamMembers.length} pess` },
                     { title: 'Gerir Diário', icon: '📓', desc: 'D6 · SBI · 1:1 · Config', tags: ['D6', 'SBI', '1:1'], info: 'lideres', sub: 'gerir', count: 'diário IE' },
                     { title: 'Empresa', icon: '🏢', desc: 'Estratégia · BI · OKRs', tags: ['Estratégia', 'BI', 'Canais'], info: 'empresa', sub: 'estrategia', count: 'configurar' }
@@ -1741,17 +1755,98 @@ export function SigPessoasPanel() {
                         if (n.info === 'time') setTimeTab(n.sub as TimeSubTab)
                         if (n.info === 'empresa') setEmpresaTab(n.sub as EmpresaSubTab)
                       }}
-                      className="bloco-nav-card"
+                      className="group p-5 bg-black/40 hover:bg-[#d4b87a]/10 border border-white/5 hover:border-[#d4b87a]/40 rounded-2xl cursor-pointer transition-all flex flex-col items-center text-center relative overflow-hidden"
                     >
-                      <div className="bnc-icon">{n.icon}</div>
-                      <div className="bnc-title">{n.title}</div>
-                      <div className="bnc-sub">{n.desc}</div>
-                      <div className="bnc-tags">
-                        {n.tags.map(t => <span key={t} className="bnc-tag">{t}</span>)}
+                      <div className="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                      <div className="text-3xl mb-3 relative z-10 filter drop-shadow-md">{n.icon}</div>
+                      <div className="text-[13px] font-bold text-white mb-1 relative z-10">{n.title}</div>
+                      <div className="text-[10px] text-white/50 font-sans mb-4 relative z-10">{n.desc}</div>
+                      <div className="flex flex-wrap justify-center gap-1.5 mb-4 relative z-10">
+                        {n.tags.map(t => <span key={t} className="px-2 py-0.5 bg-white/5 border border-white/10 rounded text-[8px] font-mono text-white/60 tracking-widest">{t}</span>)}
                       </div>
-                      <div className="bnc-count">{n.count}</div>
+                      <div className="text-[9px] font-mono font-bold text-[#d4b87a] tracking-widest mt-auto pt-3 border-t border-white/5 w-full relative z-10">{n.count}</div>
                     </div>
                   ))}
+                </div>
+              </div>
+            </div>
+
+            {/* RECRUTAR MOVED TO HOME */}
+            <div className="home-row full mt-6">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                {/* Left: Role metrics */}
+                <div className="lg:col-span-8 space-y-4 text-left">
+                  <div className="dash-card bg-[#050505]/60 backdrop-blur-3xl border border-white/5 relative overflow-hidden">
+                    <div className="absolute top-0 left-0 w-64 h-64 bg-[#d4b87a]/5 blur-[80px] pointer-events-none mix-blend-screen" />
+                    <div className="mb-5 relative z-10">
+                      <span className="font-mono text-[9px] text-[#d4b87a] tracking-widest block mb-2 font-bold uppercase">RECRUTAMENTO</span>
+                      <h3 className="text-[14px] font-bold text-white mb-1">Novo Candidato: Para qual papel?</h3>
+                    </div>
+                    
+                    <p className="text-[11px] text-white/50 mb-5 leading-relaxed font-sans relative z-10">
+                      Cada papel tem critérios diferentes de avaliação. Líderes/Gestores precisam de mais perguntas porque o impacto cultural deles é maior.
+                    </p>
+                    
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6 relative z-10">
+                      {[
+                        { title: 'Liderado', desc: 'Alguém que vai compor seu time e reportar a você. Foco: fit cultural + comportamento + soft skills.', qCount: '5 perguntas de avaliação' },
+                        { title: 'Gestor', desc: 'Função de gestão (coordenador, gerente). Foco: capacidade gestora + desenvolvimento + mediação.', qCount: '7 perguntas de avaliação' },
+                        { title: 'Líder & Gestor', desc: 'Liderança estratégica que gere pessoas diretamente. Foco: visão + operação + cultura.', qCount: '10 perguntas de avaliação' },
+                        { title: 'Líder', desc: 'Liderança estratégica (head, C-level) que NÃO gere pessoas diretamente. Foco: transformação + coragem ética.', qCount: '10 perguntas de avaliação' }
+                      ].map((role, idx) => (
+                        <div 
+                          key={idx}
+                          onClick={() => triggerToast(`Parâmetros de fit para ${role.title} ativados.`, 'ok')}
+                          className="group p-5 bg-black/40 border border-white/[0.08] hover:border-[#d4b87a]/60 hover:bg-[#d4b87a]/10 rounded-2xl cursor-pointer transition-all text-left relative overflow-hidden"
+                        >
+                          <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                          <b className="text-[12px] font-mono tracking-widest text-[#d4b87a] block leading-none mb-2">{role.title}</b>
+                          <span className="text-[10px] text-white/60 block mt-1 leading-snug font-sans">{role.desc}</span>
+                          <div className="mt-4 flex items-center justify-between">
+                            <span className="text-[9px] font-mono font-bold text-white/40 uppercase tracking-widest">{role.qCount}</span>
+                            <span className="text-[#d4b87a] opacity-0 group-hover:opacity-100 transition-opacity text-xs">→</span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+
+                    <div className="p-5 bg-black/50 border border-[#5dcaa5]/20 rounded-2xl relative z-10">
+                      <span className="font-mono text-[10px] text-[#5dcaa5] tracking-widest block mb-2 font-bold uppercase">◆ PRA QUÊ SERVEM ESSAS PERGUNTAS</span>
+                      <p className="text-[11px] text-white/60 leading-relaxed font-sans m-0">
+                        Cada resposta é analisada por IA contra 6 frameworks (Lencioni, HHS, SBI, Tuckman, Goleman, Big Five) e vira scores no perfil do candidato. Esses scores aparecem automaticamente em:
+                        <br /><br />
+                        <b className="text-white/90">Triagem</b> → ordena candidatos por fit<br />
+                        <b className="text-white/90">Ficha do liderado</b> → vira histórico Lencioni/HHS<br />
+                        <b className="text-white/90">Onboarding</b> → personaliza o plano dos 90 dias<br />
+                        <b className="text-white/90">Folha mensal</b> → cruza com SBI e D6 ao longo do tempo
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Right: Automations */}
+                <div className="lg:col-span-4 space-y-4 text-left">
+                  <div className="dash-card bg-[#050505]/60 backdrop-blur-3xl border border-[#d4b87a]/20">
+                    <div className="mb-4">
+                      <h3 className="text-[11px] font-mono text-[#d4b87a] font-bold tracking-widest uppercase">AUTOMAÇÕES RECRUTAR</h3>
+                    </div>
+                    <div className="space-y-2.5 text-[10px] font-mono text-white/60 bg-black/40 p-4 rounded-xl border border-white/5">
+                      <div className="flex justify-between items-center"><span className="flex items-center gap-2"><Zap className="w-3 h-3 text-[#5dcaa5]" /> Whisper Transcrição</span><span className="text-[#5dcaa5] bg-[#5dcaa5]/10 px-2 py-0.5 rounded">ativo</span></div>
+                      <div className="flex justify-between items-center"><span className="flex items-center gap-2"><Cpu className="w-3 h-3 text-[#5dcaa5]" /> IA Lencioni</span><span className="text-[#5dcaa5] bg-[#5dcaa5]/10 px-2 py-0.5 rounded">ativo</span></div>
+                      <div className="flex justify-between items-center"><span className="flex items-center gap-2"><Activity className="w-3 h-3 text-[#5dcaa5]" /> HHS scoring</span><span className="text-[#5dcaa5] bg-[#5dcaa5]/10 px-2 py-0.5 rounded">ativo</span></div>
+                      <div className="flex justify-between items-center"><span className="flex items-center gap-2"><Square className="w-3 h-3 text-[#fac775]" /> LinkedIn - Gupy</span><span className="text-[#fac775] bg-[#fac775]/10 px-2 py-0.5 rounded">pendente</span></div>
+                    </div>
+
+                    <div className="mt-8 mb-4">
+                      <h3 className="text-[11px] font-mono text-white/60 font-bold tracking-widest uppercase">AUTOMAÇÕES GERAIS</h3>
+                    </div>
+                    <div className="space-y-2.5 text-[10px] font-mono text-white/60 bg-black/40 p-4 rounded-xl border border-white/5">
+                      <div className="flex justify-between items-center"><span className="flex items-center gap-2"><Zap className="w-3 h-3 text-[#5dcaa5]" /> 1:1 mobile</span><span className="text-[#5dcaa5] bg-[#5dcaa5]/10 px-2 py-0.5 rounded">ativo</span></div>
+                      <div className="flex justify-between items-center"><span className="flex items-center gap-2"><Cpu className="w-3 h-3 text-[#5dcaa5]" /> Slack NLP</span><span className="text-[#5dcaa5] bg-[#5dcaa5]/10 px-2 py-0.5 rounded">ativo</span></div>
+                      <div className="flex justify-between items-center"><span className="flex items-center gap-2"><Activity className="w-3 h-3 text-[#5dcaa5]" /> Pulso semanal</span><span className="text-[#5dcaa5] bg-[#5dcaa5]/10 px-2 py-0.5 rounded">ativo</span></div>
+                      <div className="flex justify-between items-center"><span className="flex items-center gap-2"><Square className="w-3 h-3 text-[#fac775]" /> HRIS Integrations</span><span className="text-[#fac775] bg-[#fac775]/10 px-2 py-0.5 rounded">pendente</span></div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1765,41 +1860,42 @@ export function SigPessoasPanel() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className="dash-card gold-border"
+            className="dash-card bg-[#050505]/60 backdrop-blur-3xl border border-[#d4b87a]/20 relative overflow-hidden"
             style={{ padding: '24px' }}
           >
+            <div className="absolute top-0 right-0 w-64 h-64 bg-[#d4b87a]/5 blur-[80px] pointer-events-none mix-blend-screen" />
+            
             {/* Header info */}
-            <div className="sec-head" style={{ marginBottom: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <div className="lhs" style={{ textAlign: 'left' }}>
-                <div className="sec-id" style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-                  <span className="num" style={{ fontFamily: 'inherit', fontSize: '10px', color: '#b8975a', border: '0.2px solid rgba(212,184,122,0.3)', padding: '1px 6px', borderRadius: '4px', background: 'rgba(212,184,122,0.05)', fontWeight: 'bold' }}>LÍDERES</span>
-                  <span className="tag" style={{ fontSize: '9px', color: 'var(--ink-mute)' }}>Ferramentas do Líder como Agente</span>
+            <div className="flex justify-between items-start mb-6 relative z-10">
+              <div className="text-left max-w-2xl">
+                <div className="flex items-center gap-3 mb-2">
+                  <span className="px-2 py-0.5 bg-[#d4b87a]/10 border border-[#d4b87a]/30 rounded text-[9px] font-mono font-bold text-[#d4b87a] tracking-widest uppercase">LÍDERES</span>
+                  <span className="text-[10px] font-mono text-white/50 tracking-widest uppercase">Ferramentas do Líder como Agente</span>
                 </div>
-                <h2 className="sec-h" style={{ fontSize: '16px', fontWeight: 'bold', color: '#fff', marginTop: '6px' }}>Desenvolvimento de Liderança</h2>
-                <div className="sec-sub" style={{ fontSize: '9.5px', color: 'var(--ink-mute)', marginTop: '2px' }}>Você não pode liderar quem você não é. Desenvolvimento tem uma sequência: Autoconhecimento → Gestão → Equipe → Organização.</div>
+                <h2 className="text-[18px] font-bold text-white mb-2 tracking-tight">Desenvolvimento de Liderança</h2>
+                <div className="text-[11px] text-white/60 font-sans leading-relaxed">Você não pode liderar quem você não é. Desenvolvimento tem uma sequência: Autoconhecimento → Gestão → Equipe → Organização.</div>
               </div>
-              <div className="rhs">
+              <div>
                 <button 
                   onClick={() => triggerToast('Professor de IA iniciando mentoria de liderança...', 'ok')}
-                  className="btn-professor-ia"
+                  className="px-4 py-2 bg-gradient-to-r from-[#d4b87a]/20 to-[#d4b87a]/5 hover:from-[#d4b87a]/30 hover:to-[#d4b87a]/10 border border-[#d4b87a]/40 rounded-xl text-[10px] font-bold text-[#d4b87a] font-mono tracking-widest transition-all shadow-[0_0_20px_rgba(212,184,122,0.1)] flex items-center gap-2"
                 >
-                  ▶ PROFESSOR IA
+                  <span className="text-[12px]">▶</span> PROFESSOR IA
                 </button>
               </div>
             </div>
 
             {/* Sub-tabs Row */}
-            <div className="tab-lideres-row">
+            <div className="flex flex-wrap gap-2 mb-6 border-b border-white/5 pb-4 relative z-10">
               {[
-                { id: 'recrutar', label: 'Recrutar' },
+                { id: 'voce', label: 'Líderes / Gestores' },
                 { id: 'gerir', label: 'Gerir' },
-                { id: 'delegar', label: 'Delegar' },
-                { id: 'voce', label: 'Você' }
+                { id: 'delegar', label: 'Delegar' }
               ].map(sub => (
                 <button
                   key={sub.id}
                   onClick={() => setLideresTab(sub.id as LideresSubTab)}
-                  className={`sub-tab-btn ${lideresTab === sub.id ? 'active' : ''}`}
+                  className={`px-4 py-2 rounded-xl text-[10px] font-mono tracking-widest uppercase font-bold transition-all ${lideresTab === sub.id ? 'bg-[#d4b87a] text-black shadow-[0_0_15px_rgba(212,184,122,0.3)]' : 'bg-white/5 border border-white/10 text-white/50 hover:border-[#d4b87a]/30 hover:text-[#d4b87a]'}`}
                 >
                   {sub.label}
                 </button>
@@ -1809,89 +1905,88 @@ export function SigPessoasPanel() {
             {/* Inner pages dispatch */}
             <AnimatePresence mode="wait">
               
-              {/* SUBPAGE: RECRUTAR */}
-              {lideresTab === 'recrutar' && (
+              {/* LIDERES SUB-TABS GO HERE */}
+              
+              {/* SUBPAGE: LÍDERES / GESTORES (VOCÊ) */}
+              {lideresTab === 'voce' && (
                 <motion.div
-                  key="recrutar"
+                  key="voce"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  className="p-sub-view active"
+                  className="space-y-6"
                 >
-                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
-                    {/* Left: Role metrics */}
-                    <div className="lg:col-span-8 space-y-4 text-left">
-                      <div className="dash-card">
-                        <div className="sec-head" style={{ marginBottom: '20px' }}>
-                          <div className="lhs">
-                            <h3 className="panel-title" style={{ fontSize: '16px' }}>NOVO CANDIDATO</h3>
-                            <div className="panel-sub">Para qual papel?</div>
-                          </div>
-                        </div>
-                        
-                        <p style={{ fontSize: '11px', color: 'var(--ink-mute)', marginBottom: '15px', lineHeight: '1.5' }}>
-                          Cada papel tem critérios diferentes de avaliação. Líderes/Gestores precisam de mais perguntas porque o impacto cultural deles é maior.
-                        </p>
-                        
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-                          {[
-                            { title: 'Liderado', desc: 'Alguém que vai compor seu time e reportar a você. Foco: fit cultural + comportamento + soft skills.', qCount: '5 perguntas de avaliação' },
-                            { title: 'Gestor', desc: 'Função de gestão (coordenador, gerente). Foco: capacidade gestora + desenvolvimento + mediação.', qCount: '7 perguntas de avaliação' },
-                            { title: 'Líder & Gestor', desc: 'Liderança estratégica que gere pessoas diretamente. Foco: visão + operação + cultura.', qCount: '10 perguntas de avaliação' },
-                            { title: 'Líder', desc: 'Liderança estratégica (head, C-level) que NÃO gere pessoas diretamente. Foco: transformação + coragem ética.', qCount: '10 perguntas de avaliação' }
-                          ].map((role, idx) => (
-                            <div 
-                              key={idx}
-                              onClick={() => triggerToast(`Parâmetros de fit para ${role.title} ativados.`, 'ok')}
-                              className="group p-5 bg-black/40 border border-white/[0.08] hover:border-[#d4b87a]/60 hover:bg-[#d4b87a]/10 rounded-2xl cursor-pointer transition-all text-left relative overflow-hidden"
-                            >
-                              <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                              <b className="text-[12px] font-mono tracking-widest text-[#d4b87a] block leading-none mb-2">{role.title}</b>
-                              <span className="text-[10px] text-white/60 block mt-1 leading-snug font-sans">{role.desc}</span>
-                              <div className="mt-4 flex items-center justify-between">
-                                <span className="text-[9px] font-mono font-bold text-white/40 uppercase tracking-widest">{role.qCount}</span>
-                                <span className="text-[#d4b87a] opacity-0 group-hover:opacity-100 transition-opacity text-xs">→</span>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-
-                        <div className="p-5 bg-[#0a0a0a]/80 backdrop-blur-xl border border-white/[0.06] rounded-2xl">
-                          <span className="font-mono text-[10px] text-[#d4b87a] tracking-widest block mb-2 font-bold uppercase">◆ PRA QUÊ SERVEM ESSAS PERGUNTAS</span>
-                          <p className="text-[11px] text-white/60 leading-relaxed font-sans m-0">
-                            Cada resposta é analisada por IA contra 6 frameworks (Lencioni, HHS, SBI, Tuckman, Goleman, Big Five) e vira scores no perfil do candidato. Esses scores aparecem automaticamente em:
-                            <br /><br />
-                            <b className="text-white/90">Triagem</b> → ordena candidatos por fit<br />
-                            <b className="text-white/90">Ficha do liderado</b> → vira histórico Lencioni/HHS<br />
-                            <b className="text-white/90">Onboarding</b> → personaliza o plano dos 90 dias<br />
-                            <b className="text-white/90">Folha mensal</b> → cruza com SBI e D6 ao longo do tempo
-                          </p>
-                        </div>
-                      </div>
+                  <div className="dash-card bg-[#050505]/60 backdrop-blur-3xl border border-[#d4b87a]/20 relative overflow-hidden">
+                    <div className="absolute top-0 left-0 w-64 h-64 bg-[#d4b87a]/5 blur-[80px] mix-blend-screen pointer-events-none" />
+                    
+                    <div className="relative z-10 mb-6">
+                      <h4 className="text-[12px] font-mono text-[#d4b87a] font-bold tracking-widest uppercase mb-1">JORNADA DO LÍDER — FAÇA NESTA ORDEM</h4>
+                      <p className="text-[11px] text-white/50 font-sans leading-relaxed">
+                        O desenvolvimento da liderança tem uma sequência: primeiro você se conhece, depois domina as ferramentas de gestão, depois aplica com o time, depois influencia a organização. Pular etapas cria líderes frágeis.
+                      </p>
                     </div>
 
-                    {/* Right: Automations */}
-                    <div className="lg:col-span-4 space-y-4 text-left">
-                      <div className="dash-card bg-[#050505]/60 backdrop-blur-3xl border border-[#d4b87a]/20">
-                        <div className="mb-4">
-                          <h3 className="text-[11px] font-mono text-[#d4b87a] font-bold tracking-widest uppercase">AUTOMAÇÕES RECRUTAR</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5 relative z-10">
+                      
+                      {/* Step 1 */}
+                      <div className="p-5 border border-[#d4b87a]/30 bg-[#d4b87a]/10 rounded-2xl relative">
+                        <div className="absolute -top-3 -left-3 w-8 h-8 rounded-full bg-[#d4b87a] text-black flex items-center justify-center font-bold font-mono text-[14px] shadow-[0_0_15px_rgba(212,184,122,0.4)]">1</div>
+                        <span className="px-2 py-0.5 bg-[#d4b87a] text-black text-[8px] font-bold uppercase tracking-widest rounded absolute top-3 right-3">COMECE AQUI</span>
+                        
+                        <h5 className="text-[13px] font-bold text-white mb-2 ml-4">Autoconhecimento (PDI + IE)</h5>
+                        <p className="text-[10px] text-white/60 mb-4 ml-4 leading-relaxed font-sans">
+                          Escreva sobre uma situação que gerou emoção intensa. Use o Diário IE (na aba Gerir) — a IA analisa o padrão e avança seu PDI automaticamente.
+                        </p>
+                        
+                        <div className="ml-4 space-y-2">
+                          <button onClick={() => triggerToast('Abrindo Diário IE...', 'ok')} className="w-full text-left p-3 bg-black/40 border border-white/10 hover:border-[#d4b87a]/40 rounded-xl transition-all group flex justify-between items-center">
+                            <div>
+                              <span className="block text-[11px] text-white font-bold group-hover:text-[#d4b87a] transition-colors">▶ Escrever no Diário IE</span>
+                              <span className="block text-[9px] text-white/40 mt-1">A IA calcula seu padrão</span>
+                            </div>
+                            <span className="text-[#d4b87a] opacity-0 group-hover:opacity-100 transition-opacity">→</span>
+                          </button>
                         </div>
-                        <div className="space-y-2.5 text-[10px] font-mono text-white/60 bg-black/40 p-4 rounded-xl border border-white/5">
-                          <div className="flex justify-between items-center"><span className="flex items-center gap-2"><Zap className="w-3 h-3 text-[#5dcaa5]" /> Whisper Transcrição</span><span className="text-[#5dcaa5] bg-[#5dcaa5]/10 px-2 py-0.5 rounded">ativo</span></div>
-                          <div className="flex justify-between items-center"><span className="flex items-center gap-2"><Cpu className="w-3 h-3 text-[#5dcaa5]" /> IA Lencioni</span><span className="text-[#5dcaa5] bg-[#5dcaa5]/10 px-2 py-0.5 rounded">ativo</span></div>
-                          <div className="flex justify-between items-center"><span className="flex items-center gap-2"><Activity className="w-3 h-3 text-[#5dcaa5]" /> HHS scoring</span><span className="text-[#5dcaa5] bg-[#5dcaa5]/10 px-2 py-0.5 rounded">ativo</span></div>
-                          <div className="flex justify-between items-center"><span className="flex items-center gap-2"><Square className="w-3 h-3 text-[#fac775]" /> LinkedIn - Gupy</span><span className="text-[#fac775] bg-[#fac775]/10 px-2 py-0.5 rounded">pendente</span></div>
-                        </div>
+                      </div>
 
-                        <div className="mt-8 mb-4">
-                          <h3 className="text-[11px] font-mono text-white/60 font-bold tracking-widest uppercase">AUTOMAÇÕES GERAIS</h3>
+                      {/* Step 2 */}
+                      <div className="p-5 border border-white/10 bg-black/40 rounded-2xl relative opacity-80 hover:opacity-100 transition-opacity">
+                        <div className="absolute -top-3 -left-3 w-8 h-8 rounded-full bg-[#1a1a1a] border border-white/20 text-white/50 flex items-center justify-center font-bold font-mono text-[14px]">2</div>
+                        
+                        <h5 className="text-[13px] font-bold text-white mb-2 ml-4">Fundamentos da Gestão</h5>
+                        <p className="text-[10px] text-white/60 mb-4 ml-4 leading-relaxed font-sans">
+                          Domine as ferramentas operacionais antes de tentar inspirar grandes mudanças. Recrutamento, Feedback, 1:1s, Delegação (M1-M4).
+                        </p>
+
+                        <div className="ml-4 space-y-2">
+                          <button onClick={() => setLideresTab('gerir')} className="w-full text-left p-3 bg-black/40 border border-white/10 hover:border-white/30 rounded-xl transition-all group flex justify-between items-center">
+                            <div>
+                              <span className="block text-[11px] text-white font-bold">▶ Ir para Gerir</span>
+                              <span className="block text-[9px] text-white/40 mt-1">Ferramentas de Gestão</span>
+                            </div>
+                            <span className="text-white/50 group-hover:text-white transition-colors">→</span>
+                          </button>
                         </div>
-                        <div className="space-y-2.5 text-[10px] font-mono text-white/60 bg-black/40 p-4 rounded-xl border border-white/5">
-                          <div className="flex justify-between items-center"><span className="flex items-center gap-2"><Zap className="w-3 h-3 text-[#5dcaa5]" /> 1:1 mobile</span><span className="text-[#5dcaa5] bg-[#5dcaa5]/10 px-2 py-0.5 rounded">ativo</span></div>
-                          <div className="flex justify-between items-center"><span className="flex items-center gap-2"><Cpu className="w-3 h-3 text-[#5dcaa5]" /> Slack NLP</span><span className="text-[#5dcaa5] bg-[#5dcaa5]/10 px-2 py-0.5 rounded">ativo</span></div>
-                          <div className="flex justify-between items-center"><span className="flex items-center gap-2"><Activity className="w-3 h-3 text-[#5dcaa5]" /> Pulso semanal</span><span className="text-[#5dcaa5] bg-[#5dcaa5]/10 px-2 py-0.5 rounded">ativo</span></div>
-                          <div className="flex justify-between items-center"><span className="flex items-center gap-2"><Square className="w-3 h-3 text-[#fac775]" /> HRIS Integrations</span><span className="text-[#fac775] bg-[#fac775]/10 px-2 py-0.5 rounded">pendente</span></div>
-                        </div>
+                      </div>
+
+                      {/* Step 3 */}
+                      <div className="p-5 border border-white/10 bg-black/40 rounded-2xl relative opacity-60">
+                        <div className="absolute -top-3 -left-3 w-8 h-8 rounded-full bg-[#1a1a1a] border border-white/20 text-white/30 flex items-center justify-center font-bold font-mono text-[14px]">3</div>
+                        
+                        <h5 className="text-[13px] font-bold text-white/70 mb-2 ml-4">Dinâmica de Equipe (Tuckman)</h5>
+                        <p className="text-[10px] text-white/40 mb-4 ml-4 leading-relaxed font-sans">
+                          Aprenda a formar alianças (Contrato de Aliança) e gerenciar conflitos construtivos. (Bloqueado: Requer 60% no PDI 2)
+                        </p>
+                      </div>
+
+                      {/* Step 4 */}
+                      <div className="p-5 border border-white/10 bg-black/40 rounded-2xl relative opacity-60">
+                        <div className="absolute -top-3 -left-3 w-8 h-8 rounded-full bg-[#1a1a1a] border border-white/20 text-white/30 flex items-center justify-center font-bold font-mono text-[14px]">4</div>
+                        
+                        <h5 className="text-[13px] font-bold text-white/70 mb-2 ml-4">Impacto Organizacional</h5>
+                        <p className="text-[10px] text-white/40 mb-4 ml-4 leading-relaxed font-sans">
+                          Liderar mudanças estratégicas e influenciar cultura. Alpha-Linter e BI Avançado. (Bloqueado)
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -2755,33 +2850,38 @@ export function SigPessoasPanel() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className="dash-card gold-border"
+            className="dash-card bg-[#050505]/60 backdrop-blur-3xl border border-[#5dcaa5]/20 relative overflow-hidden"
             style={{ padding: '24px' }}
           >
+            <div className="absolute top-0 right-0 w-64 h-64 bg-[#5dcaa5]/5 blur-[80px] pointer-events-none mix-blend-screen" />
+            
             {/* Header info */}
-            <div className="sec-head" style={{ marginBottom: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <div className="lhs" style={{ textAlign: 'left' }}>
-                <div className="sec-id" style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-                  <span className="num" style={{ fontFamily: 'inherit', fontSize: '10px', color: '#b8975a', border: '0.2px solid rgba(212,184,122,0.3)', padding: '1px 6px', borderRadius: '4px', background: 'rgba(212,184,122,0.05)', fontWeight: 'bold' }}>EMPRESA</span>
-                  <span className="tag" style={{ fontSize: '9px', color: 'var(--ink-mute)' }}>Alinhamento Organizacional &amp; BI</span>
+            <div className="flex justify-between items-start mb-6 relative z-10">
+              <div className="text-left max-w-2xl">
+                <div className="flex items-center gap-3 mb-2">
+                  <span className="px-2 py-0.5 bg-[#5dcaa5]/10 border border-[#5dcaa5]/30 rounded text-[9px] font-mono font-bold text-[#5dcaa5] tracking-widest uppercase">EMPRESA</span>
+                  <span className="text-[10px] font-mono text-white/50 tracking-widest uppercase">Direção &amp; Estratégia Corporativa</span>
                 </div>
-                <h2 className="sec-h" style={{ fontSize: '16px', fontWeight: 'bold', color: '#fff', marginTop: '6px' }}>Mapeamento Corporativo e Indicadores</h2>
-                <div className="sec-sub" style={{ fontSize: '9.5px', color: 'var(--ink-mute)', marginTop: '2px' }}>Acompanhamento de OKRs estratégicos, ROI do Clima Organizacional, eNPS consolidado e saúde dos canais de comunicação.</div>
+                <h2 className="text-[18px] font-bold text-white mb-2 tracking-tight">Estratégia · BI · Organização</h2>
+                <div className="text-[11px] text-white/60 font-sans leading-relaxed">Conecte o desenvolvimento da liderança e a força do time aos resultados do negócio através de OKRs e análise sistêmica.</div>
               </div>
-              <div className="rhs">
+              <div>
                 <button 
-                  onClick={() => triggerToast('Carregando mentoria estratégica executiva...', 'ok')}
-                  className="btn-professor-ia"
+                  onClick={() => triggerToast('Professor de IA iniciando análise corporativa...', 'ok')}
+                  className="px-4 py-2 bg-gradient-to-r from-[#5dcaa5]/20 to-[#5dcaa5]/5 hover:from-[#5dcaa5]/30 hover:to-[#5dcaa5]/10 border border-[#5dcaa5]/40 rounded-xl text-[10px] font-bold text-[#5dcaa5] font-mono tracking-widest transition-all shadow-[0_0_20px_rgba(93,202,165,0.1)] flex items-center gap-2"
                 >
-                  ▶ PROFESSOR IA
+                  <span className="text-[12px]">▶</span> PROFESSOR IA
                 </button>
               </div>
             </div>
 
             {/* Sub-tabs Row */}
-            <div className="tab-empresa-row">
-              <button onClick={() => setEmpresaTab('diagnostico')} className={`sub-tab-btn ${empresaTab === 'diagnostico' ? 'active' : ''}`}>
-                Diagnóstico<span className="tab-sub">Organizacional</span>
+            <div className="flex flex-wrap gap-2 mb-6 border-b border-white/5 pb-4 relative z-10">
+              <button 
+                onClick={() => setEmpresaTab('diagnostico')} 
+                className={`px-4 py-2 rounded-xl text-[10px] font-mono tracking-widest uppercase font-bold transition-all ${empresaTab === 'diagnostico' ? 'bg-[#5dcaa5] text-black shadow-[0_0_15px_rgba(93,202,165,0.3)]' : 'bg-white/5 border border-white/10 text-white/50 hover:border-[#5dcaa5]/30 hover:text-[#5dcaa5]'}`}
+              >
+                Auditoria 6D
               </button>
               {[
                 { id: 'estrategia', label: 'Estratégia & OKRs' },
@@ -2792,7 +2892,7 @@ export function SigPessoasPanel() {
                 <button
                   key={sub.id}
                   onClick={() => setEmpresaTab(sub.id as EmpresaSubTab)}
-                  className={`sub-tab-btn ${empresaTab === sub.id ? 'active' : ''}`}
+                  className={`px-4 py-2 rounded-xl text-[10px] font-mono tracking-widest uppercase font-bold transition-all ${empresaTab === sub.id ? 'bg-[#5dcaa5] text-black shadow-[0_0_15px_rgba(93,202,165,0.3)]' : 'bg-white/5 border border-white/10 text-white/50 hover:border-[#5dcaa5]/30 hover:text-[#5dcaa5]'}`}
                 >
                   {sub.label}
                 </button>
@@ -2801,32 +2901,56 @@ export function SigPessoasPanel() {
 
             <AnimatePresence mode="wait">
               
-              {/* SUBVIEW: DIAGNÓSTICO */}
+              {/* SUBVIEW: AUDITORIA 6D (DIAGNÓSTICO ATP) */}
               {empresaTab === 'diagnostico' && (
                 <motion.div
                   key="diagnostico"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  className="dash-card text-left space-y-4"
+                  className="space-y-6 text-left"
                 >
-                  <div className="flex justify-between items-center border-b border-white/[0.04] pb-2">
-                    <div>
-                      <h4 className="text-[11px] font-bold text-[#d4b87a] uppercase font-mono">Diagnóstico Organizacional Estratégico</h4>
-                      <p className="text-[9.5px] text-white/45 font-sans">Alinhamento de negócios antes de definir OKRs.</p>
+                  <div className="dash-card bg-[#050505]/60 backdrop-blur-3xl border border-[#5dcaa5]/20 relative overflow-hidden">
+                    <div className="absolute top-0 right-0 w-64 h-64 bg-purple-500/5 blur-[80px] pointer-events-none mix-blend-screen" />
+                    
+                    <div className="flex justify-between items-center border-b border-white/[0.04] pb-4 mb-6 relative z-10">
+                      <div>
+                        <h4 className="text-[12px] font-bold text-[#5dcaa5] uppercase font-mono tracking-widest mb-1">Auditoria de Gestão 6D</h4>
+                        <p className="text-[10px] text-white/50 font-sans">Consultoria estratégica em gestão corporativa e alinhamento de liderança (ATP).</p>
+                      </div>
+                      <button 
+                        className="px-4 py-2 bg-gradient-to-r from-[#5dcaa5]/20 to-[#5dcaa5]/5 hover:from-[#5dcaa5]/30 hover:to-[#5dcaa5]/10 border border-[#5dcaa5]/40 rounded-xl text-[10px] font-bold text-[#5dcaa5] font-mono tracking-widest transition-all shadow-[0_0_20px_rgba(93,202,165,0.1)] flex items-center gap-2"
+                        onClick={() => triggerToast("Iniciando auditoria de gestão com a IA...", "ok")}
+                      >
+                        <span className="text-[12px]">▶</span> IA ANALYZER
+                      </button>
                     </div>
-                    <button 
-                      className="btn-professor-ia"
-                      onClick={() => alert("Módulo de IA será integrado à API /api/business/consultoria")}
-                    >
-                      ▶ IA ANALYZER
-                    </button>
-                  </div>
-                  <div className="p-4 bg-black/40 rounded-lg border border-white/[0.06] flex items-center justify-center min-h-[300px]">
-                    <p className="text-white/40 text-xs text-center max-w-sm">
-                      Módulo de Diagnóstico integrado.<br/><br/>
-                      Aqui será renderizado o fluxo de geração de planos PESTEL/Porter usando o Gemini 1.5 Pro AI Gateway, conectando a diretoria com a estratégia.
-                    </p>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-5 relative z-10">
+                      {/* Fase 1 */}
+                      <div className="p-5 bg-black/40 border border-white/10 hover:border-[#5dcaa5]/40 rounded-2xl transition-all group relative">
+                        <div className="absolute -top-3 -left-3 w-8 h-8 rounded-full bg-[#5dcaa5]/20 border border-[#5dcaa5]/50 text-[#5dcaa5] flex items-center justify-center font-bold font-mono text-[14px]">1</div>
+                        <h5 className="text-[12px] font-bold text-white mb-2 ml-4">Mapeamento PESTEL</h5>
+                        <p className="text-[10px] text-white/50 mb-4 ml-4 leading-relaxed font-sans">Análise Macroambiental. Identifique fatores Políticos, Econômicos e Tecnológicos que impactam a corporação.</p>
+                        <button className="w-full py-2 bg-white/5 hover:bg-[#5dcaa5]/10 border border-white/10 hover:border-[#5dcaa5]/30 rounded-lg text-[9px] font-mono text-white/70 hover:text-[#5dcaa5] transition-all font-bold tracking-widest">INICIAR FASE 1</button>
+                      </div>
+
+                      {/* Fase 2 */}
+                      <div className="p-5 bg-black/40 border border-white/10 hover:border-[#5dcaa5]/40 rounded-2xl transition-all group relative opacity-80">
+                        <div className="absolute -top-3 -left-3 w-8 h-8 rounded-full bg-white/5 border border-white/10 text-white/30 flex items-center justify-center font-bold font-mono text-[14px]">2</div>
+                        <h5 className="text-[12px] font-bold text-white mb-2 ml-4">Forças de Porter</h5>
+                        <p className="text-[10px] text-white/50 mb-4 ml-4 leading-relaxed font-sans">Análise Microambiental. Avalie a rivalidade, novos entrantes e poder de negociação para ajustar o posicionamento.</p>
+                        <button className="w-full py-2 bg-black/40 border border-white/5 rounded-lg text-[9px] font-mono text-white/20 cursor-not-allowed tracking-widest font-bold">BLOQUEADO</button>
+                      </div>
+
+                      {/* Fase 3 */}
+                      <div className="p-5 bg-black/40 border border-white/10 hover:border-[#5dcaa5]/40 rounded-2xl transition-all group relative opacity-80">
+                        <div className="absolute -top-3 -left-3 w-8 h-8 rounded-full bg-white/5 border border-white/10 text-white/30 flex items-center justify-center font-bold font-mono text-[14px]">3</div>
+                        <h5 className="text-[12px] font-bold text-white mb-2 ml-4">VRIO &amp; Cadeia de Valor</h5>
+                        <p className="text-[10px] text-white/50 mb-4 ml-4 leading-relaxed font-sans">Análise Interna. Identifique recursos Valiosos e Inimitáveis para sustentar a vantagem competitiva.</p>
+                        <button className="w-full py-2 bg-black/40 border border-white/5 rounded-lg text-[9px] font-mono text-white/20 cursor-not-allowed tracking-widest font-bold">BLOQUEADO</button>
+                      </div>
+                    </div>
                   </div>
                 </motion.div>
               )}
