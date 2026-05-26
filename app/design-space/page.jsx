@@ -1448,50 +1448,26 @@ function BusinessManifestoPage() {
     }}>
       {/* 1. Splash Screen - Estilo WhatsApp Business (Capa Minimalista) */}
       <section style={{ 
+        width: '100vw', 
         height: '100vh', 
-        width: '100vw',
-        display: 'flex', 
-        flexDirection: 'column', 
+        backgroundColor: '#000',
+        display: 'flex',
+        flexDirection: 'column',
         justifyContent: 'center', 
-        alignItems: 'center',
-        position: 'relative',
-        backgroundColor: '#000'
+        alignItems: 'center', 
       }}>
-        {/* Centro Absoluto: Apenas a Imagem do "B", elegante e nítida */}
+        {/* Imagem Centralizada com tamanho restrito para nunca cortar na tela */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1.5, ease: "easeOut" }}
-          style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1.2, ease: "easeOut" }}
+          style={{ width: '100%', height: '100%', padding: '2rem', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
         >
           <img 
             src="/business_cube_straight.png" 
-            alt="IPB Logo" 
-            style={{ width: '300px', height: 'auto', display: 'block' }} 
+            alt="IPB Cover" 
+            style={{ maxWidth: '100%', maxHeight: '90%', objectFit: 'contain' }} 
           />
-        </motion.div>
-
-        {/* Rodapé fixo estilo "from Meta" do WhatsApp Business */}
-        <motion.div 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1, duration: 1 }}
-          style={{ position: 'absolute', bottom: '50px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}
-        >
-          <span style={{ fontSize: '0.6rem', letterSpacing: '0.1em', color: '#666', textTransform: 'uppercase' }}>
-            From
-          </span>
-          <h1 style={{ 
-            fontFamily: 'var(--sans)', 
-            fontWeight: 500, 
-            letterSpacing: '0.2em', 
-            fontSize: '1rem',
-            color: '#fff',
-            margin: 0,
-            textTransform: 'uppercase'
-          }}>
-            Intelligence Platform Business
-          </h1>
         </motion.div>
       </section><section style={{ 
         minHeight: '100vh', 

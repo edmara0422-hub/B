@@ -11,7 +11,7 @@ import {
 type TabOption = 'home' | 'lideres' | 'time' | 'empresa'
 type LideresSubTab = 'recrutar' | 'gerir' | 'delegar' | 'voce'
 type TimeSubTab = 'formar' | 'pessoas' | 'influencia'
-type EmpresaSubTab = 'estrategia' | 'bi' | 'relatorio' | 'canais'
+type EmpresaSubTab = 'diagnostico' | 'estrategia' | 'bi' | 'relatorio' | 'canais'
 
 type Candidate = {
   id: string
@@ -68,7 +68,7 @@ export function SigPessoasPanel() {
   const [activeTab, setActiveTab] = useState<TabOption>('home')
   const [lideresTab, setLideresTab] = useState<LideresSubTab>('recrutar')
   const [timeTab, setTimeTab] = useState<TimeSubTab>('formar')
-  const [empresaTab, setEmpresaTab] = useState<EmpresaSubTab>('estrategia')
+  const [empresaTab, setEmpresaTab] = useState<EmpresaSubTab>('diagnostico')
 
   // Global Toast
   const [toastMsg, setToastMsg] = useState<string | null>(null)
@@ -1833,7 +1833,7 @@ export function SigPessoasPanel() {
                           Cada papel tem critérios diferentes de avaliação. Líderes/Gestores precisam de mais perguntas porque o impacto cultural deles é maior.
                         </p>
                         
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-5">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
                           {[
                             { title: 'Liderado', desc: 'Alguém que vai compor seu time e reportar a você. Foco: fit cultural + comportamento + soft skills.', qCount: '5 perguntas de avaliação' },
                             { title: 'Gestor', desc: 'Função de gestão (coordenador, gerente). Foco: capacidade gestora + desenvolvimento + mediação.', qCount: '7 perguntas de avaliação' },
@@ -1843,23 +1843,28 @@ export function SigPessoasPanel() {
                             <div 
                               key={idx}
                               onClick={() => triggerToast(`Parâmetros de fit para ${role.title} ativados.`, 'ok')}
-                              className="p-3 bg-white/[0.01] border border-white/[0.05] hover:border-[#d4b87a]/45 rounded-lg cursor-pointer transition text-left"
+                              className="group p-5 bg-black/40 border border-white/[0.08] hover:border-[#d4b87a]/60 hover:bg-[#d4b87a]/10 rounded-2xl cursor-pointer transition-all text-left relative overflow-hidden"
                             >
-                              <b className="text-[11.5px] text-[#d4b87a] block leading-none">{role.title}</b>
-                              <span className="text-[9.5px] text-white/50 block mt-1 leading-snug">{role.desc}</span>
-                              <span className="text-[8.5px] font-mono text-white/35 block mt-2">{role.qCount}</span>
+                              <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                              <b className="text-[12px] font-mono tracking-widest text-[#d4b87a] block leading-none mb-2">{role.title}</b>
+                              <span className="text-[10px] text-white/60 block mt-1 leading-snug font-sans">{role.desc}</span>
+                              <div className="mt-4 flex items-center justify-between">
+                                <span className="text-[9px] font-mono font-bold text-white/40 uppercase tracking-widest">{role.qCount}</span>
+                                <span className="text-[#d4b87a] opacity-0 group-hover:opacity-100 transition-opacity text-xs">→</span>
+                              </div>
                             </div>
                           ))}
                         </div>
 
-                        <div style={{ background: 'rgba(255,255,255,0.01)', borderTop: '0.2px solid rgba(255,255,255,0.05)', paddingTop: '15px' }}>
-                          <span style={{ fontFamily: 'inherit', fontSize: '9px', color: '#d4b87a', letterSpacing: '0.05em', display: 'block', marginBottom: '6px', fontWeight: 'bold' }}>◆ PRA QUÊ SERVEM ESSAS PERGUNTAS</span>
-                          <p style={{ fontSize: '10.5px', color: 'var(--ink-2)', lineHeight: '1.5', margin: 0 }}>
+                        <div className="p-5 bg-[#0a0a0a]/80 backdrop-blur-xl border border-white/[0.06] rounded-2xl">
+                          <span className="font-mono text-[10px] text-[#d4b87a] tracking-widest block mb-2 font-bold uppercase">◆ PRA QUÊ SERVEM ESSAS PERGUNTAS</span>
+                          <p className="text-[11px] text-white/60 leading-relaxed font-sans m-0">
                             Cada resposta é analisada por IA contra 6 frameworks (Lencioni, HHS, SBI, Tuckman, Goleman, Big Five) e vira scores no perfil do candidato. Esses scores aparecem automaticamente em:
-                            <br /><b>Triagem</b> → ordena candidatos por fit
-                            <br /><b>Ficha do liderado</b> → vira histórico Lencioni/HHS
-                            <br /><b>Onboarding</b> → personaliza o plano dos 90 dias
-                            <br /><b>Folha mensal</b> → cruza com SBI e D6 ao longo do tempo
+                            <br /><br />
+                            <b className="text-white/90">Triagem</b> → ordena candidatos por fit<br />
+                            <b className="text-white/90">Ficha do liderado</b> → vira histórico Lencioni/HHS<br />
+                            <b className="text-white/90">Onboarding</b> → personaliza o plano dos 90 dias<br />
+                            <b className="text-white/90">Folha mensal</b> → cruza com SBI e D6 ao longo do tempo
                           </p>
                         </div>
                       </div>
@@ -1867,25 +1872,25 @@ export function SigPessoasPanel() {
 
                     {/* Right: Automations */}
                     <div className="lg:col-span-4 space-y-4 text-left">
-                      <div className="dash-card">
-                        <div className="sec-head" style={{ marginBottom: '12px' }}>
-                          <h3 className="panel-title" style={{ fontSize: '12px' }}>AUTOMAÇÕES RECRUTAR</h3>
+                      <div className="dash-card bg-[#050505]/60 backdrop-blur-3xl border border-[#d4b87a]/20">
+                        <div className="mb-4">
+                          <h3 className="text-[11px] font-mono text-[#d4b87a] font-bold tracking-widest uppercase">AUTOMAÇÕES RECRUTAR</h3>
                         </div>
-                        <div className="space-y-2 text-[9.5px] font-mono text-white/60">
-                          <div className="flex justify-between"><span>Whisper Transcrição</span><span className="text-[#5dcaa5]">ativo</span></div>
-                          <div className="flex justify-between"><span>IA Lencioni</span><span className="text-[#5dcaa5]">ativo</span></div>
-                          <div className="flex justify-between"><span>HHS scoring</span><span className="text-[#5dcaa5]">ativo</span></div>
-                          <div className="flex justify-between"><span>LinkedIn - Gupy</span><span className="text-[#fac775]">pendente</span></div>
+                        <div className="space-y-2.5 text-[10px] font-mono text-white/60 bg-black/40 p-4 rounded-xl border border-white/5">
+                          <div className="flex justify-between items-center"><span className="flex items-center gap-2"><Zap className="w-3 h-3 text-[#5dcaa5]" /> Whisper Transcrição</span><span className="text-[#5dcaa5] bg-[#5dcaa5]/10 px-2 py-0.5 rounded">ativo</span></div>
+                          <div className="flex justify-between items-center"><span className="flex items-center gap-2"><Cpu className="w-3 h-3 text-[#5dcaa5]" /> IA Lencioni</span><span className="text-[#5dcaa5] bg-[#5dcaa5]/10 px-2 py-0.5 rounded">ativo</span></div>
+                          <div className="flex justify-between items-center"><span className="flex items-center gap-2"><Activity className="w-3 h-3 text-[#5dcaa5]" /> HHS scoring</span><span className="text-[#5dcaa5] bg-[#5dcaa5]/10 px-2 py-0.5 rounded">ativo</span></div>
+                          <div className="flex justify-between items-center"><span className="flex items-center gap-2"><Square className="w-3 h-3 text-[#fac775]" /> LinkedIn - Gupy</span><span className="text-[#fac775] bg-[#fac775]/10 px-2 py-0.5 rounded">pendente</span></div>
                         </div>
 
-                        <div className="sec-head" style={{ marginTop: '20px', marginBottom: '12px' }}>
-                          <h3 className="panel-title" style={{ fontSize: '12px' }}>AUTOMAÇÕES GERAIS</h3>
+                        <div className="mt-8 mb-4">
+                          <h3 className="text-[11px] font-mono text-white/60 font-bold tracking-widest uppercase">AUTOMAÇÕES GERAIS</h3>
                         </div>
-                        <div className="space-y-2 text-[9.5px] font-mono text-white/60">
-                          <div className="flex justify-between"><span>1:1 mobile</span><span className="text-[#5dcaa5]">ativo</span></div>
-                          <div className="flex justify-between"><span>Slack NLP</span><span className="text-[#5dcaa5]">ativo</span></div>
-                          <div className="flex justify-between"><span>Pulso semanal</span><span className="text-[#5dcaa5]">ativo</span></div>
-                          <div className="flex justify-between"><span>Gmail - GitHub - HRIS</span><span className="text-[#fac775]">pendente</span></div>
+                        <div className="space-y-2.5 text-[10px] font-mono text-white/60 bg-black/40 p-4 rounded-xl border border-white/5">
+                          <div className="flex justify-between items-center"><span className="flex items-center gap-2"><Zap className="w-3 h-3 text-[#5dcaa5]" /> 1:1 mobile</span><span className="text-[#5dcaa5] bg-[#5dcaa5]/10 px-2 py-0.5 rounded">ativo</span></div>
+                          <div className="flex justify-between items-center"><span className="flex items-center gap-2"><Cpu className="w-3 h-3 text-[#5dcaa5]" /> Slack NLP</span><span className="text-[#5dcaa5] bg-[#5dcaa5]/10 px-2 py-0.5 rounded">ativo</span></div>
+                          <div className="flex justify-between items-center"><span className="flex items-center gap-2"><Activity className="w-3 h-3 text-[#5dcaa5]" /> Pulso semanal</span><span className="text-[#5dcaa5] bg-[#5dcaa5]/10 px-2 py-0.5 rounded">ativo</span></div>
+                          <div className="flex justify-between items-center"><span className="flex items-center gap-2"><Square className="w-3 h-3 text-[#fac775]" /> HRIS Integrations</span><span className="text-[#fac775] bg-[#fac775]/10 px-2 py-0.5 rounded">pendente</span></div>
                         </div>
                       </div>
                     </div>
@@ -1902,32 +1907,36 @@ export function SigPessoasPanel() {
                   exit={{ opacity: 0 }}
                   className="p-sub-view active space-y-4"
                 >
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '15px', marginBottom: '20px' }}>
-                    <div className="dash-card" style={{ padding: '15px', textAlign: 'center' }}>
-                      <span className="panel-label">Pessoas em Alerta</span>
-                      <b className="text-2xl font-bold text-[#e24b4a] block mt-1">{teamMembers.filter(m => m.d6 < 60).length}</b>
-                      <span className="text-[9px] text-white/40 block mt-1 font-mono">D6 ou ISR &lt; 50</span>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+                    <div className="dash-card p-5 text-center bg-black/40 backdrop-blur-xl border border-white/5 relative overflow-hidden">
+                      <div className="absolute top-0 right-0 w-32 h-32 bg-[#e24b4a]/10 blur-[50px] mix-blend-screen pointer-events-none" />
+                      <span className="font-mono text-[9px] uppercase tracking-widest text-[#e24b4a] font-bold block mb-2">Pessoas em Alerta</span>
+                      <b className="text-3xl font-light text-white block">{teamMembers.filter(m => m.d6 < 60).length}</b>
+                      <span className="text-[9px] text-[#e24b4a]/70 block mt-2 font-mono">D6 ou ISR &lt; 50</span>
                     </div>
-                    <div className="dash-card" style={{ padding: '15px', textAlign: 'center' }}>
-                      <span className="panel-label">D6 Médio do Time</span>
-                      <b className="text-2xl font-bold text-[#d4b87a] block mt-1">{Math.round(teamMembers.reduce((s, m) => s + m.d6, 0) / teamMembers.length)}<small style={{ fontSize: '12px', color: 'var(--ink-mute)' }}>/100</small></b>
-                      <span className="text-[9px] text-white/40 block mt-1 font-mono">Calculado em tempo real</span>
+                    <div className="dash-card p-5 text-center bg-black/40 backdrop-blur-xl border border-white/5 relative overflow-hidden">
+                      <div className="absolute top-0 right-0 w-32 h-32 bg-[#d4b87a]/10 blur-[50px] mix-blend-screen pointer-events-none" />
+                      <span className="font-mono text-[9px] uppercase tracking-widest text-[#d4b87a] font-bold block mb-2">D6 Médio do Time</span>
+                      <b className="text-3xl font-light text-white block">{Math.round(teamMembers.reduce((s, m) => s + m.d6, 0) / (teamMembers.length || 1))}<small className="text-[14px] text-white/30 font-sans">/100</small></b>
+                      <span className="text-[9px] text-[#d4b87a]/70 block mt-2 font-mono">Calculado em tempo real</span>
                     </div>
-                    <div className="dash-card" style={{ padding: '15px', textAlign: 'center' }}>
-                      <span className="panel-label">Com Tarefas Pendentes</span>
-                      <b className="text-2xl font-bold text-[#fac775] block mt-1">{delegatedTasks.filter(t => t.status !== 'concluido').length}</b>
-                      <span className="text-[9px] text-white/40 block mt-1 font-mono">Delegação ativa</span>
+                    <div className="dash-card p-5 text-center bg-black/40 backdrop-blur-xl border border-white/5 relative overflow-hidden">
+                      <div className="absolute top-0 right-0 w-32 h-32 bg-[#5dcaa5]/10 blur-[50px] mix-blend-screen pointer-events-none" />
+                      <span className="font-mono text-[9px] uppercase tracking-widest text-[#5dcaa5] font-bold block mb-2">Com Tarefas Pendentes</span>
+                      <b className="text-3xl font-light text-white block">{delegatedTasks.filter(t => t.status !== 'concluido').length}</b>
+                      <span className="text-[9px] text-[#5dcaa5]/70 block mt-2 font-mono">Delegação ativa</span>
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
+                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
                     {/* Coach SBI */}
-                    <div className="lg:col-span-7 dash-card text-left space-y-3">
-                      <div className="flex justify-between items-center" style={{ marginBottom: '12px' }}>
+                    <div className="lg:col-span-7 dash-card text-left space-y-4 bg-[#050505]/60 backdrop-blur-3xl border border-white/5 relative overflow-hidden">
+                      <div className="absolute top-0 left-0 w-64 h-64 bg-blue-500/5 blur-[80px] pointer-events-none mix-blend-screen" />
+                      <div className="flex justify-between items-center mb-4 relative z-10">
                         <div>
-                          <span className="panel-label">COACH SBI</span>
-                          <h4 className="panel-title">Registrar Feedback SBI</h4>
-                          <div className="panel-sub">Foque em Situação → Comportamento objetivo → Impacto</div>
+                          <span className="font-mono text-[9px] text-blue-400 tracking-widest block mb-2 font-bold uppercase">COACH SBI</span>
+                          <h4 className="text-[14px] font-bold text-white mb-1">Registrar Feedback SBI</h4>
+                          <div className="text-[10px] text-white/50 font-sans">Foque em Situação → Comportamento objetivo → Impacto</div>
                         </div>
                         <button className="btn-reset-sm" onClick={() => triggerToast('Carregando aula SBI...', 'ok')}>▶ AULA</button>
                       </div>
@@ -1963,16 +1972,18 @@ export function SigPessoasPanel() {
                       </div>
 
                       {/* Log feed */}
-                      <div className="border-t border-white/[0.04] pt-3 max-h-[140px] overflow-y-auto space-y-2 pr-1">
+                      <div className="border-t border-white/[0.04] pt-4 max-h-[140px] overflow-y-auto space-y-3 pr-1 custom-scrollbar">
                         {sbiLogs.length === 0 ? (
-                          <span style={{ fontSize: '10px', fontStyle: 'italic', opacity: 0.5 }}>Nenhum feedback SBI registrado hoje. Use em 1:1 semanais.</span>
+                          <span className="text-[10px] italic opacity-50 block font-sans">Nenhum feedback SBI registrado hoje. Use em 1:1 semanais.</span>
                         ) : (
                           sbiLogs.map((log, i) => (
-                            <div key={i} className="p-2 bg-white/[0.02] border border-white/[0.04] rounded-lg font-mono text-[9px]">
-                              <span className="text-[#d4b87a] font-bold block">{log.date} · REGISTRO SBI</span>
-                              <span className="text-white/40 block mt-1">Situação: <b className="text-white/70">{log.situation}</b></span>
-                              <span className="text-white/40 block">Comportamento: <b className="text-white/70">{log.behavior}</b></span>
-                              <span className="text-white/40 block">Impacto: <b className="text-white/70">{log.impact}</b></span>
+                            <div key={i} className="p-3 bg-white/[0.02] border border-white/[0.04] rounded-xl font-mono text-[9px] hover:border-[#d4b87a]/20 transition-colors">
+                              <span className="text-[#d4b87a] font-bold block mb-2 tracking-widest">{log.date} · REGISTRO SBI</span>
+                              <div className="space-y-1">
+                                <span className="text-white/40 block">Situação: <b className="text-white/80">{log.situation}</b></span>
+                                <span className="text-white/40 block">Comportamento: <b className="text-white/80">{log.behavior}</b></span>
+                                <span className="text-white/40 block">Impacto: <b className="text-[#e24b4a]/90">{log.impact}</b></span>
+                              </div>
                             </div>
                           ))
                         )}
@@ -1980,16 +1991,17 @@ export function SigPessoasPanel() {
                     </div>
 
                     {/* Team Individual Health */}
-                    <div className="lg:col-span-5 dash-card text-left space-y-3">
+                    <div className="lg:col-span-5 dash-card text-left space-y-4 bg-[#050505]/60 backdrop-blur-3xl border border-white/5 relative overflow-hidden">
+                      <div className="absolute top-0 right-0 w-64 h-64 bg-[#d4b87a]/5 blur-[80px] pointer-events-none mix-blend-screen" />
                       <div>
-                        <span className="panel-label">SAÚDE INDIVIDUAL</span>
-                        <h4 className="panel-title">Saúde Individual e Indicadores</h4>
-                        <div className="panel-sub">Filtro cruzado de calibração em tempo real</div>
+                        <span className="font-mono text-[9px] text-[#d4b87a] tracking-widest block mb-2 font-bold uppercase">SAÚDE INDIVIDUAL</span>
+                        <h4 className="text-[13px] font-bold text-white mb-1">Saúde Individual e Indicadores</h4>
+                        <div className="text-[10px] text-white/50 font-sans">Filtro cruzado de calibração em tempo real</div>
                       </div>
 
-                      <div className="space-y-1.5">
+                      <div className="space-y-2 max-h-[300px] overflow-y-auto pr-1 custom-scrollbar">
                         {teamMembers.length === 0 ? (
-                          <span style={{ fontSize: '10.5px', opacity: 0.5, fontStyle: 'italic', display: 'block' }}>Nenhum liderado cadastrado ainda. Vá em Home → Funil e contrate candidatos para popular a saúde individual.</span>
+                          <span className="text-[10px] opacity-50 italic block font-sans">Nenhum liderado cadastrado ainda. Vá em Home → Funil e contrate candidatos para popular a saúde individual.</span>
                         ) : (
                           teamMembers.map(m => (
                             <div key={m.id} className="p-2 bg-black/25 border border-white/[0.03] rounded-lg flex items-center justify-between">
@@ -2017,36 +2029,37 @@ export function SigPessoasPanel() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  className="p-sub-view active space-y-4 text-left"
+                  className="p-sub-view active space-y-6 text-left"
                 >
                   {/* Matriz M1-M4 situational matrix explanation */}
-                  <div className="dash-card">
-                    <h4 className="panel-title" style={{ fontSize: '12px', marginBottom: '10px' }}>Matriz M1-M4 — Liderança Situacional</h4>
-                    <p className="panel-sub" style={{ fontSize: '10px', marginTop: 0, marginBottom: '15px' }}>Adapte sua liderança à maturidade técnica (M1 a M4) do seu liderado para cada tarefa específica.</p>
+                  <div className="dash-card bg-[#050505]/60 backdrop-blur-3xl border border-white/5 relative overflow-hidden">
+                    <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/5 blur-[80px] mix-blend-screen pointer-events-none" />
+                    <h4 className="text-[12px] font-mono text-[#d4b87a] font-bold tracking-widest uppercase mb-1">Matriz M1-M4 — Liderança Situacional</h4>
+                    <p className="text-[10px] text-white/50 mb-6 font-sans leading-relaxed">Adapte sua liderança à maturidade técnica (M1 a M4) do seu liderado para cada tarefa específica.</p>
                     
-                    <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
+                    <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                       {[
-                        { m: 'M1', label: 'INICIANTE', focus: 'Direcionar / Instruir', color: 'border-red-900/30 text-red-400', desc: 'Alta motivação, baixa competência. Prescritivo: defina e monitore.' },
-                        { m: 'M2', label: 'APRENDIZ', focus: 'Orientar / Treinar', color: 'border-yellow-900/30 text-yellow-400', desc: 'Motivação cai no progresso. Direcione tarefas e apoie socioemocionalmente.' },
-                        { m: 'M3', label: 'CAPAZ', focus: 'Apoiar / Facilitar', color: 'border-slate-700 text-slate-300', desc: 'Competência alta, confiança oscila. Coparticipe da decisão e incentive.' },
-                        { m: 'M4', label: 'EXPERT', focus: 'Delegar Autonomia', color: 'border-[#5dcaa5]/30 text-[#5dcaa5]', desc: 'Maturidade máxima. Conceda autonomia de decisão com monitoramento assíncrono.' }
+                        { m: 'M1', label: 'INICIANTE', focus: 'Direcionar / Instruir', color: 'border-red-900/30 text-red-400 bg-red-900/10', desc: 'Alta motivação, baixa competência. Prescritivo: defina e monitore.' },
+                        { m: 'M2', label: 'APRENDIZ', focus: 'Orientar / Treinar', color: 'border-yellow-900/30 text-yellow-400 bg-yellow-900/10', desc: 'Motivação cai no progresso. Direcione tarefas e apoie socioemocionalmente.' },
+                        { m: 'M3', label: 'CAPAZ', focus: 'Apoiar / Facilitar', color: 'border-slate-700 text-slate-300 bg-slate-800/30', desc: 'Competência alta, confiança oscila. Coparticipe da decisão e incentive.' },
+                        { m: 'M4', label: 'EXPERT', focus: 'Delegar Autonomia', color: 'border-[#5dcaa5]/30 text-[#5dcaa5] bg-[#5dcaa5]/10', desc: 'Maturidade máxima. Conceda autonomia de decisão com monitoramento assíncrono.' }
                       ].map(item => (
-                        <div key={item.m} className={`p-3 bg-black/20 border ${item.color} rounded-lg space-y-1`}>
-                          <span className="text-[8px] font-mono font-bold block">{item.m} · {item.label}</span>
-                          <b className="text-[11px] block leading-none">{item.focus}</b>
-                          <span className="text-[9px] text-white/45 block leading-snug">{item.desc}</span>
+                        <div key={item.m} className={`p-4 border ${item.color} rounded-2xl space-y-2 hover:-translate-y-1 transition-transform`}>
+                          <span className="text-[9px] font-mono font-bold block opacity-80">{item.m} · {item.label}</span>
+                          <b className="text-[12px] block leading-none">{item.focus}</b>
+                          <span className="text-[9.5px] opacity-70 block leading-relaxed font-sans">{item.desc}</span>
                         </div>
                       ))}
                     </div>
                   </div>
 
                   {/* Calculator Split */}
-                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
+                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
                     {/* Calculator Form */}
-                    <div className="lg:col-span-7 dash-card space-y-3">
+                    <div className="lg:col-span-7 dash-card space-y-5 bg-[#050505]/60 backdrop-blur-3xl border border-[#d4b87a]/10">
                       <div>
-                        <h4 className="panel-title" style={{ fontSize: '12px' }}>Calculadora de Custo de Oportunidade (ROI da Delegação)</h4>
-                        <p className="panel-sub" style={{ fontSize: '9.5px', marginBottom: '12px' }}>Regra dos 80%: descubra quanto vale a recuperação do seu tempo operacional.</p>
+                        <h4 className="text-[11px] font-mono text-white/90 font-bold tracking-widest uppercase mb-1">Cálculo de Custo de Oportunidade (ROI da Delegação)</h4>
+                        <p className="text-[10px] text-white/50 font-sans">Regra dos 80%: descubra quanto vale a recuperação do seu tempo operacional.</p>
                       </div>
 
                       <div className="calc-grid">
@@ -2185,32 +2198,38 @@ export function SigPessoasPanel() {
                   className="p-sub-view active space-y-5 text-left"
                 >
                   {/* Top Highlight: Progress */}
-                  <div style={{ background: 'rgba(255,255,255,0.02)', border: '0.2px solid rgba(255,255,255,0.06)', padding: '16px', borderRadius: '10px' }}>
-                    <span style={{ fontFamily: 'inherit', fontSize: '8.5px', color: '#d4b87a', textTransform: 'uppercase', letterSpacing: '0.08em', display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>PDI - JORNADA DO LÍDER</span>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '15px', marginBottom: '8px' }}>
-                      <div style={{ flex: 1, height: '8px', background: 'rgba(255,255,255,0.06)', borderRadius: '4px', overflow: 'hidden' }}>
-                        <div style={{ width: `${lessonsCompletedPercent}%`, height: '100%', background: 'linear-gradient(90deg, #94a3b8, #ffffff)', boxShadow: '0 0 8px rgba(255,255,255,0.5)' }}></div>
+                  <div className="p-5 bg-gradient-to-r from-black/60 to-black/30 border border-[#d4b87a]/20 rounded-2xl relative overflow-hidden backdrop-blur-3xl shadow-[0_0_40px_rgba(212,184,122,0.05)]">
+                    <div className="absolute top-0 right-0 w-64 h-64 bg-[#d4b87a]/10 blur-[80px] pointer-events-none mix-blend-screen" />
+                    <span className="font-mono text-[10px] text-[#d4b87a] tracking-[0.1em] uppercase font-bold block mb-3">PDI - JORNADA DO LÍDER</span>
+                    <div className="flex items-center gap-4 mb-3">
+                      <div className="flex-1 height-2 bg-white/5 rounded-full overflow-hidden shadow-inner">
+                        <div 
+                          className="h-full bg-gradient-to-r from-[#d4b87a] to-white relative"
+                          style={{ width: `${lessonsCompletedPercent}%`, boxShadow: '0 0 10px rgba(212,184,122,0.5)' }}
+                        >
+                          <div className="absolute inset-0 bg-white/30 mix-blend-overlay w-full h-full animate-pulse" />
+                        </div>
                       </div>
-                      <span style={{ fontFamily: 'inherit', fontSize: '10px', fontWeight: 'bold' }}>{lessonsCompletedPercent}%</span>
+                      <span className="font-mono text-[12px] font-bold text-white drop-shadow-md">{lessonsCompletedPercent}%</span>
                     </div>
-                    <p style={{ fontSize: '10.5px', opacity: 0.75, lineHeight: '1.45', margin: 0 }}>
-                      Seu PDI calcula automaticamente baseado nas suas ações reais registradas no cockpit (ex: Diário IE, Feedbacks SBI, OKRs). <b>Não pule etapas!</b>
+                    <p className="text-[11px] text-white/70 leading-relaxed m-0 font-sans max-w-3xl">
+                      Seu PDI calcula automaticamente baseado nas suas ações reais registradas no cockpit (ex: Diário IE, Feedbacks SBI, OKRs). <b className="text-white/90">Não pule etapas!</b>
                     </p>
                   </div>
 
                   {/* Grid 1: Diário IE & Alpha Linter + Microaulas */}
-                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
+                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
                     {/* Left: Diary & CNV */}
-                    <div className="lg:col-span-7 space-y-4">
+                    <div className="lg:col-span-7 space-y-5">
                       {/* Diary Form */}
-                      <div className="dash-card">
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
-                          <h4 style={{ fontSize: '12px', margin: 0, fontWeight: 'bold', color: '#fff' }}>Diário de Inteligência Emocional + IA</h4>
-                          <button className="btn-reset-sm" onClick={() => triggerToast('Carregando Diário IE...', 'ok')}>▶ AULA</button>
+                      <div className="dash-card bg-[#050505]/60 backdrop-blur-3xl border border-white/5">
+                        <div className="flex justify-between items-center mb-3">
+                          <h4 className="text-[13px] m-0 font-bold text-white tracking-wide">Diário de Inteligência Emocional + IA</h4>
+                          <button className="px-3 py-1.5 border border-[#d4b87a]/30 rounded-lg text-[#d4b87a] text-[9px] font-mono font-bold tracking-widest hover:bg-[#d4b87a]/10 hover:border-[#d4b87a]/60 transition-all shadow-[0_0_15px_rgba(212,184,122,0.1)]">▶ AULA</button>
                         </div>
-                        <p style={{ fontSize: '10px', opacity: 0.6, marginTop: 0 }}>Escreva sobre uma situation que gerou emoção intensa. A IA analisa o padrão e sugere ações de autogestão.</p>
+                        <p className="text-[10px] text-white/50 m-0 mb-4 font-sans leading-relaxed">Escreva sobre uma situation que gerou emoção intensa. A IA analisa o padrão e sugere ações de autogestão.</p>
                         
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                        <div className="flex flex-col gap-3">
                           <textarea 
                             value={diaryInput}
                             onChange={(e) => setDiaryInput(e.target.value)}
@@ -2241,49 +2260,50 @@ export function SigPessoasPanel() {
                       </div>
 
                       {/* CNV Rosenberg linter */}
-                      <div className="dash-card">
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
-                          <h4 style={{ fontSize: '12px', margin: 0, fontWeight: 'bold', color: '#fff' }}>Linter de Comunicação (Índice α)</h4>
-                          <span style={{ fontFamily: 'inherit', fontSize: '8.5px', color: '#5dcaa5', border: '0.2px solid rgba(93,202,165,0.2)', padding: '2px 6px', borderRadius: '4px' }}>CNV Rosenberg</span>
+                      <div className="dash-card bg-[#050505]/60 backdrop-blur-3xl border border-white/5 relative overflow-hidden">
+                        <div className="absolute top-0 right-0 w-64 h-64 bg-[#5dcaa5]/5 blur-[80px] pointer-events-none mix-blend-screen" />
+                        <div className="flex justify-between items-center mb-3">
+                          <h4 className="text-[13px] m-0 font-bold text-white tracking-wide">Linter de Comunicação (Índice α)</h4>
+                          <span className="font-mono text-[9px] text-[#5dcaa5] border border-[#5dcaa5]/20 bg-[#5dcaa5]/5 px-2 py-1 rounded">CNV Rosenberg</span>
                         </div>
-                        <p style={{ fontSize: '10px', opacity: 0.6, marginTop: 0 }}>Reduza julgamentos e transforme sua comunicação executiva em fatos objetivos.</p>
+                        <p className="text-[10px] text-white/50 m-0 mb-4 font-sans leading-relaxed">Reduza julgamentos e transforme sua comunicação executiva em fatos objetivos.</p>
 
                         <textarea 
                           value={cnvInput}
                           onChange={(e) => setCnvInput(e.target.value)}
                           placeholder="Ex: O colaborador é preguiçoso e sempre atrasa as entregas da sprint."
-                          className="cnv-text-area"
+                          className="w-full bg-black/40 border border-white/[0.08] rounded-xl px-4 py-3 text-[11px] text-white font-sans leading-relaxed outline-none focus:border-[#d4b87a]/40 focus:ring-1 focus:ring-[#d4b87a]/20 min-h-[80px] resize-none"
                         />
 
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '10px' }}>
-                          <b style={{ fontSize: '11px' }}>{cnvScore || 'Score Alpha: --'}</b>
+                        <div className="flex justify-between items-center mt-3">
+                          <b className="text-[12px] font-mono text-white/80 tracking-widest">{cnvScore || 'Score Alpha: --'}</b>
                           <button 
                             onClick={handleCnvAnalyze}
                             disabled={cnvAnalyzing}
-                            className="px-3.5 py-1.5 bg-[#d4b87a]/15 hover:bg-[#d4b87a]/30 border border-[#d4b87a]/45 rounded-lg text-[9px] font-bold text-[#d4b87a] font-mono transition disabled:opacity-50"
+                            className="px-4 py-2 bg-[#d4b87a]/10 hover:bg-[#d4b87a]/20 border border-[#d4b87a]/30 rounded-xl text-[9px] font-bold text-[#d4b87a] font-mono transition-all disabled:opacity-50"
                           >
                             {cnvAnalyzing ? 'Analisando...' : 'CALCULAR ÍNDICE ALPHA'}
                           </button>
                         </div>
 
                         {cnvFeedback && (
-                          <div style={{ marginTop: '12px', background: 'rgba(0,0,0,0.15)', borderRadius: '6px', padding: '10px', fontSize: '10.5px', lineHeight: '1.4' }}>
+                          <div className="mt-4 bg-black/30 border border-[#5dcaa5]/20 rounded-xl p-4 text-[11px] leading-relaxed text-white/80 font-sans border-l-2 border-l-[#5dcaa5]">
                             {cnvFeedback}
                           </div>
                         )}
 
-                        <div style={{ marginTop: '15px', borderTop: '0.2px solid rgba(255,255,255,0.06)', paddingTop: '15px' }}>
-                          <span style={{ fontFamily: 'inherit', fontSize: '8.5px', color: '#d4b87a', display: 'block', marginBottom: '10px', fontWeight: 'bold' }}>📡 PDI DE COMUNICAÇÃO · 4 MÓDULOS</span>
-                          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
-                            <div style={{ background: 'rgba(255,255,255,0.01)', border: '0.2px solid rgba(255,255,255,0.04)', borderRadius: '6px', padding: '10px' }}>
-                              <b style={{ fontSize: '10.5px', display: 'block', marginBottom: '4px' }}>MÓDULO 1: Fato vs Julgamento</b>
-                              <span style={{ fontSize: '9.5px', opacity: 0.65, display: 'block', marginBottom: '6px' }}>Eliminar adjetivos subjetivos da sua comunicação técnica.</span>
-                              <span style={{ fontFamily: 'inherit', fontSize: '8.5px', color: '#5dcaa5', display: 'block' }}>KPI: Alpha-Linter &gt;70%</span>
+                        <div className="mt-5 border-t border-white/[0.06] pt-5">
+                          <span className="font-mono text-[9px] text-[#d4b87a] tracking-widest block mb-3 font-bold uppercase">📡 PDI DE COMUNICAÇÃO · 4 MÓDULOS</span>
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div className="bg-white/[0.02] border border-white/[0.04] rounded-xl p-4 hover:border-[#d4b87a]/20 transition-colors">
+                              <b className="text-[11px] text-white block mb-1 font-mono tracking-wide">MÓDULO 1: Fato vs Julgamento</b>
+                              <span className="text-[10px] text-white/50 block mb-3 font-sans leading-relaxed">Eliminar adjetivos subjetivos da sua comunicação técnica.</span>
+                              <span className="font-mono text-[9px] text-[#5dcaa5] block tracking-widest font-bold">KPI: Alpha-Linter &gt;70%</span>
                             </div>
-                            <div style={{ background: 'rgba(255,255,255,0.01)', border: '0.2px solid rgba(255,255,255,0.04)', borderRadius: '6px', padding: '10px' }}>
-                              <b style={{ fontSize: '10.5px', display: 'block', marginBottom: '4px' }}>MÓDULO 2: Assertividade (CNV)</b>
-                              <span style={{ fontSize: '9.5px', opacity: 0.65, display: 'block', marginBottom: '6px' }}>Fato + Sentimento + Necessidade + Pedido em conversas difíceis.</span>
-                              <span style={{ fontFamily: 'inherit', fontSize: '8.5px', color: '#5dcaa5', display: 'block' }}>KPI: 3 conversas/mês</span>
+                            <div className="bg-white/[0.02] border border-white/[0.04] rounded-xl p-4 hover:border-[#d4b87a]/20 transition-colors">
+                              <b className="text-[11px] text-white block mb-1 font-mono tracking-wide">MÓDULO 2: Assertividade (CNV)</b>
+                              <span className="text-[10px] text-white/50 block mb-3 font-sans leading-relaxed">Fato + Sentimento + Necessidade + Pedido em conversas difíceis.</span>
+                              <span className="font-mono text-[9px] text-[#5dcaa5] block tracking-widest font-bold">KPI: 3 conversas/mês</span>
                             </div>
                           </div>
                         </div>
@@ -2291,31 +2311,34 @@ export function SigPessoasPanel() {
                     </div>
 
                     {/* Right: Microaulas Checklist */}
-                    <div className="lg:col-span-5 space-y-4">
-                      <div className="dash-card">
-                        <h4 style={{ fontSize: '12px', marginTop: 0, marginBottom: '12px', fontWeight: 'bold', color: '#fff' }}>Fase 1: Autoconhecimento</h4>
-                        <div style={{ fontSize: '9px', fontFamily: 'inherit', color: 'var(--ink-mute)', marginBottom: '10px', display: 'flex', justifyContent: 'space-between' }}>
+                    <div className="lg:col-span-5 space-y-5">
+                      <div className="dash-card bg-[#050505]/60 backdrop-blur-3xl border border-white/5">
+                        <h4 className="text-[14px] font-bold text-white mb-4 tracking-wide">Fase 1: Autoconhecimento</h4>
+                        <div className="text-[10px] font-mono text-white/40 tracking-widest uppercase mb-4 flex justify-between font-bold">
                           <span>0/5 MÓDULOS COMPLETOS</span>
-                          <span>{lessonsCompletedPercent}%</span>
+                          <span className="text-white/80">{lessonsCompletedPercent}%</span>
                         </div>
 
                         <div className="space-y-2">
                           {lessons.map((lesson, idx) => {
                             const expanded = expandedLesson === lesson.id
                             return (
-                              <div key={lesson.id} className={`interactive-lesson ${expanded ? 'expanded' : ''}`} onClick={() => setExpandedLesson(expanded ? null : lesson.id)}>
-                                <div className="lesson-header">
-                                  <b style={{ fontSize: '10.5px', color: '#fff' }}>▶ {lesson.title}</b>
+                              <div 
+                                key={lesson.id} 
+                                className={`p-4 bg-white/[0.01] border rounded-xl cursor-pointer transition-all ${expanded ? 'border-[#d4b87a]/40 bg-[#d4b87a]/5' : 'border-white/[0.04] hover:border-white/[0.1]'}`} 
+                                onClick={() => setExpandedLesson(expanded ? null : lesson.id)}
+                              >
+                                <div className="flex justify-between items-center">
+                                  <b className={`text-[11px] font-sans tracking-wide transition-colors ${expanded ? 'text-[#d4b87a]' : 'text-white'}`}>▶ {lesson.title}</b>
                                   <input 
                                     type="checkbox" 
                                     checked={microaulasProgress[idx] || false}
                                     onChange={() => handleToggleLessonCheck(idx)}
                                     onClick={(e) => e.stopPropagation()}
-                                    className="manifesto-checkbox"
-                                    style={{ width: '12px', height: '12px' }}
+                                    className="w-3.5 h-3.5 accent-[#d4b87a] rounded cursor-pointer"
                                   />
                                 </div>
-                                <div className="lesson-body">
+                                <div className={`mt-3 text-[10px] text-white/60 font-sans leading-relaxed overflow-hidden transition-all duration-300 ${expanded ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'}`}>
                                   {lesson.body}
                                 </div>
                               </div>
@@ -2757,6 +2780,9 @@ export function SigPessoasPanel() {
 
             {/* Sub-tabs Row */}
             <div className="tab-empresa-row">
+              <button onClick={() => setEmpresaTab('diagnostico')} className={`sub-tab-btn ${empresaTab === 'diagnostico' ? 'active' : ''}`}>
+                Diagnóstico<span className="tab-sub">Organizacional</span>
+              </button>
               {[
                 { id: 'estrategia', label: 'Estratégia & OKRs' },
                 { id: 'bi', label: 'BI & Clima' },
@@ -2775,6 +2801,36 @@ export function SigPessoasPanel() {
 
             <AnimatePresence mode="wait">
               
+              {/* SUBVIEW: DIAGNÓSTICO */}
+              {empresaTab === 'diagnostico' && (
+                <motion.div
+                  key="diagnostico"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="dash-card text-left space-y-4"
+                >
+                  <div className="flex justify-between items-center border-b border-white/[0.04] pb-2">
+                    <div>
+                      <h4 className="text-[11px] font-bold text-[#d4b87a] uppercase font-mono">Diagnóstico Organizacional Estratégico</h4>
+                      <p className="text-[9.5px] text-white/45 font-sans">Alinhamento de negócios antes de definir OKRs.</p>
+                    </div>
+                    <button 
+                      className="btn-professor-ia"
+                      onClick={() => alert("Módulo de IA será integrado à API /api/business/consultoria")}
+                    >
+                      ▶ IA ANALYZER
+                    </button>
+                  </div>
+                  <div className="p-4 bg-black/40 rounded-lg border border-white/[0.06] flex items-center justify-center min-h-[300px]">
+                    <p className="text-white/40 text-xs text-center max-w-sm">
+                      Módulo de Diagnóstico integrado.<br/><br/>
+                      Aqui será renderizado o fluxo de geração de planos PESTEL/Porter usando o Gemini 1.5 Pro AI Gateway, conectando a diretoria com a estratégia.
+                    </p>
+                  </div>
+                </motion.div>
+              )}
+
               {/* SUBVIEW: ESTRATÉGIA & OKRS */}
               {empresaTab === 'estrategia' && (
                 <motion.div

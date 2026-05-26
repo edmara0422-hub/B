@@ -38,7 +38,6 @@ const SIDEBAR_GROUPS = [
     label: 'GERENCIAL',
     items: [
       { id: 'sig-pessoas', title: 'Pessoas', desc: 'Líderes & Gestores' },
-      { id: 'sig-consultoria', title: 'Consultoria ATP', desc: 'Diagnóstico & Estratégia' },
       { id: 'sig-mercado', title: 'Mercado', desc: 'Panorama Cruzado' },
       { id: 'sig-esg', title: 'ESG', desc: 'Sustentabilidade & Governança' },
       { id: 'sig-feedback', title: 'Feedback & NPS', desc: 'Cultura & Feedback' },
@@ -143,9 +142,6 @@ export default function SistemasPageClient() {
         return <VMSystemPanel />
       case 'S3':
         return <ICUSystemPanel />
-      case 'sig-consultoria':
-        if (typeof window !== 'undefined') window.location.href = '/sistemas/consultoria-business';
-        return null;
       case 'sig-pessoas':
         return <SigPessoasPanel />
       case 'sig-mercado':
