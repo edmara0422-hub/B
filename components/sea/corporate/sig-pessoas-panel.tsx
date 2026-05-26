@@ -1773,81 +1773,140 @@ export function SigPessoasPanel() {
 
             {/* RECRUTAR MOVED TO HOME */}
             <div className="home-row full mt-6">
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                {/* Left: Role metrics */}
-                <div className="lg:col-span-8 space-y-4 text-left">
-                  <div className="dash-card bg-[#050505]/60 backdrop-blur-3xl border border-white/5 relative overflow-hidden">
-                    <div className="absolute top-0 left-0 w-64 h-64 bg-[#d4b87a]/5 blur-[80px] pointer-events-none mix-blend-screen" />
-                    <div className="mb-5 relative z-10">
-                      <span className="font-mono text-[9px] text-[#d4b87a] tracking-widest block mb-2 font-bold uppercase">RECRUTAMENTO</span>
-                      <h3 className="text-[14px] font-bold text-white mb-1">Novo Candidato: Para qual papel?</h3>
-                    </div>
-                    
-                    <p className="text-[11px] text-white/50 mb-5 leading-relaxed font-sans relative z-10">
+              <div className="space-y-6">
+                
+                {/* Main Card: Recruiting Roles */}
+                <div className="dash-card bg-[#050505]/60 backdrop-blur-3xl border border-white/5 relative overflow-hidden p-6 text-left">
+                  <div className="absolute top-0 left-0 w-96 h-96 bg-[#d4b87a]/5 blur-[120px] pointer-events-none mix-blend-screen" />
+                  
+                  <div className="mb-6 relative z-10">
+                    <span className="font-mono text-[9px] text-[#d4b87a] tracking-widest block mb-2 font-bold uppercase">RECRUTAMENTO</span>
+                    <h3 className="text-[16px] font-bold text-white mb-2">Novo Candidato: Para qual papel?</h3>
+                    <p className="text-[11px] text-white/50 leading-relaxed font-sans max-w-3xl">
                       Cada papel tem critérios diferentes de avaliação. Líderes/Gestores precisam de mais perguntas porque o impacto cultural deles é maior.
                     </p>
-                    
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6 relative z-10">
-                      {[
-                        { title: 'Liderado', desc: 'Alguém que vai compor seu time e reportar a você. Foco: fit cultural + comportamento + soft skills.', qCount: '5 perguntas de avaliação' },
-                        { title: 'Gestor', desc: 'Função de gestão (coordenador, gerente). Foco: capacidade gestora + desenvolvimento + mediação.', qCount: '7 perguntas de avaliação' },
-                        { title: 'Líder & Gestor', desc: 'Liderança estratégica que gere pessoas diretamente. Foco: visão + operação + cultura.', qCount: '10 perguntas de avaliação' },
-                        { title: 'Líder', desc: 'Liderança estratégica (head, C-level) que NÃO gere pessoas diretamente. Foco: transformação + coragem ética.', qCount: '10 perguntas de avaliação' }
-                      ].map((role, idx) => (
-                        <div 
-                          key={idx}
-                          onClick={() => triggerToast(`Parâmetros de fit para ${role.title} ativados.`, 'ok')}
-                          className="group p-5 bg-black/40 border border-white/[0.08] hover:border-[#d4b87a]/60 hover:bg-[#d4b87a]/10 rounded-2xl cursor-pointer transition-all text-left relative overflow-hidden"
-                        >
-                          <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                          <b className="text-[12px] font-mono tracking-widest text-[#d4b87a] block leading-none mb-2">{role.title}</b>
-                          <span className="text-[10px] text-white/60 block mt-1 leading-snug font-sans">{role.desc}</span>
-                          <div className="mt-4 flex items-center justify-between">
-                            <span className="text-[9px] font-mono font-bold text-white/40 uppercase tracking-widest">{role.qCount}</span>
-                            <span className="text-[#d4b87a] opacity-0 group-hover:opacity-100 transition-opacity text-xs">→</span>
-                          </div>
+                  </div>
+                  
+                  {/* 4 Roles in horizontal grid to prevent being narrow/squeezed */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6 relative z-10">
+                    {[
+                      { title: 'Liderado', desc: 'Alguém que vai compor seu time e reportar a você. Foco: fit cultural + comportamento + soft skills.', qCount: '5 perguntas' },
+                      { title: 'Gestor', desc: 'Função de gestão (coordenador, gerente). Foco: capacidade gestora + desenvolvimento + mediação.', qCount: '7 perguntas' },
+                      { title: 'Líder & Gestor', desc: 'Liderança estratégica que gere pessoas diretamente. Foco: visão + operação + cultura.', qCount: '10 perguntas' },
+                      { title: 'Líder', desc: 'Liderança estratégica (head, C-level) sem gestão de pessoas. Foco: transformação + coragem ética.', qCount: '10 perguntas' }
+                    ].map((role, idx) => (
+                      <div 
+                        key={idx}
+                        onClick={() => triggerToast(`Parâmetros de fit para ${role.title} ativados.`, 'ok')}
+                        className="group p-5 bg-black/40 border border-white/[0.08] hover:border-[#d4b87a]/60 hover:bg-[#d4b87a]/10 rounded-2xl cursor-pointer transition-all text-left relative overflow-hidden flex flex-col justify-between"
+                      >
+                        <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                        <div className="relative z-10">
+                          <b className="text-[12px] font-mono tracking-widest text-[#d4b87a] block leading-none mb-3">{role.title}</b>
+                          <span className="text-[10px] text-white/60 block leading-snug font-sans mb-4 min-h-[50px]">{role.desc}</span>
                         </div>
-                      ))}
+                        <div className="mt-auto pt-3 border-t border-white/5 flex items-center justify-between relative z-10">
+                          <span className="text-[8.5px] font-mono font-bold text-white/40 uppercase tracking-widest">{role.qCount}</span>
+                          <span className="text-[#d4b87a] opacity-0 group-hover:opacity-100 transition-opacity text-xs">→</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Frameworks explanation in a modern wide horizontal glass box */}
+                  <div className="p-6 bg-black/50 border border-[#5dcaa5]/20 rounded-2xl relative z-10">
+                    <span className="font-mono text-[9.5px] text-[#5dcaa5] tracking-widest block mb-4 font-bold uppercase">◆ PRA QUÊ SERVEM ESSAS PERGUNTAS</span>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 text-left">
+                      <div className="p-3 bg-white/[0.02] border border-white/5 rounded-xl hover:border-white/10 transition">
+                        <span className="text-[10px] font-mono text-[#5dcaa5] font-bold block mb-1">1. TRIAGEM</span>
+                        <span className="text-[10.5px] text-white/60 leading-relaxed font-sans block">
+                          Ordena automaticamente os candidatos por fit cultural em tempo real.
+                        </span>
+                      </div>
+                      <div className="p-3 bg-white/[0.02] border border-white/5 rounded-xl hover:border-white/10 transition">
+                        <span className="text-[10px] font-mono text-[#5dcaa5] font-bold block mb-1">2. FICHA DO LIDERADO</span>
+                        <span className="text-[10.5px] text-white/60 leading-relaxed font-sans block">
+                          Alimenta e cria o histórico contínuo Lencioni / HHS da pessoa desde o dia zero.
+                        </span>
+                      </div>
+                      <div className="p-3 bg-white/[0.02] border border-white/5 rounded-xl hover:border-white/10 transition">
+                        <span className="text-[10px] font-mono text-[#5dcaa5] font-bold block mb-1">3. ONBOARDING</span>
+                        <span className="text-[10.5px] text-white/60 leading-relaxed font-sans block">
+                          Personaliza e adapta o plano estratégico de integração dos primeiros 90 dias.
+                        </span>
+                      </div>
+                      <div className="p-3 bg-white/[0.02] border border-white/5 rounded-xl hover:border-white/10 transition">
+                        <span className="text-[10px] font-mono text-[#5dcaa5] font-bold block mb-1">4. FOLHA MENSAL</span>
+                        <span className="text-[10.5px] text-white/60 leading-relaxed font-sans block">
+                          Cruza com a evolução de feedbacks do SBI e o índice D6 ao longo do tempo.
+                        </span>
+                      </div>
+                    </div>
+                    <p className="text-[9.5px] text-white/40 font-mono mt-4 pt-3 border-t border-white/5 m-0">
+                      * Cada resposta é analisada por IA contra 6 frameworks fundamentais: Lencioni, HHS, SBI, Tuckman, Goleman e Big Five.
+                    </p>
+                  </div>
+                </div>
+
+                {/* Automations Row: Left (Recruiting), Right (General) */}
+                <div className="dash-card bg-[#050505]/60 backdrop-blur-3xl border border-[#d4b87a]/20 p-6 relative overflow-hidden text-left">
+                  <div className="absolute top-0 right-0 w-96 h-96 bg-[#d4b87a]/5 blur-[120px] pointer-events-none mix-blend-screen" />
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8 relative z-10">
+                    <div>
+                      <div className="mb-4">
+                        <h3 className="text-[11px] font-mono text-[#d4b87a] font-bold tracking-widest uppercase flex items-center gap-2">
+                          <Zap className="w-3.5 h-3.5" /> AUTOMAÇÕES RECRUTAR
+                        </h3>
+                      </div>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-[10px] font-mono text-white/70">
+                        <div className="flex justify-between items-center bg-black/40 p-3.5 rounded-xl border border-white/5 hover:border-white/10 transition">
+                          <span className="flex items-center gap-2"><Zap className="w-3 h-3 text-[#5dcaa5]" /> Whisper Transcrição</span>
+                          <span className="text-[#5dcaa5] bg-[#5dcaa5]/10 px-2 py-0.5 rounded text-[9px] font-bold">ativo</span>
+                        </div>
+                        <div className="flex justify-between items-center bg-black/40 p-3.5 rounded-xl border border-white/5 hover:border-white/10 transition">
+                          <span className="flex items-center gap-2"><Cpu className="w-3 h-3 text-[#5dcaa5]" /> IA Lencioni</span>
+                          <span className="text-[#5dcaa5] bg-[#5dcaa5]/10 px-2 py-0.5 rounded text-[9px] font-bold">ativo</span>
+                        </div>
+                        <div className="flex justify-between items-center bg-black/40 p-3.5 rounded-xl border border-white/5 hover:border-white/10 transition">
+                          <span className="flex items-center gap-2"><Activity className="w-3 h-3 text-[#5dcaa5]" /> HHS Scoring</span>
+                          <span className="text-[#5dcaa5] bg-[#5dcaa5]/10 px-2 py-0.5 rounded text-[9px] font-bold">ativo</span>
+                        </div>
+                        <div className="flex justify-between items-center bg-black/40 p-3.5 rounded-xl border border-white/5 hover:border-white/10 transition">
+                          <span className="flex items-center gap-2"><Square className="w-3 h-3 text-[#fac775]" /> LinkedIn - Gupy</span>
+                          <span className="text-[#fac775] bg-[#fac775]/10 px-2 py-0.5 rounded text-[9px] font-bold">pendente</span>
+                        </div>
+                      </div>
                     </div>
 
-                    <div className="p-5 bg-black/50 border border-[#5dcaa5]/20 rounded-2xl relative z-10">
-                      <span className="font-mono text-[10px] text-[#5dcaa5] tracking-widest block mb-2 font-bold uppercase">◆ PRA QUÊ SERVEM ESSAS PERGUNTAS</span>
-                      <p className="text-[11px] text-white/60 leading-relaxed font-sans m-0">
-                        Cada resposta é analisada por IA contra 6 frameworks (Lencioni, HHS, SBI, Tuckman, Goleman, Big Five) e vira scores no perfil do candidato. Esses scores aparecem automaticamente em:
-                        <br /><br />
-                        <b className="text-white/90">Triagem</b> → ordena candidatos por fit<br />
-                        <b className="text-white/90">Ficha do liderado</b> → vira histórico Lencioni/HHS<br />
-                        <b className="text-white/90">Onboarding</b> → personaliza o plano dos 90 dias<br />
-                        <b className="text-white/90">Folha mensal</b> → cruza com SBI e D6 ao longo do tempo
-                      </p>
+                    <div>
+                      <div className="mb-4">
+                        <h3 className="text-[11px] font-mono text-white/60 font-bold tracking-widest uppercase flex items-center gap-2">
+                          <Cpu className="w-3.5 h-3.5" /> AUTOMAÇÕES GERAIS
+                        </h3>
+                      </div>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-[10px] font-mono text-white/70">
+                        <div className="flex justify-between items-center bg-black/40 p-3.5 rounded-xl border border-white/5 hover:border-white/10 transition">
+                          <span className="flex items-center gap-2"><Zap className="w-3 h-3 text-[#5dcaa5]" /> 1:1 Mobile</span>
+                          <span className="text-[#5dcaa5] bg-[#5dcaa5]/10 px-2 py-0.5 rounded text-[9px] font-bold">ativo</span>
+                        </div>
+                        <div className="flex justify-between items-center bg-black/40 p-3.5 rounded-xl border border-white/5 hover:border-white/10 transition">
+                          <span className="flex items-center gap-2"><Cpu className="w-3 h-3 text-[#5dcaa5]" /> Slack NLP</span>
+                          <span className="text-[#5dcaa5] bg-[#5dcaa5]/10 px-2 py-0.5 rounded text-[9px] font-bold">ativo</span>
+                        </div>
+                        <div className="flex justify-between items-center bg-black/40 p-3.5 rounded-xl border border-white/5 hover:border-white/10 transition">
+                          <span className="flex items-center gap-2"><Activity className="w-3 h-3 text-[#5dcaa5]" /> Pulso Semanal</span>
+                          <span className="text-[#5dcaa5] bg-[#5dcaa5]/10 px-2 py-0.5 rounded text-[9px] font-bold">ativo</span>
+                        </div>
+                        <div className="flex justify-between items-center bg-black/40 p-3.5 rounded-xl border border-white/5 hover:border-white/10 transition">
+                          <span className="flex items-center gap-2"><Square className="w-3 h-3 text-[#fac775]" /> HRIS Integrations</span>
+                          <span className="text-[#fac775] bg-[#fac775]/10 px-2 py-0.5 rounded text-[9px] font-bold">pendente</span>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
 
-                {/* Right: Automations */}
-                <div className="lg:col-span-4 space-y-4 text-left">
-                  <div className="dash-card bg-[#050505]/60 backdrop-blur-3xl border border-[#d4b87a]/20">
-                    <div className="mb-4">
-                      <h3 className="text-[11px] font-mono text-[#d4b87a] font-bold tracking-widest uppercase">AUTOMAÇÕES RECRUTAR</h3>
-                    </div>
-                    <div className="space-y-2.5 text-[10px] font-mono text-white/60 bg-black/40 p-4 rounded-xl border border-white/5">
-                      <div className="flex justify-between items-center"><span className="flex items-center gap-2"><Zap className="w-3 h-3 text-[#5dcaa5]" /> Whisper Transcrição</span><span className="text-[#5dcaa5] bg-[#5dcaa5]/10 px-2 py-0.5 rounded">ativo</span></div>
-                      <div className="flex justify-between items-center"><span className="flex items-center gap-2"><Cpu className="w-3 h-3 text-[#5dcaa5]" /> IA Lencioni</span><span className="text-[#5dcaa5] bg-[#5dcaa5]/10 px-2 py-0.5 rounded">ativo</span></div>
-                      <div className="flex justify-between items-center"><span className="flex items-center gap-2"><Activity className="w-3 h-3 text-[#5dcaa5]" /> HHS scoring</span><span className="text-[#5dcaa5] bg-[#5dcaa5]/10 px-2 py-0.5 rounded">ativo</span></div>
-                      <div className="flex justify-between items-center"><span className="flex items-center gap-2"><Square className="w-3 h-3 text-[#fac775]" /> LinkedIn - Gupy</span><span className="text-[#fac775] bg-[#fac775]/10 px-2 py-0.5 rounded">pendente</span></div>
-                    </div>
-
-                    <div className="mt-8 mb-4">
-                      <h3 className="text-[11px] font-mono text-white/60 font-bold tracking-widest uppercase">AUTOMAÇÕES GERAIS</h3>
-                    </div>
-                    <div className="space-y-2.5 text-[10px] font-mono text-white/60 bg-black/40 p-4 rounded-xl border border-white/5">
-                      <div className="flex justify-between items-center"><span className="flex items-center gap-2"><Zap className="w-3 h-3 text-[#5dcaa5]" /> 1:1 mobile</span><span className="text-[#5dcaa5] bg-[#5dcaa5]/10 px-2 py-0.5 rounded">ativo</span></div>
-                      <div className="flex justify-between items-center"><span className="flex items-center gap-2"><Cpu className="w-3 h-3 text-[#5dcaa5]" /> Slack NLP</span><span className="text-[#5dcaa5] bg-[#5dcaa5]/10 px-2 py-0.5 rounded">ativo</span></div>
-                      <div className="flex justify-between items-center"><span className="flex items-center gap-2"><Activity className="w-3 h-3 text-[#5dcaa5]" /> Pulso semanal</span><span className="text-[#5dcaa5] bg-[#5dcaa5]/10 px-2 py-0.5 rounded">ativo</span></div>
-                      <div className="flex justify-between items-center"><span className="flex items-center gap-2"><Square className="w-3 h-3 text-[#fac775]" /> HRIS Integrations</span><span className="text-[#fac775] bg-[#fac775]/10 px-2 py-0.5 rounded">pendente</span></div>
-                    </div>
-                  </div>
-                </div>
               </div>
             </div>
           </motion.div>
