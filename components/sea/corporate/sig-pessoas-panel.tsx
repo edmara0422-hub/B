@@ -721,27 +721,12 @@ export function SigPessoasPanel() {
           inset: 0;
           border-radius: 14px;
           padding: 1px;
-          background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%) !important;
+          background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(212, 184, 122, 0.12) 100%) !important;
           -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
           -webkit-mask-composite: xor;
           -webkit-mask-composite: exclude;
           pointer-events: none;
           z-index: 1;
-        }
-        .dash-card.gold-border::before {
-          background: linear-gradient(135deg, rgba(212, 184, 122, 0.5) 0%, rgba(212, 184, 122, 0.1) 100%) !important;
-        }
-        .dash-card.teal-border::before {
-          background: linear-gradient(135deg, rgba(93, 202, 165, 0.5) 0%, rgba(93, 202, 165, 0.1) 100%) !important;
-        }
-        .dash-card.red-border::before {
-          background: linear-gradient(135deg, rgba(226, 75, 74, 0.5) 0%, rgba(226, 75, 74, 0.1) 100%) !important;
-        }
-        .dash-card.blue-border::before {
-          background: linear-gradient(135deg, rgba(59, 130, 246, 0.5) 0%, rgba(59, 130, 246, 0.1) 100%) !important;
-        }
-        .dash-card.cyan-border::before {
-          background: linear-gradient(135deg, rgba(6, 182, 212, 0.5) 0%, rgba(6, 182, 212, 0.1) 100%) !important;
         }
         .dash-card:hover {
           background: rgba(10, 10, 12, 0.55) !important;
@@ -750,6 +735,84 @@ export function SigPessoasPanel() {
             0 16px 48px rgba(0, 0, 0, 0.85),
             0 0 25px rgba(255, 255, 255, 0.05) !important;
           transform: translateY(-2.5px);
+        }
+
+        /* 6D Dimension Cards (Glowing custom borders & shadows) */
+        .dash-card-d1::before {
+          background: linear-gradient(135deg, rgba(93, 202, 165, 0.45) 0%, rgba(5, 5, 5, 0.6) 100%) !important;
+        }
+        .dash-card-d1:hover {
+          background: rgba(93, 202, 165, 0.04) !important;
+          box-shadow: 
+            inset 0 1px 0 rgba(93, 202, 165, 0.25),
+            0 16px 48px rgba(0, 0, 0, 0.85),
+            0 0 35px rgba(93, 202, 165, 0.15) !important;
+        }
+
+        .dash-card-d2::before {
+          background: linear-gradient(135deg, rgba(250, 199, 117, 0.45) 0%, rgba(5, 5, 5, 0.6) 100%) !important;
+        }
+        .dash-card-d2:hover {
+          background: rgba(250, 199, 117, 0.04) !important;
+          box-shadow: 
+            inset 0 1px 0 rgba(250, 199, 117, 0.25),
+            0 16px 48px rgba(0, 0, 0, 0.85),
+            0 0 35px rgba(250, 199, 117, 0.15) !important;
+        }
+
+        .dash-card-d3::before {
+          background: linear-gradient(135deg, rgba(226, 75, 74, 0.45) 0%, rgba(5, 5, 5, 0.6) 100%) !important;
+        }
+        .dash-card-d3:hover {
+          background: rgba(226, 75, 74, 0.04) !important;
+          box-shadow: 
+            inset 0 1px 0 rgba(226, 75, 74, 0.25),
+            0 16px 48px rgba(0, 0, 0, 0.85),
+            0 0 35px rgba(226, 75, 74, 0.15) !important;
+        }
+
+        .dash-card-d4::before {
+          background: linear-gradient(135deg, rgba(59, 130, 246, 0.45) 0%, rgba(5, 5, 5, 0.6) 100%) !important;
+        }
+        .dash-card-d4:hover {
+          background: rgba(59, 130, 246, 0.04) !important;
+          box-shadow: 
+            inset 0 1px 0 rgba(59, 130, 246, 0.25),
+            0 16px 48px rgba(0, 0, 0, 0.85),
+            0 0 35px rgba(59, 130, 246, 0.15) !important;
+        }
+
+        .dash-card-d5::before {
+          background: linear-gradient(135deg, rgba(14, 165, 233, 0.45) 0%, rgba(5, 5, 5, 0.6) 100%) !important;
+        }
+        .dash-card-d5:hover {
+          background: rgba(14, 165, 233, 0.04) !important;
+          box-shadow: 
+            inset 0 1px 0 rgba(14, 165, 233, 0.25),
+            0 16px 48px rgba(0, 0, 0, 0.85),
+            0 0 35px rgba(14, 165, 233, 0.15) !important;
+        }
+
+        .dash-card-d6::before {
+          background: linear-gradient(135deg, rgba(168, 85, 247, 0.45) 0%, rgba(5, 5, 5, 0.6) 100%) !important;
+        }
+        .dash-card-d6:hover {
+          background: rgba(168, 85, 247, 0.04) !important;
+          box-shadow: 
+            inset 0 1px 0 rgba(168, 85, 247, 0.25),
+            0 16px 48px rgba(0, 0, 0, 0.85),
+            0 0 35px rgba(168, 85, 247, 0.15) !important;
+        }
+
+        .dash-card-radar::before {
+          background: linear-gradient(135deg, rgba(212, 184, 122, 0.5) 0%, rgba(5, 5, 5, 0.6) 100%) !important;
+        }
+        .dash-card-radar:hover {
+          background: rgba(212, 184, 122, 0.04) !important;
+          box-shadow: 
+            inset 0 1px 0 rgba(212, 184, 122, 0.25),
+            0 16px 48px rgba(0, 0, 0, 0.85),
+            0 0 35px rgba(212, 184, 122, 0.2) !important;
         }
 
         .panel-label {
@@ -1306,10 +1369,9 @@ export function SigPessoasPanel() {
             {/* ROW 1: Visão Cruzada + Candidates Funnel */}
             <div className="home-row split-6040">
               
-              {/* Visão Cruzada 6D - GOLD/AMBER THEMED PREMIUM GLASS CARD */}
-              <div className="dash-card gold-border bg-gradient-to-b from-[#15120e] via-[#050505] to-[#020202] relative overflow-hidden p-6 rounded-2xl">
-                <div className="absolute top-0 right-0 w-64 h-64 bg-[#d4b87a]/10 blur-[90px] pointer-events-none mix-blend-screen" />
-                <div className="absolute -bottom-10 -left-10 w-48 h-48 bg-[#d4b87a]/5 blur-[70px] pointer-events-none mix-blend-screen" />
+              {/* Visão Cruzada 6D - UNIFORM PREMIUM DARK GLASS CARD */}
+              <div className="dash-card dash-card-radar bg-[#050505]/60 backdrop-blur-3xl relative overflow-hidden p-6 rounded-2xl">
+                <div className="absolute top-0 right-0 w-64 h-64 bg-[#d4b87a]/[0.08] blur-[80px] pointer-events-none mix-blend-screen" />
                 
                 <div className="flex justify-between items-center mb-6 relative z-10">
                   <div className="text-left">
@@ -1318,7 +1380,7 @@ export function SigPessoasPanel() {
                     <div className="text-[10px] text-white/50 font-sans">Radar organizacional · n = {teamMembers.length} colaboradores</div>
                   </div>
                   <div className="flex gap-2 items-center">
-                    <button onClick={handleResetRadar} className="px-3.5 py-1.5 bg-black/60 hover:bg-[#d4b87a]/15 border border-[#d4b87a]/40 rounded-xl text-[9px] font-bold text-[#d4b87a] font-mono transition-all uppercase tracking-wider">⟲ RESET</button>
+                    <button onClick={handleResetRadar} className="px-3.5 py-1.5 bg-black/60 hover:bg-[#d4b87a]/15 border border-[#d4b87a]/30 rounded-xl text-[9px] font-bold text-[#d4b87a] font-mono transition-all uppercase tracking-wider">⟲ RESET</button>
                   </div>
                 </div>
 
@@ -1330,27 +1392,25 @@ export function SigPessoasPanel() {
                       <svg className="w-full h-full overflow-visible" viewBox="-200 -200 400 400">
                         <defs>
                           <radialGradient id="crystalFillH" cx="50%" cy="50%" r="50%">
-                            <stop offset="0%" stopColor="#d4b87a" stopOpacity="0.3"/>
-                            <stop offset="60%" stopColor="#d4b87a" stopOpacity="0.08"/>
+                            <stop offset="0%" stopColor="#d4b87a" stopOpacity="0.25"/>
                             <stop offset="100%" stopColor="#151310" stopOpacity="0"/>
                           </radialGradient>
                           <linearGradient id="crystalStrokeH" x1="0" y1="-150" x2="0" y2="150" gradientUnits="userSpaceOnUse">
-                            <stop offset="0%" stopColor="#ffffff" stopOpacity="0.75"/>
-                            <stop offset="50%" stopColor="#d4b87a" stopOpacity="0.6"/>
-                            <stop offset="100%" stopColor="#ffffff" stopOpacity="0.7"/>
+                            <stop offset="0%" stopColor="#ffffff" stopOpacity="0.6"/>
+                            <stop offset="50%" stopColor="#d4b87a" stopOpacity="0.45"/>
+                            <stop offset="100%" stopColor="#ffffff" stopOpacity="0.5"/>
                           </linearGradient>
-                          <filter id="glow-h"><feGaussianBlur stdDeviation="3"/></filter>
                         </defs>
 
                         {/* Radar Circles */}
-                        <circle cx="0" cy="0" r="160" fill="none" stroke="rgba(212,184,122,0.18)" strokeWidth="0.8" strokeDasharray="5 7"/>
-                        <circle cx="0" cy="0" r="110" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="0.6"/>
-                        <circle cx="0" cy="0" r="60" fill="none" stroke="rgba(255,255,255,0.04)" strokeWidth="0.5"/>
+                        <circle cx="0" cy="0" r="160" fill="none" stroke="rgba(212,184,122,0.12)" strokeWidth="0.7" strokeDasharray="4 6"/>
+                        <circle cx="0" cy="0" r="110" fill="none" stroke="rgba(255,255,255,0.04)" strokeWidth="0.5"/>
+                        <circle cx="0" cy="0" r="60" fill="none" stroke="rgba(255,255,255,0.03)" strokeWidth="0.4"/>
                         
                         {/* Star base polygon */}
-                        <polygon points="0,-140 121,-70 121,70 0,140 -121,70 -121,-70" fill="none" stroke="url(#crystalStrokeH)" strokeWidth="1.2"/>
+                        <polygon points="0,-140 121,-70 121,70 0,140 -121,70 -121,-70" fill="none" stroke="url(#crystalStrokeH)" strokeWidth="1"/>
                         
-                        <g stroke="rgba(255,255,255,0.15)" strokeWidth="0.6">
+                        <g stroke="rgba(255,255,255,0.1)" strokeWidth="0.5">
                           <line x1="0" y1="-140" x2="0" y2="140"/>
                           <line x1="-121" y1="0" x2="121" y2="0"/>
                           <line x1="-121" y1="-70" x2="121" y2="70"/>
@@ -1369,32 +1429,31 @@ export function SigPessoasPanel() {
                           `} 
                           fill="url(#crystalFillH)" 
                           stroke="#d4b87a" 
-                          strokeWidth="2.2" 
-                          opacity="0.8"
-                          style={{ filter: 'drop-shadow(0 0 4px rgba(212,184,122,0.3))' }}
+                          strokeWidth="2" 
+                          opacity="0.6"
                         />
 
                         {/* Vertex Dots */}
-                        {selectedDims.includes('D1') && <circle cx="0" cy="-115" r="5" fill="#fff" stroke="#d4b87a" strokeWidth="2"/>}
-                        {selectedDims.includes('D2') && <circle cx="100" cy="-48" r="5" fill="#fff" stroke="#d4b87a" strokeWidth="2"/>}
-                        {selectedDims.includes('D3') && <circle cx="80" cy="55" r="5" fill="#fff" stroke="#d4b87a" strokeWidth="2"/>}
-                        {selectedDims.includes('D4') && <circle cx="0" cy="98" r="5" fill="#fff" stroke="#d4b87a" strokeWidth="2"/>}
-                        {selectedDims.includes('D5') && <circle cx="-70" cy="38" r="5" fill="#fff" stroke="#d4b87a" strokeWidth="2"/>}
-                        {selectedDims.includes('D6') && <circle cx="-85" cy="-52" r="5" fill="#fff" stroke="#d4b87a" strokeWidth="2"/>}
+                        {selectedDims.includes('D1') && <circle cx="0" cy="-115" r="4.5" fill="#fff" stroke="#d4b87a" strokeWidth="1.5"/>}
+                        {selectedDims.includes('D2') && <circle cx="100" cy="-48" r="4.5" fill="#fff" stroke="#d4b87a" strokeWidth="1.5"/>}
+                        {selectedDims.includes('D3') && <circle cx="80" cy="55" r="4.5" fill="#fff" stroke="#d4b87a" strokeWidth="1.5"/>}
+                        {selectedDims.includes('D4') && <circle cx="0" cy="98" r="4.5" fill="#fff" stroke="#d4b87a" strokeWidth="1.5"/>}
+                        {selectedDims.includes('D5') && <circle cx="-70" cy="38" r="4.5" fill="#fff" stroke="#d4b87a" strokeWidth="1.5"/>}
+                        {selectedDims.includes('D6') && <circle cx="-85" cy="-52" r="4.5" fill="#fff" stroke="#d4b87a" strokeWidth="1.5"/>}
 
                         <g fontStyle="Poppins" fontSize="13" fontWeight="600" fill="#d4b87a">
-                          <text x="0" y="-154" textAnchor="middle">D1</text>
-                          <text x="144" y="-78" textAnchor="middle">D2</text>
-                          <text x="140" y="88" textAnchor="middle">D3</text>
-                          <text x="0" y="160" textAnchor="middle">D4</text>
-                          <text x="-140" y="88" textAnchor="middle">D5</text>
-                          <text x="-144" y="-78" textAnchor="middle">D6</text>
+                          <text x="0" y="-152" textAnchor="middle">D1</text>
+                          <text x="140" y="-78" textAnchor="middle">D2</text>
+                          <text x="138" y="85" textAnchor="middle">D3</text>
+                          <text x="0" y="158" textAnchor="middle">D4</text>
+                          <text x="-138" y="85" textAnchor="middle">D5</text>
+                          <text x="-140" y="-78" textAnchor="middle">D6</text>
                         </g>
                       </svg>
 
                       {/* Center Info Gauge */}
                       <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none text-center">
-                        <div className="w-[60px] h-[60px] rounded-full bg-black/60 border border-[#d4b87a]/20 backdrop-blur-md flex flex-col items-center justify-center">
+                        <div className="w-[60px] h-[60px] rounded-full bg-black/60 border border-white/5 backdrop-blur-md flex flex-col items-center justify-center">
                           <span className="text-xl font-bold text-white tracking-tighter leading-none">
                             {selectedDims.length * 12 + 4}
                           </span>
@@ -1412,9 +1471,9 @@ export function SigPessoasPanel() {
                         <div 
                           key={dim.code}
                           onClick={() => handleSelectDimension(dim.code)}
-                          className={`vc-dot flex items-center gap-2 p-2 bg-black/40 border border-white/5 hover:border-white/15 rounded-xl cursor-pointer transition ${selectedDims.includes(dim.code) ? 'active border-[#d4b87a]/40 bg-[#d4b87a]/5' : ''}`}
+                          className={`vc-dot flex items-center gap-2 p-2 bg-black/40 border border-white/5 hover:border-white/10 rounded-xl cursor-pointer transition ${selectedDims.includes(dim.code) ? 'active border-[#d4b87a]/20 bg-[#d4b87a]/5' : ''}`}
                         >
-                          <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: dim.color, boxShadow: `0 0 8px ${dim.color}` }}></span>
+                          <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: dim.color, boxShadow: `0 0 6px ${dim.color}` }}></span>
                           <span className="text-[10px] font-mono font-bold text-white/80">{dim.code}</span>
                           <span className="text-[8.5px] text-white/40 ml-auto font-sans">{dim.label}</span>
                         </div>
@@ -1436,15 +1495,15 @@ export function SigPessoasPanel() {
                 </div>
               </div>
 
-              {/* Recrutamento Funil Lencioni & Candidates - TEAL/GREEN THEMED PREMIUM GLASS CARD */}
+              {/* Recrutamento Funil Lencioni & Candidates - UNIFORM PREMIUM DARK GLASS CARD */}
               <div className="flex flex-col gap-4 text-left">
                 
                 {/* 4 Stage recruit bar */}
-                <div className="dash-card teal-border bg-gradient-to-b from-[#081512] via-[#050505] to-[#010101] relative overflow-hidden p-5 rounded-2xl">
-                  <div className="absolute top-0 right-0 w-32 h-32 bg-[#5dcaa5]/5 blur-[60px] pointer-events-none mix-blend-screen" />
+                <div className="dash-card dash-card-d1 bg-[#050505]/60 backdrop-blur-3xl relative overflow-hidden p-5 rounded-2xl">
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-[#5dcaa5]/[0.08] blur-[60px] pointer-events-none mix-blend-screen" />
                   <div className="flex justify-between items-center mb-4">
-                    <span className="font-mono text-[9px] text-[#5dcaa5] tracking-widest block font-bold uppercase flex items-center gap-1.5"><Users className="w-3.5 h-3.5" /> RECRUTAMENTO · FLUXO LENCIONI</span>
-                    <button className="text-[9px] uppercase tracking-wider text-[#5dcaa5] font-bold hover:underline" onClick={() => setActiveTab('lideres')}>▶ Detalhes</button>
+                    <span className="font-mono text-[9px] text-[#d4b87a] tracking-widest block font-bold uppercase flex items-center gap-1.5"><Users className="w-3.5 h-3.5" /> RECRUTAMENTO · FLUXO LENCIONI</span>
+                    <button className="text-[9px] uppercase tracking-wider text-[#d4b87a] font-bold hover:underline" onClick={() => setActiveTab('lideres')}>▶ Detalhes</button>
                   </div>
                   
                   <div className="grid grid-cols-5 gap-2 bg-black/40 border border-white/5 rounded-xl p-3 text-center">
@@ -1464,23 +1523,26 @@ export function SigPessoasPanel() {
                       <b className="text-[15px] text-[#d4b87a] block leading-none">{candidates.filter(c => c.stage === 'onboarding').length}</b>
                       <span className="text-[7px] text-white/40 font-mono block mt-1">ONBOARD</span>
                     </div>
-                    <div className="bg-[#5dcaa5]/5 border border-[#5dcaa5]/20 p-1 rounded transition">
+                    <div className="bg-[#5dcaa5]/5 border border-[#5dcaa5]/25 p-1 rounded transition">
                       <b className="text-[15px] text-[#5dcaa5] block leading-none">{teamMembers.length}</b>
                       <span className="text-[7px] text-[#5dcaa5] font-mono block mt-1 font-bold">CONTRATADO</span>
                     </div>
                   </div>
+                  <p className="text-[8.5px] text-white/30 font-mono mt-3 leading-tight border-t border-white/[0.04] pt-2 mb-0">
+                    * Scores obtidos via IA calibram automaticamente o indicador <b className="text-white/50">D1: Cultura</b> na ficha de onboarding.
+                  </p>
                 </div>
 
                 {/* Candidate list stack with custom subtle flows */}
-                <div className="dash-card teal-border flex-1 flex flex-col justify-between bg-gradient-to-b from-[#050c0a] via-[#050505] to-[#010101] relative overflow-hidden p-5 rounded-2xl">
-                  <div className="absolute top-0 right-0 w-64 h-64 bg-[#5dcaa5]/5 blur-[90px] pointer-events-none mix-blend-screen" />
+                <div className="dash-card dash-card-d1 flex-1 flex flex-col justify-between bg-[#050505]/60 backdrop-blur-3xl relative overflow-hidden p-5 rounded-2xl">
+                  <div className="absolute top-0 right-0 w-64 h-64 bg-[#5dcaa5]/[0.08] blur-[80px] pointer-events-none mix-blend-screen" />
                   <div className="relative z-10">
                     <div className="flex justify-between items-center mb-4 border-b border-white/[0.04] pb-3">
                       <div>
-                        <span className="font-mono text-[9px] text-[#5dcaa5] tracking-widest block font-bold uppercase mb-1">CANDIDATOS ATIVOS</span>
+                        <span className="font-mono text-[9px] text-[#d4b87a] tracking-widest block font-bold uppercase mb-1">CANDIDATOS ATIVOS</span>
                         <h3 className="text-[13px] font-bold text-white m-0">Fit Lencioni &amp; HHS</h3>
                       </div>
-                      <button onClick={handleResetCandidates} className="px-3 py-1 bg-black/60 hover:bg-[#5dcaa5]/10 border border-white/10 hover:border-[#5dcaa5]/30 rounded-lg text-[9px] text-white/70 hover:text-[#5dcaa5] font-mono transition-colors">♻ Restaurar</button>
+                      <button onClick={handleResetCandidates} className="px-3 py-1 bg-black/60 hover:bg-[#d4b87a]/10 border border-white/10 hover:border-white/20 rounded-lg text-[9px] text-white/70 hover:text-[#d4b87a] font-mono transition-colors">♻ Restaurar</button>
                     </div>
 
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', maxHeight: '180px', overflowY: 'auto', paddingRight: '4px' }}>
@@ -1488,11 +1550,11 @@ export function SigPessoasPanel() {
                         <div className="text-center py-6 text-[10px] text-white/30">Nenhum candidato no funil.</div>
                       ) : (
                         candidates.map(cand => (
-                          <div key={cand.id} className="cand-card-mockup group hover:border-[#5dcaa5]/30 hover:bg-black/60 transition-all border border-white/5 rounded-xl bg-black/40" style={{ padding: '12px', marginBottom: '0px' }}>
+                          <div key={cand.id} className="cand-card-mockup group hover:border-[#d4b87a]/30 hover:bg-black/60 transition-all border border-white/5 rounded-xl bg-black/40" style={{ padding: '12px', marginBottom: '0px' }}>
                             <button onClick={() => handleDeleteCandidate(cand.id)} className="btn-del-cand text-white/40 hover:text-[#e24b4a] transition" style={{ width: '16px', height: '16px', fontSize: '9px', top: '8px', right: '8px' }}>✕</button>
                             
                             <div className="header-row" style={{ gap: '8px' }}>
-                              <div className="avatar bg-gradient-to-br from-[#5dcaa5] to-[#d4b87a] text-black font-bold" style={{ width: '26px', height: '26px', fontSize: '10px' }}>
+                              <div className="avatar bg-gradient-to-br from-[#d4b87a] to-[#efddb1] text-black font-bold" style={{ width: '26px', height: '26px', fontSize: '10px' }}>
                                 {cand.name.split(' ').map(x => x[0]).join('')}
                               </div>
                               <div className="info-col text-left">
@@ -1503,7 +1565,7 @@ export function SigPessoasPanel() {
                             
                             {/* HHS Bar */}
                             <div className="hhs-bar-mockup" style={{ margin: '6px 0', height: '5px', borderRadius: '4px', overflow: 'hidden', backgroundColor: 'rgba(255,255,255,0.05)' }}>
-                              <i className="bg-gradient-to-r from-[#5dcaa5] to-[#d4b87a]" style={{ width: `${cand.lencioniScore}%`, height: '100%', display: 'block', borderRadius: '4px' }} />
+                              <i className="bg-gradient-to-r from-[#d4b87a] to-[#efddb1]" style={{ width: `${cand.lencioniScore}%`, height: '100%', display: 'block', borderRadius: '4px' }} />
                             </div>
 
                             <div className="stats-row flex justify-between items-center text-white/60 text-left" style={{ fontSize: '8px', paddingTop: '4px' }}>
@@ -1513,7 +1575,7 @@ export function SigPessoasPanel() {
                             </div>
                             <button 
                               onClick={() => handleTriggerOnboard(cand)}
-                              className="btn-onboard w-full mt-2.5 py-1.5 rounded-lg border border-[#5dcaa5]/30 hover:border-[#5dcaa5] text-[#5dcaa5] bg-[#5dcaa5]/5 hover:bg-[#5dcaa5]/15 transition font-mono text-[9px] uppercase font-bold tracking-widest"
+                              className="btn-onboard w-full mt-2.5 py-1.5 rounded-lg border border-[#d4b87a]/30 hover:border-[#d4b87a] text-[#d4b87a] bg-[#d4b87a]/5 hover:bg-[#d4b87a]/15 transition font-mono text-[9px] uppercase font-bold tracking-widest"
                               style={{ padding: '6px' }}
                             >
                               {cand.stage === 'triagem' ? 'Avançar' : cand.stage === 'onboarding' ? 'CONTRATAR' : 'Evoluir'}
@@ -1531,80 +1593,88 @@ export function SigPessoasPanel() {
             {/* ROW 2: Mapa do Time + Você como Líder */}
             <div className="home-row cols-2 mt-6">
               
-              {/* Mapa do Time - RED/BURGUNDY THEMED PREMIUM GLASS CARD */}
-              <div className="dash-card red-border bg-gradient-to-b from-[#180909] via-[#050505] to-[#010101] relative overflow-hidden p-6 rounded-2xl text-left">
-                <div className="absolute top-0 right-0 w-64 h-64 bg-[#e24b4a]/5 blur-[85px] pointer-events-none mix-blend-screen" />
+              {/* Mapa do Time - UNIFORM PREMIUM DARK GLASS CARD (Ties DOT colors to dynamic D6 values) */}
+              <div className="dash-card dash-card-d3 bg-[#050505]/60 backdrop-blur-3xl relative overflow-hidden p-6 rounded-2xl text-left">
+                <div className="absolute top-0 right-0 w-64 h-64 bg-[#e24b4a]/[0.08] blur-[85px] pointer-events-none mix-blend-screen" />
                 <div className="flex justify-between items-start mb-4 relative z-10">
                   <div>
-                    <span className="font-mono text-[9px] text-[#e24b4a] tracking-widest block font-bold uppercase mb-1">MAPA · TIME</span>
+                    <span className="font-mono text-[9px] text-[#d4b87a] tracking-widest block font-bold uppercase mb-1">D6 DIAGNÓSTICO · MAPA DO TIME</span>
                     <h3 className="text-[14px] font-bold text-white mb-0.5">Influência × Impacto</h3>
-                    <div className="text-[10px] text-white/50 font-sans">Mapeamento strategic com base no capital social</div>
+                    <div className="text-[10px] text-white/50 font-sans">Vetorização 6D com base no capital social de cada colaborador</div>
                   </div>
-                  <button onClick={handleAddTeamMemberMap} className="px-3 py-1.5 bg-black/60 hover:bg-[#e24b4a]/10 border border-[#e24b4a]/40 hover:border-[#e24b4a] rounded-xl text-[9px] text-[#e24b4a] font-mono transition-colors font-bold tracking-widest">+ ADD</button>
+                  <button onClick={handleAddTeamMemberMap} className="px-3 py-1.5 bg-black/60 hover:bg-[#d4b87a]/10 border border-white/10 hover:border-white/30 rounded-xl text-[9px] text-[#d4b87a] font-mono transition-colors font-bold tracking-widest">+ ADD</button>
                 </div>
 
                 <div className="mapa-container bg-black/40 border border-white/5 rounded-xl p-3">
                   <div className="mapa-svg-wrap relative">
                     <svg viewBox="0 0 300 200" style={{ overflow: 'visible' }}>
                       {/* Background quadrants */}
-                      <rect x="0" y="0" width="150" height="100" fill="rgba(250,199,117,0.06)" stroke="rgba(255,255,255,0.08)" strokeWidth="0.6"/>
-                      <rect x="150" y="0" width="150" height="100" fill="rgba(93,202,165,0.06)" stroke="rgba(255,255,255,0.08)" strokeWidth="0.6"/>
-                      <rect x="0" y="100" width="150" height="100" fill="rgba(226,75,74,0.06)" stroke="rgba(255,255,255,0.08)" strokeWidth="0.6"/>
-                      <rect x="150" y="100" width="150" height="100" fill="rgba(212,184,122,0.06)" stroke="rgba(255,255,255,0.08)" strokeWidth="0.6"/>
+                      <rect x="0" y="0" width="150" height="100" fill="rgba(250,199,117,0.03)" stroke="rgba(255,255,255,0.04)" strokeWidth="0.5"/>
+                      <rect x="150" y="0" width="150" height="100" fill="rgba(93,202,165,0.03)" stroke="rgba(255,255,255,0.04)" strokeWidth="0.5"/>
+                      <rect x="0" y="100" width="150" height="100" fill="rgba(226,75,74,0.03)" stroke="rgba(255,255,255,0.04)" strokeWidth="0.5"/>
+                      <rect x="150" y="100" width="150" height="100" fill="rgba(212,184,122,0.03)" stroke="rgba(255,255,255,0.04)" strokeWidth="0.5"/>
                       {/* Axes */}
-                      <line x1="0" y1="100" x2="300" y2="100" stroke="rgba(255,255,255,0.18)" strokeWidth="1" strokeDasharray="5 4"/>
-                      <line x1="150" y1="0" x2="150" y2="200" stroke="rgba(255,255,255,0.18)" strokeWidth="1" strokeDasharray="5 4"/>
+                      <line x1="0" y1="100" x2="300" y2="100" stroke="rgba(255,255,255,0.12)" strokeWidth="0.8" strokeDasharray="4 4"/>
+                      <line x1="150" y1="0" x2="150" y2="200" stroke="rgba(255,255,255,0.12)" strokeWidth="0.8" strokeDasharray="4 4"/>
                       {/* Axis labels */}
-                      <text x="150" y="195" textAnchor="middle" fontFamily="inherit" fontSize="8" fill="rgba(255,255,255,0.4)">← baixa influência · alta influência →</text>
-                      <text x="4" y="100" fontFamily="inherit" fontSize="7" fill="rgba(255,255,255,0.4)" writingMode="vertical-rl" transform="rotate(180,4,100)">alto impacto ↑</text>
+                      <text x="150" y="195" textAnchor="middle" fontFamily="inherit" fontSize="8" fill="rgba(255,255,255,0.3)">← baixa influência · alta influência →</text>
+                      <text x="4" y="100" fontFamily="inherit" fontSize="7" fill="rgba(255,255,255,0.3)" writingMode="vertical-rl" transform="rotate(180,4,100)">alto impacto ↑</text>
                       
-                      {/* Plot Dots with dynamic glowing effects */}
+                      {/* Plot Dots - Colored dynamically by their real D6 health score */}
                       <g>
                         {teamMembers.map(m => {
                           const cx = ((m.influence + 150) / 300) * 280 + 10
                           const cy = 200 - (((m.impact + 100) / 200) * 180 + 10)
+                          // 6D Color categorization: Green for healthy, Orange for mid, Red for risk
+                          const d6Color = m.d6 >= 80 ? '#5dcaa5' : m.d6 >= 60 ? '#fac775' : '#e24b4a'
                           return (
                             <g key={m.id} className="cursor-pointer group" onClick={() => triggerToast(`${m.name} (${m.role}): D6=${m.d6}`)}>
-                              <circle cx={cx} cy={cy} r="6.5" fill="#e24b4a" stroke="#fff" strokeWidth="1.2" className="transition duration-300 hover:scale-130" style={{ filter: 'drop-shadow(0 0 6px #e24b4a)' }} />
-                              <circle cx={cx} cy={cy} r="12" fill="none" stroke="#e24b4a" strokeWidth="0.5" opacity="0.3" className="animate-ping" style={{ transformOrigin: `${cx}px ${cy}px` }} />
-                              <text x={cx} y={cy - 12} textAnchor="middle" fill="#fff" fontSize="8" fontWeight="bold" className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none bg-black px-1.5 py-0.5 rounded border border-white/10">{m.name.split(' ')[0]}</text>
+                              <circle cx={cx} cy={cy} r="6.5" fill={d6Color} stroke="#fff" strokeWidth="1.2" className="transition duration-300 hover:scale-130" style={{ filter: `drop-shadow(0 0 6px ${d6Color})` }} />
+                              <circle cx={cx} cy={cy} r="11" fill="none" stroke={d6Color} strokeWidth="0.5" opacity="0.2" className="animate-ping" style={{ transformOrigin: `${cx}px ${cy}px` }} />
+                              <text x={cx} y={cy - 12} textAnchor="middle" fill="#fff" fontSize="8" fontWeight="bold" className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none bg-black px-1.5 py-0.5 rounded border border-white/10">{m.name.split(' ')[0]} ({m.d6}%)</text>
                             </g>
                           )
                         })}
                       </g>
                     </svg>
                     {/* Quadrant labels */}
-                    <div className="mapa-quadrant-lbl top-left text-[8px] uppercase tracking-wider text-[#fac775] font-bold">neutralos · orientar</div>
-                    <div className="mapa-quadrant-lbl top-right text-[8px] uppercase tracking-wider text-[#5dcaa5] font-bold">aliados · delegar</div>
-                    <div className="mapa-quadrant-lbl bot-left text-[8px] uppercase tracking-wider text-[#e24b4a] font-bold">bloqueador · direcionar</div>
-                    <div className="mapa-quadrant-lbl bot-right text-[8px] uppercase tracking-wider text-[#d4b87a] font-bold">exec · apoiar</div>
+                    <div className="mapa-quadrant-lbl top-left text-[8px] uppercase tracking-wider text-white/30">neutralos · orientar</div>
+                    <div className="mapa-quadrant-lbl top-right text-[8px] uppercase tracking-wider text-white/30">aliados · delegar</div>
+                    <div className="mapa-quadrant-lbl bot-left text-[8px] uppercase tracking-wider text-white/30">bloqueador · direcionar</div>
+                    <div className="mapa-quadrant-lbl bot-right text-[8px] uppercase tracking-wider text-white/30">exec · apoiar</div>
                   </div>
                 </div>
               </div>
 
-              {/* Você como Líder - BLUE/PURPLE THEMED PREMIUM GLASS CARD */}
-              <div className="dash-card blue-border bg-gradient-to-b from-[#090b1c] via-[#050505] to-[#010101] relative overflow-hidden p-6 rounded-2xl text-left">
-                <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/5 blur-[85px] pointer-events-none mix-blend-screen" />
-                <div className="relative z-10 mb-5">
-                  <span className="font-mono text-[9px] text-[#3b82f6] tracking-widest block font-bold uppercase mb-1">Perfil · Liderança</span>
-                  <h3 className="text-[14px] font-bold text-white">Você como Líder</h3>
+              {/* Você como Líder - UNIFORM PREMIUM DARK GLASS CARD */}
+              <div className="dash-card dash-card-d2 bg-[#050505]/60 backdrop-blur-3xl relative overflow-hidden p-6 rounded-2xl text-left">
+                <div className="absolute top-0 right-0 w-64 h-64 bg-[#fac775]/[0.08] blur-[85px] pointer-events-none mix-blend-screen" />
+                <div className="relative z-10 mb-5 flex justify-between items-center">
+                  <div>
+                    <span className="font-mono text-[9px] text-[#d4b87a] tracking-widest block font-bold uppercase mb-1">Perfil · Liderança</span>
+                    <h3 className="text-[14px] font-bold text-white">Você como Líder</h3>
+                  </div>
+                  {/* Calculates and displays actual 6D alignment score based on checked principles */}
+                  <span className="px-2 py-1 bg-[#d4b87a]/10 border border-[#d4b87a]/20 rounded text-[#d4b87a] font-mono text-[9px] font-bold">
+                    {Math.round((manifestoChecks.filter(Boolean).length / 5) * 100)}% ALINHAMENTO D2
+                  </span>
                 </div>
 
-                {/* Role selector with high tech look */}
-                <div className="flex gap-4 mb-6 relative z-10">
-                  <div className="flex-1 p-3 bg-blue-500/10 border border-blue-500/30 rounded-xl cursor-pointer text-center hover:bg-blue-500/15 transition">
-                    <span className="text-[9px] font-mono font-bold text-blue-400 block mb-1">Modo 1</span>
+                {/* Role selector */}
+                <div className="grid grid-cols-2 gap-3 mb-6 relative z-10">
+                  <div className="p-3 bg-[#d4b87a]/5 border border-[#d4b87a]/20 rounded-xl cursor-pointer text-center">
+                    <span className="text-[8.5px] font-mono font-bold text-[#d4b87a] block mb-1">Modo 1</span>
                     <span className="text-[12px] font-bold text-white block">Gestor</span>
                     <span className="text-[9px] text-white/50 block font-sans">Complexidade &amp; Processos</span>
                   </div>
-                  <div className="flex-1 p-3 bg-black/60 border border-white/5 hover:border-white/20 rounded-xl cursor-pointer text-center transition-colors">
-                    <span className="text-[9px] font-mono font-bold text-white/40 block mb-1">Modo 2</span>
+                  <div className="p-3 bg-black/40 border border-white/5 hover:border-white/10 rounded-xl cursor-pointer text-center transition-colors">
+                    <span className="text-[8.5px] font-mono font-bold text-white/40 block mb-1">Modo 2</span>
                     <span className="text-[12px] font-bold text-white block">Líder</span>
                     <span className="text-[9px] text-white/50 block font-sans">Mudança &amp; Propósito</span>
                   </div>
                 </div>
 
-                {/* Manifesto Checklist with glowing active checkmarks */}
+                {/* Manifesto Checklist */}
                 <div className="font-mono text-[9px] text-white/40 font-bold uppercase tracking-widest mt-5 mb-3 relative z-10">
                   Saúde Manifesto · 5 Princípios
                 </div>
@@ -1613,13 +1683,13 @@ export function SigPessoasPanel() {
                     <div 
                       key={p.code}
                       onClick={() => handleToggleManifesto(idx)}
-                      className={`flex justify-between items-center p-3 rounded-xl border cursor-pointer transition-colors ${manifestoChecks[idx] ? 'bg-blue-500/5 border-blue-500/30' : 'bg-black/40 border-white/5 hover:border-white/10'}`}
+                      className={`flex justify-between items-center p-3 rounded-xl border cursor-pointer transition-colors ${manifestoChecks[idx] ? 'bg-[#d4b87a]/5 border-[#d4b87a]/20' : 'bg-black/40 border-white/5 hover:border-white/10'}`}
                     >
                       <div className="flex items-center gap-3">
-                        <div className={`text-[9px] font-mono font-bold ${manifestoChecks[idx] ? 'text-blue-400' : 'text-white/40'}`}>{p.code}</div>
+                        <div className={`text-[9px] font-mono font-bold ${manifestoChecks[idx] ? 'text-[#d4b87a]' : 'text-white/40'}`}>{p.code}</div>
                         <div className={`text-[10px] font-sans leading-snug ${manifestoChecks[idx] ? 'text-white font-medium' : 'text-white/60'}`}>{p.text}</div>
                       </div>
-                      <div className={`text-[9px] font-mono font-bold whitespace-nowrap px-2 py-0.5 rounded ${manifestoChecks[idx] ? 'text-blue-400 bg-blue-500/10 font-extrabold' : 'text-white/20'}`}>{manifestoChecks[idx] ? '✓ ATIVO' : '—'}</div>
+                      <div className={`text-[9px] font-mono font-bold whitespace-nowrap px-2 py-0.5 rounded ${manifestoChecks[idx] ? 'text-[#d4b87a] bg-[#d4b87a]/10 font-bold' : 'text-white/20'}`}>{manifestoChecks[idx] ? '✓ ATIVO' : '—'}</div>
                     </div>
                   ))}
                 </div>
@@ -1629,39 +1699,49 @@ export function SigPessoasPanel() {
             {/* ROW 3: Primeiros Passos + Pulso Semanal */}
             <div className="home-row cols-2 mt-6">
               
-              {/* Primeiros Passos - CYAN THEMED PREMIUM GLASS CARD */}
-              <div className="dash-card cyan-border bg-gradient-to-b from-[#071318] via-[#050505] to-[#010101] relative overflow-hidden p-6 rounded-2xl text-left">
-                <div className="absolute top-0 right-0 w-64 h-64 bg-[#06b6d4]/5 blur-[85px] pointer-events-none mix-blend-screen" />
+              {/* Primeiros Passos - UNIFORM PREMIUM DARK GLASS CARD (Tied explicitly to D6 dimensions) */}
+              <div className="dash-card dash-card-d5 bg-[#050505]/60 backdrop-blur-3xl relative overflow-hidden p-6 rounded-2xl text-left">
+                <div className="absolute top-0 right-0 w-64 h-64 bg-[#14a5e9]/[0.08] blur-[85px] pointer-events-none mix-blend-screen" />
                 <div className="flex justify-between items-center mb-5 relative z-10">
                   <div>
-                    <span className="font-mono text-[9px] text-[#06b6d4] tracking-widest block font-bold uppercase mb-1">Onboarding · Sistema</span>
+                    <span className="font-mono text-[9px] text-[#d4b87a] tracking-widest block font-bold uppercase mb-1">Onboarding · Sistema</span>
                     <h3 className="text-[14px] font-bold text-white">Primeiros Passos</h3>
                   </div>
-                  <button onClick={handlePopularPassosExemplo} className="px-3 py-1.5 bg-black/60 hover:bg-[#06b6d4]/15 border border-[#06b6d4]/40 rounded-xl text-[9px] text-[#06b6d4] font-mono transition-colors font-bold tracking-widest">EXEMPLO</button>
+                  <button onClick={handlePopularPassosExemplo} className="px-3 py-1.5 bg-black/60 hover:bg-[#d4b87a]/15 border border-[#d4b87a]/30 rounded-xl text-[9px] text-[#d4b87a] font-mono transition-colors font-bold tracking-widest">EXEMPLO</button>
                 </div>
                 <div className="primeiros-list space-y-2">
-                  {primeirosPassos.map((p, idx) => (
+                  {/* Step list mapped with their corresponding 6D diagnostic dimensions */}
+                  {[
+                    { id: 1, title: 'Escreva a primeira entrada do Diário IE', desc: 'Calibra o indicador D2: Liderança no PDI', d6Dim: 'D2 Liderança' },
+                    { id: 2, title: 'Adicione o primeiro liderado ao time', desc: 'Permite compilar análises cruzadas de fit e engajamento', d6Dim: 'D1 Cultura' },
+                    { id: 3, title: 'Registre um SBI de reconhecimento', desc: 'Razão saudável: 2 feedbacks positivos para 1 de calibração', d6Dim: 'D3 Confiança' },
+                    { id: 4, title: 'Defina o primeiro OKR trimestral', desc: 'Foco na direção para afastar desalinhamentos táticos', d6Dim: 'D4 Entrega' },
+                    { id: 5, title: 'Configure o Contrato de Aliança do time', desc: 'Normas e combinados explícitos reduzem atritos', d6Dim: 'D5 Clareza' }
+                  ].map((p, idx) => (
                     <div 
                       key={p.id}
                       onClick={() => handleTogglePassos(idx)}
-                      className={`flex items-center gap-3 p-3 bg-black/40 border border-white/5 hover:border-[#06b6d4]/30 hover:bg-black/60 rounded-xl cursor-pointer transition ${passosChecks[idx] ? 'border-[#06b6d4]/40 bg-[#06b6d4]/5' : ''}`}
+                      className={`flex items-center gap-3 p-3 bg-black/40 border border-white/5 hover:border-white/10 rounded-xl cursor-pointer transition ${passosChecks[idx] ? 'border-[#d4b87a]/20 bg-[#d4b87a]/5' : ''}`}
                     >
-                      <div className={`w-6 h-6 rounded-full flex items-center justify-center font-mono font-bold text-[10px] flex-shrink-0 transition-all ${passosChecks[idx] ? 'bg-gradient-to-r from-[#06b6d4] to-[#5dcaa5] text-black shadow-[0_0_8px_#06b6d4]' : 'bg-white/5 border border-white/10 text-white/50'}`}>
+                      <div className={`w-6 h-6 rounded-full flex items-center justify-center font-mono font-bold text-[10px] flex-shrink-0 transition-all ${passosChecks[idx] ? 'bg-gradient-to-r from-[#d4b87a] to-[#efddb1] text-black shadow-[0_0_8px_rgba(212,184,122,0.3)]' : 'bg-white/5 border border-white/10 text-white/50'}`}>
                         {p.id}
                       </div>
                       <div className="flex-1 text-left">
-                        <span className={`block text-[11px] font-bold text-white transition-all ${passosChecks[idx] ? 'line-through text-white/40' : ''}`}>{p.title}</span>
+                        <div className="flex items-center gap-2">
+                          <span className={`block text-[11px] font-bold text-white transition-all ${passosChecks[idx] ? 'line-through text-white/40' : ''}`}>{p.title}</span>
+                          <span className="px-1.5 py-0.5 rounded bg-black/60 border border-white/5 text-white/30 text-[7px] font-mono uppercase tracking-widest">{p.d6Dim}</span>
+                        </div>
                         <span className="block text-[9.5px] text-white/40 font-sans leading-tight mt-0.5">{p.desc}</span>
                       </div>
-                      <div className={`text-[12px] font-bold transition-all ${passosChecks[idx] ? 'text-[#06b6d4] translate-x-0' : 'text-white/20 -translate-x-1'}`}>→</div>
+                      <div className={`text-[12px] font-bold transition-all ${passosChecks[idx] ? 'text-[#d4b87a] translate-x-0' : 'text-white/20 -translate-x-1'}`}>→</div>
                     </div>
                   ))}
                 </div>
               </div>
 
-              {/* Pulso Semanal - GOLD/AMBER THEMED PREMIUM CARD */}
-              <div className="dash-card gold-border bg-gradient-to-b from-[#18140c] via-[#050505] to-[#010101] relative overflow-hidden p-6 rounded-2xl text-left">
-                <div className="absolute top-0 left-0 w-64 h-64 bg-[#d4b87a]/5 blur-[85px] pointer-events-none mix-blend-screen" />
+              {/* Pulso Semanal - UNIFORM PREMIUM DARK GLASS CARD */}
+              <div className="dash-card dash-card-d6 bg-[#050505]/60 backdrop-blur-3xl relative overflow-hidden p-6 rounded-2xl text-left border border-white/[0.08] shadow-[0_0_40px_rgba(168,85,247,0.05)]">
+                <div className="absolute top-0 right-0 w-64 h-64 bg-[#a855f7]/[0.08] blur-[85px] pointer-events-none mix-blend-screen" />
                 <div className="flex justify-between items-center mb-5 relative z-10">
                   <div>
                     <span className="font-mono text-[9px] text-[#d4b87a] tracking-widest block font-bold uppercase mb-1">📊 PULSO SEMANAL</span>
@@ -1693,7 +1773,7 @@ export function SigPessoasPanel() {
                         <button
                           key={v}
                           onClick={() => setPulseFocus(v)}
-                          className={`flex-1 py-2.5 rounded-xl border text-[11px] font-mono font-bold transition-all duration-300 ${pulseFocus === v ? 'bg-gradient-to-r from-[#5dcaa5] to-[#a3e635] border-[#5dcaa5] text-black shadow-[0_0_15px_rgba(93,202,165,0.45)]' : 'bg-black/60 border-white/5 text-white/40 hover:border-white/20'}`}
+                          className={`flex-1 py-2.5 rounded-xl border text-[11px] font-mono font-bold transition-all duration-300 ${pulseFocus === v ? 'bg-gradient-to-r from-[#5dcaa5] to-[#efddb1] border-[#5dcaa5] text-black shadow-[0_0_15px_rgba(93,202,165,0.45)]' : 'bg-black/60 border-white/5 text-white/40 hover:border-white/20'}`}
                         >
                           {v}
                         </button>
@@ -1724,8 +1804,8 @@ export function SigPessoasPanel() {
               <div className="space-y-6">
                 
                 {/* Main Card: Recruiting Roles */}
-                <div className="dash-card bg-[#050505]/60 backdrop-blur-3xl border border-white/5 relative overflow-hidden p-6 text-left">
-                  <div className="absolute top-0 left-0 w-96 h-96 bg-[#d4b87a]/5 blur-[120px] pointer-events-none mix-blend-screen" />
+                <div className="dash-card dash-card-d1 bg-[#050505]/60 backdrop-blur-3xl relative overflow-hidden p-6 text-left">
+                  <div className="absolute top-0 left-0 w-96 h-96 bg-[#5dcaa5]/[0.08] blur-[120px] pointer-events-none mix-blend-screen" />
                   
                   <div className="mb-6 relative z-10">
                     <span className="font-mono text-[9px] text-[#d4b87a] tracking-widest block mb-2 font-bold uppercase">RECRUTAMENTO</span>
@@ -1797,8 +1877,8 @@ export function SigPessoasPanel() {
                 </div>
 
                 {/* Automations Row: Left (Recruiting), Right (General) */}
-                <div className="dash-card bg-[#050505]/60 backdrop-blur-3xl border border-[#d4b87a]/20 p-6 relative overflow-hidden text-left">
-                  <div className="absolute top-0 right-0 w-96 h-96 bg-[#d4b87a]/5 blur-[120px] pointer-events-none mix-blend-screen" />
+                <div className="dash-card dash-card-d4 bg-[#050505]/60 backdrop-blur-3xl relative overflow-hidden p-6 text-left">
+                  <div className="absolute top-0 right-0 w-96 h-96 bg-[#3b82f6]/[0.08] blur-[120px] pointer-events-none mix-blend-screen" />
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8 relative z-10">
                     <div>
