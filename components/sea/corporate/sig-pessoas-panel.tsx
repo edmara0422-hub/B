@@ -1919,7 +1919,7 @@ export function SigPessoasPanel() {
               {/* SUBPAGE: LÍDERES / GESTORES (VOCÊ) */}
               {lideresTab === 'voce' && (
                 <motion.div
-                  key="voce"
+                  key="voce-jornada"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
@@ -2303,7 +2303,7 @@ export function SigPessoasPanel() {
               {/* SUBPAGE: VOCÊ (PDI & SIGNIFICADO UNIFICADOS) */}
               {lideresTab === 'voce' && (
                 <motion.div
-                  key="voce"
+                  key="voce-pdi"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
