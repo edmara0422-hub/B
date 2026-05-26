@@ -721,19 +721,27 @@ export function SigPessoasPanel() {
           inset: 0;
           border-radius: 14px;
           padding: 1px;
-          background: linear-gradient(90deg, #cbd5e1 0%, #d4b87a 100%) !important;
+          background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%) !important;
           -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
           -webkit-mask-composite: xor;
-          mask-composite: exclude;
+          -webkit-mask-composite: exclude;
           pointer-events: none;
           z-index: 1;
         }
-        .dash-card.gold-border {
-          background: rgba(5, 5, 5, 0.45) !important;
-          border: none !important;
-        }
         .dash-card.gold-border::before {
-          background: linear-gradient(90deg, #cbd5e1 0%, #d4b87a 100%) !important;
+          background: linear-gradient(135deg, rgba(212, 184, 122, 0.5) 0%, rgba(212, 184, 122, 0.1) 100%) !important;
+        }
+        .dash-card.teal-border::before {
+          background: linear-gradient(135deg, rgba(93, 202, 165, 0.5) 0%, rgba(93, 202, 165, 0.1) 100%) !important;
+        }
+        .dash-card.red-border::before {
+          background: linear-gradient(135deg, rgba(226, 75, 74, 0.5) 0%, rgba(226, 75, 74, 0.1) 100%) !important;
+        }
+        .dash-card.blue-border::before {
+          background: linear-gradient(135deg, rgba(59, 130, 246, 0.5) 0%, rgba(59, 130, 246, 0.1) 100%) !important;
+        }
+        .dash-card.cyan-border::before {
+          background: linear-gradient(135deg, rgba(6, 182, 212, 0.5) 0%, rgba(6, 182, 212, 0.1) 100%) !important;
         }
         .dash-card:hover {
           background: rgba(10, 10, 12, 0.55) !important;
@@ -1279,21 +1287,19 @@ export function SigPessoasPanel() {
           onClick={() => triggerToast('Professor de IA iniciando mentoria de liderança...', 'ok')}
           className="btn-professor-ia"
         >
-          ▶ PROFESSOR IA
-        </button>
-      </div>
-
-      {/* CONTENT PAGES ROUTER */}
-      <AnimatePresence mode="wait">
-        
-        {/* ================= HOME TAB ================= */}
-        {activeTab === 'home' && (
+             {activeTab === 'home' && (
           <motion.div
-                    {/* ROW 1: Visão Cruzada + Candidates Funnel */}
+            key="home"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            className="home-dashboard"
+          >
+            {/* ROW 1: Visão Cruzada + Candidates Funnel */}
             <div className="home-row split-6040">
               
               {/* Visão Cruzada 6D - GOLD/AMBER THEMED PREMIUM GLASS CARD */}
-              <div className="dash-card bg-gradient-to-b from-[#15120e] via-[#050505] to-[#020202] border border-[#d4b87a]/30 relative overflow-hidden p-6 rounded-2xl">
+              <div className="dash-card gold-border bg-gradient-to-b from-[#15120e] via-[#050505] to-[#020202] relative overflow-hidden p-6 rounded-2xl">
                 <div className="absolute top-0 right-0 w-64 h-64 bg-[#d4b87a]/10 blur-[90px] pointer-events-none mix-blend-screen" />
                 <div className="absolute -bottom-10 -left-10 w-48 h-48 bg-[#d4b87a]/5 blur-[70px] pointer-events-none mix-blend-screen" />
                 
@@ -1426,7 +1432,7 @@ export function SigPessoasPanel() {
               <div className="flex flex-col gap-4 text-left">
                 
                 {/* 4 Stage recruit bar */}
-                <div className="dash-card bg-gradient-to-b from-[#081512] via-[#050505] to-[#010101] border border-[#5dcaa5]/30 relative overflow-hidden p-5 rounded-2xl">
+                <div className="dash-card teal-border bg-gradient-to-b from-[#081512] via-[#050505] to-[#010101] relative overflow-hidden p-5 rounded-2xl">
                   <div className="absolute top-0 right-0 w-32 h-32 bg-[#5dcaa5]/5 blur-[60px] pointer-events-none mix-blend-screen" />
                   <div className="flex justify-between items-center mb-4">
                     <span className="font-mono text-[9px] text-[#5dcaa5] tracking-widest block font-bold uppercase flex items-center gap-1.5"><Users className="w-3.5 h-3.5" /> RECRUTAMENTO · FLUXO LENCIONI</span>
@@ -1458,7 +1464,7 @@ export function SigPessoasPanel() {
                 </div>
 
                 {/* Candidate list stack with custom subtle flows */}
-                <div className="dash-card flex-1 flex flex-col justify-between bg-gradient-to-b from-[#050c0a] via-[#050505] to-[#010101] border border-[#5dcaa5]/20 relative overflow-hidden p-5 rounded-2xl">
+                <div className="dash-card teal-border flex-1 flex flex-col justify-between bg-gradient-to-b from-[#050c0a] via-[#050505] to-[#010101] relative overflow-hidden p-5 rounded-2xl">
                   <div className="absolute top-0 right-0 w-64 h-64 bg-[#5dcaa5]/5 blur-[90px] pointer-events-none mix-blend-screen" />
                   <div className="relative z-10">
                     <div className="flex justify-between items-center mb-4 border-b border-white/[0.04] pb-3">
@@ -1518,7 +1524,7 @@ export function SigPessoasPanel() {
             <div className="home-row cols-2 mt-6">
               
               {/* Mapa do Time - RED/BURGUNDY THEMED PREMIUM GLASS CARD */}
-              <div className="dash-card bg-gradient-to-b from-[#180909] via-[#050505] to-[#010101] border border-[#e24b4a]/30 relative overflow-hidden p-6 rounded-2xl text-left">
+              <div className="dash-card red-border bg-gradient-to-b from-[#180909] via-[#050505] to-[#010101] relative overflow-hidden p-6 rounded-2xl text-left">
                 <div className="absolute top-0 right-0 w-64 h-64 bg-[#e24b4a]/5 blur-[85px] pointer-events-none mix-blend-screen" />
                 <div className="flex justify-between items-start mb-4 relative z-10">
                   <div>
@@ -1569,7 +1575,7 @@ export function SigPessoasPanel() {
               </div>
 
               {/* Você como Líder - BLUE/PURPLE THEMED PREMIUM GLASS CARD */}
-              <div className="dash-card bg-gradient-to-b from-[#090b1c] via-[#050505] to-[#010101] border border-blue-500/30 relative overflow-hidden p-6 rounded-2xl text-left">
+              <div className="dash-card blue-border bg-gradient-to-b from-[#090b1c] via-[#050505] to-[#010101] relative overflow-hidden p-6 rounded-2xl text-left">
                 <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/5 blur-[85px] pointer-events-none mix-blend-screen" />
                 <div className="relative z-10 mb-5">
                   <span className="font-mono text-[9px] text-[#3b82f6] tracking-widest block font-bold uppercase mb-1">Perfil · Liderança</span>
@@ -1616,7 +1622,7 @@ export function SigPessoasPanel() {
             <div className="home-row cols-2 mt-6">
               
               {/* Primeiros Passos - CYAN THEMED PREMIUM GLASS CARD */}
-              <div className="dash-card bg-gradient-to-b from-[#071318] via-[#050505] to-[#010101] border border-[#06b6d4]/30 relative overflow-hidden p-6 rounded-2xl text-left">
+              <div className="dash-card cyan-border bg-gradient-to-b from-[#071318] via-[#050505] to-[#010101] relative overflow-hidden p-6 rounded-2xl text-left">
                 <div className="absolute top-0 right-0 w-64 h-64 bg-[#06b6d4]/5 blur-[85px] pointer-events-none mix-blend-screen" />
                 <div className="flex justify-between items-center mb-5 relative z-10">
                   <div>
@@ -1646,7 +1652,7 @@ export function SigPessoasPanel() {
               </div>
 
               {/* Pulso Semanal - GOLD/AMBER THEMED PREMIUM CARD */}
-              <div className="dash-card bg-gradient-to-b from-[#18140c] via-[#050505] to-[#010101] border border-[#d4b87a]/30 relative overflow-hidden p-6 rounded-2xl text-left">
+              <div className="dash-card gold-border bg-gradient-to-b from-[#18140c] via-[#050505] to-[#010101] relative overflow-hidden p-6 rounded-2xl text-left">
                 <div className="absolute top-0 left-0 w-64 h-64 bg-[#d4b87a]/5 blur-[85px] pointer-events-none mix-blend-screen" />
                 <div className="flex justify-between items-center mb-5 relative z-10">
                   <div>
@@ -1698,11 +1704,6 @@ export function SigPessoasPanel() {
                   </div>
                   
                   <button onClick={handleSavePulso} className="w-full py-3.5 bg-gradient-to-r from-[#d4b87a]/25 to-[#d4b87a]/5 hover:from-[#d4b87a]/35 hover:to-[#d4b87a]/15 border border-[#d4b87a]/50 rounded-xl text-[10px] font-bold text-[#d4b87a] font-mono tracking-widest transition-all shadow-[0_0_20px_rgba(212,184,122,0.12)]">
-                    ✓ SALVAR PULSO DA SEMANA
-                  </button>
-                </div>
-              </div>
-            </div>/40 rounded-xl text-[10px] font-bold text-[#d4b87a] font-mono tracking-widest transition-all shadow-[0_0_20px_rgba(212,184,122,0.1)]">
                     ✓ SALVAR PULSO DA SEMANA
                   </button>
                 </div>
