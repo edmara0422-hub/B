@@ -1289,56 +1289,54 @@ export function SigPessoasPanel() {
         {/* ================= HOME TAB ================= */}
         {activeTab === 'home' && (
           <motion.div
-            key="home"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            className="home-dashboard"
-          >
-            {/* ROW 1: Visão Cruzada + Candidates Funnel */}
+                    {/* ROW 1: Visão Cruzada + Candidates Funnel */}
             <div className="home-row split-6040">
               
-              {/* Visão Cruzada 4D/6D */}
-              <div className="dash-card bg-[#050505]/60 backdrop-blur-3xl border border-[#d4b87a]/20 relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-64 h-64 bg-[#d4b87a]/5 blur-[80px] pointer-events-none mix-blend-screen" />
-                <div className="flex justify-between items-center mb-4 relative z-10">
-                  <div>
-                    <span className="font-mono text-[9px] text-[#d4b87a] tracking-widest block mb-2 font-bold uppercase">SIG · OS</span>
-                    <h3 className="text-[14px] font-bold text-white mb-1">Visão Cruzada · Saúde 6D</h3>
-                    <div className="text-[10px] text-white/50 font-sans">Radar multidimensional · n = {teamMembers.length} colaboradores</div>
+              {/* Visão Cruzada 6D - GOLD/AMBER THEMED PREMIUM GLASS CARD */}
+              <div className="dash-card bg-gradient-to-b from-[#15120e] via-[#050505] to-[#020202] border border-[#d4b87a]/30 relative overflow-hidden p-6 rounded-2xl">
+                <div className="absolute top-0 right-0 w-64 h-64 bg-[#d4b87a]/10 blur-[90px] pointer-events-none mix-blend-screen" />
+                <div className="absolute -bottom-10 -left-10 w-48 h-48 bg-[#d4b87a]/5 blur-[70px] pointer-events-none mix-blend-screen" />
+                
+                <div className="flex justify-between items-center mb-6 relative z-10">
+                  <div className="text-left">
+                    <span className="font-mono text-[9px] text-[#d4b87a] tracking-widest block mb-1 font-bold uppercase">DIAGNÓSTICO 6D</span>
+                    <h3 className="text-[16px] font-bold text-white mb-0.5">Visão Cruzada · Saúde 6D</h3>
+                    <div className="text-[10px] text-white/50 font-sans">Radar organizacional · n = {teamMembers.length} colaboradores</div>
                   </div>
                   <div className="flex gap-2 items-center">
-                    <button onClick={handleResetRadar} className="px-3 py-1.5 bg-black/40 hover:bg-[#d4b87a]/10 border border-[#d4b87a]/30 rounded-lg text-[9px] font-bold text-[#d4b87a] font-mono transition-all">⟲ RESET</button>
+                    <button onClick={handleResetRadar} className="px-3.5 py-1.5 bg-black/60 hover:bg-[#d4b87a]/15 border border-[#d4b87a]/40 rounded-xl text-[9px] font-bold text-[#d4b87a] font-mono transition-all uppercase tracking-wider">⟲ RESET</button>
                   </div>
                 </div>
 
-                <div className="grid grid-cols-[1fr_1.2fr] gap-5 items-center relative z-10">
+                <div className="grid grid-cols-1 md:grid-cols-[1fr_1.2fr] gap-6 items-center relative z-10">
                   
-                  {/* Radar Stage SVG */}
+                  {/* Radar Stage SVG with improved look */}
                   <div style={{ maxWidth: '180px', margin: '0 auto', position: 'relative' }}>
                     <div className="w-[180px] h-[180px] relative">
                       <svg className="w-full h-full overflow-visible" viewBox="-200 -200 400 400">
                         <defs>
                           <radialGradient id="crystalFillH" cx="50%" cy="50%" r="50%">
-                            <stop offset="0%" stopColor="#efddb1" stopOpacity="0.25"/>
-                            <stop offset="100%" stopColor="#151310" stopOpacity="0.02"/>
+                            <stop offset="0%" stopColor="#d4b87a" stopOpacity="0.3"/>
+                            <stop offset="60%" stopColor="#d4b87a" stopOpacity="0.08"/>
+                            <stop offset="100%" stopColor="#151310" stopOpacity="0"/>
                           </radialGradient>
                           <linearGradient id="crystalStrokeH" x1="0" y1="-150" x2="0" y2="150" gradientUnits="userSpaceOnUse">
-                            <stop offset="0%" stopColor="#ffffff" stopOpacity="0.7"/>
-                            <stop offset="50%" stopColor="#d4b87a" stopOpacity="0.55"/>
-                            <stop offset="100%" stopColor="#ffffff" stopOpacity="0.6"/>
+                            <stop offset="0%" stopColor="#ffffff" stopOpacity="0.75"/>
+                            <stop offset="50%" stopColor="#d4b87a" stopOpacity="0.6"/>
+                            <stop offset="100%" stopColor="#ffffff" stopOpacity="0.7"/>
                           </linearGradient>
                           <filter id="glow-h"><feGaussianBlur stdDeviation="3"/></filter>
                         </defs>
 
                         {/* Radar Circles */}
-                        <circle cx="0" cy="0" r="160" fill="none" stroke="rgba(212,184,122,0.12)" strokeWidth="0.7" strokeDasharray="4 6"/>
-                        <circle cx="0" cy="0" r="110" fill="none" stroke="rgba(255,255,255,0.04)" strokeWidth="0.5"/>
+                        <circle cx="0" cy="0" r="160" fill="none" stroke="rgba(212,184,122,0.18)" strokeWidth="0.8" strokeDasharray="5 7"/>
+                        <circle cx="0" cy="0" r="110" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="0.6"/>
+                        <circle cx="0" cy="0" r="60" fill="none" stroke="rgba(255,255,255,0.04)" strokeWidth="0.5"/>
                         
                         {/* Star base polygon */}
-                        <polygon points="0,-140 121,-70 121,70 0,140 -121,70 -121,-70" fill="none" stroke="url(#crystalStrokeH)" strokeWidth="1"/>
+                        <polygon points="0,-140 121,-70 121,70 0,140 -121,70 -121,-70" fill="none" stroke="url(#crystalStrokeH)" strokeWidth="1.2"/>
                         
-                        <g stroke="rgba(255,255,255,0.12)" strokeWidth="0.6">
+                        <g stroke="rgba(255,255,255,0.15)" strokeWidth="0.6">
                           <line x1="0" y1="-140" x2="0" y2="140"/>
                           <line x1="-121" y1="0" x2="121" y2="0"/>
                           <line x1="-121" y1="-70" x2="121" y2="70"/>
@@ -1357,62 +1355,66 @@ export function SigPessoasPanel() {
                           `} 
                           fill="url(#crystalFillH)" 
                           stroke="#d4b87a" 
-                          strokeWidth="1.8" 
-                          opacity="0.4"
+                          strokeWidth="2.2" 
+                          opacity="0.8"
+                          style={{ filter: 'drop-shadow(0 0 4px rgba(212,184,122,0.3))' }}
                         />
 
                         {/* Vertex Dots */}
-                        {selectedDims.includes('D1') && <circle cx="0" cy="-115" r="4.5" fill="#fff" stroke="#d4b87a" strokeWidth="1.5"/>}
-                        {selectedDims.includes('D2') && <circle cx="100" cy="-48" r="4.5" fill="#fff" stroke="#d4b87a" strokeWidth="1.5"/>}
-                        {selectedDims.includes('D3') && <circle cx="80" cy="55" r="4.5" fill="#fff" stroke="#d4b87a" strokeWidth="1.5"/>}
-                        {selectedDims.includes('D4') && <circle cx="0" cy="98" r="4.5" fill="#fff" stroke="#d4b87a" strokeWidth="1.5"/>}
-                        {selectedDims.includes('D5') && <circle cx="-70" cy="38" r="4.5" fill="#fff" stroke="#d4b87a" strokeWidth="1.5"/>}
-                        {selectedDims.includes('D6') && <circle cx="-85" cy="-52" r="4.5" fill="#fff" stroke="#d4b87a" strokeWidth="1.5"/>}
+                        {selectedDims.includes('D1') && <circle cx="0" cy="-115" r="5" fill="#fff" stroke="#d4b87a" strokeWidth="2"/>}
+                        {selectedDims.includes('D2') && <circle cx="100" cy="-48" r="5" fill="#fff" stroke="#d4b87a" strokeWidth="2"/>}
+                        {selectedDims.includes('D3') && <circle cx="80" cy="55" r="5" fill="#fff" stroke="#d4b87a" strokeWidth="2"/>}
+                        {selectedDims.includes('D4') && <circle cx="0" cy="98" r="5" fill="#fff" stroke="#d4b87a" strokeWidth="2"/>}
+                        {selectedDims.includes('D5') && <circle cx="-70" cy="38" r="5" fill="#fff" stroke="#d4b87a" strokeWidth="2"/>}
+                        {selectedDims.includes('D6') && <circle cx="-85" cy="-52" r="5" fill="#fff" stroke="#d4b87a" strokeWidth="2"/>}
 
                         <g fontStyle="Poppins" fontSize="13" fontWeight="600" fill="#d4b87a">
-                          <text x="0" y="-152" textAnchor="middle">D1</text>
-                          <text x="140" y="-78" textAnchor="middle">D2</text>
-                          <text x="138" y="85" textAnchor="middle">D3</text>
-                          <text x="0" y="158" textAnchor="middle">D4</text>
-                          <text x="-138" y="85" textAnchor="middle">D5</text>
-                          <text x="-140" y="-78" textAnchor="middle">D6</text>
+                          <text x="0" y="-154" textAnchor="middle">D1</text>
+                          <text x="144" y="-78" textAnchor="middle">D2</text>
+                          <text x="140" y="88" textAnchor="middle">D3</text>
+                          <text x="0" y="160" textAnchor="middle">D4</text>
+                          <text x="-140" y="88" textAnchor="middle">D5</text>
+                          <text x="-144" y="-78" textAnchor="middle">D6</text>
                         </g>
                       </svg>
 
                       {/* Center Info Gauge */}
                       <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none text-center">
-                        <span className="text-2xl font-bold text-white tracking-tighter leading-none">
-                          {selectedDims.length * 12 + 4}
-                        </span>
-                        <span className="text-[6px] uppercase tracking-widest text-[#d4b87a] mt-1 font-mono">OBI GLOBAL</span>
-                        <span className="text-[7px] text-[#5dcaa5] mt-0.5 font-bold">▲ +3.2</span>
+                        <div className="w-[60px] h-[60px] rounded-full bg-black/60 border border-[#d4b87a]/20 backdrop-blur-md flex flex-col items-center justify-center">
+                          <span className="text-xl font-bold text-white tracking-tighter leading-none">
+                            {selectedDims.length * 12 + 4}
+                          </span>
+                          <span className="text-[5.5px] uppercase tracking-widest text-[#d4b87a] mt-1 font-mono">OBI GLOBAL</span>
+                          <span className="text-[6.5px] text-[#5dcaa5] mt-0.5 font-bold">▲ +3.2</span>
+                        </div>
                       </div>
                     </div>
                   </div>
 
                   {/* Interactive Dimension list & checkmarks */}
-                  <div>
-                    <div className="vc-d-dots">
+                  <div className="text-left">
+                    <div className="vc-d-dots grid grid-cols-3 md:grid-cols-2 gap-1.5 mb-4">
                       {dimensionsInfo.map(dim => (
                         <div 
                           key={dim.code}
                           onClick={() => handleSelectDimension(dim.code)}
-                          className={`vc-dot ${selectedDims.includes(dim.code) ? 'active' : ''}`}
+                          className={`vc-dot flex items-center gap-2 p-2 bg-black/40 border border-white/5 hover:border-white/15 rounded-xl cursor-pointer transition ${selectedDims.includes(dim.code) ? 'active border-[#d4b87a]/40 bg-[#d4b87a]/5' : ''}`}
                         >
-                          <span className="dot-circle" style={{ backgroundColor: dim.color }}></span>
-                          {dim.code}
+                          <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: dim.color, boxShadow: `0 0 8px ${dim.color}` }}></span>
+                          <span className="text-[10px] font-mono font-bold text-white/80">{dim.code}</span>
+                          <span className="text-[8.5px] text-white/40 ml-auto font-sans">{dim.label}</span>
                         </div>
                       ))}
                     </div>
 
                     {/* Progress Bar of Health */}
-                    <div className="vc-saude-bar">
-                      <div className="lbl">Saúde 6D · Score Geral</div>
-                      <div className="vc-bar-track">
-                        <div className="vc-bar-fill" style={{ width: `${(selectedDims.length / 6) * 100}%` }} />
+                    <div className="vc-saude-bar bg-black/30 border border-white/5 p-3.5 rounded-xl">
+                      <div className="lbl text-[10px] font-mono text-[#d4b87a] font-bold uppercase tracking-widest mb-1.5">Saúde 6D · Score Geral</div>
+                      <div className="vc-bar-track h-2 bg-black/60 rounded-full overflow-hidden border border-white/5">
+                        <div className="vc-bar-fill h-full bg-gradient-to-r from-[#d4b87a] to-[#5dcaa5] rounded-full transition-all duration-500" style={{ width: `${(selectedDims.length / 6) * 100}%` }} />
                       </div>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', fontFamily: 'inherit', fontSize: '9px', color: '#8a9098', marginTop: '3px' }}>
-                        <span>S10</span><span>S21 · AGORA</span>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', fontFamily: 'inherit', fontSize: '9px', color: '#8a9098', marginTop: '5px' }}>
+                        <span>S10</span><span className="text-[#5dcaa5] font-bold">S21 · AGORA</span>
                       </div>
                     </div>
                   </div>
@@ -1420,54 +1422,51 @@ export function SigPessoasPanel() {
                 </div>
               </div>
 
-              {/* Recrutamento Funil Lencioni & Candidates */}
-              <div className="flex flex-col gap-4">
+              {/* Recrutamento Funil Lencioni & Candidates - TEAL/GREEN THEMED PREMIUM GLASS CARD */}
+              <div className="flex flex-col gap-4 text-left">
                 
-                {/* 5 Stage recruit bar */}
-                <div className="dash-card bg-[#050505]/60 backdrop-blur-3xl border border-white/5">
-                  <div className="flex justify-between items-center mb-3">
-                    <span className="font-mono text-[9px] text-[#d4b87a] tracking-widest block font-bold uppercase">RECRUTAMENTO - 4 ESTÁGIOS</span>
-                    <button className="text-[9px] uppercase tracking-wider text-[#d4b87a] font-bold hover:underline" onClick={() => setActiveTab('lideres')}>▶ Detalhes</button>
+                {/* 4 Stage recruit bar */}
+                <div className="dash-card bg-gradient-to-b from-[#081512] via-[#050505] to-[#010101] border border-[#5dcaa5]/30 relative overflow-hidden p-5 rounded-2xl">
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-[#5dcaa5]/5 blur-[60px] pointer-events-none mix-blend-screen" />
+                  <div className="flex justify-between items-center mb-4">
+                    <span className="font-mono text-[9px] text-[#5dcaa5] tracking-widest block font-bold uppercase flex items-center gap-1.5"><Users className="w-3.5 h-3.5" /> RECRUTAMENTO · FLUXO LENCIONI</span>
+                    <button className="text-[9px] uppercase tracking-wider text-[#5dcaa5] font-bold hover:underline" onClick={() => setActiveTab('lideres')}>▶ Detalhes</button>
                   </div>
                   
-                  <div className="flex justify-between items-center bg-black/30 border border-white/5 rounded-xl p-3 text-[9px] text-center">
-                    <div>
-                      <b className="text-[15px] text-[#d4b87a] block">{candidates.filter(c => c.stage === 'triagem').length}</b>
-                      <span className="text-[7.5px] text-white/40 font-mono block mt-1">TRIAGEM</span>
+                  <div className="grid grid-cols-5 gap-2 bg-black/40 border border-white/5 rounded-xl p-3 text-center">
+                    <div className="hover:bg-white/[0.02] p-1 rounded transition">
+                      <b className="text-[15px] text-[#d4b87a] block leading-none">{candidates.filter(c => c.stage === 'triagem').length}</b>
+                      <span className="text-[7px] text-white/40 font-mono block mt-1">TRIAGEM</span>
                     </div>
-                    <div className="text-white/20 font-light">→</div>
-                    <div>
-                      <b className="text-[15px] text-[#d4b87a] block">{candidates.filter(c => c.stage === 'entrevista').length}</b>
-                      <span className="text-[7.5px] text-white/40 font-mono block mt-1">ENTREVISTA</span>
+                    <div className="hover:bg-white/[0.02] p-1 rounded transition">
+                      <b className="text-[15px] text-[#d4b87a] block leading-none">{candidates.filter(c => c.stage === 'entrevista').length}</b>
+                      <span className="text-[7px] text-white/40 font-mono block mt-1">ENTREVISTA</span>
                     </div>
-                    <div className="text-white/20 font-light">→</div>
-                    <div>
-                      <b className="text-[15px] text-[#d4b87a] block">{candidates.filter(c => c.stage === 'decisao').length}</b>
-                      <span className="text-[7.5px] text-white/40 font-mono block mt-1">DECISÃO</span>
+                    <div className="hover:bg-white/[0.02] p-1 rounded transition">
+                      <b className="text-[15px] text-[#d4b87a] block leading-none">{candidates.filter(c => c.stage === 'decisao').length}</b>
+                      <span className="text-[7px] text-white/40 font-mono block mt-1">DECISÃO</span>
                     </div>
-                    <div className="text-white/20 font-light">→</div>
-                    <div>
-                      <b className="text-[15px] text-[#d4b87a] block">{candidates.filter(c => c.stage === 'onboarding').length}</b>
-                      <span className="text-[7.5px] text-white/40 font-mono block mt-1">ONBOARD</span>
+                    <div className="hover:bg-white/[0.02] p-1 rounded transition">
+                      <b className="text-[15px] text-[#d4b87a] block leading-none">{candidates.filter(c => c.stage === 'onboarding').length}</b>
+                      <span className="text-[7px] text-white/40 font-mono block mt-1">ONBOARD</span>
                     </div>
-                    <div className="text-white/20 font-light">→</div>
-                    <div>
-                      <b className="text-[15px] text-[#5dcaa5] block">{teamMembers.length}</b>
-                      <span className="text-[7.5px] text-white/40 font-mono block mt-1">HIRED</span>
+                    <div className="bg-[#5dcaa5]/5 border border-[#5dcaa5]/20 p-1 rounded transition">
+                      <b className="text-[15px] text-[#5dcaa5] block leading-none">{teamMembers.length}</b>
+                      <span className="text-[7px] text-[#5dcaa5] font-mono block mt-1 font-bold">CONTRATADO</span>
                     </div>
                   </div>
                 </div>
 
-                {/* Candidate list stack */}
-                <div className="dash-card flex-1 flex flex-col justify-between bg-[#050505]/60 backdrop-blur-3xl border border-white/5 relative overflow-hidden">
-                  <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 blur-[80px] pointer-events-none mix-blend-screen" />
+                {/* Candidate list stack with custom subtle flows */}
+                <div className="dash-card flex-1 flex flex-col justify-between bg-gradient-to-b from-[#050c0a] via-[#050505] to-[#010101] border border-[#5dcaa5]/20 relative overflow-hidden p-5 rounded-2xl">
+                  <div className="absolute top-0 right-0 w-64 h-64 bg-[#5dcaa5]/5 blur-[90px] pointer-events-none mix-blend-screen" />
                   <div className="relative z-10">
                     <div className="flex justify-between items-center mb-4 border-b border-white/[0.04] pb-3">
                       <div>
-                        <span className="font-mono text-[9px] text-[#d4b87a] tracking-widest block font-bold uppercase mb-1">HHS · SIG</span>
-                        <h3 className="text-[13px] font-bold text-[#d4b87a] m-0">Funil Lencioni &amp; HHS</h3>
+                        <span className="font-mono text-[9px] text-[#5dcaa5] tracking-widest block font-bold uppercase mb-1">CANDIDATOS ATIVOS</span>
+                        <h3 className="text-[13px] font-bold text-white m-0">Fit Lencioni &amp; HHS</h3>
                       </div>
-                      <button onClick={handleResetCandidates} className="px-3 py-1 bg-black/40 hover:bg-[#d4b87a]/10 border border-white/10 hover:border-[#d4b87a]/30 rounded-lg text-[9px] text-white/70 hover:text-[#d4b87a] font-mono transition-colors">♻ Restaurar</button>
+                      <button onClick={handleResetCandidates} className="px-3 py-1 bg-black/60 hover:bg-[#5dcaa5]/10 border border-white/10 hover:border-[#5dcaa5]/30 rounded-lg text-[9px] text-white/70 hover:text-[#5dcaa5] font-mono transition-colors">♻ Restaurar</button>
                     </div>
 
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', maxHeight: '180px', overflowY: 'auto', paddingRight: '4px' }}>
@@ -1475,33 +1474,33 @@ export function SigPessoasPanel() {
                         <div className="text-center py-6 text-[10px] text-white/30">Nenhum candidato no funil.</div>
                       ) : (
                         candidates.map(cand => (
-                          <div key={cand.id} className="cand-card-mockup" style={{ padding: '12px', marginBottom: '0px' }}>
-                            <button onClick={() => handleDeleteCandidate(cand.id)} className="btn-del-cand" style={{ width: '16px', height: '16px', fontSize: '9px', top: '8px', right: '8px' }}>✕</button>
+                          <div key={cand.id} className="cand-card-mockup group hover:border-[#5dcaa5]/30 hover:bg-black/60 transition-all border border-white/5 rounded-xl bg-black/40" style={{ padding: '12px', marginBottom: '0px' }}>
+                            <button onClick={() => handleDeleteCandidate(cand.id)} className="btn-del-cand text-white/40 hover:text-[#e24b4a] transition" style={{ width: '16px', height: '16px', fontSize: '9px', top: '8px', right: '8px' }}>✕</button>
                             
                             <div className="header-row" style={{ gap: '8px' }}>
-                              <div className="avatar" style={{ width: '26px', height: '26px', fontSize: '10px' }}>
+                              <div className="avatar bg-gradient-to-br from-[#5dcaa5] to-[#d4b87a] text-black font-bold" style={{ width: '26px', height: '26px', fontSize: '10px' }}>
                                 {cand.name.split(' ').map(x => x[0]).join('')}
                               </div>
-                              <div className="info-col">
-                                <span className="name" style={{ fontSize: '11.5px' }}>{cand.name}</span>
-                                <span className="subtext" style={{ fontSize: '8px' }}>{cand.role} · {cand.stage.toUpperCase()}</span>
+                              <div className="info-col text-left">
+                                <span className="name text-white font-bold block" style={{ fontSize: '11.5px' }}>{cand.name}</span>
+                                <span className="subtext text-white/50 block" style={{ fontSize: '8px' }}>{cand.role} · {cand.stage.toUpperCase()}</span>
                               </div>
                             </div>
                             
                             {/* HHS Bar */}
-                            <div className="hhs-bar-mockup" style={{ margin: '6px 0' }}>
-                              <i style={{ width: `${cand.lencioniScore}%` }} />
+                            <div className="hhs-bar-mockup" style={{ margin: '6px 0', height: '5px', borderRadius: '4px', overflow: 'hidden', backgroundColor: 'rgba(255,255,255,0.05)' }}>
+                              <i className="bg-gradient-to-r from-[#5dcaa5] to-[#d4b87a]" style={{ width: `${cand.lencioniScore}%`, height: '100%', display: 'block', borderRadius: '4px' }} />
                             </div>
 
-                            <div className="stats-row" style={{ fontSize: '7.5px', paddingTop: '4px' }}>
-                              <div className="item"><span>HUM</span><b>{cand.stats.hum}%</b></div>
-                              <div className="item"><span>FOM</span><b>{cand.stats.fom}%</b></div>
-                              <div className="item"><span>INT</span><b>{cand.stats.int}%</b></div>
+                            <div className="stats-row flex justify-between items-center text-white/60 text-left" style={{ fontSize: '8px', paddingTop: '4px' }}>
+                              <div className="item"><span>HUM </span><b className="text-white">{cand.stats.hum}%</b></div>
+                              <div className="item"><span>FOM </span><b className="text-white">{cand.stats.fom}%</b></div>
+                              <div className="item"><span>INT </span><b className="text-white">{cand.stats.int}%</b></div>
                             </div>
                             <button 
                               onClick={() => handleTriggerOnboard(cand)}
-                              className="btn-onboard"
-                              style={{ marginTop: '8px', padding: '6px' }}
+                              className="btn-onboard w-full mt-2.5 py-1.5 rounded-lg border border-[#5dcaa5]/30 hover:border-[#5dcaa5] text-[#5dcaa5] bg-[#5dcaa5]/5 hover:bg-[#5dcaa5]/15 transition font-mono text-[9px] uppercase font-bold tracking-widest"
+                              style={{ padding: '6px' }}
                             >
                               {cand.stage === 'triagem' ? 'Avançar' : cand.stage === 'onboarding' ? 'CONTRATAR' : 'Evoluir'}
                             </button>
@@ -1515,124 +1514,83 @@ export function SigPessoasPanel() {
               </div>
             </div>
 
-            {/* ROW 1.5: Status dos 4 Blocos OS (Redesigned Premium 6D Navigation) */}
-            <div className="bg-[#050505]/60 backdrop-blur-3xl border border-white/5 p-6 rounded-2xl relative overflow-hidden text-left">
-              <div className="absolute top-0 left-0 w-64 h-64 bg-blue-500/5 blur-[80px] pointer-events-none mix-blend-screen" />
-              <span className="text-[9px] uppercase tracking-widest text-[#d4b87a] font-mono block mb-4 font-bold relative z-10">OS · MAPA DA OPERAÇÃO DE LIDERANÇA</span>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 relative z-10">
-                {[
-                  { code: 'BLOCO 01', name: 'Líderes / Gestores', action: 'Recrutar · Gerir · Delegar', status: '✓ ativo', color: 'text-[#5dcaa5] border-[#5dcaa5]/30 bg-[#5dcaa5]/5', hoverColor: 'hover:border-[#5dcaa5]/60 hover:bg-[#5dcaa5]/10', icon: Award, tab: 'lideres', sub: 'recrutar' },
-                  { code: 'BLOCO 02', name: 'Time & Equipes', action: 'Formar · Pessoas · Influência', status: '⚡ atenção', color: 'text-[#fac775] border-[#fac775]/30 bg-[#fac775]/5', hoverColor: 'hover:border-[#fac775]/60 hover:bg-[#fac775]/10', icon: Users, tab: 'time', sub: 'formar' },
-                  { code: 'BLOCO 03', name: 'Gerir Diário', action: 'D6 · SBI · 1:1 · Config', status: '✓ calibrado', color: 'text-[#d4b87a] border-[#d4b87a]/30 bg-[#d4b87a]/5', hoverColor: 'hover:border-[#d4b87a]/60 hover:bg-[#d4b87a]/10', icon: BookOpen, tab: 'lideres', sub: 'gerir' },
-                  { code: 'BLOCO 04', name: 'Empresa & Cultura', action: 'Estratégia · BI · OKRs', status: '✓ ativo', color: 'text-[#5dcaa5] border-[#5dcaa5]/30 bg-[#5dcaa5]/5', hoverColor: 'hover:border-[#5dcaa5]/60 hover:bg-[#5dcaa5]/10', icon: Compass, tab: 'empresa', sub: 'estrategia' }
-                ].map(b => {
-                  const IconComponent = b.icon
-                  return (
-                    <div 
-                      key={b.code} 
-                      onClick={() => {
-                        setActiveTab(b.tab as TabOption)
-                        if (b.tab === 'lideres') setLideresTab(b.sub as LideresSubTab)
-                        if (b.tab === 'time') setTimeTab(b.sub as TimeSubTab)
-                        if (b.tab === 'empresa') setEmpresaTab(b.sub as EmpresaSubTab)
-                      }}
-                      className="group p-5 bg-black/40 border border-white/5 hover:border-white/20 rounded-2xl cursor-pointer hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between relative overflow-hidden"
-                    >
-                      <div className="absolute inset-0 bg-gradient-to-b from-white/[0.02] to-transparent pointer-events-none" />
-                      <div>
-                        <div className="flex justify-between items-start mb-3">
-                          <span className="text-[8.5px] font-mono font-bold text-white/40 tracking-wider uppercase">{b.code}</span>
-                          <IconComponent className={`w-4 h-4 ${b.color.split(' ')[0]} opacity-80`} />
-                        </div>
-                        <h4 className="text-[13px] font-bold text-white mb-1 font-sans">{b.name}</h4>
-                        <p className="text-[10px] text-white/50 font-sans leading-normal mb-4">{b.action}</p>
-                      </div>
-                      <div className={`text-[8.5px] font-mono tracking-widest font-bold uppercase mt-auto pt-2.5 border-t border-white/[0.04] w-full flex items-center justify-between ${b.color.split(' ')[0]}`}>
-                        <span>{b.status}</span>
-                        <span className="text-white opacity-40 group-hover:opacity-100 group-hover:translate-x-1 transition-all text-xs">→</span>
-                      </div>
-                    </div>
-                  )
-                })}
-              </div>
-            </div>
-
             {/* ROW 2: Mapa do Time + Você como Líder */}
             <div className="home-row cols-2 mt-6">
               
-              {/* Mapa do Time */}
-              <div className="dash-card bg-[#050505]/60 backdrop-blur-3xl border border-white/5 relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-64 h-64 bg-red-500/5 blur-[80px] pointer-events-none mix-blend-screen" />
+              {/* Mapa do Time - RED/BURGUNDY THEMED PREMIUM GLASS CARD */}
+              <div className="dash-card bg-gradient-to-b from-[#180909] via-[#050505] to-[#010101] border border-[#e24b4a]/30 relative overflow-hidden p-6 rounded-2xl text-left">
+                <div className="absolute top-0 right-0 w-64 h-64 bg-[#e24b4a]/5 blur-[85px] pointer-events-none mix-blend-screen" />
                 <div className="flex justify-between items-start mb-4 relative z-10">
                   <div>
                     <span className="font-mono text-[9px] text-[#e24b4a] tracking-widest block font-bold uppercase mb-1">MAPA · TIME</span>
                     <h3 className="text-[14px] font-bold text-white mb-0.5">Influência × Impacto</h3>
-                    <div className="text-[10px] text-white/50 font-sans">Mapeamento estratégico com base no capital social</div>
+                    <div className="text-[10px] text-white/50 font-sans">Mapeamento strategic com base no capital social</div>
                   </div>
-                  <button onClick={handleAddTeamMemberMap} className="px-3 py-1.5 bg-black/40 hover:bg-[#d4b87a]/10 border border-white/10 hover:border-[#d4b87a]/30 rounded-lg text-[9px] text-[#d4b87a] font-mono transition-colors font-bold">+ ADD</button>
+                  <button onClick={handleAddTeamMemberMap} className="px-3 py-1.5 bg-black/60 hover:bg-[#e24b4a]/10 border border-[#e24b4a]/40 hover:border-[#e24b4a] rounded-xl text-[9px] text-[#e24b4a] font-mono transition-colors font-bold tracking-widest">+ ADD</button>
                 </div>
 
-                <div className="mapa-container">
-                  <div className="mapa-svg-wrap">
+                <div className="mapa-container bg-black/40 border border-white/5 rounded-xl p-3">
+                  <div className="mapa-svg-wrap relative">
                     <svg viewBox="0 0 300 200" style={{ overflow: 'visible' }}>
                       {/* Background quadrants */}
-                      <rect x="0" y="0" width="150" height="100" fill="rgba(250,199,117,0.04)" stroke="rgba(255,255,255,0.06)" strokeWidth="0.5"/>
-                      <rect x="150" y="0" width="150" height="100" fill="rgba(93,202,165,0.04)" stroke="rgba(255,255,255,0.06)" strokeWidth="0.5"/>
-                      <rect x="0" y="100" width="150" height="100" fill="rgba(226,75,74,0.04)" stroke="rgba(255,255,255,0.06)" strokeWidth="0.5"/>
-                      <rect x="150" y="100" width="150" height="100" fill="rgba(212,184,122,0.04)" stroke="rgba(255,255,255,0.06)" strokeWidth="0.5"/>
+                      <rect x="0" y="0" width="150" height="100" fill="rgba(250,199,117,0.06)" stroke="rgba(255,255,255,0.08)" strokeWidth="0.6"/>
+                      <rect x="150" y="0" width="150" height="100" fill="rgba(93,202,165,0.06)" stroke="rgba(255,255,255,0.08)" strokeWidth="0.6"/>
+                      <rect x="0" y="100" width="150" height="100" fill="rgba(226,75,74,0.06)" stroke="rgba(255,255,255,0.08)" strokeWidth="0.6"/>
+                      <rect x="150" y="100" width="150" height="100" fill="rgba(212,184,122,0.06)" stroke="rgba(255,255,255,0.08)" strokeWidth="0.6"/>
                       {/* Axes */}
-                      <line x1="0" y1="100" x2="300" y2="100" stroke="rgba(255,255,255,0.12)" strokeWidth="1" strokeDasharray="4 3"/>
-                      <line x1="150" y1="0" x2="150" y2="200" stroke="rgba(255,255,255,0.12)" strokeWidth="1" strokeDasharray="4 3"/>
+                      <line x1="0" y1="100" x2="300" y2="100" stroke="rgba(255,255,255,0.18)" strokeWidth="1" strokeDasharray="5 4"/>
+                      <line x1="150" y1="0" x2="150" y2="200" stroke="rgba(255,255,255,0.18)" strokeWidth="1" strokeDasharray="5 4"/>
                       {/* Axis labels */}
-                      <text x="150" y="195" textAnchor="middle" fontFamily="inherit" fontSize="8" fill="rgba(255,255,255,0.3)">← baixa influência · alta influência →</text>
-                      <text x="4" y="100" fontFamily="inherit" fontSize="7" fill="rgba(255,255,255,0.3)" writingMode="vertical-rl" transform="rotate(180,4,100)">alto impacto ↑</text>
+                      <text x="150" y="195" textAnchor="middle" fontFamily="inherit" fontSize="8" fill="rgba(255,255,255,0.4)">← baixa influência · alta influência →</text>
+                      <text x="4" y="100" fontFamily="inherit" fontSize="7" fill="rgba(255,255,255,0.4)" writingMode="vertical-rl" transform="rotate(180,4,100)">alto impacto ↑</text>
                       
-                      {/* Plot Dots */}
+                      {/* Plot Dots with dynamic glowing effects */}
                       <g>
                         {teamMembers.map(m => {
                           const cx = ((m.influence + 150) / 300) * 280 + 10
                           const cy = 200 - (((m.impact + 100) / 200) * 180 + 10)
                           return (
                             <g key={m.id} className="cursor-pointer group" onClick={() => triggerToast(`${m.name} (${m.role}): D6=${m.d6}`)}>
-                              <circle cx={cx} cy={cy} r="6" fill="#d4b87a" stroke="#fff" strokeWidth="1" className="transition duration-300 hover:scale-125" style={{ filter: 'drop-shadow(0 0 4px #d4b87a)' }} />
-                              <text x={cx} y={cy - 10} textAnchor="middle" fill="#fff" fontSize="7" fontWeight="bold" className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none bg-black px-1 rounded">{m.name.split(' ')[0]}</text>
+                              <circle cx={cx} cy={cy} r="6.5" fill="#e24b4a" stroke="#fff" strokeWidth="1.2" className="transition duration-300 hover:scale-130" style={{ filter: 'drop-shadow(0 0 6px #e24b4a)' }} />
+                              <circle cx={cx} cy={cy} r="12" fill="none" stroke="#e24b4a" strokeWidth="0.5" opacity="0.3" className="animate-ping" style={{ transformOrigin: `${cx}px ${cy}px` }} />
+                              <text x={cx} y={cy - 12} textAnchor="middle" fill="#fff" fontSize="8" fontWeight="bold" className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none bg-black px-1.5 py-0.5 rounded border border-white/10">{m.name.split(' ')[0]}</text>
                             </g>
                           )
                         })}
                       </g>
                     </svg>
                     {/* Quadrant labels */}
-                    <div className="mapa-quadrant-lbl top-left">neutralos · orientar</div>
-                    <div className="mapa-quadrant-lbl top-right">aliados · delegar</div>
-                    <div className="mapa-quadrant-lbl bot-left">bloqueador · direcionar</div>
-                    <div className="mapa-quadrant-lbl bot-right">exec · apoiar</div>
+                    <div className="mapa-quadrant-lbl top-left text-[8px] uppercase tracking-wider text-[#fac775] font-bold">neutralos · orientar</div>
+                    <div className="mapa-quadrant-lbl top-right text-[8px] uppercase tracking-wider text-[#5dcaa5] font-bold">aliados · delegar</div>
+                    <div className="mapa-quadrant-lbl bot-left text-[8px] uppercase tracking-wider text-[#e24b4a] font-bold">bloqueador · direcionar</div>
+                    <div className="mapa-quadrant-lbl bot-right text-[8px] uppercase tracking-wider text-[#d4b87a] font-bold">exec · apoiar</div>
                   </div>
                 </div>
               </div>
 
-              {/* Você como Líder */}
-              <div className="dash-card bg-[#050505]/60 backdrop-blur-3xl border border-white/5 relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-64 h-64 bg-[#d4b87a]/5 blur-[80px] pointer-events-none mix-blend-screen" />
+              {/* Você como Líder - BLUE/PURPLE THEMED PREMIUM GLASS CARD */}
+              <div className="dash-card bg-gradient-to-b from-[#090b1c] via-[#050505] to-[#010101] border border-blue-500/30 relative overflow-hidden p-6 rounded-2xl text-left">
+                <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/5 blur-[85px] pointer-events-none mix-blend-screen" />
                 <div className="relative z-10 mb-5">
-                  <span className="font-mono text-[9px] text-[#d4b87a] tracking-widest block font-bold uppercase mb-1">Perfil · Liderança</span>
+                  <span className="font-mono text-[9px] text-[#3b82f6] tracking-widest block font-bold uppercase mb-1">Perfil · Liderança</span>
                   <h3 className="text-[14px] font-bold text-white">Você como Líder</h3>
                 </div>
 
-                {/* Role selector */}
+                {/* Role selector with high tech look */}
                 <div className="flex gap-4 mb-6 relative z-10">
-                  <div className="flex-1 p-3 bg-[#d4b87a]/10 border border-[#d4b87a]/30 rounded-xl cursor-pointer text-center">
-                    <span className="text-[9px] font-mono font-bold text-[#d4b87a] block mb-1">Modo 1</span>
+                  <div className="flex-1 p-3 bg-blue-500/10 border border-blue-500/30 rounded-xl cursor-pointer text-center hover:bg-blue-500/15 transition">
+                    <span className="text-[9px] font-mono font-bold text-blue-400 block mb-1">Modo 1</span>
                     <span className="text-[12px] font-bold text-white block">Gestor</span>
                     <span className="text-[9px] text-white/50 block font-sans">Complexidade &amp; Processos</span>
                   </div>
-                  <div className="flex-1 p-3 bg-black/40 border border-white/10 hover:border-white/30 rounded-xl cursor-pointer text-center transition-colors">
+                  <div className="flex-1 p-3 bg-black/60 border border-white/5 hover:border-white/20 rounded-xl cursor-pointer text-center transition-colors">
                     <span className="text-[9px] font-mono font-bold text-white/40 block mb-1">Modo 2</span>
                     <span className="text-[12px] font-bold text-white block">Líder</span>
                     <span className="text-[9px] text-white/50 block font-sans">Mudança &amp; Propósito</span>
                   </div>
                 </div>
 
-                {/* Manifesto Checklist */}
+                {/* Manifesto Checklist with glowing active checkmarks */}
                 <div className="font-mono text-[9px] text-white/40 font-bold uppercase tracking-widest mt-5 mb-3 relative z-10">
                   Saúde Manifesto · 5 Princípios
                 </div>
@@ -1641,13 +1599,13 @@ export function SigPessoasPanel() {
                     <div 
                       key={p.code}
                       onClick={() => handleToggleManifesto(idx)}
-                      className={`flex justify-between items-center p-3 rounded-lg border cursor-pointer transition-colors ${manifestoChecks[idx] ? 'bg-[#5dcaa5]/5 border-[#5dcaa5]/20' : 'bg-white/[0.02] border-white/[0.04] hover:border-white/[0.1]'}`}
+                      className={`flex justify-between items-center p-3 rounded-xl border cursor-pointer transition-colors ${manifestoChecks[idx] ? 'bg-blue-500/5 border-blue-500/30' : 'bg-black/40 border-white/5 hover:border-white/10'}`}
                     >
                       <div className="flex items-center gap-3">
-                        <div className={`text-[9px] font-mono font-bold ${manifestoChecks[idx] ? 'text-[#5dcaa5]' : 'text-white/40'}`}>{p.code}</div>
-                        <div className={`text-[10px] font-sans leading-snug ${manifestoChecks[idx] ? 'text-white' : 'text-white/60'}`}>{p.text}</div>
+                        <div className={`text-[9px] font-mono font-bold ${manifestoChecks[idx] ? 'text-blue-400' : 'text-white/40'}`}>{p.code}</div>
+                        <div className={`text-[10px] font-sans leading-snug ${manifestoChecks[idx] ? 'text-white font-medium' : 'text-white/60'}`}>{p.text}</div>
                       </div>
-                      <div className={`text-[9px] font-mono font-bold whitespace-nowrap ${manifestoChecks[idx] ? 'text-[#5dcaa5]' : 'text-white/20'}`}>{manifestoChecks[idx] ? '✓ ATIVO' : '—'}</div>
+                      <div className={`text-[9px] font-mono font-bold whitespace-nowrap px-2 py-0.5 rounded ${manifestoChecks[idx] ? 'text-blue-400 bg-blue-500/10 font-extrabold' : 'text-white/20'}`}>{manifestoChecks[idx] ? '✓ ATIVO' : '—'}</div>
                     </div>
                   ))}
                 </div>
@@ -1657,54 +1615,56 @@ export function SigPessoasPanel() {
             {/* ROW 3: Primeiros Passos + Pulso Semanal */}
             <div className="home-row cols-2 mt-6">
               
-              {/* Primeiros Passos */}
-              <div className="dash-card bg-[#050505]/60 backdrop-blur-3xl border border-white/5 relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 blur-[80px] pointer-events-none mix-blend-screen" />
+              {/* Primeiros Passos - CYAN THEMED PREMIUM GLASS CARD */}
+              <div className="dash-card bg-gradient-to-b from-[#071318] via-[#050505] to-[#010101] border border-[#06b6d4]/30 relative overflow-hidden p-6 rounded-2xl text-left">
+                <div className="absolute top-0 right-0 w-64 h-64 bg-[#06b6d4]/5 blur-[85px] pointer-events-none mix-blend-screen" />
                 <div className="flex justify-between items-center mb-5 relative z-10">
                   <div>
-                    <span className="font-mono text-[9px] text-[#d4b87a] tracking-widest block font-bold uppercase mb-1">Onboarding · Sistema</span>
+                    <span className="font-mono text-[9px] text-[#06b6d4] tracking-widest block font-bold uppercase mb-1">Onboarding · Sistema</span>
                     <h3 className="text-[14px] font-bold text-white">Primeiros Passos</h3>
                   </div>
-                  <button onClick={handlePopularPassosExemplo} className="px-3 py-1.5 bg-black/40 hover:bg-[#d4b87a]/10 border border-white/10 hover:border-[#d4b87a]/30 rounded-lg text-[9px] text-white/70 hover:text-[#d4b87a] font-mono transition-colors">popular com exemplo</button>
+                  <button onClick={handlePopularPassosExemplo} className="px-3 py-1.5 bg-black/60 hover:bg-[#06b6d4]/15 border border-[#06b6d4]/40 rounded-xl text-[9px] text-[#06b6d4] font-mono transition-colors font-bold tracking-widest">EXEMPLO</button>
                 </div>
-                <div className="primeiros-list">
+                <div className="primeiros-list space-y-2">
                   {primeirosPassos.map((p, idx) => (
                     <div 
                       key={p.id}
                       onClick={() => handleTogglePassos(idx)}
-                      className="passo-item"
+                      className={`flex items-center gap-3 p-3 bg-black/40 border border-white/5 hover:border-[#06b6d4]/30 hover:bg-black/60 rounded-xl cursor-pointer transition ${passosChecks[idx] ? 'border-[#06b6d4]/40 bg-[#06b6d4]/5' : ''}`}
                     >
-                      <div className="p-num">{p.id}</div>
-                      <div className="p-body">
-                        <span className={`p-title ${passosChecks[idx] ? 'done' : ''}`}>{p.title}</span>
-                        <span className="p-desc">{p.desc}</span>
+                      <div className={`w-6 h-6 rounded-full flex items-center justify-center font-mono font-bold text-[10px] flex-shrink-0 transition-all ${passosChecks[idx] ? 'bg-gradient-to-r from-[#06b6d4] to-[#5dcaa5] text-black shadow-[0_0_8px_#06b6d4]' : 'bg-white/5 border border-white/10 text-white/50'}`}>
+                        {p.id}
                       </div>
-                      <div className="p-arrow">→</div>
+                      <div className="flex-1 text-left">
+                        <span className={`block text-[11px] font-bold text-white transition-all ${passosChecks[idx] ? 'line-through text-white/40' : ''}`}>{p.title}</span>
+                        <span className="block text-[9.5px] text-white/40 font-sans leading-tight mt-0.5">{p.desc}</span>
+                      </div>
+                      <div className={`text-[12px] font-bold transition-all ${passosChecks[idx] ? 'text-[#06b6d4] translate-x-0' : 'text-white/20 -translate-x-1'}`}>→</div>
                     </div>
                   ))}
                 </div>
               </div>
 
-              {/* Pulso Semanal */}
-              <div className="dash-card bg-[#050505]/60 backdrop-blur-3xl border border-[#d4b87a]/20 relative overflow-hidden">
-                <div className="absolute top-0 left-0 w-64 h-64 bg-[#d4b87a]/5 blur-[80px] pointer-events-none mix-blend-screen" />
+              {/* Pulso Semanal - GOLD/AMBER THEMED PREMIUM CARD */}
+              <div className="dash-card bg-gradient-to-b from-[#18140c] via-[#050505] to-[#010101] border border-[#d4b87a]/30 relative overflow-hidden p-6 rounded-2xl text-left">
+                <div className="absolute top-0 left-0 w-64 h-64 bg-[#d4b87a]/5 blur-[85px] pointer-events-none mix-blend-screen" />
                 <div className="flex justify-between items-center mb-5 relative z-10">
                   <div>
-                    <span className="font-mono text-[9px] text-[#d4b87a] tracking-widest block font-bold uppercase mb-1">📊 Pulso Semanal</span>
+                    <span className="font-mono text-[9px] text-[#d4b87a] tracking-widest block font-bold uppercase mb-1">📊 PULSO SEMANAL</span>
                     <h3 className="text-[14px] font-bold text-white">Como está sua energia?</h3>
                   </div>
-                  <span className="px-2 py-1 bg-[#d4b87a]/10 border border-[#d4b87a]/30 rounded text-[#d4b87a] font-mono text-[9px] font-bold tracking-widest">Semana 21</span>
+                  <span className="px-2.5 py-1 bg-[#d4b87a]/10 border border-[#d4b87a]/30 rounded text-[#d4b87a] font-mono text-[8px] font-bold tracking-widest uppercase">Semana 21</span>
                 </div>
 
                 <div className="relative z-10 space-y-5">
                   <div>
-                    <div className="text-[10px] text-white/60 font-sans mb-2 font-bold">Energia esta semana:</div>
+                    <div className="text-[10px] text-white/70 font-sans mb-2 font-medium">Energia esta semana:</div>
                     <div className="flex gap-2">
                       {[1, 2, 3, 4, 5].map(v => (
                         <button
                           key={v}
                           onClick={() => setPulseEnergy(v)}
-                          className={`flex-1 py-2 rounded-xl border text-[11px] font-bold transition-all ${pulseEnergy === v ? 'bg-[#d4b87a] border-[#d4b87a] text-black shadow-[0_0_15px_rgba(212,184,122,0.4)]' : 'bg-black/40 border-white/10 text-white/40 hover:border-white/30'}`}
+                          className={`flex-1 py-2.5 rounded-xl border text-[11px] font-mono font-bold transition-all duration-300 ${pulseEnergy === v ? 'bg-gradient-to-r from-[#d4b87a] to-[#efddb1] border-[#d4b87a] text-black shadow-[0_0_15px_rgba(212,184,122,0.45)]' : 'bg-black/60 border-white/5 text-white/40 hover:border-white/20'}`}
                         >
                           {v}
                         </button>
@@ -1713,13 +1673,13 @@ export function SigPessoasPanel() {
                   </div>
 
                   <div>
-                    <div className="text-[10px] text-white/60 font-sans mb-2 font-bold">E seu foco?</div>
+                    <div className="text-[10px] text-white/70 font-sans mb-2 font-medium">E seu foco?</div>
                     <div className="flex gap-2">
                       {[1, 2, 3, 4, 5].map(v => (
                         <button
                           key={v}
                           onClick={() => setPulseFocus(v)}
-                          className={`flex-1 py-2 rounded-xl border text-[11px] font-bold transition-all ${pulseFocus === v ? 'bg-[#5dcaa5] border-[#5dcaa5] text-black shadow-[0_0_15px_rgba(93,202,165,0.4)]' : 'bg-black/40 border-white/10 text-white/40 hover:border-white/30'}`}
+                          className={`flex-1 py-2.5 rounded-xl border text-[11px] font-mono font-bold transition-all duration-300 ${pulseFocus === v ? 'bg-gradient-to-r from-[#5dcaa5] to-[#a3e635] border-[#5dcaa5] text-black shadow-[0_0_15px_rgba(93,202,165,0.45)]' : 'bg-black/60 border-white/5 text-white/40 hover:border-white/20'}`}
                         >
                           {v}
                         </button>
@@ -1728,16 +1688,21 @@ export function SigPessoasPanel() {
                   </div>
 
                   <div>
-                    <div className="text-[10px] text-white/60 font-sans mb-2 font-bold">Qual o maior bloqueio agora? <span className="opacity-50 font-normal">(1 linha)</span></div>
+                    <div className="text-[10px] text-white/70 font-sans mb-2 font-medium">Qual o maior bloqueio agora? <span className="opacity-50 font-normal">(1 linha)</span></div>
                     <textarea 
                       value={pulseBlocker}
                       onChange={(e) => setPulseBlocker(e.target.value)}
                       placeholder="Descreva seu bloqueio principal desta semana..."
-                      className="w-full bg-black/40 border border-white/[0.08] rounded-xl px-4 py-3 text-[11px] text-white font-sans leading-relaxed outline-none focus:border-[#d4b87a]/40 focus:ring-1 focus:ring-[#d4b87a]/20 min-h-[60px] resize-none"
+                      className="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-3 text-[11px] text-white font-sans leading-relaxed outline-none focus:border-[#d4b87a]/40 focus:ring-1 focus:ring-[#d4b87a]/20 min-h-[60px] resize-none"
                     />
                   </div>
                   
-                  <button onClick={handleSavePulso} className="w-full py-3 bg-gradient-to-r from-[#d4b87a]/20 to-[#d4b87a]/5 hover:from-[#d4b87a]/30 hover:to-[#d4b87a]/10 border border-[#d4b87a]/40 rounded-xl text-[10px] font-bold text-[#d4b87a] font-mono tracking-widest transition-all shadow-[0_0_20px_rgba(212,184,122,0.1)]">
+                  <button onClick={handleSavePulso} className="w-full py-3.5 bg-gradient-to-r from-[#d4b87a]/25 to-[#d4b87a]/5 hover:from-[#d4b87a]/35 hover:to-[#d4b87a]/15 border border-[#d4b87a]/50 rounded-xl text-[10px] font-bold text-[#d4b87a] font-mono tracking-widest transition-all shadow-[0_0_20px_rgba(212,184,122,0.12)]">
+                    ✓ SALVAR PULSO DA SEMANA
+                  </button>
+                </div>
+              </div>
+            </div>/40 rounded-xl text-[10px] font-bold text-[#d4b87a] font-mono tracking-widest transition-all shadow-[0_0_20px_rgba(212,184,122,0.1)]">
                     ✓ SALVAR PULSO DA SEMANA
                   </button>
                 </div>
