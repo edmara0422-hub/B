@@ -523,7 +523,8 @@ const BUSINESS_SYLLABUS = [
   { id: 'M4-T1-S2', topicId: 'M4-T1', title: 'Pensamento Criativo', subtitle: 'IE · Neurociência e Ideação', duration: '18:45' },
   { id: 'M4-T1-S3', topicId: 'M4-T1', title: 'Sustentabilidade em Negócios', subtitle: 'IE · ESG e Valor Compartilhado', duration: '25:30' },
   { id: 'M4-T1-S4', topicId: 'M4-T1', title: 'Gestão de Negócios', subtitle: 'IE · Canvas e Estratégia Corporativa', duration: '35:40' },
-  { id: 'M4-T1-S5', topicId: 'M4-T1', title: 'Demonstrações Contábeis', subtitle: 'IE · Balanço, DRE e Fluxo de Caixa', duration: '31:20' }
+  { id: 'M4-T1-S5', topicId: 'M4-T1', title: 'Demonstrações Contábeis', subtitle: 'IE · Balanço, DRE e Fluxo de Caixa', duration: '31:20' },
+  { id: 'M4-T1-S6', topicId: 'M4-T1', title: 'Matemática Financeira', subtitle: 'IE · VPL, TIR e Juros Compostos', duration: '28:15' }
 ]
 
 function ExecutiveMasterclassTheater({ 

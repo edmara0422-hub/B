@@ -2841,6 +2841,109 @@ export const SUBJECTS_DB: SubjectContent[] = [
               }
           }
       ]
+  },
+  {
+      "id": "M4-T1-S6",
+      "code": "M4-T1-S6",
+      "title": "Matemática Financeira",
+      "description": "O valor do dinheiro no tempo, juros simples vs compostos, VPL, TIR e indicadores financeiros",
+      "icon": "TrendingUp",
+      "videoUrls": [],
+      "chapters": [
+          {
+              "title": "1: O que é Matemática Financeira",
+              "description": "O valor do dinheiro muda com o tempo — entenda isso antes de qualquer cálculo",
+              "subsections": [
+                  {
+                      "title": "O Princípio Básico",
+                      "content": "Matemática financeira parte da ideia de que R$ 100 hoje valem mais que R$ 100 daqui a um ano, porque hoje podem ser investidos. Trata da avaliação do valor do dinheiro no tempo, permitindo comparar fluxos de entradas e saídas em momentos diferentes, seja como Pessoa Física ou Pessoa Jurídica."
+                  },
+                  {
+                      "title": "Taxas Proporcionais vs Equivalentes",
+                      "content": "Taxas proporcionais (nominais): conversão linear multiplicando ou dividindo (ex: 2% a.m = 24% a.a). Funciona apenas em juros simples.\n\nTaxas equivalentes: conversão exponencial, pois os juros gerados incidem sobre juros. Padrão do mercado. (ex: Selic 10.5% a.a equivale a 0.837% a.m)."
+                  }
+              ],
+              "synthesis": {
+                  "title": "Síntese",
+                  "bullets": [
+                      "Matemática financeira é a ferramenta que compara valores em momentos diferentes.",
+                      "Taxa proporcional: multiplicação linear. Taxa equivalente: fórmula (1+i)^n."
+                  ],
+                  "insights": []
+              }
+          },
+          {
+              "title": "2: Juros Simples vs Juros Compostos",
+              "description": "A diferença que muda tudo — por que Einstein chamou os juros compostos de 8ª maravilha",
+              "subsections": [
+                  {
+                      "title": "Juros Simples",
+                      "content": "Crescimento linear (J = C × i × t). Os juros incidem apenas sobre o capital inicial. Em 30 anos, R$ 10k a 10% a.a = R$ 40k. Previsível e constante."
+                  },
+                  {
+                      "title": "Juros Compostos",
+                      "content": "Crescimento exponencial (M = C × (1 + i)^t). Os juros incidem sobre juros anteriores. Em 30 anos, os mesmos R$ 10k a 10% a.a viram R$ 174k.\n\nA regra dos 72: divida 72 pela taxa anual para saber em quantos anos o dinheiro dobra."
+                  }
+              ],
+              "synthesis": {
+                  "title": "Síntese",
+                  "bullets": [
+                      "A diferença no longo prazo é entre riqueza e estagnação.",
+                      "Regra dos 72: 72 ÷ taxa = anos para dobrar.",
+                      "Juros compostos são padrão de mercado. Quem não entende, paga caro."
+                  ],
+                  "insights": []
+              }
+          },
+          {
+              "title": "3: Valor do Dinheiro no Tempo",
+              "description": "VP, VF, VPL e TIR — as ferramentas de decisão de investimento",
+              "subsections": [
+                  {
+                      "title": "VP e VF",
+                      "content": "Valor Presente (VP): Quanto vale HOJE um valor futuro descontado pela taxa.\nValor Futuro (VF): Quanto vale NO FUTURO um valor de hoje acrescido de juros."
+                  },
+                  {
+                      "title": "VPL e TIR",
+                      "content": "VPL (Valor Presente Líquido): Soma de todos os fluxos futuros trazidos a valor presente menos o investimento. VPL > 0 = gera valor.\nTIR (Taxa Interna de Retorno): A taxa que faz o VPL = 0. Se TIR > custo de capital (WACC), o investimento gera valor."
+                  },
+                  {
+                      "title": "Payback e VPL na Prática",
+                      "content": "Payback é o tempo de retorno, mas ignora o que ocorre após o período de retorno. VPL é a ferramenta mais confiável quando a TIR e o VPL divergem para projetos excludentes."
+                  }
+              ],
+              "synthesis": {
+                  "title": "Síntese",
+                  "bullets": [
+                      "VPL > 0 = investimento gera valor acima do custo de capital. Regra de ouro.",
+                      "TIR > WACC = retorno supera o custo do dinheiro."
+                  ],
+                  "insights": []
+              }
+          },
+          {
+              "title": "4: Indicadores Financeiros",
+              "description": "ROI, Liquidez e Endividamento — os 3 números que todo gestor precisa saber",
+              "subsections": [
+                  {
+                      "title": "Os 3 Pilares",
+                      "content": "ROI (Retorno sobre Investimento): (Ganho - Custo) / Custo × 100. Mede o retorno percentual.\nLiquidez Corrente: Ativo Circulante / Passivo Circulante. Mede se paga obrigações de curto prazo (> 1 é saudável).\nEndividamento: Passivo Total / Ativo Total × 100. Quanto do ativo é financiado por terceiros (> 70% é risco)."
+                  },
+                  {
+                      "title": "Outros Essenciais",
+                      "content": "EBITDA: Geração de caixa operacional puro. Giro do Ativo: Quantas vezes o ativo gera receita por ano. Ciclo Financeiro: Dias que a empresa se financia."
+                  }
+              ],
+              "synthesis": {
+                  "title": "Síntese",
+                  "bullets": [
+                      "ROI mede retorno, liquidez mede capacidade de pagar, endividamento mede dependência de terceiros.",
+                      "Dívida que gera retorno acima dos juros é alavancagem; abaixo, é armadilha."
+                  ],
+                  "insights": []
+              }
+          }
+      ]
   }
   , SIG_PESSOAS
 ];
