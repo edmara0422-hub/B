@@ -2215,45 +2215,38 @@ export const SUBJECTS_DB: SubjectContent[] = [
               }
           },
           {
-              "title": "8: Inteligência Organizacional e Projeto de BI",
-              "description": "Da administração estratégica aos Sistemas de Informação, Prototipagem e MVP",
+              "title": "8: Inteligência Organizacional e Business Intelligence",
+              "description": "OBI (Organizational Business Intelligence), metodologia Kimball e as 4 camadas de integração de dados.",
               "subsections": [
                   {
-                      "title": "Etapas da Administração Estratégica",
-                      "content": "São cinco as etapas com relação ao sistema de administração estratégica: analisar o ambiente (interno e externo - SWOT), estabelecer a diretriz organizacional (missão, visão e objetivos), formular estratégias, implementar estratégias e elaborar o controle estratégico (monitorar com sistemas de informações).\n\nO pensamento estratégico é a arte de criar estratégias com efetividade. Pensar estrategicamente e agir operacionalmente significam dominar o presente e conquistar o futuro.",
-                      "quote": "As organizações são inteligentes quando aplicam a inovação de maneira participativa e integrada.",
-                      "deepDive": "Inteligência organizacional é o somatório de inovação, criatividade, qualidade, produtividade, efetividade e gestão do conhecimento."
+                      "title": "O que é Inteligência Organizacional (OBI)",
+                      "content": "Business Intelligence não é um software isolado — é uma capacidade organizacional. O OBI (Organizational Business Intelligence) integra dados de toda a empresa para transformar cada decisão gerencial em ação baseada em evidência. Um projeto de BI transforma essa intenção em realidade operacional mensurável.\n\nO conceito de Inteligência Organizacional (OBI) vai além dos relatórios operacionais tradicionais. Enquanto o BI clássico foca em dados transacionais — vendas, estoque, financeiro — o OBI integra dimensões humanas e processuais: desempenho de equipes, eficiência de fluxos, padrões de colaboração e saúde organizacional. O resultado é uma visão 360° que conecta operação, pessoas e estratégia em um único ambiente analítico.\n\nWilliam Inmon (1990), considerado o \"pai do Data Warehouse\", definiu que a inteligência organizacional começa pela separação entre sistemas transacionais (OLTP — registro de eventos) e sistemas analíticos (OLAP — análise de padrões). Misturar os dois é o erro mais comum — e mais caro — em projetos de BI: relatórios lentos, decisões atrasadas e dados inconsistentes."
                   },
                   {
-                      "title": "Dado, Informação e Conhecimento",
-                      "content": "Dado é um conjunto de números ou letras que isoladamente não transmite conhecimento. Informação é o dado trabalhado ou tratado, com valor agregado e sentido lógico para quem usa (ex: saldo bancário).\n\nQuando a informação é trabalhada por pessoas e recursos para gerar cenários e simulações, chama-se conhecimento (ex: percepção de práticas a utilizar baseado no cenário atual).",
-                      "quote": "Sistemas de Informação se dividem em Operacional (SIO), Gerencial (SIG) e Estratégico (SIE)."
+                      "title": "As 4 Camadas do OBI",
+                      "content": "🗄️ Camada de Dados\nColeta e armazenamento de dados brutos — transacionais, operacionais e comportamentais. ERP, CRM, IoT, planilhas. A qualidade aqui determina tudo o que vem depois. 70% do tempo do projeto é ETL.\n\n🔄 Camada de Integração\nETL (Extract, Transform, Load) padroniza e consolida dados de fontes heterogêneas. Qualidade de dados determina qualidade das decisões. Garbage in = garbage out. 80% dos projetos falham nessa etapa.\n\n🧠 Camada Analítica\nOLAP, modelos preditivos e algoritmos de IA transformam dados em padrões acionáveis. Aqui nascem os insights — análise dimensional, drill-down, slice and dice. 10x mais rápido que SQL direto.\n\n📊 Camada de Apresentação\nDashboards, relatórios e alertas entregam informação no momento certo, para a pessoa certa, no formato certo. KPI = pergunta + métrica + meta + frequência. 1 insight por tela — regra de ouro."
                   },
                   {
-                      "title": "Prototipagem e MVP",
-                      "content": "Protótipo é o modelo preliminar do projeto, utilizado para prova de conceito ou MVP (Minimum Viable Product). Sem a etapa de geração de ideias não é possível criar protótipos e avaliar com o cliente se o projeto está no caminho certo.\n\nA execução da etapa de protótipo reduz a incerteza na aparência, usabilidade e desempenho, evitando prejuízos altos caso o produto vá direto para a produção sem ser validado pelo usuário.",
-                      "quote": "O MVP permite que empreendedores validem ideias antes de desenvolver o produto definitivo.",
-                      "studyCase": {
-                          "title": "Road Map e Customer Development",
-                          "body": "O road map é a bússola gerencial que alinha todos os stakeholders sobre a evolução do produto. As etapas de Customer Development incluem: 1. Descoberta do Cliente; 2. Validação do Cliente; 3. Construção da Empresa; 4. Execução do Negócio."
-                      }
+                      "title": "Projeto de Software de BI — Ciclo de Vida",
+                      "content": "Um projeto de BI bem executado começa pelo negócio, não pela tecnologia. O maior erro é começar pelo software — antes de entender o que precisa ser decidido. Ralph Kimball (1996) definiu o padrão ouro: dimensional modeling primeiro, ferramenta depois. Seu livro \"The Data Warehouse Toolkit\" é a referência mais citada da área até hoje e ainda guia projetos modernos em cloud.\n\n▶ PROFESSOR IA✦ CONTEXTUAL\nCICLO DE VIDA DO PROJETO DE BI (METODOLOGIA KIMBALL)\n\n1. Levantamento de Requisitos\nEntender quais decisões precisam ser suportadas. Entrevistar stakeholders, mapear fontes de dados, definir KPIs prioritários. Sem essa fase, projetos entregam dados sem impacto. Magazine Luiza: levantamento revelou que gerentes de loja precisavam de sell-through por SKU — não de receita total.\n\n2. Modelagem Dimensional\nDefinir fatos (o que medir) e dimensões (como analisar). Star Schema ou Snowflake Schema. A granularidade define o nível de detalhe e o desempenho das consultas. Kimball (1996): \"Escolha a granularidade mais baixa possível — você pode sempre agregar, nunca desagregar.\"\n\n3. ETL — Extração, Transformação e Carga\nConectar fontes, limpar e padronizar dados, carregar no Data Warehouse. 70% do tempo de projetos de BI é gasto aqui — e é onde a maioria dos problemas se esconde. Renner: dados de estoque vinham de 3 sistemas com nomenclaturas diferentes. Harmonização levou 4 meses.\n\n4. Desenvolvimento de Visualizações\nConstruir dashboards, relatórios e alertas. Regra: 1 insight por tela. Complexidade visual mata a adoção. Stephen Few (2006): bons dashboards comunicam, não impressionam. Ambev: reduziu painel de 40 métricas para 7 KPIs — adoção subiu de 30% para 85% em 90 dias.\n\n5. Deploy e Governança\nPublicar, criar política de acesso (RBAC), treinar usuários, definir ciclo de atualização. BI sem governança vira caos de versões — cada área com \"a sua verdade\". DAMA-DMBOK (2017): Data Governance = pessoas + processos + tecnologia. Tecnologia é a menor parte."
                   },
                   {
-                      "title": "Tipos de Testes",
-                      "content": "Teste de Funcionalidade verifica o desempenho do protótipo nas mãos do usuário. Teste de Usabilidade avalia se o protótipo é fácil de usar sem necessidade de manuais extensos (UX Design).\n\nTeste A/B é uma análise comparativa que visa testar diferentes versões do produto simultaneamente para ver qual performa melhor com o público.",
-                      "deepDive": "Os custos na fase de testes são muito menores se comparados com o prejuízo de lançar um produto defeituoso no mercado final."
+                      "title": "Prototipagem em BI e Ferramentas no Mercado",
+                      "content": "PROTOTIPAGEM EM BI\nPrototipar antes de construir é a prática que mais reduz retrabalho em projetos de BI. O custo de mudar um wireframe é zero. O custo de mudar um modelo dimensional em produção pode ser meses de trabalho. Protótipos definem expectativas reais entre analistas e stakeholders antes de qualquer linha de código ou query SQL — e evitam o cenário clássico: \"não era isso que eu queria.\"\n\n3 FASES DA PROTOTIPAGEM EM BI\n✏️ Wireframe (Baixa Fidelidade): Esboço visual das telas e layouts. Sem dados reais — apenas estrutura. Ferramentas: papel, Balsamiq, Figma sketch. Valida: o que aparece onde e qual hierarquia de informação.\n🎨 Mockup (Média Fidelidade): Design visual com dados fictícios. Simula a aparência final — cores, tipografia, ícones. Ferramentas: Figma, Adobe XD. Valida: linguagem visual e consistência antes de codar.\n⚡ Protótipo Funcional (Alta Fidelidade): Dashboard real com amostra de dados reais. Ferramentas: Power BI, Tableau, Metabase. Valida: usabilidade e valor do insight antes do deploy completo — expõe problemas de dados cedo.\n\nFERRAMENTAS DE BI NO MERCADO\nA escolha da ferramenta de BI deve seguir o contexto, não a moda. Três variáveis determinam a escolha certa: maturidade da equipe, volume de dados e integração com sistemas existentes. Gartner (2024): Power BI e Tableau lideram o Quadrante Mágico de Analytics por 9 anos consecutivos.\n\n🟡 Power BI (Microsoft): Integração nativa com Excel, Azure e Teams. Curva de aprendizado mais baixa. Licenciamento por usuário. Ideal: empresas já no ecossistema Microsoft.\n🔵 Tableau (Salesforce): Referência em visualização avançada e análise exploratória. Maior curva de aprendizado. Ideal: analistas avançados que precisam de flexibilidade visual sem limite.\n🟢 Metabase (Open-source): Gratuito, deploy rápido, acessível para não-técnicos. Ideal: startups e equipes com orçamento limitado.\n🟠 Qlik Sense: Motor de associação único. Descoberta de dados mais intuitiva."
                   }
               ],
               "synthesis": {
-                  "title": "Síntese",
+                  "title": "Síntese Estratégica",
                   "bullets": [
-                      "A estratégia precisa de monitoramento contínuo através de Sistemas de Informação.",
-                      "O Protótipo e o MVP servem para errar rápido e consertar rápido com baixo custo.",
-                      "O Road Map mantém a visão do projeto clara para todos os stakeholders envolvidos."
+                      "OBI transforma a empresa em uma organização que aprende com seus próprios dados.",
+                      "As 4 camadas (Dados, Integração, Analítica, Apresentação) formam o pipeline completo.",
+                      "O ciclo Kimball inclui: requisitos, modelagem, ETL, visualização e governança.",
+                      "Prototipar antes de construir é a decisão mais inteligente para reduzir retrabalho."
                   ],
                   "insights": [
-                      "Pensamento Estratégico",
-                      "Mínimo Produto Viável"
+                      "Inmon vs Kimball: Kimball (dimensional) é mais adotado para BI ágil. Inmon (normalizado) para ambientes enterprise de longo prazo.",
+                      "Regra de ouro do dashboard: 1 insight por tela. Múltiplas métricas competindo geram indecisão.",
+                      "Star Schema vence na maioria dos casos operacionais por ser mais rápido e simples que Snowflake."
                   ]
               }
           }
