@@ -27,6 +27,11 @@ type TeamMember = {
   id: string
   name: string
   role: string
+  d1: number
+  d2: number
+  d3: number
+  d4: number
+  d5: number
   d6: number
   hhh: { smart: number; humble: number; hungry: number }
   influence: number // x position in -150 to 150
@@ -139,30 +144,48 @@ export function SigPessoasPanel() {
   }
 
   // --- STATE FOR CANDIDATES ---
-  const defaultCandidates: Candidate[] = [
-    { id: 'cand-a', name: 'Ana Beatriz', role: 'Head de Growth', score: 'HHS A / Lencioni 9.2', stage: 'triagem', lencioniScore: 92, stats: { hum: 85, fom: 92, int: 93 } },
-    { id: 'cand-b', name: 'Bruno Melo', role: 'Tech Lead', score: 'HHS A- / Lencioni 8.8', stage: 'entrevista', lencioniScore: 88, stats: { hum: 90, fom: 80, int: 76 } },
-    { id: 'cand-be', name: 'Beatriz Esteves', role: 'Líder de Design', score: 'HHS B+ / Lencioni 7.6', stage: 'decisao', lencioniScore: 76, stats: { hum: 82, fom: 89, int: 93 } }
-  ]
-  const [candidates, setCandidates] = useState<Candidate[]>(defaultCandidates)
+  const defaultCandidates: Candidate[] = []
+  const [candidates, setCandidates] = useState<Candidate[]>([])
 
   // --- STATE FOR TEAM MEMBERS ---
-  const [teamMembers, setTeamMembers] = useState<TeamMember[]>([
-    { id: 'm-1', name: 'Rodrigo Silva', role: 'Coord. Reabilitação', d6: 82, hhh: { smart: 85, humble: 80, hungry: 88 }, influence: 80, impact: 60, maturity: 'M3', status: 'Excelente', successionScore: 84, wishes: 'Evoluir para Head Estratégico' },
-    { id: 'm-2', name: 'Juliana Mendes', role: 'Fisioterapeuta Intensiva', d6: 74, hhh: { smart: 78, humble: 92, hungry: 70 }, influence: -60, impact: 40, maturity: 'M2', status: 'Alinhado', successionScore: 78, wishes: 'Especialização em Neuro' },
-    { id: 'm-3', name: 'Lucas Alencar', role: 'Supervisor de Enfermagem', d6: 45, hhh: { smart: 62, humble: 55, hungry: 50 }, influence: -40, impact: -60, maturity: 'M1', status: 'Atenção', successionScore: 48, wishes: 'Calibração de Processos' }
-  ])
+  const [teamMembers, setTeamMembers] = useState<TeamMember[]>([])
 
   // --- STATE FOR RADAR DIMENSIONS ---
   const [selectedDims, setSelectedDims] = useState<string[]>(['D1', 'D2', 'D3', 'D4', 'D5', 'D6'])
+  
+  // Dynamic 6D calculations based on teamMembers
+  const avgD1 = teamMembers.length ? Math.round(teamMembers.reduce((acc, m) => acc + (m.d1 || 0), 0) / teamMembers.length) : 0;
+  const avgD2 = teamMembers.length ? Math.round(teamMembers.reduce((acc, m) => acc + (m.d2 || 0), 0) / teamMembers.length) : 0;
+  const avgD3 = teamMembers.length ? Math.round(teamMembers.reduce((acc, m) => acc + (m.d3 || 0), 0) / teamMembers.length) : 0;
+  const avgD4 = teamMembers.length ? Math.round(teamMembers.reduce((acc, m) => acc + (m.d4 || 0), 0) / teamMembers.length) : 0;
+  const avgD5 = teamMembers.length ? Math.round(teamMembers.reduce((acc, m) => acc + (m.d5 || 0), 0) / teamMembers.length) : 0;
+  const avgD6 = teamMembers.length ? Math.round(teamMembers.reduce((acc, m) => acc + (m.d6 || 0), 0) / teamMembers.length) : 0;
+
+  const getDimColor = (val: number) => val >= 80 ? '#5dcaa5' : val >= 65 ? '#fac775' : '#e24b4a';
+
   const dimensionsInfo = [
-    { code: 'D1', label: 'Cultura', val: '82', color: '#5dcaa5' },
-    { code: 'D2', label: 'Liderança', val: '76', color: '#fac775' },
-    { code: 'D3', label: 'Confiança', val: '71', color: '#e24b4a' },
-    { code: 'D4', label: 'Entrega', val: '88', color: '#5dcaa5' },
-    { code: 'D5', label: 'Clareza', val: '64', color: '#fac775' },
-    { code: 'D6', label: 'Engajamento', val: '74', color: '#5dcaa5' }
-  ]
+    { code: 'D1', label: 'Cultura', val: avgD1, color: getDimColor(avgD1) },
+    { code: 'D2', label: 'Liderança', val: avgD2, color: getDimColor(avgD2) },
+    { code: 'D3', label: 'Confiança', val: avgD3, color: getDimColor(avgD3) },
+    { code: 'D4', label: 'Entrega', val: avgD4, color: getDimColor(avgD4) },
+    { code: 'D5', label: 'Clareza', val: avgD5, color: getDimColor(avgD5) },
+    { code: 'D6', label: 'Engajamento', val: avgD6, color: getDimColor(avgD6) }
+  ];
+
+  const getPoint = (val: number, angleDeg: number) => {
+    const r = (val / 100) * 140;
+    const angleRad = (angleDeg - 90) * (Math.PI / 180);
+    return { x: r * Math.cos(angleRad), y: r * Math.sin(angleRad) };
+  };
+
+  const p1 = getPoint(selectedDims.includes('D1') ? avgD1 : 0, 0);
+  const p2 = getPoint(selectedDims.includes('D2') ? avgD2 : 0, 60);
+  const p3 = getPoint(selectedDims.includes('D3') ? avgD3 : 0, 120);
+  const p4 = getPoint(selectedDims.includes('D4') ? avgD4 : 0, 180);
+  const p5 = getPoint(selectedDims.includes('D5') ? avgD5 : 0, 240);
+  const p6 = getPoint(selectedDims.includes('D6') ? avgD6 : 0, 300);
+
+  // --- STATE FOR MAP TEAM INTERACTION ---
 
   // --- STATE FOR MAP TEAM INTERACTION ---
   const [selectedQuadrant, setSelectedQuadrant] = useState<string | null>(null)
@@ -203,10 +226,7 @@ export function SigPessoasPanel() {
 
   // --- STATE FOR DIARY IE ---
   const [diaryInput, setDiaryInput] = useState('')
-  const [diaryLogs, setDiaryLogs] = useState<DiaryLog[]>([
-    { time: '14:32', text: 'Conduzi feedback SBI com o supervisor. Alinhamos a expectativa sobre a calibração de alarmes da UTI.' },
-    { time: '09:15', text: 'Senti irritação na passagem de plantão por falta de dados objetivos. Pratiquei respiração quadrada e redirecionei focando em fatos.' }
-  ])
+  const [diaryLogs, setDiaryLogs] = useState<DiaryLog[]>([])
 
   // --- STATE FOR MICROAULAS ---
   const [microaulasProgress, setMicroaulasProgress] = useState<boolean[]>([false, false, false, false, false])
@@ -223,15 +243,10 @@ export function SigPessoasPanel() {
   const [sbiSit, setSbiSit] = useState('')
   const [sbiComp, setSbiComp] = useState('')
   const [sbiImp, setSbiImp] = useState('')
-  const [sbiLogs, setSbiLogs] = useState<SbiLog[]>([
-    { situation: 'Na reunião de OKRs de terça às 14h', behavior: 'Você me interrompeu 3 vezes com palpites não-fundamentados', impact: 'Isso gerou ruído na equipe e alongou a definição da meta em 25 minutos.', date: '22/05/2026' }
-  ])
+  const [sbiLogs, setSbiLogs] = useState<SbiLog[]>([])
 
   // --- STATE FOR DELEGATED TASKS ---
-  const [delegatedTasks, setDelegatedTasks] = useState<DelegatedTask[]>([
-    { id: 'task-1', title: 'Mapeamento de desmame ventilatório no leito', assignee: 'Juliana Mendes', maturity: 'M2', status: 'calibrado' },
-    { id: 'task-2', title: 'Calibração do sensor de fluxo bioneural', assignee: 'Rodrigo Silva', maturity: 'M3', status: 'concluido' }
-  ])
+  const [delegatedTasks, setDelegatedTasks] = useState<DelegatedTask[]>([])
   const [newTaskTitle, setNewTaskTitle] = useState('')
   const [newTaskAssignee, setNewTaskAssignee] = useState('Juliana Mendes')
   const [newTaskMaturity, setNewTaskMaturity] = useState('M3')
@@ -258,10 +273,7 @@ export function SigPessoasPanel() {
   const [mediationAnalyzing, setMediationAnalyzing] = useState(false)
 
   // --- STATE FOR OKRS ---
-  const [okrs, setOkrs] = useState<OkrItem[]>([
-    { id: 'okr-1', title: 'Reduzir latência de calibração bioneural para < 4min', keyResults: 'KR1: Zero incidentes críticos, KR2: Calibração em 100% dos leitos', progress: 68 },
-    { id: 'okr-2', title: 'Atingir eNPS Geral do Time > +70', keyResults: 'KR1: 100% de rituais 1:1 executados, KR2: Plano de PDI ativo', progress: 40 }
-  ])
+  const [okrs, setOkrs] = useState<OkrItem[]>([])
   const [newOkrTitle, setNewOkrTitle] = useState('')
   const [newOkrKr, setNewOkrKr] = useState('')
 
@@ -433,7 +445,7 @@ export function SigPessoasPanel() {
         id: `m-${Date.now()}`,
         name: c.name,
         role: c.role,
-        d6: c.lencioniScore,
+        d1: c.lencioniScore, d2: c.lencioniScore, d3: c.lencioniScore, d4: c.lencioniScore, d5: c.lencioniScore, d6: c.lencioniScore,
         hhh: { smart: c.stats.int, humble: c.stats.hum, hungry: c.stats.fom },
         influence: Math.floor(Math.random() * 200) - 100,
         impact: Math.floor(Math.random() * 140) - 70,
@@ -512,7 +524,7 @@ export function SigPessoasPanel() {
       id: `m-${Date.now()}`,
       name,
       role,
-      d6: 75,
+      d1: 75, d2: 75, d3: 75, d4: 75, d5: 75, d6: 75,
       hhh: { smart: 80, humble: 70, hungry: 75 },
       influence: x,
       impact: y,
@@ -1565,12 +1577,12 @@ export function SigPessoasPanel() {
                         {/* Interactive dynamic radar polygon based on selection */}
                         <polygon 
                           points={`
-                            0,${selectedDims.includes('D1') ? -115 : 0} 
-                            ${selectedDims.includes('D2') ? 95.3 : 0},${selectedDims.includes('D2') ? -55 : 0} 
-                            ${selectedDims.includes('D3') ? 90.9 : 0},${selectedDims.includes('D3') ? 52.5 : 0} 
-                            0,${selectedDims.includes('D4') ? 98 : 0} 
-                            ${selectedDims.includes('D5') ? -73.6 : 0},${selectedDims.includes('D5') ? 42.5 : 0} 
-                            ${selectedDims.includes('D6') ? -86.6 : 0},${selectedDims.includes('D6') ? -50 : 0}
+                            ${p1.x},${p1.y} 
+                            ${p2.x},${p2.y} 
+                            ${p3.x},${p3.y} 
+                            ${p4.x},${p4.y} 
+                            ${p5.x},${p5.y} 
+                            ${p6.x},${p6.y}
                           `} 
                           fill="url(#crystalFillH)" 
                           stroke="#d4b87a" 
@@ -1580,12 +1592,12 @@ export function SigPessoasPanel() {
                         />
 
                         {/* Vertex Dots */}
-                        {selectedDims.includes('D1') && <circle cx="0" cy="-115" r="4.5" fill="#151310" stroke="#d4b87a" strokeWidth="2" className="drop-shadow-[0_0_8px_rgba(212,184,122,0.8)]"/>}
-                        {selectedDims.includes('D2') && <circle cx="95.3" cy="-55" r="4.5" fill="#151310" stroke="#d4b87a" strokeWidth="2" className="drop-shadow-[0_0_8px_rgba(212,184,122,0.8)]"/>}
-                        {selectedDims.includes('D3') && <circle cx="90.9" cy="52.5" r="4.5" fill="#151310" stroke="#d4b87a" strokeWidth="2" className="drop-shadow-[0_0_8px_rgba(212,184,122,0.8)]"/>}
-                        {selectedDims.includes('D4') && <circle cx="0" cy="98" r="4.5" fill="#151310" stroke="#d4b87a" strokeWidth="2" className="drop-shadow-[0_0_8px_rgba(212,184,122,0.8)]"/>}
-                        {selectedDims.includes('D5') && <circle cx="-73.6" cy="42.5" r="4.5" fill="#151310" stroke="#d4b87a" strokeWidth="2" className="drop-shadow-[0_0_8px_rgba(212,184,122,0.8)]"/>}
-                        {selectedDims.includes('D6') && <circle cx="-86.6" cy="-50" r="4.5" fill="#151310" stroke="#d4b87a" strokeWidth="2" className="drop-shadow-[0_0_8px_rgba(212,184,122,0.8)]"/>}
+                        {selectedDims.includes('D1') && <circle cx={p1.x} cy={p1.y} r="4.5" fill="#151310" stroke="#d4b87a" strokeWidth="2" className="drop-shadow-[0_0_8px_rgba(212,184,122,0.8)]"/>}
+                        {selectedDims.includes('D2') && <circle cx={p2.x} cy={p2.y} r="4.5" fill="#151310" stroke="#d4b87a" strokeWidth="2" className="drop-shadow-[0_0_8px_rgba(212,184,122,0.8)]"/>}
+                        {selectedDims.includes('D3') && <circle cx={p3.x} cy={p3.y} r="4.5" fill="#151310" stroke="#d4b87a" strokeWidth="2" className="drop-shadow-[0_0_8px_rgba(212,184,122,0.8)]"/>}
+                        {selectedDims.includes('D4') && <circle cx={p4.x} cy={p4.y} r="4.5" fill="#151310" stroke="#d4b87a" strokeWidth="2" className="drop-shadow-[0_0_8px_rgba(212,184,122,0.8)]"/>}
+                        {selectedDims.includes('D5') && <circle cx={p5.x} cy={p5.y} r="4.5" fill="#151310" stroke="#d4b87a" strokeWidth="2" className="drop-shadow-[0_0_8px_rgba(212,184,122,0.8)]"/>}
+                        {selectedDims.includes('D6') && <circle cx={p6.x} cy={p6.y} r="4.5" fill="#151310" stroke="#d4b87a" strokeWidth="2" className="drop-shadow-[0_0_8px_rgba(212,184,122,0.8)]"/>}
 
                         {/* Axis Labels */}
                         <g fontStyle="Poppins" fontSize="11" fontWeight="700" fill="#d4b87a" className="tracking-widest drop-shadow-[0_0_4px_rgba(0,0,0,0.8)]">
