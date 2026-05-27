@@ -2493,7 +2493,7 @@ export function SigPessoasPanel() {
                   </div>
 
                   {/* Grid 1: Diário IE & Alpha Linter + Microaulas */}
-                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                  <div className="flex flex-col gap-6">
                     {/* Left: Diary & CNV */}
                     <div className="lg:col-span-7 space-y-5">
                       {/* Diary Form */}
@@ -2660,7 +2660,7 @@ export function SigPessoasPanel() {
                   </div>
 
                   {/* Grid 2: Lentes de Missão & Manifesto */}
-                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
+                  <div className="flex flex-col gap-6">
                     {/* Lentes de Missão */}
                     <div className="lg:col-span-7 dash-card">
                       <h4 style={{ fontSize: '12px', marginTop: 0, marginBottom: '4px', fontWeight: 'bold', color: '#fff' }}>Lentes de Missão — Estudos Críticos OBI</h4>
@@ -2747,7 +2747,7 @@ export function SigPessoasPanel() {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                  <div className="flex flex-col gap-6">
                     {/* Coach SBI */}
                     <div className="lg:col-span-7 dash-card text-left space-y-4 bg-[#050505]/60 backdrop-blur-3xl border border-white/5 relative overflow-hidden">
                       <div className="absolute top-0 left-0 w-64 h-64 bg-blue-500/5 blur-[80px] pointer-events-none mix-blend-screen" />
@@ -2895,7 +2895,7 @@ export function SigPessoasPanel() {
                   </div>
 
                   {/* Calculator Split */}
-                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                  <div className="flex flex-col gap-6">
                     {/* Calculator Form */}
                     <div className="lg:col-span-7 dash-card space-y-5 bg-[#050505]/60 backdrop-blur-3xl border border-[#d4b87a]/10">
                       <div>
@@ -3090,7 +3090,7 @@ export function SigPessoasPanel() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  className="grid grid-cols-1 lg:grid-cols-12 gap-4 text-left w-full"
+                  className="flex flex-col gap-6 text-left w-full"
                   style={{ width: '100%' }}
                 >
                   {/* Tuckman Stages */}
@@ -3200,7 +3200,7 @@ export function SigPessoasPanel() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  className="grid grid-cols-1 lg:grid-cols-12 gap-4 text-left w-full"
+                  className="flex flex-col gap-6 text-left w-full"
                   style={{ width: '100%' }}
                 >
                   
@@ -3325,7 +3325,7 @@ export function SigPessoasPanel() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  className="grid grid-cols-1 lg:grid-cols-12 gap-4 text-left w-full"
+                  className="flex flex-col gap-6 text-left w-full"
                   style={{ width: '100%' }}
                 >
                   
