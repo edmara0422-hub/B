@@ -89,11 +89,12 @@ const SYLLABUS_TO_DB_MAP: Record<string, string> = {
   'M4-T1-S7': 'M4-T1-S7', // Economia de Empresa e Análise Mercadológica
   'M4-T1-S8': 'M4-T1-S8', // Liderança e Gestão de Equipes
   'M4-T1-S9': 'M4-T1-S9', // Filosofia Aplicada aos Negócios
-  'M4-T1-S10': 'M4-S2', // Cálculo Aplicado a Negócios
-  'M4-T1-S11': 'M4-S3', // Análise Estatística
-  'M4-T1-S12': 'M5-S1', // Leitura e Escrita Acadêmica
-  'M4-T1-S13': 'M5-S2', // Empreendedorismo e Inovação
-  'M4-T1-S14': 'M5-S3', // Ambiente Macroeconômico
+  'M4-T1-S10': 'M4-T1-S10', // Cálculo Aplicado a Negócios
+  'M4-T1-S11': 'M4-T1-S11', // Análise Estatística
+  'M4-T1-S12': 'M4-T1-S12', // Leitura e Escrita Acadêmica
+  'M4-T1-S13': 'M4-T1-S13', // Empreendedorismo e Inovação
+  'M4-T1-S14': 'M4-T1-S14', // Ambiente Macroeconômico
+  'M4-T1-S15': 'M4-T1-S15', // Novo Módulo 15
   
   // Pilar 2: Finanças e Inteligência Quantitativa
   'M4-T2-S1': 'M6-S1', // Análise Financeira (M6-S1 no BD)
