@@ -723,6 +723,11 @@ export function SigPessoasPanel() {
     triggerToast('OKR estratégico cadastrado com sucesso.')
   }
 
+  function handleDeleteOkr(id: string) {
+    setOkrs(okrs.filter(okr => okr.id !== id))
+    triggerToast('OKR estratégico removido com sucesso.', 'ok')
+  }
+
   // Climate ROI calculations
   // Hidden Cost = climateSalary * (climateLatency/100 + climateRework/100) * teamSize + turnoverCost
   const climateHiddenCost = Math.round(
@@ -1433,6 +1438,30 @@ export function SigPessoasPanel() {
         }
         .calc-input-group input:focus, .calc-input-group select:focus {
           border-color: rgba(212, 184, 122, 0.4) !important;
+        }
+        .premium-glass-card {
+          background: rgba(10, 10, 12, 0.45) !important;
+          border: 0.2px solid rgba(255, 255, 255, 0.08) !important;
+          border-radius: 16px;
+          padding: 16px;
+          backdrop-filter: blur(28px) saturate(180%) !important;
+          -webkit-backdrop-filter: blur(28px) saturate(180%) !important;
+          box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 10px 30px rgba(0, 0, 0, 0.5) !important;
+          transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+          position: relative;
+          overflow: hidden;
+        }
+        .premium-glass-card::before {
+          content: '';
+          position: absolute; top: 0; left: 0; right: 0; height: 1px;
+          background: linear-gradient(90deg, transparent 0%, rgba(212, 184, 122, 0.15) 20%, rgba(255, 255, 255, 0.25) 50%, rgba(212, 184, 122, 0.15) 80%, transparent 100%);
+          pointer-events: none;
+        }
+        .premium-glass-card:hover {
+          border-color: rgba(212, 184, 122, 0.35) !important;
+          background: rgba(15, 15, 18, 0.60) !important;
+          transform: translateY(-2.5px);
+          box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.10), 0 16px 36px rgba(0, 0, 0, 0.6), 0 0 20px rgba(212, 184, 122, 0.05) !important;
         }
       `}} />
 
@@ -3175,28 +3204,28 @@ export function SigPessoasPanel() {
                   
                   {/* Algoritmo de Sucessor */}
                   <div className="lg:col-span-6">
-                    <div className="dash-card space-y-3">
+                    <div className="dash-card space-y-4">
                       <div>
-                        <h4 className="text-[11px] font-bold text-white uppercase font-mono">Algoritmo de Identificação de Sucessor</h4>
+                        <h4 className="text-[12px] font-bold text-white uppercase font-mono tracking-widest">Algoritmo de Identificação de Sucessor</h4>
                         <p className="text-[9.5px] text-white/40 font-sans">Parâmetros combinados de D6 + HHH + Propósito</p>
                       </div>
 
-                      <div className="space-y-2">
+                      <div className="space-y-3">
                         {rankedSuccessors.map((member, i) => (
-                          <div key={member.id} className="p-3 bg-black/40 border border-white/[0.05] rounded-xl flex items-center justify-between hover:border-[#d4b87a]/30 hover:bg-black/60 transition duration-300">
+                          <div key={member.id} className="premium-glass-card flex items-center justify-between transition-all duration-300">
                             <div className="flex items-center gap-3">
-                              <span className="w-5 h-5 rounded-full bg-[#d4b87a]/10 border border-[#d4b87a]/25 text-[#d4b87a] flex items-center justify-center font-bold font-mono text-[9px] flex-shrink-0">
+                              <span className="w-8 h-8 rounded-full bg-gradient-to-br from-[#d4b87a]/20 to-[#d4b87a]/5 border border-[#d4b87a]/40 text-[#d4b87a] flex items-center justify-center font-bold font-mono text-[10px] flex-shrink-0 shadow-[0_0_10px_rgba(212,184,122,0.15)]">
                                 0{i + 1}
                               </span>
                               <div>
-                                <b className="text-[11px] text-white leading-none block font-bold">{member.name}</b>
-                                <span className="text-[8.5px] font-mono text-white/45 block mt-1">{member.role}</span>
+                                <b className="text-[11.5px] text-white leading-none block font-bold">{member.name}</b>
+                                <span className="text-[8.5px] font-mono text-white/45 block mt-1.5">{member.role}</span>
                               </div>
                             </div>
                             
                             <div className="text-right">
-                              <span className="text-[10.5px] font-mono font-bold text-[#5dcaa5] block leading-none">{member.successionScore} pts</span>
-                              <span className="text-[8px] text-white/35 block mt-1.5">{member.wishes}</span>
+                              <span className="text-[11px] font-mono font-bold text-[#5dcaa5] block leading-none">{member.successionScore} pts</span>
+                              <span className="text-[8.5px] text-white/35 block mt-1.5 font-sans">{member.wishes}</span>
                             </div>
                           </div>
                         ))}
@@ -3206,17 +3235,17 @@ export function SigPessoasPanel() {
 
                   {/* Profiler detail */}
                   <div className="lg:col-span-6">
-                    <div className="dash-card space-y-3">
-                      <div className="flex justify-between items-center border-b border-white/[0.04] pb-2">
+                    <div className="dash-card space-y-4">
+                      <div className="flex justify-between items-center border-b border-white/[0.04] pb-3">
                         <div>
-                          <h4 className="text-[11px] font-bold text-white uppercase font-mono">Ficha de Perfil do Liderado</h4>
+                          <h4 className="text-[12px] font-bold text-white uppercase font-mono tracking-widest">Ficha de Perfil do Liderado</h4>
                           <p className="text-[9.5px] text-white/40 font-sans">Visualização unificada de fit cultural</p>
                         </div>
                         
                         <select
                           value={selectedProfileId}
                           onChange={(e) => setSelectedProfileId(e.target.value)}
-                          className="bg-black/40 border border-white/[0.08] rounded px-2.5 py-1 text-[9.5px] text-white outline-none focus:border-[#d4b87a]/40"
+                          className="bg-black/50 border border-white/10 rounded-xl px-3 py-1.5 text-[9.5px] text-white outline-none focus:border-[#d4b87a]/40"
                         >
                           {teamMembers.map(m => <option key={m.id} value={m.id}>{m.name}</option>)}
                         </select>
@@ -3229,40 +3258,40 @@ export function SigPessoasPanel() {
                         return (
                           <div className="space-y-4 font-sans text-[10px] text-white/70">
                             <div className="flex items-center gap-3">
-                              <div className="h-10 w-10 rounded-full bg-[#d4b87a]/15 text-[#d4b87a] border border-[#d4b87a]/30 text-xs font-bold flex items-center justify-center">
-                                {m.name.split(' ').map(x => x[0]).join('')}
+                              <div className="h-11 w-11 rounded-full bg-[#d4b87a]/15 text-[#d4b87a] border border-[#d4b87a]/30 text-xs font-bold flex items-center justify-center">
+                                {m.name.split(' ').map(x => x[0]).join('').slice(0, 2)}
                               </div>
                               <div>
-                                <b className="text-white text-[12px] block leading-none font-bold">{m.name}</b>
-                                <span className="text-white/45 text-[9px] font-mono block mt-1">{m.role} · Maturidade {m.maturity}</span>
+                                <b className="text-white text-[13px] block leading-none font-bold">{m.name}</b>
+                                <span className="text-white/45 text-[9px] font-mono block mt-1.5">{m.role} · Maturidade {m.maturity}</span>
                               </div>
                             </div>
 
                             <div className="grid grid-cols-2 gap-2 mt-4">
-                              <div className="p-3 bg-black/40 border border-white/[0.05] rounded-xl flex flex-col gap-1 text-left">
+                              <div className="premium-glass-card flex flex-col gap-1 text-left">
                                 <span className="text-[8px] text-white/40 uppercase tracking-widest font-mono">D6 Health Index</span>
                                 <b className="text-[11px] font-mono font-bold text-white">{m.d6}%</b>
                               </div>
-                              <div className="p-3 bg-black/40 border border-white/[0.05] rounded-xl flex flex-col gap-1 text-left">
+                              <div className="premium-glass-card flex flex-col gap-1 text-left">
                                 <span className="text-[8px] text-white/40 uppercase tracking-widest font-mono">Alinhamento</span>
                                 <b className="text-[11px] font-mono font-bold text-[#5dcaa5]">{m.status}</b>
                               </div>
-                              <div className="p-3 bg-black/40 border border-white/[0.05] rounded-xl flex flex-col gap-1 text-left">
+                              <div className="premium-glass-card flex flex-col gap-1 text-left">
                                 <span className="text-[8px] text-white/40 uppercase tracking-widest font-mono">Humble (Coração)</span>
                                 <b className="text-[11px] font-mono font-bold text-white">{m.hhh.humble}%</b>
                               </div>
-                              <div className="p-3 bg-black/40 border border-white/[0.05] rounded-xl flex flex-col gap-1 text-left">
+                              <div className="premium-glass-card flex flex-col gap-1 text-left">
                                 <span className="text-[8px] text-white/40 uppercase tracking-widest font-mono">Hungry (Mãos)</span>
                                 <b className="text-[11px] font-mono font-bold text-white">{m.hhh.hungry}%</b>
                               </div>
-                              <div className="col-span-2 p-3 bg-[#d4b87a]/5 border border-[#d4b87a]/15 rounded-xl flex flex-col gap-1 text-left">
+                              <div className="col-span-2 p-4 bg-gradient-to-r from-[#d4b87a]/10 to-transparent border border-[#d4b87a]/20 rounded-2xl flex flex-col gap-1.5 text-left">
                                 <span className="text-[8px] text-[#d4b87a] uppercase tracking-widest font-mono font-bold">Desejo de Carreira</span>
-                                <b className="text-[10px] text-[#fac775] font-medium">{m.wishes}</b>
+                                <b className="text-[10px] text-[#fac775] font-medium leading-relaxed">{m.wishes}</b>
                               </div>
-                              <div className="col-span-2 flex gap-3 mt-2">
+                              <div className="col-span-2 flex gap-3 mt-3">
                                 <button
                                   onClick={() => handleMoveMemberToCandidates(m)}
-                                  className="flex-1 py-2 bg-gradient-to-b from-[#d4b87a]/10 to-[#d4b87a]/5 hover:from-[#d4b87a]/20 border border-[#d4b87a]/30 rounded-xl text-[10px] font-mono font-bold text-[#d4b87a] transition-all flex items-center justify-center gap-1.5"
+                                  className="flex-1 py-2.5 bg-[#d4b87a]/10 hover:bg-[#d4b87a]/20 border border-[#d4b87a]/40 rounded-xl text-[10px] font-mono font-bold text-[#d4b87a] transition-all hover:scale-[1.02] flex items-center justify-center gap-1.5"
                                 >
                                   <span>⇄</span> MOVER P/ CANDIDATOS
                                 </button>
@@ -3272,7 +3301,7 @@ export function SigPessoasPanel() {
                                       handleDeleteMember(m.id)
                                     }
                                   }}
-                                  className="flex-1 py-2 bg-gradient-to-b from-red-950/20 to-red-950/10 hover:from-red-950/40 border border-red-900/35 rounded-xl text-[10px] font-mono font-bold text-red-400 transition-all flex items-center justify-center gap-1.5"
+                                  className="flex-1 py-2.5 bg-red-950/20 hover:bg-red-900/20 border border-red-900/40 rounded-xl text-[10px] font-mono font-bold text-red-400 transition-all hover:scale-[1.02] flex items-center justify-center gap-1.5"
                                 >
                                   <span>🗑</span> DEMITIR / APAGAR
                                 </button>
@@ -3481,35 +3510,46 @@ export function SigPessoasPanel() {
                   <div className="lg:col-span-7 dash-card space-y-4">
                     <div className="flex justify-between items-center">
                       <div>
-                        <h4 className="text-[11px] font-bold text-white uppercase font-mono">OKRs Trimestrais · Q2 2026</h4>
-                        <p className="text-[9px] text-white/40 font-sans">41 dias restantes · Q2 consolidado</p>
+                        <h4 className="text-[12px] font-bold text-white uppercase font-mono tracking-widest">OKRs Trimestrais · Q2 2026</h4>
+                        <p className="text-[9.5px] text-white/40 font-sans">41 dias restantes · Q2 consolidado</p>
                       </div>
                     </div>
 
                     <div className="space-y-3">
-                      {okrs.map(okr => (
-                        <div key={okr.id} className="p-3.5 bg-black/35 border border-white/[0.06] rounded-lg space-y-2 hover:border-[#d4b87a]/20 transition">
-                          <div className="flex justify-between text-[10px] font-bold">
-                            <span className="text-white/95 font-bold">{okr.title}</span>
-                            <span className="font-mono text-[#d4b87a]">{okr.progress}%</span>
+                      {okrs.length === 0 ? (
+                        <div className="text-center py-6 text-[10px] text-white/30 border border-white/5 rounded-2xl bg-black/20">Nenhum OKR cadastrado ainda. Crie um novo objetivo estratégico abaixo.</div>
+                      ) : (
+                        okrs.map(okr => (
+                          <div key={okr.id} className="premium-glass-card space-y-2.5 transition-all duration-300 relative group">
+                            <button 
+                              onClick={() => handleDeleteOkr(okr.id)} 
+                              className="absolute top-3 right-3 text-white/30 hover:text-red-400 opacity-0 group-hover:opacity-100 transition text-[10px] font-bold p-1 hover:bg-white/5 rounded z-10"
+                              title="Remover OKR"
+                            >
+                              ✕
+                            </button>
+                            <div className="flex justify-between text-[11px] font-bold">
+                              <span className="text-white/95 font-bold">{okr.title}</span>
+                              <span className="font-mono text-[#d4b87a]">{okr.progress}%</span>
+                            </div>
+                            <span className="text-[8.5px] font-mono text-white/45 block leading-tight">{okr.keyResults}</span>
+                            <div className="h-1.5 bg-white/[0.04] rounded-full overflow-hidden border border-white/5">
+                              <div className="h-full bg-gradient-to-r from-[#d4b87a] to-[#5dcaa5] rounded-full transition-all duration-300" style={{ width: `${okr.progress}%` }} />
+                            </div>
                           </div>
-                          <span className="text-[8px] font-mono text-white/40 block leading-tight">{okr.keyResults}</span>
-                          <div className="h-1 bg-white/[0.04] rounded-full overflow-hidden">
-                            <div className="h-full bg-gradient-to-r from-[#d4b87a] to-white rounded-full transition-all duration-300" style={{ width: `${okr.progress}%` }} />
-                          </div>
-                        </div>
-                      ))}
+                        ))
+                      )}
                     </div>
 
                     {/* OKR add form */}
-                    <div className="border-t border-white/[0.04] pt-3 space-y-2">
+                    <div className="border-t border-white/[0.04] pt-4 space-y-3">
                       <span className="text-[8px] font-mono text-[#d4b87a] uppercase tracking-wider block font-bold">Criar Novo OKR Estratégico</span>
                       <input 
                         type="text" 
                         placeholder="Objetivo principal (ex: Reduzir churn em 10%)..." 
                         value={newOkrTitle}
                         onChange={(e) => setNewOkrTitle(e.target.value)}
-                        className="w-full bg-black/40 border border-white/[0.08] rounded-[0.4rem] px-2.5 py-1.5 text-[9.5px] outline-none focus:border-[#d4b87a]/40"
+                        className="w-full bg-black/40 border border-white/10 rounded-xl px-3 py-2 text-[10.5px] text-white outline-none focus:border-[#d4b87a]/40"
                       />
                       <div className="flex gap-2">
                         <input 
@@ -3517,11 +3557,11 @@ export function SigPessoasPanel() {
                           placeholder="Key Results (ex: KR1: LTV > 12 meses, KR2: zero bugs)..." 
                           value={newOkrKr}
                           onChange={(e) => setNewOkrKr(e.target.value)}
-                          className="flex-1 bg-black/40 border border-white/[0.08] rounded-[0.4rem] px-2.5 py-1.5 text-[9.5px] outline-none focus:border-[#d4b87a]/40"
+                          className="flex-1 bg-black/40 border border-white/10 rounded-xl px-3 py-2 text-[10.5px] text-white outline-none focus:border-[#d4b87a]/40"
                         />
                         <button 
                           onClick={handleAddOkr}
-                          className="px-3 bg-[#d4b87a]/15 hover:bg-[#d4b87a]/30 border border-[#d4b87a]/45 rounded-[0.4rem] text-[9.5px] font-bold text-[#d4b87a] transition"
+                          className="px-4 bg-[#d4b87a]/15 hover:bg-[#d4b87a]/30 border border-[#d4b87a]/45 rounded-xl text-[10px] font-bold text-[#d4b87a] font-mono transition"
                         >
                           DEFINIR
                         </button>
@@ -3531,12 +3571,21 @@ export function SigPessoasPanel() {
 
                   {/* Right: strategic info bank */}
                   <div className="lg:col-span-5 space-y-4">
-                    <div className="dash-card space-y-3">
-                      <h4 className="text-[11px] font-bold text-[#d4b87a] uppercase font-mono">Banco de Estratégias</h4>
-                      <div className="space-y-1.5 font-sans text-[9px] text-white/50">
-                        <div className="p-2.5 bg-black/20 border border-white/[0.06] rounded hover:border-[#d4b87a]/15 transition"><b>D6 Diagnóstico:</b> Visão cruzada 360 do time em 6 dimensões de saúde.</div>
-                        <div className="p-2.5 bg-black/20 border border-white/[0.06] rounded hover:border-[#d4b87a]/15 transition"><b>eNPS Clima:</b> Frequência mensal de contentamento e disposição de indicar a equipe.</div>
-                        <div className="p-2.5 bg-black/20 border border-white/[0.06] rounded hover:border-[#d4b87a]/15 transition"><b>ISR Score:</b> Relação de impacto e reconhecimento individual do colaborador.</div>
+                    <div className="dash-card space-y-4">
+                      <h4 className="text-[12px] font-bold text-[#d4b87a] uppercase font-mono tracking-widest">Banco de Estratégias</h4>
+                      <div className="space-y-2.5 font-sans text-[9.5px] text-white/50">
+                        <div className="premium-glass-card space-y-1 transition duration-300">
+                          <b className="text-white block mb-1">D6 Diagnóstico:</b> 
+                          <span>Visão cruzada 360 do time em 6 dimensões de saúde organizacional.</span>
+                        </div>
+                        <div className="premium-glass-card space-y-1 transition duration-300">
+                          <b className="text-white block mb-1">eNPS Clima:</b> 
+                          <span>Frequência mensal de contentamento e disposição de indicar a equipe.</span>
+                        </div>
+                        <div className="premium-glass-card space-y-1 transition duration-300">
+                          <b className="text-white block mb-1">ISR Score:</b> 
+                          <span>Relação de impacto e reconhecimento individual do colaborador.</span>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -3666,19 +3715,19 @@ export function SigPessoasPanel() {
                 >
                   
                   {/* Channels noise calculator */}
-                  <div className="lg:col-span-8 dash-card space-y-3">
+                  <div className="lg:col-span-8 dash-card space-y-4">
                     <div>
-                      <h4 className="text-[11px] font-bold text-white uppercase font-mono">Score de Ruído de Canais</h4>
+                      <h4 className="text-[12px] font-bold text-white uppercase font-mono tracking-widest">Score de Ruído de Canais</h4>
                       <p className="text-[9.5px] text-white/40 font-sans">Análise cruzada de complexidade da mensagem contra a sincronia do meio</p>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-3 text-left">
-                      <div className="space-y-1">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-left">
+                      <div className="space-y-1.5">
                         <label className="text-[8.5px] font-mono text-white/40 block font-bold">Complexidade da Mensagem</label>
                         <select 
                           value={msgComplexity}
                           onChange={(e) => setMsgComplexity(parseInt(e.target.value) as any)}
-                          className="w-full bg-black/40 border border-white/[0.08] rounded-[0.4rem] px-3 py-1.5 text-[10px] text-white outline-none focus:border-[#d4b87a]/40"
+                          className="w-full bg-black/50 border border-white/10 rounded-xl px-3 py-2 text-[10.5px] text-white outline-none focus:border-[#d4b87a]/40"
                         >
                           <option value="1">1: Baixa (Transacional / Aviso simples)</option>
                           <option value="2">2: Média (Definição / Alinhamento tático)</option>
@@ -3686,12 +3735,12 @@ export function SigPessoasPanel() {
                         </select>
                       </div>
 
-                      <div className="space-y-1">
+                      <div className="space-y-1.5">
                         <label className="text-[8.5px] font-mono text-white/40 block font-bold">Canal Utilizado</label>
                         <select 
                           value={channelUsed}
                           onChange={(e) => setChannelUsed(e.target.value)}
-                          className="w-full bg-black/40 border border-white/[0.08] rounded-[0.4rem] px-3 py-1.5 text-[10px] text-white outline-none focus:border-[#d4b87a]/40"
+                          className="w-full bg-black/50 border border-white/10 rounded-xl px-3 py-2 text-[10.5px] text-white outline-none focus:border-[#d4b87a]/40"
                         >
                           <option value="slack">Slack / Chat escrito (Assíncrono)</option>
                           <option value="email">E-mail escrito (Assíncrono)</option>
@@ -3703,23 +3752,32 @@ export function SigPessoasPanel() {
                       </div>
                     </div>
 
-                    <div className="p-3.5 bg-black/35 rounded-lg border border-white/[0.06] flex justify-between items-center shadow-inner">
+                    <div className="premium-glass-card flex justify-between items-center transition duration-300">
                       <div>
-                        <span className="text-[8.5px] font-mono text-white/45 block">Índice de Ruído Calculado</span>
-                        <b className={`text-lg font-mono ${noiseScore > 70 ? 'text-red-400' : 'text-[#5dcaa5]'}`}>{noiseScore}%</b>
+                        <span className="text-[8.5px] font-mono text-white/45 block mb-1">Índice de Ruído Calculado</span>
+                        <b className={`text-lg font-mono font-bold ${noiseScore > 70 ? 'text-[#e24b4a]' : 'text-[#5dcaa5]'}`} style={{ textShadow: noiseScore > 70 ? '0 0 10px rgba(226, 75, 74, 0.4)' : '0 0 10px rgba(93, 202, 165, 0.4)' }}>{noiseScore}%</b>
                       </div>
-                      <span className="text-[9px] font-mono text-white/50">{channelFeedback}</span>
+                      <span className="text-[9.5px] font-mono text-white/50">{channelFeedback}</span>
                     </div>
                   </div>
 
                   {/* C2 Communication Styles */}
-                  <div className="lg:col-span-4 dash-card space-y-3">
-                    <h4 className="text-[11px] font-bold text-[#d4b87a] uppercase font-mono">C² Communication Matrix</h4>
+                  <div className="lg:col-span-4 dash-card space-y-4">
+                    <h4 className="text-[12px] font-bold text-[#d4b87a] uppercase font-mono tracking-widest">C² Communication Matrix</h4>
                     
-                    <div className="space-y-1.5 font-sans text-[8.5px] text-white/60">
-                      <div className="p-2 bg-black/20 border border-white/[0.06] rounded hover:border-[#d4b87a]/15 transition"><b>Direto:</b> Objetivo e focado em fatos. Indicado para M3/M4.</div>
-                      <div className="p-2 bg-black/20 border border-white/[0.06] rounded hover:border-[#d4b87a]/15 transition"><b>Analítico:</b> Data-driven, focado em métricas.</div>
-                      <div className="p-2 bg-black/20 border border-white/[0.06] rounded hover:border-[#d4b87a]/15 transition"><b>Relacional:</b> Empático, focado na calibração emocional.</div>
+                    <div className="space-y-2.5 font-sans text-[9.5px] text-white/60">
+                      <div className="premium-glass-card space-y-1 transition duration-300">
+                        <b className="text-white block mb-1 font-bold">Direto:</b> 
+                        <span>Objetivo e focado em fatos de entrega. Indicado para maturidades técnicas M3/M4.</span>
+                      </div>
+                      <div className="premium-glass-card space-y-1 transition duration-300">
+                        <b className="text-white block mb-1 font-bold">Analítico:</b> 
+                        <span>Data-driven, focado em métricas e calibração objetiva do plantão.</span>
+                      </div>
+                      <div className="premium-glass-card space-y-1 transition duration-300">
+                        <b className="text-white block mb-1 font-bold">Relacional:</b> 
+                        <span>Empático, focado na calibração emocional e segurança psicológica.</span>
+                      </div>
                     </div>
                   </div>
 
