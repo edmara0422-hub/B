@@ -4032,6 +4032,104 @@ export const SUBJECTS_DB: SubjectContent[] = [
               }
           }
       ]
+  },
+  {
+      "id": "M4-T1-S17",
+      "code": "M4-T1-S17",
+      "title": "Empreendedorismo Social",
+      "description": "Modelos de impacto, Teoria da Mudança, SROI e financiamento.",
+      "icon": "Heart",
+      "videoUrls": [],
+      "chapters": [
+          {
+              "title": "1: Os 3 Modelos de Impacto Social",
+              "description": "Negócio Social, Empresa B e ONG: caminhos para resolver problemas com sustentabilidade",
+              "subsections": [
+                  {
+                      "title": "Os Modelos",
+                      "content": "Negócio Social (Yunus: lucra e reinveste tudo), Empresa B (lucra e distribui, mas equilibra impacto), ONG (impacto puro dependente de doações) e Organização Híbrida."
+                  },
+                  {
+                      "title": "O Dilema",
+                      "content": "Não é filantropia com CNPJ. A grande questão é como construir um modelo financeiro que sustente o bem desejado por décadas, de forma escalável."
+                  }
+              ],
+              "synthesis": {
+                  "title": "Síntese",
+                  "bullets": [
+                      "Empresa que doa 1% do lucro não é negócio social. O impacto deve estar no modelo de negócio.",
+                      "O Grameen Bank provou que os mais pobres não representam risco de inadimplência quando há modelo e confiança adequados."
+                  ],
+                  "insights": []
+              }
+          },
+          {
+              "title": "2: Teoria da Mudança",
+              "description": "Da ideia ao impacto real: como medir e provar que você fez a diferença",
+              "subsections": [
+                  {
+                      "title": "Os 5 Níveis de Mudança",
+                      "content": "Inputs (o que investe), Atividades (o que faz), Outputs (o que entrega - ex: formou 100 alunos), Outcomes (a mudança na vida - ex: 70 empregados com renda maior) e Impacto (mudança sistêmica de longo prazo)."
+                  },
+                  {
+                      "title": "A Armadilha do Output",
+                      "content": "Confundir Output com Outcome. Doadores financiam cada vez mais a mudança (Outcomes). Sem medir, não há como provar o impacto."
+                  }
+              ],
+              "synthesis": {
+                  "title": "Síntese",
+                  "bullets": [
+                      "Mensuração de impacto é o equivalente ao DRE para negócios tradicionais.",
+                      "Deadweight: meça apenas a transformação que não teria acontecido se o projeto não existisse."
+                  ],
+                  "insights": []
+              }
+          },
+          {
+              "title": "3: SROI e Métricas",
+              "description": "Quanto vale o impacto gerado? Retorno Social sobre Investimento",
+              "subsections": [
+                  {
+                      "title": "SROI",
+                      "content": "Para cada R$ 1 investido, quanto volta em valor social? Se SROI > 1, gera valor. Exemplo prático da Gerando Falcões, que tem um SROI de 6:1."
+                  },
+                  {
+                      "title": "Frameworks Globais",
+                      "content": "O uso do catálogo IRIS+ (GIIN) e o alinhamento com os ODS da ONU padronizam o diálogo de impacto e atraem fundos globais exigentes."
+                  }
+              ],
+              "synthesis": {
+                  "title": "Síntese",
+                  "bullets": [
+                      "Evite Cherry-picking: apresentar apenas os números que deram certo afasta financiadores sérios.",
+                      "Capital de impacto exige SROI auditado e alinhado a frameworks globais como ODS."
+                  ],
+                  "insights": []
+              }
+          },
+          {
+              "title": "4: Escalando o Impacto",
+              "description": "Financiamento e Dilemas Reais: como crescer sem distorcer a missão",
+              "subsections": [
+                  {
+                      "title": "Caminhos de Financiamento",
+                      "content": "Doações (limitadas), Investimento de Impacto (exige escala e métrica), Modelos Híbridos (onde empresas pagam pela formação do público final) e Receita de Mercado (subsídio cruzado)."
+                  },
+                  {
+                      "title": "Protegendo a Missão",
+                      "content": "A governança deve proteger o propósito antes do aceite do capital. O dilema 'Escala vs. Missão' é falso caso a empresa consiga modelar uma estrutura em que um terceiro pague pela vulnerabilidade do usuário final."
+                  }
+              ],
+              "synthesis": {
+                  "title": "Síntese",
+                  "bullets": [
+                      "Subsídio cruzado (cobrar mais de quem pode pagar para subsidiar os mais vulneráveis) é a principal engrenagem escalável hoje.",
+                      "Antes de captar investimento, documente os limites éticos e os inegociáveis do negócio."
+                  ],
+                  "insights": []
+              }
+          }
+      ]
   }
   , SIG_PESSOAS
 ];
