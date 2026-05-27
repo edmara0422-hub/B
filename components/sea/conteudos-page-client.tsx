@@ -81,13 +81,13 @@ const SYLLABUS_TO_DB_MAP: Record<string, string> = {
 
   // Pilar 1: Inovação e Estratégia
   'M4-T1-S1': 'M4-S1', // Inovação, Transformação e Ferramentas Digitais
-  'M4-T1-S2': 'M1-S2', // Pensamento Criativo
-  'M4-T1-S3': 'M1-S3', // Sustentabilidade em Negócios
-  'M4-T1-S4': 'M2-S1', // Gestão de Negócios
-  'M4-T1-S5': 'M2-S2', // Demonstrações Contábeis
-  'M4-T1-S6': 'M2-S3', // Matemática Financeira
-  'M4-T1-S7': 'M3-S1', // Economia de Empresa e Análise Mercadológica
-  'M4-T1-S8': 'M3-S2', // Liderança e Gestão de Equipes
+  'M4-T1-S2': 'M4-T1-S2', // Pensamento Criativo
+  'M4-T1-S3': 'M4-T1-S3', // Sustentabilidade em Negócios
+  'M4-T1-S4': 'M4-T1-S4', // Gestão de Negócios
+  'M4-T1-S5': 'M4-T1-S5', // Demonstrações Contábeis
+  'M4-T1-S6': 'M4-T1-S6', // Matemática Financeira
+  'M4-T1-S7': 'M4-T1-S7', // Economia de Empresa e Análise Mercadológica
+  'M4-T1-S8': 'M4-T1-S8', // Liderança e Gestão de Equipes
   'M4-T1-S9': 'M4-T1-S9', // Filosofia Aplicada aos Negócios
   'M4-T1-S10': 'M4-S2', // Cálculo Aplicado a Negócios
   'M4-T1-S11': 'M4-S3', // Análise Estatística
@@ -97,26 +97,26 @@ const SYLLABUS_TO_DB_MAP: Record<string, string> = {
   
   // Pilar 2: Finanças e Inteligência Quantitativa
   'M4-T2-S1': 'M6-S1', // Análise Financeira (M6-S1 no BD)
-  'M4-T2-S2': 'M6-S1', // Análise Financeira (M6-S1 no BD)
-  'M4-T2-S3': 'M2-S3', // Matemática Financeira (M2-S3 no BD)
-  'M4-T2-S4': 'M2-S2', // Demonstrações Contábeis (M2-S2 no BD)
+  'M4-T2-S2': 'M4-T2-S2', // Análise Financeira
+  'M4-T2-S3': 'M4-T2-S3', // Matemática Financeira
+  'M4-T2-S4': 'M4-T1-S5', // Demonstrações Contábeis
   'M4-T2-S5': 'M6-S2', // Precificação (M6-S2 no BD)
   'M4-T2-S6': 'M4-S2', // Cálculo Aplicado a Negócios (M4-S2 no BD)
   'M4-T2-S7': 'M4-S3', // Análise Estatística (M4-S3 no BD)
   
   // Pilar 3: Liderança, Pessoas e Cultura
-  'M4-T3-S1': 'M3-S2', // Liderança e Gestão de Equipes (M3-S2 no BD)
-  'M4-T3-S2': 'M3-S2', // Liderança e Gestão de Equipes (M3-S2 no BD)
+  'M4-T3-S1': 'M4-T3-S1', // Liderança e Gestão de Equipes
+  'M4-T3-S2': 'M4-T3-S2', // Liderança e Gestão de Equipes
   'M4-T3-S3': 'M8-S1', // Educação, Identidade e Solidariedade (M8-S1 no BD)
   'M4-T3-S4': 'M6-S3', // Ética (M6-S3 no BD)
   
   // Pilar 4: Gestão e Operações Corporativas
-  'M4-T4-S1': 'M2-S1', // Gestão de Negócios (M2-S1 no BD)
-  'M4-T4-S2': 'M2-S1', // Gestão de Negócios (M2-S1 no BD)
+  'M4-T4-S1': 'M4-T4-S1', // Gestão de Negócios
+  'M4-T4-S2': 'M4-T4-S2', // Gestão de Negócios
   'M4-T4-S3': 'M1-S3', // Sustentabilidade em Negócios (M1-S3 no BD)
   
   // Pilar 5: Mercado e Macroeconomia
-  'M4-T5-S1': 'M3-S1', // Economia de Empresa e Análise Mercadológica (M3-S1 no BD)
+  'M4-T5-S1': 'M4-T5-S1', // Economia de Empresa e Análise Mercadológica
   'M4-T5-S2': 'M5-S3', // Ambiente Macroeconômico (M5-S3 no BD)
   'M4-T5-S3': 'M4-S1', // Filosofia (M4-S1 no BD)
   'M4-T5-S4': 'M4-S1', // Filosofia (M4-S1 no BD)
