@@ -519,23 +519,7 @@ const NEURO_SYLLABUS = [
 ]
 
 const BUSINESS_SYLLABUS = [
-  { id: 'M4-T1-S1', topicId: 'M4-T1', title: 'Inovação, Transformação e Ferramentas Digitais', subtitle: 'IE · Era Digital e Automação', duration: '22:15' },
-  { id: 'M4-T1-S2', topicId: 'M4-T1', title: 'Pensamento Criativo', subtitle: 'IE · Neurociência e Ideação', duration: '18:45' },
-  { id: 'M4-T1-S3', topicId: 'M4-T1', title: 'Sustentabilidade em Negócios', subtitle: 'IE · ESG e Valor Compartilhado', duration: '25:30' },
-  { id: 'M4-T1-S4', topicId: 'M4-T1', title: 'Gestão de Negócios', subtitle: 'IE · Canvas e Estratégia Corporativa', duration: '35:40' },
-  { id: 'M4-T1-S5', topicId: 'M4-T1', title: 'Demonstrações Contábeis', subtitle: 'IE · Balanço, DRE e Fluxo de Caixa', duration: '31:20' },
-  { id: 'M4-T1-S6', topicId: 'M4-T1', title: 'Matemática Financeira', subtitle: 'IE · O Valor do Dinheiro no Tempo', duration: '28:45' },
-  { id: 'M4-T1-S7', topicId: 'M4-T1', title: 'Economia e Análise Mercadológica', subtitle: 'IE · Fundamentos do Marketing e Criação de Valor', duration: '35:10' },
-  { id: 'M4-T1-S8', topicId: 'M4-T1', title: 'Liderança e Gestão de Equipes', subtitle: 'IE · Cultura, Conflito e Alta Performance', duration: '41:20' },
-  { id: 'M4-T1-S9', topicId: 'M4-T1', title: 'Filosofia Aplicada aos Negócios', subtitle: 'IE · Ética, Lógica e Decisão', duration: '30:15' },
-  { id: 'M4-T1-S10', topicId: 'M4-T1', title: 'Cálculo Aplicado a Negócios', subtitle: 'IE · Derivadas, Integrais e Break-Even', duration: '29:40' },
-  { id: 'M4-T1-S11', topicId: 'M4-T1', title: 'Análise Estatística', subtitle: 'IE · Regressão, Probabilidade e Data Storytelling', duration: '34:50' },
-  { id: 'M4-T1-S12', topicId: 'M4-T1', title: 'Leitura e Escrita Corporativa', subtitle: 'IE · Comunicação, Argumentação e Impacto', duration: '28:15' },
-  { id: 'M4-T1-S13', topicId: 'M4-T1', title: 'Empreendedorismo e Inovação', subtitle: 'IE · MVP, Causation vs Effectuation e Funding', duration: '36:45' },
-  { id: 'M4-T1-S14', topicId: 'M4-T1', title: 'Ambiente Macroeconômico', subtitle: 'IE · Ciclos, Taxa Selic e Vantagens do Brasil', duration: '31:20' },
-  
-  // Pilar 2: Finanças e Inteligência Quantitativa
-  { id: 'M4-T2-S1', topicId: 'M4-T2', title: 'Análise Financeira', subtitle: 'FQ · Análise Vertical, Valuation e Capital de Giro', duration: '38:10' }
+  { id: 'M4-T1-S1', topicId: 'M4-T1', title: 'Inovação, Transformação e Ferramentas Digitais', subtitle: 'IE · Era Digital e Automação', duration: '22:15' }
 ]
 
 function ExecutiveMasterclassTheater({ 
