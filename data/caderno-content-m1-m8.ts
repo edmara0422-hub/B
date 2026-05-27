@@ -3816,6 +3816,116 @@ export const SUBJECTS_DB: SubjectContent[] = [
               }
           }
       ]
+  },
+  {
+      "id": "M4-T1-S15",
+      "code": "M4-T1-S15",
+      "title": "Análise Financeira",
+      "description": "Análise vertical/horizontal, valuation, capital de giro e diagnóstico integrado.",
+      "icon": "TrendingUp",
+      "videoUrls": [],
+      "chapters": [
+          {
+              "title": "1: Análise Vertical e Horizontal",
+              "description": "Lendo as entrelinhas: o que os números escondem sobre a saúde da operação",
+              "subsections": [
+                  {
+                      "title": "Análise Vertical",
+                      "content": "A estrutura do negócio: compara cada item (ex: Custos) como percentual da Receita Líquida no mesmo período. Revela ineficiências em proporção."
+                  },
+                  {
+                      "title": "Análise Horizontal",
+                      "content": "A tendência no tempo: compara o crescimento da receita com o crescimento dos custos. A estrutura está inchando ou ganhando eficiência?"
+                  },
+                  {
+                      "title": "Índices Fundamentais",
+                      "content": "Ciclo Operacional (compra a recebimento), Ciclo Financeiro (quando financiamos a operação), Giro do Ativo e Margem de Contribuição."
+                  }
+              ],
+              "synthesis": {
+                  "title": "Síntese",
+                  "bullets": [
+                      "Vertical expõe onde o problema está na estrutura; Horizontal expõe quando começou.",
+                      "O Ciclo Financeiro negativo é o cenário ideal de autofinanciamento."
+                  ],
+                  "insights": []
+              }
+          },
+          {
+              "title": "2: Valuation — Quanto Vale Sua Empresa?",
+              "description": "DCF, múltiplos e valor patrimonial: três lentes para o valor justo",
+              "subsections": [
+                  {
+                      "title": "DCF (Fluxo de Caixa Descontado)",
+                      "content": "Projeta fluxos de caixa futuros e os traz a valor presente usando uma taxa (WACC). Extremamente sensível a premissas de crescimento."
+                  },
+                  {
+                      "title": "Múltiplos de Mercado",
+                      "content": "Compara a empresa a outras semelhantes (EV/EBITDA, P/L). Em Varejo, costuma girar entre 6x e 10x EBITDA. Muito usado para transações rápidas."
+                  },
+                  {
+                      "title": "A Triangulação",
+                      "content": "Valuation é narrativa apoiada em números. Para definir o valor justo, triangule o DCF (o futuro projetado) com os Múltiplos (o mercado) e o Patrimonial (o piso material)."
+                  }
+              ],
+              "synthesis": {
+                  "title": "Síntese",
+                  "bullets": [
+                      "Valuation não é ciência exata: o valor certo é o que comprador e vendedor concordam.",
+                      "Múltiplos do Vale do Silício não se aplicam a PMEs no Brasil por conta da alta Selic e Risco País."
+                  ],
+                  "insights": []
+              }
+          },
+          {
+              "title": "3: Capital de Giro — O Motor da Operação",
+              "description": "60% das falências não são por falta de vendas, mas por falta de caixa no ciclo.",
+              "subsections": [
+                  {
+                      "title": "O que é Capital de Giro Líquido",
+                      "content": "Ativo Circulante menos Passivo Circulante. Positivo: folga para operar. Negativo: dependência imediata de terceiros (risco)."
+                  },
+                  {
+                      "title": "Os Componentes do Ciclo",
+                      "content": "1. Estoque (dinheiro parado). 2. Contas a Receber (prazo ao cliente). 3. Contas a Pagar (financiamento com o fornecedor). 4. Caixa (segurança vital)."
+                  },
+                  {
+                      "title": "Alavancas de Otimização",
+                      "content": "A primeira ação de gestão de caixa é negociar o alongamento com fornecedores (30→60→90 dias) — é financiamento grátis sem juros."
+                  }
+              ],
+              "synthesis": {
+                  "title": "Síntese",
+                  "bullets": [
+                      "A empresa pode ser lucrativa, vender muito, e quebrar no mês seguinte se o dinheiro não girar rápido.",
+                      "O Cheque Especial, sendo o crédito mais caro, é o maior sintoma de um ciclo operacional quebrado."
+                  ],
+                  "insights": []
+              }
+          },
+          {
+              "title": "4: Diagnóstico Integrado",
+              "description": "Análise V/H, valuation, capital de giro e precificação: as quatro lentes unidas.",
+              "subsections": [
+                  {
+                      "title": "A Visão Holística",
+                      "content": "Estes pilares não andam sozinhos. Analisar só a receita e ignorar o endividamento gerado pela operação é criar uma bomba-relógio interna."
+                  },
+                  {
+                      "title": "As 4 Perguntas de Ouro",
+                      "content": "1. A estrutura está saudável? (V) 2. A tendência melhora? (H) 3. O dinheiro circula bem? (Giro) 4. O preço cobre tudo com lucro? (Precificação)."
+                  }
+              ],
+              "synthesis": {
+                  "title": "Síntese",
+                  "bullets": [
+                      "Fatura mas falta caixa? Olhe o capital de giro. Vende mas não lucra? Olhe a estrutura vertical.",
+                      "O diagnóstico integrado transforma números mortos em direções acionáveis para o CEO."
+                  ],
+                  "insights": []
+              }
+          }
+      ]
   }
   , SIG_PESSOAS
 ];
