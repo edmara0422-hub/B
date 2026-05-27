@@ -3502,6 +3502,108 @@ export const SUBJECTS_DB: SubjectContent[] = [
               }
           }
       ]
+  },
+  {
+      "id": "M4-T1-S12",
+      "code": "M4-T1-S12",
+      "title": "Leitura e Escrita Acadêmica",
+      "description": "Pirâmide de Minto, Modelo Toulmin, pesquisa e storytelling corporativo.",
+      "icon": "PenTool",
+      "videoUrls": [],
+      "chapters": [
+          {
+              "title": "1: Escrever com Clareza",
+              "description": "Da clareza de pensamento à clareza de texto — como gestores comunicam para quem decide",
+              "subsections": [
+                  {
+                      "title": "Os 3 Princípios",
+                      "content": "Clareza (sem ambiguidade), Concisão (menos palavras) e Estrutura (lógica evidente)."
+                  },
+                  {
+                      "title": "A Pirâmide de Minto",
+                      "content": "A estrutura mais poderosa de comunicação executiva (criada na McKinsey). Inverte a lógica tradicional: a recomendação e conclusão vêm na primeira frase, não na última. O CEO lê a conclusão em 10 segundos e depois decide se lê as evidências."
+                  },
+                  {
+                      "title": "Formatos Diretos",
+                      "content": "Cada situação exige o seu veículo: Memo de 1 página (decisões rápidas), Executive Summary de 2 páginas, Deck de 10-15 slides, Email de 5 linhas."
+                  }
+              ],
+              "synthesis": {
+                  "title": "Síntese",
+                  "bullets": [
+                      "A escrita executiva é sobre fazer o leitor entender e agir, não sobre mostrar conhecimento.",
+                      "Se você não consegue escrever sua tese em uma frase, você ainda não sabe o que quer."
+                  ],
+                  "insights": []
+              }
+          },
+          {
+              "title": "2: Argumentar com Rigor",
+              "description": "Do Modelo Toulmin aos 10 erros que destroem credibilidade — como construir teses que convencem",
+              "subsections": [
+                  {
+                      "title": "O Modelo Toulmin",
+                      "content": "A anatomia de um argumento robusto tem 6 elementos: Tese (o que defendo), Dados (números), Justificativa (conexão lógica), Grau de Certeza, Contra-argumento e Suporte adicional."
+                  },
+                  {
+                      "title": "Erros Comuns",
+                      "content": "1. Falta de tese clara na primeira frase. 2. Linguagem vaga ('várias empresas'). 3. Citações sem análise. 4. Plágio acidental."
+                  }
+              ],
+              "synthesis": {
+                  "title": "Síntese",
+                  "bullets": [
+                      "Um argumento sem dados é opinião; com dados e sem justificativa é só correlação.",
+                      "Antecipar contra-argumentos fortalece a sua posição."
+                  ],
+                  "insights": []
+              }
+          },
+          {
+              "title": "3: Ler e Pesquisar",
+              "description": "Leitura crítica, métodos de pesquisa e revisão bibliográfica — as fundações do conhecimento",
+              "subsections": [
+                  {
+                      "title": "Leitura Crítica (SQ3R)",
+                      "content": "Ler criticamente é questionar premissas, não confirmar ideias prontas. SQ3R: Survey, Question, Read, Recite, Review."
+                  },
+                  {
+                      "title": "Tipos de Pesquisa",
+                      "content": "Exploratória (o que acontece? entrevistas); Descritiva (perfil/tamanho? surveys); Causal (X causa Y? teste A/B, experimento controlado)."
+                  }
+              ],
+              "synthesis": {
+                  "title": "Síntese",
+                  "bullets": [
+                      "Viés de confirmação é o inimigo da leitura crítica.",
+                      "Pesquisa com método errado invalida o estudo inteiro."
+                  ],
+                  "insights": []
+              }
+          },
+          {
+              "title": "4: Apresentar com Impacto",
+              "description": "Storytelling com dados, design de slides e a estrutura que move pessoas à ação",
+              "subsections": [
+                  {
+                      "title": "Estrutura Duarte",
+                      "content": "A narrativa que gera ação alterna entre o 'O que é' (realidade com tensão) e 'O que poderia ser' (a visão e solução), terminando em um Call to Action claro."
+                  },
+                  {
+                      "title": "Design de Slides",
+                      "content": "Regra dos 3 segundos: se o leitor não entende em 3 segundos, refaça. Um slide = uma ideia = um visual. Destaque o número gigante, não o texto."
+                  }
+              ],
+              "synthesis": {
+                  "title": "Síntese",
+                  "bullets": [
+                      "Os primeiros 30 segundos são decisivos: comece com impacto, nunca lendo o slide.",
+                      "Qualquer elemento extra no slide divide a atenção da audiência e dilui sua fala."
+                  ],
+                  "insights": []
+              }
+          }
+      ]
   }
   , SIG_PESSOAS
 ];
