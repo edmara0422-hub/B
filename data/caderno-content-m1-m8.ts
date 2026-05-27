@@ -4130,6 +4130,104 @@ export const SUBJECTS_DB: SubjectContent[] = [
               }
           }
       ]
+  },
+  {
+      "id": "M4-T1-S18",
+      "code": "M4-T1-S18",
+      "title": "Pesquisa Aplicada a Negócios",
+      "description": "Quanti vs Quali, desenho de pesquisa, 4 níveis de análise e LTV/CAC/Churn.",
+      "icon": "Search",
+      "videoUrls": [],
+      "chapters": [
+          {
+              "title": "1: Quanti vs Quali",
+              "description": "Escolha o Método Certo para Cada Pergunta. Quanti diz O QUE; Quali diz POR QUÊ.",
+              "subsections": [
+                  {
+                      "title": "Os 4 Métodos",
+                      "content": "Quantitativa (números e escala), Qualitativa (motivações profundas), Misto (quali para hipótese, quanti para validação) e Experimental (A/B Test para comportamento real)."
+                  },
+                  {
+                      "title": "A Armadilha da Intenção",
+                      "content": "Confundir intenção com comportamento é o erro mais caro. As pessoas dizem que fariam X, mas na prática escolhem Y. Teste real sempre ganha de focus group."
+                  }
+              ],
+              "synthesis": {
+                  "title": "Síntese",
+                  "bullets": [
+                      "A sequência ideal: Quali (entender) → Quanti (dimensionar) → Experimental (testar solução).",
+                      "Amostra certa importa muito mais que o tamanho da amostra."
+                  ],
+                  "insights": []
+              }
+          },
+          {
+              "title": "2: Desenhando Pesquisa de Qualidade",
+              "description": "Como não enviesar a pesquisa para ouvir apenas o que você quer ouvir.",
+              "subsections": [
+                  {
+                      "title": "O Processo de 5 Etapas",
+                      "content": "1. Pergunta clara. 2. Hipóteses explícitas testáveis. 3. Amostra rigorosa. 4. Instrumento neutro. 5. Ação (pesquisa que não gera decisão é apenas custo)."
+                  },
+                  {
+                      "title": "Viés de Confirmação",
+                      "content": "Formular hipóteses antes evita que você molde as perguntas para confirmar o que já acreditava (ex: focar no preço quando o problema era horário)."
+                  }
+              ],
+              "synthesis": {
+                  "title": "Síntese",
+                  "bullets": [
+                      "Sempre inclua os 'detratores' e quem nunca comprou. Fãs não revelam o gargalo.",
+                      "Escreva a hipótese antes de escrever as perguntas do formulário."
+                  ],
+                  "insights": []
+              }
+          },
+          {
+              "title": "3: Os 4 Níveis de Análise de Dados",
+              "description": "A maioria fica no nível 1 (descritivo) e acha que usa dados para decisão.",
+              "subsections": [
+                  {
+                      "title": "Os 4 Níveis",
+                      "content": "1. Descritivo (o que aconteceu?). 2. Diagnóstico (por que aconteceu?). 3. Preditivo (o que vai acontecer?). 4. Prescritivo (o que devemos fazer?)."
+                  },
+                  {
+                      "title": "Não Pule Degraus",
+                      "content": "Você não implementa IA Prescritiva se sua base de dados Descritiva está suja. A passagem do Nível 1 para o 2 (Diagnóstico) tem o maior ROI imediato."
+                  }
+              ],
+              "synthesis": {
+                  "title": "Síntese",
+                  "bullets": [
+                      "Para cada dashboard, pergunte: qual decisão este dado habilita?",
+                      "Preditivo treinado em dado ruim (Lixo Entra, Lixo Sai) gera predições piores que a intuição humana."
+                  ],
+                  "insights": []
+              }
+          },
+          {
+              "title": "4: LTV, CAC e Churn",
+              "description": "As 3 métricas que definem se o crescimento da sua empresa é real ou suicida.",
+              "subsections": [
+                  {
+                      "title": "O Tripé",
+                      "content": "LTV (valor gerado ao longo da vida do cliente). CAC (custo para trazer o cliente). Churn (taxa de cancelamento que esvazia a base)."
+                  },
+                  {
+                      "title": "A Regra de Ouro",
+                      "content": "LTV > 3x CAC. Crescer com um LTV/CAC < 1 significa pagar para trabalhar; quanto mais a empresa cresce, mais rápido ela vai à falência."
+                  }
+              ],
+              "synthesis": {
+                  "title": "Síntese",
+                  "bullets": [
+                      "O Churn é o inimigo silencioso: reduzir o churn em 2% pode dobrar seu LTV.",
+                      "Antes de pisar no acelerador da aquisição, tape os buracos da retenção."
+                  ],
+                  "insights": []
+              }
+          }
+      ]
   }
   , SIG_PESSOAS
 ];
