@@ -3090,7 +3090,8 @@ export function SigPessoasPanel() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  className="grid grid-cols-1 lg:grid-cols-12 gap-4 text-left"
+                  className="grid grid-cols-1 lg:grid-cols-12 gap-4 text-left w-full"
+                  style={{ width: '100%' }}
                 >
                   {/* Tuckman Stages */}
                   <div className="lg:col-span-7 space-y-4">
@@ -3199,7 +3200,8 @@ export function SigPessoasPanel() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  className="grid grid-cols-1 lg:grid-cols-12 gap-4 text-left"
+                  className="grid grid-cols-1 lg:grid-cols-12 gap-4 text-left w-full"
+                  style={{ width: '100%' }}
                 >
                   
                   {/* Algoritmo de Sucessor */}
@@ -3323,7 +3325,8 @@ export function SigPessoasPanel() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  className="grid grid-cols-1 lg:grid-cols-12 gap-4 text-left"
+                  className="grid grid-cols-1 lg:grid-cols-12 gap-4 text-left w-full"
+                  style={{ width: '100%' }}
                 >
                   
                   {/* Conflict Analyzer Thomas Kilmann */}
@@ -3415,7 +3418,17 @@ export function SigPessoasPanel() {
             <div className="flex flex-wrap gap-2 mb-6 border-b border-white/5 pb-4 relative z-10">
               <button 
                 onClick={() => setEmpresaTab('diagnostico')} 
-                className={`px-4 py-2 rounded-xl text-[10px] font-mono tracking-widest uppercase font-bold transition-all ${empresaTab === 'diagnostico' ? 'bg-[#5dcaa5] text-black shadow-[0_0_15px_rgba(93,202,165,0.3)]' : 'bg-white/5 border border-white/10 text-white/50 hover:border-[#5dcaa5]/30 hover:text-[#5dcaa5]'}`}
+                className="px-4 py-2 rounded-xl text-[10px] font-mono tracking-widest uppercase font-bold transition-all border"
+                style={empresaTab === 'diagnostico' ? {
+                  backgroundColor: '#5dcaa5',
+                  color: '#000000',
+                  borderColor: '#5dcaa5',
+                  boxShadow: '0 0 15px rgba(93,202,165,0.35)',
+                } : {
+                  backgroundColor: 'rgba(255,255,255,0.05)',
+                  borderColor: 'rgba(255,255,255,0.1)',
+                  color: 'rgba(255,255,255,0.5)',
+                }}
               >
                 Auditoria 6D
               </button>
@@ -3428,7 +3441,17 @@ export function SigPessoasPanel() {
                 <button
                   key={sub.id}
                   onClick={() => setEmpresaTab(sub.id as EmpresaSubTab)}
-                  className={`px-4 py-2 rounded-xl text-[10px] font-mono tracking-widest uppercase font-bold transition-all ${empresaTab === sub.id ? 'bg-[#5dcaa5] text-black shadow-[0_0_15px_rgba(93,202,165,0.3)]' : 'bg-white/5 border border-white/10 text-white/50 hover:border-[#5dcaa5]/30 hover:text-[#5dcaa5]'}`}
+                  className="px-4 py-2 rounded-xl text-[10px] font-mono tracking-widest uppercase font-bold transition-all border"
+                  style={empresaTab === sub.id ? {
+                    backgroundColor: '#5dcaa5',
+                    color: '#000000',
+                    borderColor: '#5dcaa5',
+                    boxShadow: '0 0 15px rgba(93,202,165,0.35)',
+                  } : {
+                    backgroundColor: 'rgba(255,255,255,0.05)',
+                    borderColor: 'rgba(255,255,255,0.1)',
+                    color: 'rgba(255,255,255,0.5)',
+                  }}
                 >
                   {sub.label}
                 </button>
@@ -3504,7 +3527,8 @@ export function SigPessoasPanel() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  className="grid grid-cols-1 lg:grid-cols-12 gap-4 text-left"
+                  className="grid grid-cols-1 lg:grid-cols-12 gap-4 text-left w-full"
+                  style={{ width: '100%' }}
                 >
                   {/* Left: OKR list and add */}
                   <div className="lg:col-span-7 dash-card space-y-4">
@@ -3600,7 +3624,8 @@ export function SigPessoasPanel() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  className="grid grid-cols-1 lg:grid-cols-12 gap-4 text-left"
+                  className="grid grid-cols-1 lg:grid-cols-12 gap-4 text-left w-full"
+                  style={{ width: '100%' }}
                 >
                   
                   {/* Climate ROI Calculator */}
@@ -3711,7 +3736,8 @@ export function SigPessoasPanel() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  className="grid grid-cols-1 lg:grid-cols-12 gap-4 text-left"
+                  className="grid grid-cols-1 lg:grid-cols-12 gap-4 text-left w-full"
+                  style={{ width: '100%' }}
                 >
                   
                   {/* Channels noise calculator */}
