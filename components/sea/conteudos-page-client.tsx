@@ -1626,7 +1626,22 @@ function ExecutiveStudyBriefing({
   const syllabusList = moduleId === 'M1' ? NEURO_SYLLABUS : moduleId === 'M2' ? PNEUMO_SYLLABUS : BUSINESS_SYLLABUS
   const syllabusItem = syllabusList[activeSubjectIndex] ?? syllabusList[0]
   const dbId = SYLLABUS_TO_DB_MAP[syllabusItem.id] ?? 'M1-S1'
-  const activeSubjectData = SUBJECTS_DB.find(s => s.id === dbId) ?? SUBJECTS_DB[0]
+  const activeSubjectData = SUBJECTS_DB.find(s => s.id === dbId) ?? {
+    id: dbId,
+    code: "EM-BREVE",
+    title: "Conteúdo em Produção",
+    videoUrls: [],
+    chapters: [{
+      title: "Em breve",
+      description: "Este conteúdo está sendo estruturado.",
+      subsections: [{
+        title: "Aguarde",
+        content: "O material completo para este módulo estará disponível em breve.",
+        quote: ""
+      }],
+      synthesis: { title: "Síntese", bullets: ["Em produção"], insights: [] }
+    }]
+  }
 
   useEffect(() => {
     setActiveChapterIndex(0)
