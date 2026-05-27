@@ -1535,8 +1535,8 @@ export function SigPessoasPanel() {
                       <svg className="w-full h-full overflow-visible" viewBox="-200 -200 400 400">
                         <defs>
                           <radialGradient id="crystalFillH" cx="50%" cy="50%" r="50%">
-                            <stop offset="0%" stopColor="#d4b87a" stopOpacity="0.25"/>
-                            <stop offset="100%" stopColor="#151310" stopOpacity="0"/>
+                            <stop offset="0%" stopColor="#d4b87a" stopOpacity="0.35"/>
+                            <stop offset="100%" stopColor="#d4b87a" stopOpacity="0.05"/>
                           </radialGradient>
                           <linearGradient id="crystalStrokeH" x1="0" y1="-150" x2="0" y2="150" gradientUnits="userSpaceOnUse">
                             <stop offset="0%" stopColor="#ffffff" stopOpacity="0.6"/>
@@ -1545,52 +1545,56 @@ export function SigPessoasPanel() {
                           </linearGradient>
                         </defs>
 
-                        {/* Radar Circles */}
-                        <circle cx="0" cy="0" r="160" fill="none" stroke="rgba(212,184,122,0.12)" strokeWidth="0.7" strokeDasharray="4 6"/>
-                        <circle cx="0" cy="0" r="110" fill="none" stroke="rgba(255,255,255,0.04)" strokeWidth="0.5"/>
-                        <circle cx="0" cy="0" r="60" fill="none" stroke="rgba(255,255,255,0.03)" strokeWidth="0.4"/>
+                        {/* Radar Web (Concentric Hexagons) */}
+                        <g fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="0.8">
+                          {/* Outer Hexagon (R=140) */}
+                          <polygon points="0,-140 121.2,-70 121.2,70 0,140 -121.2,70 -121.2,-70" stroke="url(#crystalStrokeH)" strokeWidth="1" />
+                          {/* Mid Hexagon (R=93.3) */}
+                          <polygon points="0,-93.3 80.8,-46.6 80.8,46.6 0,93.3 -80.8,46.6 -80.8,-46.6" strokeDasharray="3 3" />
+                          {/* Inner Hexagon (R=46.6) */}
+                          <polygon points="0,-46.6 40.4,-23.3 40.4,23.3 0,46.6 -40.4,23.3 -40.4,-23.3" strokeDasharray="3 3" />
+                        </g>
                         
-                        {/* Star base polygon */}
-                        <polygon points="0,-140 121,-70 121,70 0,140 -121,70 -121,-70" fill="none" stroke="url(#crystalStrokeH)" strokeWidth="1"/>
-                        
-                        <g stroke="rgba(255,255,255,0.1)" strokeWidth="0.5">
+                        {/* 6 Axes */}
+                        <g stroke="rgba(255,255,255,0.15)" strokeWidth="0.8">
                           <line x1="0" y1="-140" x2="0" y2="140"/>
-                          <line x1="-121" y1="0" x2="121" y2="0"/>
-                          <line x1="-121" y1="-70" x2="121" y2="70"/>
-                          <line x1="-121" y1="70" x2="121" y2="-70"/>
+                          <line x1="121.2" y1="-70" x2="-121.2" y2="70"/>
+                          <line x1="-121.2" y1="-70" x2="121.2" y2="70"/>
                         </g>
 
                         {/* Interactive dynamic radar polygon based on selection */}
                         <polygon 
                           points={`
                             0,${selectedDims.includes('D1') ? -115 : 0} 
-                            ${selectedDims.includes('D2') ? 100 : 0},${selectedDims.includes('D2') ? -48 : 0} 
-                            ${selectedDims.includes('D3') ? 80 : 0},${selectedDims.includes('D3') ? 55 : 0} 
+                            ${selectedDims.includes('D2') ? 95.3 : 0},${selectedDims.includes('D2') ? -55 : 0} 
+                            ${selectedDims.includes('D3') ? 90.9 : 0},${selectedDims.includes('D3') ? 52.5 : 0} 
                             0,${selectedDims.includes('D4') ? 98 : 0} 
-                            ${selectedDims.includes('D5') ? -70 : 0},${selectedDims.includes('D5') ? 38 : 0} 
-                            ${selectedDims.includes('D6') ? -85 : 0},${selectedDims.includes('D6') ? -52 : 0}
+                            ${selectedDims.includes('D5') ? -73.6 : 0},${selectedDims.includes('D5') ? 42.5 : 0} 
+                            ${selectedDims.includes('D6') ? -86.6 : 0},${selectedDims.includes('D6') ? -50 : 0}
                           `} 
                           fill="url(#crystalFillH)" 
                           stroke="#d4b87a" 
                           strokeWidth="2" 
-                          opacity="0.6"
+                          opacity="0.85"
+                          style={{ transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)' }}
                         />
 
                         {/* Vertex Dots */}
-                        {selectedDims.includes('D1') && <circle cx="0" cy="-115" r="4.5" fill="#fff" stroke="#d4b87a" strokeWidth="1.5"/>}
-                        {selectedDims.includes('D2') && <circle cx="100" cy="-48" r="4.5" fill="#fff" stroke="#d4b87a" strokeWidth="1.5"/>}
-                        {selectedDims.includes('D3') && <circle cx="80" cy="55" r="4.5" fill="#fff" stroke="#d4b87a" strokeWidth="1.5"/>}
-                        {selectedDims.includes('D4') && <circle cx="0" cy="98" r="4.5" fill="#fff" stroke="#d4b87a" strokeWidth="1.5"/>}
-                        {selectedDims.includes('D5') && <circle cx="-70" cy="38" r="4.5" fill="#fff" stroke="#d4b87a" strokeWidth="1.5"/>}
-                        {selectedDims.includes('D6') && <circle cx="-85" cy="-52" r="4.5" fill="#fff" stroke="#d4b87a" strokeWidth="1.5"/>}
+                        {selectedDims.includes('D1') && <circle cx="0" cy="-115" r="4.5" fill="#151310" stroke="#d4b87a" strokeWidth="2" className="drop-shadow-[0_0_8px_rgba(212,184,122,0.8)]"/>}
+                        {selectedDims.includes('D2') && <circle cx="95.3" cy="-55" r="4.5" fill="#151310" stroke="#d4b87a" strokeWidth="2" className="drop-shadow-[0_0_8px_rgba(212,184,122,0.8)]"/>}
+                        {selectedDims.includes('D3') && <circle cx="90.9" cy="52.5" r="4.5" fill="#151310" stroke="#d4b87a" strokeWidth="2" className="drop-shadow-[0_0_8px_rgba(212,184,122,0.8)]"/>}
+                        {selectedDims.includes('D4') && <circle cx="0" cy="98" r="4.5" fill="#151310" stroke="#d4b87a" strokeWidth="2" className="drop-shadow-[0_0_8px_rgba(212,184,122,0.8)]"/>}
+                        {selectedDims.includes('D5') && <circle cx="-73.6" cy="42.5" r="4.5" fill="#151310" stroke="#d4b87a" strokeWidth="2" className="drop-shadow-[0_0_8px_rgba(212,184,122,0.8)]"/>}
+                        {selectedDims.includes('D6') && <circle cx="-86.6" cy="-50" r="4.5" fill="#151310" stroke="#d4b87a" strokeWidth="2" className="drop-shadow-[0_0_8px_rgba(212,184,122,0.8)]"/>}
 
-                        <g fontStyle="Poppins" fontSize="13" fontWeight="600" fill="#d4b87a">
-                          <text x="0" y="-152" textAnchor="middle">D1</text>
-                          <text x="140" y="-78" textAnchor="middle">D2</text>
-                          <text x="138" y="85" textAnchor="middle">D3</text>
-                          <text x="0" y="158" textAnchor="middle">D4</text>
-                          <text x="-138" y="85" textAnchor="middle">D5</text>
-                          <text x="-140" y="-78" textAnchor="middle">D6</text>
+                        {/* Axis Labels */}
+                        <g fontStyle="Poppins" fontSize="11" fontWeight="700" fill="#d4b87a" className="tracking-widest drop-shadow-[0_0_4px_rgba(0,0,0,0.8)]">
+                          <text x="0" y="-155" textAnchor="middle">D1</text>
+                          <text x="142" y="-76" textAnchor="middle">D2</text>
+                          <text x="142" y="86" textAnchor="middle">D3</text>
+                          <text x="0" y="166" textAnchor="middle">D4</text>
+                          <text x="-142" y="86" textAnchor="middle">D5</text>
+                          <text x="-142" y="-76" textAnchor="middle">D6</text>
                         </g>
                       </svg>
 
