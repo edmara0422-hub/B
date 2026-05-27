@@ -3718,6 +3718,104 @@ export const SUBJECTS_DB: SubjectContent[] = [
               }
           }
       ]
+  },
+  {
+      "id": "M4-T1-S14",
+      "code": "M4-T1-S14",
+      "title": "Ambiente Macroeconômico",
+      "description": "Indicadores econômicos, ciclos, mercado brasileiro e o sistema financeiro.",
+      "icon": "Globe",
+      "videoUrls": [],
+      "chapters": [
+          {
+              "title": "1: Os 5 Indicadores — Lendo o Ambiente",
+              "description": "PIB, IPCA, Selic, câmbio e desemprego: o painel que nenhum gestor pode ignorar.",
+              "subsections": [
+                  {
+                      "title": "Macroeconomia na Prática",
+                      "content": "Você não controla a economia, mas precisa saber lê-la para proteger a empresa. Quando política monetária e fiscal conflitam (governo gastando muito e BC subindo juros), ocorre o pior cenário para os negócios."
+                  },
+                  {
+                      "title": "Os 5 Indicadores Básicos",
+                      "content": "PIB: Soma da produção (crescendo = expansão). IPCA: Inflação. Selic: Alta significa priorizar caixa, baixa estimula investimentos. Câmbio: Afeta importação e exportação. Desemprego: Baixo desemprego força aumento de salários."
+                  }
+              ],
+              "synthesis": {
+                  "title": "Síntese",
+                  "bullets": [
+                      "Leia o painel dos 5 indicadores em conjunto, não isoladamente.",
+                      "Selic alta = priorize caixa; Selic baixa = invista para expandir."
+                  ],
+                  "insights": []
+              }
+          },
+          {
+              "title": "2: Ciclos Econômicos — Expandir e Proteger",
+              "description": "A economia oscila em 4 fases. A estratégia certa no momento errado é a estratégia errada.",
+              "subsections": [
+                  {
+                      "title": "As 4 Fases do Ciclo",
+                      "content": "Expansão (investir com cautela de caixa). Pico (preparar caixa, não acreditar que a euforia será eterna). Contração (proteger caixa e reduzir custos). Vale (comprar o futuro barato, juros caem)."
+                  },
+                  {
+                      "title": "Indicadores que Antecipam a Mudança",
+                      "content": "A Curva de juros invertida (curtos maiores que longos) antecipa recessão em 12 a 18 meses com forte precisão. PMI abaixo de 50 aponta retração na indústria."
+                  }
+              ],
+              "synthesis": {
+                  "title": "Síntese",
+                  "bullets": [
+                      "A estratégia certa na fase errada gera quebra.",
+                      "Quem tem caixa na contração compra concorrentes fracos e talentos baratos."
+                  ],
+                  "insights": []
+              }
+          },
+          {
+              "title": "3: Brasil — Estrutura, Desafios e Oportunidades",
+              "description": "Da reforma tributária ao agronegócio: entender o Brasil é vantagem competitiva.",
+              "subsections": [
+                  {
+                      "title": "Matriz Econômica e Desafios",
+                      "content": "Serviços são 70% do PIB, indústria 22% e o agro apenas 8% (embora corresponda a 25% das exportações). Os desafios: carga tributária, infraestrutura, desigualdade extrema, spread bancário alto e forte burocracia."
+                  },
+                  {
+                      "title": "A Reforma Tributária",
+                      "content": "5 tributos viram 2 (CBS e IBS), formando o IVA e visando simplificar. Serviços tendem a pagar mais, enquanto a indústria tende a pagar menos pela eliminação da cobrança em cascata."
+                  }
+              ],
+              "synthesis": {
+                  "title": "Síntese",
+                  "bullets": [
+                      "Vantagem comparativa do Brasil: Agro, energia limpa e biodiversidade.",
+                      "Entender e se preparar para os impactos da Reforma Tributária (antes de 2026) é diferencial."
+                  ],
+                  "insights": []
+              }
+          },
+          {
+              "title": "4: Trabalho e Dinheiro — O Sistema",
+              "description": "Mercado de trabalho em transformação + sistema financeiro: o que todo gestor precisa dominar.",
+              "subsections": [
+                  {
+                      "title": "Transformações no Trabalho",
+                      "content": "Há escassez de talento (desemprego em tech ~1%). Upskilling interno é mais barato do que tentar contratar no mercado. O trabalho híbrido hoje retém 12% mais talentos e IA substitui tarefas, não necessariamente pessoas diretas."
+                  },
+                  {
+                      "title": "Sistema Financeiro",
+                      "content": "O BCB regula a Selic e opera o PIX. As regras básicas de caixa: mantenha reserva de emergência (3-6 meses em CDI) e nunca recorra ao cheque especial (>300%/ano)."
+                  }
+              ],
+              "synthesis": {
+                  "title": "Síntese",
+                  "bullets": [
+                      "O crédito mais caro do mundo é o cheque especial — evite-o a todo custo.",
+                      "Equipes diversas (gênero/etnia) têm rentabilidade historicamente maior."
+                  ],
+                  "insights": []
+              }
+          }
+      ]
   }
   , SIG_PESSOAS
 ];
