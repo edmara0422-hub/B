@@ -412,19 +412,9 @@ export function SigPessoasPanel() {
     triggerToast('Membro da equipe desligado/removido.', 'warn')
   }
 
-  function handleMoveMemberToCandidates(m: TeamMember) {
+  function handleArchiveMember(m: TeamMember) {
     setTeamMembers(teamMembers.filter(x => x.id !== m.id))
-    const newCand: Candidate = {
-      id: `cand-${Date.now()}`,
-      name: m.name,
-      role: m.role,
-      score: `HHS B+ / Lencioni ${(m.d6 / 10).toFixed(1)}`,
-      stage: 'triagem',
-      lencioniScore: m.d6,
-      stats: { hum: m.hhh.humble, fom: m.hhh.hungry, int: m.hhh.smart }
-    }
-    setCandidates([...candidates, newCand])
-    triggerToast(`⇄ ${m.name} movido de volta para candidatos (Triagem)!`, 'ok')
+    triggerToast(`📥 ${m.name} foi arquivado do time atual.`, 'ok')
   }
 
   function handleTriggerOnboard(c: Candidate) {
@@ -2849,12 +2839,12 @@ export function SigPessoasPanel() {
                                 <span className={`text-[7.5px] font-bold uppercase font-mono mt-0.5 block ${m.d6 >= 80 ? 'text-[#5dcaa5]' : m.d6 >= 60 ? 'text-[#fac775]' : 'text-[#e24b4a]'}`}>{m.status}</span>
                                 <div className="flex items-center gap-1.5 mt-1">
                                   <button 
-                                    onClick={() => handleMoveMemberToCandidates(m)}
+                                    onClick={() => handleArchiveMember(m)}
                                     className="p-1 hover:bg-white/10 rounded text-[9.5px] text-[#d4b87a] transition-colors flex items-center justify-center"
-                                    title="Mover de volta para Candidatos"
+                                    title="Arquivar membro do time"
                                     style={{ lineHeight: 1 }}
                                   >
-                                    ⇄
+                                    📥
                                   </button>
                                   <button 
                                     onClick={() => {
@@ -3308,10 +3298,10 @@ export function SigPessoasPanel() {
                               </div>
                               <div className="col-span-2 flex gap-3 mt-3">
                                 <button
-                                  onClick={() => handleMoveMemberToCandidates(m)}
+                                  onClick={() => handleArchiveMember(m)}
                                   className="flex-1 py-2.5 bg-[#d4b87a]/10 hover:bg-[#d4b87a]/20 border border-[#d4b87a]/40 rounded-xl text-[10px] font-mono font-bold text-[#d4b87a] transition-all hover:scale-[1.02] flex items-center justify-center gap-1.5"
                                 >
-                                  <span>⇄</span> MOVER P/ CANDIDATOS
+                                  <span>📥</span> ARQUIVAR
                                 </button>
                                 <button
                                   onClick={() => {
