@@ -2944,6 +2944,90 @@ export const SUBJECTS_DB: SubjectContent[] = [
               }
           }
       ]
+  },
+  {
+      "id": "M4-T1-S7",
+      "code": "M4-T1-S7",
+      "title": "Economia de Empresa e Análise Mercadológica",
+      "description": "Escassez, custo de oportunidade, conceito de valor, necessidade, desejo e demanda",
+      "icon": "LineChart",
+      "videoUrls": [],
+      "chapters": [
+          {
+              "title": "1: Fundamentos de Economia e Marketing",
+              "description": "Escassez, custo de oportunidade e a evolução do marketing — de trocas a ecossistemas",
+              "subsections": [
+                  {
+                      "title": "Escassez e Custo de Oportunidade",
+                      "content": "A economia define escassez como a insuficiência de recursos para todos os desejos. Toda escolha implica um custo de oportunidade — o valor da melhor alternativa sacrificada. Quando se investe em marketing, diz-se 'não' a outra área."
+                  },
+                  {
+                      "title": "A Evolução do Marketing",
+                      "content": "Era da Produção (até 1930): Foco na eficiência, demanda superava oferta (ex: Ford Modelo T).\nEra do Marketing (1950-2000): Foco no cliente, oferta superava demanda, foco em 4Ps.\nEra Digital (2000+): Foco em ecossistema, algoritmos e dados (ex: Amazon)."
+                  },
+                  {
+                      "title": "Definições Clássicas",
+                      "content": "Raimar Richers: 'Busca e realização de trocas'.\nPeter Drucker: 'Tornar a venda supérflua. O produto se vende sozinho'.\nPhilip Kotler: 'Processo social de criação, oferta e livre negociação de valor'.\nO núcleo em comum é: organizar trocas sob escassez, reduzindo o custo de decisão."
+                  }
+              ],
+              "synthesis": {
+                  "title": "Síntese",
+                  "bullets": [
+                      "Toda escolha tem custo de oportunidade.",
+                      "Amazon: 35% das vendas vêm de recomendações; no digital, o produto é o marketing."
+                  ],
+                  "insights": []
+              }
+          },
+          {
+              "title": "2: Valor — O Conceito Central do Marketing",
+              "description": "Valor não está no produto — está na percepção do cliente",
+              "subsections": [
+                  {
+                      "title": "Valor Percebido",
+                      "content": "Valor não está no produto, está na mente do cliente. É a relação entre Benefício Percebido e Custo Percebido. O cérebro avalia: 'Isso vale o que me custa?'"
+                  },
+                  {
+                      "title": "Os 4 Tipos de Valor Percebido",
+                      "content": "1. Funcional: Resolve o problema? (Durabilidade, qualidade).\n2. Emocional: Como se sente ao usar? (Alegria, segurança).\n3. Social: O que diz sobre mim? (Status, tribo).\n4. Econômico: Custo-benefício justo? (Economia de tempo/dinheiro)."
+                  },
+                  {
+                      "title": "Valor vs Preço na Prática",
+                      "content": "Havaianas: mesma borracha de R$ 15 pode custar R$ 350 em parceria com D&G. O valor social justifica a margem.\nNubank: mesmo serviço de banco, mas o valor econômico, funcional e emocional gerou o maior NPS do mercado (87)."
+                  }
+              ],
+              "synthesis": {
+                  "title": "Síntese",
+                  "bullets": [
+                      "Valor = Benefício percebido ÷ Custo percebido. É percepção.",
+                      "Os 4Ps gerenciam o valor: criar (produto), sinalizar (preço), comunicar (promoção), entregar (distribuição)."
+                  ],
+                  "insights": []
+              }
+          },
+          {
+              "title": "3: Necessidade, Desejo e Demanda",
+              "description": "A diferença que separa marketing eficiente de marketing desperdiçado",
+              "subsections": [
+                  {
+                      "title": "Necessidade vs Desejo vs Demanda",
+                      "content": "Necessidade: carência humana básica universal (Maslow: fome, segurança, estima).\nDesejo: forma cultural de satisfazer uma necessidade (ex: necessidade de cafeína, desejo de Starbucks).\nDemanda: desejo acompanhado de poder de compra (ex: Xiaomi transformou o desejo de premium em demanda acessível)."
+                  },
+                  {
+                      "title": "A Estratégia de Marketing",
+                      "content": "Marketing NÃO cria necessidades. Ele molda desejos e os converte em demanda viável. Confundir desejo com demanda leva a lançar produtos sem aderência financeira no mercado real."
+                  }
+              ],
+              "synthesis": {
+                  "title": "Síntese",
+                  "bullets": [
+                      "Necessidade é inata, desejo é cultural, demanda exige dinheiro.",
+                      "Confundir necessidade, desejo e demanda desperdiça o orçamento da empresa."
+                  ],
+                  "insights": []
+              }
+          }
+      ]
   }
   , SIG_PESSOAS
 ];
