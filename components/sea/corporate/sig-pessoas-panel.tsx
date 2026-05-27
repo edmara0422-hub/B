@@ -3418,17 +3418,7 @@ export function SigPessoasPanel() {
             <div className="flex flex-wrap gap-2 mb-6 border-b border-white/5 pb-4 relative z-50">
               <button 
                 onClick={() => setEmpresaTab('diagnostico')} 
-                className="px-4 py-2 rounded-xl text-[10px] font-mono tracking-widest uppercase font-bold transition-all border"
-                style={empresaTab === 'diagnostico' ? {
-                  backgroundColor: '#5dcaa5',
-                  color: '#000000',
-                  borderColor: '#5dcaa5',
-                  boxShadow: '0 0 15px rgba(93,202,165,0.35)',
-                } : {
-                  backgroundColor: 'rgba(255,255,255,0.05)',
-                  borderColor: 'rgba(255,255,255,0.1)',
-                  color: 'rgba(255,255,255,0.5)',
-                }}
+                className={`sub-tab-btn ${empresaTab === 'diagnostico' ? 'active' : ''}`}
               >
                 Auditoria 6D
               </button>
@@ -3441,17 +3431,7 @@ export function SigPessoasPanel() {
                 <button
                   key={sub.id}
                   onClick={() => setEmpresaTab(sub.id as EmpresaSubTab)}
-                  className="px-4 py-2 rounded-xl text-[10px] font-mono tracking-widest uppercase font-bold transition-all border"
-                  style={empresaTab === sub.id ? {
-                    backgroundColor: '#5dcaa5',
-                    color: '#000000',
-                    borderColor: '#5dcaa5',
-                    boxShadow: '0 0 15px rgba(93,202,165,0.35)',
-                  } : {
-                    backgroundColor: 'rgba(255,255,255,0.05)',
-                    borderColor: 'rgba(255,255,255,0.1)',
-                    color: 'rgba(255,255,255,0.5)',
-                  }}
+                  className={`sub-tab-btn ${empresaTab === sub.id ? 'active' : ''}`}
                 >
                   {sub.label}
                 </button>
@@ -3527,7 +3507,7 @@ export function SigPessoasPanel() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  className="grid grid-cols-1 lg:grid-cols-12 gap-4 text-left w-full"
+                  className="flex flex-col gap-6 text-left w-full"
                   style={{ width: '100%' }}
                 >
                   {/* Left: OKR list and add */}
@@ -3624,7 +3604,7 @@ export function SigPessoasPanel() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  className="grid grid-cols-1 lg:grid-cols-12 gap-4 text-left w-full"
+                  className="flex flex-col gap-6 text-left w-full"
                   style={{ width: '100%' }}
                 >
                   
@@ -3736,7 +3716,7 @@ export function SigPessoasPanel() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  className="grid grid-cols-1 lg:grid-cols-12 gap-4 text-left w-full"
+                  className="flex flex-col gap-6 text-left w-full"
                   style={{ width: '100%' }}
                 >
                   
