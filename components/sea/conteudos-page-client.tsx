@@ -529,7 +529,8 @@ const BUSINESS_SYLLABUS = [
   { id: 'M4-T1-S7', topicId: 'M4-T1', title: 'Economia de Empresa e Análise Mercadológica', subtitle: 'IE · Escassez e Valor Percebido', duration: '33:10' },
   { id: 'M4-T1-S8', topicId: 'M4-T1', title: 'Liderança e Gestão de Equipes', subtitle: 'IE · IE e Segurança Psicológica', duration: '41:50' },
   { id: 'M4-T1-S9', topicId: 'M4-T1', title: 'Filosofia', subtitle: 'IE · Ética e Pensamento Crítico', duration: '24:45' },
-  { id: 'M4-T1-S10', topicId: 'M4-T1', title: 'Cálculo Aplicado a Negócios', subtitle: 'IE · Derivadas e Break-Even', duration: '29:30' }
+  { id: 'M4-T1-S10', topicId: 'M4-T1', title: 'Cálculo Aplicado a Negócios', subtitle: 'IE · Derivadas e Break-Even', duration: '29:30' },
+  { id: 'M4-T1-S11', topicId: 'M4-T1', title: 'Análise Estatística', subtitle: 'IE · Média, Dispersão e Teste A/B', duration: '38:10' }
 ]
 
 function ExecutiveMasterclassTheater({ 

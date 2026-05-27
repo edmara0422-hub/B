@@ -3388,6 +3388,120 @@ export const SUBJECTS_DB: SubjectContent[] = [
               }
           }
       ]
+  },
+  {
+      "id": "M4-T1-S11",
+      "code": "M4-T1-S11",
+      "title": "Análise Estatística",
+      "description": "Média, dispersão, teste A/B, data storytelling, regressão e machine learning.",
+      "icon": "BarChart",
+      "videoUrls": [],
+      "chapters": [
+          {
+              "title": "1: Fundamentos de Estatística",
+              "description": "Média, dispersão e probabilidade — a base de toda decisão por dados",
+              "subsections": [
+                  {
+                      "title": "Medidas de Tendência Central",
+                      "content": "Média: soma ÷ quantidade (sensível a outliers). Mediana: valor central, imune a outliers (ideal para salários). Moda: valor mais frequente."
+                  },
+                  {
+                      "title": "Medidas de Dispersão",
+                      "content": "Desvio padrão: mede quanto os dados se afastam da média. Um desvio pequeno indica consistência e processos previsíveis."
+                  },
+                  {
+                      "title": "Probabilidade e Distribuição Normal",
+                      "content": "A Curva de Gauss (68-95-99.7%) mostra que 95% dos dados ficam a 2 desvios padrão da média. Acima de 3 desvios, o dado é uma anomalia estatística."
+                  }
+              ],
+              "synthesis": {
+                  "title": "Síntese",
+                  "bullets": [
+                      "Mediana é mais honesta que média quando há outliers.",
+                      "Se um resultado sai 3 desvios padrão do normal, não é rotina — é anomalia."
+                  ],
+                  "insights": []
+              }
+          },
+          {
+              "title": "2: Regressão, Hipóteses e Teste A/B",
+              "description": "Prever, testar e provar — a estatística que separa dado de achismo",
+              "subsections": [
+                  {
+                      "title": "Regressão Linear",
+                      "content": "Prevê o futuro com base no passado (reta de regressão). O R² mede o quanto a variação de Y é explicada por X (ex: 82% das vendas explicadas por ads)."
+                  },
+                  {
+                      "title": "Teste de Hipóteses",
+                      "content": "P-valor < 0.05 significa que o resultado é estatisticamente significativo (a diferença é real, não mero acaso). Não mede o tamanho do efeito, apenas a sua probabilidade de existir."
+                  },
+                  {
+                      "title": "Teste A/B",
+                      "content": "O padrão ouro para marketing e produto (ex: Booking.com roda 1000+ simultâneos). Opinião do executivo vs Teste A/B."
+                  }
+              ],
+              "synthesis": {
+                  "title": "Síntese",
+                  "bullets": [
+                      "Regressão prevê, teste de hipótese prova, teste A/B compara.",
+                      "Correlação não é causalidade. Para provar causa é preciso um Teste A/B."
+                  ],
+                  "insights": []
+              }
+          },
+          {
+              "title": "3: KPIs, Cohort e Data Storytelling",
+              "description": "As métricas que importam e como transformar números em narrativa",
+              "subsections": [
+                  {
+                      "title": "KPIs Essenciais",
+                      "content": "LTV/CAC > 3 (Saúde de E-commerce/SaaS). NRR > 100% (SaaS crescendo sem clientes novos). OEE > 85% (Indústria de alto padrão)."
+                  },
+                  {
+                      "title": "Análise de Cohort",
+                      "content": "A métrica que separa amadores de profissionais: agrupa os clientes pelo mês/semana em que entraram, e acompanha como esse grupo específico se comporta ao longo do tempo. Revela problemas pontuais, ocultados pela média."
+                  },
+                  {
+                      "title": "Data Storytelling",
+                      "content": "Não basta um número; é preciso uma narrativa: Contexto, Dado chave, Visual (Gráficos), Insight (o significado real do dado) e Recomendação (ação)."
+                  }
+              ],
+              "synthesis": {
+                  "title": "Síntese",
+                  "bullets": [
+                      "Apresentar 30 gráficos sem dizer o que significam é inútil. O formato ideal: 1 Gráfico + 1 Insight + 1 Recomendação.",
+                      "Cohort é a diferença entre notar '30% cancelaram' e notar que 'os de janeiro cancelaram 15%, os de março 25%'."
+                  ],
+                  "insights": []
+              }
+          },
+          {
+              "title": "4: Análise Preditiva e Ferramentas",
+              "description": "Machine learning para negócios e Excel como kit de sobrevivência",
+              "subsections": [
+                  {
+                      "title": "Modelos de Machine Learning (ML)",
+                      "content": "Regressão (prever número), Classificação (ex: Churn sim/não, como o Spotify faz), Clustering (segmentos/grupos sem rótulo) e Séries Temporais (sazonalidade)."
+                  },
+                  {
+                      "title": "ML de Recomendação",
+                      "content": "Personalização gera lucro: A Netflix economiza 1 bilhão por ano em retenção sugerindo conteúdos para os usuários. A Amazon gera 35% de vendas por recomendação."
+                  },
+                  {
+                      "title": "O Excel (A ferramenta #1)",
+                      "content": "Apesar da IA, o Excel/Sheets ainda é a base: PROCV (cruzamento), Tabela Dinâmica (resumo poderoso) e SOMASE (condicionais). Dominar isso resolve 80% das necessidades de uma PME."
+                  }
+              ],
+              "synthesis": {
+                  "title": "Síntese",
+                  "bullets": [
+                      "ML automatiza estatística: regressão para número, classificação para perfil.",
+                      "PROCV, Tabela Dinâmica e funções Lógicas resolvem a maioria dos desafios de negócio."
+                  ],
+                  "insights": []
+              }
+          }
+      ]
   }
   , SIG_PESSOAS
 ];
