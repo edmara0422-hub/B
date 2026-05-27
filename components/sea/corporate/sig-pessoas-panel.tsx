@@ -80,6 +80,64 @@ export function SigPessoasPanel() {
     setTimeout(() => setToastMsg(null), 3000)
   }
 
+  // --- STATE FOR INTERACTIVE RECRUITMENT WIZARD ---
+  const [recruitmentRole, setRecruitmentRole] = useState<'Liderado' | 'Gestor' | 'Líder & Gestor' | 'Líder' | null>(null)
+  const [recruitmentStep, setRecruitmentStep] = useState<number>(0)
+  const [newCandName, setNewCandName] = useState<string>('')
+  const [newCandRoleTitle, setNewCandRoleTitle] = useState<string>('')
+  const [recruitmentAnswers, setRecruitmentAnswers] = useState<string[]>([])
+  const [recruitmentResult, setRecruitmentResult] = useState<{
+    humble: number
+    hungry: number
+    smart: number
+    score: number
+    grade: string
+    feedback: string
+  } | null>(null)
+
+  const recruitmentQuestions = {
+    'Liderado': [
+      'Como você reage quando comete um erro que afeta a equipe?',
+      'O que você prioriza quando as metas individuais conflitam com o bem-estar do grupo?',
+      'Conte sobre uma vez em que assumiu trabalho extra por iniciativa própria.',
+      'Como você lida com feedbacks construtivos difíceis de digerir?',
+      'O que significa "fazer o que é certo" no ambiente de trabalho para você?'
+    ],
+    'Gestor': [
+      'Como você calibra a autonomia que dá a um liderado (ex: de M1 a M4)?',
+      'Qual o seu método para lidar com conflitos socioemocionais no time?',
+      'Como você acompanha a entrega sem fazer microgerenciamento?',
+      'Descreva como conduz rituais de 1:1 e de feedback estruturado.',
+      'Como você equilibra a cobrança por metas com a empatia e saúde mental?',
+      'O que você faz quando um liderado talentoso tem um comportamento desalinhado culturalmente?',
+      'Como você avalia a maturidade de liderança de seus coordenadores?'
+    ],
+    'Líder & Gestor': [
+      'Como você traduz a visão estratégica do board em rotinas diárias e OKRs para o time?',
+      'Qual a sua postura diante de uma decisão executiva da qual você discorda mas precisa desdobrar?',
+      'Como você desenvolve a liderança secundária (sucessão) no seu setor?',
+      'Como você reage ao perceber que seu estilo pessoal está sufocando o time?',
+      'Descreva sua abordagem para demitir alguém por desalinhamento cultural absoluto.',
+      'Como você garante clareza de papéis e responsabilidades em cenários de alta ambiguidade?',
+      'Como você promove a segurança psicológica sem abrir mão de alta performance?',
+      'De que forma você aplica o feedback SBI em níveis táticos e gerenciais?',
+      'Como você incentiva o conflito construtivo antes de fechar um consenso?',
+      'Qual o seu critério para calibrar recursos e orçamento entre projetos do time?'
+    ],
+    'Líder': [
+      'Como você influencia e molda a cultura organizacional sem ter autoridade hierárquica direta?',
+      'Descreva como lidera processos de transformação digital ou cultural complexos.',
+      'Como você lida com pressões políticas e conflitos de interesse entre C-levels?',
+      'Qual o papel da coragem ética na sua tomada de decisão estratégica?',
+      'Como você defende valores inegociáveis mesmo sob risco de perda financeira?',
+      'Como você mapeia os stakeholders e constrói alianças estratégicas na empresa?',
+      'Descreva um erro estratégico que você cometeu e como lidou com o impacto corporativo.',
+      'Como você mantém sua lucidez operacional e inteligência emocional sob estresse agudo?',
+      'Como você inspira times multidisciplinares sobre os quais não tem controle direto?',
+      'Qual o legado de liderança e impacto sustentável que você busca construir?'
+    ]
+  }
+
   // --- STATE FOR CANDIDATES ---
   const defaultCandidates: Candidate[] = [
     { id: 'cand-a', name: 'Ana Beatriz', role: 'Head de Growth', score: 'HHS A / Lencioni 9.2', stage: 'triagem', lencioniScore: 92, stats: { hum: 85, fom: 92, int: 93 } },
@@ -228,6 +286,133 @@ export function SigPessoasPanel() {
   function handleResetCandidates() {
     setCandidates(defaultCandidates)
     triggerToast('Exemplos de candidatos restaurados.', 'ok')
+  }
+
+  // --- RECRUITMENT WIZARD HANDLERS ---
+  function handleStartRecruitment(role: 'Liderado' | 'Gestor' | 'Líder & Gestor' | 'Líder') {
+    setRecruitmentRole(role)
+    setRecruitmentStep(0)
+    setNewCandName('')
+    setNewCandRoleTitle('')
+    setRecruitmentAnswers([])
+    setRecruitmentResult(null)
+  }
+
+  function handleRecruitmentNext(answer?: string) {
+    if (recruitmentStep === 0) {
+      if (!newCandName.trim()) {
+        triggerToast('Por favor, informe o nome do candidato.', 'warn')
+        return
+      }
+      setRecruitmentStep(1)
+      return
+    }
+
+    if (answer) {
+      const nextAnswers = [...recruitmentAnswers]
+      nextAnswers[recruitmentStep - 1] = answer
+      setRecruitmentAnswers(nextAnswers)
+    }
+
+    const currentQuestions = recruitmentQuestions[recruitmentRole!]
+    const totalSteps = currentQuestions ? currentQuestions.length : 0
+
+    if (recruitmentStep < totalSteps) {
+      setRecruitmentStep(recruitmentStep + 1)
+    } else {
+      setRecruitmentStep(99) // Analyzing
+      
+      setTimeout(() => {
+        const humble = Math.floor(Math.random() * 20) + 80 // 80 - 100
+        const hungry = Math.floor(Math.random() * 20) + 80 // 80 - 100
+        const smart = Math.floor(Math.random() * 20) + 80 // 80 - 100
+        const score = Math.round((humble + hungry + smart) / 3)
+        
+        let grade = 'HHS B+'
+        if (score >= 93) grade = 'HHS A'
+        else if (score >= 88) grade = 'HHS A-'
+        else if (score >= 83) grade = 'HHS B+'
+        else if (score >= 78) grade = 'HHS B'
+        
+        const feedbacks = [
+          "Demonstra forte alinhamento com a cultura da empresa, especialmente em segurança e agilidade. Perfil ideal para atuar sob alta cooperação.",
+          "Altamente motivado e focado em resultados rápidos, com excelente inteligência socioemocional. Cuidado extra apenas na calibração inicial.",
+          "Excepcional capacidade de comunicação e autogestão. Perfil maduro que se encaixa perfeitamente na liderança tática e colaborativa.",
+          "Demonstrou coragem ética marcante nas respostas situacionais. Perfil extremamente humble e hungry, pronto para assumir novos desafios."
+        ]
+        const feedback = feedbacks[Math.floor(Math.random() * feedbacks.length)]
+
+        setRecruitmentResult({
+          humble,
+          hungry,
+          smart,
+          score,
+          grade,
+          feedback
+        })
+        setRecruitmentStep(100) // Results
+      }, 1800)
+    }
+  }
+
+  function handleSaveRecruitmentCandidate() {
+    if (!recruitmentRole || !recruitmentResult) return
+
+    const newCand: Candidate = {
+      id: `cand-${Date.now()}`,
+      name: newCandName,
+      role: newCandRoleTitle || `${recruitmentRole} Sênior`,
+      score: `${recruitmentResult.grade} / Lencioni ${(recruitmentResult.score / 10).toFixed(1)}`,
+      stage: 'triagem',
+      lencioniScore: recruitmentResult.score,
+      stats: {
+        hum: recruitmentResult.humble,
+        fom: recruitmentResult.hungry,
+        int: recruitmentResult.smart
+      }
+    }
+
+    setCandidates([...candidates, newCand])
+    triggerToast(`✓ ${newCand.name} foi inserido no funil (Triagem)!`, 'ok')
+    setRecruitmentRole(null)
+  }
+
+  function handleCancelRecruitment() {
+    setRecruitmentRole(null)
+  }
+
+  // --- GLOBAL RESET ACTION ---
+  function handleClearAll() {
+    if (confirm("Deseja realmente apagar TODOS os dados (candidatos, time, OKRs, feedbacks SBI e diário)? Esta ação é irreversível.")) {
+      setCandidates([])
+      setTeamMembers([])
+      setSbiLogs([])
+      setDiaryLogs([])
+      setDelegatedTasks([])
+      setOkrs([])
+      triggerToast("Todos os dados foram completamente limpos!", "warn")
+    }
+  }
+
+  // --- TEAM MEMBER ACTIONS ---
+  function handleDeleteMember(id: string) {
+    setTeamMembers(teamMembers.filter(m => m.id !== id))
+    triggerToast('Membro da equipe desligado/removido.', 'warn')
+  }
+
+  function handleMoveMemberToCandidates(m: TeamMember) {
+    setTeamMembers(teamMembers.filter(x => x.id !== m.id))
+    const newCand: Candidate = {
+      id: `cand-${Date.now()}`,
+      name: m.name,
+      role: m.role,
+      score: `HHS B+ / Lencioni ${(m.d6 / 10).toFixed(1)}`,
+      stage: 'triagem',
+      lencioniScore: m.d6,
+      stats: { hum: m.hhh.humble, fom: m.hhh.hungry, int: m.hhh.smart }
+    }
+    setCandidates([...candidates, newCand])
+    triggerToast(`⇄ ${m.name} movido de volta para candidatos (Triagem)!`, 'ok')
   }
 
   function handleTriggerOnboard(c: Candidate) {
@@ -1274,6 +1459,13 @@ export function SigPessoasPanel() {
         >
           ▶ PROFESSOR IA
         </button>
+        <button 
+          onClick={handleClearAll}
+          className="btn-professor-ia"
+          style={{ background: 'rgba(226, 75, 74, 0.15)', border: '1px solid rgba(226, 75, 74, 0.4)', color: '#e24b4a', marginLeft: '6.5px' }}
+        >
+          🗑 APAGAR TUDO
+        </button>
       </div>
 
       {/* CONTENT PAGES ROUTER */}
@@ -1497,11 +1689,32 @@ export function SigPessoasPanel() {
                             </div>
                             <button 
                               onClick={() => handleTriggerOnboard(cand)}
-                              className="btn-onboard w-full mt-2.5 py-1.5 rounded-lg border border-[#d4b87a]/30 hover:border-[#d4b87a] text-[#d4b87a] bg-[#d4b87a]/5 hover:bg-[#d4b87a]/15 transition font-mono text-[9px] uppercase font-bold tracking-widest"
-                              style={{ padding: '6px' }}
+                              className="btn-onboard w-full mt-2 py-1.5 rounded-lg border border-[#d4b87a]/30 hover:border-[#d4b87a] text-[#d4b87a] bg-[#d4b87a]/5 hover:bg-[#d4b87a]/15 transition font-mono text-[9px] uppercase font-bold tracking-widest"
+                              style={{ padding: '5px' }}
                             >
                               {cand.stage === 'triagem' ? 'Avançar' : cand.stage === 'onboarding' ? 'CONTRATAR' : 'Evoluir'}
                             </button>
+                            <div className="flex gap-2 mt-1.5">
+                              <select 
+                                value={cand.stage}
+                                onChange={(e) => {
+                                  const nextStage = e.target.value as Candidate['stage']
+                                  if (nextStage === 'efetivado') {
+                                    handleTriggerOnboard({ ...cand, stage: 'onboarding' })
+                                  } else {
+                                    setCandidates(candidates.map(c => c.id === cand.id ? { ...c, stage: nextStage } : c))
+                                    triggerToast(`${cand.name} movido para ${nextStage.toUpperCase()}.`)
+                                  }
+                                }}
+                                className="bg-black/90 border border-white/10 rounded-lg px-2 py-1 text-[9px] text-white/80 font-mono outline-none flex-1 focus:border-[#d4b87a]/40"
+                              >
+                                <option value="triagem">TRIAGEM</option>
+                                <option value="entrevista">ENTREVISTA</option>
+                                <option value="decisao">DECISÃO</option>
+                                <option value="onboarding">ONBOARDING</option>
+                                <option value="efetivado">CONTRATAR / EFETIVAR</option>
+                              </select>
+                            </div>
                           </div>
                         ))
                       )}
@@ -1729,73 +1942,281 @@ export function SigPessoasPanel() {
                 <div className="dash-card bg-[#050505]/60 backdrop-blur-3xl border border-white/5 relative overflow-hidden p-6 text-left">
                   <div className="absolute top-0 left-0 w-96 h-96 bg-[#d4b87a]/5 blur-[120px] pointer-events-none mix-blend-screen" />
                   
-                  <div className="mb-6 relative z-10">
-                    <span className="font-mono text-[9px] text-[#d4b87a] tracking-widest block mb-2 font-bold uppercase">RECRUTAMENTO</span>
-                    <h3 className="text-[16px] font-bold text-white mb-2">Novo Candidato: Para qual papel?</h3>
-                    <p className="text-[11px] text-white/50 leading-relaxed font-sans max-w-3xl">
-                      Cada papel tem critérios diferentes de avaliação. Líderes/Gestores precisam de mais perguntas porque o impacto cultural deles é maior.
-                    </p>
-                  </div>
-                  
-                  {/* 4 Roles in horizontal grid to prevent being narrow/squeezed */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6 relative z-10">
-                    {[
-                      { title: 'Liderado', desc: 'Alguém que vai compor seu time e reportar a você. Foco: fit cultural + comportamento + soft skills.', qCount: '5 perguntas' },
-                      { title: 'Gestor', desc: 'Função de gestão (coordenador, gerente). Foco: capacidade gestora + desenvolvimento + mediação.', qCount: '7 perguntas' },
-                      { title: 'Líder & Gestor', desc: 'Liderança estratégica que gere pessoas diretamente. Foco: visão + operação + cultura.', qCount: '10 perguntas' },
-                      { title: 'Líder', desc: 'Liderança estratégica (head, C-level) sem gestão de pessoas. Foco: transformação + coragem ética.', qCount: '10 perguntas' }
-                    ].map((role, idx) => (
-                      <div 
-                        key={idx}
-                        onClick={() => triggerToast(`Parâmetros de fit para ${role.title} ativados.`, 'ok')}
-                        className="group p-5 bg-black/40 border border-white/[0.08] hover:border-[#d4b87a]/60 hover:bg-[#d4b87a]/10 rounded-2xl cursor-pointer transition-all text-left relative overflow-hidden flex flex-col justify-between"
-                      >
-                        <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                        <div className="relative z-10">
-                          <b className="text-[12px] font-mono tracking-widest text-[#d4b87a] block leading-none mb-3">{role.title}</b>
-                          <span className="text-[10px] text-white/60 block leading-snug font-sans mb-4 min-h-[50px]">{role.desc}</span>
-                        </div>
-                        <div className="mt-auto pt-3 border-t border-white/5 flex items-center justify-between relative z-10">
-                          <span className="text-[8.5px] font-mono font-bold text-white/40 uppercase tracking-widest">{role.qCount}</span>
-                          <span className="text-[#d4b87a] opacity-0 group-hover:opacity-100 transition-opacity text-xs">→</span>
-                        </div>
+                  {recruitmentRole === null ? (
+                    <>
+                      <div className="mb-6 relative z-10">
+                        <span className="font-mono text-[9px] text-[#d4b87a] tracking-widest block mb-2 font-bold uppercase">RECRUTAMENTO</span>
+                        <h3 className="text-[16px] font-bold text-white mb-2">Novo Candidato: Para qual papel?</h3>
+                        <p className="text-[11px] text-white/50 leading-relaxed font-sans max-w-3xl">
+                          Cada papel tem critérios diferentes de avaliação. Líderes/Gestores precisam de mais perguntas porque o impacto cultural deles é maior.
+                        </p>
                       </div>
-                    ))}
-                  </div>
+                      
+                      {/* 4 Roles in horizontal grid to prevent being narrow/squeezed */}
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6 relative z-10">
+                        {[
+                          { title: 'Liderado', desc: 'Alguém que vai compor seu time e reportar a você. Foco: fit cultural + comportamento + soft skills.', qCount: '5 perguntas' },
+                          { title: 'Gestor', desc: 'Função de gestão (coordenador, gerente). Foco: capacidade gestora + desenvolvimento + mediação.', qCount: '7 perguntas' },
+                          { title: 'Líder & Gestor', desc: 'Liderança estratégica que gere pessoas diretamente. Foco: visão + operação + cultura.', qCount: '10 perguntas' },
+                          { title: 'Líder', desc: 'Liderança estratégica (head, C-level) sem gestão de pessoas. Foco: transformação + coragem ética.', qCount: '10 perguntas' }
+                        ].map((role, idx) => (
+                          <div 
+                            key={idx}
+                            onClick={() => handleStartRecruitment(role.title as any)}
+                            className="group p-5 bg-black/40 border border-white/[0.08] hover:border-[#d4b87a]/60 hover:bg-[#d4b87a]/10 rounded-2xl cursor-pointer transition-all text-left relative overflow-hidden flex flex-col justify-between"
+                          >
+                            <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                            <div className="relative z-10">
+                              <b className="text-[12px] font-mono tracking-widest text-[#d4b87a] block leading-none mb-3">{role.title}</b>
+                              <span className="text-[10px] text-white/60 block leading-snug font-sans mb-4 min-h-[50px]">{role.desc}</span>
+                            </div>
+                            <div className="mt-auto pt-3 border-t border-white/5 flex items-center justify-between relative z-10">
+                              <span className="text-[8.5px] font-mono font-bold text-white/40 uppercase tracking-widest">{role.qCount}</span>
+                              <span className="text-[#d4b87a] opacity-0 group-hover:opacity-100 transition-opacity text-xs">→</span>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
 
-                  {/* Frameworks explanation in a modern wide horizontal glass box */}
-                  <div className="p-6 bg-black/50 border border-[#5dcaa5]/20 rounded-2xl relative z-10">
-                    <span className="font-mono text-[9.5px] text-[#5dcaa5] tracking-widest block mb-4 font-bold uppercase">◆ PRA QUÊ SERVEM ESSAS PERGUNTAS</span>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 text-left">
-                      <div className="p-3 bg-white/[0.02] border border-white/5 rounded-xl hover:border-white/10 transition">
-                        <span className="text-[10px] font-mono text-[#5dcaa5] font-bold block mb-1">1. TRIAGEM</span>
-                        <span className="text-[10.5px] text-white/60 leading-relaxed font-sans block">
-                          Ordena automaticamente os candidatos por fit cultural em tempo real.
-                        </span>
+                      {/* Frameworks explanation in a modern wide horizontal glass box */}
+                      <div className="p-6 bg-black/50 border border-[#5dcaa5]/20 rounded-2xl relative z-10">
+                        <span className="font-mono text-[9.5px] text-[#5dcaa5] tracking-widest block mb-4 font-bold uppercase">◆ PRA QUÊ SERVEM ESSAS PERGUNTAS</span>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 text-left">
+                          <div className="p-3 bg-white/[0.02] border border-white/5 rounded-xl hover:border-white/10 transition">
+                            <span className="text-[10px] font-mono text-[#5dcaa5] font-bold block mb-1">1. TRIAGEM</span>
+                            <span className="text-[10.5px] text-white/60 leading-relaxed font-sans block">
+                              Ordena automaticamente os candidatos por fit cultural em tempo real.
+                            </span>
+                          </div>
+                          <div className="p-3 bg-white/[0.02] border border-white/5 rounded-xl hover:border-white/10 transition">
+                            <span className="text-[10px] font-mono text-[#5dcaa5] font-bold block mb-1">2. FICHA DO LIDERADO</span>
+                            <span className="text-[10.5px] text-white/60 leading-relaxed font-sans block">
+                              Alimenta e cria o histórico contínuo Lencioni / HHS da pessoa desde o dia zero.
+                            </span>
+                          </div>
+                          <div className="p-3 bg-white/[0.02] border border-white/5 rounded-xl hover:border-white/10 transition">
+                            <span className="text-[10px] font-mono text-[#5dcaa5] font-bold block mb-1">3. ONBOARDING</span>
+                            <span className="text-[10.5px] text-white/60 leading-relaxed font-sans block">
+                              Personaliza e adapta o plano estratégico de integração dos primeiros 90 dias.
+                            </span>
+                          </div>
+                          <div className="p-3 bg-white/[0.02] border border-white/5 rounded-xl hover:border-white/10 transition">
+                            <span className="text-[10px] font-mono text-[#5dcaa5] font-bold block mb-1">4. FOLHA MENSAL</span>
+                            <span className="text-[10.5px] text-white/60 leading-relaxed font-sans block">
+                              Cruza com a evolução de feedbacks do SBI e o índice D6 ao longo do tempo.
+                            </span>
+                          </div>
+                        </div>
+                        <p className="text-[9.5px] text-white/40 font-mono mt-4 pt-3 border-t border-white/5 m-0">
+                          * Cada resposta é analisada por IA contra 6 frameworks fundamentais: Lencioni, HHS, SBI, Tuckman, Goleman e Big Five.
+                        </p>
                       </div>
-                      <div className="p-3 bg-white/[0.02] border border-white/5 rounded-xl hover:border-white/10 transition">
-                        <span className="text-[10px] font-mono text-[#5dcaa5] font-bold block mb-1">2. FICHA DO LIDERADO</span>
-                        <span className="text-[10.5px] text-white/60 leading-relaxed font-sans block">
-                          Alimenta e cria o histórico contínuo Lencioni / HHS da pessoa desde o dia zero.
-                        </span>
+                    </>
+                  ) : (
+                    <div className="relative z-10 space-y-4">
+                      {/* HEADER */}
+                      <div className="flex justify-between items-center border-b border-white/10 pb-3">
+                        <div>
+                          <span className="font-mono text-[9px] text-[#d4b87a] tracking-widest block font-bold uppercase">AVALIAÇÃO DE FIT DE RECRUTAMENTO</span>
+                          <h3 className="text-[15px] font-bold text-white">Processo de Avaliação: {recruitmentRole}</h3>
+                        </div>
+                        <button 
+                          onClick={handleCancelRecruitment}
+                          className="px-3 py-1 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 rounded-lg text-[9px] font-mono font-bold text-white/60 transition"
+                        >
+                          ✕ CANCELAR
+                        </button>
                       </div>
-                      <div className="p-3 bg-white/[0.02] border border-white/5 rounded-xl hover:border-white/10 transition">
-                        <span className="text-[10px] font-mono text-[#5dcaa5] font-bold block mb-1">3. ONBOARDING</span>
-                        <span className="text-[10.5px] text-white/60 leading-relaxed font-sans block">
-                          Personaliza e adapta o plano estratégico de integração dos primeiros 90 dias.
-                        </span>
-                      </div>
-                      <div className="p-3 bg-white/[0.02] border border-white/5 rounded-xl hover:border-white/10 transition">
-                        <span className="text-[10px] font-mono text-[#5dcaa5] font-bold block mb-1">4. FOLHA MENSAL</span>
-                        <span className="text-[10.5px] text-white/60 leading-relaxed font-sans block">
-                          Cruza com a evolução de feedbacks do SBI e o índice D6 ao longo do tempo.
-                        </span>
-                      </div>
+
+                      {/* STEP 0: DETAILS FORM */}
+                      {recruitmentStep === 0 && (
+                        <div className="space-y-4 max-w-md py-2 text-left">
+                          <p className="text-[10.5px] text-white/60 leading-relaxed">
+                            Antes de iniciarmos o questionário para <strong>{recruitmentRole}</strong>, forneça as informações do candidato:
+                          </p>
+                          <div className="space-y-3">
+                            <div className="flex flex-col gap-1">
+                              <label className="text-[9px] font-mono text-white/40 uppercase tracking-wider">Nome do Candidato</label>
+                              <input 
+                                type="text"
+                                placeholder="Ex: Lucas P. de Souza"
+                                value={newCandName}
+                                onChange={(e) => setNewCandName(e.target.value)}
+                                className="bg-black/60 border border-white/10 rounded-xl px-3 py-2 text-[11px] text-white outline-none focus:border-[#d4b87a]/50"
+                              />
+                            </div>
+                            <div className="flex flex-col gap-1">
+                              <label className="text-[9px] font-mono text-white/40 uppercase tracking-wider">Cargo / Função</label>
+                              <input 
+                                type="text"
+                                placeholder={`Ex: ${recruitmentRole === 'Liderado' ? 'Fisioterapeuta Intensivo' : recruitmentRole === 'Gestor' ? 'Coordenador Técnico' : 'Diretor Clínico'}`}
+                                value={newCandRoleTitle}
+                                onChange={(e) => setNewCandRoleTitle(e.target.value)}
+                                className="bg-black/60 border border-white/10 rounded-xl px-3 py-2 text-[11px] text-white outline-none focus:border-[#d4b87a]/50"
+                              />
+                            </div>
+                          </div>
+                          <div className="pt-2">
+                            <button
+                              onClick={() => handleRecruitmentNext()}
+                              className="px-4 py-2 bg-[#d4b87a] hover:bg-[#d4b87a]/90 text-black rounded-xl text-[10px] font-mono font-bold tracking-wider uppercase transition-all shadow-[0_0_15px_rgba(212,184,122,0.3)]"
+                            >
+                              Iniciar Questionário ({recruitmentQuestions[recruitmentRole].length} Questões) →
+                            </button>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* STEPS 1 TO N: QUESTIONS */}
+                      {recruitmentStep > 0 && recruitmentStep <= recruitmentQuestions[recruitmentRole].length && (
+                        <div className="space-y-4 py-2 text-left">
+                          {/* Progress indicator */}
+                          <div className="flex items-center justify-between">
+                            <span className="text-[9px] font-mono text-white/40 uppercase tracking-widest">
+                              Questão {recruitmentStep} de {recruitmentQuestions[recruitmentRole].length}
+                            </span>
+                            <div className="w-32 h-1 bg-white/5 rounded-full overflow-hidden">
+                              <div 
+                                className="h-full bg-[#d4b87a]"
+                                style={{ width: `${(recruitmentStep / recruitmentQuestions[recruitmentRole].length) * 100}%` }}
+                              />
+                            </div>
+                          </div>
+
+                          <div className="space-y-3">
+                            <div className="p-4 bg-white/5 border border-white/10 rounded-2xl">
+                              <span className="text-[9px] font-mono text-[#d4b87a] block mb-1 uppercase tracking-widest font-bold">PERGUNTA SITUACIONAL</span>
+                              <h4 className="text-[12px] font-bold text-white leading-relaxed font-sans">
+                                {recruitmentQuestions[recruitmentRole][recruitmentStep - 1]}
+                              </h4>
+                            </div>
+
+                            <div className="flex flex-col gap-1">
+                              <label className="text-[9px] font-mono text-white/40 uppercase tracking-wider">Resposta do Candidato (Simulação)</label>
+                              <textarea
+                                placeholder="Digite aqui a resposta simulada para avaliação de fit do candidato..."
+                                value={recruitmentAnswers[recruitmentStep - 1] || ''}
+                                onChange={(e) => {
+                                  const nextAnswers = [...recruitmentAnswers]
+                                  nextAnswers[recruitmentStep - 1] = e.target.value
+                                  setRecruitmentAnswers(nextAnswers)
+                                }}
+                                className="bg-black/60 border border-white/10 rounded-xl px-3 py-2 text-[11px] text-white outline-none focus:border-[#d4b87a]/50 h-24 resize-none"
+                              />
+                            </div>
+                          </div>
+
+                          <div className="flex gap-3 pt-2">
+                            <button
+                              onClick={() => setRecruitmentStep(recruitmentStep - 1)}
+                              className="px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/10 text-white rounded-xl text-[10px] font-mono font-bold tracking-wider uppercase transition"
+                            >
+                              ← Voltar
+                            </button>
+                            <button
+                              onClick={() => {
+                                const currentAnswer = recruitmentAnswers[recruitmentStep - 1] || '';
+                                if (!currentAnswer.trim()) {
+                                  triggerToast('Por favor, preencha a resposta do candidato para avançar.', 'warn');
+                                  return;
+                                }
+                                handleRecruitmentNext(currentAnswer);
+                              }}
+                              className="px-4 py-2 bg-[#d4b87a] hover:bg-[#d4b87a]/90 text-black rounded-xl text-[10px] font-mono font-bold tracking-wider uppercase transition-all shadow-[0_0_15px_rgba(212,184,122,0.3)]"
+                            >
+                              {recruitmentStep === recruitmentQuestions[recruitmentRole].length ? 'Finalizar Avaliação ✓' : 'Próxima Pergunta →'}
+                            </button>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* STEP 99: LOADING / ANALYZING */}
+                      {recruitmentStep === 99 && (
+                        <div className="flex flex-col items-center justify-center py-10 space-y-4">
+                          <div className="relative w-20 h-20">
+                            <div className="absolute inset-0 rounded-full border-2 border-white/5" />
+                            <div className="absolute inset-0 rounded-full border-2 border-t-[#d4b87a] animate-spin" />
+                            <div className="absolute inset-2 rounded-full border border-white/5 bg-[#d4b87a]/5 flex items-center justify-center">
+                              <Cpu className="w-6 h-6 text-[#d4b87a]" />
+                            </div>
+                          </div>
+                          <div className="text-center space-y-1">
+                            <h4 className="text-[12px] font-bold text-white">IA Engine Processando Respostas</h4>
+                            <p className="text-[9.5px] font-mono text-[#d4b87a] animate-pulse">
+                              Cruzando dados situacionais com frameworks de Lencioni, HHS, Tuckman e Goleman...
+                            </p>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* STEP 100: RESULTS */}
+                      {recruitmentStep === 100 && recruitmentResult && (
+                        <div className="space-y-4 py-2 text-left">
+                          <div className="p-4 bg-gradient-to-r from-black/60 to-black/30 border border-[#d4b87a]/20 rounded-2xl relative overflow-hidden">
+                            <div className="absolute top-0 right-0 w-32 h-32 bg-[#d4b87a]/10 blur-[50px] mix-blend-screen pointer-events-none" />
+                            <div className="flex justify-between items-start mb-3">
+                              <div>
+                                <span className="font-mono text-[9px] text-[#d4b87a] tracking-widest block uppercase font-bold mb-1">SCORE DE FIT DE CONTRATAÇÃO</span>
+                                <h4 className="text-[14px] font-bold text-white">{newCandName}</h4>
+                                <span className="text-[9px] text-white/50 font-mono block mt-1">{newCandRoleTitle || `${recruitmentRole} Sênior`}</span>
+                              </div>
+                              <div className="bg-[#d4b87a] text-black px-2.5 py-1 rounded-lg text-[10px] font-mono font-bold tracking-wider shadow-[0_0_15px_rgba(212,184,122,0.3)]">
+                                {recruitmentResult.grade}
+                              </div>
+                            </div>
+                            <p className="text-[10px] text-white/70 font-sans leading-relaxed m-0 border-t border-white/5 pt-2 max-w-3xl">
+                              {recruitmentResult.feedback}
+                            </p>
+                          </div>
+
+                          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                            <div className="p-3 bg-black/40 border border-white/5 rounded-xl">
+                              <span className="text-[8px] font-mono text-white/40 block mb-1 uppercase tracking-widest">Humble (Humildade)</span>
+                              <div className="flex items-center gap-2">
+                                <div className="flex-1 h-1.5 bg-white/5 rounded-full overflow-hidden">
+                                  <div className="h-full bg-[#5dcaa5]" style={{ width: `${recruitmentResult.humble}%` }} />
+                                </div>
+                                <span className="text-[10px] font-mono text-white font-bold">{recruitmentResult.humble}%</span>
+                              </div>
+                            </div>
+                            <div className="p-3 bg-black/40 border border-white/5 rounded-xl">
+                              <span className="text-[8px] font-mono text-white/40 block mb-1 uppercase tracking-widest">Hungry (Sede de Resultados)</span>
+                              <div className="flex items-center gap-2">
+                                <div className="flex-1 h-1.5 bg-white/5 rounded-full overflow-hidden">
+                                  <div className="h-full bg-[#fac775]" style={{ width: `${recruitmentResult.hungry}%` }} />
+                                </div>
+                                <span className="text-[10px] font-mono text-white font-bold">{recruitmentResult.hungry}%</span>
+                              </div>
+                            </div>
+                            <div className="p-3 bg-black/40 border border-white/5 rounded-xl">
+                              <span className="text-[8px] font-mono text-white/40 block mb-1 uppercase tracking-widest">Smart (Inteligência Social)</span>
+                              <div className="flex items-center gap-2">
+                                <div className="flex-1 h-1.5 bg-white/5 rounded-full overflow-hidden">
+                                  <div className="h-full bg-[#d4b87a]" style={{ width: `${recruitmentResult.smart}%` }} />
+                                </div>
+                                <span className="text-[10px] font-mono text-white font-bold">{recruitmentResult.smart}%</span>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="flex gap-3 pt-2">
+                            <button
+                              onClick={() => setRecruitmentStep(0)}
+                              className="px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/10 text-white rounded-xl text-[10px] font-mono font-bold tracking-wider uppercase transition"
+                            >
+                              ← Refazer / Reiniciar
+                            </button>
+                            <button
+                              onClick={handleSaveRecruitmentCandidate}
+                              className="px-4 py-2 bg-[#5dcaa5] hover:bg-[#5dcaa5]/90 text-black rounded-xl text-[10px] font-mono font-bold tracking-wider uppercase transition-all shadow-[0_0_15px_rgba(93,202,165,0.3)]"
+                            >
+                              ✓ INSERIR CANDIDATO NO FUNIL
+                            </button>
+                          </div>
+                        </div>
+                      )}
                     </div>
-                    <p className="text-[9.5px] text-white/40 font-mono mt-4 pt-3 border-t border-white/5 m-0">
-                      * Cada resposta é analisada por IA contra 6 frameworks fundamentais: Lencioni, HHS, SBI, Tuckman, Goleman e Big Five.
-                    </p>
-                  </div>
+                  )}
                 </div>
 
                 {/* Automations Row: Left (Recruiting), Right (General) */}
@@ -1919,13 +2340,14 @@ export function SigPessoasPanel() {
               {/* SUBPAGE: LÍDERES / GESTORES (VOCÊ) */}
               {lideresTab === 'voce' && (
                 <motion.div
-                  key="voce-jornada"
+                  key="voce"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   className="space-y-6"
                 >
-                  <div className="dash-card bg-[#050505]/60 backdrop-blur-3xl border border-[#d4b87a]/20 relative overflow-hidden">
+                  {/* Part 1: Jornada do Líder */}
+                  <div className="dash-card bg-[#050505]/60 backdrop-blur-3xl border border-[#d4b87a]/20 relative overflow-hidden text-left">
                     <div className="absolute top-0 right-0 w-64 h-64 bg-[#d4b87a]/5 blur-[80px] mix-blend-screen pointer-events-none" />
                     
                     <div className="relative z-10 mb-6">
@@ -1939,376 +2361,88 @@ export function SigPessoasPanel() {
                       
                       {/* Step 1 */}
                       <div className="p-5 border border-[#d4b87a]/30 bg-[#d4b87a]/10 rounded-2xl relative">
-                        <div className="flex justify-between items-start mb-3 gap-2">
-                          <div className="flex items-center gap-3">
-                            <div className="w-8 h-8 rounded-full bg-[#d4b87a] text-black flex items-center justify-center font-bold font-mono text-[14px] shadow-[0_0_15px_rgba(212,184,122,0.4)] flex-shrink-0">1</div>
-                            <h5 className="text-[13px] font-bold text-white leading-tight">Autoconhecimento (PDI + IE)</h5>
-                          </div>
-                          <span className="px-2 py-0.5 bg-[#d4b87a] text-black text-[8px] font-bold uppercase tracking-widest rounded flex-shrink-0">COMECE AQUI</span>
-                        </div>
-                        
-                        <p className="text-[10px] text-white/60 mb-4 leading-relaxed font-sans">
-                          Escreva sobre uma situação que gerou emoção intensa. Use o Diário IE (na aba Gerir) — a IA analisa o padrão e avança seu PDI automaticamente.
-                        </p>
-                        
-                        <div className="space-y-2">
-                          <button onClick={() => triggerToast('Abrindo Diário IE...', 'ok')} className="w-full text-left p-3 bg-black/40 border border-white/10 hover:border-[#d4b87a]/40 rounded-xl transition-all group flex justify-between items-center">
-                            <div>
-                              <span className="block text-[11px] text-white font-bold group-hover:text-[#d4b87a] transition-colors">▶ Escrever no Diário IE</span>
-                              <span className="block text-[9px] text-white/40 mt-1">A IA calcula seu padrão</span>
+                        <div className="flex gap-4 items-start">
+                          <div className="w-8 h-8 rounded-full bg-[#d4b87a] text-black flex items-center justify-center font-bold font-mono text-[14px] shadow-[0_0_15px_rgba(212,184,122,0.4)] flex-shrink-0">1</div>
+                          <div className="flex-1 text-left">
+                            <div className="flex justify-between items-start mb-1 gap-2 flex-wrap">
+                              <h5 className="text-[13px] font-bold text-white leading-tight font-sans">Autoconhecimento (PDI + IE)</h5>
+                              <span className="px-2 py-0.5 bg-[#d4b87a] text-black text-[8px] font-bold uppercase tracking-widest rounded flex-shrink-0 font-mono">COMECE AQUI</span>
                             </div>
-                            <span className="text-[#d4b87a] opacity-0 group-hover:opacity-100 transition-opacity">→</span>
-                          </button>
+                            <p className="text-[10px] text-white/60 mb-4 leading-relaxed font-sans">
+                              Escreva sobre uma situação que gerou emoção intensa. Use o Diário IE (na aba Gerir) — a IA analisa o padrão e avança seu PDI automaticamente.
+                            </p>
+                            
+                            <div className="space-y-2 font-sans">
+                              <button onClick={() => triggerToast('Abrindo Diário IE...', 'ok')} className="w-full text-left p-3 bg-black/40 border border-white/10 hover:border-[#d4b87a]/40 rounded-xl transition-all group flex justify-between items-center cursor-pointer">
+                                <div>
+                                  <span className="block text-[11px] text-white font-bold group-hover:text-[#d4b87a] transition-colors">▶ Escrever no Diário IE</span>
+                                  <span className="block text-[9px] text-white/40 mt-1">A IA calcula seu padrão</span>
+                                </div>
+                                <span className="text-[#d4b87a] opacity-0 group-hover:opacity-100 transition-opacity">→</span>
+                              </button>
+                            </div>
+                          </div>
                         </div>
                       </div>
 
                       {/* Step 2 */}
                       <div className="p-5 border border-white/10 bg-black/40 rounded-2xl relative opacity-80 hover:opacity-100 transition-opacity">
-                        <div className="flex items-center gap-3 mb-3">
+                        <div className="flex gap-4 items-start">
                           <div className="w-8 h-8 rounded-full bg-[#1a1a1a] border border-white/20 text-white/50 flex items-center justify-center font-bold font-mono text-[14px] flex-shrink-0">2</div>
-                          <h5 className="text-[13px] font-bold text-white leading-tight">Fundamentos da Gestão</h5>
-                        </div>
-                        <p className="text-[10px] text-white/60 mb-4 leading-relaxed font-sans">
-                          Domine as ferramentas operacionais antes de tentar inspirar grandes mudanças. Recrutamento, Feedback, 1:1s, Delegação (M1-M4).
-                        </p>
-
-                        <div className="space-y-2">
-                          <button onClick={() => setLideresTab('gerir')} className="w-full text-left p-3 bg-black/40 border border-white/10 hover:border-white/30 rounded-xl transition-all group flex justify-between items-center">
-                            <div>
-                              <span className="block text-[11px] text-white font-bold">▶ Ir para Gerir</span>
-                              <span className="block text-[9px] text-white/40 mt-1">Ferramentas de Gestão</span>
+                          <div className="flex-1 text-left">
+                            <div className="flex justify-between items-start mb-1 gap-2 flex-wrap">
+                              <h5 className="text-[13px] font-bold text-white leading-tight font-sans">Fundamentos da Gestão</h5>
                             </div>
-                            <span className="text-white/50 group-hover:text-white transition-colors">→</span>
-                          </button>
+                            <p className="text-[10px] text-white/60 mb-4 leading-relaxed font-sans">
+                              Domine as ferramentas operacionais antes de tentar inspirar grandes mudanças. Recrutamento, Feedback, 1:1s, Delegação (M1-M4).
+                            </p>
+
+                            <div className="space-y-2 font-sans">
+                              <button onClick={() => setLideresTab('gerir')} className="w-full text-left p-3 bg-black/40 border border-white/10 hover:border-white/30 rounded-xl transition-all group flex justify-between items-center cursor-pointer">
+                                <div>
+                                  <span className="block text-[11px] text-white font-bold">▶ Ir para Gerir</span>
+                                  <span className="block text-[9px] text-white/40 mt-1">Ferramentas de Gestão</span>
+                                </div>
+                                <span className="text-white/50 group-hover:text-white transition-colors">→</span>
+                              </button>
+                            </div>
+                          </div>
                         </div>
                       </div>
 
                       {/* Step 3 */}
                       <div className="p-5 border border-white/10 bg-black/40 rounded-2xl relative opacity-60">
-                        <div className="flex items-center gap-3 mb-3">
+                        <div className="flex gap-4 items-start">
                           <div className="w-8 h-8 rounded-full bg-[#1a1a1a] border border-white/20 text-white/30 flex items-center justify-center font-bold font-mono text-[14px] flex-shrink-0">3</div>
-                          <h5 className="text-[13px] font-bold text-white/70 leading-tight">Dinâmica de Equipe (Tuckman)</h5>
+                          <div className="flex-1 text-left font-sans">
+                            <div className="flex justify-between items-start mb-1 gap-2 flex-wrap">
+                              <h5 className="text-[13px] font-bold text-white/70 leading-tight">Dinâmica de Equipe (Tuckman)</h5>
+                            </div>
+                            <p className="text-[10px] text-white/40 mb-4 leading-relaxed font-sans">
+                              Aprenda a formar alianças (Contrato de Aliança) e gerenciar conflitos construtivos. (Bloqueado: Requer 60% no PDI 2)
+                            </p>
+                          </div>
                         </div>
-                        <p className="text-[10px] text-white/40 mb-4 leading-relaxed font-sans">
-                          Aprenda a formar alianças (Contrato de Aliança) e gerenciar conflitos construtivos. (Bloqueado: Requer 60% no PDI 2)
-                        </p>
                       </div>
 
                       {/* Step 4 */}
                       <div className="p-5 border border-white/10 bg-black/40 rounded-2xl relative opacity-60">
-                        <div className="flex items-center gap-3 mb-3">
+                        <div className="flex gap-4 items-start">
                           <div className="w-8 h-8 rounded-full bg-[#1a1a1a] border border-white/20 text-white/30 flex items-center justify-center font-bold font-mono text-[14px] flex-shrink-0">4</div>
-                          <h5 className="text-[13px] font-bold text-white/70 leading-tight">Impacto Organizacional</h5>
-                        </div>
-                        <p className="text-[10px] text-white/40 mb-4 leading-relaxed font-sans">
-                          Liderar mudanças estratégicas e influenciar cultura. Alpha-Linter e BI Avançado. (Bloqueado)
-                        </p>
-                      </div>
-
-                    </div>
-                  </div>
-                </motion.div>
-              )}
-
-              {/* SUBPAGE: GERIR */}
-              {lideresTab === 'gerir' && (
-                <motion.div
-                  key="gerir"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  className="space-y-4 text-left"
-                >
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
-                    <div className="dash-card p-5 text-center bg-black/40 backdrop-blur-xl border border-white/5 relative overflow-hidden">
-                      <div className="absolute top-0 right-0 w-32 h-32 bg-[#e24b4a]/10 blur-[50px] mix-blend-screen pointer-events-none" />
-                      <span className="font-mono text-[9px] uppercase tracking-widest text-[#e24b4a] font-bold block mb-2">Pessoas em Alerta</span>
-                      <b className="text-3xl font-light text-white block">{teamMembers.filter(m => m.d6 < 60).length}</b>
-                      <span className="text-[9px] text-[#e24b4a]/70 block mt-2 font-mono">D6 ou ISR &lt; 50</span>
-                    </div>
-                    <div className="dash-card p-5 text-center bg-black/40 backdrop-blur-xl border border-white/5 relative overflow-hidden">
-                      <div className="absolute top-0 right-0 w-32 h-32 bg-[#d4b87a]/10 blur-[50px] mix-blend-screen pointer-events-none" />
-                      <span className="font-mono text-[9px] uppercase tracking-widest text-[#d4b87a] font-bold block mb-2">D6 Médio do Time</span>
-                      <b className="text-3xl font-light text-white block">{Math.round(teamMembers.reduce((s, m) => s + m.d6, 0) / (teamMembers.length || 1))}<small className="text-[14px] text-white/30 font-sans">/100</small></b>
-                      <span className="text-[9px] text-[#d4b87a]/70 block mt-2 font-mono">Calculado em tempo real</span>
-                    </div>
-                    <div className="dash-card p-5 text-center bg-black/40 backdrop-blur-xl border border-white/5 relative overflow-hidden">
-                      <div className="absolute top-0 right-0 w-32 h-32 bg-[#5dcaa5]/10 blur-[50px] mix-blend-screen pointer-events-none" />
-                      <span className="font-mono text-[9px] uppercase tracking-widest text-[#5dcaa5] font-bold block mb-2">Com Tarefas Pendentes</span>
-                      <b className="text-3xl font-light text-white block">{delegatedTasks.filter(t => t.status !== 'concluido').length}</b>
-                      <span className="text-[9px] text-[#5dcaa5]/70 block mt-2 font-mono">Delegação ativa</span>
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                    {/* Coach SBI */}
-                    <div className="lg:col-span-7 dash-card text-left space-y-4 bg-[#050505]/60 backdrop-blur-3xl border border-white/5 relative overflow-hidden">
-                      <div className="absolute top-0 left-0 w-64 h-64 bg-blue-500/5 blur-[80px] pointer-events-none mix-blend-screen" />
-                      <div className="flex justify-between items-center mb-4 relative z-10">
-                        <div>
-                          <span className="font-mono text-[9px] text-blue-400 tracking-widest block mb-2 font-bold uppercase">COACH SBI</span>
-                          <h4 className="text-[14px] font-bold text-white mb-1">Registrar Feedback SBI</h4>
-                          <div className="text-[10px] text-white/50 font-sans">Foque em Situação → Comportamento objetivo → Impacto</div>
-                        </div>
-                        <button className="btn-reset-sm" onClick={() => triggerToast('Carregando aula SBI...', 'ok')}>▶ AULA</button>
-                      </div>
-
-                      <div className="space-y-2">
-                        <input 
-                          type="text" 
-                          placeholder="Situação (Onde e quando ocorreu? Ex: Na reunião de OKRs de terça...)" 
-                          value={sbiSit}
-                          onChange={(e) => setSbiSit(e.target.value)}
-                          className="w-full bg-black/40 border border-white/[0.08] rounded-[0.4rem] px-3 py-1.5 text-[10px] text-white outline-none focus:border-[#d4b87a]/40"
-                        />
-                        <input 
-                          type="text" 
-                          placeholder="Comportamento (Fato observável. Ex: Você me interrompeu 3 vezes...)" 
-                          value={sbiComp}
-                          onChange={(e) => setSbiComp(e.target.value)}
-                          className="w-full bg-black/40 border border-white/[0.08] rounded-[0.4rem] px-3 py-1.5 text-[10px] text-white outline-none focus:border-[#d4b87a]/40"
-                        />
-                        <textarea 
-                          placeholder="Impacto (Efeito no time. Ex: Isso gerou ruído na equipe...)" 
-                          value={sbiImp}
-                          onChange={(e) => setSbiImp(e.target.value)}
-                          className="w-full h-14 bg-black/40 border border-white/[0.08] rounded-[0.4rem] px-3 py-1.5 text-[10px] text-white outline-none focus:border-[#d4b87a]/40 resize-none"
-                        />
-                        
-                        <button 
-                          onClick={handleAddSbi}
-                          className="px-3.5 py-1.5 bg-[#d4b87a]/15 hover:bg-[#d4b87a]/30 border border-[#d4b87a]/45 rounded-lg text-[9px] font-bold text-[#d4b87a] font-mono transition"
-                        >
-                          + REGISTRAR FEEDBACK SBI
-                        </button>
-                      </div>
-
-                      {/* Log feed */}
-                      <div className="border-t border-white/[0.04] pt-4 max-h-[140px] overflow-y-auto space-y-3 pr-1 custom-scrollbar">
-                        {sbiLogs.length === 0 ? (
-                          <span className="text-[10px] italic opacity-50 block font-sans">Nenhum feedback SBI registrado hoje. Use em 1:1 semanais.</span>
-                        ) : (
-                          sbiLogs.map((log, i) => (
-                            <div key={i} className="p-3 bg-white/[0.02] border border-white/[0.04] rounded-xl font-mono text-[9px] hover:border-[#d4b87a]/20 transition-colors">
-                              <span className="text-[#d4b87a] font-bold block mb-2 tracking-widest">{log.date} · REGISTRO SBI</span>
-                              <div className="space-y-1">
-                                <span className="text-white/40 block">Situação: <b className="text-white/80">{log.situation}</b></span>
-                                <span className="text-white/40 block">Comportamento: <b className="text-white/80">{log.behavior}</b></span>
-                                <span className="text-white/40 block">Impacto: <b className="text-[#e24b4a]/90">{log.impact}</b></span>
-                              </div>
+                          <div className="flex-1 text-left font-sans">
+                            <div className="flex justify-between items-start mb-1 gap-2 flex-wrap">
+                              <h5 className="text-[13px] font-bold text-white/70 leading-tight">Impacto Organizacional</h5>
                             </div>
-                          ))
-                        )}
-                      </div>
-                    </div>
-
-                    {/* Team Individual Health */}
-                    <div className="lg:col-span-5 dash-card text-left space-y-4 bg-[#050505]/60 backdrop-blur-3xl border border-white/5 relative overflow-hidden">
-                      <div className="absolute top-0 right-0 w-64 h-64 bg-[#d4b87a]/5 blur-[80px] pointer-events-none mix-blend-screen" />
-                      <div>
-                        <span className="font-mono text-[9px] text-[#d4b87a] tracking-widest block mb-2 font-bold uppercase">SAÚDE INDIVIDUAL</span>
-                        <h4 className="text-[13px] font-bold text-white mb-1">Saúde Individual e Indicadores</h4>
-                        <div className="text-[10px] text-white/50 font-sans">Filtro cruzado de calibração em tempo real</div>
-                      </div>
-
-                      <div className="space-y-2 max-h-[300px] overflow-y-auto pr-1 custom-scrollbar">
-                        {teamMembers.length === 0 ? (
-                          <span className="text-[10px] opacity-50 italic block font-sans">Nenhum liderado cadastrado ainda. Vá em Home → Funil e contrate candidatos para popular a saúde individual.</span>
-                        ) : (
-                          teamMembers.map(m => (
-                            <div key={m.id} className="p-2 bg-black/25 border border-white/[0.03] rounded-lg flex items-center justify-between">
-                              <div>
-                                <b className="text-[10px] text-white/90 block leading-tight">{m.name}</b>
-                                <span className="text-[8px] font-mono text-white/40">{m.role}</span>
-                              </div>
-                              <div className="text-right">
-                                <span className="text-[9.5px] font-bold font-mono text-[#d4b87a] block leading-none">{m.d6}% D6</span>
-                                <span className={`text-[7.5px] font-bold uppercase font-mono mt-0.5 block ${m.d6 >= 80 ? 'text-[#5dcaa5]' : m.d6 >= 60 ? 'text-[#fac775]' : 'text-[#e24b4a]'}`}>{m.status}</span>
-                              </div>
-                            </div>
-                          ))
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
-              )}
-
-              {/* SUBPAGE: DELEGAR */}
-              {lideresTab === 'delegar' && (
-                <motion.div
-                  key="delegar"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  className="space-y-6 text-left"
-                >
-                  {/* Matriz M1-M4 situational matrix explanation */}
-                  <div className="dash-card bg-[#050505]/60 backdrop-blur-3xl border border-white/5 relative overflow-hidden">
-                    <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/5 blur-[80px] mix-blend-screen pointer-events-none" />
-                    <h4 className="text-[12px] font-mono text-[#d4b87a] font-bold tracking-widest uppercase mb-1">Matriz M1-M4 — Liderança Situacional</h4>
-                    <p className="text-[10px] text-white/50 mb-6 font-sans leading-relaxed">Adapte sua liderança à maturidade técnica (M1 a M4) do seu liderado para cada tarefa específica.</p>
-                    
-                    <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                      {[
-                        { m: 'M1', label: 'INICIANTE', focus: 'Direcionar / Instruir', color: 'border-red-900/30 text-red-400 bg-red-900/10', desc: 'Alta motivação, baixa competência. Prescritivo: defina e monitore.' },
-                        { m: 'M2', label: 'APRENDIZ', focus: 'Orientar / Treinar', color: 'border-yellow-900/30 text-yellow-400 bg-yellow-900/10', desc: 'Motivação cai no progresso. Direcione tarefas e apoie socioemocionalmente.' },
-                        { m: 'M3', label: 'CAPAZ', focus: 'Apoiar / Facilitar', color: 'border-slate-700 text-slate-300 bg-slate-800/30', desc: 'Competência alta, confiança oscila. Coparticipe da decisão e incentive.' },
-                        { m: 'M4', label: 'EXPERT', focus: 'Delegar Autonomia', color: 'border-[#5dcaa5]/30 text-[#5dcaa5] bg-[#5dcaa5]/10', desc: 'Maturidade máxima. Conceda autonomia de decisão com monitoramento assíncrono.' }
-                      ].map(item => (
-                        <div key={item.m} className={`p-4 border ${item.color} rounded-2xl space-y-2 hover:-translate-y-1 transition-transform`}>
-                          <span className="text-[9px] font-mono font-bold block opacity-80">{item.m} · {item.label}</span>
-                          <b className="text-[12px] block leading-none">{item.focus}</b>
-                          <span className="text-[9.5px] opacity-70 block leading-relaxed font-sans">{item.desc}</span>
+                            <p className="text-[10px] text-white/40 mb-4 leading-relaxed font-sans">
+                              Liderar mudanças estratégicas e influenciar cultura. Alpha-Linter e BI Avançado. (Bloqueado)
+                            </p>
+                          </div>
                         </div>
-                      ))}
+                      </div>
+
                     </div>
                   </div>
 
-                  {/* Calculator Split */}
-                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                    {/* Calculator Form */}
-                    <div className="lg:col-span-7 dash-card space-y-5 bg-[#050505]/60 backdrop-blur-3xl border border-[#d4b87a]/10">
-                      <div>
-                        <h4 className="text-[11px] font-mono text-white/90 font-bold tracking-widest uppercase mb-1">Cálculo de Custo de Oportunidade (ROI da Delegação)</h4>
-                        <p className="text-[10px] text-white/50 font-sans">Regra dos 80%: descubra quanto vale a recuperação do seu tempo operacional.</p>
-                      </div>
-
-                      <div className="calc-grid">
-                        <div className="calc-input-group">
-                          <label>Seu Salário Mensal (R$)</label>
-                          <input 
-                            type="number" 
-                            value={salary}
-                            onChange={(e) => setSalary(parseInt(e.target.value) || 0)}
-                          />
-                        </div>
-                        <div className="calc-input-group">
-                          <label>Horas Operacionais/Semana</label>
-                          <input 
-                            type="number" 
-                            value={operHours}
-                            onChange={(e) => setOperHours(parseInt(e.target.value) || 0)}
-                          />
-                        </div>
-                        
-                        <div className="calc-input-group" style={{ gridColumn: 'span 2' }}>
-                          <label>Maturidade do Liderado</label>
-                          <select 
-                            value={delegationMaturity}
-                            onChange={(e) => setDelegationMaturity(e.target.value as any)}
-                          >
-                            <option value="M1">M1: Iniciante (Microgestão / Direcional - Baixo ROI)</option>
-                            <option value="M2">M2: Aprendiz (Direção + Treinamento - Médio ROI)</option>
-                            <option value="M3">M3: Capaz (Autonomia Assistida - Alto ROI)</option>
-                            <option value="M4">M4: Expert (Delegação Plena - ROI Máximo)</option>
-                          </select>
-                        </div>
-                      </div>
-
-                      {/* Diagnostic Outputs */}
-                      <div style={{ background: 'rgba(212,184,122,0.03)', border: '0.2px solid rgba(212,184,122,0.15)', borderRadius: '8px', padding: '12px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', marginTop: '14px' }}>
-                        <div>
-                          <span style={{ fontSize: '9px', opacity: 0.5, display: 'block' }}>Custo da Sua Hora</span>
-                          <b style={{ fontSize: '13px', color: '#ffffff' }} className="font-mono">R$ {costPerHour}</b>
-                        </div>
-                        <div>
-                          <span style={{ fontSize: '9px', opacity: 0.5, display: 'block' }}>Risco de Burnout</span>
-                          <b style={{ fontSize: '13px', color: '#fac775' }}>{burnoutRisk}</b>
-                        </div>
-                        <div>
-                          <span style={{ fontSize: '9px', opacity: 0.5, display: 'block' }}>ROI Estratégico Mensal</span>
-                          <b style={{ fontSize: '13px', color: '#5dcaa5' }} className="font-mono">R$ {Math.round(opportunityRoi)}</b>
-                        </div>
-                        <div>
-                          <span style={{ fontSize: '9px', opacity: 0.5, display: 'block' }}>Impacto Anual Gerado</span>
-                          <b style={{ fontSize: '13px', color: '#5dcaa5' }} className="font-mono">R$ {annualRoi}</b>
-                        </div>
-                      </div>
-
-                      <div style={{ fontSize: '9.5px', lineHeight: '1.4', padding: '8px', background: 'rgba(0,0,0,0.2)', borderRadius: '6px' }}>
-                        <b>DIAGNÓSTICO ALX:</b> Líder, seu gargalo de {operHours}h/semana gera um desperdício. Ao delegar para um {delegationMaturity}, você recupera R$ {Math.round(opportunityRoi)} mensais em valor estratégico.
-                      </div>
-                    </div>
-
-                    {/* Delegated task checklist */}
-                    <div className="lg:col-span-5 dash-card space-y-3">
-                      <div className="flex justify-between items-center" style={{ marginBottom: '10px' }}>
-                        <div>
-                          <h4 className="panel-title" style={{ fontSize: '12px' }}>Painel de Tarefas Delegadas</h4>
-                          <div className="panel-sub">Atribua metas baseadas na maturidade</div>
-                        </div>
-                      </div>
-
-                      <div className="space-y-2">
-                        <input 
-                          type="text" 
-                          placeholder="Meta / Tarefa a ser delegada..."
-                          value={newTaskTitle}
-                          onChange={(e) => setNewTaskTitle(e.target.value)}
-                          className="w-full bg-black/45 border border-white/[0.08] rounded-[0.4rem] px-3 py-1.5 text-[9.5px] text-white outline-none focus:border-[#d4b87a]/40"
-                        />
-                        
-                        <div className="flex gap-2">
-                          <select 
-                            value={newTaskAssignee}
-                            onChange={(e) => setNewTaskAssignee(e.target.value)}
-                            className="flex-1 bg-black/45 border border-white/[0.08] rounded-[0.4rem] px-2 py-1.5 text-[9.5px] text-white outline-none"
-                          >
-                            {teamMembers.map(m => <option key={m.id} value={m.name}>{m.name}</option>)}
-                          </select>
-                          <select 
-                            value={newTaskMaturity}
-                            onChange={(e) => setNewTaskMaturity(e.target.value)}
-                            className="w-20 bg-black/45 border border-white/[0.08] rounded-[0.4rem] px-2 py-1.5 text-[9.5px] text-white outline-none"
-                          >
-                            <option value="M1">M1</option>
-                            <option value="M2">M2</option>
-                            <option value="M3">M3</option>
-                            <option value="M4">M4</option>
-                          </select>
-                          <button 
-                            onClick={handleAddDelegatedTask}
-                            className="px-3 bg-[#d4b87a]/20 border border-[#d4b87a]/30 hover:bg-[#d4b87a]/30 rounded-[0.4rem] text-[9.5px] font-bold text-[#d4b87a] transition"
-                          >
-                            DELEGAR
-                          </button>
-                        </div>
-                      </div>
-
-                      <div className="space-y-1.5 pt-2 max-h-[140px] overflow-y-auto pr-1">
-                        {delegatedTasks.length === 0 ? (
-                          <span style={{ fontSize: '10px', fontStyle: 'italic', opacity: 0.5 }}>Nenhum liderado cadastrado hoje. Adicione colaboradores para delegar tarefas.</span>
-                        ) : (
-                          delegatedTasks.map(t => (
-                            <div 
-                              key={t.id} 
-                              onClick={() => handleToggleTaskStatus(t.id)}
-                              className="p-2 bg-white/[0.02] border border-white/[0.04] rounded-lg flex items-center justify-between cursor-pointer transition hover:border-[#d4b87a]/30 text-left"
-                            >
-                              <div>
-                                <b className="text-[10px] text-white block leading-none">{t.title}</b>
-                                <span className="text-[8px] font-mono text-white/40 block mt-1">{t.assignee} · {t.maturity}</span>
-                              </div>
-                              <span className={`text-[8.5px] font-mono uppercase font-bold ${t.status === 'concluido' ? 'text-[#5dcaa5]' : 'text-white/35'}`}>{t.status}</span>
-                            </div>
-                          ))
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
-              )}
-
-              {/* SUBPAGE: VOCÊ (PDI & SIGNIFICADO UNIFICADOS) */}
-              {lideresTab === 'voce' && (
-                <motion.div
-                  key="voce-pdi"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  className="space-y-5 text-left"
-                >
                   {/* Top Highlight: Progress */}
                   <div className="p-5 bg-gradient-to-r from-black/60 to-black/30 border border-[#d4b87a]/20 rounded-2xl relative overflow-hidden backdrop-blur-3xl shadow-[0_0_40px_rgba(212,184,122,0.05)]">
                     <div className="absolute top-0 right-0 w-64 h-64 bg-[#d4b87a]/10 blur-[80px] pointer-events-none mix-blend-screen" />
@@ -2339,7 +2473,7 @@ export function SigPessoasPanel() {
                           <h4 className="text-[13px] m-0 font-bold text-white tracking-wide">Diário de Inteligência Emocional + IA</h4>
                           <button className="px-3 py-1.5 border border-[#d4b87a]/30 rounded-lg text-[#d4b87a] text-[9px] font-mono font-bold tracking-widest hover:bg-[#d4b87a]/10 hover:border-[#d4b87a]/60 transition-all shadow-[0_0_15px_rgba(212,184,122,0.1)]">▶ AULA</button>
                         </div>
-                        <p className="text-[10px] text-white/50 m-0 mb-4 font-sans leading-relaxed">Escreva sobre uma situation que gerou emoção intensa. A IA analisa o padrão e sugere ações de autogestão.</p>
+                        <p className="text-[10px] text-white/50 m-0 mb-4 font-sans leading-relaxed">Escreva sobre uma situação que gerou emoção intensa. A IA analisa o padrão e sugere ações de autogestão.</p>
                         
                         <div className="flex flex-col gap-3">
                           <textarea 
@@ -2553,6 +2687,319 @@ export function SigPessoasPanel() {
                   </div>
                 </motion.div>
               )}
+
+              {/* SUBPAGE: GERIR */}
+              {lideresTab === 'gerir' && (
+                <motion.div
+                  key="gerir"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="space-y-4 text-left"
+                >
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+                    <div className="dash-card p-5 text-center bg-black/40 backdrop-blur-xl border border-white/5 relative overflow-hidden">
+                      <div className="absolute top-0 right-0 w-32 h-32 bg-[#e24b4a]/10 blur-[50px] mix-blend-screen pointer-events-none" />
+                      <span className="font-mono text-[9px] uppercase tracking-widest text-[#e24b4a] font-bold block mb-2">Pessoas em Alerta</span>
+                      <b className="text-3xl font-light text-white block">{teamMembers.filter(m => m.d6 < 60).length}</b>
+                      <span className="text-[9px] text-[#e24b4a]/70 block mt-2 font-mono">D6 ou ISR &lt; 50</span>
+                    </div>
+                    <div className="dash-card p-5 text-center bg-black/40 backdrop-blur-xl border border-white/5 relative overflow-hidden">
+                      <div className="absolute top-0 right-0 w-32 h-32 bg-[#d4b87a]/10 blur-[50px] mix-blend-screen pointer-events-none" />
+                      <span className="font-mono text-[9px] uppercase tracking-widest text-[#d4b87a] font-bold block mb-2">D6 Médio do Time</span>
+                      <b className="text-3xl font-light text-white block">{Math.round(teamMembers.reduce((s, m) => s + m.d6, 0) / (teamMembers.length || 1))}<small className="text-[14px] text-white/30 font-sans">/100</small></b>
+                      <span className="text-[9px] text-[#d4b87a]/70 block mt-2 font-mono">Calculado em tempo real</span>
+                    </div>
+                    <div className="dash-card p-5 text-center bg-black/40 backdrop-blur-xl border border-white/5 relative overflow-hidden">
+                      <div className="absolute top-0 right-0 w-32 h-32 bg-[#5dcaa5]/10 blur-[50px] mix-blend-screen pointer-events-none" />
+                      <span className="font-mono text-[9px] uppercase tracking-widest text-[#5dcaa5] font-bold block mb-2">Com Tarefas Pendentes</span>
+                      <b className="text-3xl font-light text-white block">{delegatedTasks.filter(t => t.status !== 'concluido').length}</b>
+                      <span className="text-[9px] text-[#5dcaa5]/70 block mt-2 font-mono">Delegação ativa</span>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    {/* Coach SBI */}
+                    <div className="lg:col-span-7 dash-card text-left space-y-4 bg-[#050505]/60 backdrop-blur-3xl border border-white/5 relative overflow-hidden">
+                      <div className="absolute top-0 left-0 w-64 h-64 bg-blue-500/5 blur-[80px] pointer-events-none mix-blend-screen" />
+                      <div className="flex justify-between items-center mb-4 relative z-10">
+                        <div>
+                          <span className="font-mono text-[9px] text-blue-400 tracking-widest block mb-2 font-bold uppercase">COACH SBI</span>
+                          <h4 className="text-[14px] font-bold text-white mb-1">Registrar Feedback SBI</h4>
+                          <div className="text-[10px] text-white/50 font-sans">Foque em Situação → Comportamento objetivo → Impacto</div>
+                        </div>
+                        <button className="btn-reset-sm" onClick={() => triggerToast('Carregando aula SBI...', 'ok')}>▶ AULA</button>
+                      </div>
+
+                      <div className="space-y-2">
+                        <input 
+                          type="text" 
+                          placeholder="Situação (Onde e quando ocorreu? Ex: Na reunião de OKRs de terça...)" 
+                          value={sbiSit}
+                          onChange={(e) => setSbiSit(e.target.value)}
+                          className="w-full bg-black/40 border border-white/[0.08] rounded-[0.4rem] px-3 py-1.5 text-[10px] text-white outline-none focus:border-[#d4b87a]/40"
+                        />
+                        <input 
+                          type="text" 
+                          placeholder="Comportamento (Fato observável. Ex: Você me interrompeu 3 vezes...)" 
+                          value={sbiComp}
+                          onChange={(e) => setSbiComp(e.target.value)}
+                          className="w-full bg-black/40 border border-white/[0.08] rounded-[0.4rem] px-3 py-1.5 text-[10px] text-white outline-none focus:border-[#d4b87a]/40"
+                        />
+                        <textarea 
+                          placeholder="Impacto (Efeito no time. Ex: Isso gerou ruído na equipe...)" 
+                          value={sbiImp}
+                          onChange={(e) => setSbiImp(e.target.value)}
+                          className="w-full h-14 bg-black/40 border border-white/[0.08] rounded-[0.4rem] px-3 py-1.5 text-[10px] text-white outline-none focus:border-[#d4b87a]/40 resize-none"
+                        />
+                        
+                        <button 
+                          onClick={handleAddSbi}
+                          className="px-3.5 py-1.5 bg-[#d4b87a]/15 hover:bg-[#d4b87a]/30 border border-[#d4b87a]/45 rounded-lg text-[9px] font-bold text-[#d4b87a] font-mono transition"
+                        >
+                          + REGISTRAR FEEDBACK SBI
+                        </button>
+                      </div>
+
+                      {/* Log feed */}
+                      <div className="border-t border-white/[0.04] pt-4 max-h-[140px] overflow-y-auto space-y-3 pr-1 custom-scrollbar">
+                        {sbiLogs.length === 0 ? (
+                          <span className="text-[10px] italic opacity-50 block font-sans">Nenhum feedback SBI registrado hoje. Use em 1:1 semanais.</span>
+                        ) : (
+                          sbiLogs.map((log, i) => (
+                            <div key={i} className="p-3 bg-white/[0.02] border border-white/[0.04] rounded-xl font-mono text-[9px] hover:border-[#d4b87a]/20 transition-colors">
+                              <span className="text-[#d4b87a] font-bold block mb-2 tracking-widest">{log.date} · REGISTRO SBI</span>
+                              <div className="space-y-1">
+                                <span className="text-white/40 block">Situação: <b className="text-white/80">{log.situation}</b></span>
+                                <span className="text-white/40 block">Comportamento: <b className="text-white/80">{log.behavior}</b></span>
+                                <span className="text-white/40 block">Impacto: <b className="text-[#e24b4a]/90">{log.impact}</b></span>
+                              </div>
+                            </div>
+                          ))
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Team Individual Health */}
+                    <div className="lg:col-span-5 dash-card text-left space-y-4 bg-[#050505]/60 backdrop-blur-3xl border border-white/5 relative overflow-hidden">
+                      <div className="absolute top-0 right-0 w-64 h-64 bg-[#d4b87a]/5 blur-[80px] pointer-events-none mix-blend-screen" />
+                      <div>
+                        <span className="font-mono text-[9px] text-[#d4b87a] tracking-widest block mb-2 font-bold uppercase">SAÚDE INDIVIDUAL</span>
+                        <h4 className="text-[13px] font-bold text-white mb-1">Saúde Individual e Indicadores</h4>
+                        <div className="text-[10px] text-white/50 font-sans">Filtro cruzado de calibração em tempo real</div>
+                      </div>
+
+                      <div className="space-y-2 max-h-[300px] overflow-y-auto pr-1 custom-scrollbar">
+                        {teamMembers.length === 0 ? (
+                          <span className="text-[10px] opacity-50 italic block font-sans">Nenhum liderado cadastrado ainda. Vá em Home → Funil e contrate candidatos para popular a saúde individual.</span>
+                        ) : (
+                          teamMembers.map(m => (
+                            <div key={m.id} className="p-2 bg-black/25 border border-white/[0.03] rounded-lg flex items-center justify-between">
+                              <div>
+                                <b className="text-[10px] text-white/90 block leading-tight">{m.name}</b>
+                                <span className="text-[8px] font-mono text-white/40">{m.role}</span>
+                              </div>
+                              <div className="text-right flex flex-col items-end">
+                                <span className="text-[9.5px] font-bold font-mono text-[#d4b87a] block leading-none">{m.d6}% D6</span>
+                                <span className={`text-[7.5px] font-bold uppercase font-mono mt-0.5 block ${m.d6 >= 80 ? 'text-[#5dcaa5]' : m.d6 >= 60 ? 'text-[#fac775]' : 'text-[#e24b4a]'}`}>{m.status}</span>
+                                <div className="flex items-center gap-1.5 mt-1">
+                                  <button 
+                                    onClick={() => handleMoveMemberToCandidates(m)}
+                                    className="p-1 hover:bg-white/10 rounded text-[9.5px] text-[#d4b87a] transition-colors flex items-center justify-center"
+                                    title="Mover de volta para Candidatos"
+                                    style={{ lineHeight: 1 }}
+                                  >
+                                    ⇄
+                                  </button>
+                                  <button 
+                                    onClick={() => {
+                                      if (confirm(`Deseja realmente demitir/remover ${m.name}?`)) {
+                                        handleDeleteMember(m.id)
+                                      }
+                                    }}
+                                    className="p-1 hover:bg-red-500/20 rounded text-[9px] text-red-400 transition-colors flex items-center justify-center"
+                                    title="Demitir / Apagar"
+                                    style={{ lineHeight: 1 }}
+                                  >
+                                    ✕
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          ))
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+
+              {/* SUBPAGE: DELEGAR */}
+              {lideresTab === 'delegar' && (
+                <motion.div
+                  key="delegar"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="space-y-6 text-left"
+                >
+                  {/* Matriz M1-M4 situational matrix explanation */}
+                  <div className="dash-card bg-[#050505]/60 backdrop-blur-3xl border border-white/5 relative overflow-hidden">
+                    <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/5 blur-[80px] mix-blend-screen pointer-events-none" />
+                    <h4 className="text-[12px] font-mono text-[#d4b87a] font-bold tracking-widest uppercase mb-1">Matriz M1-M4 — Liderança Situacional</h4>
+                    <p className="text-[10px] text-white/50 mb-6 font-sans leading-relaxed">Adapte sua liderança à maturidade técnica (M1 a M4) do seu liderado para cada tarefa específica.</p>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                      {[
+                        { m: 'M1', label: 'INICIANTE', focus: 'Direcionar / Instruir', color: 'border-red-900/30 text-red-400 bg-red-900/10', desc: 'Alta motivação, baixa competência. Prescritivo: defina e monitore.' },
+                        { m: 'M2', label: 'APRENDIZ', focus: 'Orientar / Treinar', color: 'border-yellow-900/30 text-yellow-400 bg-yellow-900/10', desc: 'Motivação cai no progresso. Direcione tarefas e apoie socioemocionalmente.' },
+                        { m: 'M3', label: 'CAPAZ', focus: 'Apoiar / Facilitar', color: 'border-slate-700 text-slate-300 bg-slate-800/30', desc: 'Competência alta, confiança oscila. Coparticipe da decisão e incentive.' },
+                        { m: 'M4', label: 'EXPERT', focus: 'Delegar Autonomia', color: 'border-[#5dcaa5]/30 text-[#5dcaa5] bg-[#5dcaa5]/10', desc: 'Maturidade máxima. Conceda autonomia de decisão com monitoramento assíncrono.' }
+                      ].map(item => (
+                        <div key={item.m} className={`p-4 border ${item.color} rounded-2xl space-y-2 hover:-translate-y-1 transition-transform`}>
+                          <span className="text-[9px] font-mono font-bold block opacity-80">{item.m} · {item.label}</span>
+                          <b className="text-[12px] block leading-none">{item.focus}</b>
+                          <span className="text-[9.5px] opacity-70 block leading-relaxed font-sans">{item.desc}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Calculator Split */}
+                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    {/* Calculator Form */}
+                    <div className="lg:col-span-7 dash-card space-y-5 bg-[#050505]/60 backdrop-blur-3xl border border-[#d4b87a]/10">
+                      <div>
+                        <h4 className="text-[11px] font-mono text-white/90 font-bold tracking-widest uppercase mb-1">Cálculo de Custo de Oportunidade (ROI da Delegação)</h4>
+                        <p className="text-[10px] text-white/50 font-sans">Regra dos 80%: descubra quanto vale a recuperação do seu tempo operacional.</p>
+                      </div>
+
+                      <div className="calc-grid">
+                        <div className="calc-input-group">
+                          <label>Seu Salário Mensal (R$)</label>
+                          <input 
+                            type="number" 
+                            value={salary}
+                            onChange={(e) => setSalary(parseInt(e.target.value) || 0)}
+                          />
+                        </div>
+                        <div className="calc-input-group">
+                          <label>Horas Operacionais/Semana</label>
+                          <input 
+                            type="number" 
+                            value={operHours}
+                            onChange={(e) => setOperHours(parseInt(e.target.value) || 0)}
+                          />
+                        </div>
+                        
+                        <div className="calc-input-group" style={{ gridColumn: 'span 2' }}>
+                          <label>Maturidade do Liderado</label>
+                          <select 
+                            value={delegationMaturity}
+                            onChange={(e) => setDelegationMaturity(e.target.value as any)}
+                          >
+                            <option value="M1">M1: Iniciante (Microgestão / Direcional - Baixo ROI)</option>
+                            <option value="M2">M2: Aprendiz (Direção + Treinamento - Médio ROI)</option>
+                            <option value="M3">M3: Capaz (Autonomia Assistida - Alto ROI)</option>
+                            <option value="M4">M4: Expert (Delegação Plena - ROI Máximo)</option>
+                          </select>
+                        </div>
+                      </div>
+
+                      {/* Diagnostic Outputs */}
+                      <div style={{ background: 'rgba(212,184,122,0.03)', border: '0.2px solid rgba(212,184,122,0.15)', borderRadius: '8px', padding: '12px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', marginTop: '14px' }}>
+                        <div>
+                          <span style={{ fontSize: '9px', opacity: 0.5, display: 'block' }}>Custo da Sua Hora</span>
+                          <b style={{ fontSize: '13px', color: '#ffffff' }} className="font-mono">R$ {costPerHour}</b>
+                        </div>
+                        <div>
+                          <span style={{ fontSize: '9px', opacity: 0.5, display: 'block' }}>Risco de Burnout</span>
+                          <b style={{ fontSize: '13px', color: '#fac775' }}>{burnoutRisk}</b>
+                        </div>
+                        <div>
+                          <span style={{ fontSize: '9px', opacity: 0.5, display: 'block' }}>ROI Estratégico Mensal</span>
+                          <b style={{ fontSize: '13px', color: '#5dcaa5' }} className="font-mono">R$ {Math.round(opportunityRoi)}</b>
+                        </div>
+                        <div>
+                          <span style={{ fontSize: '9px', opacity: 0.5, display: 'block' }}>Impacto Anual Gerado</span>
+                          <b style={{ fontSize: '13px', color: '#5dcaa5' }} className="font-mono">R$ {annualRoi}</b>
+                        </div>
+                      </div>
+
+                      <div style={{ fontSize: '9.5px', lineHeight: '1.4', padding: '8px', background: 'rgba(0,0,0,0.2)', borderRadius: '6px' }}>
+                        <b>DIAGNÓSTICO ALX:</b> Líder, seu gargalo de {operHours}h/semana gera um desperdício. Ao delegar para um {delegationMaturity}, você recupera R$ {Math.round(opportunityRoi)} mensais em valor estratégico.
+                      </div>
+                    </div>
+
+                    {/* Delegated task checklist */}
+                    <div className="lg:col-span-5 dash-card space-y-3">
+                      <div className="flex justify-between items-center" style={{ marginBottom: '10px' }}>
+                        <div>
+                          <h4 className="panel-title" style={{ fontSize: '12px' }}>Painel de Tarefas Delegadas</h4>
+                          <div className="panel-sub">Atribua metas baseadas na maturidade</div>
+                        </div>
+                      </div>
+
+                      <div className="space-y-2">
+                        <input 
+                          type="text" 
+                          placeholder="Meta / Tarefa a ser delegada..."
+                          value={newTaskTitle}
+                          onChange={(e) => setNewTaskTitle(e.target.value)}
+                          className="w-full bg-black/45 border border-white/[0.08] rounded-[0.4rem] px-3 py-1.5 text-[9.5px] text-white outline-none focus:border-[#d4b87a]/40"
+                        />
+                        
+                        <div className="flex gap-2">
+                          <select 
+                            value={newTaskAssignee}
+                            onChange={(e) => setNewTaskAssignee(e.target.value)}
+                            className="flex-1 bg-black/45 border border-white/[0.08] rounded-[0.4rem] px-2 py-1.5 text-[9.5px] text-white outline-none"
+                          >
+                            {teamMembers.map(m => <option key={m.id} value={m.name}>{m.name}</option>)}
+                          </select>
+                          <select 
+                            value={newTaskMaturity}
+                            onChange={(e) => setNewTaskMaturity(e.target.value)}
+                            className="w-20 bg-black/45 border border-white/[0.08] rounded-[0.4rem] px-2 py-1.5 text-[9.5px] text-white outline-none"
+                          >
+                            <option value="M1">M1</option>
+                            <option value="M2">M2</option>
+                            <option value="M3">M3</option>
+                            <option value="M4">M4</option>
+                          </select>
+                          <button 
+                            onClick={handleAddDelegatedTask}
+                            className="px-3 bg-[#d4b87a]/20 border border-[#d4b87a]/30 hover:bg-[#d4b87a]/30 rounded-[0.4rem] text-[9.5px] font-bold text-[#d4b87a] transition"
+                          >
+                            DELEGAR
+                          </button>
+                        </div>
+                      </div>
+
+                      <div className="space-y-1.5 pt-2 max-h-[140px] overflow-y-auto pr-1">
+                        {delegatedTasks.length === 0 ? (
+                          <span style={{ fontSize: '10px', fontStyle: 'italic', opacity: 0.5 }}>Nenhum liderado cadastrado hoje. Adicione colaboradores para delegar tarefas.</span>
+                        ) : (
+                          delegatedTasks.map(t => (
+                            <div 
+                              key={t.id} 
+                              onClick={() => handleToggleTaskStatus(t.id)}
+                              className="p-2 bg-white/[0.02] border border-white/[0.04] rounded-lg flex items-center justify-between cursor-pointer transition hover:border-[#d4b87a]/30 text-left"
+                            >
+                              <div>
+                                <b className="text-[10px] text-white block leading-none">{t.title}</b>
+                                <span className="text-[8px] font-mono text-white/40 block mt-1">{t.assignee} · {t.maturity}</span>
+                              </div>
+                              <span className={`text-[8.5px] font-mono uppercase font-bold ${t.status === 'concluido' ? 'text-[#5dcaa5]' : 'text-white/35'}`}>{t.status}</span>
+                            </div>
+                          ))
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+
             </AnimatePresence>
           </motion.div>
         )}
@@ -2811,6 +3258,24 @@ export function SigPessoasPanel() {
                               <div className="col-span-2 p-3 bg-[#d4b87a]/5 border border-[#d4b87a]/15 rounded-xl flex flex-col gap-1 text-left">
                                 <span className="text-[8px] text-[#d4b87a] uppercase tracking-widest font-mono font-bold">Desejo de Carreira</span>
                                 <b className="text-[10px] text-[#fac775] font-medium">{m.wishes}</b>
+                              </div>
+                              <div className="col-span-2 flex gap-3 mt-2">
+                                <button
+                                  onClick={() => handleMoveMemberToCandidates(m)}
+                                  className="flex-1 py-2 bg-gradient-to-b from-[#d4b87a]/10 to-[#d4b87a]/5 hover:from-[#d4b87a]/20 border border-[#d4b87a]/30 rounded-xl text-[10px] font-mono font-bold text-[#d4b87a] transition-all flex items-center justify-center gap-1.5"
+                                >
+                                  <span>⇄</span> MOVER P/ CANDIDATOS
+                                </button>
+                                <button
+                                  onClick={() => {
+                                    if (confirm(`Deseja realmente demitir/remover ${m.name}?`)) {
+                                      handleDeleteMember(m.id)
+                                    }
+                                  }}
+                                  className="flex-1 py-2 bg-gradient-to-b from-red-950/20 to-red-950/10 hover:from-red-950/40 border border-red-900/35 rounded-xl text-[10px] font-mono font-bold text-red-400 transition-all flex items-center justify-center gap-1.5"
+                                >
+                                  <span>🗑</span> DEMITIR / APAGAR
+                                </button>
                               </div>
                             </div>
                           </div>
