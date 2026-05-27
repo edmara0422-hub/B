@@ -1871,7 +1871,6 @@ export const SUBJECTS_DB: SubjectContent[] = [
       }
     ]
   },
-  ,
   {
       "id": "M4-T1-S2",
       "code": "M4-T1-S2",
