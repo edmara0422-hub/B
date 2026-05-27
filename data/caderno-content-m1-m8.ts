@@ -2703,6 +2703,144 @@ export const SUBJECTS_DB: SubjectContent[] = [
               }
           }
       ]
+  },
+  {
+      "id": "M4-T1-S5",
+      "code": "M4-T1-S5",
+      "title": "Demonstrações Contábeis",
+      "description": "Fundamentos da Contabilidade, Balanço Patrimonial, DRE, Fluxo de Caixa e Patrimônio",
+      "icon": "Calculator",
+      "videoUrls": [],
+      "chapters": [
+          {
+              "title": "1: Fundamentos da Contabilidade",
+              "description": "A linguagem universal dos negócios — o que ela é, por que existe e quem usa",
+              "subsections": [
+                  {
+                      "title": "A Ciência Contábil e seus Objetivos",
+                      "content": "A contabilidade é a linguagem universal dos negócios, uma ciência social aplicada que transforma transações complexas em informações compreensíveis. Seus 3 grandes objetivos são: 1. Registrar transações (matéria-prima para análise); 2. Classificar e resumir (separar custo de investimento para relatórios padronizados); 3. Avaliar o desempenho (permitir ajustes antes de crises)."
+                  },
+                  {
+                      "title": "As 4 Finalidades",
+                      "content": "Tomada de decisões (razão de existir), Prestação de contas (transparência), Controle financeiro (monitoramento e correção) e Análise de desempenho (medir progresso rumo a objetivos)."
+                  },
+                  {
+                      "title": "Usuários e Especializações",
+                      "content": "Usuários internos: Gerência, funcionários. Usuários externos: Investidores, credores, governo, fornecedores.\n\nContabilidade Financeira (foco externo, segue normas IFRS/CPC) vs Contabilidade de Gestão (foco interno, auxilia em decisões como preço e recursos).\n\nEspecializações incluem Tributária (impostos), Custos (precificação) e Auditoria (que fornece segurança para o sistema, ex: as Big 4)."
+                  }
+              ],
+              "synthesis": {
+                  "title": "Síntese",
+                  "bullets": [
+                      "Fraude contábil destrói a confiança de todos os usuários ao mesmo tempo.",
+                      "60% das PMEs brasileiras fecham em 5 anos; má gestão financeira é a causa #1.",
+                      "Cada usuário lê os números contábeis com uma lente diferente (controle vs retorno vs risco)."
+                  ],
+                  "insights": []
+              }
+          },
+          {
+              "title": "2: Balanço Patrimonial",
+              "description": "A fotografia financeira — o que a empresa tem, deve e quanto sobra",
+              "subsections": [
+                  {
+                      "title": "A Equação Fundamental",
+                      "content": "O Balanço responde o que a empresa tem, o que deve e o que sobra para os donos. A equação é: Ativo = Passivo + Patrimônio Líquido (PL)."
+                  },
+                  {
+                      "title": "Ativo e Passivo",
+                      "content": "Ativo (Lado Esquerdo - O que a empresa tem): Ativo Circulante (até 12 meses, ex: caixa, estoque) e Não Circulante (longo prazo, imóveis, intangíveis como marca e software).\n\nPassivo (Lado Direito - O que deve): Passivo Circulante (dívidas de até 12 meses) e Não Circulante (longo prazo)."
+                  },
+                  {
+                      "title": "Patrimônio Líquido e Indicadores",
+                      "content": "Patrimônio Líquido (O que sobra): PL = Ativo - Passivo. Inclui capital social e lucros retidos. PL negativo significa insolvência técnica, embora possa ser estratégico em startups de alto crescimento.\n\nIndicadores-Chave: Liquidez Corrente (Ativo Circulante / Passivo Circulante > 1), Endividamento (Passivo Total / Ativo Total < 70%) e ROE (Lucro Líquido / PL)."
+                  }
+              ],
+              "synthesis": {
+                  "title": "Síntese",
+                  "bullets": [
+                      "A equação Ativo = Passivo + PL deve sempre fechar.",
+                      "Empresas digitais têm seu maior ativo como intangível.",
+                      "Liquidez, endividamento e ROE são fundamentais para ler a fotografia financeira."
+                  ],
+                  "insights": []
+              }
+          },
+          {
+              "title": "3: DRE — Demonstração do Resultado",
+              "description": "Da receita bruta ao lucro líquido — onde a empresa ganha e onde perde",
+              "subsections": [
+                  {
+                      "title": "Estrutura da DRE",
+                      "content": "A DRE é um filme do desempenho financeiro ao longo do período: 1. Receita Bruta; 2. (-) Deduções = Receita Líquida; 3. (-) CMV/CPV = Lucro Bruto; 4. (-) Despesas Operacionais = EBIT (Lucro Operacional); 5. (-) IR e CSLL = Lucro Líquido."
+                  },
+                  {
+                      "title": "As Margens",
+                      "content": "Margem Bruta (Lucro Bruto/Receita Líquida): mede eficiência de produção.\nMargem Operacional (EBIT/Receita Líquida): eficiência geral da operação.\nMargem Líquida (Lucro Líquido/Receita Líquida): o que sobra no bolso final. Cada linha é uma alavanca estratégica."
+                  }
+              ],
+              "synthesis": {
+                  "title": "Síntese",
+                  "bullets": [
+                      "A DRE é um funil: receita entra no topo, despesas saem, e lucro fica embaixo.",
+                      "Margem bruta alta com líquida baixa indica produção eficiente, mas operação inchada."
+                  ],
+                  "insights": []
+              }
+          },
+          {
+              "title": "4: Fluxo de Caixa",
+              "description": "O oxigênio do negócio — por que empresas lucrativas quebram",
+              "subsections": [
+                  {
+                      "title": "Lucro vs Caixa",
+                      "content": "A diferença é o regime: DRE é regime de competência (venda registrada na hora), Fluxo é caixa (só quando o dinheiro entra). Uma empresa lucrativa na DRE pode quebrar se os clientes pagarem a prazo e os boletos vencerem hoje."
+                  },
+                  {
+                      "title": "Os 3 Tipos de Fluxo",
+                      "content": "1. Operacional: as entradas e saídas do dia a dia. Se for negativo recorrente, o modelo tem problema.\n2. Investimento: aquisição/venda de ativos de longo prazo. Muitas vezes é negativo em fases de expansão.\n3. Financiamento: captação e pagamento de dívidas/emissão de ações.\n\nRunway: meses de sobrevivência sem nova receita. Abaixo de 6 meses é alerta de emergência."
+                  }
+              ],
+              "synthesis": {
+                  "title": "Síntese",
+                  "bullets": [
+                      "Lucro não é caixa. A empresa quebra por asfixia de fluxo, não por DRE.",
+                      "Runway é a principal métrica de fôlego."
+                  ],
+                  "insights": []
+              }
+          },
+          {
+              "title": "5: Patrimônio e Método das Partidas Dobradas",
+              "description": "Bens, Direitos, Obrigações e PL — os 4 pilares",
+              "subsections": [
+                  {
+                      "title": "Os Bens",
+                      "content": "O que a empresa possui. Bens Tangíveis Móveis (veículos, estoques), Bens Tangíveis Imóveis (terrenos, construções) e Bens Intangíveis (marcas, softwares)."
+                  },
+                  {
+                      "title": "Os Direitos",
+                      "content": "O que a empresa tem a receber de terceiros (Ativos futuros): Contas a receber, investimentos, pagamentos antecipados e depósitos judiciais."
+                  },
+                  {
+                      "title": "As Obrigações",
+                      "content": "O que a empresa deve (Passivos presentes): Dívidas/empréstimos (bancos), Fornecedores, e Salários/Impostos. Dívidas trabalhistas/fiscais têm sempre prioridade e pesadas multas."
+                  },
+                  {
+                      "title": "Patrimônio Líquido",
+                      "content": "PL = (Bens + Direitos) - Obrigações. Formado por: Capital Social (aporte dos sócios), Reservas de Lucro e Resultado do Exercício."
+                  }
+              ],
+              "synthesis": {
+                  "title": "Síntese",
+                  "bullets": [
+                      "A fórmula básica do patrimônio define quem é o verdadeiro dono do negócio.",
+                      "Obrigações trabalhistas e fiscais nunca devem ser ignoradas ou adiadas."
+                  ],
+                  "insights": []
+              }
+          }
+      ]
   }
   , SIG_PESSOAS
 ];
