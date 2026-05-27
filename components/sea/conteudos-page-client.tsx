@@ -95,6 +95,7 @@ const SYLLABUS_TO_DB_MAP: Record<string, string> = {
   'M4-T1-S13': 'M4-T1-S13', // Empreendedorismo e Inovação
   'M4-T1-S14': 'M4-T1-S14', // Ambiente Macroeconômico
   'M4-T1-S15': 'M4-T1-S15', // Novo Módulo 15
+  'M4-T1-S16': 'M4-T1-S16', // Ética Empresarial
   
   // Pilar 2: Finanças e Inteligência Quantitativa
   'M4-T2-S1': 'M6-S1', // Análise Financeira (M6-S1 no BD)
@@ -534,7 +535,8 @@ const BUSINESS_SYLLABUS = [
   { id: 'M4-T1-S12', topicId: 'M4-T1', title: 'Leitura e Escrita Acadêmica', subtitle: 'IE · Minto, Toulmin e Pesquisa', duration: '26:20' },
   { id: 'M4-T1-S13', topicId: 'M4-T1', title: 'Empreendedorismo e Inovação', subtitle: 'IE · Canvas e Lógica Effectuation', duration: '32:45' },
   { id: 'M4-T1-S14', topicId: 'M4-T1', title: 'Ambiente Macroeconômico', subtitle: 'IE · Indicadores e Ciclos Econômicos', duration: '36:15' },
-  { id: 'M4-T1-S15', topicId: 'M4-T1', title: 'Análise Financeira', subtitle: 'IE · DRE Vertical, Valuation e Giro', duration: '40:20' }
+  { id: 'M4-T1-S15', topicId: 'M4-T1', title: 'Análise Financeira', subtitle: 'IE · DRE Vertical, Valuation e Giro', duration: '40:20' },
+  { id: 'M4-T1-S16', topicId: 'M4-T1', title: 'Ética Empresarial', subtitle: 'IE · Dilemas e Teste de ESG', duration: '34:50' }
 ]
 
 function ExecutiveMasterclassTheater({ 

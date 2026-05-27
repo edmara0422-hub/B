@@ -3926,6 +3926,112 @@ export const SUBJECTS_DB: SubjectContent[] = [
               }
           }
       ]
+  },
+  {
+      "id": "M4-T1-S16",
+      "code": "M4-T1-S16",
+      "title": "Ética Empresarial",
+      "description": "Frameworks filosóficos, dilemas da IA, ESG, governança e o teste do jornal.",
+      "icon": "Scale",
+      "videoUrls": [],
+      "chapters": [
+          {
+              "title": "1: Os 4 Frameworks — A Bússola",
+              "description": "Quando a lei não dá resposta, a filosofia entra em cena para iluminar a decisão",
+              "subsections": [
+                  {
+                      "title": "O que são",
+                      "content": "Utilitarismo (maior bem coletivo), Deontologia (regras universais), Ética das Virtudes (caráter do agente) e Contratualismo (equidade, regra de Rawls)."
+                  },
+                  {
+                      "title": "Como Aplicar",
+                      "content": "Aja usando os 4 filtros. Se todos convergem, a decisão é certa. Se divergem, o dilema exige deliberação. O pior erro é usar um só."
+                  }
+              ],
+              "synthesis": {
+                  "title": "Síntese",
+                  "bullets": [
+                      "Compliance é o mínimo exigido pela lei; a Ética atua na zona cinzenta onde a lei termina.",
+                      "O Teste do Jornal: 'Ficaria confortável se isso saísse na capa do jornal amanhã?'"
+                  ],
+                  "insights": []
+              }
+          },
+          {
+              "title": "2: Dilemas do Século XXI",
+              "description": "A tecnologia criou dilemas éticos sem precedentes. Como navegar sem mapa?",
+              "subsections": [
+                  {
+                      "title": "IA e Algoritmos",
+                      "content": "Vieses em algoritmos de recrutamento ou crédito que reproduzem discriminação histórica (quem responde quando a IA erra?)."
+                  },
+                  {
+                      "title": "Dados e Privacidade",
+                      "content": "A LGPD pune com multas de até 2% do faturamento (limitado a R$ 50M). O consentimento é obrigatório e Dark Patterns manipulam usuários."
+                  },
+                  {
+                      "title": "Trabalho e Greenwashing",
+                      "content": "A gig economy precariza relações; e o greenwashing (marketing verde falso) compra certificações mas gera risco reputacional futuro."
+                  }
+              ],
+              "synthesis": {
+                  "title": "Síntese",
+                  "bullets": [
+                      "Os dilemas atuais derivam de forte assimetria de poder entre empresa e usuário/trabalhador.",
+                      "Empresas pagaram bilhões em multas recentes nos EUA por viés em recrutamento via IA."
+                  ],
+                  "insights": []
+              }
+          },
+          {
+              "title": "3: O Método das Decisões",
+              "description": "Ética sem método é intenção. Com método, é prática replicável.",
+              "subsections": [
+                  {
+                      "title": "Mapear",
+                      "content": "Passo 1: Quem são as partes afetadas? (Incluindo os invisíveis). Passo 2: Aplique os 4 frameworks de filtragem filosófica."
+                  },
+                  {
+                      "title": "Trade-offs",
+                      "content": "Passo 3: Toda decisão exige sacrifício; mapeie ganhos, perdas e quem paga o ônus."
+                  },
+                  {
+                      "title": "O Teste do Jornal",
+                      "content": "Passo 4: Documente seu raciocínio ético para blindar a escolha. Decisões baseadas em registros claros resistem a pressões."
+                  }
+              ],
+              "synthesis": {
+                  "title": "Síntese",
+                  "bullets": [
+                      "Bons gestores erram quando pressionados. O método 4-passos atua como escudo sob pressão.",
+                      "Cultura é aquilo que se tolera. Uma irregularidade ignorada comunica aprovação."
+                  ],
+                  "insights": []
+              }
+          },
+          {
+              "title": "4: ESG e Governança",
+              "description": "Ética que Aparece no Balanço: o ESG virou critério financeiro e de talento",
+              "subsections": [
+                  {
+                      "title": "O Padrão ESG",
+                      "content": "Ambiental (gestão de resíduos, pegada), Social (diversidade em toda a cadeia de fornecedores) e Governança (conselho independente, combate à corrupção)."
+                  },
+                  {
+                      "title": "Governança e Compliance",
+                      "content": "A raiz de 80% dos escândalos não é malícia individual, mas falha grave em Governança. Compliance robusto atrai crédito mais barato e fundos institucionais."
+                  }
+              ],
+              "synthesis": {
+                  "title": "Síntese",
+                  "bullets": [
+                      "Empresas com alto rating ESG financiam-se a custos 1,5% a 2% menores. Ética gera ROI.",
+                      "Investidores exigem integridade não por caridade, mas como gestão preditiva de riscos."
+                  ],
+                  "insights": []
+              }
+          }
+      ]
   }
   , SIG_PESSOAS
 ];
