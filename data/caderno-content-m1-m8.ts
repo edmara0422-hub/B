@@ -2384,6 +2384,192 @@ export const SUBJECTS_DB: SubjectContent[] = [
               }
           }
       ]
+  },
+  {
+      "id": "M4-T1-S3",
+      "code": "M4-T1-S3",
+      "title": "Sustentabilidade em Negócios",
+      "description": "ESG, Frameworks de Reporte, Política de Sustentabilidade, Economia Regenerativa e BPMN",
+      "icon": "Leaf",
+      "videoUrls": [],
+      "chapters": [
+          {
+              "title": "1: Por que Sustentabilidade Virou Estratégia",
+              "description": "Do TBL ao modelo de Círculos Aninhados — sustentabilidade como pilar de negócio",
+              "subsections": [
+                  {
+                      "title": "Contexto e Evolução",
+                      "content": "A sustentabilidade deixou de ser filantropia. Hoje é o eixo central da governança corporativa — e ignorá-la é risco financeiro. A pressão vem de investidores (critérios ESG), consumidores, reguladores (LGPD, marco ESG europeu) e funcionários.\n\nAntes, a gestão era dominada pela visão de Milton Friedman, focada apenas no lucro. Em 1994, John Elkington introduziu o Triple Bottom Line, e em 2023 mais de US$ 35 trilhões em ativos eram geridos sob critérios ESG."
+                  },
+                  {
+                      "title": "Triple Bottom Line (TBL) — Os 3Ps",
+                      "content": "People — Pessoas: Impacto social, condições de trabalho, diversidade (ex: Natura e comunidades na Amazônia).\nPlanet — Planeta: Impacto ambiental, emissões, água, energia (ex: Ambev reduzindo consumo de água).\nProfit — Lucro: Viabilidade econômica, lucro sustentável (ex: Trainee exclusivo do Magalu gerou identificação e vendas)."
+                  },
+                  {
+                      "title": "Recall do TBL e Círculos Aninhados",
+                      "content": "A maioria imagina a sustentabilidade como 3 círculos sobrepostos. O modelo de Círculos Aninhados inverte: a economia está DENTRO da sociedade, que está DENTRO do meio ambiente. Sem planeta viável, não há sociedade nem economia. Elkington pediu o recall do TBL em 2018 porque virou ferramenta de relações públicas (greenwashing) em vez de transformação real."
+                  }
+              ],
+              "synthesis": {
+                  "title": "Síntese",
+                  "bullets": [
+                      "Elkington pediu o 'recall' do TBL em 2018 pois foi cooptado por greenwashing.",
+                      "US$ 35 trilhões sob critérios ESG. Ignorar é ignorar o mercado.",
+                      "People + Planet + Profit se reforçam mutuamente."
+                  ],
+                  "insights": []
+              }
+          },
+          {
+              "title": "2: ESG — Como o Mercado Avalia Sustentabilidade",
+              "description": "Environmental, Social, Governance — de relatório a critério de investimento",
+              "subsections": [
+                  {
+                      "title": "O conceito de ESG",
+                      "content": "Lançado em 2004 pela ONU, o ESG transformou o TBL em critério de risco financeiro. ODS é o 'quê' deve ser alcançado, o ESG é o 'como'."
+                  },
+                  {
+                      "title": "E - Environmental (Ambiental)",
+                      "content": "Emissões, resíduos, água, biodiversidade. É risco existencial, não só relatório (ex: falha da Vale em Brumadinho custou R$ 70 bi)."
+                  },
+                  {
+                      "title": "S - Social e G - Governance",
+                      "content": "Social: Direitos humanos, diversidade, segurança. Afeta reputação.\nGovernance: Composição do conselho, transparência, combate à corrupção. O G sem enforcement é decorativo (ex: Fraude da Americanas de R$ 20 bi)."
+                  }
+              ],
+              "synthesis": {
+                  "title": "Síntese",
+                  "bullets": [
+                      "ESG não é relatório — é critério de investimento.",
+                      "E mede impacto ambiental, S mede impacto social, G sustenta ambos."
+                  ],
+                  "insights": []
+              }
+          },
+          {
+              "title": "3: Frameworks de Reporte e Valor Compartilhado",
+              "description": "GRI, SASB, ODS e CSV",
+              "subsections": [
+                  {
+                      "title": "GRI e SASB",
+                      "content": "GRI: Padrão mais usado no mundo. Olha de 'dentro para fora' e foca em todos os stakeholders.\nSASB: Complemento financeiro. Olha de 'fora para dentro' e fala direto com investidores usando métricas específicas por setor."
+                  },
+                  {
+                      "title": "ODS e CSV",
+                      "content": "ODS: Os 17 Objetivos da ONU. A empresa escolhe onde gera valor ou dano.\nCSV (Creating Shared Value): Porter e Kramer. Valor compartilhado não é CSR; é estratégia onde se lucra PORQUE se resolve um problema social. 3 níveis: Reconceber produtos/mercados, Redefinir produtividade na cadeia, Desenvolver clusters locais."
+                  }
+              ],
+              "synthesis": {
+                  "title": "Síntese",
+                  "bullets": [
+                      "GRI: 75% das 250 maiores empresas usam.",
+                      "SASB: 77 setores com métricas específicas para investidores.",
+                      "CSV: expande o bolo econômico e social simultaneamente."
+                  ],
+                  "insights": []
+              }
+          },
+          {
+              "title": "4: Greenwashing e Política de Sustentabilidade",
+              "description": "Como separar substância de discurso e Cisnes Verdes",
+              "subsections": [
+                  {
+                      "title": "Greenwashing",
+                      "content": "7 pecados (TerraChoice), sendo o mais comum o trade-off oculto (destacar o que é verde, ignorar grandes danos) e a vagueza ('eco-friendly' sem provas)."
+                  },
+                  {
+                      "title": "Cisnes Verdes e Economia Regenerativa",
+                      "content": "Cisnes Verdes: inovação regenerativa que cria valor exponencial. A economia regenerativa não busca apenas não causar dano (neutro), mas ser Net-Positive (ex: remover mais CO2 do que emite)."
+                  },
+                  {
+                      "title": "ISE, ISP e Passos para Política",
+                      "content": "ISE B3 é índice para ~40 empresas. A política formal precisa de 8 passos: Diagnóstico, Materialidade, Metas SMART, Governança, Capacitação, Processos, Medir/Reportar e Revisar."
+                  }
+              ],
+              "synthesis": {
+                  "title": "Síntese",
+                  "bullets": [
+                      "Sustentabilidade real tem métricas e governança. Greenwashing tem marketing.",
+                      "O futuro aponta para a Economia Regenerativa: gerar abundância."
+                  ],
+                  "insights": []
+              }
+          },
+          {
+              "title": "5: Política de Sustentabilidade na Prática",
+              "description": "Como criar e a Metodologia SMART",
+              "subsections": [
+                  {
+                      "title": "Os 3 Pilares e Os 8 Passos (Toledo & Farias)",
+                      "content": "Pilar Ambiental, Social e Econômico. Os 8 passos práticos para implementar: 1. Identifique problemas; 2. Defina objetivos; 3. Crie ações; 4. Envolva todos; 5. Implemente; 6. Monitore; 7. Comunique resultados; 8. Ajuste."
+                  },
+                  {
+                      "title": "Metodologia SMART",
+                      "content": "Metas eficazes precisam ser: S (Específicas), M (Mensuráveis), A (Atingíveis), R (Relevantes) e T (Temporais)."
+                  }
+              ],
+              "synthesis": {
+                  "title": "Síntese",
+                  "bullets": [
+                      "Comece pelo simples: redução de plásticos e LED.",
+                      "Se não medir, não sabe se funciona."
+                  ],
+                  "insights": []
+              }
+          },
+          {
+              "title": "6: BPMN — Modelagem de Processos de Negócio",
+              "description": "Como mapear e analisar processos para otimização e sustentabilidade",
+              "subsections": [
+                  {
+                      "title": "A notação BPMN",
+                      "content": "BPMN traduz negócios para TI. 4 elementos gráficos: Objetos de Fluxo (Eventos, Atividades, Gateways), Conexão, Swimlanes e Artefatos."
+                  },
+                  {
+                      "title": "Gateways e Swimlanes",
+                      "content": "Gateways: XOR (Exclusivo - ou um ou outro), AND (Paralelo - todos ao mesmo tempo, espera concluir), OR (Inclusivo) e Baseado em Eventos.\nSwimlanes: Pools (empresas) e Lanes (departamentos)."
+                  },
+                  {
+                      "title": "Tipos e Maturidade de Processos",
+                      "content": "Privado, Abstrato e Colaboração. 3 Níveis de Maturidade: Descritivo (alto nível), Analítico (com regras e exceções) e Técnico/Executável (automação)."
+                  }
+              ],
+              "synthesis": {
+                  "title": "Síntese",
+                  "bullets": [
+                      "BPMN é o tradutor universal entre negócio e TI.",
+                      "Gateways definem como os tokens fluem e se ramificam."
+                  ],
+                  "insights": []
+              }
+          },
+          {
+              "title": "7: Certificações, Selos e Indicadores Globais",
+              "description": "Como provar e medir a sustentabilidade",
+              "subsections": [
+                  {
+                      "title": "Certificações de Empresa",
+                      "content": "B Corps (Propósito + Lucro), Great Place to Work, Instituto Ethos e Ethisphere (ética corporativa global)."
+                  },
+                  {
+                      "title": "Padrões de Reporte e Rankings",
+                      "content": "Corporate Knights, ISE B3, Pacto Global ONU. Padrões: GRI, SASB, CDP e TCFD."
+                  },
+                  {
+                      "title": "Selos de Produto",
+                      "content": "Fair Trade (comércio justo), Rainforest Alliance (o sapinho de conservação), FSC (florestas) e Cradle to Cradle (C2C - economia circular, zero resíduo)."
+                  }
+              ],
+              "synthesis": {
+                  "title": "Síntese",
+                  "bullets": [
+                      "B Corp certifica a empresa inteira.",
+                      "Cradle to Cradle é o mais exigente e comprova ciclo fechado."
+                  ],
+                  "insights": []
+              }
+          }
+      ]
   }
   , SIG_PESSOAS
 ];
