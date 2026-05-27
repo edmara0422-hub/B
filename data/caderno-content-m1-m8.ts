@@ -2215,9 +2215,34 @@ export const SUBJECTS_DB: SubjectContent[] = [
               }
           },
           {
-              "title": "8: Inteligência Organizacional e Business Intelligence",
-              "description": "OBI (Organizational Business Intelligence), metodologia Kimball e as 4 camadas de integração de dados.",
+              "title": "8: Inteligência Organizacional e Projeto de BI",
+              "description": "Da administração estratégica aos Sistemas de Informação, Prototipagem e MVP",
               "subsections": [
+                  {
+                      "title": "Etapas da Administração Estratégica",
+                      "content": "São cinco as etapas com relação ao sistema de administração estratégica: analisar o ambiente (interno e externo - SWOT), estabelecer a diretriz organizacional (missão, visão e objetivos), formular estratégias, implementar estratégias e elaborar o controle estratégico (monitorar com sistemas de informações).\n\nO pensamento estratégico é a arte de criar estratégias com efetividade. Pensar estrategicamente e agir operacionalmente significam dominar o presente e conquistar o futuro.",
+                      "quote": "As organizações são inteligentes quando aplicam a inovação de maneira participativa e integrada.",
+                      "deepDive": "Inteligência organizacional é o somatório de inovação, criatividade, qualidade, produtividade, efetividade e gestão do conhecimento."
+                  },
+                  {
+                      "title": "Dado, Informação e Conhecimento",
+                      "content": "Dado é um conjunto de números ou letras que isoladamente não transmite conhecimento. Informação é o dado trabalhado ou tratado, com valor agregado e sentido lógico para quem usa (ex: saldo bancário).\n\nQuando a informação é trabalhada por pessoas e recursos para gerar cenários e simulações, chama-se conhecimento (ex: percepção de práticas a utilizar baseado no cenário atual).",
+                      "quote": "Sistemas de Informação se dividem em Operacional (SIO), Gerencial (SIG) e Estratégico (SIE)."
+                  },
+                  {
+                      "title": "Prototipagem e MVP",
+                      "content": "Protótipo é o modelo preliminar do projeto, utilizado para prova de conceito ou MVP (Minimum Viable Product). Sem a etapa de geração de ideias não é possível criar protótipos e avaliar com o cliente se o projeto está no caminho certo.\n\nA execução da etapa de protótipo reduz a incerteza na aparência, usabilidade e desempenho, evitando prejuízos altos caso o produto vá direto para a produção sem ser validado pelo usuário.",
+                      "quote": "O MVP permite que empreendedores validem ideias antes de desenvolver o produto definitivo.",
+                      "studyCase": {
+                          "title": "Road Map e Customer Development",
+                          "body": "O road map é a bússola gerencial que alinha todos os stakeholders sobre a evolução do produto. As etapas de Customer Development incluem: 1. Descoberta do Cliente; 2. Validação do Cliente; 3. Construção da Empresa; 4. Execução do Negócio."
+                      }
+                  },
+                  {
+                      "title": "Tipos de Testes",
+                      "content": "Teste de Funcionalidade verifica o desempenho do protótipo nas mãos do usuário. Teste de Usabilidade avalia se o protótipo é fácil de usar sem necessidade de manuais extensos (UX Design).\n\nTeste A/B é uma análise comparativa que visa testar diferentes versões do produto simultaneamente para ver qual performa melhor com o público.",
+                      "deepDive": "Os custos na fase de testes são muito menores se comparados com o prejuízo de lançar um produto defeituoso no mercado final."
+                  },
                   {
                       "title": "O que é Inteligência Organizacional (OBI)",
                       "content": "Business Intelligence não é um software isolado — é uma capacidade organizacional. O OBI (Organizational Business Intelligence) integra dados de toda a empresa para transformar cada decisão gerencial em ação baseada em evidência. Um projeto de BI transforma essa intenção em realidade operacional mensurável.\n\nO conceito de Inteligência Organizacional (OBI) vai além dos relatórios operacionais tradicionais. Enquanto o BI clássico foca em dados transacionais — vendas, estoque, financeiro — o OBI integra dimensões humanas e processuais: desempenho de equipes, eficiência de fluxos, padrões de colaboração e saúde organizacional. O resultado é uma visão 360° que conecta operação, pessoas e estratégia em um único ambiente analítico.\n\nWilliam Inmon (1990), considerado o \"pai do Data Warehouse\", definiu que a inteligência organizacional começa pela separação entre sistemas transacionais (OLTP — registro de eventos) e sistemas analíticos (OLAP — análise de padrões). Misturar os dois é o erro mais comum — e mais caro — em projetos de BI: relatórios lentos, decisões atrasadas e dados inconsistentes."
@@ -2236,14 +2261,19 @@ export const SUBJECTS_DB: SubjectContent[] = [
                   }
               ],
               "synthesis": {
-                  "title": "Síntese Estratégica",
+                  "title": "Síntese",
                   "bullets": [
+                      "A estratégia precisa de monitoramento contínuo através de Sistemas de Informação.",
+                      "O Protótipo e o MVP servem para errar rápido e consertar rápido com baixo custo.",
+                      "O Road Map mantém a visão do projeto clara para todos os stakeholders envolvidos.",
                       "OBI transforma a empresa em uma organização que aprende com seus próprios dados.",
                       "As 4 camadas (Dados, Integração, Analítica, Apresentação) formam o pipeline completo.",
                       "O ciclo Kimball inclui: requisitos, modelagem, ETL, visualização e governança.",
                       "Prototipar antes de construir é a decisão mais inteligente para reduzir retrabalho."
                   ],
                   "insights": [
+                      "Pensamento Estratégico",
+                      "Mínimo Produto Viável",
                       "Inmon vs Kimball: Kimball (dimensional) é mais adotado para BI ágil. Inmon (normalizado) para ambientes enterprise de longo prazo.",
                       "Regra de ouro do dashboard: 1 insight por tela. Múltiplas métricas competindo geram indecisão.",
                       "Star Schema vence na maioria dos casos operacionais por ser mais rápido e simples que Snowflake."
