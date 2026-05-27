@@ -3604,6 +3604,120 @@ export const SUBJECTS_DB: SubjectContent[] = [
               }
           }
       ]
+  },
+  {
+      "id": "M4-T1-S13",
+      "code": "M4-T1-S13",
+      "title": "Empreendedorismo e Inovação",
+      "description": "Effectuation, MVP, Product-Market Fit, Unit Economics, Funil AARRR e Venture Capital.",
+      "icon": "Rocket",
+      "videoUrls": [],
+      "chapters": [
+          {
+              "title": "1: Empreender — O que É e Como Pensar",
+              "description": "De Schumpeter à Effectuation — as duas lógicas que separam criadores de executores",
+              "subsections": [
+                  {
+                      "title": "Destruição Criativa e Mitos",
+                      "content": "Schumpeter: empreendedorismo é destruir o velho para criar o novo. Mitos a combater: 'nascem prontos', 'precisam de ideia genial', 'amam risco', 'precisam de muito dinheiro' (70% das startups do Vale começam com < $10k)."
+                  },
+                  {
+                      "title": "Causation vs Effectuation",
+                      "content": "Causation (Planejamento): Foco em prever o futuro em mercados maduros. Effectuation (Lógica Empreendedora): Foco em construir o futuro com o que se tem nas mãos em mercados incertos (ex: o surgimento do Airbnb)."
+                  },
+                  {
+                      "title": "Pivot (Pivotar)",
+                      "content": "Quando o aprendizado muda o rumo do produto sem mudar a missão. O Instagram nasceu do Burbn quando os fundadores notaram que só a função de fotos com filtros era usada."
+                  }
+              ],
+              "synthesis": {
+                  "title": "Síntese",
+                  "bullets": [
+                      "A lógica Effectuation: o que posso criar agora com o que tenho?",
+                      "Pivot não é fracasso, é aprendizado aplicado; mas quem muda a missão toda semana não pivotou, apenas perdeu o rumo."
+                  ],
+                  "insights": []
+              }
+          },
+          {
+              "title": "2: Validar Antes de Construir",
+              "description": "Lean Startup, MVP e Product-Market Fit — o método que evita construir algo que ninguém quer",
+              "subsections": [
+                  {
+                      "title": "O Ciclo Build-Measure-Learn",
+                      "content": "O maior risco é construir algo que ninguém quer (42% de mortalidade). A validação é uma mentalidade permanente, não uma fase. O ciclo começa no 'Learn': definir o que aprender primeiro."
+                  },
+                  {
+                      "title": "MVP (Minimum Viable Product)",
+                      "content": "Não é o produto final com menos funcionalidades; é o experimento mais barato possível para testar uma hipótese (ex: landing page do Buffer antes de codificar o app)."
+                  },
+                  {
+                      "title": "Product-Market Fit (PMF)",
+                      "content": "Escalar antes do PMF é queimar caixa à toa. PMF é visível através de crescimento orgânico e alta retenção (ex: o início do WhatsApp). Métrica de vaidade (downloads) engana; métrica acionável (retenção) diz a verdade."
+                  }
+              ],
+              "synthesis": {
+                  "title": "Síntese",
+                  "bullets": [
+                      "MVP é um experimento, não um produto simples.",
+                      "Sem Product-Market Fit, a tração é artificial e dependente de mídia paga de alto custo."
+                  ],
+                  "insights": []
+              }
+          },
+          {
+              "title": "3: Modelo de Negócio e Unit Economics",
+              "description": "Business Model Canvas, CAC, LTV e o funil AARRR — se a unidade falha, a escala falha",
+              "subsections": [
+                  {
+                      "title": "Business Model Canvas",
+                      "content": "Substitui planos de negócio densos por 9 blocos interligados. Cada bloco (Segmento, Proposta de Valor, Canais, etc.) é uma hipótese que precisa ser validada com o cliente."
+                  },
+                  {
+                      "title": "Unit Economics",
+                      "content": "Análise de uma unidade de negócio. Se o LTV (Lifetime Value) dividido pelo CAC (Customer Acquisition Cost) for menor que 1, a empresa paga para trabalhar. Acima de 3 é sustentável."
+                  },
+                  {
+                      "title": "O Funil AARRR",
+                      "content": "Aquisição (como o cliente chega), Retenção (se ele volta — a mais importante), Recomendação (Referral — K > 1 indica crescimento viral, ex: Dropbox e Hotmail)."
+                  }
+              ],
+              "synthesis": {
+                  "title": "Síntese",
+                  "bullets": [
+                      "Se a retenção D30 for menor que 20%, pare tudo e arrume o produto antes de gastar com aquisição.",
+                      "Escalar um modelo com Unit Economics negativo é escalar o prejuízo e acelerar a falência."
+                  ],
+                  "insights": []
+              }
+          },
+          {
+              "title": "4: Financiamento, Pitch e Ecossistema",
+              "description": "Do bootstrap ao VC — a fonte certa no estágio certo, e como apresentar para investidores",
+              "subsections": [
+                  {
+                      "title": "Estágios de Capital",
+                      "content": "Ideação: Bootstrap, FFF, Aceleradoras, Editais (finep). Validação/Tração: Anjo (smart money). Escala: VC (Seed, Séries A, B, C). A diluição por rodada ronda os 10% a 25%."
+                  },
+                  {
+                      "title": "O Pitch de 12 Slides",
+                      "content": "Estrutura Sequoia Capital. VCs olham centenas de decks; o pitch não vende a ideia, vende a equipe, o TAM/SOM e a evidência de tração real."
+                  },
+                  {
+                      "title": "O Ecossistema",
+                      "content": "Valide antes de captar. O investidor errado destrói a empresa. Tração honesta (como o Airbnb provou para a YCombinator com 10 mil usuários) sempre vence narrativas bonitas sem números."
+                  }
+              ],
+              "synthesis": {
+                  "title": "Síntese",
+                  "bullets": [
+                      "Não existe cheque para ideia; existe cheque para tração e evidência.",
+                      "Ter 10% de um negócio gigante vale muito mais do que 100% de uma ideia sem mercado."
+                  ],
+                  "insights": []
+              }
+          }
+      ]
   }
   , SIG_PESSOAS
 ];
