@@ -2570,6 +2570,139 @@ export const SUBJECTS_DB: SubjectContent[] = [
               }
           }
       ]
+  },
+  {
+      "id": "M4-T1-S4",
+      "code": "M4-T1-S4",
+      "title": "Gestão de Negócios",
+      "description": "Fundamentos de gestão, Business Model Canvas, Planejamento Estratégico e Cadeia de Valor",
+      "icon": "Briefcase",
+      "videoUrls": [],
+      "chapters": [
+          {
+              "title": "1: Fundamentos da Gestão",
+              "description": "As 4 funções clássicas + visão sistêmica — a base que sustenta tudo",
+              "subsections": [
+                  {
+                      "title": "A Base da Gestão",
+                      "content": "Gestão empresarial é um processo dinâmico fundamentado na administração eficiente de recursos materiais e humanos. O gestor maduro enxerga a empresa de forma sistêmica, compreendendo as interações entre áreas."
+                  },
+                  {
+                      "title": "As 4 Funções Clássicas",
+                      "content": "1. Planejamento (onde queremos chegar): definir metas e analisar cenários. Empresas com planejamento sobrevivem 30% mais.\n2. Organização (como nos estruturamos): hierarquias, processos e recursos.\n3. Direção (como conduzimos pessoas): liderança e motivação. A direção dá vida ao planejamento.\n4. Controle (como acompanhamos): medir desempenho (KPIs) para correção de desvios. O controle frequente evita crises."
+                  },
+                  {
+                      "title": "Visão Sistêmica",
+                      "content": "A interconexão e o alinhamento transformam o esforço em resultado. Adaptação constante e a geração de valor diferenciam a burocracia do resultado prático."
+                  }
+              ],
+              "synthesis": {
+                  "title": "Síntese",
+                  "bullets": [
+                      "Gestão = Planejamento, Organização, Direção, Controle operados com visão sistêmica.",
+                      "O que não é medido não é gerenciado. Controle fecha o ciclo PDCA.",
+                      "A estrutura segue a estratégia."
+                  ],
+                  "insights": []
+              }
+          },
+          {
+              "title": "2: Modelos de Negócio e Canvas",
+              "description": "Como uma empresa cria, entrega e captura valor",
+              "subsections": [
+                  {
+                      "title": "Business Model Canvas (BMC)",
+                      "content": "Ferramenta de Osterwalder & Pigneur (2010). O BMC divide o modelo em 9 blocos em uma única página: Proposta de Valor, Segmentos de Clientes, Canais, Relacionamento, Fontes de Receita, Recursos Principais, Atividades-Chave, Parcerias Principais e Estrutura de Custos."
+                  },
+                  {
+                      "title": "Canvas na Prática",
+                      "content": "Nubank (Fintech): Valor sem tarifa, canais de app e indicação, estrutura 100% cloud.\niFood (Plataforma): 3 segmentos (consumidor, restaurante, entregador), gerando um complexo ecossistema."
+                  }
+              ],
+              "synthesis": {
+                  "title": "Síntese",
+                  "bullets": [
+                      "O bloco mais crítico é a Proposta de Valor: se não resolve um problema real, os outros blocos não o salvam.",
+                      "Plataformas possuem Canvas complexos com múltiplos segmentos conectados."
+                  ],
+                  "insights": []
+              }
+          },
+          {
+              "title": "3: Planejamento Estratégico",
+              "description": "SWOT, 5 Forças de Porter e Objetivos",
+              "subsections": [
+                  {
+                      "title": "Análise SWOT",
+                      "content": "Analisa o ambiente interno (Forças e Fraquezas) e o externo (Oportunidades e Ameaças). O poder está nos cruzamentos: usar Forças para capturar Oportunidades."
+                  },
+                  {
+                      "title": "As 5 Forças de Porter",
+                      "content": "Entende a atratividade do setor analisando a Rivalidade, Ameaça de Entrantes, Ameaça de Substitutos, Poder de Fornecedores e Compradores."
+                  },
+                  {
+                      "title": "Matriz BCG",
+                      "content": "Gestão de portfólio em 4 quadrantes baseados em crescimento de mercado e participação: Estrelas (alto crescimento, manter), Vacas Leiteiras (geram caixa, ordenhar), Interrogações (investir ou abandonar) e Vira-latas (dogs, liquidar)."
+                  },
+                  {
+                      "title": "Objetivos SMART",
+                      "content": "Específicos, Mensuráveis, Atingíveis, Relevantes e Temporais."
+                  }
+              ],
+              "synthesis": {
+                  "title": "Síntese",
+                  "bullets": [
+                      "SWOT (dentro e fora) + Porter (setor) + BCG (produtos) + SMART (ação) compõem um diagnóstico estratégico.",
+                      "Portfólios saudáveis usam o caixa de vacas leiteiras para sustentar estrelas."
+                  ],
+                  "insights": []
+              }
+          },
+          {
+              "title": "4: Gestão de Processos e Cadeia de Valor",
+              "description": "Como cada atividade cria ou destrói valor",
+              "subsections": [
+                  {
+                      "title": "A Cadeia de Valor",
+                      "content": "Modelo de Porter (1985) que divide as atividades em primárias (Logística, Operações, Vendas) e de suporte (Infraestrutura, RH, P&D). Ex: Amazon lidera pela logística primária."
+                  },
+                  {
+                      "title": "Gestão à Vista",
+                      "content": "Tornar o processo visível acelera detecção de desvios, cria alinhamento e transparência (ex: Kanban e Andon da Toyota). Onde há variação contínua mostrada visualmente, há Kaizen (melhoria contínua)."
+                  }
+              ],
+              "synthesis": {
+                  "title": "Síntese",
+                  "bullets": [
+                      "A estratégia define quais atividades da Cadeia de Valor fazer diferente.",
+                      "Gestão à Vista transforma a operação inteira em controle tempo real."
+                  ],
+                  "insights": []
+              }
+          },
+          {
+              "title": "5: Tipos de Empresa e Regime Tributário",
+              "description": "MEI, ME, LTDA, Simples e Presumido",
+              "subsections": [
+                  {
+                      "title": "Tipos Jurídicos",
+                      "content": "MEI (Microempreendedor Individual - até R$ 81k), ME/EPP (Microempresa - até R$ 4.8M), e LTDA / S.A. (para escalar com responsabilidade limitada e ações)."
+                  },
+                  {
+                      "title": "Regimes Tributários",
+                      "content": "Simples Nacional (unificado), Lucro Presumido (base presumida para margens altas) e Lucro Real (imposto sobre lucro efetivo para margens baixas)."
+                  }
+              ],
+              "synthesis": {
+                  "title": "Síntese",
+                  "bullets": [
+                      "A estrutura jurídica é um habilitador estratégico.",
+                      "A escolha do regime afeta a margem final, o contador é essencial."
+                  ],
+                  "insights": []
+              }
+          }
+      ]
   }
   , SIG_PESSOAS
 ];
