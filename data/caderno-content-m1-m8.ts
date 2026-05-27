@@ -3300,6 +3300,94 @@ export const SUBJECTS_DB: SubjectContent[] = [
               }
           }
       ]
+  },
+  {
+      "id": "M4-T1-S10",
+      "code": "M4-T1-S10",
+      "title": "Cálculo Aplicado a Negócios",
+      "description": "Funções, derivadas, otimização, elasticidade, integrais e break-even",
+      "icon": "Calculator",
+      "videoUrls": [],
+      "chapters": [
+          {
+              "title": "1: Funções, Derivadas e Otimização",
+              "description": "A matemática da mudança — como derivadas encontram o ponto ótimo de lucro",
+              "subsections": [
+                  {
+                      "title": "A Matemática da Mudança",
+                      "content": "Cálculo é a matemática da mudança, fundamental porque em negócios tudo muda (preço, demanda, custo). Funções descrevem a relação entre variáveis. (Ex: Lucro = Receita - Custo)."
+                  },
+                  {
+                      "title": "Derivadas: Receita e Custo Marginal",
+                      "content": "A derivada mede a taxa de variação. Quando a Receita Marginal (derivada da receita) é igual ao Custo Marginal (derivada do custo), encontramos o ponto ótimo.\nReceita Marginal > Custo Marginal = vale produzir mais.\nEm SaaS (ex: Netflix), o custo marginal é próximo a zero, tornando a escala puro lucro."
+                  },
+                  {
+                      "title": "Elasticidade",
+                      "content": "Mede a sensibilidade da demanda ao preço. Elástico (|E| > 1): sensível ao preço (ex: pizza). Inelástico (|E| < 1): insensível (ex: remédio). Unitário: equilíbrio proporcional."
+                  }
+              ],
+              "synthesis": {
+                  "title": "Síntese",
+                  "bullets": [
+                      "Ponto ótimo de produção é onde Receita Marginal = Custo Marginal.",
+                      "Elasticidade define a estratégia de precificação de um produto."
+                  ],
+                  "insights": []
+              }
+          },
+          {
+              "title": "2: Investimentos e Valor do Dinheiro",
+              "description": "Integrais, juros compostos, VPL e TIR — decidir onde colocar dinheiro",
+              "subsections": [
+                  {
+                      "title": "Integrais e Acumulação",
+                      "content": "Se a derivada mede a mudança, a integral mede o acumulado ao longo do tempo (área sob a curva). Juros compostos e VPL são exemplos práticos de integrais aplicadas em finanças."
+                  },
+                  {
+                      "title": "VPL e TIR na Prática",
+                      "content": "VPL soma os fluxos futuros trazidos a valor presente menos investimento. É a ferramenta mais segura (VPL > 0 = investir).\nTIR é a taxa que zera o VPL. Payback é o tempo de retorno (mas ignora fluxos futuros após o período de payback)."
+                  },
+                  {
+                      "title": "A Força do Tempo",
+                      "content": "Juros compostos representam crescimento exponencial. Warren Buffett fez 99% da sua fortuna após os 60 anos graças ao tempo + juros compostos."
+                  }
+              ],
+              "synthesis": {
+                  "title": "Síntese",
+                  "bullets": [
+                      "Integrais acumulam, VPL decide e TIR compara.",
+                      "Quando VPL e TIR divergirem em projetos excludentes, priorize o VPL."
+                  ],
+                  "insights": []
+              }
+          },
+          {
+              "title": "3: Break-Even, Depreciação e Aplicações",
+              "description": "Quando a empresa para de perder dinheiro — e o custo invisível dos ativos",
+              "subsections": [
+                  {
+                      "title": "O Ponto de Equilíbrio (Break-Even)",
+                      "content": "É o momento em que Receita Total = Custo Total. Fórmula: Custos Fixos ÷ (Preço - Custo Variável). A margem de contribuição (Preço - Custo Variável) paga os fixos e gera lucro.\nModelos de SaaS alavancam rápido porque o custo variável é muito baixo."
+                  },
+                  {
+                      "title": "Depreciação e Amortização",
+                      "content": "Depreciação é a perda de valor de ativos físicos; Amortização é de intangíveis. São custos invisíveis que reduzem o lucro contábil, embora não saia dinheiro imediato do caixa (daí a métrica EBITDA, que os exclui)."
+                  },
+                  {
+                      "title": "Alavancagem Operacional",
+                      "content": "Custos fixos altos significam alta alavancagem = maior risco, mas maior potencial de retorno quando o volume ultrapassa o Break-Even."
+                  }
+              ],
+              "synthesis": {
+                  "title": "Síntese",
+                  "bullets": [
+                      "Break-even é a métrica essencial para evitar operar no prejuízo no escuro.",
+                      "SaaS tem escala absurda após o break-even por causa de custos marginais mínimos."
+                  ],
+                  "insights": []
+              }
+          }
+      ]
   }
   , SIG_PESSOAS
 ];
