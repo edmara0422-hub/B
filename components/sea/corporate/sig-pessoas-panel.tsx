@@ -3415,7 +3415,7 @@ export function SigPessoasPanel() {
             </div>
 
             {/* Sub-tabs Row */}
-            <div className="flex flex-wrap gap-2 mb-6 border-b border-white/5 pb-4 relative z-10">
+            <div className="flex flex-wrap gap-2 mb-6 border-b border-white/5 pb-4 relative z-50">
               <button 
                 onClick={() => setEmpresaTab('diagnostico')} 
                 className="px-4 py-2 rounded-xl text-[10px] font-mono tracking-widest uppercase font-bold transition-all border"
