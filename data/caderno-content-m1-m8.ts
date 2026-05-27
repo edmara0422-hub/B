@@ -2281,6 +2281,109 @@ export const SUBJECTS_DB: SubjectContent[] = [
               }
           }
       ]
+  },
+  {
+      "id": "M4-T1-S2",
+      "code": "M4-T1-S2",
+      "title": "Pensamento Criativo",
+      "description": "Da neurociência ao modelo de Guilford, Design Thinking, SCAMPER e ferramentas de inovação",
+      "icon": "Lightbulb",
+      "videoUrls": [],
+      "chapters": [
+          {
+              "title": "1: O que é Pensamento Criativo",
+              "description": "Da neurociência ao modelo de Guilford — criatividade como competência treinável",
+              "subsections": [
+                  {
+                      "title": "Redes Cerebrais e Definição",
+                      "content": "Pensamento criativo é a capacidade cognitiva de gerar ideias, soluções ou conexões que são simultaneamente originais e úteis. Diferente do senso comum, criatividade não é um dom exclusivo de artistas — é uma competência treinável, mensurável e essencial para a sobrevivência empresarial.\n\nPesquisas com fMRI (ressonância magnética funcional) revelam que a criatividade não reside em um hemisfério específico. O neurocientista Rex Jung demonstrou que o processo criativo envolve três redes cerebrais: DMN (Default Mode - imaginação), ECN (Executive Control - avalia/filtra) e SN (Salience Network - alterna e detecta eureka)."
+                  },
+                  {
+                      "title": "O que define uma pessoa criativa e os 4 Ps",
+                      "content": "Definição de pessoa criativa envolve Curiosidade, Ângulo inusitado, Perseverança e Humildade. Os 4 Ps da Criatividade (Mel Rhodes) são: Person (traços cognitivos), Process (etapas do pensamento), Product (resultado tangível) e Press (o ambiente que facilita ou bloqueia)."
+                  },
+                  {
+                      "title": "Mitos que Precisam Morrer",
+                      "content": "Mito 1: \"Criatividade é inata\" (Falso: 98% das crianças são criativas vs 2% dos adultos). Mito 2: \"Brainstorming sempre funciona\" (Parcialmente Falso: grupos sem estrutura geram menos ideias). Mito 3: \"Pressão mata criatividade\" (Parcialmente Verdadeiro: pressão com propósito aumenta, mas com controle destrói)."
+                  },
+                  {
+                      "title": "Guilford: Pensamento Divergente vs Convergente",
+                      "content": "A diferença decisiva de Guilford é entre pensamento convergente (raciocínio analítico) e divergente (várias alternativas). As 4 métricas divergentes são: Fluência (quantidade), Flexibilidade (variedade), Originalidade (raridade) e Elaboração (detalhes). O erro mais comum é julgar ideias antes de gerar volume suficiente (as melhores ideias surgem após a ideia #50)."
+                  },
+                  {
+                      "title": "As 6 Etapas do Processo Criativo e Tipos de Criatividade",
+                      "content": "As etapas são: Reconhecimento de Insights, Geração de Alternativas, Seleção, Iteração, Transferência ao Mundo Real e Aprendizado.\n\nTipos incluem Criatividade de Produto (ex: Havaianas), Criatividade de Modelo (ex: Nubank) e Criatividade Estratégica (ex: Embraer)."
+                  }
+              ],
+              "synthesis": {
+                  "title": "Síntese",
+                  "bullets": [
+                      "98% das crianças de 5 anos são gênios criativos. Aos adultos: 2%. Criatividade é desaprendida.",
+                      "O pensamento divergente gera ideias, convergente as seleciona. Nunca faça os dois juntos.",
+                      "O ambiente tem dimensões mensuráveis que definem a criatividade."
+                  ],
+                  "insights": []
+              }
+          },
+          {
+              "title": "2: Métodos de Criatividade",
+              "description": "Design Thinking, Brainstorming Estruturado e SCAMPER",
+              "subsections": [
+                  {
+                      "title": "Design Thinking",
+                      "content": "Design Thinking é uma abordagem centrada no humano com fases: 1. Empatizar (Observar sem perguntar diretamente); 2. Definir (Sintetizar em POV acionável); 3. Idear (Divergir sem julgamento); 4. Prototipar (Construir para testar barato); 5. Testar (Aprender rápido). Exemplo: o case da IDEO com carrinhos de supermercado."
+                  },
+                  {
+                      "title": "Brainstorming Estruturado",
+                      "content": "Grupos só geram mais ideias com estrutura. Variantes que funcionam: Brainwriting 6-3-5 (silêncio e volume), Round Robin (contribuição igualitária), Crazy 8s (8 ideias em 8 min) e Brainstorming Reverso (como piorar o problema?)."
+                  },
+                  {
+                      "title": "SCAMPER",
+                      "content": "A ferramenta mais prática para inovar sobre algo existente. Substituir (Beyond Meat), Combinar (iPhone unindo funções), Eliminar (IKEA tirando a montagem da fábrica), entre outros operadores."
+                  }
+              ],
+              "synthesis": {
+                  "title": "Síntese",
+                  "bullets": [
+                      "IDEO: as melhores ideias surgem após a ideia #50. Separe divergência de convergência.",
+                      "Brainstorming sem estrutura produz MENOS do que indivíduos sozinhos.",
+                      "SCAMPER evolui produtos existentes (ex: iPhone combinou, eliminou teclado)."
+                  ],
+                  "insights": []
+              }
+          },
+          {
+              "title": "3: Ferramentas Avançadas e Bloqueios Criativos",
+              "description": "Pensamento Lateral, TRIZ, Mapas Mentais e Prototipagem Rápida",
+              "subsections": [
+                  {
+                      "title": "Ferramentas Avançadas",
+                      "content": "Quando ideias esgotam: Pensamento Lateral (De Bono, fugir do lógico), TRIZ (Altshuller, 40 princípios para resolver contradições), Mapas Mentais e Restrição Criativa (ex: Twitter 140 chars)."
+                  },
+                  {
+                      "title": "Os Seis Chapéus do Pensamento",
+                      "content": "Método de De Bono onde todos usam o mesmo 'chapéu' (modo) ao mesmo tempo: Branco (Fatos), Vermelho (Emoções), Preto (Cautela), Amarelo (Otimismo), Verde (Criatividade), Azul (Processo)."
+                  },
+                  {
+                      "title": "Bloqueios Criativos",
+                      "content": "Bloqueio Perceptivo (fixação funcional - não ver o problema), Bloqueio Emocional (medo de julgamento, segurança psicológica é chave), Bloqueio Cultural (Groupthink, 'sempre fizemos assim') e Bloqueio Ambiental (falta de tempo/espaço, como o projeto Post-it da 3M)."
+                  },
+                  {
+                      "title": "Prototipagem Rápida e Restrição",
+                      "content": "A velocidade de aprendizado requer prototipagem: Sketch, Storyboard, Mockup Interativo, Protótipo Funcional, MVP. A restrição (tempo, dinheiro, features) atua como um motor criativo contra o perfeccionismo."
+                  }
+              ],
+              "synthesis": {
+                  "title": "Síntese",
+                  "bullets": [
+                      "Bloqueios não são falta de talento — são sintomas do ambiente. O diagnóstico correto resolve.",
+                      "Inovação segue padrões mapeáveis (TRIZ).",
+                      "A restrição é o melhor combustível da criatividade prática."
+                  ],
+                  "insights": []
+              }
+          }
+      ]
   }
   , SIG_PESSOAS
 ];
