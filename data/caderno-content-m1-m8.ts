@@ -3028,6 +3028,172 @@ export const SUBJECTS_DB: SubjectContent[] = [
               }
           }
       ]
+  },
+  {
+      "id": "M4-T1-S8",
+      "code": "M4-T1-S8",
+      "title": "Liderança e Gestão de Equipes",
+      "description": "Teorias de liderança, Inteligência Emocional, Tuckman, OKRs e Liderança em VUCA/BANI",
+      "icon": "Users",
+      "videoUrls": [],
+      "chapters": [
+          {
+              "title": "1: Liderança, Teorias e Inteligência Emocional",
+              "description": "Liderança ≠ Gestão — as 5 teorias e por que IE importa mais que QI",
+              "subsections": [
+                  {
+                      "title": "Liderança vs Gestão",
+                      "content": "Gestão lida com complexidade (planejar, organizar). Liderança lida com mudança (visão, alinhamento, inspirar pessoas). Ambas são complementares e necessárias."
+                  },
+                  {
+                      "title": "As 5 Teorias de Liderança",
+                      "content": "1. Teoria dos Traços (nascem líderes); 2. Comportamental (foco nas ações); 3. Situacional (Hersey & Blanchard: o estilo certo para a maturidade do liderado); 4. Transformacional (inspirar mudança e propósito); 5. Servidora (o líder remove obstáculos para a equipe, ex: Nubank)."
+                  },
+                  {
+                      "title": "Inteligência Emocional (IE)",
+                      "content": "Goleman mostrou que a IE representa 67% das competências de um líder de alta performance (2x mais que QI). As 5 dimensões: Autoconhecimento, Autocontrole, Motivação, Empatia e Habilidade Social."
+                  }
+              ],
+              "synthesis": {
+                  "title": "Síntese",
+                  "bullets": [
+                      "Liderança Situacional: usar o mesmo estilo para um júnior e um sênior é falha de liderança.",
+                      "Inteligência Emocional (Goleman) importa mais que conhecimento técnico para o líder."
+                  ],
+                  "insights": []
+              }
+          },
+          {
+              "title": "2: Formação de Equipes e Ferramentas de Gestão",
+              "description": "Tuckman, Feedback SBI, Delegação e o custo de não delegar",
+              "subsections": [
+                  {
+                      "title": "5 Fases de Tuckman",
+                      "content": "Forming (cautela), Storming (conflitos essenciais), Norming (regras claras), Performing (alta performance e segurança psicológica) e Adjourning (dissolução e lições)."
+                  },
+                  {
+                      "title": "Feedback SBI e Delegação",
+                      "content": "Feedback estruturado SBI: Situação + Comportamento + Impacto. Remove a agressividade e interpretação pessoal.\nDelegação: gargalo do líder. Se alguém pode fazer 80% tão bem quanto o líder, deve ser delegado."
+                  },
+                  {
+                      "title": "Composição Estratégica",
+                      "content": "Equipes se dividem em Nível Estratégico (C-Level), Tático (Gerência), Operacional (Execução), Back Office e Equipe Estendida (Terceirizados)."
+                  }
+              ],
+              "synthesis": {
+                  "title": "Síntese",
+                  "bullets": [
+                      "70% das equipes ficam presas na fase de Storming (conflitos); evitá-los impede o amadurecimento.",
+                      "Se você não delega, a velocidade da empresa é a sua própria velocidade (Bottleneck)."
+                  ],
+                  "insights": []
+              }
+          },
+          {
+              "title": "3: Conflitos, Motivação e Segurança Psicológica",
+              "description": "Como transformar tensão em resultado e construir equipes que inovam",
+              "subsections": [
+                  {
+                      "title": "Gestão de Conflitos",
+                      "content": "A matriz Thomas-Kilmann mostra 5 abordagens: Competir, Colaborar, Comprometer, Evitar, Acomodar."
+                  },
+                  {
+                      "title": "Motivação (Daniel Pink)",
+                      "content": "Motivação intrínseca supera a extrínseca. Os 3 drivers são: Autonomia (decidir como fazer), Maestria (ficar cada vez melhor) e Propósito (algo que importa)."
+                  },
+                  {
+                      "title": "Segurança Psicológica",
+                      "content": "Projeto Aristóteles do Google (180 equipes) provou que segurança psicológica (poder errar sem retaliação interpessoal) é o fator #1 para a alta performance e inovação."
+                  }
+              ],
+              "synthesis": {
+                  "title": "Síntese",
+                  "bullets": [
+                      "Equipes com baixa segurança psicológica não erram menos — elas apenas escondem os erros.",
+                      "Reunião 1:1 frequente é a ferramenta mais importante e subutilizada da liderança."
+                  ],
+                  "insights": []
+              }
+          },
+          {
+              "title": "4: Comunicação Estratégica na Liderança",
+              "description": "CNV, Feedforward, Candura Radical e a matemática dos canais",
+              "subsections": [
+                  {
+                      "title": "A Matemática dos Canais",
+                      "content": "Uma equipe de 15 pessoas gera 105 canais de comunicação, causando ineficiência e exigindo rituais de simplificação por parte do líder."
+                  },
+                  {
+                      "title": "CNV e Candura Radical",
+                      "content": "CNV (Comunicação Não-Violenta): Observação, Sentimento, Necessidade, Pedido.\nCandura Radical (Kim Scott): Interseção entre o Cuidado Pessoal e o Desafio Direto. Sem ambos, vira empatia ruinosa ou agressividade."
+                  },
+                  {
+                      "title": "Feedforward",
+                      "content": "Enquanto o feedback avalia o passado, o feedforward olha para frente e desenvolve o futuro. Líder moderno usa ambos."
+                  }
+              ],
+              "synthesis": {
+                  "title": "Síntese",
+                  "bullets": [
+                      "CNV transforma críticas destrutivas em diálogos de resolução de problemas.",
+                      "A persuasão executiva (Ethos, Pathos, Logos) converte dados abstratos em visões inspiradoras."
+                  ],
+                  "insights": []
+              }
+          },
+          {
+              "title": "5: Disfunções, OKRs e Desenvolvimento de Líderes",
+              "description": "Lencioni, Nine Box, Jim Collins e como construir um pipeline de liderança",
+              "subsections": [
+                  {
+                      "title": "As 5 Disfunções de Lencioni",
+                      "content": "A base da falha de uma equipe é a Ausência de Confiança, que gera Medo do Conflito, Falta de Comprometimento, Evitação de Responsabilidades e Falta de Atenção aos Resultados."
+                  },
+                  {
+                      "title": "OKRs (John Doerr)",
+                      "content": "Objetivos inspiradores + Resultados-Chaves mensuráveis (KRs). OKRs bem calibrados têm taxa de atingimento ideal de 70%."
+                  },
+                  {
+                      "title": "Jim Collins e o Nine Box",
+                      "content": "Liderança Nível 5 (Feitas para Vencer): humildade extrema + vontade feroz. Nine Box é a matriz que mapeia o desempenho x potencial para planejar sucessões reais."
+                  }
+              ],
+              "synthesis": {
+                  "title": "Síntese",
+                  "bullets": [
+                      "Sem vulnerabilidade do líder, a equipe não cria a confiança necessária para admitir e corrigir falhas.",
+                      "Metas coletivas alinham egos e curam a disfunção de atenção individual."
+                  ],
+                  "insights": []
+              }
+          },
+          {
+              "title": "6: Liderança Digital, Contexto Lusófono e ESG",
+              "description": "VUCA/BANI, equipes remotas, Hofstede, DE&I e liderança sustentável",
+              "subsections": [
+                  {
+                      "title": "Ambientes VUCA/BANI",
+                      "content": "Em cenários complexos, a liderança distribuída e ágil ganha da liderança autocrática. Em metodologias ágeis, o líder atua como Scrum Master/Facilitador."
+                  },
+                  {
+                      "title": "Equipes Remotas",
+                      "content": "Gestão por resultados substitui a gestão por presença. A 'Documentação Radical' (o que não está escrito, não existe) e a clareza de expectativas são primordiais."
+                  },
+                  {
+                      "title": "Contexto Lusófono, Diversidade e ESG",
+                      "content": "Brasil exige liderança cordial e humanizada, enquanto Portugal respeita forte hierarquia. Equipes diversas superam pares financeiramente quando a inclusão é ativa. O ESG determina que a cultura é reflexo do líder e da coerência de seu discurso."
+                  }
+              ],
+              "synthesis": {
+                  "title": "Síntese",
+                  "bullets": [
+                      "Microgerenciar equipes remotas destrói produtividade e confiança. Delegue resultado, não o método.",
+                      "A coerência ética entre discurso e prática é a única liderança duradoura."
+                  ],
+                  "insights": []
+              }
+          }
+      ]
   }
   , SIG_PESSOAS
 ];
