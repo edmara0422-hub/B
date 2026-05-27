@@ -3194,6 +3194,112 @@ export const SUBJECTS_DB: SubjectContent[] = [
               }
           }
       ]
+  },
+  {
+      "id": "M4-T1-S9",
+      "code": "M4-T1-S9",
+      "title": "Filosofia e Pensamento Crítico",
+      "description": "Lógica, ética, vieses, epistemologia, filosofia política e IA",
+      "icon": "BookOpen",
+      "videoUrls": [],
+      "chapters": [
+          {
+              "title": "1: Pensamento Crítico e Lógica nos Negócios",
+              "description": "Por que filosofia importa — falácias, vieses e como pensar com rigor",
+              "subsections": [
+                  {
+                      "title": "A Importância do Pensamento Crítico",
+                      "content": "Pensamento crítico é avaliar informações objetivamente, identificar vieses e construir conclusões fundamentadas. É a competência mais valorizada por CEOs globais (WEF 2023)."
+                  },
+                  {
+                      "title": "Ferramentas e Falácias",
+                      "content": "Análise de argumentos (separar premissa de conclusão), detecção de falácias (apelo à autoridade, falsa dicotomia, ad hominem) e o método socrático.\nFalácia de Autoridade: O CEO da empresa disse, logo funciona (ex: WeWork e Adam Neumann).\nCorrelação ≠ Causalidade: Associações não indicam causa (ex: branding cresceu, mas o mercado todo cresceu)."
+                  },
+                  {
+                      "title": "Viés de Confirmação",
+                      "content": "O viés mais perigoso: buscar apenas informações que confirmam o que já se acredita, ignorando evidências contrárias (ex: Kodak ignorando a câmera digital)."
+                  }
+              ],
+              "synthesis": {
+                  "title": "Síntese",
+                  "bullets": [
+                      "Pensamento crítico é a competência #1 do século XXI (WEF 2023).",
+                      "Viés de confirmação custa bilhões; o antídoto é dados e humildade intelectual."
+                  ],
+                  "insights": []
+              }
+          },
+          {
+              "title": "2: Ética Empresarial e Epistemologia",
+              "description": "4 frameworks éticos + como separar conhecimento válido de achismo",
+              "subsections": [
+                  {
+                      "title": "Os 4 Frameworks Éticos",
+                      "content": "Utilitarismo (Bentham/Mill): o maior bem para o maior número. Consequências importam (ex: Ford Pinto, onde o cálculo falhou moralmente).\nDeontologia (Kant): o dever moral importa. A ação deve ser universal (ex: J&J no caso Tylenol).\nÉtica das Virtudes (Aristóteles): foca no caráter (ex: Patagonia doada para o clima).\nÉtica do Cuidado (Gilligan): relacionamentos e responsabilidade."
+                  },
+                  {
+                      "title": "Epistemologia e Ciência",
+                      "content": "Estuda como justificamos uma crença. Karl Popper: o conhecimento científico precisa ser falsificável. Se não se pode provar que é falso, é crença, não dado."
+                  }
+              ],
+              "synthesis": {
+                  "title": "Síntese",
+                  "bullets": [
+                      "Não existe framework ético 'melhor'. Usar os 4 juntos cria robustez.",
+                      "Se uma afirmação de negócio não tem como ser falsificada, é fé, não estratégia."
+                  ],
+                  "insights": []
+              }
+          },
+          {
+              "title": "3: Filosofia Política, Ciência e Propósito",
+              "description": "Smith, Marx, Rawls — e por que existencialismo importa para gestores",
+              "subsections": [
+                  {
+                      "title": "Os Modelos Filosóficos",
+                      "content": "Adam Smith (Mão Invisível): o mercado livre aloca recursos. O interesse próprio gera o bem coletivo (ex: Silicon Valley).\nKarl Marx (O Capital): desigualdade estrutural (mais-valia), exemplificado hoje no debate da Gig Economy (iFood/Uber).\nJohn Rawls (Justiça): o 'véu da ignorância' defende regras justas protegendo os mais vulneráveis (cotas e DE&I)."
+                  },
+                  {
+                      "title": "Existencialismo e Propósito",
+                      "content": "Sartre: liberdade e responsabilidade individual definem quem somos. Viktor Frankl: o significado gera engajamento. Empresas com propósito claro engajam 3x mais."
+                  }
+              ],
+              "synthesis": {
+                  "title": "Síntese",
+                  "bullets": [
+                      "Smith, Marx e Rawls são as lentes pelas quais toda decisão política/econômica é debatida.",
+                      "Sem propósito, a empresa é máquina de lucro sem alma (e atrai menos talento)."
+                  ],
+                  "insights": []
+              }
+          },
+          {
+              "title": "4: Filosofia Oriental, Linguagem, Estética e Tecnologia",
+              "description": "Zen e liderança, poder das palavras, beleza como diferencial e ética da IA",
+              "subsections": [
+                  {
+                      "title": "Filosofia Oriental",
+                      "content": "Taoísmo (não-ação, criar condições), Zen Budismo (mente de principiante, simplicidade), Sun Tzu (antecipação) e Wabi-Sabi (a estética da imperfeição aplicada aos MVPs)."
+                  },
+                  {
+                      "title": "Linguagem e Estética",
+                      "content": "Wittgenstein: 'os limites da linguagem são os limites do mundo'. A linguagem cria a realidade.\nEstética: beleza é diferencial competitivo (ex: Apple, Dieter Rams). O design importa."
+                  },
+                  {
+                      "title": "Ética da IA e Tecnologia",
+                      "content": "Heidegger: a tecnologia transforma tudo em recurso. A IA nunca é neutra; o viés algorítmico, a vigilância excessiva e a substituição exigem que o líder pergunte 'deve fazer?' em vez de 'pode fazer?'."
+                  }
+              ],
+              "synthesis": {
+                  "title": "Síntese",
+                  "bullets": [
+                      "A linguagem renomeia a percepção da realidade.",
+                      "A tecnologia não é neutra — quem programa a IA programa os valores reproduzidos."
+                  ],
+                  "insights": []
+              }
+          }
+      ]
   }
   , SIG_PESSOAS
 ];
