@@ -837,10 +837,10 @@ export function NeuroActionPotentialSim({ className }: { className?: string }) {
   }, [drawMembraneLipids])
 
   return (
-    <div className={`flex flex-col lg:flex-row gap-4 h-full min-h-[500px] w-full ${className}`}>
+    <div className={`flex flex-col lg:flex-row gap-4 h-full w-full min-h-0 ${className}`}>
       
       {/* ── Left main simulation screen ── */}
-      <div className="relative flex-1 min-h-[400px] rounded-2xl overflow-hidden bg-black/40 border border-white/5 shadow-2xl flex flex-col justify-end">
+      <div className="relative flex-1 min-h-[220px] rounded-2xl overflow-hidden bg-black/40 border border-white/5 shadow-2xl flex flex-col justify-end">
         <canvas
           ref={canvasRef}
           onClick={triggerStimulus}
