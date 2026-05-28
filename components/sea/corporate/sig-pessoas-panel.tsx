@@ -74,6 +74,7 @@ export function SigPessoasPanel() {
   const [lideresTab, setLideresTab] = useState<LideresSubTab>('voce')
   const [timeTab, setTimeTab] = useState<TimeSubTab>('formar')
   const [empresaTab, setEmpresaTab] = useState<EmpresaSubTab>('diagnostico')
+  const [auditoriaStep, setAuditoriaStep] = useState<number | null>(null)
 
   // Global Toast
   const [toastMsg, setToastMsg] = useState<string | null>(null)
@@ -3460,60 +3461,156 @@ export function SigPessoasPanel() {
                     
                     <div className="flex justify-between items-center border-b border-white/[0.04] pb-4 mb-6 relative z-10">
                       <div>
-                        <h4 className="text-[12px] font-bold text-[#5dcaa5] uppercase font-mono tracking-widest mb-1">Auditoria de Gestão 6D</h4>
-                        <p className="text-[10px] text-white/50 font-sans">Consultoria estratégica em gestão corporativa e alinhamento de liderança (ATP).</p>
+                        <h4 className="text-[12px] font-bold text-[#5dcaa5] uppercase font-mono tracking-widest mb-1">Modelo de Avaliação Organizacional</h4>
+                        <p className="text-[10px] text-white/50 font-sans">Consultoria estratégica em gestão corporativa e alinhamento de liderança.</p>
                       </div>
-                      <button 
-                        className="px-4 py-2 bg-gradient-to-r from-[#5dcaa5]/20 to-[#5dcaa5]/5 hover:from-[#5dcaa5]/30 hover:to-[#5dcaa5]/10 border border-[#5dcaa5]/40 rounded-xl text-[10px] font-bold text-[#5dcaa5] font-mono tracking-widest transition-all shadow-[0_0_20px_rgba(93,202,165,0.1)] flex items-center gap-2"
-                        onClick={() => triggerToast("Iniciando auditoria de gestão com a IA...", "ok")}
-                      >
-                        <span className="text-[12px]">▶</span> IA ANALYZER
-                      </button>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5 relative z-10">
-                      {/* Etapa 1 */}
-                      <div className="p-5 bg-black/40 border border-white/10 hover:border-[#5dcaa5]/40 rounded-2xl transition-all group relative">
-                        <div className="flex items-center gap-3 mb-3">
-                          <div className="w-8 h-8 rounded-full bg-[#5dcaa5]/20 border border-[#5dcaa5]/50 text-[#5dcaa5] flex items-center justify-center font-bold font-mono text-[14px] flex-shrink-0">1</div>
-                          <h5 className="text-[12px] font-bold text-white leading-tight">Prospecção & Setup</h5>
-                        </div>
-                        <p className="text-[10px] text-white/50 mb-4 leading-relaxed font-sans min-h-[45px]">Etapa 1 da ATP: História, forças/fraquezas e mapeamento das funções de gestão (Planejar, Organizar, Liderar, Controlar).</p>
-                        <button className="w-full py-2 bg-white/5 hover:bg-[#5dcaa5]/10 border border-white/10 hover:border-[#5dcaa5]/30 rounded-lg text-[9px] font-mono text-white/70 hover:text-[#5dcaa5] transition-all font-bold tracking-widest">INICIAR ETAPA 1</button>
-                      </div>
-
-                      {/* Etapa 2 */}
-                      <div className="p-5 bg-black/40 border border-white/10 hover:border-[#5dcaa5]/40 rounded-2xl transition-all group relative">
-                        <div className="flex items-center gap-3 mb-3">
-                          <div className="w-8 h-8 rounded-full bg-white/5 border border-white/10 text-white/30 flex items-center justify-center font-bold font-mono text-[14px] flex-shrink-0 group-hover:bg-[#5dcaa5]/10 group-hover:text-[#5dcaa5] transition-colors">2</div>
-                          <h5 className="text-[12px] font-bold text-white leading-tight">Macro, Micro & Stakeholders</h5>
-                        </div>
-                        <p className="text-[10px] text-white/50 mb-4 leading-relaxed font-sans min-h-[45px]">Etapa 2 da ATP: Análise PESTEL (política/economia), Porter (clientes/fornecedores) e matriz de influência de stakeholders.</p>
-                        <button className="w-full py-2 bg-white/5 hover:bg-[#5dcaa5]/10 border border-white/10 hover:border-[#5dcaa5]/30 rounded-lg text-[9px] font-mono text-white/70 hover:text-[#5dcaa5] transition-all font-bold tracking-widest">INICIAR ETAPA 2</button>
-                      </div>
-
-                      {/* Etapa 3 */}
-                      <div className="p-5 bg-black/40 border border-white/10 hover:border-[#5dcaa5]/40 rounded-2xl transition-all group relative">
-                        <div className="flex items-center gap-3 mb-3">
-                          <div className="w-8 h-8 rounded-full bg-white/5 border border-white/10 text-white/30 flex items-center justify-center font-bold font-mono text-[14px] flex-shrink-0 group-hover:bg-[#5dcaa5]/10 group-hover:text-[#5dcaa5] transition-colors">3</div>
-                          <h5 className="text-[12px] font-bold text-white leading-tight">Estrutura & Controle</h5>
-                        </div>
-                        <p className="text-[10px] text-white/50 mb-4 leading-relaxed font-sans min-h-[45px]">Etapa 3 da ATP: Desenho de organograma, definição de cultura orgânica/mecanicista e mapeamento de controle de objetivos.</p>
-                        <button className="w-full py-2 bg-white/5 hover:bg-[#5dcaa5]/10 border border-white/10 hover:border-[#5dcaa5]/30 rounded-lg text-[9px] font-mono text-white/70 hover:text-[#5dcaa5] transition-all font-bold tracking-widest">INICIAR ETAPA 3</button>
-                      </div>
-
-                      {/* Etapa 4 */}
-                      <div className="p-5 bg-[#5dcaa5]/5 border border-[#5dcaa5]/30 rounded-2xl transition-all group relative">
-                        <div className="flex items-center gap-3 mb-3">
-                          <div className="w-8 h-8 rounded-full bg-[#5dcaa5]/20 border border-[#5dcaa5]/50 text-[#5dcaa5] flex items-center justify-center font-bold font-mono text-[14px] flex-shrink-0">4</div>
-                          <h5 className="text-[12px] font-bold text-white leading-tight">Relatório Executivo de Consultoria</h5>
-                        </div>
-                        <p className="text-[10px] text-white/50 mb-4 leading-relaxed font-sans min-h-[45px]">Etapa 4 da ATP: Fechamento com os 8 tópicos requeridos, cruzamento de teoria/prática e propostas de intervenção.</p>
-                        <button onClick={() => triggerToast('Gerando esboço via Inteligência Artificial...', 'ok')} className="w-full py-2 bg-gradient-to-r from-[#5dcaa5]/20 to-[#5dcaa5]/10 hover:from-[#5dcaa5]/30 hover:to-[#5dcaa5]/20 border border-[#5dcaa5]/40 rounded-lg text-[9px] font-mono text-[#5dcaa5] transition-all font-bold tracking-widest shadow-[0_0_15px_rgba(93,202,165,0.15)] flex items-center justify-center gap-2">
-                          <span className="text-[11px]">✨</span> GERAR ESBOÇO VIA IA
+                      {auditoriaStep !== null ? (
+                        <button 
+                          className="px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-[10px] font-bold text-white font-mono tracking-widest transition-all flex items-center gap-2"
+                          onClick={() => setAuditoriaStep(null)}
+                        >
+                          <span className="text-[12px]">◀</span> VOLTAR PARA VISÃO GERAL
                         </button>
-                      </div>
+                      ) : (
+                        <button 
+                          className="px-4 py-2 bg-gradient-to-r from-[#5dcaa5]/20 to-[#5dcaa5]/5 hover:from-[#5dcaa5]/30 hover:to-[#5dcaa5]/10 border border-[#5dcaa5]/40 rounded-xl text-[10px] font-bold text-[#5dcaa5] font-mono tracking-widest transition-all shadow-[0_0_20px_rgba(93,202,165,0.1)] flex items-center gap-2"
+                          onClick={() => triggerToast("Iniciando auditoria de gestão com a IA...", "ok")}
+                        >
+                          <span className="text-[12px]">▶</span> IA ANALYZER
+                        </button>
+                      )}
                     </div>
+
+                    {auditoriaStep === null && (
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-5 relative z-10">
+                        {/* Etapa 1 */}
+                        <div className="p-5 bg-black/40 border border-white/10 hover:border-[#5dcaa5]/40 rounded-2xl transition-all group relative">
+                          <div className="flex items-center gap-3 mb-3">
+                            <div className="w-8 h-8 rounded-full bg-[#5dcaa5]/20 border border-[#5dcaa5]/50 text-[#5dcaa5] flex items-center justify-center font-bold font-mono text-[14px] flex-shrink-0">1</div>
+                            <h5 className="text-[12px] font-bold text-white leading-tight">Prospecção & Setup</h5>
+                          </div>
+                          <p className="text-[10px] text-white/50 mb-4 leading-relaxed font-sans min-h-[45px]">Etapa 1 do Modelo: História, forças/fraquezas e mapeamento das funções de gestão (Planejar, Organizar, Liderar, Controlar).</p>
+                          <button onClick={() => setAuditoriaStep(1)} className="w-full py-2 bg-white/5 hover:bg-[#5dcaa5]/10 border border-white/10 hover:border-[#5dcaa5]/30 rounded-lg text-[9px] font-mono text-white/70 hover:text-[#5dcaa5] transition-all font-bold tracking-widest">INICIAR ETAPA 1</button>
+                        </div>
+
+                        {/* Etapa 2 */}
+                        <div className="p-5 bg-black/40 border border-white/10 hover:border-[#5dcaa5]/40 rounded-2xl transition-all group relative">
+                          <div className="flex items-center gap-3 mb-3">
+                            <div className="w-8 h-8 rounded-full bg-white/5 border border-white/10 text-white/30 flex items-center justify-center font-bold font-mono text-[14px] flex-shrink-0 group-hover:bg-[#5dcaa5]/10 group-hover:text-[#5dcaa5] transition-colors">2</div>
+                            <h5 className="text-[12px] font-bold text-white leading-tight">Macro, Micro & Stakeholders</h5>
+                          </div>
+                          <p className="text-[10px] text-white/50 mb-4 leading-relaxed font-sans min-h-[45px]">Etapa 2 do Modelo: Análise PESTEL (política/economia), Porter (clientes/fornecedores) e matriz de influência de stakeholders.</p>
+                          <button onClick={() => setAuditoriaStep(2)} className="w-full py-2 bg-white/5 hover:bg-[#5dcaa5]/10 border border-white/10 hover:border-[#5dcaa5]/30 rounded-lg text-[9px] font-mono text-white/70 hover:text-[#5dcaa5] transition-all font-bold tracking-widest">INICIAR ETAPA 2</button>
+                        </div>
+
+                        {/* Etapa 3 */}
+                        <div className="p-5 bg-black/40 border border-white/10 hover:border-[#5dcaa5]/40 rounded-2xl transition-all group relative">
+                          <div className="flex items-center gap-3 mb-3">
+                            <div className="w-8 h-8 rounded-full bg-white/5 border border-white/10 text-white/30 flex items-center justify-center font-bold font-mono text-[14px] flex-shrink-0 group-hover:bg-[#5dcaa5]/10 group-hover:text-[#5dcaa5] transition-colors">3</div>
+                            <h5 className="text-[12px] font-bold text-white leading-tight">Estrutura & Controle</h5>
+                          </div>
+                          <p className="text-[10px] text-white/50 mb-4 leading-relaxed font-sans min-h-[45px]">Etapa 3 do Modelo: Desenho de organograma, definição de cultura orgânica/mecanicista e mapeamento de controle de objetivos.</p>
+                          <button onClick={() => setAuditoriaStep(3)} className="w-full py-2 bg-white/5 hover:bg-[#5dcaa5]/10 border border-white/10 hover:border-[#5dcaa5]/30 rounded-lg text-[9px] font-mono text-white/70 hover:text-[#5dcaa5] transition-all font-bold tracking-widest">INICIAR ETAPA 3</button>
+                        </div>
+
+                        {/* Etapa 4 */}
+                        <div className="p-5 bg-[#5dcaa5]/5 border border-[#5dcaa5]/30 rounded-2xl transition-all group relative">
+                          <div className="flex items-center gap-3 mb-3">
+                            <div className="w-8 h-8 rounded-full bg-[#5dcaa5]/20 border border-[#5dcaa5]/50 text-[#5dcaa5] flex items-center justify-center font-bold font-mono text-[14px] flex-shrink-0">4</div>
+                            <h5 className="text-[12px] font-bold text-white leading-tight">Relatório Executivo de Consultoria</h5>
+                          </div>
+                          <p className="text-[10px] text-white/50 mb-4 leading-relaxed font-sans min-h-[45px]">Etapa 4 do Modelo: Fechamento com os 8 tópicos requeridos, cruzamento de teoria/prática e propostas de intervenção.</p>
+                          <button onClick={() => setAuditoriaStep(4)} className="w-full py-2 bg-gradient-to-r from-[#5dcaa5]/20 to-[#5dcaa5]/10 hover:from-[#5dcaa5]/30 hover:to-[#5dcaa5]/20 border border-[#5dcaa5]/40 rounded-lg text-[9px] font-mono text-[#5dcaa5] transition-all font-bold tracking-widest shadow-[0_0_15px_rgba(93,202,165,0.15)] flex items-center justify-center gap-2">
+                            ACESSAR ETAPA 4
+                          </button>
+                        </div>
+                      </div>
+                    )}
+
+                    {auditoriaStep === 1 && (
+                      <div className="animate-fade-in space-y-4">
+                        <div className="flex justify-between items-center bg-white/5 p-4 rounded-xl border border-white/10">
+                          <div>
+                            <h5 className="text-[13px] font-bold text-white mb-1">Etapa 1: Prospecção & Setup</h5>
+                            <p className="text-[10px] text-white/50">Colete dados sobre a história, forças, fraquezas e as 4 funções da administração.</p>
+                          </div>
+                          <button onClick={() => triggerToast('IA analisando perfil da empresa...', 'ok')} className="px-4 py-2 bg-[#d4b87a]/15 hover:bg-[#d4b87a]/30 border border-[#d4b87a]/45 rounded-xl text-[10px] font-bold text-[#d4b87a] font-mono transition">
+                            🤖 CONDUZIR ENTREVISTA COM IA
+                          </button>
+                        </div>
+                        <div className="grid grid-cols-2 gap-4">
+                          <textarea className="bg-black/40 border border-white/10 rounded-xl p-3 text-[10px] text-white min-h-[100px] outline-none focus:border-[#5dcaa5]/50" placeholder="História da empresa e produto..."></textarea>
+                          <textarea className="bg-black/40 border border-white/10 rounded-xl p-3 text-[10px] text-white min-h-[100px] outline-none focus:border-[#5dcaa5]/50" placeholder="Forças e Fraquezas mapeadas..."></textarea>
+                          <textarea className="col-span-2 bg-black/40 border border-white/10 rounded-xl p-3 text-[10px] text-white min-h-[80px] outline-none focus:border-[#5dcaa5]/50" placeholder="Funções de Gestão (Como o gestor planeja, organiza, lidera e controla no dia a dia)..."></textarea>
+                        </div>
+                      </div>
+                    )}
+
+                    {auditoriaStep === 2 && (
+                      <div className="animate-fade-in space-y-4">
+                        <div className="flex justify-between items-center bg-white/5 p-4 rounded-xl border border-white/10">
+                          <div>
+                            <h5 className="text-[13px] font-bold text-white mb-1">Etapa 2: Macro, Micro & Stakeholders</h5>
+                            <p className="text-[10px] text-white/50">Avalie os fatores do macroambiente, os competidores e mapeie os stakeholders.</p>
+                          </div>
+                          <button onClick={() => triggerToast('Gerando análise de mercado com IA...', 'ok')} className="px-4 py-2 bg-[#d4b87a]/15 hover:bg-[#d4b87a]/30 border border-[#d4b87a]/45 rounded-xl text-[10px] font-bold text-[#d4b87a] font-mono transition">
+                            🤖 MAPEAR AMBIENTE VIA IA
+                          </button>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                          <div className="space-y-2">
+                            <label className="text-[9px] font-mono text-[#5dcaa5] uppercase font-bold">Macro (PESTEL)</label>
+                            <textarea className="w-full bg-black/40 border border-white/10 rounded-xl p-3 text-[10px] text-white min-h-[120px] outline-none focus:border-[#5dcaa5]/50" placeholder="Fatores Políticos, Econômicos, Sociais..."></textarea>
+                          </div>
+                          <div className="space-y-2">
+                            <label className="text-[9px] font-mono text-[#5dcaa5] uppercase font-bold">Micro (Porter)</label>
+                            <textarea className="w-full bg-black/40 border border-white/10 rounded-xl p-3 text-[10px] text-white min-h-[120px] outline-none focus:border-[#5dcaa5]/50" placeholder="Concorrentes, Fornecedores, Clientes..."></textarea>
+                          </div>
+                          <div className="space-y-2">
+                            <label className="text-[9px] font-mono text-[#5dcaa5] uppercase font-bold">Stakeholders</label>
+                            <textarea className="w-full bg-black/40 border border-white/10 rounded-xl p-3 text-[10px] text-white min-h-[120px] outline-none focus:border-[#5dcaa5]/50" placeholder="Mapeamento de poder e interesse..."></textarea>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {auditoriaStep === 3 && (
+                      <div className="animate-fade-in space-y-4">
+                        <div className="flex justify-between items-center bg-white/5 p-4 rounded-xl border border-white/10">
+                          <div>
+                            <h5 className="text-[13px] font-bold text-white mb-1">Etapa 3: Estrutura & Controle</h5>
+                            <p className="text-[10px] text-white/50">Determine a configuração organizacional e os mecanismos de avaliação de metas.</p>
+                          </div>
+                          <button onClick={() => triggerToast('Sintetizando modelo de controle com IA...', 'ok')} className="px-4 py-2 bg-[#d4b87a]/15 hover:bg-[#d4b87a]/30 border border-[#d4b87a]/45 rounded-xl text-[10px] font-bold text-[#d4b87a] font-mono transition">
+                            🤖 GERAR CONTROLE VIA IA
+                          </button>
+                        </div>
+                        <div className="grid grid-cols-2 gap-4">
+                          <textarea className="bg-black/40 border border-white/10 rounded-xl p-3 text-[10px] text-white min-h-[120px] outline-none focus:border-[#5dcaa5]/50" placeholder="Organograma e Estrutura (Mecanicista/Orgânica)..."></textarea>
+                          <textarea className="bg-black/40 border border-white/10 rounded-xl p-3 text-[10px] text-white min-h-[120px] outline-none focus:border-[#5dcaa5]/50" placeholder="Sistemas de Controle e racionalidade da decisão..."></textarea>
+                        </div>
+                      </div>
+                    )}
+
+                    {auditoriaStep === 4 && (
+                      <div className="animate-fade-in space-y-4">
+                        <div className="flex justify-between items-center bg-gradient-to-r from-[#5dcaa5]/20 to-transparent p-4 rounded-xl border border-[#5dcaa5]/30">
+                          <div>
+                            <h5 className="text-[14px] font-bold text-white mb-1">Etapa 4: Relatório Executivo</h5>
+                            <p className="text-[10px] text-white/60">Cruzamento de dados das 3 etapas para formular o diagnóstico final e as implicações gerenciais.</p>
+                          </div>
+                          <button onClick={() => triggerToast('Gerando Relatório de Diagnóstico Completo em Background...', 'ok')} className="px-5 py-2.5 bg-gradient-to-r from-[#5dcaa5]/80 to-[#5dcaa5]/50 hover:from-[#5dcaa5] hover:to-[#5dcaa5]/80 text-black rounded-xl text-[11px] font-bold font-mono transition shadow-[0_0_20px_rgba(93,202,165,0.4)]">
+                            ✨ GERAR RELATÓRIO COMPLETO
+                          </button>
+                        </div>
+                        <div className="p-8 bg-black/50 border border-white/5 rounded-xl min-h-[250px] flex items-center justify-center flex-col gap-3">
+                          <span className="text-4xl">📄</span>
+                          <p className="text-[11px] text-white/40 font-mono text-center max-w-sm">
+                            As etapas anteriores devem estar preenchidas para que a Inteligência Artificial possa cruzar as teorias de gestão com os dados coletados e estruturar as implicações.
+                          </p>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </motion.div>
               )}
