@@ -1967,7 +1967,7 @@ function ExecutiveStudyBriefing({
                   </div>
 
                   {/* Right Column: Simulation Board & Pillars inside the content */}
-                  <div className="lg:col-span-5 p-6 rounded-2xl bg-white/[0.015] border border-white/[0.04] backdrop-blur-md relative overflow-hidden flex flex-col justify-between h-[720px] lg:h-[840px]"
+                  <div className="lg:col-span-5 p-6 rounded-2xl bg-white/[0.015] border border-white/[0.04] backdrop-blur-md relative overflow-y-auto ipb-thinscroll flex flex-col justify-between h-[600px] lg:h-[720px]"
                     style={{ boxShadow: '0 8px 24px rgba(0,0,0,0.15)' }}
                   >
                     <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{

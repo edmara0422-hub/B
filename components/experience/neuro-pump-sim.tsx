@@ -832,6 +832,22 @@ export function NeuroPumpSim({ className }: { className?: string }) {
       ctx.font = `9.5px ${FONT_MONO}`
       ctx.fillText(`POTENCIAL TRANSELETRÔNICO: ${state.potential.toFixed(2)} mV`, 16, 29)
 
+      // Sci-fi Telemetry Panel on the right (top-right)
+      ctx.textAlign = 'right'
+      ctx.textBaseline = 'top'
+      ctx.font = `bold 8.5px ${FONT_MONO}`
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.35)'
+      ctx.fillText('METRICAS DE FLUXO', w - 16, 16)
+
+      ctx.fillStyle = COL_TEXT
+      ctx.font = `9px ${FONT_MONO}`
+      ctx.fillText(`CICLOS: ${state.cycles}`, w - 16, 28)
+      ctx.fillText(`Na⁺ SAIDA: ${state.naTransported}`, w - 16, 40)
+      ctx.fillStyle = COL_K
+      ctx.fillText(`K⁺ ENTRADA: ${state.kTransported}`, w - 16, 52)
+      ctx.fillStyle = '#fbbf24' // ATP color
+      ctx.fillText(`ATP GASTO: ${state.atpConsumed} mol`, w - 16, 64)
+
       // stoichiometry display
       ctx.textAlign = 'center'
       ctx.textBaseline = 'bottom'
@@ -881,40 +897,8 @@ export function NeuroPumpSim({ className }: { className?: string }) {
       {/* ── Right control board (NASA-style) ── */}
       <div className="w-full lg:w-80 flex flex-col gap-4 p-4 rounded-2xl bg-black/50 border border-white/5 backdrop-blur-xl shrink-0 overflow-y-auto max-h-full">
         <div className="border-b border-white/[0.06] pb-2.5">
-          <span className="text-[8px] uppercase tracking-[0.2em] font-black text-teal-400 block mb-0.5">ESTADO DA UNIDADE</span>
+          <span className="text-[8px] uppercase tracking-[0.2em] font-black text-teal-400 block mb-0.5">CONTROLES DA UNIDADE</span>
           <h4 className="text-[12.5px] font-bold text-white/90 font-sans tracking-wide">Bomba Na⁺/K⁺-ATPase 6D</h4>
-        </div>
-
-        {/* Real-time statistics block */}
-        <div className="grid grid-cols-2 gap-2 bg-white/[0.01] border border-white/[0.04] p-3 rounded-xl">
-          <div className="flex flex-col">
-            <span className="text-[7.5px] font-mono text-white/30 uppercase">Potencial</span>
-            <span className="text-[15px] font-mono font-bold text-teal-400">{membranePotential} <span className="text-[9px] text-white/40">mV</span></span>
-          </div>
-          <div className="flex flex-col">
-            <span className="text-[7.5px] font-mono text-white/30 uppercase">Ciclos</span>
-            <span className="text-[15px] font-mono font-bold text-white">{cycles}</span>
-          </div>
-          <div className="flex flex-col mt-2.5">
-            <span className="text-[7.5px] font-mono text-white/30 uppercase">Na⁺ Bombeado</span>
-            <span className="text-[15px] font-mono font-bold text-rose-500">{naTransported}</span>
-          </div>
-          <div className="flex flex-col mt-2.5">
-            <span className="text-[7.5px] font-mono text-white/30 uppercase">K⁺ Bombeado</span>
-            <span className="text-[15px] font-mono font-bold text-cyan-400">{kTransported}</span>
-          </div>
-          <div className="col-span-2 border-t border-white/[0.04] pt-2.5 mt-2.5 flex justify-between items-center">
-            <div className="flex flex-col">
-              <span className="text-[7.5px] font-mono text-white/30 uppercase">ATP Consumido</span>
-              <span className="text-[12.5px] font-mono font-semibold text-amber-400">{atpConsumed} <span className="text-[8px] text-white/35">mol</span></span>
-            </div>
-            <button 
-              onClick={handleResetCounters}
-              className="px-2.5 py-1 text-[8.5px] uppercase font-mono tracking-wider text-white/50 border border-white/10 hover:border-white/20 hover:text-white rounded-lg transition-all"
-            >
-              Reset
-            </button>
-          </div>
         </div>
 
         {/* Dynamic Controls Sliders */}
@@ -1001,20 +985,28 @@ export function NeuroPumpSim({ className }: { className?: string }) {
         {/* Bottom Switch Button */}
         <div className="pt-2 border-t border-white/[0.06] flex items-center justify-between">
           <div className="flex flex-col">
-            <span className="text-[7.5px] font-mono text-white/30 uppercase">Operação do Painel</span>
-            <span className="text-[10px] font-mono text-white/70 font-semibold">{isPaused ? 'Em Espera' : 'Simulação Ativa'}</span>
+            <span className="text-[7.5px] font-mono text-white/30 uppercase">Operação</span>
+            <span className="text-[10px] font-mono text-white/70 font-semibold">{isPaused ? 'Espera' : 'Ativa'}</span>
           </div>
-          <button 
-            onClick={() => setIsPaused(!isPaused)}
-            className={`px-4 py-2 text-[10px] uppercase font-mono tracking-wider font-bold rounded-lg border transition-all flex items-center gap-1.5 cursor-pointer ${
-              isPaused 
-                ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/20' 
-                : 'bg-amber-500/10 border-amber-500/30 text-amber-400 hover:bg-amber-500/20'
-            }`}
-          >
-            {isPaused ? <Play className="h-3.5 w-3.5 fill-emerald-400" /> : <Pause className="h-3.5 w-3.5 fill-amber-400" />}
-            {isPaused ? 'Ligar' : 'Pausar'}
-          </button>
+          <div className="flex gap-2">
+            <button 
+              onClick={handleResetCounters}
+              className="px-2.5 py-1.5 text-[8.5px] uppercase font-mono tracking-wider text-white/50 border border-white/10 hover:border-white/20 hover:text-white rounded-lg transition-all cursor-pointer"
+            >
+              Reset
+            </button>
+            <button 
+              onClick={() => setIsPaused(!isPaused)}
+              className={`px-4 py-2 text-[10px] uppercase font-mono tracking-wider font-bold rounded-lg border transition-all flex items-center gap-1.5 cursor-pointer ${
+                isPaused 
+                  ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/20' 
+                  : 'bg-amber-500/10 border-amber-500/30 text-amber-400 hover:bg-amber-500/20'
+              }`}
+            >
+              {isPaused ? <Play className="h-3.5 w-3.5 fill-emerald-400" /> : <Pause className="h-3.5 w-3.5 fill-amber-400" />}
+              {isPaused ? 'Ligar' : 'Pausar'}
+            </button>
+          </div>
         </div>
       </div>
     </div>
