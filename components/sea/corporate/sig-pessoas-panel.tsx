@@ -5,7 +5,8 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { 
   Sparkles, CheckSquare, Square, ChevronDown, ChevronUp, UserCheck, 
   BookOpen, AlertCircle, Play, Plus, Trash2, Activity, ShieldAlert, 
-  FileText, Users, Award, Compass, Cpu, Zap, BarChart3, Search, Undo2 
+  FileText, Users, Award, Compass, Cpu, Zap, BarChart3, Search, Undo2,
+  Bot, Mic, SendHorizontal, Radar, FileDown, Network, SquareSquare
 } from 'lucide-react'
 
 type TabOption = 'home' | 'lideres' | 'time' | 'empresa'
@@ -3577,7 +3578,7 @@ export function SigPessoasPanel() {
                             {consultingChat.map((msg, i) => (
                               <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                                 <div className={`max-w-[90%] p-3.5 rounded-2xl text-[11px] font-sans leading-relaxed shadow-lg ${msg.role === 'user' ? 'bg-[#5dcaa5]/15 border border-[#5dcaa5]/30 text-white rounded-tr-sm' : 'bg-white/5 border border-white/10 text-white/90 rounded-tl-sm backdrop-blur-sm'}`}>
-                                  {msg.role === 'ai' && <div className="flex items-center gap-1.5 mb-2"><span className="text-[10px]">🤖</span><span className="text-[9px] font-mono text-[#5dcaa5] font-bold">SYS_CONSULTOR</span></div>}
+                                  {msg.role === 'ai' && <div className="flex items-center gap-1.5 mb-2"><Bot size={12} className="text-[#5dcaa5]" /><span className="text-[9px] font-mono text-[#5dcaa5] font-bold">SYS_CONSULTOR</span></div>}
                                   {msg.text}
                                 </div>
                               </div>
@@ -3595,7 +3596,7 @@ export function SigPessoasPanel() {
                                     <span className="text-[10px] text-[#5dcaa5] font-mono ml-2 animate-pulse">Gravando...</span>
                                   </div>
                                   <button onClick={() => handleConsultingChatSubmit(undefined, "Áudio transcrito automaticamente: A empresa foca em inovação mas peca na estruturação financeira.")} className="text-[#5dcaa5] bg-[#5dcaa5]/20 hover:bg-[#5dcaa5] hover:text-black w-8 h-8 rounded-lg flex items-center justify-center transition-all shadow-[0_0_15px_rgba(93,202,165,0.4)]">
-                                    <span className="text-[10px]">◼</span>
+                                    <SquareSquare size={12} className="text-[#5dcaa5]" />
                                   </button>
                                 </div>
                               ) : (
@@ -3612,7 +3613,7 @@ export function SigPessoasPanel() {
                                     onClick={() => consultingInput.trim() ? handleConsultingChatSubmit() : setIsRecordingAudio(true)} 
                                     className={`absolute right-2 top-1/2 -translate-y-1/2 ${consultingInput.trim() ? 'text-black bg-[#5dcaa5] hover:bg-white shadow-[0_0_10px_rgba(93,202,165,0.3)]' : 'text-[#5dcaa5] bg-transparent hover:bg-white/10'} w-8 h-8 rounded-lg flex items-center justify-center transition-all`}
                                   >
-                                    <span className="text-[14px]">{consultingInput.trim() ? '↑' : '🎙️'}</span>
+                                    {consultingInput.trim() ? <SendHorizontal size={14} /> : <Mic size={14} />}
                                   </button>
                                 </>
                               )}
@@ -3696,7 +3697,7 @@ export function SigPessoasPanel() {
                                 <div className={`absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 mix-blend-overlay ${isAnalyzingData ? 'animate-pulse' : ''}`}></div>
                                 <div className="text-center space-y-3 z-10">
                                   {isAnalyzingData ? (
-                                    <div className="text-[#5dcaa5] text-[30px] animate-pulse">📡</div>
+                                    <div className="text-[#5dcaa5] animate-pulse flex items-center justify-center h-[30px]"><Radar size={32} /></div>
                                   ) : (
                                     <div className="w-16 h-16 border-4 border-[#5dcaa5]/30 border-t-[#5dcaa5] rounded-full animate-spin mx-auto"></div>
                                   )}
@@ -3729,7 +3730,7 @@ export function SigPessoasPanel() {
                                   </div>
                                 </div>
                                 <div className={`flex-1 border border-dashed ${isAnalyzingData ? 'border-[#5dcaa5]/50 bg-[#5dcaa5]/5' : 'border-white/10 bg-white/[0.02]'} rounded-xl flex items-center justify-center relative transition-all duration-500`}>
-                                  <span className={`text-[40px] opacity-20 ${isAnalyzingData ? 'animate-bounce' : ''}`}>📊</span>
+                                  <Network size={40} strokeWidth={1} className={`text-white opacity-20 ${isAnalyzingData ? 'animate-bounce text-[#5dcaa5]' : ''}`} />
                                   <div className="absolute bottom-4 text-[9px] text-white/30 font-mono text-center w-full">
                                     {isAnalyzingData ? 'Analisando os níveis de governança e controle informados...' : 'Renderizando nós do organograma baseado no seu relato...'}
                                   </div>
@@ -3745,13 +3746,13 @@ export function SigPessoasPanel() {
                                 <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-[#5dcaa5]/20 blur-3xl rounded-full" />
                                 
                                 <div className="w-16 h-16 bg-black border border-white/10 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-xl relative z-10">
-                                  <span className="text-2xl">📄</span>
+                                  <FileText size={28} className="text-[#5dcaa5]" strokeWidth={1.5} />
                                 </div>
                                 <h3 className="text-[16px] font-bold text-white font-mono uppercase tracking-widest mb-2 relative z-10">Dossiê 6D Pronto</h3>
                                 <p className="text-[11px] text-white/50 mb-8 relative z-10">A IA cruzou os 8 tópicos de gestão e consolidou o Relatório Executivo completo baseado na nossa sessão.</p>
                                 
                                 <button onClick={() => triggerToast('Dossiê 6D baixado com sucesso!', 'ok')} className="w-full py-3.5 bg-white text-black hover:bg-gray-200 rounded-xl text-[11px] font-bold font-mono transition-all shadow-[0_0_20px_rgba(255,255,255,0.2)] relative z-10 flex items-center justify-center gap-2">
-                                  <span>📥</span> BAIXAR PDF (MOLDE ACADÊMICO)
+                                  <FileDown size={14} /> BAIXAR PDF (MOLDE ACADÊMICO)
                                 </button>
                               </div>
                             </div>
