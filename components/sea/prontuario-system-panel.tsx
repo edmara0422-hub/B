@@ -2833,10 +2833,57 @@ export function ProntuarioSystemPanel() {
   const [collapsedDesmame, setCollapsedDesmame] = useState(true)
   const [collapsedProna, setCollapsedProna] = useState(true)
   const [syncStatus, setSyncStatus] = useState<'idle' | 'syncing' | 'saved' | 'offline' | 'error'>('idle')
+  const [syncMessage, setSyncMessage] = useState<string>('Sync')
   const [showSyncModal, setShowSyncModal] = useState(false)
   const [syncCodeInput, setSyncCodeInput] = useState('')
   const [importingSync, setImportingSync] = useState(false)
   const [syncCopied, setSyncCopied] = useState(false)
+
+  /**
+   * Executa uma função assíncrona com mecanismo de tentativas (retry),
+   * timeout e atualização dinâmica de mensagens de progresso na UI.
+   */
+  const executeWithRetry = async <T extends unknown>(
+    operation: () => Promise<T>,
+    options: {
+      maxAttempts?: number
+      timeoutMs?: number
+      baseDelayMs?: number
+      onAttempt?: (attempt: number, total: number) => void
+    } = {}
+  ): Promise<T> => {
+    const maxAttempts = options.maxAttempts ?? 3
+    const timeoutMs = options.timeoutMs ?? 10000 // 10s timeout
+    const baseDelayMs = options.baseDelayMs ?? 1500
+
+    let lastError: any = null
+
+    for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+      if (attempt > 1) {
+        const delay = baseDelayMs * Math.pow(1.5, attempt - 2)
+        await new Promise<void>(resolve => setTimeout(resolve, delay))
+      }
+
+      if (options.onAttempt) {
+        options.onAttempt(attempt, maxAttempts)
+      }
+
+      try {
+        const result = await Promise.race([
+          operation(),
+          new Promise<never>((_, reject) =>
+            setTimeout(() => reject(new Error('Tempo limite de conexão esgotado (Timeout)')), timeoutMs)
+          )
+        ])
+        return result
+      } catch (err: any) {
+        console.warn(`[Sync Retry] Tentativa ${attempt} de ${maxAttempts} falhou:`, err?.message || err)
+        lastError = err
+      }
+    }
+
+    throw lastError || new Error('Falha após múltiplas tentativas')
+  }
 
   // --- ICU Master Clock & Shift Policy ---
   const [currentTime, setCurrentTime] = useState(new Date())
@@ -3270,20 +3317,36 @@ export function ProntuarioSystemPanel() {
         }
       }
       const safe = JSON.parse(JSON.stringify(stripBase64(currentWs), getCirc()))
-      const { error } = await supabase.from('icu_sessions').upsert({
-        session_id: sessionId,
-        records: { __sea_v2: true, workspaces: safe, activeId: activeWsIdRef.current },
-        archive: [],
-        updated_at: new Date().toISOString(),
-      }, { onConflict: 'session_id' })
-      if (error) throw error
+
+      await executeWithRetry(
+        async () => {
+          const { error } = await supabase!.from('icu_sessions').upsert({
+            session_id: sessionId,
+            records: { __sea_v2: true, workspaces: safe, activeId: activeWsIdRef.current },
+            archive: [],
+            updated_at: new Date().toISOString(),
+          }, { onConflict: 'session_id' })
+          
+          if (error) throw error
+        },
+        {
+          maxAttempts: 3,
+          timeoutMs: 10000,
+          onAttempt: (attempt, total) => {
+            setSyncMessage(`Salvando (${attempt}/${total})`)
+          }
+        }
+      )
+
       setSyncStatus('saved')
+      setSyncMessage('Sync')
       const count = currentWs.reduce((acc, w) => acc + w.records.length, 0)
       alert(`Sincronizado! ${count} paciente(s) salvos no Supabase (compactado, sem imagens base64).`)
     } catch (err: any) {
       console.error('[Force Save] Erro:', err)
       setSyncStatus('error')
-      alert(`Falha ao salvar: ${err.message}`)
+      setSyncMessage('Erro')
+      alert(`Falha ao salvar após 3 tentativas: ${err.message}`)
     }
   }
 
@@ -3297,14 +3360,28 @@ export function ProntuarioSystemPanel() {
     setSyncStatus('syncing')
     console.log('[Supabase Sync] Iniciando resgate manual para:', sid)
     try {
-      const { data, error } = await supabase.from('icu_sessions').select('records,archive,updated_at').eq('session_id', sid).maybeSingle()
-      if (error) throw error
+      const data = await executeWithRetry(
+        async () => {
+          const { data, error } = await supabase!.from('icu_sessions').select('records,archive,updated_at').eq('session_id', sid).maybeSingle()
+          if (error) throw error
+          if (!data) throw new Error('Nenhum dado encontrado no servidor.')
+          return data
+        },
+        {
+          maxAttempts: 3,
+          timeoutMs: 10000,
+          onAttempt: (attempt, total) => {
+            setSyncMessage(`Buscando (${attempt}/${total})`)
+          }
+        }
+      )
       
       console.log('[Supabase Sync] Dados recebidos. Última atualização:', data?.updated_at)
       
       if (!data?.records) {
         alert('Nenhum dado encontrado no servidor para este usuário.')
         setSyncStatus('saved')
+        setSyncMessage('Sync')
         return
       }
 
@@ -3349,12 +3426,14 @@ export function ProntuarioSystemPanel() {
       localStorage.setItem(sk.activeWorkspace, newActiveId)
       
       setSyncStatus('saved')
+      setSyncMessage('Sync')
       const count = active?.records?.length || 0
       alert(`Resgate concluído!\n${count} pacientes carregados.\nSincronizados em: ${new Date(data.updated_at).toLocaleString()}`)
     } catch (err: any) {
       console.error('[Supabase Sync] Erro no resgate:', err)
-      alert(`Falha ao resgatar: ${err.message}`)
+      alert(`Falha ao resgatar após 3 tentativas: ${err.message}`)
       setSyncStatus('error')
+      setSyncMessage('Erro')
     }
   }
 
@@ -3628,30 +3707,29 @@ export function ProntuarioSystemPanel() {
           archive: [],
           updated_at: new Date().toISOString(),
         }
-        let saved = false
-        for (let attempt = 0; attempt < 3; attempt++) {
-          if (attempt > 0) await new Promise<void>(r => setTimeout(r, attempt * 5000))
-          try {
-            const { error } = await Promise.race([
-              supabase!.from('icu_sessions').upsert(upsertPayload, { onConflict: 'session_id' }),
-              new Promise<never>((_, reject) => setTimeout(() => reject(new Error('Timeout')), 15000))
-            ]) as { error: any }
-            if (!error) { saved = true; break }
-            console.warn(`[Auto-save] Tentativa ${attempt + 1} falhou:`, error.message)
-          } catch (e: any) {
-            console.warn(`[Auto-save] Tentativa ${attempt + 1} erro:`, e?.message)
+        
+        await executeWithRetry(
+          async () => {
+            const { error } = await supabase!.from('icu_sessions').upsert(upsertPayload, { onConflict: 'session_id' })
+            if (error) throw error
+          },
+          {
+            maxAttempts: 3,
+            timeoutMs: 12000,
+            onAttempt: (attempt, total) => {
+              setSyncMessage(`Salvando (${attempt}/${total})`)
+            }
           }
-        }
-        if (saved) {
-          console.log('[Auto-save] Salvo com sucesso')
-          lastSavedPayloadRef.current = payloadString
-          setSyncStatus('saved')
-        } else {
-          setSyncStatus('offline')
-        }
+        )
+
+        console.log('[Auto-save] Salvo com sucesso')
+        lastSavedPayloadRef.current = payloadString
+        setSyncStatus('saved')
+        setSyncMessage('Sync')
       } catch (err: any) {
         console.error('[Auto-save] Falhou:', err?.message || err)
         setSyncStatus('offline')
+        setSyncMessage('Sem Conexão')
       }
     }, 1500)
     return () => clearTimeout(timer)
@@ -3686,19 +3764,34 @@ export function ProntuarioSystemPanel() {
       
       const safeSnapshot = JSON.parse(JSON.stringify(stripBase64(snapshot), getCircularReplacer()))
 
-      const { error } = await supabase.from('icu_sessions').upsert({
-        session_id: sid,
-        records: { __sea_v2: true, workspaces: safeSnapshot, activeId: activeWsIdRef.current },
-        archive: [],
-        updated_at: new Date().toISOString(),
-      }, { onConflict: 'session_id' })
+      await executeWithRetry(
+        async () => {
+          const { error } = await supabase!.from('icu_sessions').upsert({
+            session_id: sid,
+            records: { __sea_v2: true, workspaces: safeSnapshot, activeId: activeWsIdRef.current },
+            archive: [],
+            updated_at: new Date().toISOString(),
+          }, { onConflict: 'session_id' })
+          
+          if (error) throw error
+        },
+        {
+          maxAttempts: 3,
+          timeoutMs: 10000,
+          onAttempt: (attempt, total) => {
+            setSyncMessage(`Salvando (${attempt}/${total})`)
+          }
+        }
+      )
       
-      if (error) throw error
       setSyncStatus('saved')
+      setSyncMessage('Sync')
       alert('Sincronização concluída! Dados salvos no servidor.')
     } catch (err: any) {
-      alert(`Falha ao sincronizar: ${err.message}`)
+      console.error('[Force Save Server] Erro final:', err)
       setSyncStatus('error')
+      setSyncMessage('Erro')
+      alert(`Falha ao sincronizar após 3 tentativas: ${err.message}`)
     }
   }
 
@@ -5221,7 +5314,7 @@ export function ProntuarioSystemPanel() {
             {/* Sync status indicator */}
             {syncStatus === 'syncing' && (
               <span className="flex items-center gap-1 rounded-full border border-[#60a5fa30] bg-[#60a5fa0a] px-2 py-0.5 text-[8px] font-semibold text-[#60a5fa]">
-                <Loader2 className="h-2.5 w-2.5 animate-spin" />Sync
+                <Loader2 className="h-2.5 w-2.5 animate-spin" />{syncMessage}
               </span>
             )}
             {syncStatus === 'saved' && (
