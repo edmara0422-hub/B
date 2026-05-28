@@ -204,11 +204,11 @@ export function NeuroActionPotentialSim({ className }: { className?: string }) {
       const h = displayH
 
       // Layout split coordinates
-      const simH = Math.max(140, h * 0.44) // top simulation part height
+      const simH = Math.max(160, h * 0.48) // top simulation part height (increased for better spacing)
       const graphY = simH + 10 // top coordinates of bottom graph
       const graphH = h - graphY - 10
 
-      const memY = simH * 0.5
+      const memY = simH * 0.58 // shifted down to prevent HUD overlap
       const memH = Math.max(48, simH * 0.28)
       const cx = w * 0.5
       const channelW = Math.max(42, w * 0.08)
@@ -580,34 +580,21 @@ export function NeuroActionPotentialSim({ className }: { className?: string }) {
       }
       ctx.fillText('Tempo (ms)', 16 + graphPadL + gW / 2, graphY + graphH - graphPadB + 16)
 
-      // HUD Telemetry status display
-      ctx.textAlign = 'left'
+      // HUD Telemetry status display - Sleek single horizontal row to prevent overlaps
       ctx.textBaseline = 'top'
-      ctx.font = `bold 12px ${FONT_MONO}`
-      ctx.fillStyle = state.alertMessage ? '#ef4444' : COL_TEAL_ACCENT
       
+      // Left side HUD status
+      ctx.textAlign = 'left'
+      ctx.font = `bold 9.5px ${FONT_MONO}`
+      ctx.fillStyle = state.alertMessage ? '#ef4444' : COL_TEAL_ACCENT
       const statusIcon = state.alertMessage ? '⚠️' : '⚡'
-      ctx.fillText(`${statusIcon} TELEMETRIA: ${state.alertMessage || activePhase.toUpperCase()}`, 16, 16)
+      ctx.fillText(`${statusIcon} ${state.alertMessage || activePhase.toUpperCase()}`, 16, 12)
 
-      ctx.fillStyle = COL_TEXT_DIM
-      ctx.font = `9.5px ${FONT_MONO}`
-      ctx.fillText(`POTENCIAL TRANSELETRÔNICO: ${state.potential.toFixed(1)} mV`, 16, 29)
-
-      // Sci-fi Telemetry Panel on the right (top-right)
+      // Right side HUD stats in one elegant line
       ctx.textAlign = 'right'
-      ctx.textBaseline = 'top'
-      ctx.font = `bold 8.5px ${FONT_MONO}`
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.35)'
-      ctx.fillText('METRICAS DE FLUXO', w - 16, 16)
-
+      ctx.font = `bold 9px ${FONT_MONO}`
       ctx.fillStyle = COL_TEXT
-      ctx.font = `9px ${FONT_MONO}`
-      ctx.fillText(`ESTIMULOS: ${state.stimuliCount}`, w - 16, 28)
-      ctx.fillText(`POTENCIAL: ${state.potential.toFixed(1)} mV`, w - 16, 40)
-      ctx.fillStyle = state.isMyelinated ? '#38bdf8' : COL_TEXT_DIM
-      ctx.fillText(`FIBRA: ${state.isMyelinated ? 'MIELINIZADA' : 'CONTÍNUA'}`, w - 16, 52)
-      ctx.fillStyle = '#fbbf24'
-      ctx.fillText(`LIMIAR: -55 mV`, w - 16, 64)
+      ctx.fillText(`ESTIMULOS: ${state.stimuliCount}  |  POTENCIAL: ${state.potential.toFixed(1)} mV  |  FIBRA: ${state.isMyelinated ? 'MIELINIZADA' : 'CONTÍNUA'}  |  LIMIAR: -55 mV`, w - 16, 12)
 
       // warning alerts overlay inside simulation box
       if (state.alertMessage) {
