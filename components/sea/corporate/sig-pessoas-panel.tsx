@@ -76,6 +76,12 @@ export function SigPessoasPanel() {
   const [empresaTab, setEmpresaTab] = useState<EmpresaSubTab>('diagnostico')
   const [auditoriaStep, setAuditoriaStep] = useState<number | null>(null)
 
+  // Consultoria IA Chat States
+  const [consultingChat, setConsultingChat] = useState<{role: 'ai'|'user', text: string}[]>([
+    {role: 'ai', text: 'Olá! Sou o Mentor IA. Analisando perfil da empresa... Vamos iniciar o mapeamento. Para começar, poderia descrever brevemente qual é a história e o diferencial da organização?'}
+  ])
+  const [consultingInput, setConsultingInput] = useState('')
+
   // Global Toast
   const [toastMsg, setToastMsg] = useState<string | null>(null)
   const [toastType, setToastType] = useState<'ok' | 'warn'>('ok')
@@ -724,6 +730,25 @@ export function SigPessoasPanel() {
     setNewOkrTitle('')
     setNewOkrKr('')
     triggerToast('OKR estratégico cadastrado com sucesso.')
+  }
+
+  function handleConsultingChatSubmit(e?: React.KeyboardEvent) {
+    if (e && e.key !== 'Enter') return;
+    if (!consultingInput.trim()) return;
+
+    const newChat = [...consultingChat, { role: 'user' as const, text: consultingInput }];
+    setConsultingChat(newChat);
+    setConsultingInput('');
+
+    // Simulate AI response based on step
+    setTimeout(() => {
+      let aiResponse = 'Processando...';
+      if (auditoriaStep === 1) aiResponse = 'Excelente. Com base nisso, quais você diria que são as maiores forças dessa organização hoje? E as maiores fraquezas?';
+      if (auditoriaStep === 2) aiResponse = 'Entendido. Olhando para o mercado (concorrentes, clientes), quem são os players mais fortes e como a empresa lida com eles?';
+      if (auditoriaStep === 3) aiResponse = 'Perfeito. E como é o organograma da empresa? É algo mais hierárquico (mecanicista) ou flexível (orgânico)?';
+      
+      setConsultingChat(prev => [...prev, { role: 'ai', text: aiResponse }]);
+    }, 1200);
   }
 
   function handleDeleteOkr(id: string) {
@@ -3527,94 +3552,159 @@ export function SigPessoasPanel() {
                       </div>
                     )}
 
-                    {auditoriaStep === 1 && (
-                      <div className="animate-fade-in space-y-4">
-                        <div className="flex justify-between items-center bg-white/5 p-4 rounded-xl border border-white/10">
-                          <div>
-                            <h5 className="text-[13px] font-bold text-white mb-1">Etapa 1: Prospecção & Setup</h5>
-                            <p className="text-[10px] text-white/50">Colete dados sobre a história, forças, fraquezas e as 4 funções da administração.</p>
+                    {auditoriaStep !== null && (
+                      <div className="animate-fade-in grid grid-cols-1 lg:grid-cols-12 gap-5 min-h-[550px] relative z-10">
+                        {/* Lado Esquerdo: Terminal Conversacional IA */}
+                        <div className="col-span-1 lg:col-span-5 bg-[#050505]/80 backdrop-blur-md border border-white/10 rounded-2xl flex flex-col overflow-hidden shadow-[0_0_30px_rgba(0,0,0,0.5)]">
+                          <div className="p-4 border-b border-white/5 bg-gradient-to-r from-[#5dcaa5]/10 to-transparent flex items-center justify-between">
+                            <div className="flex items-center gap-3">
+                              <div className="relative flex items-center justify-center w-6 h-6">
+                                <div className="absolute w-full h-full bg-[#5dcaa5] rounded-full opacity-20 animate-ping" />
+                                <div className="w-2 h-2 rounded-full bg-[#5dcaa5]" />
+                              </div>
+                              <span className="text-[11px] font-bold font-mono text-[#5dcaa5] uppercase tracking-widest">Mentor IA · Ativo</span>
+                            </div>
+                            <span className="text-[9px] text-white/30 font-mono border border-white/10 px-2 py-1 rounded bg-black/50">ETAPA {auditoriaStep}/4</span>
                           </div>
-                          <button onClick={() => triggerToast('IA analisando perfil da empresa...', 'ok')} className="px-4 py-2 bg-[#d4b87a]/15 hover:bg-[#d4b87a]/30 border border-[#d4b87a]/45 rounded-xl text-[10px] font-bold text-[#d4b87a] font-mono transition">
-                            🤖 CONDUZIR ENTREVISTA COM IA
-                          </button>
+                          
+                          <div className="flex-1 p-5 overflow-y-auto space-y-5 custom-scrollbar">
+                            {consultingChat.map((msg, i) => (
+                              <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                                <div className={`max-w-[90%] p-3.5 rounded-2xl text-[11px] font-sans leading-relaxed shadow-lg ${msg.role === 'user' ? 'bg-[#5dcaa5]/15 border border-[#5dcaa5]/30 text-white rounded-tr-sm' : 'bg-white/5 border border-white/10 text-white/90 rounded-tl-sm backdrop-blur-sm'}`}>
+                                  {msg.role === 'ai' && <div className="flex items-center gap-1.5 mb-2"><span className="text-[10px]">🤖</span><span className="text-[9px] font-mono text-[#5dcaa5] font-bold">SYS_CONSULTOR</span></div>}
+                                  {msg.text}
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                          
+                          <div className="p-3 border-t border-white/5 bg-black/60 backdrop-blur-md">
+                            <div className="relative">
+                              <input 
+                                type="text"
+                                value={consultingInput}
+                                onChange={e => setConsultingInput(e.target.value)}
+                                onKeyDown={handleConsultingChatSubmit}
+                                placeholder="Digite sua resposta para a IA..."
+                                className="w-full bg-white/5 border border-white/10 rounded-xl py-3 pl-4 pr-12 text-[11px] text-white outline-none focus:border-[#5dcaa5]/50 transition-all font-sans"
+                              />
+                              <button onClick={() => handleConsultingChatSubmit()} className="absolute right-2 top-1/2 -translate-y-1/2 text-black bg-[#5dcaa5] hover:bg-white w-8 h-8 rounded-lg flex items-center justify-center transition-all shadow-[0_0_10px_rgba(93,202,165,0.3)]">
+                                <span className="text-[14px]">↑</span>
+                              </button>
+                            </div>
+                          </div>
                         </div>
-                        <div className="grid grid-cols-2 gap-4">
-                          <textarea className="bg-black/40 border border-white/10 rounded-xl p-3 text-[10px] text-white min-h-[100px] outline-none focus:border-[#5dcaa5]/50" placeholder="História da empresa e produto..."></textarea>
-                          <textarea className="bg-black/40 border border-white/10 rounded-xl p-3 text-[10px] text-white min-h-[100px] outline-none focus:border-[#5dcaa5]/50" placeholder="Forças e Fraquezas mapeadas..."></textarea>
-                          <textarea className="col-span-2 bg-black/40 border border-white/10 rounded-xl p-3 text-[10px] text-white min-h-[80px] outline-none focus:border-[#5dcaa5]/50" placeholder="Funções de Gestão (Como o gestor planeja, organiza, lidera e controla no dia a dia)..."></textarea>
-                        </div>
-                      </div>
-                    )}
 
-                    {auditoriaStep === 2 && (
-                      <div className="animate-fade-in space-y-4">
-                        <div className="flex justify-between items-center bg-white/5 p-4 rounded-xl border border-white/10">
-                          <div>
-                            <h5 className="text-[13px] font-bold text-white mb-1">Etapa 2: Macro, Micro & Stakeholders</h5>
-                            <p className="text-[10px] text-white/50">Avalie os fatores do macroambiente, os competidores e mapeie os stakeholders.</p>
-                          </div>
-                          <button onClick={() => triggerToast('Gerando análise de mercado com IA...', 'ok')} className="px-4 py-2 bg-[#d4b87a]/15 hover:bg-[#d4b87a]/30 border border-[#d4b87a]/45 rounded-xl text-[10px] font-bold text-[#d4b87a] font-mono transition">
-                            🤖 MAPEAR AMBIENTE VIA IA
-                          </button>
-                        </div>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                          <div className="space-y-2">
-                            <label className="text-[9px] font-mono text-[#5dcaa5] uppercase font-bold">Macro (PESTEL)</label>
-                            <textarea className="w-full bg-black/40 border border-white/10 rounded-xl p-3 text-[10px] text-white min-h-[120px] outline-none focus:border-[#5dcaa5]/50" placeholder="Fatores Políticos, Econômicos, Sociais..."></textarea>
-                          </div>
-                          <div className="space-y-2">
-                            <label className="text-[9px] font-mono text-[#5dcaa5] uppercase font-bold">Micro (Porter)</label>
-                            <textarea className="w-full bg-black/40 border border-white/10 rounded-xl p-3 text-[10px] text-white min-h-[120px] outline-none focus:border-[#5dcaa5]/50" placeholder="Concorrentes, Fornecedores, Clientes..."></textarea>
-                          </div>
-                          <div className="space-y-2">
-                            <label className="text-[9px] font-mono text-[#5dcaa5] uppercase font-bold">Stakeholders</label>
-                            <textarea className="w-full bg-black/40 border border-white/10 rounded-xl p-3 text-[10px] text-white min-h-[120px] outline-none focus:border-[#5dcaa5]/50" placeholder="Mapeamento de poder e interesse..."></textarea>
-                          </div>
-                        </div>
-                      </div>
-                    )}
+                        {/* Lado Direito: Painel de Extração de Dados em Tempo Real */}
+                        <div className="col-span-1 lg:col-span-7 bg-[#080808] border border-white/5 rounded-2xl p-6 relative overflow-hidden flex flex-col gap-4 shadow-inner">
+                          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#5dcaa5]/30 to-transparent opacity-50" />
+                          
+                          {auditoriaStep === 1 && (
+                            <div className="animate-fade-in space-y-6 h-full flex flex-col">
+                              <div className="border-b border-white/5 pb-4">
+                                <h3 className="text-[14px] font-bold text-white font-mono uppercase">Setup & Core</h3>
+                                <p className="text-[10px] text-white/40 mt-1">Dados estruturados extraídos automaticamente da conversa.</p>
+                              </div>
+                              <div className="grid grid-cols-2 gap-4 flex-1">
+                                <div className="bg-black/50 border border-white/5 rounded-xl p-4 flex flex-col">
+                                  <span className="text-[9px] font-bold text-[#d4b87a] font-mono tracking-widest mb-3 uppercase">Forças Mapeadas</span>
+                                  <div className="flex-1 flex items-center justify-center border border-dashed border-white/10 rounded-lg bg-white/[0.02]">
+                                    {consultingChat.length > 2 ? (
+                                      <ul className="text-[10px] text-white/70 space-y-2 p-4 w-full list-disc pl-4">
+                                        <li>Qualidade técnica do time</li>
+                                        <li>Atendimento personalizado</li>
+                                      </ul>
+                                    ) : (
+                                      <span className="text-[9px] text-white/20 font-mono text-center px-4">Aguardando IA extrair dados...</span>
+                                    )}
+                                  </div>
+                                </div>
+                                <div className="bg-black/50 border border-white/5 rounded-xl p-4 flex flex-col">
+                                  <span className="text-[9px] font-bold text-red-400 font-mono tracking-widest mb-3 uppercase">Fraquezas (Gaps)</span>
+                                  <div className="flex-1 flex items-center justify-center border border-dashed border-white/10 rounded-lg bg-white/[0.02]">
+                                    {consultingChat.length > 2 ? (
+                                      <ul className="text-[10px] text-white/70 space-y-2 p-4 w-full list-disc pl-4">
+                                        <li>Falta de processos padronizados</li>
+                                      </ul>
+                                    ) : (
+                                      <span className="text-[9px] text-white/20 font-mono text-center px-4">Aguardando IA extrair dados...</span>
+                                    )}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          )}
 
-                    {auditoriaStep === 3 && (
-                      <div className="animate-fade-in space-y-4">
-                        <div className="flex justify-between items-center bg-white/5 p-4 rounded-xl border border-white/10">
-                          <div>
-                            <h5 className="text-[13px] font-bold text-white mb-1">Etapa 3: Estrutura & Controle</h5>
-                            <p className="text-[10px] text-white/50">Determine a configuração organizacional e os mecanismos de avaliação de metas.</p>
-                          </div>
-                          <button onClick={() => triggerToast('Sintetizando modelo de controle com IA...', 'ok')} className="px-4 py-2 bg-[#d4b87a]/15 hover:bg-[#d4b87a]/30 border border-[#d4b87a]/45 rounded-xl text-[10px] font-bold text-[#d4b87a] font-mono transition">
-                            🤖 GERAR CONTROLE VIA IA
-                          </button>
-                        </div>
-                        <div className="grid grid-cols-2 gap-4">
-                          <textarea className="bg-black/40 border border-white/10 rounded-xl p-3 text-[10px] text-white min-h-[120px] outline-none focus:border-[#5dcaa5]/50" placeholder="Organograma e Estrutura (Mecanicista/Orgânica)..."></textarea>
-                          <textarea className="bg-black/40 border border-white/10 rounded-xl p-3 text-[10px] text-white min-h-[120px] outline-none focus:border-[#5dcaa5]/50" placeholder="Sistemas de Controle e racionalidade da decisão..."></textarea>
-                        </div>
-                      </div>
-                    )}
+                          {auditoriaStep === 2 && (
+                            <div className="animate-fade-in space-y-6 h-full flex flex-col">
+                              <div className="border-b border-white/5 pb-4 flex justify-between items-center">
+                                <div>
+                                  <h3 className="text-[14px] font-bold text-white font-mono uppercase">Ecossistema & Stakeholders</h3>
+                                  <p className="text-[10px] text-white/40 mt-1">Renderização do ambiente competitivo.</p>
+                                </div>
+                                <div className="flex gap-1">
+                                  <span className="w-1.5 h-1.5 bg-[#5dcaa5] rounded-full animate-bounce" style={{animationDelay: '0ms'}}/>
+                                  <span className="w-1.5 h-1.5 bg-[#5dcaa5] rounded-full animate-bounce" style={{animationDelay: '150ms'}}/>
+                                  <span className="w-1.5 h-1.5 bg-[#5dcaa5] rounded-full animate-bounce" style={{animationDelay: '300ms'}}/>
+                                </div>
+                              </div>
+                              <div className="flex-1 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-white/5 to-black border border-white/5 rounded-xl p-6 relative flex items-center justify-center">
+                                <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 mix-blend-overlay"></div>
+                                <div className="text-center space-y-3 z-10">
+                                  <div className="w-16 h-16 border-4 border-[#5dcaa5]/30 border-t-[#5dcaa5] rounded-full animate-spin mx-auto"></div>
+                                  <p className="text-[10px] text-[#5dcaa5] font-mono tracking-widest uppercase">Mapeando Matriz de Poder vs Interesse</p>
+                                  <p className="text-[9px] text-white/40 max-w-[200px] mx-auto">Continue conversando com a IA para que os quadrantes de Porter e PESTEL sejam populados.</p>
+                                </div>
+                              </div>
+                            </div>
+                          )}
 
-                    {auditoriaStep === 4 && (
-                      <div className="animate-fade-in space-y-4">
-                        <div className="flex justify-between items-center bg-gradient-to-r from-[#5dcaa5]/20 to-transparent p-4 rounded-xl border border-[#5dcaa5]/30">
-                          <div>
-                            <h5 className="text-[14px] font-bold text-white mb-1">Etapa 4: Relatório Executivo</h5>
-                            <p className="text-[10px] text-white/60">Cruzamento de dados das 3 etapas para formular o diagnóstico final e as implicações gerenciais.</p>
-                          </div>
-                          <button onClick={() => triggerToast('Gerando Relatório de Diagnóstico Completo em Background...', 'ok')} className="px-5 py-2.5 bg-gradient-to-r from-[#5dcaa5]/80 to-[#5dcaa5]/50 hover:from-[#5dcaa5] hover:to-[#5dcaa5]/80 text-black rounded-xl text-[11px] font-bold font-mono transition shadow-[0_0_20px_rgba(93,202,165,0.4)]">
-                            ✨ GERAR RELATÓRIO COMPLETO
-                          </button>
-                        </div>
-                        <div className="p-8 bg-black/50 border border-white/5 rounded-xl min-h-[250px] flex items-center justify-center flex-col gap-3">
-                          <span className="text-4xl">📄</span>
-                          <p className="text-[11px] text-white/40 font-mono text-center max-w-sm">
-                            As etapas anteriores devem estar preenchidas para que a Inteligência Artificial possa cruzar as teorias de gestão com os dados coletados e estruturar as implicações.
-                          </p>
+                          {auditoriaStep === 3 && (
+                            <div className="animate-fade-in space-y-6 h-full flex flex-col">
+                              <div className="border-b border-white/5 pb-4">
+                                <h3 className="text-[14px] font-bold text-white font-mono uppercase">Estrutura Orgânica vs Mecanicista</h3>
+                                <p className="text-[10px] text-white/40 mt-1">Análise de sistemas de controle e hierarquia.</p>
+                              </div>
+                              <div className="flex-1 flex flex-col gap-6">
+                                <div className="h-8 bg-black border border-white/10 rounded-full relative overflow-hidden flex items-center px-2">
+                                  <div className="absolute left-0 h-full w-[65%] bg-gradient-to-r from-blue-500/20 to-[#5dcaa5]/40" />
+                                  <div className="w-full flex justify-between z-10 text-[9px] font-bold font-mono px-2">
+                                    <span className="text-blue-400">MECANICISTA (35%)</span>
+                                    <span className="text-[#5dcaa5]">ORGÂNICA (65%)</span>
+                                  </div>
+                                </div>
+                                <div className="flex-1 border border-dashed border-white/10 rounded-xl bg-white/[0.02] flex items-center justify-center relative">
+                                  <span className="text-[40px] opacity-20">📊</span>
+                                  <div className="absolute bottom-4 text-[9px] text-white/30 font-mono text-center w-full">Renderizando nós do organograma baseado no seu relato...</div>
+                                </div>
+                              </div>
+                            </div>
+                          )}
+
+                          {auditoriaStep === 4 && (
+                            <div className="animate-fade-in space-y-4 h-full flex flex-col justify-center items-center">
+                              <div className="w-full max-w-sm bg-gradient-to-br from-white/10 to-white/5 border border-white/20 rounded-2xl p-8 text-center relative overflow-hidden shadow-2xl">
+                                <div className="absolute -top-10 -right-10 w-32 h-32 bg-[#d4b87a]/20 blur-3xl rounded-full" />
+                                <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-[#5dcaa5]/20 blur-3xl rounded-full" />
+                                
+                                <div className="w-16 h-16 bg-black border border-white/10 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-xl relative z-10">
+                                  <span className="text-2xl">📄</span>
+                                </div>
+                                <h3 className="text-[16px] font-bold text-white font-mono uppercase tracking-widest mb-2 relative z-10">Dossiê 6D Pronto</h3>
+                                <p className="text-[11px] text-white/50 mb-8 relative z-10">A IA cruzou os 8 tópicos de gestão e consolidou o Relatório Executivo completo baseado na nossa sessão.</p>
+                                
+                                <button onClick={() => triggerToast('Dossiê 6D baixado com sucesso!', 'ok')} className="w-full py-3.5 bg-white text-black hover:bg-gray-200 rounded-xl text-[11px] font-bold font-mono transition-all shadow-[0_0_20px_rgba(255,255,255,0.2)] relative z-10 flex items-center justify-center gap-2">
+                                  <span>📥</span> BAIXAR PDF (MOLDE ACADÊMICO)
+                                </button>
+                              </div>
+                            </div>
+                          )}
                         </div>
                       </div>
                     )}
                   </div>
                 </motion.div>
               )}
-
               {/* SUBVIEW: ESTRATÉGIA & OKRS */}
               {empresaTab === 'estrategia' && (
                 <motion.div
