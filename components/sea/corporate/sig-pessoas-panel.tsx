@@ -76,6 +76,8 @@ export function SigPessoasPanel() {
   const [timeTab, setTimeTab] = useState<TimeSubTab>('formar')
   const [empresaTab, setEmpresaTab] = useState<EmpresaSubTab>('diagnostico')
   const [auditoriaStep, setAuditoriaStep] = useState<number | null>(null)
+  const [etapa2Tab, setEtapa2Tab] = useState<'macro' | 'micro' | 'stakeholders' | 'reflexao'>('macro')
+  const [selectedStakeholder, setSelectedStakeholder] = useState<string | null>(null)
 
   // Consultoria IA Chat States
   const [consultingChat, setConsultingChat] = useState<{role: 'ai'|'user', text: string}[]>([
@@ -94,6 +96,30 @@ export function SigPessoasPanel() {
     setToastType(type)
     setTimeout(() => setToastMsg(null), 3000)
   }
+
+  useEffect(() => {
+    if (auditoriaStep === null) {
+      setConsultingChat([
+        {role: 'ai', text: 'Olá! Sou o Mentor IA. Analisando perfil da empresa... Vamos iniciar o mapeamento. Para começar, poderia descrever brevemente qual é a história e o diferencial da organização?'}
+      ])
+    } else if (auditoriaStep === 1) {
+      setConsultingChat([
+        {role: 'ai', text: 'Olá! Iniciamos a Etapa 1: Prospecção & Setup. Vamos mapear as maiores forças e fraquezas (gaps) da Nossa Consultoria BI. Poderia nos contar quais são os pontos mais fortes que percebe na empresa hoje?'}
+      ])
+    } else if (auditoriaStep === 2) {
+      setConsultingChat([
+        {role: 'ai', text: 'Olá! Iniciamos a Etapa 2: Macro, Micro & Stakeholders. Vamos avaliar as pressões ambientais e a matriz Poder vs Interesse para a Nossa Consultoria BI / Auditoria 6D. Gostaria de focar primeiro no Macroambiente (PESTEL), no Microambiente (Porter) ou mapear um Stakeholder específico?'}
+      ])
+    } else if (auditoriaStep === 3) {
+      setConsultingChat([
+        {role: 'ai', text: 'Olá! Iniciamos a Etapa 3: Estrutura & Controle. Mapearemos o organograma e o estilo de liderança (orgânico vs mecanicista). Qual é a atual distribuição de papéis e centralização de decisão na diretoria?'}
+      ])
+    } else if (auditoriaStep === 4) {
+      setConsultingChat([
+        {role: 'ai', text: 'Olá! Chegamos à Etapa 4: Relatório Executivo de Consultoria. Compilei as respostas das etapas anteriores e cruzei com a teoria. O PDF do Dossiê Acadêmico completo está pronto para download à direita! Caso tenha alguma dúvida ou queira simular outra melhoria, é só falar.'}
+      ])
+    }
+  }, [auditoriaStep])
 
   // --- STATE FOR INTERACTIVE RECRUITMENT WIZARD ---
   const [recruitmentRole, setRecruitmentRole] = useState<'Liderado' | 'Gestor' | 'Líder & Gestor' | 'Líder' | null>(null)
@@ -750,7 +776,18 @@ export function SigPessoasPanel() {
     setTimeout(() => {
       let aiResponse = 'Processando...';
       if (auditoriaStep === 1) aiResponse = 'Excelente. Com base nisso, quais você diria que são as maiores forças dessa organização hoje? E as maiores fraquezas?';
-      if (auditoriaStep === 2) aiResponse = 'Entendido. Olhando para o mercado (concorrentes, clientes), quem são os players mais fortes e como a empresa lida com eles?';
+      if (auditoriaStep === 2) {
+        const text = submission.toLowerCase();
+        if (text.includes('macro') || text.includes('pestel') || text.includes('polit') || text.includes('econ') || text.includes('social') || text.includes('legal')) {
+          aiResponse = 'Compreendido! A análise do Macroambiente (PESTEL) é crucial. Note como a instabilidade econômica e a vigência da LGPD impactam diretamente a governança de dados da Nossa Consultoria BI. Ao estruturar os relatórios no SIG Pessoas, o gestor mitiga o risco legal e prova ROI para o board. Qual desses fatores você gostaria de aprofundar?';
+        } else if (text.includes('micro') || text.includes('porter') || text.includes('concorr') || text.includes('client') || text.includes('fornece') || text.includes('substitut')) {
+          aiResponse = 'Excelente ponto. No Microambiente (5 Forças de Porter), o diferencial competitivo inimitável da Nossa Consultoria BI / Auditoria 6D é o acoplamento de dashboards técnicos com telemetria comportamental e de pessoas. Isso nos afasta da guerra de preços com freelancers. Como você vê a força dos produtos substitutos (como as planilhas manuais) no seu setor?';
+        } else if (text.includes('stakeholder') || text.includes('matriz') || text.includes('poder') || text.includes('interesse')) {
+          aiResponse = 'Mapeamento de Stakeholders concluído! Identificamos o Board C-level e Clientes Críticos no quadrante "Gerenciar de Perto" (alto poder e interesse). Já o time operacional e gestores operacionais estão em "Manter Informados". Veja o gráfico de dispersão interativo à direita! Clique em qualquer ponto para detalhes estratégicos.';
+        } else {
+          aiResponse = 'Entendido! Analisando o ecossistema competitivo e stakeholders da Nossa Consultoria BI, percebo uma forte dependência técnica de provedores de nuvem (Microsoft/AWS) e uma necessidade absoluta de provar ROI ao Board Executivo. À direita, estruturei a Matriz de Poder e os fatores PESTEL e Porter para você explorar e validar no seu dossiê da ATP. Algum stakeholder específico te preocupa mais?';
+        }
+      }
       if (auditoriaStep === 3) aiResponse = 'Perfeito. E como é o organograma da empresa? É algo mais hierárquico (mecanicista) ou flexível (orgânico)?';
       
       setConsultingChat(prev => [...prev, { role: 'ai', text: aiResponse }]);
@@ -3675,35 +3712,252 @@ export function SigPessoasPanel() {
                           )}
 
                           {auditoriaStep === 2 && (
-                            <div className="animate-fade-in space-y-6 h-full flex flex-col">
-                              <div className="border-b border-white/5 pb-4 flex justify-between items-center">
+                            <div className="animate-fade-in space-y-4 h-full flex flex-col">
+                              {/* Header & Sub-Tabs */}
+                              <div className="border-b border-white/5 pb-3 flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
                                 <div>
-                                  <h3 className="text-[14px] font-bold text-white font-mono uppercase">Ecossistema & Stakeholders</h3>
-                                  <p className="text-[10px] text-white/40 mt-1">Renderização do ambiente competitivo.</p>
+                                  <h3 className="text-[13px] font-bold text-white font-mono uppercase tracking-wider">Etapa 2: Ecossistema & Stakeholders</h3>
+                                  <p className="text-[9px] text-white/40 mt-0.5">Mapeamento estruturado de macro, microambiente e matriz de poder.</p>
                                 </div>
-                                <div className="flex gap-1">
-                                  {isAnalyzingData ? (
-                                    <span className="text-[10px] font-mono text-[#5dcaa5] animate-pulse">[|||||||] Mapeando...</span>
-                                  ) : (
-                                    <>
-                                      <span className="w-1.5 h-1.5 bg-[#5dcaa5] rounded-full animate-bounce" style={{animationDelay: '0ms'}}/>
-                                      <span className="w-1.5 h-1.5 bg-[#5dcaa5] rounded-full animate-bounce" style={{animationDelay: '150ms'}}/>
-                                      <span className="w-1.5 h-1.5 bg-[#5dcaa5] rounded-full animate-bounce" style={{animationDelay: '300ms'}}/>
-                                    </>
-                                  )}
+                                <div className="flex bg-black/40 border border-white/10 rounded-lg p-0.5 relative z-20">
+                                  {[
+                                    { id: 'macro', label: 'Macro' },
+                                    { id: 'micro', label: 'Micro' },
+                                    { id: 'stakeholders', label: 'Stakeholders' },
+                                    { id: 'reflexao', label: 'Reflexão' }
+                                  ].map(tab => (
+                                    <button
+                                      key={tab.id}
+                                      onClick={() => setEtapa2Tab(tab.id as any)}
+                                      className={`px-2.5 py-1 text-[9px] font-mono font-bold tracking-wider rounded-md uppercase transition-all ${etapa2Tab === tab.id ? 'bg-[#5dcaa5]/20 text-[#5dcaa5] border border-[#5dcaa5]/30' : 'text-white/40 hover:text-white/80 border border-transparent'}`}
+                                    >
+                                      {tab.label}
+                                    </button>
+                                  ))}
                                 </div>
                               </div>
-                              <div className={`flex-1 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] ${isAnalyzingData ? 'from-[#5dcaa5]/20' : 'from-white/5'} to-black border ${isAnalyzingData ? 'border-[#5dcaa5]/30' : 'border-white/5'} rounded-xl p-6 relative flex items-center justify-center transition-all duration-700`}>
-                                <div className={`absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 mix-blend-overlay ${isAnalyzingData ? 'animate-pulse' : ''}`}></div>
-                                <div className="text-center space-y-3 z-10">
-                                  {isAnalyzingData ? (
-                                    <div className="text-[#5dcaa5] animate-pulse flex items-center justify-center h-[30px]"><Radar size={32} /></div>
-                                  ) : (
-                                    <div className="w-16 h-16 border-4 border-[#5dcaa5]/30 border-t-[#5dcaa5] rounded-full animate-spin mx-auto"></div>
-                                  )}
-                                  <p className="text-[10px] text-[#5dcaa5] font-mono tracking-widest uppercase">{isAnalyzingData ? 'Processando Resposta...' : 'Mapeando Matriz de Poder vs Interesse'}</p>
-                                  <p className="text-[9px] text-white/40 max-w-[200px] mx-auto">Continue conversando com a IA para que os quadrantes de Porter e PESTEL sejam populados.</p>
-                                </div>
+
+                              {/* Content area based on sub-tab */}
+                              <div className="flex-1 min-h-[380px] overflow-y-auto custom-scrollbar relative z-10 pr-1">
+                                {etapa2Tab === 'macro' && (
+                                  <div className="animate-fade-in space-y-3">
+                                    <div className="bg-[#5dcaa5]/5 border border-[#5dcaa5]/20 rounded-xl p-3 mb-2">
+                                      <h4 className="text-[10px] font-bold text-[#5dcaa5] uppercase font-mono tracking-widest mb-1">Análise do Macroambiente (PESTEL)</h4>
+                                      <p className="text-[9px] text-white/60 leading-relaxed">
+                                        Como os fatores externos de grande alcance influenciam a operação e a demanda pelos serviços da <strong>Nossa Consultoria BI / Auditoria 6D</strong>.
+                                      </p>
+                                    </div>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                      {[
+                                        {
+                                          title: 'Político',
+                                          color: 'text-amber-400 border-amber-500/20 bg-amber-500/5',
+                                          desc: 'Incentivos e políticas governamentais de fomento à inovação de dados e inteligência artificial atuam como catalisador direto, motivando empresas a investirem em BI.'
+                                        },
+                                        {
+                                          title: 'Econômico',
+                                          color: 'text-emerald-400 border-emerald-500/20 bg-emerald-500/5',
+                                          desc: 'Em crises, empresas nos buscam para corte de gastos e mapeamento de ineficiências. Em expansão, buscam inteligência competitiva e otimização de mercado.'
+                                        },
+                                        {
+                                          title: 'Sociedade & Cultura',
+                                          color: 'text-blue-400 border-blue-500/20 bg-blue-500/5',
+                                          desc: 'A forte pressão social por decisões justas, transparentes e orientadas a dados (Data-Driven) impulsiona o uso de telemetria científica no desenvolvimento humano.'
+                                        },
+                                        {
+                                          title: 'Legislação & Regulações',
+                                          color: 'text-purple-400 border-purple-500/20 bg-purple-500/5',
+                                          desc: 'A vigência da LGPD exige infraestruturas de dados extremamente governadas, transformando conformidade técnica rigorosa em um forte argumento de credibilidade comercial.'
+                                        }
+                                      ].map((f, idx) => (
+                                        <div key={idx} className={`p-3 border rounded-xl hover:border-white/20 transition-all ${f.color}`}>
+                                          <span className="text-[9px] font-mono uppercase tracking-widest font-bold block mb-1.5">{idx + 1}. {f.title}</span>
+                                          <p className="text-[10px] text-white/70 leading-relaxed font-sans">{f.desc}</p>
+                                        </div>
+                                      ))}
+                                    </div>
+                                  </div>
+                                )}
+
+                                {etapa2Tab === 'micro' && (
+                                  <div className="animate-fade-in space-y-3">
+                                    <div className="bg-[#5dcaa5]/5 border border-[#5dcaa5]/20 rounded-xl p-3 mb-2">
+                                      <h4 className="text-[10px] font-bold text-[#5dcaa5] uppercase font-mono tracking-widest mb-1">Análise do Microambiente (5 Forças de Porter)</h4>
+                                      <p className="text-[9px] text-white/60 leading-relaxed">
+                                        Mapeamento das forças competitivas e relações de mercado que moldam a atratividade da <strong>Nossa Consultoria BI / Auditoria 6D</strong>.
+                                      </p>
+                                    </div>
+                                    <div className="space-y-2.5">
+                                      {[
+                                        {
+                                          title: 'Concorrentes Diretos',
+                                          badge: 'Diferencial Único',
+                                          badgeColor: 'bg-[#5dcaa5]/20 text-[#5dcaa5] border-[#5dcaa5]/30',
+                                          desc: 'Empresas de consultoria tradicionais e desenvolvedores freelancers. Nosso diferencial estratégico inimitável é a união da engenharia técnica de BI com telemetria socioemocional e o Índice 6D Imersivo (SIG Pessoas), superando dashboards estáticos comuns.'
+                                        },
+                                        {
+                                          title: 'Fornecedores Críticos',
+                                          badge: 'Baixa Dependência',
+                                          badgeColor: 'bg-blue-500/20 text-blue-400 border-blue-500/30',
+                                          desc: 'Provedores globais de nuvem e visualizadores (Microsoft Power BI, AWS, Snowflake). O poder de barganha de preços deles é alto pelas licenças, mas a portabilidade e interoperabilidade de dados moderna reduz o risco de lock-in absoluto.'
+                                        },
+                                        {
+                                          title: 'Clientes-Alvo',
+                                          badge: 'Foco em Alta Qualidade',
+                                          badgeColor: 'bg-purple-500/20 text-purple-400 border-purple-500/30',
+                                          desc: 'Empresas de médio e grande porte. Nosso cliente ideal não busca preço extremamente baixo; ele exige qualidade metodológica impecável, integridade de governança e retorno financeiro tangível e comprovado sobre o projeto.'
+                                        },
+                                        {
+                                          title: 'Produtos Substitutos',
+                                          badge: 'Risco Operacional',
+                                          badgeColor: 'bg-amber-500/20 text-amber-400 border-amber-500/30',
+                                          desc: 'Profissionais internos de BI (departamentos internos) ou planilhas tradicionais (Excel) administradas informalmente. A barreira para migrar é o alto salário de engenheiros internos e a ineficiência de planilhas.'
+                                        }
+                                      ].map((m, idx) => (
+                                        <div key={idx} className="p-3 bg-black/40 border border-white/5 rounded-xl hover:border-white/10 transition-all">
+                                          <div className="flex justify-between items-center mb-1.5">
+                                            <span className="text-[10px] font-bold text-white font-mono uppercase tracking-wider">{m.title}</span>
+                                            <span className={`text-[8px] font-mono font-bold px-2 py-0.5 border rounded-full uppercase ${m.badgeColor}`}>{m.badge}</span>
+                                          </div>
+                                          <p className="text-[9.5px] text-white/60 leading-relaxed font-sans">{m.desc}</p>
+                                        </div>
+                                      ))}
+                                    </div>
+                                  </div>
+                                )}
+
+                                {etapa2Tab === 'stakeholders' && (
+                                  <div className="animate-fade-in space-y-3">
+                                    <div className="bg-[#5dcaa5]/5 border border-[#5dcaa5]/20 rounded-xl p-3 mb-2 flex justify-between items-center gap-4">
+                                      <div>
+                                        <h4 className="text-[10px] font-bold text-[#5dcaa5] uppercase font-mono tracking-widest mb-1">Matriz Poder vs Interesse</h4>
+                                        <p className="text-[9px] text-white/60 leading-relaxed">
+                                          Mapeamento dos stakeholders chaves da organização. Clique nos pontos para abrir o dossiê de gestão.
+                                        </p>
+                                      </div>
+                                      {selectedStakeholder && (
+                                        <button 
+                                          onClick={() => setSelectedStakeholder(null)}
+                                          className="text-[9px] font-mono text-[#5dcaa5] underline hover:text-white"
+                                        >
+                                          [Limpar Filtro]
+                                        </button>
+                                      )}
+                                    </div>
+
+                                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-3">
+                                      {/* Interactive Visual Map */}
+                                      <div className="lg:col-span-7 bg-black/60 border border-white/5 rounded-xl p-4 flex flex-col justify-between relative overflow-hidden h-[240px]">
+                                        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-white/[0.01] to-transparent pointer-events-none" />
+                                        
+                                        {/* Quadrants background labels */}
+                                        <div className="absolute top-2 left-2 text-[8px] font-mono text-white/10 uppercase font-bold">MANTER SATISFEITO (Poder+/Interesse-)</div>
+                                        <div className="absolute top-2 right-2 text-[8px] font-mono text-[#5dcaa5]/20 uppercase font-bold">GERENCIAR DE PERTO (Poder+/Interesse+)</div>
+                                        <div className="absolute bottom-2 left-2 text-[8px] font-mono text-white/10 uppercase font-bold">MONITORAR (Poder-/Interesse-)</div>
+                                        <div className="absolute bottom-2 right-2 text-[8px] font-mono text-[#d4b87a]/20 uppercase font-bold">MANTER INFORMADO (Poder-/Interesse+)</div>
+
+                                        {/* Axes */}
+                                        <div className="absolute left-1/2 top-0 bottom-0 w-0.5 bg-white/5 -translate-x-1/2 pointer-events-none" />
+                                        <div className="absolute top-1/2 left-0 right-0 h-0.5 bg-white/5 -translate-y-1/2 pointer-events-none" />
+
+                                        {/* Interactive Nodes */}
+                                        {[
+                                          { id: 'board', name: 'Sócios & C-Level', x: '82%', y: '25%', q: 'Gerenciar de Perto', power: 'Muito Alto (Aprova verbas e cultura)', interest: 'Extremo (Retorno financeiro)', desc: 'Exerce poder por meio de governança corporativa direta e limites orçamentários.' },
+                                          { id: 'clientes', name: 'Clientes Críticos', x: '78%', y: '38%', q: 'Gerenciar de Perto', power: 'Alto (Condiciona a renovação)', interest: 'Alto (Busca retorno de BI)', desc: 'Exerce poder cobrando métricas rígidas de eficiência operacional.' },
+                                          { id: 'anpd', name: 'Órgãos Reguladores (ANPD)', x: '22%', y: '18%', q: 'Manter Satisfeito', power: 'Alto (Poder de multas e sanções)', interest: 'Baixo (Foco apenas em conformidade)', desc: 'Exerce influência fiscalizando a aderência técnica à LGPD.' },
+                                          { id: 'provedores', name: 'Provedores Cloud (MS/AWS)', x: '28%', y: '40%', q: 'Manter Satisfeito', power: 'Médio-Alto (Disponibilidade técnica)', interest: 'Baixo (Foco em volumetria)', desc: 'Exercem influência por meio de preços e uptime de APIs.' },
+                                          { id: 'gestores', name: 'Gestores de Área', x: '72%', y: '68%', q: 'Manter Informado', power: 'Médio-Baixo (Decisão tática)', interest: 'Alto (Precisam de dados diários)', desc: 'Exercem influência na aderência operacional das ferramentas.' },
+                                          { id: 'devs', name: 'Desenvolvedores de BI', x: '68%', y: '82%', q: 'Manter Informado', power: 'Baixo (Operação)', interest: 'Muito Alto (Estabilidade e carreira)', desc: 'Exercem influência direta na qualidade técnica e agilidade de entrega.' },
+                                          { id: 'familias', name: 'Famílias dos Colaboradores', x: '92%', y: '78%', q: 'Manter Informado', power: 'Baixo', interest: 'Alto (Estabilidade e renda)', desc: 'Impactadas pelo sucesso do negócio em termos de emprego e bem-estar.' },
+                                          { id: 'terceirizados', name: 'Terceirizados Apoio', x: '15%', y: '88%', q: 'Monitorar', power: 'Muito Baixo', interest: 'Baixo', desc: 'Monitorados quanto a entregas pontuais e conformidade básica.' }
+                                        ].map(s => (
+                                          <button
+                                            key={s.id}
+                                            onClick={() => setSelectedStakeholder(s.id)}
+                                            style={{ left: s.x, top: s.y }}
+                                            className={`absolute -translate-x-1/2 -translate-y-1/2 group/node transition-all z-20`}
+                                          >
+                                            <div className={`w-3.5 h-3.5 rounded-full flex items-center justify-center border transition-all duration-300 ${selectedStakeholder === s.id ? 'bg-[#5dcaa5] scale-150 border-white shadow-[0_0_12px_#5dcaa5]' : 'bg-black border-white/40 group-hover/node:bg-white group-hover/node:scale-125'}`} />
+                                            <span className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/80 border border-white/10 rounded px-1.5 py-0.5 text-[7px] font-mono text-white/95 opacity-0 group-hover/node:opacity-100 transition whitespace-nowrap pointer-events-none z-30">{s.name}</span>
+                                          </button>
+                                        ))}
+
+                                        {/* Axes markers */}
+                                        <div className="absolute right-2 top-1/2 -translate-y-1/2 text-[7px] font-mono text-white/30 uppercase tracking-widest pointer-events-none">Interesse +</div>
+                                        <div className="absolute left-2 top-1/2 -translate-y-1/2 text-[7px] font-mono text-white/30 uppercase tracking-widest pointer-events-none">Interesse -</div>
+                                        <div className="absolute left-1/2 top-2 -translate-x-1/2 text-[7px] font-mono text-white/30 uppercase tracking-widest pointer-events-none">Poder +</div>
+                                        <div className="absolute left-1/2 bottom-2 -translate-x-1/2 text-[7px] font-mono text-white/30 uppercase tracking-widest pointer-events-none">Poder -</div>
+                                      </div>
+
+                                      {/* Details Column */}
+                                      <div className="lg:col-span-5 flex flex-col justify-between">
+                                        <div className="bg-[#050505] border border-white/5 rounded-xl p-3.5 min-h-[240px] flex flex-col justify-between">
+                                          {selectedStakeholder ? (() => {
+                                            const infoMap: Record<string, { name: string, q: string, power: string, interest: string, desc: string }> = {
+                                              board: { name: 'Sócios & C-Level', q: 'Gerenciar de Perto', power: 'Muito Alto (Aprova verbas e cultura)', interest: 'Extremo (Retorno financeiro)', desc: 'Eles ditam os recursos destinados ao BI e a governança ética. Devem estar em sintonia constante com os painéis executivos.' },
+                                              clientes: { name: 'Clientes Críticos', q: 'Gerenciar de Perto', power: 'Alto (Condiciona a renovação)', interest: 'Alto (Busca retorno de BI)', desc: 'São os tomadores de decisão corporativos que compram nossa auditoria. Suas avaliações em tempo real ditam a renovação de contratos.' },
+                                              anpd: { name: 'Órgãos Reguladores (ANPD)', q: 'Manter Satisfeito', power: 'Alto (Multas e sanções)', interest: 'Baixo (Foco em conformidade)', desc: 'Seu foco principal é garantir conformidade com as leis de privacidade. Exigem auditoria de acesso e logs rígidos de dados de saúde e pessoas.' },
+                                              provedores: { name: 'Provedores Cloud (MS/AWS)', q: 'Manter Satisfeito', power: 'Médio-Alto (Disponibilidade)', interest: 'Baixo (Foco em volumetria)', desc: 'Fornecem a infraestrutura (servidores, ferramentas de BI). Gerenciados através de contratos de nível de serviço (SLA).' },
+                                              gestores: { name: 'Gestores de Área', q: 'Manter Informado', power: 'Médio-Baixo', interest: 'Alto (Precisam de dados diários)', desc: 'Utilizam as ferramentas para liderar e calibrar tarefas do time. Se beneficiam com diagnósticos automatizados do SIG Pessoas.' },
+                                              devs: { name: 'Desenvolvedores de BI', q: 'Manter Informado', power: 'Baixo (Operação)', interest: 'Muito Alto (Estabilidade e carreira)', desc: 'Constroem as soluções técnicas. Devem ser engajados por meio de cultura transparente, segurança psicológica e clareza de atribuições.' },
+                                              familias: { name: 'Famílias dos Colaboradores', q: 'Manter Informado', power: 'Baixo', interest: 'Alto (Estabilidade)', desc: 'Dependem indiretamente do sucesso financeiro e da saúde psicológica proporcionados pelo ambiente corporativo saudável.' },
+                                              terceirizados: { name: 'Terceirizados Apoio', q: 'Monitorar', power: 'Muito Baixo', interest: 'Baixo', desc: 'Prestadores de serviços periféricos. Monitorados para conformidade contratual básica de fornecimento de serviços.' }
+                                            };
+                                            const item = infoMap[selectedStakeholder];
+                                            return (
+                                              <div className="space-y-3 animate-fade-in flex flex-col justify-between h-full">
+                                                <div>
+                                                  <div className="flex justify-between items-center">
+                                                    <span className="text-[11px] font-bold text-white font-mono uppercase tracking-wider">{item.name}</span>
+                                                    <span className="text-[7.5px] font-mono bg-[#5dcaa5]/10 border border-[#5dcaa5]/20 text-[#5dcaa5] px-2 py-0.5 rounded-full font-bold uppercase">{item.q}</span>
+                                                  </div>
+                                                  <div className="space-y-1.5 mt-2.5">
+                                                    <div className="text-[9px] text-white/50"><span className="font-mono text-white/80 font-bold">Nível de Poder:</span> {item.power}</div>
+                                                    <div className="text-[9px] text-white/50"><span className="font-mono text-white/80 font-bold">Interesse:</span> {item.interest}</div>
+                                                    <div className="text-[9.5px] text-white/70 leading-relaxed font-sans border-t border-white/5 pt-2 mt-2">{item.desc}</div>
+                                                  </div>
+                                                </div>
+                                                <div className="text-[8.5px] font-mono text-[#5dcaa5] bg-[#5dcaa5]/5 p-2 rounded-lg border border-[#5dcaa5]/20 mt-3">
+                                                  💡 <strong>Diretriz de Gestão:</strong> {item.q === 'Gerenciar de Perto' ? 'Envolver ativamente nos rituais estratégicos e relatórios.' : item.q === 'Manter Satisfeito' ? 'Garantir conformidade técnica e operacional estrita.' : item.q === 'Manter Informado' ? 'Disponibilizar relatórios assíncronos e updates frequentes.' : 'Monitorar métricas de entrega sem reuniões físicas excessivas.'}
+                                                </div>
+                                              </div>
+                                            );
+                                          })() : (
+                                            <div className="flex-1 flex flex-col items-center justify-center text-center p-4">
+                                              <Users size={24} className="text-white/20 mb-2" strokeWidth={1.5} />
+                                              <span className="text-[9.5px] text-white/30 font-mono">Nenhum stakeholder selecionado. Clique em algum ponto do gráfico ao lado para analisar a matriz Poder vs Interesse.</span>
+                                            </div>
+                                          )}
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                )}
+
+                                {etapa2Tab === 'reflexao' && (
+                                  <div className="animate-fade-in space-y-3">
+                                    <div className="bg-[#5dcaa5]/5 border border-[#5dcaa5]/20 rounded-xl p-3 mb-2">
+                                      <h4 className="text-[10px] font-bold text-[#5dcaa5] uppercase font-mono tracking-widest mb-1">Reflexão sobre Governança e Tomada de Decisão</h4>
+                                      <p className="text-[9px] text-white/60 leading-relaxed">
+                                        Como equilibrar os fatores do macro/microambiente e as demandas dos stakeholders na rotina de liderança.
+                                      </p>
+                                    </div>
+                                    <div className="space-y-3">
+                                      <div className="p-3 bg-black/40 border border-white/5 rounded-xl">
+                                        <span className="text-[9px] font-mono text-[#d4b87a] uppercase font-bold tracking-widest block mb-1">Desafio do Gestor Moderno</span>
+                                        <p className="text-[10px] text-white/80 leading-relaxed font-sans">
+                                          Equilibrar forças macro instáveis (inflação, LGPD) com microcompetidores velozes exige dos gestores uma <strong>capacidade assíncrona de alta frequência</strong>. O erro clássico é reagir emocionalmente pelo Sistema 1 (reativo) sob estresse, em vez de recorrer ao Sistema 2 (analítico) suportado por dados objetivos.
+                                        </p>
+                                      </div>
+                                      <div className="p-3 bg-[#5dcaa5]/5 border border-[#5dcaa5]/20 rounded-xl">
+                                        <span className="text-[9px] font-mono text-[#5dcaa5] uppercase font-bold tracking-widest block mb-1">O Papel de Telemetria Comportamental</span>
+                                        <p className="text-[10px] text-white/80 leading-relaxed font-sans">
+                                          Nesta organização, os líderes gerenciam esses ambientes utilizando painéis unificados como o <strong>SIG Pessoas e o Índice 6D</strong>. Ao traduzir atitudes subjetivas em telemetria limpa de cultura, o gestor atende o board (provando ROI) ao mesmo tempo que assegura segurança psicológica e clareza para os liderados.
+                                        </p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                )}
                               </div>
                             </div>
                           )}
