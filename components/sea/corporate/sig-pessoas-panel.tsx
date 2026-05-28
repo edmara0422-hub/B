@@ -4367,129 +4367,126 @@ export function SigPessoasPanel() {
                                 </button>
                               </div>
 
-                              <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 flex-1 overflow-hidden relative z-10">
-                                {/* Left column: List of sections */}
-                                <div className="lg:col-span-4 bg-black/60 border border-white/5 rounded-2xl p-3 space-y-2 overflow-y-auto custom-scrollbar h-[380px]">
-                                  <span className="text-[8.5px] font-mono text-white/30 font-bold uppercase tracking-widest block px-1.5 mb-2">Estrutura do Dossiê</span>
-                                  {[
-                                    { id: 1, label: '1. Introdução', words: '151 p.', req: '100-200 p.' },
-                                    { id: 2, label: '2. Análise da Gestão', words: '267 p.', req: '250-300 p.' },
-                                    { id: 3, label: '3. Macroambiente', words: '275 p.', req: '250-350 p.' },
-                                    { id: 4, label: '4. Microambiente', words: '264 p.', req: '250-350 p.' },
-                                    { id: 5, label: '5. Stakeholders', words: '259 p.', req: '250-350 p.' },
-                                    { id: 6, label: '6. Estrutura & Organograma', words: '259 p.', req: '250-350 p.' },
-                                    { id: 7, label: '7. Sistemas de Controle', words: '256 p.', req: '250-350 p.' },
-                                    { id: 8, label: '8. Conclusões & Propostas', words: '3 Sugestões', req: 'Mínimo 3' }
-                                  ].map(s => (
-                                    <button
-                                      key={s.id}
-                                      onClick={() => setActiveReportSection(s.id)}
-                                      className={`w-full p-2.5 rounded-xl text-left transition-all border ${activeReportSection === s.id ? 'bg-[#5dcaa5]/10 border-[#5dcaa5]/30 text-white shadow-inner' : 'bg-black/20 border-transparent text-white/50 hover:text-white/80 hover:bg-white/[0.01]'}`}
-                                    >
-                                      <span className="text-[10px] font-bold block">{s.label}</span>
-                                      <div className="flex justify-between items-center mt-1 text-[7.5px] font-mono text-white/30">
-                                        <span>Calibrado: {s.words}</span>
-                                        <span className="text-[#5dcaa5] font-bold">Limite: {s.req} [✓]</span>
-                                      </div>
-                                    </button>
-                                  ))}
-                                </div>
+                              {/* 8 Section buttons grid */}
+                              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 relative z-20">
+                                {[
+                                  { id: 1, label: '1. Introdução', words: '151 p.', req: '100-200 p.' },
+                                  { id: 2, label: '2. Análise da Gestão', words: '267 p.', req: '250-300 p.' },
+                                  { id: 3, label: '3. Macroambiente', words: '275 p.', req: '250-350 p.' },
+                                  { id: 4, label: '4. Microambiente', words: '264 p.', req: '250-350 p.' },
+                                  { id: 5, label: '5. Stakeholders', words: '259 p.', req: '250-350 p.' },
+                                  { id: 6, label: '6. Estrutura & Organograma', words: '259 p.', req: '250-350 p.' },
+                                  { id: 7, label: '7. Sistemas de Controle', words: '256 p.', req: '250-350 p.' },
+                                  { id: 8, label: '8. Conclusões & Propostas', words: '3 Sugestões', req: 'Mínimo 3' }
+                                ].map(s => (
+                                  <button
+                                    key={s.id}
+                                    onClick={() => setActiveReportSection(s.id)}
+                                    className={`p-2 rounded-xl text-left transition-all border ${activeReportSection === s.id ? 'bg-[#5dcaa5]/15 border-[#5dcaa5]/45 text-white shadow-inner animate-pulse' : 'bg-black/30 border-white/5 text-white/50 hover:text-white/80 hover:bg-white/[0.01]'}`}
+                                  >
+                                    <span className="text-[9px] font-bold block">{s.label}</span>
+                                    <div className="flex justify-between items-center mt-1 text-[7px] font-mono text-white/30">
+                                      <span>Calibrado: {s.words}</span>
+                                      <span className="text-[#5dcaa5] font-bold">{s.req} [✓]</span>
+                                    </div>
+                                  </button>
+                                ))}
+                              </div>
 
-                                {/* Right column: Content viewer */}
-                                <div className="lg:col-span-8 bg-[#050505] border border-white/5 rounded-2xl p-5 overflow-y-auto custom-scrollbar h-[380px] flex flex-col justify-between relative">
-                                  <div className="absolute top-0 right-0 w-24 h-24 bg-[#5dcaa5]/3 blur-3xl pointer-events-none" />
-                                  <div className="space-y-4">
-                                    {activeReportSection === 1 && (
-                                      <div className="animate-fade-in space-y-3">
-                                        <h4 className="text-[12px] font-mono font-bold text-[#5dcaa5] uppercase tracking-wider pb-1.5 border-b border-white/5">1. Introdução da Atividade Prática</h4>
-                                        <p className="text-[10.5px] text-white/80 leading-relaxed font-sans text-justify">
-                                          Este relatório de consultoria consolida o diagnóstico organizacional realizado ao longo das últimas semanas na empresa fictícia <strong>Nossa Consultoria BI (Auditoria 6D)</strong>, integrando conceitos teóricos da gestão à prática observada. O estudo abrangeu o setup core das funções administrativas, a análise detalhada do macroambiente (político, econômico, sociocultural e legal) e microambiente competitivo (cinco forças de Porter). Além disso, mapeou-se a matriz de poder e interesse dos stakeholders internos e externos, a estrutura do organograma híbrido adotado e os sistemas de controle operacionais de metas e comportamento. A ATP nos permitiu compreender como o acúmulo de conhecimento prático de gestão compensa a falta de planejamento racional e estruturado inicial. O resultado final é uma proposta de governança corporativa transparente que descentraliza decisões técnicas sem abrir mão de segurança e conformidade de dados, gerando recomendações aplicáveis de intervenção estratégica no negócio.
-                                        </p>
-                                      </div>
-                                    )}
+                              {/* Full-width Content viewer */}
+                              <div className="flex-1 bg-[#050505] border border-white/5 rounded-2xl p-5 overflow-y-auto custom-scrollbar min-h-[300px] flex flex-col justify-between relative z-10">
+                                <div className="absolute top-0 right-0 w-24 h-24 bg-[#5dcaa5]/3 blur-3xl pointer-events-none" />
+                                <div className="space-y-4">
+                                  {activeReportSection === 1 && (
+                                    <div className="animate-fade-in space-y-3">
+                                      <h4 className="text-[12px] font-mono font-bold text-[#5dcaa5] uppercase tracking-wider pb-1.5 border-b border-white/5">1. Introdução da Atividade Prática</h4>
+                                      <p className="text-[10.5px] text-white/80 leading-relaxed font-sans text-justify">
+                                        Este relatório de consultoria consolida o diagnóstico organizacional realizado ao longo das últimas semanas na empresa fictícia <strong>Nossa Consultoria BI (Auditoria 6D)</strong>, integrando conceitos teóricos da gestão à prática observada. O estudo abrangeu o setup core das funções administrativas, a análise detalhada do macroambiente (político, econômico, sociocultural e legal) e microambiente competitivo (cinco forças de Porter). Além disso, mapeou-se a matriz de poder e interesse dos stakeholders internos e externos, a estrutura do organograma híbrido adotado e os sistemas de controle operacionais de metas e comportamento. A ATP nos permitiu compreender como o acúmulo de conhecimento prático de gestão compensa a falta de planejamento racional e estruturado inicial. O resultado final é uma proposta de governança corporativa transparente que descentraliza decisões técnicas sem abrir mão de segurança e conformidade de dados, gerando recomendações aplicáveis de intervenção estratégica no negócio.
+                                      </p>
+                                    </div>
+                                  )}
 
-                                    {activeReportSection === 2 && (
-                                      <div className="animate-fade-in space-y-3">
-                                        <h4 className="text-[12px] font-mono font-bold text-[#5dcaa5] uppercase tracking-wider pb-1.5 border-b border-white/5">2. Análise da Gestão da Organização (FOPL)</h4>
-                                        <p className="text-[10.5px] text-white/80 leading-relaxed font-sans text-justify">
-                                          A gestão na Nossa Consultoria BI foi analisada à luz das quatro funções administrativas clássicas: planejar, organizar, liderar e controlar. No planejamento, observou-se que a empresa carece de um planejamento estratégico de longo prazo formalizado e sistemático. A teoria ensina que o planejamento define a direção e reduz a incerteza; na prática, as decisões iniciais ocorreram empiricamente, baseadas na demanda de projetos de curto prazo. Na organização de recursos, a consultoria adota uma estrutura ágil para alocar analistas aos projetos. Embora essa descentralização promova dinamismo, a literatura de Taylor e Fayol enfatiza a necessidade de clareza de atribuições para evitar desperdício de esforço. No SIG Pessoas, notamos que a indefinição de escopo em picos de demanda gera gargalos. A liderança é exercida de forma colaborativa e aberta pelos diretores fundadores, promovendo um ambiente de alta segurança psicológica e confiança mútua. Esse estilo de liderança participativa é alinhado com as teorias contemporâneas, motivando a equipe técnica de tecnologia a propor inovações frequentes. Por fim, o controle é exercido de maneira informal no comportamento cotidiano e formalizado através de entregas técnicas pontuais e SLAs de satisfação do cliente. A lacuna identificada reside na ausência de indicadores operacionais globais de performance unificados. Conclui-se que o acúmulo de experiência dos gestores foi vital para suprir as fragilidades do planejamento formal original. A transição gradual para rituais mais estruturados, mantendo a flexibilidade ágil, surge como a recomendação principal para consolidar o crescimento sustentável da organização no mercado altamente competitivo de inteligência corporativa.
-                                        </p>
-                                      </div>
-                                    )}
+                                  {activeReportSection === 2 && (
+                                    <div className="animate-fade-in space-y-3">
+                                      <h4 className="text-[12px] font-mono font-bold text-[#5dcaa5] uppercase tracking-wider pb-1.5 border-b border-white/5">2. Análise da Gestão da Organização (FOPL)</h4>
+                                      <p className="text-[10.5px] text-white/80 leading-relaxed font-sans text-justify">
+                                        A gestão na Nossa Consultoria BI foi analisada à luz das quatro funções administrativas clássicas: planejar, organizar, liderar e controlar. No planejamento, observou-se que a empresa carece de um planejamento estratégico de longo prazo formalizado e sistemático. A teoria ensina que o planejamento define a direção e reduz a incerteza; na prática, as decisões iniciais ocorreram empiricamente, baseadas na demanda de projetos de curto prazo. Na organização de recursos, a consultoria adota uma estrutura ágil para alocar analistas aos projetos. Embora essa descentralização promova dinamismo, a literatura de Taylor e Fayol enfatiza a necessidade de clareza de atribuições para evitar desperdício de esforço. No SIG Pessoas, notamos que a indefinição de escopo em picos de demanda gera gargalos. A liderança é exercida de forma colaborativa e aberta pelos diretores fundadores, promovendo um ambiente de alta segurança psicológica e confiança mútua. Esse estilo de liderança participativa é alinhado com as teorias contemporâneas, motivando a equipe técnica de tecnologia a propor inovações frequentes. Por fim, o controle é exercido de maneira informal no comportamento cotidiano e formalizado através de entregas técnicas pontuais e SLAs de satisfação do cliente. A lacuna identificada reside na ausência de indicadores operacionais globais de performance unificados. Conclui-se que o acúmulo de experiência dos gestores foi vital para suprir as fragilidades do planejamento formal original. A transição gradual para rituais mais estruturados, mantendo a flexibilidade ágil, surge como a recomendação principal para consolidar o crescimento sustentável da organização no mercado altamente competitivo de inteligência corporativa.
+                                      </p>
+                                    </div>
+                                  )}
 
-                                    {activeReportSection === 3 && (
-                                      <div className="animate-fade-in space-y-3">
-                                        <h4 className="text-[12px] font-mono font-bold text-[#5dcaa5] uppercase tracking-wider pb-1.5 border-b border-white/5">3. Análise do Macroambiente (PESTEL)</h4>
-                                        <p className="text-[10.5px] text-white/80 leading-relaxed font-sans text-justify">
-                                          O macroambiente exerce uma influência profunda e contínua sobre o desempenho estratégico e financeiro da Nossa Consultoria BI. Por meio da análise PESTEL, articulamos os impactos políticos, econômicos, socioculturais e legais na operação. No âmbito político, diretrizes estatais e incentivos governamentais para a inovação digital impulsionam a modernização corporativa, gerando novos negócios para projetos de business intelligence. Sob a ótica econômica, a instabilidade inflacionária e oscilações de juros alteram diretamente a capacidade de investimento dos clientes. Em momentos de contração econômica, as empresas nos contratam focadas no corte rigoroso de custos e aumento de eficiência interna. Em períodos expansivos, a demanda migra para inteligência competitiva e captação de mercados. Socioculturalmente, a ascensão da cultura orientada a dados (Data-Driven) reflete um anseio social por transparência ética nas tomadas de decisão. Isso se reflete no SIG Pessoas, onde colaboradores demandam avaliações baseadas em fatos objetivos e não julgamentos subjetivos. No pilar tecnológico, o surgimento contínuo de novas APIs e inteligência artificial generativa atua simultaneamente como catalisador e ameaça. A consultoria precisa se atualizar freneticamente para não se tornar obsoleta perante ferramentas self-service integradas. Finalmente, as regulações legais, especialmente a Lei Geral de Proteção de Dados (LGPD), afetam diretamente a governança da consultoria. A manipulação de bases de dados exige criptografia e trilhas de auditoria complexas. A conformidade regulatória rigorosa encarece a operação técnica, mas se consolidou como um forte argumento de credibilidade comercial perante corporações exigentes. Compreender esse ecossistema externo complexo permite que a consultoria antecipe ameaças de mercado e as converta em oportunidades de valor para os clientes.
-                                        </p>
-                                      </div>
-                                    )}
+                                  {activeReportSection === 3 && (
+                                    <div className="animate-fade-in space-y-3">
+                                      <h4 className="text-[12px] font-mono font-bold text-[#5dcaa5] uppercase tracking-wider pb-1.5 border-b border-white/5">3. Análise do Macroambiente (PESTEL)</h4>
+                                      <p className="text-[10.5px] text-white/80 leading-relaxed font-sans text-justify">
+                                        O macroambiente exerce uma influência profunda e contínua sobre o desempenho estratégico e financeiro da Nossa Consultoria BI. Por meio da análise PESTEL, articulamos os impactos políticos, econômicos, socioculturais e legais na operação. No âmbito político, diretrizes estatais e incentivos governamentais para a inovação digital impulsionam a modernização corporativa, gerando novos negócios para projetos de business intelligence. Sob a ótica econômica, a instabilidade inflacionária e oscilações de juros alteram diretamente a capacidade de investimento dos clientes. Em momentos de contração econômica, as empresas nos contratam focadas no corte rigoroso de custos e aumento de eficiência interna. Em períodos expansivos, a demanda migra para inteligência competitiva e captação de mercados. Socioculturalmente, a ascensão da cultura orientada a dados (Data-Driven) reflete um anseio social por transparência ética nas tomadas de decisão. Isso se reflete no SIG Pessoas, onde colaboradores demandam avaliações baseadas em fatos objetivos e não julgamentos subjetivos. No pilar tecnológico, o surgimento contínuo de novas APIs e inteligência artificial generativa atua simultaneamente como catalisador e ameaça. A consultoria precisa se atualizar freneticamente para não se tornar obsoleta perante ferramentas self-service integradas. Finalmente, as regulações legais, especialmente a Lei Geral de Proteção de Dados (LGPD), afetam diretamente a governança da consultoria. A manipulação de bases de dados exige criptografia e trilhas de auditoria complexas. A conformidade regulatória rigorosa encarece a operação técnica, mas se consolidou como um forte argumento de credibilidade comercial perante corporações exigentes. Compreender esse ecossistema externo complexo permite que a consultoria antecipe ameaças de mercado e as converta em oportunidades de valor para os clientes.
+                                      </p>
+                                    </div>
+                                  )}
 
-                                    {activeReportSection === 4 && (
-                                      <div className="animate-fade-in space-y-3">
-                                        <h4 className="text-[12px] font-mono font-bold text-[#5dcaa5] uppercase tracking-wider pb-1.5 border-b border-white/5">4. Análise do Microambiente (Porter)</h4>
-                                        <p className="text-[10.5px] text-white/80 leading-relaxed font-sans text-justify">
-                                          A dinâmica competitiva da Nossa Consultoria BI foi mapeada por meio do modelo das cinco forças de Porter, cruzando a realidade prática com a teoria clássica de microeconomia. A rivalidade entre os concorrentes diretos é intensa, impulsionada por grandes firmas globais e desenvolvedores freelancers. Contudo, nossa estratégia de competição é focada estritamente na qualidade metodológica e não no preço baixo. Oferecemos o Índice 6D Imersivo e telemetria socioemocional no desenvolvimento humano (SIG Pessoas), um diferencial único e de difícil imitação, afastando-nos da commodity do mercado técnico. O poder de barganha dos fornecedores, constituído por provedores globais de computação em nuvem e ferramentas de visualização (como Microsoft, AWS e Snowflake), é elevado devido ao monopólio técnico das licenças. Para mitigar esse risco de lock-in, a consultoria adota soluções com alta portabilidade de dados em código aberto. Por outro lado, o poder de negociação dos clientes de médio e grande porte é expressivo. Eles exigem entregas de alto valor, integridade ética nos relatórios de conformidade e retorno sobre investimento (ROI) mensurável em curto prazo. Quanto à ameaça de produtos substitutos, o principal risco reside em planilhas informais descentralizadas em Excel ou na contratação de engenheiros internos dedicados. Embora a informalidade seja barata, ela gera custos invisíveis por falhas humanas. A contratação de equipes próprias é onerosa perante o modelo sob demanda da consultoria. Articular essas forças do microambiente ajuda a direcionar nosso posicionamento estratégico rumo a um segmento premium resiliente às pressões de margem.
-                                        </p>
-                                      </div>
-                                    )}
+                                  {activeReportSection === 4 && (
+                                    <div className="animate-fade-in space-y-3">
+                                      <h4 className="text-[12px] font-mono font-bold text-[#5dcaa5] uppercase tracking-wider pb-1.5 border-b border-white/5">4. Análise do Microambiente (Porter)</h4>
+                                      <p className="text-[10.5px] text-white/80 leading-relaxed font-sans text-justify">
+                                        A dinâmica competitiva da Nossa Consultoria BI foi mapeada por meio do modelo das cinco forças de Porter, cruzando a realidade prática com a teoria clássica de microeconomia. A rivalidade entre os concorrentes diretos é intensa, impulsionada por grandes firmas globais e desenvolvedores freelancers. Contudo, nossa estratégia de competição é focada estritamente na qualidade metodológica e não no preço baixo. Oferecemos o Índice 6D Imersivo e telemetria socioemocional no desenvolvimento humano (SIG Pessoas), um diferencial único e de difícil imitação, afastando-nos da commodity do mercado técnico. O poder de barganha dos fornecedores, constituído por provedores globais de computação em nuvem e ferramentas de visualização (como Microsoft, AWS e Snowflake), é elevado devido ao monopólio técnico das licenças. Para mitigar esse risco de lock-in, a consultoria adota soluções com alta portabilidade de dados in código aberto. Por outro lado, o poder de negociação dos clientes de médio e grande porte é expressivo. Eles exigem entregas de alto valor, integridade ética nos relatórios de conformidade e retorno sobre investimento (ROI) mensurável em curto prazo. Quanto à ameaça de produtos substitutos, o principal risco reside em planilhas informais descentralizadas em Excel ou na contratação de engenheiros internos dedicados. Embora a informalidade seja barata, ela gera custos invisíveis por falhas humanas. A contratação de equipes próprias é onerosa perante o modelo sob demanda da consultoria. Articular essas forças do microambiente ajuda a direcionar nosso posicionamento estratégico rumo a um segmento premium resiliente às pressões de margem.
+                                      </p>
+                                    </div>
+                                  )}
 
-                                    {activeReportSection === 5 && (
-                                      <div className="animate-fade-in space-y-3">
-                                        <h4 className="text-[12px] font-mono font-bold text-[#5dcaa5] uppercase tracking-wider pb-1.5 border-b border-white/5">5. Análise dos Stakeholders</h4>
-                                        <p className="text-[10.5px] text-white/80 leading-relaxed font-sans text-justify">
-                                          A governança ética da Nossa Consultoria BI depende da administração balanceada de suas partes interessadas. Articulando a teoria de Mitchell com a prática, mapeamos os stakeholders com base em poder, legitimidade e urgência. No quadrante de alta influência e alto interesse (Gerenciar de Perto), localizam-se os sócios diretores e os clientes corporativos críticos. O conselho executivo exerce seu poder por decisões orçamentárias estratégicas e definição da cultura organizativa. Os clientes críticos exercem poder direto condicionando a renovação de contratos à qualidade técnica e ROI tangível. Estes grupos devem participar ativamente de rituais consultivos recorrentes. Os fornecedores globais de cloud e órgãos de regulação da LGPD (como a ANPD) possuem alto poder, mas baixo interesse em nossa operação interna, devendo ser mantidos satisfeitos através de conformidade estrita e relatórios técnicos. Em contrapartida, os gestores operacionais e a equipe interna de analistas e desenvolvedores de BI apresentam baixo poder decisório, mas alto interesse no sucesso financeiro e na estabilidade de carreira da empresa. De acordo com as diretrizes teóricas de desenvolvimento de pessoas, estes stakeholders internos são mantidos informados por meio de transparência assíncrona, OKRs claras e rituais horizontais de feedback, o que estimula o engajamento e a segurança psicológica organizacional. Por fim, as famílias dos colaboradores e prestadores de serviços secundários encontram-se em níveis inferiores de influência, exigindo monitoramento básico de clima e pontualidade. Gerenciar de perto os stakeholders certos e manter a comunicação transparente reduz os ruídos e assegura o alinhamento estratégico indispensável para a eficiência corporativa.
-                                        </p>
-                                      </div>
-                                    )}
+                                  {activeReportSection === 5 && (
+                                    <div className="animate-fade-in space-y-3">
+                                      <h4 className="text-[12px] font-mono font-bold text-[#5dcaa5] uppercase tracking-wider pb-1.5 border-b border-white/5">5. Análise dos Stakeholders</h4>
+                                      <p className="text-[10.5px] text-white/80 leading-relaxed font-sans text-justify">
+                                        A governança ética da Nossa Consultoria BI depende da administração balanceada de suas partes interessadas. Articulando a teoria de Mitchell com a prática, mapeamos os stakeholders com base em poder, legitimidade e urgência. No quadrante de alta influência e alto interesse (Gerenciar de Perto), localizam-se os sócios diretores e os clientes corporativos críticos. O conselho executivo exerce seu poder por decisões orçamentárias estratégicas e definição da cultura organizativa. Os clientes críticos exercem poder direto condicionando a renovação de contratos à qualidade técnica e ROI tangível. Estes grupos devem participar ativamente de rituais consultivos recorrentes. Os fornecedores globais de cloud e órgãos de regulação da LGPD (como a ANPD) possuem alto poder, mas baixo interesse em nossa operação interna, devendo ser mantidos satisfeitos através de conformidade estrita e relatórios técnicos. Em contrapartida, os gestores operacionais e a equipe interna de analistas e desenvolvedores de BI apresentam baixo poder decisório, mas alto interesse no sucesso financeiro e na estabilidade de carreira da empresa. De acordo com as diretrizes teóricas de desenvolvimento de pessoas, estes stakeholders internos são mantidos informados por meio de transparência assíncrona, OKRs claras e rituais horizontais de feedback, o que estimula o engajamento e a segurança psicológica organizacional. Por fim, as famílias dos colaboradores e prestadores de serviços secundários encontram-se em níveis inferiores de influência, exigindo monitoramento básico de clima e pontualidade. Gerenciar de perto os stakeholders certos e manter a comunicação transparente reduz os ruídos e assegura o alinhamento estratégico indispensável para a eficiência corporativa.
+                                      </p>
+                                    </div>
+                                  )}
 
-                                    {activeReportSection === 6 && (
-                                      <div className="animate-fade-in space-y-3">
-                                        <h4 className="text-[12px] font-mono font-bold text-[#5dcaa5] uppercase tracking-wider pb-1.5 border-b border-white/5">6. Estrutura e Organograma</h4>
-                                        <p className="text-[10.5px] text-white/80 leading-relaxed font-sans text-justify">
-                                          A Nossa Consultoria BI adota uma estrutura organizacional híbrida que equilibra o modelo orgânico (65%) e mecanicista (35%). O organograma é desenhado em formato tático enxuto, onde o sócio-presidente centraliza decisões estratégicas globais, mas reporta-se de forma direta a dois diretores técnicos e operacionais, que por sua vez lideram coordenadores de projetos e pessoas. Essa estrutura descentraliza as tomadas de decisão sobre a execução técnica dos analistas e desenvolvedores. A grande vantagem desse arranjo híbrido, conforme a literatura de Burns e Stalker, é a flexibilidade operacional extrema e a alta velocidade de inovação técnica para responder a demandas complexas de projetos. No entanto, a desvantagem reside na ambiguidade de papéis em momentos de pico de atividade e na dispersão dos fluxos de autoridade. Para mitigar isso, a empresa utiliza metas e OKRs. Alternativamente, a literatura propõe estruturas puramente mecanicistas com hierarquias rígidas e regras burocráticas estritas. Em nosso campo de tecnologia da informação, a adoção de um estilo puramente mecanicista sufocaria a autonomia dos programadores, destruindo o engajamento. Uma estrutura puramente orgânica, por sua vez, criaria caos e vulnerabilidade regulatória frente à LGPD. Portanto, o estilo híbrido ágil adotado é a escolha mais lógica e racional para as contingências do negócio. Recomendamos apenas institucionalizar squads temporários focados em projetos específicos com o papel de Product Owner explicitamente definido para refinar o escopo de reporte tático e as atribuições funcionais da equipe técnica no dia a dia operante.
-                                        </p>
-                                      </div>
-                                    )}
+                                  {activeReportSection === 6 && (
+                                    <div className="animate-fade-in space-y-3">
+                                      <h4 className="text-[12px] font-mono font-bold text-[#5dcaa5] uppercase tracking-wider pb-1.5 border-b border-white/5">6. Estrutura e Organograma</h4>
+                                      <p className="text-[10.5px] text-white/80 leading-relaxed font-sans text-justify">
+                                        A Nossa Consultoria BI adota uma estrutura organizacional híbrida que equilibra o modelo orgânico (65%) e mecanicista (35%). O organograma é desenhado em formato tático enxuto, onde o sócio-presidente centraliza decisões estratégicas globais, mas reporta-se de forma direta a dois diretores técnicos e operacionais, que por sua vez lideram coordenadores de projetos e pessoas. Essa estrutura descentraliza as tomadas de decisão sobre a execução técnica dos analistas e desenvolvedores. A grande vantagem desse arranjo híbrido, conforme a literatura de Burns e Stalker, é a flexibilidade operacional extrema e a alta velocidade de inovação técnica para responder a demandas complexas de projetos. No entanto, a desvantagem reside na ambiguidade de papéis em momentos de pico de atividade e na dispersão dos fluxos de autoridade. Para mitigar isso, a empresa utiliza metas e OKRs. Alternativamente, a literatura propõe estruturas puramente mecanicistas com hierarquias rígidas e regras burocráticas estritas. Em nosso campo de tecnologia da informação, a adoção de um estilo puramente mecanicista sufocaria a autonomia dos programadores, destruindo o engajamento. Uma estrutura puramente orgânica, por sua vez, criaria caos e vulnerabilidade regulatória frente à LGPD. Portanto, o estilo híbrido ágil adotado é a escolha mais lógica e racional para as contingências do negócio. Recomendamos apenas institucionalizar squads temporários focados em projetos específicos com o papel de Product Owner explicitamente definido para refinar o escopo de reporte tático e as atribuições funcionais da equipe técnica no dia a dia operante.
+                                      </p>
+                                    </div>
+                                  )}
 
-                                    {activeReportSection === 7 && (
-                                      <div className="animate-fade-in space-y-3">
-                                        <h4 className="text-[12px] font-mono font-bold text-[#5dcaa5] uppercase tracking-wider pb-1.5 border-b border-white/5">7. Sistemas de Controle Organizacional</h4>
-                                        <p className="text-[10.5px] text-white/80 leading-relaxed font-sans text-justify">
-                                          Os sistemas de controle organizacional da Nossa Consultoria BI misturam ferramentas formais racionais com mecanismos informais comportamentais. No pilar racional (mecanicista), a empresa baseia-se em OKRs trimestrais formais e no controle rígido de SLAs de projetos técnicos e faturamento mensal. Esse tipo de controle sobre os outputs é vital para garantir previsibilidade e mensurar o retorno. No entanto, no controle de processos internos e comportamento do time, a consultoria apoia-se em controles naturais e informais (orgânicos). Estes rituais compreendem reuniões de feedback recorrentes baseadas na metodologia SBI (Situação-Comportamento-Impacto) e no contrato de aliança estabelecido cooperativamente. A teoria de Ouchi aponta que controles de clã (informais) geram alta confiança mútua e reduzem o microgerenciamento restritivo. A nossa proposta para melhorar a eficácia reside na integração tecnológica de dashboards de performance transparentes, como no SIG Pessoas, onde o colaborador visualiza suas próprias métricas de engajamento de forma assíncrona. A adoção de controles comportamentais sistematizados, sem caráter punitivo, ajuda os profissionais de BI a calibrar suas tarefas e prioridades em tempo real, gerando eficácia de entregas e alta segurança psicológica. O alinhamento automatizado de metas reduz em até 40% a necessidade de reuniões de alinhamento desnecessárias, diminuindo os custos invisíveis operacionais e otimizando a energia da liderança de pessoas. Portanto, robustecer as ferramentas de telemetria sem engessar a rotina ágil é a melhor avenida estratégica para alcançar os objetivos organizacionais com a máxima eficácia e harmonia corporativa.
-                                        </p>
-                                      </div>
-                                    )}
+                                  {activeReportSection === 7 && (
+                                    <div className="animate-fade-in space-y-3">
+                                      <h4 className="text-[12px] font-mono font-bold text-[#5dcaa5] uppercase tracking-wider pb-1.5 border-b border-white/5">7. Sistemas de Controle Organizacional</h4>
+                                      <p className="text-[10.5px] text-white/80 leading-relaxed font-sans text-justify">
+                                        Os sistemas de controle organizacional da Nossa Consultoria BI misturam ferramentas formais racionais com mecanismos informais comportamentais. No pilar racional (mecanicista), a empresa baseia-se em OKRs trimestrais formais e no controle rígido de SLAs de projetos técnicos e faturamento mensal. Esse tipo de controle sobre os outputs é vital para garantir previsibilidade e mensurar o retorno. No entanto, no controle de processos internos e comportamento do time, a consultoria apoia-se em controles naturais e informais (orgânicos). Estes rituais compreendem reuniões de feedback recorrentes baseadas na metodologia SBI (Situação-Comportamento-Impacto) e no contrato de aliança estabelecido cooperativamente. A teoria de Ouchi aponta que controles de clã (informais) geram alta confiança mútua e reduzem o microgerenciamento restritivo. A nossa proposta para melhorar a eficácia reside na integração tecnológica de dashboards de performance transparentes, como no SIG Pessoas, onde o colaborador visualiza suas próprias métricas de engajamento de forma assíncrona. A adoção de controles comportamentais sistematizados, sem caráter punitivo, ajuda os profissionais de BI a calibrar suas tarefas e prioridades em tempo real, gerando eficácia de entregas e alta segurança psicológica. O alinhamento automatizado de metas reduz em até 40% a necessidade de reuniões de alinhamento desnecessárias, diminuindo os custos invisíveis operacionais e otimizando a energia da liderança de pessoas. Portanto, robustecer as ferramentas de telemetria sem engessar a rotina ágil é a melhor avenida estratégica para alcançar os objetivos organizacionais com a máxima eficácia e harmonia corporativa.
+                                      </p>
+                                    </div>
+                                  )}
 
-                                    {activeReportSection === 8 && (
-                                      <div className="animate-fade-in space-y-3.5">
-                                        <h4 className="text-[12px] font-mono font-bold text-[#5dcaa5] uppercase tracking-wider pb-1.5 border-b border-white/5">8. Conclusões e Recomendações de Consultoria</h4>
-                                        
-                                        <div className="space-y-3">
-                                          {[
-                                            {
-                                              title: 'Recomendação 1: Padronização de Rituais via SIG Pessoas',
-                                              text: 'Recomendamos formalizar reuniões 1:1 quinzenais pautadas no modelo de feedback estruturado SBI (Situação, Comportamento e Impacto). A fundamentação teórica de Daniel Goleman ensina que a inteligência emocional coletiva e a clareza de atribuições nas equipes são alimentadas por ciclos frequentes de alinhamento. A ferramenta SIG Pessoas automatiza o registro histórico desses logs, permitindo que a coordenação de pessoas acompanhe as tendências de desenvolvimento socioemocional e crie planos de desenvolvimento individual (PDI) específicos. Isso elimina as avaliações subjetivas vagas que geram desconfiança, otimizando o engajamento e a harmonia operacional da consultoria técnica.'
-                                            },
-                                            {
-                                              title: 'Recomendação 2: Implantação de Squads Matriciais com POs',
-                                              text: 'Sugerimos estruturar a consultoria em squads (times multidisciplinares temporários) com autonomia técnica de ponta a ponta para cada projeto corporativo. Cada squad contará com um Product Owner (PO) tático encarregado de intermediar o escopo diretamente com o cliente e calibrações. A fundamentação teórica de contingência de Lawrence e Lorsch demonstra que empresas ágeis em ambientes mutáveis precisam de alta differentiation e integração. O PO reduz a ambiguidade de papéis que sobrecarrega os diretores técnicos, provendo velocidade operacional, clareza nos prazos e controle rígido das entregas contratadas via SLAs formais.'
-                                            },
-                                            {
-                                              title: 'Recomendação 3: Telemetria de OKRs e Governança LGPD Integrada',
-                                              text: 'Propomos integrar as metas estratégicas e OKRs corporativos em um dashboard executivo automatizado com trilhas de auditoria contínua de acessos aos bancos de dados de saúde e pessoas. A fundamentação teórica de controle cibernético de Wiener estabelece que sistemas complexos necessitam de loops de feedback de dados constantes para correções de desvios. O uso de criptografia e logs de auditoria automatizados assegura conformidade estrita com a LGPD e mitiga passivos regulatórios catastróficos, ao mesmo tempo em que a visibilidade pública interna das metas reduz o microgerenciamento e orienta a equipe de BI rumo ao alto desempenho data-driven.'
-                                            }
-                                          ].map((r, idx) => (
-                                            <div key={idx} className="p-3 bg-white/[0.02] border border-white/5 hover:border-[#5dcaa5]/30 rounded-xl transition-all">
-                                              <span className="text-[9.5px] font-mono text-[#d4b87a] font-bold block mb-1">{r.title}</span>
-                                              <p className="text-[9.5px] text-white/70 leading-relaxed font-sans text-justify">{r.text}</p>
-                                            </div>
-                                          ))}
-                                        </div>
+                                  {activeReportSection === 8 && (
+                                    <div className="animate-fade-in space-y-3.5">
+                                      <h4 className="text-[12px] font-mono font-bold text-[#5dcaa5] uppercase tracking-wider pb-1.5 border-b border-white/5">8. Conclusões e Recomendações de Consultoria</h4>
+                                      
+                                      <div className="space-y-3">
+                                        {[
+                                          {
+                                            title: 'Recomendação 1: Padronização de Rituais via SIG Pessoas',
+                                            text: 'Recomendamos formalizar reuniões 1:1 quinzenais pautadas no modelo de feedback estruturado SBI (Situação, Comportamento e Impacto). A fundamentação teórica de Daniel Goleman ensina que a inteligência emocional coletiva e a clareza de atribuições nas equipes são alimentadas por ciclos frequentes de alinhamento. A ferramenta SIG Pessoas automatiza o registro histórico desses logs, permitindo que a coordenação de pessoas acompanhe as tendências de desenvolvimento socioemocional e crie planos de desenvolvimento individual (PDI) específicos. Isso elimina as avaliações subjetivas vagas que geram desconfiança, otimizando o engajamento e a harmonia operacional da consultoria técnica.'
+                                          },
+                                          {
+                                            title: 'Recomendação 2: Implantação de Squads Matriciais com POs',
+                                            text: 'Sugerimos estruturar a consultoria em squads (times multidisciplinares temporários) com autonomia técnica de ponta a ponta para cada projeto corporativo. Cada squad contará com um Product Owner (PO) tático encarregado de intermediar o escopo diretamente com o cliente e calibrações. A fundamentação teórica de contingência de Lawrence e Lorsch demonstra que empresas ágeis em ambientes mutáveis precisam de alta differentiation e integração. O PO reduz a ambiguidade de papéis que sobrecarrega os diretores técnicos, provendo velocidade operacional, clareza nos prazos e controle rígido das entregas contratadas via SLAs formais.'
+                                          },
+                                          {
+                                            title: 'Recomendação 3: Telemetria de OKRs e Governança LGPD Integrada',
+                                            text: 'Propomos integrar as metas estratégicas e OKRs corporativos em um dashboard executivo automatizado com trilhas de auditoria contínua de acessos aos bancos de dados de saúde e pessoas. A fundamentação teórica de controle cibernético de Wiener estabelece que sistemas complexos necessitam de loops de feedback de dados constantes para correções de desvios. O uso de criptografia e logs de auditoria automatizados assegura conformidade estrita com a LGPD e mitiga passivos regulatórios catastróficos, ao mesmo tempo em que a visibilidade pública interna das metas reduz o microgerenciamento e orienta a equipe de BI rumo ao alto desempenho data-driven.'
+                                          }
+                                        ].map((r, idx) => (
+                                          <div key={idx} className="p-3 bg-white/[0.02] border border-white/5 hover:border-[#5dcaa5]/30 rounded-xl transition-all">
+                                            <span className="text-[9.5px] font-mono text-[#d4b87a] font-bold block mb-1">{r.title}</span>
+                                            <p className="text-[9.5px] text-white/70 leading-relaxed font-sans text-justify">{r.text}</p>
+                                          </div>
+                                        ))}
                                       </div>
-                                    )}
-                                  </div>
+                                    </div>
+                                  )}
                                 </div>
                               </div>
                             </div>
