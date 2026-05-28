@@ -1214,7 +1214,7 @@ function NASA6DSimulator({ dbId, chapterIndex, theme }: { dbId: string; chapterI
     }, 1200)
   }
 
-  const has6DSimulations = dbId.startsWith('N1-') || dbId.startsWith('P2-') || dbId === 'M4-S1' || dbId === 'M1-S1' || dbId === 'M1-S2' || dbId === 'M1-S3' || dbId === 'M2-S1' || dbId === 'M2-S2' || dbId === 'M2-S3' || dbId === 'M3-S1' || dbId === 'M3-S2' || dbId === 'M4-T1-S9' || dbId === 'M4-S2' || dbId === 'M4-S3' || dbId === 'M5-S1' || dbId === 'M5-S2' || dbId === 'M5-S3' || dbId === 'M6-S1'
+  const has6DSimulations = (dbId.startsWith('N1-') && (dbId !== 'N1-S1' || chapterIndex === 0)) || dbId.startsWith('P2-') || dbId === 'M4-S1' || dbId === 'M1-S1' || dbId === 'M1-S2' || dbId === 'M1-S3' || dbId === 'M2-S1' || dbId === 'M2-S2' || dbId === 'M2-S3' || dbId === 'M3-S1' || dbId === 'M3-S2' || dbId === 'M4-T1-S9' || dbId === 'M4-S2' || dbId === 'M4-S3' || dbId === 'M5-S1' || dbId === 'M5-S2' || dbId === 'M5-S3' || dbId === 'M6-S1'
 
   return (
     <div className="flex flex-col justify-between h-full w-full space-y-4">
@@ -1250,10 +1250,7 @@ function NASA6DSimulator({ dbId, chapterIndex, theme }: { dbId: string; chapterI
                 <h5 className="text-xs font-bold text-white/95 mt-1">
                 {dbId === 'N1-S1' && (
                   <>
-                    {chapterIndex === 0 && 'Bomba Na⁺/K⁺-ATPase Interativa'}
-                    {chapterIndex === 1 && 'Potencial de Ação Interativo'}
-                    {chapterIndex === 2 && 'Topologia do Sistema Nervoso Central'}
-                    {chapterIndex === 3 && 'Predição Heurística e Free Energy'}
+                    {chapterIndex === 0 && (selectedSim === 'pump' ? 'Bomba Na⁺/K⁺-ATPase Interativa' : 'Potencial de Ação Interativo')}
                   </>
                 )}
                 {dbId === 'N1-S2' && (
@@ -1970,7 +1967,7 @@ function ExecutiveStudyBriefing({
                   </div>
 
                   {/* Right Column: Simulation Board & Pillars inside the content */}
-                  <div className="lg:col-span-5 p-6 rounded-2xl bg-white/[0.015] border border-white/[0.04] backdrop-blur-md relative overflow-hidden flex flex-col justify-between h-[600px] lg:h-[720px]"
+                  <div className="lg:col-span-5 p-6 rounded-2xl bg-white/[0.015] border border-white/[0.04] backdrop-blur-md relative overflow-hidden flex flex-col justify-between h-[720px] lg:h-[840px]"
                     style={{ boxShadow: '0 8px 24px rgba(0,0,0,0.15)' }}
                   >
                     <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{
