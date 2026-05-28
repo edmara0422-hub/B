@@ -110,6 +110,24 @@ export const M1_CONTENT: CadernoModuleContent = {
                 ],
                 highlight: 'Sistema Nervoso = SNC + SNP — sistema integrado de detecção, processamento e resposta.',
               },
+              {
+                title: 'Estruturas Periféricas (Gânglios e Plexos)',
+                bullets: [
+                  'Receptores periféricos especializados monitoram constantemente dores, tato, pressões e temperaturas',
+                  'Nervos: feixes de axônios e bainhas que conectam o SNC à periferia (12 cranianos e 31 espinais)',
+                  'Gânglios: coleções de corpos neuronais extracelulares; Plexos: redes axonais organizadas',
+                ],
+                highlight: 'As vias aferentes entram nos gânglios da raiz dorsal antes de alcançar o SNC.',
+              },
+              {
+                title: 'Divisão Autônoma & O Sistema Entérico (SNE)',
+                bullets: [
+                  'SNA involuntário dividido em Simpático (luta/fuga física) e Parassimpático (digestão/repouso)',
+                  'SNE composto por plexos nas paredes gastrointestinais com circuitos de controle locais autônomos',
+                  'O SNE executa reflexos digestórios locais, podendo ser regulado pelo SNC via SNA',
+                ],
+                highlight: 'O sistema entérico funciona independentemente através de reflexos locais integrados.',
+              },
             ],
           },
           {
