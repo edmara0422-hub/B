@@ -45,6 +45,7 @@ import {
   calcPF,
   calcPmusc,
   calcRSBI,
+  calcShockIndices,
   emptyPatient,
   interpP01,
   interpPF,
@@ -234,6 +235,7 @@ const LAB_FIELDS = [
   { key: 'ureia', label: 'Ureia', unit: 'mg/dL', ref: '15-40' },
   { key: 'k', label: 'K+', unit: 'mEq/L', ref: '3.5-5.0' },
   { key: 'na', label: 'Na+', unit: 'mEq/L', ref: '135-145' },
+  { key: 'cl', label: 'Cl-', unit: 'mEq/L', ref: '98-107' },
   { key: 'lac', label: 'Lac', unit: 'mmol/L', ref: '<2.0' },
   { key: 'pcr', label: 'PCR', unit: 'mg/L', ref: '<5' },
   { key: 'bt', label: 'BT', unit: 'mg/dL', ref: '<1.2' },
@@ -1041,7 +1043,7 @@ function normalizeRecord(raw: Partial<ICURecord> | null | undefined): ICURecord 
     updatedAt: raw?.updatedAt || raw?.createdAt || timestamp,
     examesLabList: Array.isArray(raw?.examesLabList)
       ? raw.examesLabList.map((exam) => {
-        const labDefaults: LabExamEntry = { data: '', hb: '', ht: '', leuco: '', plaq: '', creat: '', ureia: '', k: '', na: '', lac: '', pcr: '', bt: '', alb: '', tgo: '', tgp: '', inr: '' }
+        const labDefaults: LabExamEntry = { data: '', hb: '', ht: '', leuco: '', plaq: '', creat: '', ureia: '', k: '', na: '', cl: '', lac: '', pcr: '', bt: '', alb: '', tgo: '', tgp: '', inr: '' }
         return { ...labDefaults, ...(exam ?? {}) }
       })
       : [],
@@ -1347,6 +1349,14 @@ function analyzeLabExam(exam: LabExamEntry) {
     else if (sodium > 145) pushItem('Na+', 'Hipernatremia', yellow)
     else pushItem('Na+', 'Normal', green)
   }
+  const chlorine = parseNumber(exam.cl)
+  if (exam.cl) {
+    if (chlorine < 90) pushItem('Cl-', 'CRITICO — alcalose contrativa', red)
+    else if (chlorine < 98) pushItem('Cl-', 'Hipocloremia', yellow)
+    else if (chlorine > 115) pushItem('Cl-', 'CRITICO — acidose hipercloremica', red)
+    else if (chlorine > 107) pushItem('Cl-', 'Hipercloremia', yellow)
+    else pushItem('Cl-', 'Normal', green)
+  }
 
   // ── Metabolico e Inflamatorio ──
   const lactate = parseNumber(exam.lac)
@@ -1427,6 +1437,16 @@ function analyzeLabExam(exam: LabExamEntry) {
 
   if (sodium && sodium < 125) alerts.push({ text: 'Na+ < 125: HIPONATREMIA GRAVE. Risco de edema cerebral e convulsoes.', color: red })
   else if (sodium && sodium > 155) alerts.push({ text: 'Na+ > 155: HIPERNATREMIA GRAVE. Desidratacao celular grave.', color: red })
+
+  if (chlorine && chlorine < 98) alerts.push({ text: 'Cl- < 98: hipocloremia. Risco de alcalose metabolica contrativa, comum com diureticos.', color: yellow })
+  else if (chlorine && chlorine > 107) alerts.push({ text: 'Cl- > 107: hipercloremia. Risco de acidose metabolica hipercloremica (induzida por SF 0.9% ou perdas renais/digestivas).', color: yellow })
+
+  if (sodium && chlorine) {
+    const agRaw = sodium - (chlorine + 24)
+    if (agRaw > 12) {
+      alerts.push({ text: `⚠ ANION GAP ELEVADO (${agRaw.toFixed(0)} mEq/L): Sugere acumulo de acidos organicos. Checar acidose metabolica, lactato, cetoacidose e funcao renal.`, color: orange })
+    }
+  }
 
   // Metabolico
   if (lactate && lactate >= 4) alerts.push({ text: 'Lactato >= 4: ACIDOSE LACTICA. Falencia circulatoria e hipoperfusao grave.', color: red })
@@ -3929,6 +3949,9 @@ export function ProntuarioSystemPanel() {
       rass: currentRecord.rass ? parseNumber(currentRecord.rass) : undefined,
       temSedativoAtivo: sedAtivosGaso.length > 0,
       temBNMAtivo: bnmAtivosGaso.length > 0,
+      na: lastLab ? parseNumber(lastLab.na) : undefined,
+      cl: lastLab ? parseNumber(lastLab.cl) : undefined,
+      alb: lastLab ? parseNumber(lastLab.alb) : undefined,
     })
     const p01Interp = currentRecord.p01 ? interpP01(parseNumber(currentRecord.p01)) : null
     const poccInterp = currentRecord.pocc ? interpPocc(parseNumber(currentRecord.pocc)) : null
@@ -3938,6 +3961,10 @@ export function ProntuarioSystemPanel() {
       currentRecord.pas && currentRecord.pad
         ? Math.round((parseNumber(currentRecord.pad) * 2 + parseNumber(currentRecord.pas)) / 3)
         : null
+    const fcVal = currentRecord.fc ? parseNumber(currentRecord.fc) : 0
+    const pasVal = currentRecord.pas ? parseNumber(currentRecord.pas) : 0
+    const pamVal = currentRecord.pam ? parseNumber(currentRecord.pam) : pamAuto || 0
+    const shockIndices = calcShockIndices(fcVal, pasVal, pamVal)
     const balance = summarizeBalance(currentRecord)
     const balanceDetailed = summarizeBalanceDetailed(currentRecord)
     const mrc = summarizeMrc(currentRecord)
@@ -4040,6 +4067,7 @@ export function ProntuarioSystemPanel() {
       pmusc,
       pmuscInterp,
       pamAuto,
+      shockIndices,
       balance,
       balanceDetailed,
       mrc,
@@ -4079,20 +4107,131 @@ export function ProntuarioSystemPanel() {
     const isIntubated = currentRecord.tipoVia === 'TOT' || currentRecord.tipoVia === 'TNT'
     const isTQT = currentRecord.tipoVia?.startsWith('TQT')
     const onVM = isIntubated || (isTQT && currentRecord.tipoVia === 'TQT-VM')
-    const glasgowNum = typeof calculations.glasgow?.total === 'number' ? calculations.glasgow.total : 0
+    const glasgowNum = typeof calculations.glasgow?.total === 'number' ? calculations.glasgow.total : parseInt(String(calculations.glasgow?.total || '0'), 10)
+    const rassLevel = currentRecord.rass ? parseInt(currentRecord.rass, 10) : null
+    const bnmAtivos = currentRecord.bnmList?.filter(b => !b.suspensao && b.droga && b.atual && parseFloat(b.atual) > 0) || []
+    const sedAtivos = currentRecord.sedativos?.filter(s => !s.suspensao && s.droga && s.atual && parseFloat(s.atual) > 0) || []
+    const lastLab = currentRecord.examesLabList?.length ? currentRecord.examesLabList[currentRecord.examesLabList.length - 1] : null
 
+    // ══════════════════════════════════════════════════
     // NEURO
+    // ══════════════════════════════════════════════════
     if (glasgowNum > 0 && glasgowNum < 8) neuro.push({ text: `Glasgow ${calculations.glasgow?.total} — rebaixado`, color: '#fb923c', action: 'Sem protecao de VA. Manter VM.' })
     if (glasgowNum >= 8 && onVM) neuro.push({ text: `Glasgow ${calculations.glasgow?.total} — favoravel`, color: '#4ade80' })
     const sedReducing = currentRecord.sedativos?.some((s: SedativeEntry) => calcDrugTrend(s.inicio, s.atual) === 'reduziu')
     if (sedReducing) neuro.push({ text: 'Sedativo em reducao — avaliar despertar diario', color: '#4ade80', action: 'Considerar janela de sedacao, avaliar RASS e drive' })
 
-    // CARDIO
-    const dvaActive = currentRecord.dvaList?.some((d: DVAEntry) => !d.suspensao && d.dose && parseFloat(d.dose) > 0)
-    if (dvaActive) cardio.push({ text: 'DVA ativa — monitorar PAM, lactato, perfusao', color: '#fb923c' })
-    if (calculations.balance?.text) cardio.push({ text: calculations.balance.text, color: calculations.balance.color })
+    // Segurança Extrema Sedação-BNM
+    if (bnmAtivos.length > 0 && (sedAtivos.length === 0 || (rassLevel !== null && rassLevel >= -2))) {
+      neuro.push({
+        text: "⚠ RISCO EXTREMO: DESPERTAR SOB BLOQUEIO (Paralisia Consciente)",
+        color: "#f87171",
+        action: "Paciente em uso de Bloqueador Neuromuscular sem sedacao profunda adequada. Risco iminente de estresse psicologico extremo. Aumentar sedacao imediatamente e garantir RASS -4/-5."
+      })
+    }
 
+    // Agitação vs VM
+    if (onVM && rassLevel !== null && rassLevel > 0) {
+      neuro.push({
+        text: `RASS +${rassLevel} (Agitacao) em Ventilação Mecânica`,
+        color: "#fb923c",
+        action: "Alto risco de auto-extubacao, assincronia e lesao de VA. Checar fixacao do TOT, analgesia (CPOT) e dor."
+      })
+    }
+
+    // Coma sem Sedativos
+    if (rassLevel !== null && rassLevel <= -4 && sedAtivos.length === 0) {
+      neuro.push({
+        text: `Coma profundo (RASS ${rassLevel}) sem sedativos ativos`,
+        color: "#fb923c",
+        action: "Investigar rebaixamento neurologico primario (lesao de tronco, AVC, disturbio metabolico agudo) ou eliminacao lenta/sedacao residual."
+      })
+    }
+
+    // Risco de Herniação Cerebral
+    const anisocoria = currentRecord.pupilaDTam && currentRecord.pupilaETam && currentRecord.pupilaDTam !== currentRecord.pupilaETam
+    const pupilNotReac = currentRecord.pupilaDReag === 'nao' || currentRecord.pupilaEReag === 'nao'
+    if ((anisocoria || pupilNotReac) && glasgowNum > 0 && glasgowNum < 9) {
+      neuro.push({
+        text: "⚠ RISCO DE HERNIAÇÃO CEREBRAL / HIC",
+        color: "#f87171",
+        action: "Anisocoria ou pupila nao reativa associada a rebaixamento de consciencia. Acionar Neurocirurgia urgente, cabeceira 30-45°, evitar hipotensao."
+      })
+    }
+
+    // ══════════════════════════════════════════════════
+    // CARDIO
+    // ══════════════════════════════════════════════════
+    const dvaActive = currentRecord.dvaList?.some((d: DVAEntry) => !d.suspensao && d.dose && parseFloat(d.dose) > 0)
+    if (dvaActive) {
+      cardio.push({ text: 'DVA ativa — monitorar PAM, lactato, perfusao', color: '#fb923c' })
+    }
+    if (calculations.balance?.text) {
+      cardio.push({ text: calculations.balance.text, color: calculations.balance.color })
+    }
+
+    // Índice de Choque (SI)
+    if (calculations.shockIndices?.si && calculations.shockIndices.si > 0.9) {
+      cardio.push({
+        text: calculations.shockIndices.siInterp?.t || `Indice de Choque elevado (${calculations.shockIndices.si.toFixed(2)})`,
+        color: calculations.shockIndices.siInterp?.c || '#f87171',
+        action: "Sugere choque oculto ou instabilidade circulatoria. Avaliar TEC, lactato e debito urinario."
+      })
+    }
+    // Índice de Choque Modificado (MSI)
+    if (calculations.shockIndices?.msi && calculations.shockIndices.msi > 1.3) {
+      cardio.push({
+        text: calculations.shockIndices.msiInterp?.t || `Indice de Choque Modificado elevado (${calculations.shockIndices.msi.toFixed(2)})`,
+        color: calculations.shockIndices.msiInterp?.c || '#f87171',
+        action: "Correlacao com mortalidade elevada em UTI. Investigar causas hemodinamicas."
+      })
+    }
+
+    // Choque Refratário / Noradrenalina alta
+    const noraEntry = currentRecord.dvaList?.find(d => !d.suspensao && d.droga?.toLowerCase().includes('nora') && d.dose)
+    const noraDose = noraEntry ? parseFloat(noraEntry.dose) : 0
+    const pamValue = currentRecord.pam ? parseFloat(currentRecord.pam) : (calculations.pamAuto || 0)
+    if (noraDose > 0.2 && pamValue > 0 && pamValue < 65) {
+      cardio.push({
+        text: "⚠ CHOQUE REFRATÁRIO",
+        color: "#f87171",
+        action: `PAM ${pamValue} mmHg sob vasopressor elevado (Nora ${noraDose} mcg/kg/min). Avaliar 2º vasopressor (Vasopressina) e corticoide (Hidrocortisona).`
+      })
+    } else if (noraDose > 0.2) {
+      cardio.push({
+        text: `Vasopressor em alta dose (Nora ${noraDose} mcg/kg/min)`,
+        color: "#fb923c",
+        action: "Meta-estimulação alfa-1 importante. Risco de isquemia de extremidades."
+      })
+    }
+
+    // Adrenalina & Lactato
+    const adreEntry = currentRecord.dvaList?.find(d => !d.suspensao && d.droga?.toLowerCase().includes('adre') && d.dose)
+    const hasAdre = adreEntry ? parseFloat(adreEntry.dose) > 0 : false
+    const lactatoValue = currentRecord.gasoLactato ? parseFloat(currentRecord.gasoLactato) : (lastLab?.lac ? parseFloat(lastLab.lac) : 0)
+    if (hasAdre && lactatoValue > 2) {
+      cardio.push({
+        text: `Hiperlactatemia induzida por Adrenalina (Lac ${lactatoValue} mmol/L)`,
+        color: "#facc15",
+        action: "Nem todo aumento de lactato reflete má perfusao — Adrenalina induz glicólise aeróbia via beta-2. Checar ScvO2 ou delta CO2."
+      })
+    }
+
+    // Dobutamina & Taquicardia
+    const dobutaEntry = currentRecord.dvaList?.find(d => !d.suspensao && d.droga?.toLowerCase().includes('dobu') && d.dose)
+    const hasDobuta = dobutaEntry ? parseFloat(dobutaEntry.dose) > 0 : false
+    const fcValue = currentRecord.fc ? parseInt(currentRecord.fc, 10) : 0
+    if (hasDobuta && fcValue > 110) {
+      cardio.push({
+        text: `Taquicardia (FC ${fcValue}) induzida por Dobutamina`,
+        color: "#fb923c",
+        action: "Meta-estimulação beta-1 importante. Risco de arritmias ou isquemia miocardiaca. Avaliar reducao da dose."
+      })
+    }
+
+    // ══════════════════════════════════════════════════
     // RESP
+    // ══════════════════════════════════════════════════
     if (onVM && !currentRecord.modoVM) pendencias.push({ text: 'Sem modo VM preenchido', color: '#60a5fa', action: 'Preencher parametros de VM' })
     if (calculations.dp && calculations.dp > 15) resp.push({ text: `DP ${calculations.dp.toFixed(0)} cmH₂O (> 15) — risco VILI`, color: '#f87171', action: 'Reduzir VC ou ajustar PEEP' })
     if (calculations.gaso?.full && calculations.gaso.full !== 'Normal') resp.push({ text: `Gaso: ${calculations.gaso.full}`, color: '#fb923c' })
@@ -4100,10 +4239,47 @@ export function ProntuarioSystemPanel() {
     if (calculations.daysTOT && calculations.daysTOT >= 7 && isIntubated) resp.push({ text: `D${calculations.daysTOT} TOT`, color: '#f87171', action: calculations.daysTOT >= 14 ? 'Considerar TQT' : 'Avaliar TQT se VM prolongada' })
     if (calculations.mechanicalPower && calculations.mechanicalPower > 17) resp.push({ text: `MP ${calculations.mechanicalPower.toFixed(1)} J/min (> 17) — risco VILI`, color: '#f87171' })
 
+    // Complacência Estática reduzida
+    if (calculations.cest && calculations.cest < 30) {
+      resp.push({
+        text: `Complacencia Estatica reduzida (${calculations.cest.toFixed(1)} mL/cmH₂O)`,
+        color: "#fb923c",
+        action: "Sugere pulmão pequeno ou congestão severa. Manter estratégia protetiva."
+      })
+    }
+
+    // Cuff Leak Test e VM Prolongada
+    const hasCuffLeakDiff = currentRecord.weanCuffLeakDiff && parseFloat(currentRecord.weanCuffLeakDiff) > 0
+    if (hasCuffLeakDiff) {
+      const cuffDiff = parseFloat(currentRecord.weanCuffLeakDiff || '0')
+      if (cuffDiff < 110) {
+        resp.push({
+          text: `⚠ CUFF LEAK POSITIVO (fluxo residual ${cuffDiff} mL)`,
+          color: "#f87171",
+          action: "Alto risco de estridor e edema de glote pos-extubacao. Considerar metilprednisolona/dexametasona preventiva 4-6h antes."
+        })
+      } else {
+        resp.push({
+          text: `Cuff Leak Test adequado (${cuffDiff} mL) — baixo risco de estridor`,
+          color: "#4ade80"
+        })
+      }
+    } else if (calculations.daysTOT && calculations.daysTOT >= 7 && isIntubated) {
+      resp.push({
+        text: `TOT prolongado (D${calculations.daysTOT}) sem Cuff Leak Test`,
+        color: "#facc15",
+        action: "Essencial realizar teste de balonete (cuff leak) antes da extubacao para afastar edema glotico."
+      })
+    }
+
+    // ══════════════════════════════════════════════════
     // MOTORA
+    // ══════════════════════════════════════════════════
     if (calculations.mrc) motora.push({ text: calculations.mrc.text, color: calculations.mrc.color })
 
+    // ══════════════════════════════════════════════════
     // PENDENCIAS
+    // ══════════════════════════════════════════════════
     const isRE = currentRecord.tipoVia?.startsWith('RE')
     if (isRE && currentRecord.dataTOT && !currentRecord.dataExtubacao) pendencias.push({ text: 'Via aerea RE sem data de extubacao', color: '#facc15' })
     if (glasgowNum >= 8 && onVM && (currentRecord.p01 || currentRecord.pocc)) pendencias.push({ text: 'Glasgow + drive presentes — checar elegibilidade desmame', color: '#4ade80' })
@@ -4283,6 +4459,7 @@ export function ProntuarioSystemPanel() {
           ureia: '',
           k: '',
           na: '',
+          cl: '',
           lac: '',
           pcr: '',
           bt: '',

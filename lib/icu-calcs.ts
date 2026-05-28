@@ -37,6 +37,7 @@ export type LabExamEntry = {
   ureia: string
   k: string
   na: string
+  cl: string
   lac: string
   pcr: string
   bt: string
@@ -45,6 +46,7 @@ export type LabExamEntry = {
   tgp: string
   inr: string
 }
+
 
 export type ImageExamEntry = {
   data: string
@@ -319,6 +321,10 @@ export function analisarGaso(params: {
   rass?: number
   temSedativoAtivo?: boolean
   temBNMAtivo?: boolean
+  // Eletrolitos e albumina para Anion Gap
+  na?: number
+  cl?: number
+  alb?: number
 }): { tipo: string; origem: string; comp: string; cor: string; wintersDetail: string; full: string; insights: string[] } | null {
   const pH = Number(params.gasoPH)
   const co2 = Number(params.gasoPaCO2)
@@ -412,7 +418,7 @@ export function analisarGaso(params: {
       const expChronic = 24 - delta * 0.5
       if (hco3 <= expChronic + 2) comp = 'Cronica compensada (rim excretando HCO3)'
       else if (hco3 <= expAcute + 2) comp = 'Aguda'
-      else comp = 'Mista — alcalose metabolica associada'
+      else comp = 'Mista — alcalose respiratoria associada'
     } else if (hasMetDist) {
       origem = 'Metabolica'
       const expCO2 = 40 + 0.7 * (hco3 - 24)
@@ -448,8 +454,38 @@ export function analisarGaso(params: {
   // ══════════════════════════════════════════════════
   const insights: string[] = []
 
-  // Reminder for Anion Gap in Metabolic Acidosis
-  if (tipo === 'Acidose' && origem === 'Metabolica') {
+  // Anion Gap & Delta-Delta
+  const naVal = Number(params.na || 0)
+  const clVal = Number(params.cl || 0)
+  const albVal = Number(params.alb || 0)
+
+  if (naVal > 0) {
+    const clEfetivo = clVal > 0 ? clVal : 104
+    const agRaw = naVal - (clEfetivo + hco3)
+    let agCorr = agRaw
+    const clEstimadoNota = clVal > 0 ? '' : ' (estimando Cl- fisiologico de 104)'
+
+    if (albVal > 0 && albVal < 4.5) {
+      agCorr = agRaw + 2.5 * (4.5 - albVal)
+    }
+
+    insights.push(`Anion Gap: ${agCorr.toFixed(1)} mEq/L${clEstimadoNota}. (Referencia: 8-12 mEq/L). ${agCorr > 12 ? 'Anion Gap ELEVADO — acúmulo de ácidos não mensurados (MUDPILES).' : 'Anion Gap Normal.'}`)
+
+    if (tipo === 'Acidose' && origem === 'Metabolica' && agCorr > 12) {
+      const deltaAG = agCorr - 12
+      const deltaHCO3 = 24 - hco3
+      if (deltaHCO3 > 0) {
+        const ratio = deltaAG / deltaHCO3
+        let ratioInterp = ''
+        if (ratio < 0.4) ratioInterp = 'Acidose Metabólica Hiperclorêmica Pura (AG normal)'
+        else if (ratio < 0.8) ratioInterp = 'Acidose Mista (AG elevado + hiperclorêmica)'
+        else if (ratio <= 2.0) ratioInterp = 'Acidose Metabólica Pura com AG elevado (ex: lática, cetoacidose)'
+        else ratioInterp = 'Acidose Metabólica com AG elevado + Alcalose Metabólica associada'
+        
+        insights.push(`Relacao Delta-Delta (ΔAG/ΔHCO3): ${ratio.toFixed(2)} — ${ratioInterp}`)
+      }
+    }
+  } else if (tipo === 'Acidose' && origem === 'Metabolica') {
     insights.push(`Sempre calcular o ANION GAP (Na - [Cl + HCO3]) para diferenciar causas (AG Elevado: Sepse, Cetoacidose, IRA, Intoxicacoes; AG Normal: Perdas digestivas ou renais de HCO3).`)
   }
 
@@ -932,3 +968,41 @@ export function emptyPatient(): PatientData {
     condutas: '',
   }
 }
+
+export function calcShockIndices(fc: number, pas: number, pam: number): {
+  si: number | null
+  msi: number | null
+  siInterp: { t: string; c: string } | null
+  msiInterp: { t: string; c: string } | null
+} {
+  if (!fc || fc <= 0) return { si: null, msi: null, siInterp: null, msiInterp: null }
+  
+  let si: number | null = null
+  let siInterp: { t: string; c: string } | null = null
+  if (pas > 0) {
+    si = fc / pas
+    if (si > 0.9) {
+      siInterp = { t: `Choque Oculto / Iminencia de Colapso (SI ${si.toFixed(2)} > 0.9)`, c: '#f87171' }
+    } else if (si > 0.7) {
+      siInterp = { t: `Indice de Choque limitrofe (SI ${si.toFixed(2)})`, c: '#facc15' }
+    } else {
+      siInterp = { t: `Indice de Choque normal (SI ${si.toFixed(2)})`, c: '#4ade80' }
+    }
+  }
+  
+  let msi: number | null = null
+  let msiInterp: { t: string; c: string } | null = null
+  if (pam > 0) {
+    msi = fc / pam
+    if (msi > 1.3) {
+      msiInterp = { t: `Indice de Choque Modificado elevado (MSI ${msi.toFixed(2)} > 1.3) — risco UTI`, c: '#f87171' }
+    } else if (msi < 0.7) {
+      msiInterp = { t: `Indice de Choque Modificado baixo (MSI ${msi.toFixed(2)} < 0.7)`, c: '#facc15' }
+    } else {
+      msiInterp = { t: `Indice de Choque Modificado normal (MSI ${msi.toFixed(2)})`, c: '#4ade80' }
+    }
+  }
+  
+  return { si, msi, siInterp, msiInterp }
+}
+
