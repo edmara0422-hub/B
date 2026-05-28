@@ -166,65 +166,7 @@ export function NeuroActionPotentialSim({ className }: { className?: string }) {
     stateRef.current.voltageHistory = []
   }
 
-  // Draw membrane lipids wiggling (Brownian motion)
-  const drawMembraneLipids = useCallback(
-    (ctx: CanvasRenderingContext2D, w: number, h: number, memY: number, memH: number, time: number, cx: number, pumpW: number) => {
-      // Bilayer base
-      ctx.fillStyle = COL_MEMBRANE
-      ctx.fillRect(0, memY - memH / 2, w, memH)
 
-      ctx.strokeStyle = COL_MEMBRANE_EDGE
-      ctx.lineWidth = 1.5
-      ctx.beginPath()
-      ctx.moveTo(0, memY - memH / 2)
-      ctx.lineTo(w, memY - memH / 2)
-      ctx.moveTo(0, memY + memH / 2)
-      ctx.lineTo(w, memY + memH / 2)
-      ctx.stroke()
-
-      // wiggling phospholipids head and tails (premium detailed graphics)
-      ctx.fillStyle = 'rgba(56, 189, 248, 0.4)'
-      ctx.strokeStyle = 'rgba(56, 189, 248, 0.15)'
-      ctx.lineWidth = 1
-      
-      const spacing = 14
-      for (let x = spacing / 2; x < w; x += spacing) {
-        // Skip channel zones (Na+ channel on left-center, K+ channel on right-center)
-        if (x > cx - pumpW * 1.5 && x < cx + pumpW * 1.5) continue
-
-        const headWobble = Math.sin(time * 0.004 + x * 0.05) * 2
-
-        // Top heads
-        const topY = memY - memH / 2 + 4
-        ctx.beginPath()
-        ctx.arc(x, topY, 3, 0, Math.PI * 2)
-        ctx.fill()
-
-        // Top tails
-        ctx.beginPath()
-        ctx.moveTo(x, topY + 3)
-        ctx.quadraticCurveTo(x - 2 + headWobble, topY + 12, x + headWobble, topY + 20)
-        ctx.moveTo(x, topY + 3)
-        ctx.quadraticCurveTo(x + 2 - headWobble, topY + 10, x - 1 - headWobble, topY + 20)
-        ctx.stroke()
-
-        // Bottom heads
-        const botY = memY + memH / 2 - 4
-        ctx.beginPath()
-        ctx.arc(x, botY, 3, 0, Math.PI * 2)
-        ctx.fill()
-
-        // Bottom tails
-        ctx.beginPath()
-        ctx.moveTo(x, botY - 3)
-        ctx.quadraticCurveTo(x + 2 - headWobble, botY - 12, x - headWobble, botY - 20)
-        ctx.moveTo(x, botY - 3)
-        ctx.quadraticCurveTo(x - 2 + headWobble, botY - 10, x + 1 + headWobble, botY - 20)
-        ctx.stroke()
-      }
-    },
-    [],
-  )
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -286,213 +228,71 @@ export function NeuroActionPotentialSim({ className }: { className?: string }) {
       }
       state.alertMessage = alertMsg
 
-      // 1. Particle spawning and kinetics
-      if (!state.isPaused) {
-        // Adjust particle density based on default constants
-        const targetNaCount = 28
-        const targetKCount = 20
-        
-        const currentNa = state.particles.filter(p => p.type === 'na' && p.state === 'free')
-        const currentK = state.particles.filter(p => p.type === 'k' && p.state === 'free')
+      // 1. Action Potential Sweep Physics
+      if (state.isSweeping && !state.isPaused) {
+        // Conduction speed depends on myelination
+        const timeStep = state.isMyelinated ? 0.28 : 0.085
+        state.timeT += timeStep
 
-        // Spawn missing Na+ outside (top area)
-        if (currentNa.length < targetNaCount) {
-          state.particles.push({
-            id: state.particleIdCounter++,
-            x: Math.random() * w,
-            y: Math.random() * (memY - memH / 2 - 8),
-            vx: (Math.random() - 0.5) * 1.5,
-            vy: (Math.random() - 0.5) * 1.2,
-            type: 'na',
-            radius: ionR,
-            state: 'free',
-            flowProgress: 0
-          })
+        if (state.timeT >= T_MAX) {
+          state.timeT = T_MAX
+          state.isSweeping = false
         }
 
-        // Spawn missing K+ inside (bottom area)
-        if (currentK.length < targetKCount) {
-          state.particles.push({
-            id: state.particleIdCounter++,
-            x: Math.random() * w,
-            y: memY + memH / 2 + 8 + Math.random() * (simH - (memY + memH / 2 + 8)),
-            vx: (Math.random() - 0.5) * 1.5,
-            vy: (Math.random() - 0.5) * 1.2,
-            type: 'k',
-            radius: ionR,
-            state: 'free',
-            flowProgress: 0
-          })
-        }
+        const t = state.timeT
+        let targetPotential = -70.0
+        let phaseLabel = 'Repouso'
 
-        // Kinetic motion step
-        state.particles.forEach(p => {
-          if (p.state === 'free') {
-            p.x += p.vx
-            p.y += p.vy
-
-            // Canvas boundaries
-            if (p.x < p.radius) { p.x = p.radius; p.vx *= -1 }
-            if (p.x > w - p.radius) { p.x = w - p.radius; p.vx *= -1 }
-            if (p.y < p.radius) { p.y = p.radius; p.vy *= -1 }
-            if (p.y > simH - p.radius) { p.y = simH - p.radius; p.vy *= -1 }
-
-            // Membrane boundaries (bounce unless they are inside open channel tunnels)
-            const topBoundary = memY - memH / 2
-            const bottomBoundary = memY + memH / 2
-
-            // Na+ channel bounds
-            const inNaTunnel = p.x > naChannelX - channelW * 0.4 && p.x < naChannelX + channelW * 0.4
-            // K+ channel bounds
-            const inKTunnel = p.x > kChannelX - channelW * 0.4 && p.x < kChannelX + channelW * 0.4
-
-            if (p.y > topBoundary - p.radius && p.y < bottomBoundary + p.radius) {
-              if (inNaTunnel || inKTunnel) {
-                // let it drift through or get swept by channel state
-              } else {
-                // Bounce off membrane
-                if (p.y - p.vy <= topBoundary - p.radius) {
-                  p.y = topBoundary - p.radius
-                  p.vy = -Math.abs(p.vy)
-                } else if (p.y - p.vy >= bottomBoundary + p.radius) {
-                  p.y = bottomBoundary + p.radius
-                  p.vy = Math.abs(p.vy)
-                } else {
-                  p.vx *= -1
-                }
-              }
+        // Classification of waveform mathematical phases
+        if (t <= 2) {
+          targetPotential = -70
+          phaseLabel = 'Repouso'
+        } else if (t <= 3) {
+          const p = (t - 2) / 1.0
+          const limVal = state.stimulusIntensity < 30 ? -62 : -55
+          targetPotential = lerp(-70, limVal, p)
+          phaseLabel = 'Estímulo'
+        } else if (t <= 4) {
+          const p = (t - 3) / 1.0
+          const s = easeInOut(p)
+          if (state.stimulusIntensity < 30) {
+            targetPotential = lerp(-62, -70, s)
+            phaseLabel = 'Estímulo Sub-Limiar'
+            if (t >= 3.8) {
+              state.isSweeping = false
+              state.timeT = 0
             }
-          }
-        })
-
-        // 2. Action Potential Sweep Physics
-        if (state.isSweeping) {
-          // Conduction speed depends on myelination
-          const timeStep = state.isMyelinated ? 0.28 : 0.085
-          state.timeT += timeStep
-
-          if (state.timeT >= T_MAX) {
-            state.timeT = T_MAX
-            state.isSweeping = false
-          }
-
-          const t = state.timeT
-          let targetPotential = -70.0
-          let phaseLabel = 'Repouso'
-
-          // Classification of waveform mathematical phases
-          if (t <= 2) {
-            // Resting phase
-            targetPotential = -70
-            phaseLabel = 'Repouso'
-          } else if (t <= 3) {
-            // Stimulus build-up
-            const p = (t - 2) / 1.0
-            const limVal = state.stimulusIntensity < 30 ? -62 : -55
-            targetPotential = lerp(-70, limVal, p)
-            phaseLabel = 'Estímulo'
-          } else if (t <= 4) {
-            // Depolarization (threshold logic)
-            const p = (t - 3) / 1.0
-            const s = easeInOut(p)
-            if (state.stimulusIntensity < 30) {
-              // Fail to trigger Action Potential (All-or-Nothing Law)
-              targetPotential = lerp(-62, -70, s)
-              phaseLabel = 'Estímulo Sub-Limiar'
-              if (t >= 3.8) {
-                state.isSweeping = false
-                state.timeT = 0
-              }
-            } else if (state.blockTTX) {
-              // Blocked by TTX
-              targetPotential = lerp(-55, -70, s)
-              phaseLabel = 'Bloqueio (TTX)'
-            } else {
-              targetPotential = lerp(-55, 40, s)
-              phaseLabel = 'Despolarização'
-            }
-          } else if (t <= 4.3) {
-            // Peak voltage
-            targetPotential = 40
-            phaseLabel = 'Pico de Potencial'
-          } else if (t <= 7) {
-            // Repolarization
-            const p = (t - 4.3) / 2.7
-            const s = easeInOut(p)
-            if (state.blockTEA) {
-              // Fail to repolarize correctly due to TEA blocker (plateau)
-              targetPotential = lerp(40, 20, s)
-              phaseLabel = 'Bloqueio de Repolarização (TEA)'
-            } else {
-              targetPotential = lerp(40, -80, s)
-              phaseLabel = 'Repolarização'
-            }
-          } else if (t <= 8.5) {
-            // Hyperpolarization hold
-            targetPotential = state.blockTEA ? lerp(20, -70, (t - 7) / 1.5) : -80
-            phaseLabel = state.blockTEA ? 'Decaimento Retardado' : 'Hiperpolarização'
+          } else if (state.blockTTX) {
+            targetPotential = lerp(-55, -70, s)
+            phaseLabel = 'Bloqueio (TTX)'
           } else {
-            // Return to rest
-            const p = (t - 8.5) / 2.5
-            targetPotential = lerp(-80, -70, p)
-            phaseLabel = 'Retorno ao Repouso'
+            targetPotential = lerp(-55, 40, s)
+            phaseLabel = 'Despolarização'
           }
-
-          state.potential = targetPotential
-          setActivePhase(phaseLabel)
-
-          // 3. Ion flux animations through channels during active phases
-          const naChannelOpen = t > 3 && t <= 4.3 && !state.blockTTX
-          const kChannelOpen = t > 4.3 && t <= 7 && !state.blockTEA
-
-          // Inward Na+ rush during depolarization
-          if (naChannelOpen && Math.random() < 0.4) {
-            // Pull free Na+ particles from top into the channel
-            const candidate = state.particles.find(p => p.type === 'na' && p.state === 'free' && p.y < memY - 6)
-            if (candidate) {
-              candidate.state = 'rushing'
-              candidate.channelType = 'na'
-              candidate.flowProgress = 0
-            }
+        } else if (t <= 4.3) {
+          targetPotential = 40
+          phaseLabel = 'Pico de Potencial'
+        } else if (t <= 7) {
+          const p = (t - 4.3) / 2.7
+          const s = easeInOut(p)
+          if (state.blockTEA) {
+            targetPotential = lerp(40, 20, s)
+            phaseLabel = 'Bloqueio de Repolarização (TEA)'
+          } else {
+            targetPotential = lerp(40, -80, s)
+            phaseLabel = 'Repolarização'
           }
-
-          // Outward K+ rush during repolarization
-          if (kChannelOpen && Math.random() < 0.4) {
-            // Pull free K+ particles from bottom into the channel
-            const candidate = state.particles.find(p => p.type === 'k' && p.state === 'free' && p.y > memY + 6)
-            if (candidate) {
-              candidate.state = 'rushing'
-              candidate.channelType = 'k'
-              candidate.flowProgress = 0
-            }
-          }
-
-          // Animate rushing particles
-          state.particles.forEach(p => {
-            if (p.state === 'rushing' && p.channelType !== undefined) {
-              p.flowProgress += 0.08
-              if (p.channelType === 'na') {
-                // Flow from top (extracellular) to bottom (intracellular)
-                p.x = lerp(p.x, naChannelX, p.flowProgress)
-                p.y = lerp(p.y, memY + memH / 2 + 10, p.flowProgress)
-                if (p.flowProgress >= 1) {
-                  p.state = 'free'
-                  p.vx = (Math.random() - 0.5) * 1.5
-                  p.vy = Math.abs((Math.random() - 0.5) * 1.2) + 0.5
-                }
-              } else if (p.channelType === 'k') {
-                // Flow from bottom (intracellular) to top (extracellular)
-                p.x = lerp(p.x, kChannelX, p.flowProgress)
-                p.y = lerp(p.y, memY - memH / 2 - 10, p.flowProgress)
-                if (p.flowProgress >= 1) {
-                  p.state = 'free'
-                  p.vx = (Math.random() - 0.5) * 1.5
-                  p.vy = -Math.abs((Math.random() - 0.5) * 1.2) - 0.5
-                }
-              }
-            }
-          })
+        } else if (t <= 8.5) {
+          targetPotential = state.blockTEA ? lerp(20, -70, (t - 7) / 1.5) : -80
+          phaseLabel = state.blockTEA ? 'Decaimento Retardado' : 'Hiperpolarização'
+        } else {
+          const p = (t - 8.5) / 2.5
+          targetPotential = lerp(-80, -70, p)
+          phaseLabel = 'Retorno ao Repouso'
         }
+
+        state.potential = targetPotential
+        setActivePhase(phaseLabel)
       }
 
       // Record voltage telemetry history continuously
@@ -530,112 +330,97 @@ export function NeuroActionPotentialSim({ className }: { className?: string }) {
       }
       ctx.stroke()
 
-      // membrane
-      drawMembraneLipids(ctx, w, h, memY, memH, timestamp, cx, channelW)
+      // ── DRAW INTERACTIVE NERVE AXON PROPAGATION ──
+      const axonY = memY
+      const axonH = 20
+      const startX = 30
+      const endX = w - 30
+      const axonW = endX - startX
 
-      // ── DRAW ION CHANNELS (Na+ on left, K+ on right) ──
-      const tNow = state.timeT
-      const naChannelOpen = tNow > 3 && tNow <= 4.3 && !state.blockTTX
-      const kChannelOpen = tNow > 4.3 && tNow <= 7 && !state.blockTEA
-
-      // Draw Na+ channel (Teal)
-      ctx.fillStyle = state.blockTTX ? COL_CHANNEL_CLOSED : (naChannelOpen ? COL_CHANNEL_NA : 'rgba(45, 212, 191, 0.4)')
-      ctx.strokeStyle = state.blockTTX ? '#ef4444' : COL_TEAL_ACCENT
-      ctx.lineWidth = 2.5
+      // Draw Axon tube
+      ctx.fillStyle = 'rgba(15, 23, 42, 0.6)'
+      ctx.strokeStyle = 'rgba(56, 189, 248, 0.25)'
+      ctx.lineWidth = 1.5
       ctx.beginPath()
-      ctx.roundRect(naChannelX - channelW / 2, memY - channelH / 2, channelW, channelH, 6)
+      ctx.roundRect(startX, axonY - axonH / 2, axonW, axonH, 6)
       ctx.fill()
       ctx.stroke()
 
-      // Na+ Channel tunnel gate visual representation
-      ctx.fillStyle = '#07080f'
-      ctx.fillRect(naChannelX - channelW * 0.15, memY - channelH / 2 + 2, channelW * 0.3, channelH - 4)
-
-      // Na+ Channel Gates (activation comportas at the top)
-      ctx.strokeStyle = COL_TEAL_ACCENT
-      ctx.lineWidth = 3
-      ctx.beginPath()
-      if (naChannelOpen) {
-        // Gates open wide
-        ctx.moveTo(naChannelX - channelW * 0.15, memY - channelH / 2 + 3)
-        ctx.lineTo(naChannelX - channelW * 0.35, memY - channelH / 2 - 4)
-        ctx.moveTo(naChannelX + channelW * 0.15, memY - channelH / 2 + 3)
-        ctx.lineTo(naChannelX + channelW * 0.35, memY - channelH / 2 - 4)
-      } else {
-        // Gates closed shut
-        ctx.moveTo(naChannelX - channelW * 0.15, memY - channelH / 2 + 3)
-        ctx.lineTo(naChannelX + channelW * 0.15, memY - channelH / 2 + 3)
-      }
-      ctx.stroke()
-
-      // Na+ Channel Ball-and-chain inactivation gate (plugs channel from bottom at t > 4.3ms)
-      const isNaInactivated = tNow > 4.3 && tNow <= 7.8 && !state.blockTTX
-      ctx.fillStyle = COL_CHANNEL_NA
-      ctx.strokeStyle = COL_TEAL_ACCENT
-      ctx.lineWidth = 1.8
-      ctx.beginPath()
-      if (isNaInactivated) {
-        // Chain is short, ball plugs the bottom tunnel
-        ctx.moveTo(naChannelX - channelW * 0.25, memY + channelH / 2 - 2)
-        ctx.lineTo(naChannelX, memY + channelH / 2 - 8)
-        ctx.stroke()
-        ctx.beginPath()
-        ctx.arc(naChannelX, memY + channelH / 2 - 8, 5, 0, Math.PI * 2)
-        ctx.fill()
-      } else {
-        // Chain hangs freely down
-        ctx.moveTo(naChannelX - channelW * 0.25, memY + channelH / 2 - 2)
-        ctx.quadraticCurveTo(naChannelX - channelW * 0.4, memY + channelH / 2 + 8, naChannelX - channelW * 0.2, memY + channelH / 2 + 14)
-        ctx.stroke()
-        ctx.beginPath()
-        ctx.arc(naChannelX - channelW * 0.2, memY + channelH / 2 + 14, 5, 0, Math.PI * 2)
-        ctx.fill()
+      // Draw myelin sheaths if myelinated
+      if (state.isMyelinated) {
+        const numBlocks = 4
+        const blockW = (axonW - 30) / numBlocks
+        ctx.fillStyle = 'rgba(45, 212, 191, 0.15)'
+        ctx.strokeStyle = 'rgba(45, 212, 191, 0.4)'
+        ctx.lineWidth = 1
+        for (let i = 0; i < numBlocks; i++) {
+          const bx = startX + 5 + i * (blockW + 8)
+          ctx.beginPath()
+          ctx.roundRect(bx, axonY - axonH / 2 - 4, blockW, axonH + 8, 4)
+          ctx.fill()
+          ctx.stroke()
+        }
       }
 
-      // Draw K+ channel (Rose)
-      ctx.fillStyle = state.blockTEA ? COL_CHANNEL_CLOSED : (kChannelOpen ? COL_CHANNEL_K : 'rgba(251, 113, 133, 0.4)')
-      ctx.strokeStyle = state.blockTEA ? '#ef4444' : 'rgba(251, 113, 133, 0.8)'
-      ctx.lineWidth = 2.5
-      ctx.beginPath()
-      ctx.roundRect(kChannelX - channelW / 2, memY - channelH / 2, channelW, channelH, 6)
-      ctx.fill()
-      ctx.stroke()
-
-      // K+ Channel tunnel gate
-      ctx.fillStyle = '#07080f'
-      ctx.fillRect(kChannelX - channelW * 0.15, memY - channelH / 2 + 2, channelW * 0.3, channelH - 4)
-
-      // K+ Channel activation comportas (at the bottom)
-      ctx.strokeStyle = 'rgba(251, 113, 133, 1)'
-      ctx.lineWidth = 3
-      ctx.beginPath()
-      if (kChannelOpen) {
-        // Gates open wide downward
-        ctx.moveTo(kChannelX - channelW * 0.15, memY + channelH / 2 - 3)
-        ctx.lineTo(kChannelX - channelW * 0.35, memY + channelH / 2 + 4)
-        ctx.moveTo(kChannelX + channelW * 0.15, memY + channelH / 2 - 3)
-        ctx.lineTo(kChannelX + channelW * 0.35, memY + channelH / 2 + 4)
-      } else {
-        // Gates closed shut at bottom
-        ctx.moveTo(kChannelX - channelW * 0.15, memY + channelH / 2 - 3)
-        ctx.lineTo(kChannelX + channelW * 0.15, memY + channelH / 2 - 3)
-      }
-      ctx.stroke()
-
-      // Channel Labels
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.8)'
-      ctx.font = `bold 8.5px ${FONT_MONO}`
+      // Draw Charge Indicators (+ and - signs) above and below membrane
+      ctx.font = `bold 8px ${FONT_MONO}`
       ctx.textAlign = 'center'
-      ctx.fillText('Na⁺ Ch', naChannelX, memY - channelH / 2 - 10)
-      ctx.fillText('K⁺ Ch', kChannelX, memY - channelH / 2 - 10)
+      ctx.textBaseline = 'middle'
 
-      // ── DRAW ALL IONS ──
-      state.particles.forEach(p => {
-        const col = p.type === 'na' ? COL_NA : COL_K
-        const glow = p.type === 'na' ? COL_NA_GLOW : COL_K_GLOW
-        const lbl = p.type === 'na' ? 'Na⁺' : 'K⁺'
-        drawIon(ctx, p.x, p.y, p.radius, col, glow, lbl)
-      })
+      const numCharges = 15
+      const pulseProgress = state.isSweeping ? remap01(state.timeT, 0, 11) : 0
+      const pulseX = startX + pulseProgress * axonW
+
+      for (let i = 0; i < numCharges; i++) {
+        const cxVal = startX + (i / (numCharges - 1)) * axonW
+        const dist = Math.abs(cxVal - pulseX)
+
+        let isDepolarized = state.isSweeping && (cxVal <= pulseX) && (dist < 40)
+
+        // Above membrane (extracellular)
+        ctx.fillStyle = isDepolarized ? '#f43f5e' : '#38bdf8' // red (-) if active, blue (+) if normal/rest
+        ctx.fillText(isDepolarized ? '−' : '+', cxVal, axonY - axonH / 2 - 8)
+
+        // Below membrane (intracellular)
+        ctx.fillStyle = isDepolarized ? '#38bdf8' : '#f43f5e' // blue (+) if active, red (-) if normal/rest
+        ctx.fillText(isDepolarized ? '+' : '−', cxVal, axonY + axonH / 2 + 8)
+      }
+
+      // Draw Traveling Action Potential Wave (Glowing Energy Pulse)
+      if (state.isSweeping) {
+        // Draw glow back-halo
+        const grad = ctx.createRadialGradient(pulseX, axonY, 0, pulseX, axonY, 30)
+        grad.addColorStop(0, 'rgba(45, 212, 191, 0.4)')
+        grad.addColorStop(1, 'transparent')
+        ctx.fillStyle = grad
+        ctx.fillRect(pulseX - 30, axonY - 30, 60, 60)
+
+        // Wave front vertical marker
+        ctx.strokeStyle = 'rgba(45, 212, 191, 0.7)'
+        ctx.lineWidth = 2
+        ctx.beginPath()
+        ctx.moveTo(pulseX, axonY - 15)
+        ctx.lineTo(pulseX, axonY + 15)
+        ctx.stroke()
+
+        // Tiny floating particles representing ions flowing
+        ctx.fillStyle = COL_TEAL_ACCENT
+        for (let pIdx = 0; pIdx < 8; pIdx++) {
+          const px = pulseX + Math.sin(timestamp * 0.01 + pIdx) * 12
+          const py = axonY + Math.cos(timestamp * 0.02 + pIdx) * 6
+          ctx.beginPath()
+          ctx.arc(px, py, 1.5, 0, Math.PI * 2)
+          ctx.fill()
+        }
+      }
+
+      // Draw axon labels
+      ctx.fillStyle = COL_TEXT_DIM
+      ctx.font = `8px ${FONT_MONO}`
+      ctx.textAlign = 'left'
+      ctx.fillText('BAINHA DE MIELINA' + (state.isMyelinated ? ' (ATIVA)' : ' (AUSENTE)'), startX, axonY - axonH / 2 - 18)
+      ctx.textAlign = 'right'
+      ctx.fillText('IMPULSO NERVOSO (PROPAGAÇÃO)', endX, axonY - axonH / 2 - 18)
 
       // ── DRAW OSCILLOSCOPE GRAPH ──
       // Background grid
@@ -850,7 +635,7 @@ export function NeuroActionPotentialSim({ className }: { className?: string }) {
     return () => {
       cancelAnimationFrame(rafId)
     }
-  }, [drawMembraneLipids])
+  }, [])
 
   return (
     <div className={`flex flex-col lg:flex-row gap-4 h-full w-full min-h-0 ${className}`}>
