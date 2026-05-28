@@ -3471,35 +3471,47 @@ export function SigPessoasPanel() {
                       </button>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-5 relative z-10">
-                      {/* Fase 1 */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5 relative z-10">
+                      {/* Etapa 1 */}
                       <div className="p-5 bg-black/40 border border-white/10 hover:border-[#5dcaa5]/40 rounded-2xl transition-all group relative">
                         <div className="flex items-center gap-3 mb-3">
                           <div className="w-8 h-8 rounded-full bg-[#5dcaa5]/20 border border-[#5dcaa5]/50 text-[#5dcaa5] flex items-center justify-center font-bold font-mono text-[14px] flex-shrink-0">1</div>
-                          <h5 className="text-[12px] font-bold text-white leading-tight">Mapeamento PESTEL</h5>
+                          <h5 className="text-[12px] font-bold text-white leading-tight">Prospecção & Setup</h5>
                         </div>
-                        <p className="text-[10px] text-white/50 mb-4 leading-relaxed font-sans">Análise Macroambiental. Identifique fatores Políticos, Econômicos e Tecnológicos que impactam a corporação.</p>
-                        <button className="w-full py-2 bg-white/5 hover:bg-[#5dcaa5]/10 border border-white/10 hover:border-[#5dcaa5]/30 rounded-lg text-[9px] font-mono text-white/70 hover:text-[#5dcaa5] transition-all font-bold tracking-widest">INICIAR FASE 1</button>
+                        <p className="text-[10px] text-white/50 mb-4 leading-relaxed font-sans min-h-[45px]">Etapa 1 da ATP: História, forças/fraquezas e mapeamento das funções de gestão (Planejar, Organizar, Liderar, Controlar).</p>
+                        <button className="w-full py-2 bg-white/5 hover:bg-[#5dcaa5]/10 border border-white/10 hover:border-[#5dcaa5]/30 rounded-lg text-[9px] font-mono text-white/70 hover:text-[#5dcaa5] transition-all font-bold tracking-widest">INICIAR ETAPA 1</button>
                       </div>
 
-                      {/* Fase 2 */}
-                      <div className="p-5 bg-black/40 border border-white/10 hover:border-[#5dcaa5]/40 rounded-2xl transition-all group relative opacity-80">
+                      {/* Etapa 2 */}
+                      <div className="p-5 bg-black/40 border border-white/10 hover:border-[#5dcaa5]/40 rounded-2xl transition-all group relative">
                         <div className="flex items-center gap-3 mb-3">
-                          <div className="w-8 h-8 rounded-full bg-white/5 border border-white/10 text-white/30 flex items-center justify-center font-bold font-mono text-[14px] flex-shrink-0">2</div>
-                          <h5 className="text-[12px] font-bold text-white leading-tight">Forças de Porter</h5>
+                          <div className="w-8 h-8 rounded-full bg-white/5 border border-white/10 text-white/30 flex items-center justify-center font-bold font-mono text-[14px] flex-shrink-0 group-hover:bg-[#5dcaa5]/10 group-hover:text-[#5dcaa5] transition-colors">2</div>
+                          <h5 className="text-[12px] font-bold text-white leading-tight">Macro, Micro & Stakeholders</h5>
                         </div>
-                        <p className="text-[10px] text-white/50 mb-4 leading-relaxed font-sans">Análise Microambiental. Avalie a rivalidade, novos entrantes e poder de negociação para ajustar o posicionamento.</p>
-                        <button className="w-full py-2 bg-black/40 border border-white/5 rounded-lg text-[9px] font-mono text-white/20 cursor-not-allowed tracking-widest font-bold">BLOQUEADO</button>
+                        <p className="text-[10px] text-white/50 mb-4 leading-relaxed font-sans min-h-[45px]">Etapa 2 da ATP: Análise PESTEL (política/economia), Porter (clientes/fornecedores) e matriz de influência de stakeholders.</p>
+                        <button className="w-full py-2 bg-white/5 hover:bg-[#5dcaa5]/10 border border-white/10 hover:border-[#5dcaa5]/30 rounded-lg text-[9px] font-mono text-white/70 hover:text-[#5dcaa5] transition-all font-bold tracking-widest">INICIAR ETAPA 2</button>
                       </div>
 
-                      {/* Fase 3 */}
-                      <div className="p-5 bg-black/40 border border-white/10 hover:border-[#5dcaa5]/40 rounded-2xl transition-all group relative opacity-80">
+                      {/* Etapa 3 */}
+                      <div className="p-5 bg-black/40 border border-white/10 hover:border-[#5dcaa5]/40 rounded-2xl transition-all group relative">
                         <div className="flex items-center gap-3 mb-3">
-                          <div className="w-8 h-8 rounded-full bg-white/5 border border-white/10 text-white/30 flex items-center justify-center font-bold font-mono text-[14px] flex-shrink-0">3</div>
-                          <h5 className="text-[12px] font-bold text-white leading-tight">VRIO &amp; Cadeia de Valor</h5>
+                          <div className="w-8 h-8 rounded-full bg-white/5 border border-white/10 text-white/30 flex items-center justify-center font-bold font-mono text-[14px] flex-shrink-0 group-hover:bg-[#5dcaa5]/10 group-hover:text-[#5dcaa5] transition-colors">3</div>
+                          <h5 className="text-[12px] font-bold text-white leading-tight">Estrutura & Controle</h5>
                         </div>
-                        <p className="text-[10px] text-white/50 mb-4 leading-relaxed font-sans">Análise Interna. Identifique recursos Valiosos e Inimitáveis para sustentar a vantagem competitiva.</p>
-                        <button className="w-full py-2 bg-black/40 border border-white/5 rounded-lg text-[9px] font-mono text-white/20 cursor-not-allowed tracking-widest font-bold">BLOQUEADO</button>
+                        <p className="text-[10px] text-white/50 mb-4 leading-relaxed font-sans min-h-[45px]">Etapa 3 da ATP: Desenho de organograma, definição de cultura orgânica/mecanicista e mapeamento de controle de objetivos.</p>
+                        <button className="w-full py-2 bg-white/5 hover:bg-[#5dcaa5]/10 border border-white/10 hover:border-[#5dcaa5]/30 rounded-lg text-[9px] font-mono text-white/70 hover:text-[#5dcaa5] transition-all font-bold tracking-widest">INICIAR ETAPA 3</button>
+                      </div>
+
+                      {/* Etapa 4 */}
+                      <div className="p-5 bg-[#5dcaa5]/5 border border-[#5dcaa5]/30 rounded-2xl transition-all group relative">
+                        <div className="flex items-center gap-3 mb-3">
+                          <div className="w-8 h-8 rounded-full bg-[#5dcaa5]/20 border border-[#5dcaa5]/50 text-[#5dcaa5] flex items-center justify-center font-bold font-mono text-[14px] flex-shrink-0">4</div>
+                          <h5 className="text-[12px] font-bold text-white leading-tight">Relatório Executivo de Consultoria</h5>
+                        </div>
+                        <p className="text-[10px] text-white/50 mb-4 leading-relaxed font-sans min-h-[45px]">Etapa 4 da ATP: Fechamento com os 8 tópicos requeridos, cruzamento de teoria/prática e propostas de intervenção.</p>
+                        <button onClick={() => triggerToast('Gerando esboço via Inteligência Artificial...', 'ok')} className="w-full py-2 bg-gradient-to-r from-[#5dcaa5]/20 to-[#5dcaa5]/10 hover:from-[#5dcaa5]/30 hover:to-[#5dcaa5]/20 border border-[#5dcaa5]/40 rounded-lg text-[9px] font-mono text-[#5dcaa5] transition-all font-bold tracking-widest shadow-[0_0_15px_rgba(93,202,165,0.15)] flex items-center justify-center gap-2">
+                          <span className="text-[11px]">✨</span> GERAR ESBOÇO VIA IA
+                        </button>
                       </div>
                     </div>
                   </div>
