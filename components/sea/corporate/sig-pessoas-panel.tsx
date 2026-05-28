@@ -81,6 +81,8 @@ export function SigPessoasPanel() {
     {role: 'ai', text: 'Olá! Sou o Mentor IA. Analisando perfil da empresa... Vamos iniciar o mapeamento. Para começar, poderia descrever brevemente qual é a história e o diferencial da organização?'}
   ])
   const [consultingInput, setConsultingInput] = useState('')
+  const [isRecordingAudio, setIsRecordingAudio] = useState(false)
+  const [isAnalyzingData, setIsAnalyzingData] = useState(false)
 
   // Global Toast
   const [toastMsg, setToastMsg] = useState<string | null>(null)
@@ -732,13 +734,16 @@ export function SigPessoasPanel() {
     triggerToast('OKR estratégico cadastrado com sucesso.')
   }
 
-  function handleConsultingChatSubmit(e?: React.KeyboardEvent) {
+  function handleConsultingChatSubmit(e?: React.KeyboardEvent, textOverride?: string) {
     if (e && e.key !== 'Enter') return;
-    if (!consultingInput.trim()) return;
+    const submission = textOverride || consultingInput;
+    if (!submission.trim()) return;
 
-    const newChat = [...consultingChat, { role: 'user' as const, text: consultingInput }];
+    const newChat = [...consultingChat, { role: 'user' as const, text: submission }];
     setConsultingChat(newChat);
     setConsultingInput('');
+    setIsRecordingAudio(false);
+    setIsAnalyzingData(true);
 
     // Simulate AI response based on step
     setTimeout(() => {
@@ -748,7 +753,8 @@ export function SigPessoasPanel() {
       if (auditoriaStep === 3) aiResponse = 'Perfeito. E como é o organograma da empresa? É algo mais hierárquico (mecanicista) ou flexível (orgânico)?';
       
       setConsultingChat(prev => [...prev, { role: 'ai', text: aiResponse }]);
-    }, 1200);
+      setIsAnalyzingData(false);
+    }, 2500);
   }
 
   function handleDeleteOkr(id: string) {
@@ -3580,17 +3586,36 @@ export function SigPessoasPanel() {
                           
                           <div className="p-3 border-t border-white/5 bg-black/60 backdrop-blur-md">
                             <div className="relative">
-                              <input 
-                                type="text"
-                                value={consultingInput}
-                                onChange={e => setConsultingInput(e.target.value)}
-                                onKeyDown={handleConsultingChatSubmit}
-                                placeholder="Digite sua resposta para a IA..."
-                                className="w-full bg-white/5 border border-white/10 rounded-xl py-3 pl-4 pr-12 text-[11px] text-white outline-none focus:border-[#5dcaa5]/50 transition-all font-sans"
-                              />
-                              <button onClick={() => handleConsultingChatSubmit()} className="absolute right-2 top-1/2 -translate-y-1/2 text-black bg-[#5dcaa5] hover:bg-white w-8 h-8 rounded-lg flex items-center justify-center transition-all shadow-[0_0_10px_rgba(93,202,165,0.3)]">
-                                <span className="text-[14px]">↑</span>
-                              </button>
+                              {isRecordingAudio ? (
+                                <div className="w-full bg-[#5dcaa5]/10 border border-[#5dcaa5]/30 rounded-xl py-3 pl-4 pr-12 flex items-center justify-between">
+                                  <div className="flex gap-1 items-end h-4">
+                                    {[1, 2, 3, 4, 5, 6].map(bar => (
+                                      <div key={bar} className="w-1.5 bg-[#5dcaa5] rounded-t-sm animate-pulse" style={{ height: `${Math.max(20, Math.random() * 100)}%`, animationDuration: `${0.3 + Math.random() * 0.5}s` }} />
+                                    ))}
+                                    <span className="text-[10px] text-[#5dcaa5] font-mono ml-2 animate-pulse">Gravando...</span>
+                                  </div>
+                                  <button onClick={() => handleConsultingChatSubmit(undefined, "Áudio transcrito automaticamente: A empresa foca em inovação mas peca na estruturação financeira.")} className="text-[#5dcaa5] bg-[#5dcaa5]/20 hover:bg-[#5dcaa5] hover:text-black w-8 h-8 rounded-lg flex items-center justify-center transition-all shadow-[0_0_15px_rgba(93,202,165,0.4)]">
+                                    <span className="text-[10px]">◼</span>
+                                  </button>
+                                </div>
+                              ) : (
+                                <>
+                                  <input 
+                                    type="text"
+                                    value={consultingInput}
+                                    onChange={e => setConsultingInput(e.target.value)}
+                                    onKeyDown={handleConsultingChatSubmit}
+                                    placeholder="Digite sua resposta ou grave um áudio..."
+                                    className="w-full bg-white/5 border border-white/10 rounded-xl py-3 pl-4 pr-12 text-[11px] text-white outline-none focus:border-[#5dcaa5]/50 transition-all font-sans"
+                                  />
+                                  <button 
+                                    onClick={() => consultingInput.trim() ? handleConsultingChatSubmit() : setIsRecordingAudio(true)} 
+                                    className={`absolute right-2 top-1/2 -translate-y-1/2 ${consultingInput.trim() ? 'text-black bg-[#5dcaa5] hover:bg-white shadow-[0_0_10px_rgba(93,202,165,0.3)]' : 'text-[#5dcaa5] bg-transparent hover:bg-white/10'} w-8 h-8 rounded-lg flex items-center justify-center transition-all`}
+                                  >
+                                    <span className="text-[14px]">{consultingInput.trim() ? '↑' : '🎙️'}</span>
+                                  </button>
+                                </>
+                              )}
                             </div>
                           </div>
                         </div>
@@ -3601,15 +3626,25 @@ export function SigPessoasPanel() {
                           
                           {auditoriaStep === 1 && (
                             <div className="animate-fade-in space-y-6 h-full flex flex-col">
-                              <div className="border-b border-white/5 pb-4">
-                                <h3 className="text-[14px] font-bold text-white font-mono uppercase">Setup & Core</h3>
-                                <p className="text-[10px] text-white/40 mt-1">Dados estruturados extraídos automaticamente da conversa.</p>
+                              <div className="border-b border-white/5 pb-4 flex justify-between items-center">
+                                <div>
+                                  <h3 className="text-[14px] font-bold text-white font-mono uppercase">Setup & Core</h3>
+                                  <p className="text-[10px] text-white/40 mt-1">Dados estruturados extraídos automaticamente da conversa.</p>
+                                </div>
+                                {isAnalyzingData && (
+                                  <div className="text-[10px] font-mono text-[#5dcaa5] animate-pulse">
+                                    [|||||||||] Mapeando entidades...
+                                  </div>
+                                )}
                               </div>
                               <div className="grid grid-cols-2 gap-4 flex-1">
-                                <div className="bg-black/50 border border-white/5 rounded-xl p-4 flex flex-col">
+                                <div className={`bg-black/50 border ${isAnalyzingData ? 'border-[#5dcaa5]/50 shadow-[0_0_15px_rgba(93,202,165,0.1)]' : 'border-white/5'} rounded-xl p-4 flex flex-col transition-all duration-500`}>
                                   <span className="text-[9px] font-bold text-[#d4b87a] font-mono tracking-widest mb-3 uppercase">Forças Mapeadas</span>
-                                  <div className="flex-1 flex items-center justify-center border border-dashed border-white/10 rounded-lg bg-white/[0.02]">
-                                    {consultingChat.length > 2 ? (
+                                  <div className="flex-1 flex items-center justify-center border border-dashed border-white/10 rounded-lg bg-white/[0.02] relative overflow-hidden">
+                                    {isAnalyzingData ? (
+                                      <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-20 mix-blend-overlay animate-pulse"></div>
+                                    ) : null}
+                                    {consultingChat.length > 2 && !isAnalyzingData ? (
                                       <ul className="text-[10px] text-white/70 space-y-2 p-4 w-full list-disc pl-4">
                                         <li>Qualidade técnica do time</li>
                                         <li>Atendimento personalizado</li>
@@ -3619,10 +3654,13 @@ export function SigPessoasPanel() {
                                     )}
                                   </div>
                                 </div>
-                                <div className="bg-black/50 border border-white/5 rounded-xl p-4 flex flex-col">
+                                <div className={`bg-black/50 border ${isAnalyzingData ? 'border-[#5dcaa5]/50 shadow-[0_0_15px_rgba(93,202,165,0.1)]' : 'border-white/5'} rounded-xl p-4 flex flex-col transition-all duration-500`}>
                                   <span className="text-[9px] font-bold text-red-400 font-mono tracking-widest mb-3 uppercase">Fraquezas (Gaps)</span>
-                                  <div className="flex-1 flex items-center justify-center border border-dashed border-white/10 rounded-lg bg-white/[0.02]">
-                                    {consultingChat.length > 2 ? (
+                                  <div className="flex-1 flex items-center justify-center border border-dashed border-white/10 rounded-lg bg-white/[0.02] relative overflow-hidden">
+                                    {isAnalyzingData ? (
+                                      <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-20 mix-blend-overlay animate-pulse"></div>
+                                    ) : null}
+                                    {consultingChat.length > 2 && !isAnalyzingData ? (
                                       <ul className="text-[10px] text-white/70 space-y-2 p-4 w-full list-disc pl-4">
                                         <li>Falta de processos padronizados</li>
                                       </ul>
@@ -3643,16 +3681,26 @@ export function SigPessoasPanel() {
                                   <p className="text-[10px] text-white/40 mt-1">Renderização do ambiente competitivo.</p>
                                 </div>
                                 <div className="flex gap-1">
-                                  <span className="w-1.5 h-1.5 bg-[#5dcaa5] rounded-full animate-bounce" style={{animationDelay: '0ms'}}/>
-                                  <span className="w-1.5 h-1.5 bg-[#5dcaa5] rounded-full animate-bounce" style={{animationDelay: '150ms'}}/>
-                                  <span className="w-1.5 h-1.5 bg-[#5dcaa5] rounded-full animate-bounce" style={{animationDelay: '300ms'}}/>
+                                  {isAnalyzingData ? (
+                                    <span className="text-[10px] font-mono text-[#5dcaa5] animate-pulse">[|||||||] Mapeando...</span>
+                                  ) : (
+                                    <>
+                                      <span className="w-1.5 h-1.5 bg-[#5dcaa5] rounded-full animate-bounce" style={{animationDelay: '0ms'}}/>
+                                      <span className="w-1.5 h-1.5 bg-[#5dcaa5] rounded-full animate-bounce" style={{animationDelay: '150ms'}}/>
+                                      <span className="w-1.5 h-1.5 bg-[#5dcaa5] rounded-full animate-bounce" style={{animationDelay: '300ms'}}/>
+                                    </>
+                                  )}
                                 </div>
                               </div>
-                              <div className="flex-1 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-white/5 to-black border border-white/5 rounded-xl p-6 relative flex items-center justify-center">
-                                <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 mix-blend-overlay"></div>
+                              <div className={`flex-1 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] ${isAnalyzingData ? 'from-[#5dcaa5]/20' : 'from-white/5'} to-black border ${isAnalyzingData ? 'border-[#5dcaa5]/30' : 'border-white/5'} rounded-xl p-6 relative flex items-center justify-center transition-all duration-700`}>
+                                <div className={`absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 mix-blend-overlay ${isAnalyzingData ? 'animate-pulse' : ''}`}></div>
                                 <div className="text-center space-y-3 z-10">
-                                  <div className="w-16 h-16 border-4 border-[#5dcaa5]/30 border-t-[#5dcaa5] rounded-full animate-spin mx-auto"></div>
-                                  <p className="text-[10px] text-[#5dcaa5] font-mono tracking-widest uppercase">Mapeando Matriz de Poder vs Interesse</p>
+                                  {isAnalyzingData ? (
+                                    <div className="text-[#5dcaa5] text-[30px] animate-pulse">📡</div>
+                                  ) : (
+                                    <div className="w-16 h-16 border-4 border-[#5dcaa5]/30 border-t-[#5dcaa5] rounded-full animate-spin mx-auto"></div>
+                                  )}
+                                  <p className="text-[10px] text-[#5dcaa5] font-mono tracking-widest uppercase">{isAnalyzingData ? 'Processando Resposta...' : 'Mapeando Matriz de Poder vs Interesse'}</p>
                                   <p className="text-[9px] text-white/40 max-w-[200px] mx-auto">Continue conversando com a IA para que os quadrantes de Porter e PESTEL sejam populados.</p>
                                 </div>
                               </div>
@@ -3661,21 +3709,30 @@ export function SigPessoasPanel() {
 
                           {auditoriaStep === 3 && (
                             <div className="animate-fade-in space-y-6 h-full flex flex-col">
-                              <div className="border-b border-white/5 pb-4">
-                                <h3 className="text-[14px] font-bold text-white font-mono uppercase">Estrutura Orgânica vs Mecanicista</h3>
-                                <p className="text-[10px] text-white/40 mt-1">Análise de sistemas de controle e hierarquia.</p>
+                              <div className="border-b border-white/5 pb-4 flex justify-between items-center">
+                                <div>
+                                  <h3 className="text-[14px] font-bold text-white font-mono uppercase">Estrutura Orgânica vs Mecanicista</h3>
+                                  <p className="text-[10px] text-white/40 mt-1">Análise de sistemas de controle e hierarquia.</p>
+                                </div>
+                                {isAnalyzingData && (
+                                  <div className="text-[10px] font-mono text-[#5dcaa5] animate-pulse">
+                                    [|||||||||] Simulando estrutura...
+                                  </div>
+                                )}
                               </div>
                               <div className="flex-1 flex flex-col gap-6">
-                                <div className="h-8 bg-black border border-white/10 rounded-full relative overflow-hidden flex items-center px-2">
+                                <div className={`h-8 bg-black border ${isAnalyzingData ? 'border-[#5dcaa5]/50' : 'border-white/10'} rounded-full relative overflow-hidden flex items-center px-2 transition-all`}>
                                   <div className="absolute left-0 h-full w-[65%] bg-gradient-to-r from-blue-500/20 to-[#5dcaa5]/40" />
                                   <div className="w-full flex justify-between z-10 text-[9px] font-bold font-mono px-2">
                                     <span className="text-blue-400">MECANICISTA (35%)</span>
                                     <span className="text-[#5dcaa5]">ORGÂNICA (65%)</span>
                                   </div>
                                 </div>
-                                <div className="flex-1 border border-dashed border-white/10 rounded-xl bg-white/[0.02] flex items-center justify-center relative">
-                                  <span className="text-[40px] opacity-20">📊</span>
-                                  <div className="absolute bottom-4 text-[9px] text-white/30 font-mono text-center w-full">Renderizando nós do organograma baseado no seu relato...</div>
+                                <div className={`flex-1 border border-dashed ${isAnalyzingData ? 'border-[#5dcaa5]/50 bg-[#5dcaa5]/5' : 'border-white/10 bg-white/[0.02]'} rounded-xl flex items-center justify-center relative transition-all duration-500`}>
+                                  <span className={`text-[40px] opacity-20 ${isAnalyzingData ? 'animate-bounce' : ''}`}>📊</span>
+                                  <div className="absolute bottom-4 text-[9px] text-white/30 font-mono text-center w-full">
+                                    {isAnalyzingData ? 'Analisando os níveis de governança e controle informados...' : 'Renderizando nós do organograma baseado no seu relato...'}
+                                  </div>
                                 </div>
                               </div>
                             </div>
