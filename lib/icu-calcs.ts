@@ -1006,3 +1006,15 @@ export function calcShockIndices(fc: number, pas: number, pam: number): {
   return { si, msi, siInterp, msiInterp }
 }
 
+export function calcClCr(idade: number, peso: number, sexo: string, creat: number): number | null {
+  if (!idade || !peso || !creat || creat <= 0) return null
+  const factor = (sexo || 'M').toUpperCase() === 'F' ? 0.85 : 1.0
+  return ((140 - GfRangeValIdade(idade)) * peso) / (72 * creat) * factor
+}
+
+function GfRangeValIdade(v: number): number {
+  if (v < 1) return 20 // Seguranca pediatrica se ocorrer
+  return v
+}
+
+

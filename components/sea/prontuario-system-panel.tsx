@@ -46,6 +46,7 @@ import {
   calcPmusc,
   calcRSBI,
   calcShockIndices,
+  calcClCr,
   emptyPatient,
   interpP01,
   interpPF,
@@ -3965,6 +3966,22 @@ export function ProntuarioSystemPanel() {
     const pasVal = currentRecord.pas ? parseNumber(currentRecord.pas) : 0
     const pamVal = currentRecord.pam ? parseNumber(currentRecord.pam) : pamAuto || 0
     const shockIndices = calcShockIndices(fcVal, pasVal, pamVal)
+    const idadeVal = currentRecord.idade ? parseInt(currentRecord.idade, 10) : 0
+    const pesoVal = currentRecord.peso ? parseNumber(currentRecord.peso) : (currentRecord.pesoAtual ? parseNumber(currentRecord.pesoAtual) : 0)
+    const creatVal = lastLab ? parseNumber(lastLab.creat) : 0
+    const clCr = calcClCr(idadeVal, pesoVal || pesoIdeal || 70, currentRecord.sexo || 'M', creatVal)
+    const pesoEfetivoNutri = pesoVal || pesoIdeal || 70
+    const kcalMin = Math.round(pesoEfetivoNutri * 20)
+    const kcalMax = Math.round(pesoEfetivoNutri * 25)
+    const protMin = (pesoEfetivoNutri * 1.2).toFixed(1)
+    const protMax = (pesoEfetivoNutri * 1.5).toFixed(1)
+    const nutritionTargets = {
+      kcalMin,
+      kcalMax,
+      protMin,
+      protMax,
+      text: `Meta Nutricional: ${kcalMin}-${kcalMax} kcal/dia · Proteínas: ${protMin}-${protMax} g/dia`
+    }
     const balance = summarizeBalance(currentRecord)
     const balanceDetailed = summarizeBalanceDetailed(currentRecord)
     const mrc = summarizeMrc(currentRecord)
@@ -4068,6 +4085,8 @@ export function ProntuarioSystemPanel() {
       pmuscInterp,
       pamAuto,
       shockIndices,
+      clCr,
+      nutritionTargets,
       balance,
       balanceDetailed,
       mrc,
@@ -4156,6 +4175,17 @@ export function ProntuarioSystemPanel() {
         text: "⚠ RISCO DE HERNIAÇÃO CEREBRAL / HIC",
         color: "#f87171",
         action: "Anisocoria ou pupila nao reativa associada a rebaixamento de consciencia. Acionar Neurocirurgia urgente, cabeceira 30-45°, evitar hipotensao."
+      })
+    }
+
+    // Delirium & Benzodiazepínicos
+    const hasDelirium = currentRecord.camIcuInatencao === 'sim' || currentRecord.camIcuAltConsc === 'sim' || currentRecord.camIcuPensamento === 'sim' || currentRecord.camIcuNivelConsc === 'sim'
+    const hasMidazolam = sedAtivos.some(s => s.droga?.toLowerCase().includes('mida'))
+    if (hasDelirium && hasMidazolam) {
+      neuro.push({
+        text: "⚠ ALERTA: DELIRIUM ATIVO + BENZODIAZEPÍNICO",
+        color: "#fb923c",
+        action: "Midazolam ativo em paciente com delirium. Benzodiazepínicos prolongam e agravam delirium. Avaliar suspensao ou rotacao para Dexmedetomidina."
       })
     }
 
@@ -4283,6 +4313,38 @@ export function ProntuarioSystemPanel() {
     const isRE = currentRecord.tipoVia?.startsWith('RE')
     if (isRE && currentRecord.dataTOT && !currentRecord.dataExtubacao) pendencias.push({ text: 'Via aerea RE sem data de extubacao', color: '#facc15' })
     if (glasgowNum >= 8 && onVM && (currentRecord.p01 || currentRecord.pocc)) pendencias.push({ text: 'Glasgow + drive presentes — checar elegibilidade desmame', color: '#4ade80' })
+
+    // Clearance Renal (Cockcroft-Gault)
+    if (calculations.clCr !== null) {
+      const gfr = calculations.clCr
+      if (gfr < 15) {
+        pendencias.push({
+          text: `⚠ FALÊNCIA RENAL EXTREMA (ClCr ${gfr.toFixed(0)} mL/min)`,
+          color: "#f87171",
+          action: "Ajuste maximo de antimicrobianos (Meropenem, Piperacilina). Evitar nefrotoxinas, risco dialitico."
+        })
+      } else if (gfr < 30) {
+        pendencias.push({
+          text: `⚠ INSUFICIÊNCIA RENAL GRAVE (ClCr ${gfr.toFixed(0)} mL/min)`,
+          color: "#fb923c",
+          action: "Evitar drogas nefrotoxicas (AINEs, Aminoglicosideos). Ajustar doses de ATB hidrossoluveis."
+        })
+      } else if (gfr < 50) {
+        pendencias.push({
+          text: `Clearance renal reduzido (ClCr ${gfr.toFixed(0)} mL/min)`,
+          color: "#facc15",
+          action: "Checar necessidade de adequacao posologica para drogas hidrossoluveis."
+        })
+      }
+    }
+
+    // Metas Nutricionais baseadas em Peso
+    if (calculations.nutritionTargets?.text) {
+      pendencias.push({
+        text: calculations.nutritionTargets.text,
+        color: "#4ade80"
+      })
+    }
 
     return { neuro, cardio, resp, motora, pendencias }
   }, [currentRecord, calculations])
