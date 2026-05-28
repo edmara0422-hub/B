@@ -75,17 +75,32 @@ export async function POST(req: Request) {
 
     // Roda via AI Gateway usando Gemini Pro ou Flash
     const GATEWAY_MODELS = [
-      'google/gemini-1.5-pro',
       'google/gemini-1.5-flash',
+      'google/gemini-1.5-pro',
       'openai/gpt-4o'
     ];
 
-    const result = await generateText({
-      model: gateway(GATEWAY_MODELS[0]),
-      prompt: finalPrompt,
-    });
+    let rawText = '';
+    let success = false;
+    for (const modelId of GATEWAY_MODELS) {
+      try {
+        console.log(`[Consultoria API] Tentando modelo: ${modelId}`);
+        const result = await generateText({
+          model: gateway(modelId),
+          prompt: finalPrompt,
+        });
+        rawText = result.text.trim();
+        success = true;
+        console.log(`[Consultoria API] Sucesso: ${modelId}`);
+        break;
+      } catch (err) {
+        console.warn(`[Consultoria API] Falhou modelo ${modelId}:`, err);
+      }
+    }
 
-    const rawText = result.text.trim();
+    if (!success) {
+      throw new Error('Todos os modelos de IA falharam na análise de consultoria.');
+    }
     
     // Tenta fazer o parse do JSON
     try {
