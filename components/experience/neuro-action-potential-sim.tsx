@@ -139,13 +139,21 @@ export function NeuroActionPotentialSim({ className }: { className?: string }) {
   }, [stimulusIntensity, blockTTX, blockTEA, isMyelinated, isPaused])
 
   // Restart / Trigger Action Potential
-  const triggerStimulus = () => {
+  const triggerStimulus = useCallback(() => {
     if (stateRef.current.isSweeping) return // already sweeping
     stateRef.current.isSweeping = true
     stateRef.current.timeT = 0
     stateRef.current.stimuliCount += 1
     setStimuliCount(stateRef.current.stimuliCount)
-  }
+  }, [])
+
+  // Auto-trigger a sweep 800ms after mounting so the simulation feels alive immediately
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      triggerStimulus()
+    }, 800)
+    return () => clearTimeout(timer)
+  }, [triggerStimulus])
 
   const handleResetCounters = () => {
     setPotential(-70)
@@ -835,7 +843,9 @@ export function NeuroActionPotentialSim({ className }: { className?: string }) {
       <div className="relative flex-1 min-h-[400px] rounded-2xl overflow-hidden bg-black/40 border border-white/5 shadow-2xl flex flex-col justify-end">
         <canvas
           ref={canvasRef}
-          style={{ width: '100%', height: '100%', display: 'block' }}
+          onClick={triggerStimulus}
+          onTouchStart={triggerStimulus}
+          style={{ width: '100%', height: '100%', display: 'block', cursor: 'pointer', touchAction: 'manipulation' }}
           className="absolute inset-0"
         />
 

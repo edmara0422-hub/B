@@ -1218,7 +1218,7 @@ function NASA6DSimulator({ dbId, chapterIndex, theme }: { dbId: string; chapterI
 
   return (
     <div className="flex flex-col justify-between h-full w-full space-y-4">
-      <div className="flex-1 min-h-[320px] bg-black/40 border border-white/[0.03] rounded-2xl p-4 flex flex-col justify-between relative overflow-hidden">
+      <div className="flex-1 min-h-[320px] bg-black/40 border border-white/[0.03] rounded-2xl p-4 flex flex-col justify-between relative overflow-y-auto">
         <div className="absolute inset-0 opacity-[0.01] pointer-events-none" style={{
           background: `radial-gradient(circle at 50% 50%, ${theme.primary}, transparent 80%)`,
           backgroundImage: 'radial-gradient(rgba(255,255,255,0.15) 1px, transparent 1px)',
