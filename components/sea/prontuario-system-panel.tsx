@@ -3203,14 +3203,15 @@ export function ProntuarioSystemPanel() {
     setArchive(activeWs.archive)
     setHydrated(true)
 
-    if (!supabase || !isUserAuthenticated) {
+    // Se o usuário não for administrador, não sincroniza com o Supabase de forma alguma (segurança de dados/LGPD)
+    if (!supabase || !isUserAuthenticated || !isAdmin) {
       setSyncStatus('offline')
       return
     }
 
     const sessionId = getOrCreateSessionId() // agora retorna o user.id
     const timeout = new Promise<null>(res => setTimeout(() => res(null), 8000))
-    const fetchReq = supabase.from('icu_sessions').select('records,archive').eq('session_id', sessionId).maybeSingle()
+    const fetchReq = supabase.from('icu_sessions').select('records,archive,updated_at').eq('session_id', sessionId).maybeSingle()
     Promise.race([fetchReq, timeout]).then(async (result) => {
       if (!result || !('data' in result)) return
       let { data } = result
@@ -3220,9 +3221,9 @@ export function ProntuarioSystemPanel() {
       if (!data?.records && supabase) {
         const legacySid = localStorage.getItem('sea-session-id-legacy')
         if (legacySid && legacySid !== sessionId) {
-          const legacy = await supabase.from('icu_sessions').select('records,archive').eq('session_id', legacySid).maybeSingle()
+          const legacy = await supabase!.from('icu_sessions').select('records,archive,updated_at').eq('session_id', legacySid).maybeSingle()
           if (legacy.data?.records) {
-            await supabase.from('icu_sessions').upsert({
+            await supabase!.from('icu_sessions').upsert({
               session_id: sessionId,
               records: legacy.data.records,
               archive: legacy.data.archive ?? [],
@@ -3233,8 +3234,22 @@ export function ProntuarioSystemPanel() {
         }
       }
       if (!data?.records) return
+
+      // Obter timestamps para sincronização offline-first inteligente
+      const serverUpdatedAt = data.updated_at ? new Date(data.updated_at).getTime() : 0
+      const localLastWriteStr = localStorage.getItem('sea-last-local-write')
+      const localLastWrite = localLastWriteStr ? new Date(localLastWriteStr).getTime() : 0
+      
       const localIsEmpty = localWs.every(w => w.records.length === 0 && w.archive.length === 0)
-      if (!localIsEmpty) return
+      
+      // SÓ descarta a sincronização automática se a lista local NÃO estiver vazia E o local for estritamente mais novo que o servidor.
+      // Se o servidor tiver dados mais novos (ex: de outro aparelho ou sessão anterior), carregamos automaticamente!
+      if (!localIsEmpty && localLastWrite >= serverUpdatedAt) {
+        console.log('[Supabase Sync] Dados locais são mais recentes ou idênticos. Pulando restore automático.')
+        return
+      }
+
+      console.log('[Supabase Sync] Servidor tem dados mais recentes ou local está vazio. Carregando automaticamente.')
 
       const raw = data.records as unknown
       let newWs: Workspace[] = []
@@ -3268,6 +3283,8 @@ export function ProntuarioSystemPanel() {
       try {
         localStorage.setItem(sk.workspaces, JSON.stringify(newWs))
         localStorage.setItem(sk.activeWorkspace, newActiveId)
+        // Iguala o timestamp local para evitar loops e marcar como sincronizado
+        localStorage.setItem('sea-last-local-write', data.updated_at || new Date().toISOString())
       } catch { /* ignore */ }
     }).catch((err) => { 
       console.error('[Supabase Sync] Erro no fetch inicial:', err)
@@ -3296,7 +3313,7 @@ export function ProntuarioSystemPanel() {
   // Força salvar dados LOCAIS → Supabase agora (sem debounce).
   // Útil quando o row do Supabase ficou corrompido ou muito grande.
   const forceSaveLocalToSupabase = async () => {
-    if (!supabase || !authUserId) return
+    if (!supabase || !authUserId || !isAdmin) return
     const sessionId = getOrCreateSessionId()
     const currentWs = workspacesRef.current
     const hasData = currentWs.some(w => w.records.length > 0 || w.archive.length > 0)
@@ -3351,7 +3368,7 @@ export function ProntuarioSystemPanel() {
   }
 
   const forceRestoreFromServer = async () => {
-    if (!supabase) return
+    if (!supabase || !isAdmin) return
     const sid = authUserId || localStorage.getItem('sea-session-id') || localStorage.getItem('sea-session-id-legacy')
     if (!sid) {
       alert('Nenhum ID de sessão encontrado para restaurar.')
@@ -3654,15 +3671,16 @@ export function ProntuarioSystemPanel() {
       localStorage.setItem(sk.activeWorkspace, activeWsIdRef.current)
       localStorage.setItem(sk.records, JSON.stringify(records, getCircularReplacer()))
       localStorage.setItem(sk.archive, JSON.stringify(archive, getCircularReplacer()))
+      localStorage.setItem('sea-last-local-write', new Date().toISOString())
     } catch { /* quota / private mode */ }
 
     const isUserAuthenticated = !!authUserId
     if (isFirstSync.current) {
       isFirstSync.current = false
-      setSyncStatus(supabase && isUserAuthenticated ? 'saved' : 'offline')
+      setSyncStatus(supabase && isUserAuthenticated && isAdmin ? 'saved' : 'offline')
       return
     }
-    if (!supabase || !isUserAuthenticated) {
+    if (!supabase || !isUserAuthenticated || !isAdmin) {
       setSyncStatus('offline')
       return
     }
@@ -3736,7 +3754,7 @@ export function ProntuarioSystemPanel() {
   }, [archive, hydrated, records, workspaces, isAdmin, authUserId])
 
   const forceSaveToServer = async () => {
-    if (!supabase) return
+    if (!supabase || !isAdmin) return
     const sid = authUserId || getOrCreateSessionId()
     if (!sid) {
       alert('Nenhum ID de sessão encontrado para salvar.')
