@@ -8,8 +8,8 @@ const gateway = createGateway({
 })
 
 const GATEWAY_MODELS = [
-  'google/gemini-1.5-pro',
   'google/gemini-1.5-flash',
+  'google/gemini-1.5-pro',
   'openai/gpt-4o-mini',
   'openai/gpt-4o',
   'anthropic/claude-3-5-sonnet',
@@ -138,9 +138,9 @@ export async function POST(req: NextRequest) {
         for (const modelId of GATEWAY_MODELS) {
           const controller = new AbortController()
           const idTimeout = setTimeout(() => {
-            console.log(`[BH Scan] Abortando ${modelId} devido a timeout de 25s`)
+            console.log(`[BH Scan] Abortando ${modelId} devido a timeout de 30s`)
             controller.abort()
-          }, 25000)
+          }, 30000)
 
           try {
             console.log(`[BH Scan] Gateway tentando: ${modelId}`)
@@ -181,9 +181,9 @@ export async function POST(req: NextRequest) {
 
     const timeoutPromise = new Promise<null>((resolve) =>
       setTimeout(() => {
-        console.log('[BH Scan] Timeout de 15 segundos atingido para chamadas remotas')
+        console.log('[BH Scan] Timeout de 35 segundos atingido para chamadas remotas')
         resolve(null)
-      }, 15000)
+      }, 35000)
     )
 
     aiResult = await Promise.race([externalCallPromise, timeoutPromise])
