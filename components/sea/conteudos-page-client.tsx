@@ -1130,6 +1130,7 @@ function StrategicRoadmapBoard({ moduleId }: { moduleId?: string }) {
 }
 
 function NASA6DSimulator({ dbId, chapterIndex, theme }: { dbId: string; chapterIndex: number; theme: any }) {
+  const [selectedSim, setSelectedSim] = useState<'pump' | 'potential'>('pump')
   const [logs, setLogs] = useState<string[]>([
     'NASA 6D Core Online. Pronto para testes de impacto cognitivo.',
     'Aguardando telemetria do caderno de estudos...'
@@ -1417,9 +1418,42 @@ function NASA6DSimulator({ dbId, chapterIndex, theme }: { dbId: string; chapterI
 
           <div className="flex-1 flex flex-col justify-center">
             {dbId === 'N1-S1' && (
-              <div className="h-full w-full relative">
-                {chapterIndex === 0 && (() => { const C = NEURO_SIMS['neuro-pump']; return <C /> })()}
-                {chapterIndex > 0 && (() => { const C = NEURO_SIMS['neuro-action-potential']; return <C /> })()}
+              <div className="h-full w-full relative flex flex-col min-h-0">
+                {chapterIndex === 0 ? (
+                  <div className="flex-1 flex flex-col h-full w-full min-h-0">
+                    <div className="flex gap-2 mb-2 shrink-0">
+                      <button
+                        onClick={() => setSelectedSim('pump')}
+                        className={`px-3 py-1.5 text-[9px] uppercase font-mono tracking-wider rounded-lg border transition-all cursor-pointer ${
+                          selectedSim === 'pump'
+                            ? 'bg-teal-500/10 border-teal-500/30 text-teal-400 font-bold shadow-[0_0_15px_rgba(45,212,191,0.1)]'
+                            : 'bg-white/5 border-white/10 text-white/50 hover:text-white/80'
+                        }`}
+                      >
+                        ⚡ Bomba Na⁺/K⁺
+                      </button>
+                      <button
+                        onClick={() => setSelectedSim('potential')}
+                        className={`px-3 py-1.5 text-[9px] uppercase font-mono tracking-wider rounded-lg border transition-all cursor-pointer ${
+                          selectedSim === 'potential'
+                            ? 'bg-teal-500/10 border-teal-500/30 text-teal-400 font-bold shadow-[0_0_15px_rgba(45,212,191,0.1)]'
+                            : 'bg-white/5 border-white/10 text-white/50 hover:text-white/80'
+                        }`}
+                      >
+                        📈 Potencial de Ação
+                      </button>
+                    </div>
+                    <div className="flex-1 min-h-0 relative">
+                      {selectedSim === 'pump' ? (
+                        (() => { const C = NEURO_SIMS['neuro-pump']; return <C /> })()
+                      ) : (
+                        (() => { const C = NEURO_SIMS['neuro-action-potential']; return <C /> })()
+                      )}
+                    </div>
+                  </div>
+                ) : (
+                  (() => { const C = NEURO_SIMS['neuro-action-potential']; return <C /> })()
+                )}
               </div>
             )}
             {dbId === 'N1-S2' && (

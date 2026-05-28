@@ -879,7 +879,7 @@ export function NeuroPumpSim({ className }: { className?: string }) {
       </div>
 
       {/* ── Right control board (NASA-style) ── */}
-      <div className="w-full lg:w-80 flex flex-col gap-4 p-4 rounded-2xl bg-black/50 border border-white/5 backdrop-blur-xl shrink-0">
+      <div className="w-full lg:w-80 flex flex-col gap-4 p-4 rounded-2xl bg-black/50 border border-white/5 backdrop-blur-xl shrink-0 overflow-y-auto max-h-full">
         <div className="border-b border-white/[0.06] pb-2.5">
           <span className="text-[8px] uppercase tracking-[0.2em] font-black text-teal-400 block mb-0.5">ESTADO DA UNIDADE</span>
           <h4 className="text-[12.5px] font-bold text-white/90 font-sans tracking-wide">Bomba Na⁺/K⁺-ATPase 6D</h4>
