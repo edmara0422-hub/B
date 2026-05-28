@@ -138,6 +138,24 @@ export const M4_CONTENT: CadernoModuleContent = {
                 'Valor do dinheiro no tempo como princípio fundamental para tomadas de decisão'
               ],
               highlight: 'Dominar o tempo e a taxa é a chave de qualquer modelagem quantitativa de sucesso.'
+            },
+            {
+              title: 'Nomenclatura HP 12C & Capitalização Composta',
+              bullets: [
+                'O tempo atua como multiplicador geométrico (juro sobre juro) acumulando a cada período',
+                'Nomenclatura padrão da HP 12C: PV (valor presente), FV (valor futuro) e PMT (prestação/pagamento)',
+                'Controle de prazo (n) e taxa de juros (i) para tomada de decisão em investimentos e empréstimos'
+              ],
+              highlight: 'O regime composto capitaliza os juros gerados a cada período na nova base de cálculo.'
+            },
+            {
+              title: 'Desconto Composto: Racional vs Comercial',
+              bullets: [
+                'Desconto Racional (por dentro): calcula o valor atual (PV) de forma equivalente aos juros compostos',
+                'Desconto Comercial (por fora): incide sobre o valor nominal (FV) deduzido dos descontos anteriores',
+                'Aplicação em títulos antecipados, financiamento de compras e fluxos de caixa corporativos'
+              ],
+              highlight: 'O desconto racional é a aplicação direta dos juros compostos para obter o capital inicial.'
             }
           ]
         },

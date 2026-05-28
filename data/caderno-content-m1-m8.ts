@@ -2883,6 +2883,22 @@ export const SUBJECTS_DB: SubjectContent[] = [
                   {
                       "title": "Juros Compostos",
                       "content": "Crescimento exponencial (M = C × (1 + i)^t). Os juros incidem sobre juros anteriores. Em 30 anos, os mesmos R$ 10k a 10% a.a viram R$ 174k.\n\nA regra dos 72: divida 72 pela taxa anual para saber em quantos anos o dinheiro dobra."
+                  },
+                  {
+                      "title": "Dinâmica Exponencial e Nomenclatura HP 12C",
+                      "content": "Diferentemente do que ocorre nos juros simples, o sistema de juros compostos introduz uma dinâmica em que o tempo passa a atuar como um verdadeiro multiplicador do dinheiro. A cada período, os juros não são apenas calculados, mas também incorporados ao capital inicial, formando uma nova base sobre a qual incidem os juros seguintes.\n\nEsse efeito cumulativo explica por que valores aplicados ou dívidas contraídas sob esse regime tendem a crescer de forma cada vez mais acelerada ao longo do tempo. Quando essa lógica composta é aplicada aos descontos, surgem duas abordagens distintas: o desconto racional e o desconto comercial. Eles se diferenciam pelo montante escolhido como referência para o cálculo do desconto, ainda que ambos estejam submetidos ao mesmo princípio de capitalização ao longo do tempo.\n\nNo regime de juros compostos, faz-se necessário conhecer a nomenclatura utilizada na Calculadora HP 12C, como pode ser observado a seguir:\n- PV: Present value (valor presente).\n- FV: Future value (valor futuro).\n- PMT: Valor da prestação.\n- n: Prazo ou Período.\n- i: Taxa de juros."
+                  },
+                  {
+                      "title": "Regime de Juros Compostos (Capitalização)",
+                      "content": "Na capitalização por juro composto, ocorre o chamado juro sobre juro – os juros produzidos são acrescidos ao valor aplicado, fazendo com que, no período seguinte, também incidam juros sobre eles. Os juros compostos são os mais utilizados e aplicados em casos de financiamento de compras, aplicações financeiras, fundos de renda fixa, empréstimos bancários, entre outros. Assim, a taxa de juros define qual será o valor da remuneração paga pelo dinheiro recebido por empréstimo ou aplicado em um investimento (Castanheira; Macedo, 2008).\n\nSegundo Assaf Neto (2023, p. 33), no regime de juros compostos, os juros formados em cada período são acrescidos ao capital, formando o montante (capital acrescido o juro do período). 'Este montante, por sua vez, passará a render juros no período seguinte, formando um novo montante', constituído pelo valor acumulado na primeira capitalização acrescido dos juros da segunda capitalização, e assim sucessivamente. A capitalização composta pode ser caracterizada por uma função exponencial que cresce geometricamente. O regime composto é utilizado no sistema financeiro.\n\nA expressão matemática utilizada no regime composto é:\n$$\\text{FV} = \\text{PV} \\times (1 + i)^n$$\nOnde:\n- FV = Montante (valor futuro)\n- PV = Capital inicial (valor presente)\n- i = Taxa de juros\n- n = Período de aplicação"
+                  },
+                  {
+                      "title": "Desconto Composto Racional ou Por Dentro",
+                      "content": "O desconto composto racional, de acordo com Assaf Neto (2023), refere-se à diferença entre o valor nominal e o valor atual de um título, cujo pagamento foi antecipado. Nesse contexto, segundo Sobrinho (2018, p. 38), '[...] o desconto composto por dentro nada mais é do que um caso particular de juros compostos quando são conhecidos o montante, o prazo e a taxa de juros e se quer obter o capital inicial e o valor dos juros pagos'.\n\nA expressão matemática utilizada no desconto racional ou por dentro é:\n$$\\text{PV} = \\frac{\\text{FV}}{(1 + i)^n}$$\nOnde:\n- PV = Valor presente\n- FV = Valor futuro\n- i = Taxa de juros\n- n = Período de capitalização"
+                  },
+                  {
+                      "title": "Desconto Composto Comercial ou Por Fora",
+                      "content": "O desconto composto comercial ou 'por fora' é caracterizado pela incidência sucessiva da taxa de desconto sobre o valor nominal do título. Com isso, o desconto é deduzido em cada período (Assaf Neto, 2023).\n\nSegundo Sobrinho (2018, p. 36), '[...] o desconto composto é aquele em que a taxa de desconto incide sobre o montante (ou valor futuro), deduzido dos descontos acumulados até o período imediatamente anterior'. O desconto comercial composto, ou 'desconto por fora', é calculado sobre o valor nominal do título (Vereta, 2021).\n\nA expressão matemática utilizada no desconto comercial ou por fora é:\n$$\\text{PV} = \\text{FV} \\times (1 - i)^n$$\nOnde:\n- PV = Valor presente\n- FV = Valor futuro\n- i = Taxa de juros (taxa de desconto)\n- n = Período de capitalização"
                   }
               ],
               "synthesis": {
@@ -2890,7 +2906,10 @@ export const SUBJECTS_DB: SubjectContent[] = [
                   "bullets": [
                       "A diferença no longo prazo é entre riqueza e estagnação.",
                       "Regra dos 72: 72 ÷ taxa = anos para dobrar.",
-                      "Juros compostos são padrão de mercado. Quem não entende, paga caro."
+                      "Juros compostos são padrão de mercado. Quem não entende, paga caro.",
+                      "A calculadora HP 12C adota a nomenclatura padrão PV, FV, PMT, n, i.",
+                      "O desconto racional composto desconta os juros acumulados do montante de forma equivalente aos juros compostos.",
+                      "O desconto comercial composto reduz sucessivamente a taxa de desconto sobre o valor nominal do título."
                   ],
                   "insights": []
               }

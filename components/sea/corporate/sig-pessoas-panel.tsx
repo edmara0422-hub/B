@@ -78,6 +78,9 @@ export function SigPessoasPanel() {
   const [auditoriaStep, setAuditoriaStep] = useState<number | null>(null)
   const [etapa2Tab, setEtapa2Tab] = useState<'macro' | 'micro' | 'stakeholders' | 'reflexao'>('macro')
   const [selectedStakeholder, setSelectedStakeholder] = useState<string | null>(null)
+  const [etapa3Tab, setEtapa3Tab] = useState<'organograma' | 'estilo' | 'controles' | 'reflexao'>('organograma')
+  const [selectedOrgNode, setSelectedOrgNode] = useState<string | null>(null)
+  const [organicRatio, setOrganicRatio] = useState<number>(65)
 
   // Consultoria IA Chat States
   const [consultingChat, setConsultingChat] = useState<{role: 'ai'|'user', text: string}[]>([
@@ -788,7 +791,18 @@ export function SigPessoasPanel() {
           aiResponse = 'Entendido! Analisando o ecossistema competitivo e stakeholders da Nossa Consultoria BI, percebo uma forte dependência técnica de provedores de nuvem (Microsoft/AWS) e uma necessidade absoluta de provar ROI ao Board Executivo. À direita, estruturei a Matriz de Poder e os fatores PESTEL e Porter para você explorar e validar no seu dossiê da ATP. Algum stakeholder específico te preocupa mais?';
         }
       }
-      if (auditoriaStep === 3) aiResponse = 'Perfeito. E como é o organograma da empresa? É algo mais hierárquico (mecanicista) ou flexível (orgânico)?';
+      if (auditoriaStep === 3) {
+        const text = submission.toLowerCase();
+        if (text.includes('organograma') || text.includes('estrutura') || text.includes('ceo') || text.includes('direto') || text.includes('hierarq')) {
+          aiResponse = 'Excelente pergunta! O organograma da Nossa Consultoria BI / Auditoria 6D é uma estrutura enxuta e tática. Temos 1 Sócio-Presidente, 2 Diretores (Técnico e Operacional), 2 Coordenadores (Projetos e Pessoas) e o corpo de analistas e desenvolvedores. À direita, renderizei a árvore SVG inteira para você! Clique em cada caixa para inspecionar a autonomia e funções de reporte.';
+        } else if (text.includes('mecanic') || text.includes('organ') || text.includes('estilo') || text.includes('autonomia') || text.includes('rotina')) {
+          aiResponse = 'Mapeamento concluído! A consultoria opera de forma híbrida: 65% Orgânica e 35% Mecanicista. A autonomia técnica do time de BI é alta (orgânica), mas rituais formais de OKRs e segurança de logs para a LGPD trazem o controle necessário (mecanicista). Teste o "Simulador de Estilo" na aba ao lado para calibrar os scores operacionais!';
+        } else if (text.includes('meta') || text.includes('objetivo') || text.includes('controle') || text.includes('sistema') || text.includes('racional') || text.includes('improvis')) {
+          aiResponse = 'Análise de controles refinada! A empresa concilia Controles Racionais (OKRs trimestrais e SLAs de clientes) com Controles Naturais e Socioemocionais (rituais de feedback SBI no SIG Pessoas e pulso semanal de clima). Isso diminui o microgerenciamento e otimiza a confiança da equipe. Qual desses métodos você acha mais eficaz?';
+        } else {
+          aiResponse = 'Entendido! Na Etapa 3 da ATP, focamos na estrutura organizacional e sistemas de controle da consultoria. O modelo híbrido (65% orgânico) garante que o time de BI tenha autonomia sem perder de vista a governança e o compliance de LGPD. Configurei o organograma de reporte e o mapa de controles formais e naturais na aba ao lado para você explorar. Qual desses pontos você gostaria de analisar agora?';
+        }
+      }
       
       setConsultingChat(prev => [...prev, { role: 'ai', text: aiResponse }]);
       setIsAnalyzingData(false);
@@ -3963,32 +3977,339 @@ export function SigPessoasPanel() {
                           )}
 
                           {auditoriaStep === 3 && (
-                            <div className="animate-fade-in space-y-6 h-full flex flex-col">
-                              <div className="border-b border-white/5 pb-4 flex justify-between items-center">
+                            <div className="animate-fade-in space-y-4 h-full flex flex-col">
+                              {/* Header & Sub-Tabs */}
+                              <div className="border-b border-white/5 pb-3 flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
                                 <div>
-                                  <h3 className="text-[14px] font-bold text-white font-mono uppercase">Estrutura Orgânica vs Mecanicista</h3>
-                                  <p className="text-[10px] text-white/40 mt-1">Análise de sistemas de controle e hierarquia.</p>
+                                  <h3 className="text-[13px] font-bold text-white font-mono uppercase tracking-wider">Etapa 3: Estrutura & Controle</h3>
+                                  <p className="text-[9px] text-white/40 mt-0.5">Mapeamento do organograma, sistemas de controle e estilo de governança.</p>
                                 </div>
-                                {isAnalyzingData && (
-                                  <div className="text-[10px] font-mono text-[#5dcaa5] animate-pulse">
-                                    [|||||||||] Simulando estrutura...
+                                <div className="flex bg-black/40 border border-white/10 rounded-lg p-0.5 relative z-20">
+                                  {[
+                                    { id: 'organograma', label: 'Organograma' },
+                                    { id: 'estilo', label: 'Estilo' },
+                                    { id: 'controles', label: 'Controles' },
+                                    { id: 'reflexao', label: 'Reflexões' }
+                                  ].map(tab => (
+                                    <button
+                                      key={tab.id}
+                                      onClick={() => setEtapa3Tab(tab.id as any)}
+                                      className={`px-2.5 py-1 text-[9px] font-mono font-bold tracking-wider rounded-md uppercase transition-all ${etapa3Tab === tab.id ? 'bg-[#5dcaa5]/20 text-[#5dcaa5] border border-[#5dcaa5]/30' : 'text-white/40 hover:text-white/80 border border-transparent'}`}
+                                    >
+                                      {tab.label}
+                                    </button>
+                                  ))}
+                                </div>
+                              </div>
+
+                              {/* Content Area */}
+                              <div className="flex-1 min-h-[380px] overflow-y-auto custom-scrollbar relative z-10 pr-1">
+                                {etapa3Tab === 'organograma' && (
+                                  <div className="animate-fade-in space-y-3">
+                                    <div className="bg-[#5dcaa5]/5 border border-[#5dcaa5]/20 rounded-xl p-3 mb-2 flex justify-between items-center gap-4">
+                                      <div>
+                                        <h4 className="text-[10px] font-bold text-[#5dcaa5] uppercase font-mono tracking-widest mb-1">Estrutura e Organograma da Consultoria</h4>
+                                        <p className="text-[9px] text-white/60 leading-relaxed">
+                                          Organização formal da <strong>Nossa Consultoria BI / Auditoria 6D</strong>. Clique nos nós do organograma abaixo para ver o dossiê detalhado do cargo.
+                                        </p>
+                                      </div>
+                                      {selectedOrgNode && (
+                                        <button 
+                                          onClick={() => setSelectedOrgNode(null)}
+                                          className="text-[9px] font-mono text-[#5dcaa5] underline hover:text-white"
+                                        >
+                                          [Limpar Seleção]
+                                        </button>
+                                      )}
+                                    </div>
+
+                                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-3">
+                                      {/* Interactive SVG tree */}
+                                      <div className="lg:col-span-7 bg-black/60 border border-white/5 rounded-xl p-3 flex items-center justify-center h-[260px] relative overflow-hidden">
+                                        <svg className="w-full h-full" viewBox="0 0 360 250">
+                                          {/* Connector Lines */}
+                                          {/* CEO to Directors */}
+                                          <line x1="180" y1="40" x2="180" y2="60" stroke="#5dcaa5" strokeWidth="1" strokeDasharray="2 2" opacity="0.4" />
+                                          <line x1="100" y1="60" x2="260" y2="60" stroke="#5dcaa5" strokeWidth="1" opacity="0.4" />
+                                          <line x1="100" y1="60" x2="100" y2="85" stroke="#5dcaa5" strokeWidth="1" opacity="0.4" />
+                                          <line x1="260" y1="60" x2="260" y2="85" stroke="#5dcaa5" strokeWidth="1" opacity="0.4" />
+
+                                          {/* Technical director to PM */}
+                                          <line x1="100" y1="115" x2="100" y2="155" stroke="#5dcaa5" strokeWidth="1" strokeDasharray="2 2" opacity="0.4" />
+                                          {/* Ops director to HR */}
+                                          <line x1="260" y1="115" x2="260" y2="155" stroke="#5dcaa5" strokeWidth="1" strokeDasharray="2 2" opacity="0.4" />
+
+                                          {/* PM to Devs */}
+                                          <line x1="100" y1="185" x2="100" y2="215" stroke="#5dcaa5" strokeWidth="1" opacity="0.4" />
+                                          {/* HR to Analysts */}
+                                          <line x1="260" y1="185" x2="260" y2="215" stroke="#5dcaa5" strokeWidth="1" opacity="0.4" />
+
+                                          {/* Interactive Node Buttons as SVG elements */}
+                                          {/* CEO */}
+                                          <g className="cursor-pointer group/node" onClick={() => setSelectedOrgNode('ceo')}>
+                                            <rect x="130" y="15" width="100" height="25" rx="6" fill={selectedOrgNode === 'ceo' ? '#5dcaa5' : '#050505'} stroke={selectedOrgNode === 'ceo' ? '#fff' : '#5dcaa5'} strokeWidth="1" className="transition-all duration-300" />
+                                            <text x="180" y="31" fill={selectedOrgNode === 'ceo' ? '#000' : '#fff'} fontSize="8" fontWeight="bold" fontFamily="monospace" textAnchor="middle">Sócio-Presidente</text>
+                                          </g>
+
+                                          {/* CTO */}
+                                          <g className="cursor-pointer group/node" onClick={() => setSelectedOrgNode('cto')}>
+                                            <rect x="50" y="85" width="100" height="30" rx="6" fill={selectedOrgNode === 'cto' ? '#5dcaa5' : '#050505'} stroke={selectedOrgNode === 'cto' ? '#fff' : 'rgba(255,255,255,0.15)'} strokeWidth="1" className="transition-all duration-300" />
+                                            <text x="100" y="99" fill={selectedOrgNode === 'cto' ? '#000' : '#fff'} fontSize="8" fontWeight="bold" fontFamily="monospace" textAnchor="middle">Dir. Técnico</text>
+                                            <text x="100" y="109" fill={selectedOrgNode === 'cto' ? '#000' : 'rgba(255,255,255,0.4)'} fontSize="6" fontFamily="sans-serif" textAnchor="middle">Engenharia / BI</text>
+                                          </g>
+
+                                          {/* COO */}
+                                          <g className="cursor-pointer group/node" onClick={() => setSelectedOrgNode('coo')}>
+                                            <rect x="210" y="85" width="100" height="30" rx="6" fill={selectedOrgNode === 'coo' ? '#5dcaa5' : '#050505'} stroke={selectedOrgNode === 'coo' ? '#fff' : 'rgba(255,255,255,0.15)'} strokeWidth="1" className="transition-all duration-300" />
+                                            <text x="260" y="99" fill={selectedOrgNode === 'coo' ? '#000' : '#fff'} fontSize="8" fontWeight="bold" fontFamily="monospace" textAnchor="middle">Dir. Operações</text>
+                                            <text x="260" y="109" fill={selectedOrgNode === 'coo' ? '#000' : 'rgba(255,255,255,0.4)'} fontSize="6" fontFamily="sans-serif" textAnchor="middle">Adm. / Financeiro</text>
+                                          </g>
+
+                                          {/* PM */}
+                                          <g className="cursor-pointer group/node" onClick={() => setSelectedOrgNode('pm')}>
+                                            <rect x="50" y="155" width="100" height="30" rx="6" fill={selectedOrgNode === 'pm' ? '#5dcaa5' : '#050505'} stroke={selectedOrgNode === 'pm' ? '#fff' : 'rgba(255,255,255,0.15)'} strokeWidth="1" className="transition-all duration-300" />
+                                            <text x="100" y="169" fill={selectedOrgNode === 'pm' ? '#000' : '#fff'} fontSize="8" fontWeight="bold" fontFamily="monospace" textAnchor="middle">Coord. Projetos</text>
+                                            <text x="100" y="179" fill={selectedOrgNode === 'pm' ? '#000' : 'rgba(255,255,255,0.4)'} fontSize="6" fontFamily="sans-serif" textAnchor="middle">Sprints / Entregas</text>
+                                          </g>
+
+                                          {/* HR */}
+                                          <g className="cursor-pointer group/node" onClick={() => setSelectedOrgNode('hr')}>
+                                            <rect x="210" y="155" width="100" height="30" rx="6" fill={selectedOrgNode === 'hr' ? '#5dcaa5' : '#050505'} stroke={selectedOrgNode === 'hr' ? '#fff' : 'rgba(255,255,255,0.15)'} strokeWidth="1" className="transition-all duration-300" />
+                                            <text x="260" y="169" fill={selectedOrgNode === 'hr' ? '#000' : '#fff'} fontSize="8" fontWeight="bold" fontFamily="monospace" textAnchor="middle">Coord. Pessoas</text>
+                                            <text x="260" y="179" fill={selectedOrgNode === 'hr' ? '#000' : 'rgba(255,255,255,0.4)'} fontSize="6" fontFamily="sans-serif" textAnchor="middle">Cultura / Rituais</text>
+                                          </g>
+
+                                          {/* Devs */}
+                                          <g className="cursor-pointer group/node" onClick={() => setSelectedOrgNode('devs')}>
+                                            <rect x="50" y="215" width="100" height="20" rx="4" fill={selectedOrgNode === 'devs' ? '#5dcaa5' : '#050505'} stroke={selectedOrgNode === 'devs' ? '#fff' : 'rgba(255,255,255,0.08)'} strokeWidth="1" className="transition-all duration-300" />
+                                            <text x="100" y="227" fill={selectedOrgNode === 'devs' ? '#000' : 'rgba(255,255,255,0.7)'} fontSize="7" fontWeight="bold" fontFamily="monospace" textAnchor="middle">Desenvolvedores BI</text>
+                                          </g>
+
+                                          {/* Analysts */}
+                                          <g className="cursor-pointer group/node" onClick={() => setSelectedOrgNode('analysts')}>
+                                            <rect x="210" y="215" width="100" height="20" rx="4" fill={selectedOrgNode === 'analysts' ? '#5dcaa5' : '#050505'} stroke={selectedOrgNode === 'analysts' ? '#fff' : 'rgba(255,255,255,0.08)'} strokeWidth="1" className="transition-all duration-300" />
+                                            <text x="260" y="227" fill={selectedOrgNode === 'analysts' ? '#000' : 'rgba(255,255,255,0.7)'} fontSize="7" fontWeight="bold" fontFamily="monospace" textAnchor="middle">Analistas de Dados</text>
+                                          </g>
+                                        </svg>
+                                      </div>
+
+                                      {/* Side detail card */}
+                                      <div className="lg:col-span-5">
+                                        <div className="bg-[#050505] border border-white/5 rounded-xl p-3.5 min-h-[260px] flex flex-col justify-between">
+                                          {selectedOrgNode ? (() => {
+                                            const nodeMap: Record<string, { role: string, parent: string, autonomy: string, style: string, desc: string, duties: string }> = {
+                                              ceo: { role: 'Sócio-Presidente / Fundador', parent: 'Conselho Executivo (C-Level)', autonomy: 'M4 (Autonomia Absoluta)', style: 'Estratégico / Decisão Racional', desc: 'Sócio principal responsável pelas diretrizes executivas, atração de clientes corporativos de alto valor e governança da marca.', duties: 'Definição de visão, OKRs anuais, calibração orçamentária estratégica e rituais do conselho.' },
+                                              cto: { role: 'Diretor Técnico (CTO)', parent: 'Sócio-Presidente', autonomy: 'M4 (Auton. Executiva)', style: 'Tático / Decisão Técnica', desc: 'Responsável pela integridade e arquitetura técnica da infraestrutura de Business Intelligence, banco de dados e APIs.', duties: 'Modelagem de dados Snowflake/AWS, definição de padrões de software e assegurar a segurança técnica exigida pela LGPD.' },
+                                              coo: { role: 'Diretora de Operações', parent: 'Sócio-Presidente', autonomy: 'M4 (Auton. Executiva)', style: 'Tático / Decisão Administrativa', desc: 'Gerencia as rotinas operacionais de contratos, cobranças e faturamento, assegurando conformidade de processos.', duties: 'Calibração financeira, contratos comerciais de prestação de serviços de BI e gestão de passivos trabalhistas/fiscais.' },
+                                              pm: { role: 'Coordenador de BI (Product Owner)', parent: 'Diretor Técnico', autonomy: 'M3 (Calibrado / Monitorado)', style: 'Operacional / Decisão Racionalizada', desc: 'Gerencia o fluxo de sprints técnicos e garante que os prazos acordados em SLAs com os clientes sejam cumpridos.', duties: 'Definição de histórias, acompanhamento diário com programadores e aprovação final de dashboards em Power BI.' },
+                                              hr: { role: 'Coordenadora de Pessoas & Cultura', parent: 'Diretora de Operações', autonomy: 'M3 (Calibrado / Monitorado)', style: 'Socioemocional / Rituais de Aliança', desc: 'Lidera a cultura da empresa, rituais socioemocionais de feedback, PDIs individuais e monitora o clima organizacional periódicamente.', duties: 'Feedbacks estruturados (SBI), planos de sucessão, canal de ruído (comunicação), contratações e mediações de conflitos.' },
+                                              devs: { role: 'Desenvolvedores de BI', parent: 'Coordenador de Projetos', autonomy: 'M2 a M3 (Autonomia Regulada)', style: 'Operacional / Técnico', desc: 'Analistas programadores encarregados de realizar conexões de APIs, ETL e front-end visual dos painéis de consultoria.', duties: 'Construção de querys SQL, formatação de views de dados, validação de fórmulas e design gráfico responsivo dos painéis.' },
+                                              analysts: { role: 'Analistas de Dados', parent: 'Coordenador de Projetos', autonomy: 'M2 a M3 (Autonomia Regulada)', style: 'Operacional / Analítico', desc: 'Profissionais dedicados a cruzar os relatórios técnicos e traduzir métricas em conclusões financeiras para os clientes.', duties: 'Limpeza de dados, elaboração de relatórios descritivos, benchmark de CAC/LTV e detecção de anomalias.' }
+                                            };
+                                            const item = nodeMap[selectedOrgNode];
+                                            return (
+                                              <div className="space-y-3 animate-fade-in flex flex-col justify-between h-full">
+                                                <div>
+                                                  <div className="border-b border-white/5 pb-2">
+                                                    <span className="text-[11px] font-bold text-white font-mono uppercase tracking-wider block leading-tight">{item.role}</span>
+                                                    <span className="text-[7px] text-[#5dcaa5] font-mono uppercase font-bold tracking-widest mt-1 block">Reporta a: {item.parent}</span>
+                                                  </div>
+                                                  <div className="space-y-1.5 mt-2 text-[9px] text-white/50">
+                                                    <div><span className="font-mono text-white/80 font-bold">Autonomia:</span> {item.autonomy}</div>
+                                                    <div><span className="font-mono text-white/80 font-bold">Estilo Decisório:</span> {item.style}</div>
+                                                    <div className="text-[9.5px] text-white/70 leading-relaxed font-sans border-t border-white/5 pt-2 mt-2"><strong>Descrição:</strong> {item.desc}</div>
+                                                    <div className="text-[9px] text-white/60 leading-relaxed font-sans mt-1"><strong>Responsabilidade:</strong> {item.duties}</div>
+                                                  </div>
+                                                </div>
+                                                <div className="text-[8px] font-mono text-[#5dcaa5] bg-[#5dcaa5]/5 p-2 rounded-lg border border-[#5dcaa5]/20 mt-2">
+                                                  ⚡ <strong>Nível de Centralização:</strong> {selectedOrgNode === 'ceo' || selectedOrgNode === 'cto' || selectedOrgNode === 'coo' ? 'Alta (Concentra a decisão estrutural e verbas).' : 'Baixa (Grande autonomia técnica no dia a dia).'}
+                                                </div>
+                                              </div>
+                                            );
+                                          })() : (
+                                            <div className="flex-1 flex flex-col items-center justify-center text-center p-4">
+                                              <Network size={24} className="text-white/20 mb-2" strokeWidth={1.5} />
+                                              <span className="text-[9.5px] text-white/30 font-mono">Nenhum cargo selecionado. Clique em algum retângulo do organograma ao lado para conferir a autonomia e detalhes do cargo.</span>
+                                            </div>
+                                          )}
+                                        </div>
+                                      </div>
+                                    </div>
                                   </div>
                                 )}
-                              </div>
-                              <div className="flex-1 flex flex-col gap-6">
-                                <div className={`h-8 bg-black border ${isAnalyzingData ? 'border-[#5dcaa5]/50' : 'border-white/10'} rounded-full relative overflow-hidden flex items-center px-2 transition-all`}>
-                                  <div className="absolute left-0 h-full w-[65%] bg-gradient-to-r from-blue-500/20 to-[#5dcaa5]/40" />
-                                  <div className="w-full flex justify-between z-10 text-[9px] font-bold font-mono px-2">
-                                    <span className="text-blue-400">MECANICISTA (35%)</span>
-                                    <span className="text-[#5dcaa5]">ORGÂNICA (65%)</span>
+
+                                {etapa3Tab === 'estilo' && (
+                                  <div className="animate-fade-in space-y-4">
+                                    <div className="bg-[#5dcaa5]/5 border border-[#5dcaa5]/20 rounded-xl p-3">
+                                      <h4 className="text-[10px] font-bold text-[#5dcaa5] uppercase font-mono tracking-widest mb-1">Simulador de Estrutura Organizacional</h4>
+                                      <p className="text-[9px] text-white/60 leading-relaxed">
+                                        Calibre o equilíbrio entre <strong>Estrutura Orgânica (Flexibilidade/Velocidade)</strong> e <strong>Mecanicista (Controle/Rigidez)</strong> e observe os impactos nos scores corporativos.
+                                      </p>
+                                    </div>
+
+                                    <div className="bg-black/40 border border-white/5 rounded-xl p-4 space-y-5">
+                                      {/* Interactive Slider */}
+                                      <div className="space-y-2">
+                                        <div className="flex justify-between items-center text-[10px] font-mono font-bold">
+                                          <span className="text-blue-400 uppercase">Mecanicista ({100 - organicRatio}%)</span>
+                                          <span className="text-[#5dcaa5] uppercase">Orgânica ({organicRatio}%)</span>
+                                        </div>
+                                        <input 
+                                          type="range" 
+                                          min="10" 
+                                          max="90" 
+                                          value={organicRatio} 
+                                          onChange={e => setOrganicRatio(parseInt(e.target.value, 10))}
+                                          className="w-full h-1 bg-white/10 rounded-lg appearance-none cursor-pointer accent-[#5dcaa5]"
+                                        />
+                                        <div className="flex justify-between text-[7.5px] font-mono text-white/30">
+                                          <span>PADRÃO RÍGIDO (TAYLOR/WEBER)</span>
+                                          <span>HYBRID ÁGIL (RECOMENDADO)</span>
+                                          <span>LIBERDADE CRÍTICA</span>
+                                        </div>
+                                      </div>
+
+                                      {/* Preset Buttons */}
+                                      <div className="grid grid-cols-3 gap-2.5">
+                                        {[
+                                          { ratio: 20, label: 'Centralizado (20%)', desc: 'Foco total em controle formal.' },
+                                          { ratio: 65, label: 'Hybrid Ágil (65%)', desc: 'Nosso equilíbrio oficial.' },
+                                          { ratio: 90, label: 'Squad Livre (90%)', desc: 'Alta velocidade / Sem regras.' }
+                                        ].map(p => (
+                                          <button
+                                            key={p.ratio}
+                                            onClick={() => {
+                                              setOrganicRatio(p.ratio);
+                                              triggerToast(`Estrutura calibrada para: ${p.label}`);
+                                            }}
+                                            className={`p-2 border rounded-lg text-left transition-all relative ${organicRatio === p.ratio ? 'bg-[#5dcaa5]/10 border-[#5dcaa5]/40 text-[#5dcaa5]' : 'bg-black/30 border-white/5 text-white/50 hover:text-white/80'}`}
+                                          >
+                                            <span className="text-[9px] font-mono font-bold block">{p.label}</span>
+                                            <span className="text-[7.5px] text-white/40 block mt-0.5 leading-tight">{p.desc}</span>
+                                          </button>
+                                        ))}
+                                      </div>
+
+                                      {/* Dynamic Scores */}
+                                      <div className="border-t border-white/5 pt-4 space-y-3">
+                                        <h5 className="text-[9px] font-mono font-bold text-white/50 uppercase tracking-widest">Impacto nos Scores Operacionais</h5>
+                                        
+                                        {/* Score 1 */}
+                                        <div className="space-y-1">
+                                          <div className="flex justify-between text-[9px] font-mono">
+                                            <span className="text-white/60">Velocidade de Inovação & Criatividade</span>
+                                            <span className="text-[#5dcaa5] font-bold">{Math.round(organicRatio * 0.95 + 5)}%</span>
+                                          </div>
+                                          <div className="h-1.5 bg-white/5 border border-white/10 rounded-full overflow-hidden">
+                                            <div className="h-full bg-gradient-to-r from-blue-500 to-[#5dcaa5] transition-all duration-300" style={{ width: `${Math.round(organicRatio * 0.95 + 5)}%` }} />
+                                          </div>
+                                        </div>
+
+                                        {/* Score 2 */}
+                                        <div className="space-y-1">
+                                          <div className="flex justify-between text-[9px] font-mono">
+                                            <span className="text-white/60">Segurança & Conformidade (LGPD/Regulamentação)</span>
+                                            <span className="text-[#d4b87a] font-bold">{Math.round((100 - organicRatio) * 0.9 + 10)}%</span>
+                                          </div>
+                                          <div className="h-1.5 bg-white/5 border border-white/10 rounded-full overflow-hidden">
+                                            <div className="h-full bg-gradient-to-r from-blue-500 to-[#d4b87a] transition-all duration-300" style={{ width: `${Math.round((100 - organicRatio) * 0.9 + 10)}%` }} />
+                                          </div>
+                                        </div>
+
+                                        {/* Score 3 */}
+                                        <div className="space-y-1">
+                                          <div className="flex justify-between text-[9px] font-mono">
+                                            <span className="text-white/60">Engajamento & Autonomia do Time</span>
+                                            <span className="text-purple-400 font-bold">{Math.round(organicRatio * 0.8 + 15)}%</span>
+                                          </div>
+                                          <div className="h-1.5 bg-white/5 border border-white/10 rounded-full overflow-hidden">
+                                            <div className="h-full bg-gradient-to-r from-blue-500 to-purple-400 transition-all duration-300" style={{ width: `${Math.round(organicRatio * 0.8 + 15)}%` }} />
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
                                   </div>
-                                </div>
-                                <div className={`flex-1 border border-dashed ${isAnalyzingData ? 'border-[#5dcaa5]/50 bg-[#5dcaa5]/5' : 'border-white/10 bg-white/[0.02]'} rounded-xl flex items-center justify-center relative transition-all duration-500`}>
-                                  <Network size={40} strokeWidth={1} className={`text-white opacity-20 ${isAnalyzingData ? 'animate-bounce text-[#5dcaa5]' : ''}`} />
-                                  <div className="absolute bottom-4 text-[9px] text-white/30 font-mono text-center w-full">
-                                    {isAnalyzingData ? 'Analisando os níveis de governança e controle informados...' : 'Renderizando nós do organograma baseado no seu relato...'}
+                                )}
+
+                                {etapa3Tab === 'controles' && (
+                                  <div className="animate-fade-in space-y-3">
+                                    <div className="bg-[#5dcaa5]/5 border border-[#5dcaa5]/20 rounded-xl p-3 mb-2">
+                                      <h4 className="text-[10px] font-bold text-[#5dcaa5] uppercase font-mono tracking-widest mb-1">Mapeamento de Sistemas de Controle</h4>
+                                      <p className="text-[9px] text-white/60 leading-relaxed">
+                                        Como a consultoria assegura que os objetivos sejam alcançados através de rituais e controles formais e socioemocionais.
+                                      </p>
+                                    </div>
+
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+                                      {/* Racionais */}
+                                      <div className="p-4 bg-black/40 border border-white/5 hover:border-blue-500/20 rounded-xl space-y-3 transition-all duration-300">
+                                        <span className="text-[9.5px] font-mono text-blue-400 font-bold uppercase tracking-widest border-b border-white/5 pb-1.5 block">1. Controles Racionais & Formais (35%)</span>
+                                        
+                                        <div className="space-y-2 text-[9.5px]">
+                                          <div className="bg-white/[0.02] border border-white/5 p-2 rounded-lg">
+                                            <strong className="text-white block font-mono">OKRs Trimestrais (Q2/2026):</strong>
+                                            <span className="text-white/60 mt-0.5 block leading-normal">Definição explícita de objetivos de faturamento, novos painéis e metas de satisfação do cliente.</span>
+                                          </div>
+                                          <div className="bg-white/[0.02] border border-white/5 p-2 rounded-lg">
+                                            <strong className="text-white block font-mono">Contratos & SLAs de Clientes:</strong>
+                                            <span className="text-white/60 mt-0.5 block leading-normal">Prazos explícitos e acordos formais de nível de serviço para a entrega de relatórios e BI.</span>
+                                          </div>
+                                          <div className="bg-white/[0.02] border border-white/5 p-2 rounded-lg">
+                                            <strong className="text-white block font-mono">Auditoria Contínua de Logs (LGPD):</strong>
+                                            <span className="text-white/60 mt-0.5 block leading-normal">Monitoramento técnico automatizado de acesso às bases de dados corporativas sensíveis.</span>
+                                          </div>
+                                        </div>
+                                      </div>
+
+                                      {/* Naturais */}
+                                      <div className="p-4 bg-black/40 border border-white/5 hover:border-[#5dcaa5]/20 rounded-xl space-y-3 transition-all duration-300">
+                                        <span className="text-[9.5px] font-mono text-[#5dcaa5] font-bold uppercase tracking-widest border-b border-white/5 pb-1.5 block">2. Controles Socioemocionais & Naturais (65%)</span>
+                                        
+                                        <div className="space-y-2 text-[9.5px]">
+                                          <div className="bg-white/[0.02] border border-white/5 p-2 rounded-lg">
+                                            <strong className="text-white block font-mono">Ritual de Feedback SBI:</strong>
+                                            <span className="text-white/60 mt-0.5 block leading-normal">Alinhamento frequente baseado em rituais do SIG Pessoas (Situação-Comportamento-Impacto) em vez de pressões de cobrança.</span>
+                                          </div>
+                                          <div className="bg-white/[0.02] border border-white/5 p-2 rounded-lg">
+                                            <strong className="text-white block font-mono">Contrato de Aliança Horizontal:</strong>
+                                            <span className="text-white/60 mt-0.5 block leading-normal">Valores implícitos e regras de convivência do time acordados democraticamente na fundação da empresa.</span>
+                                          </div>
+                                          <div className="bg-white/[0.02] border border-white/5 p-2 rounded-lg">
+                                            <strong className="text-white block font-mono">Pulso Semanal de Clima (eNPS):</strong>
+                                            <span className="text-white/60 mt-0.5 block leading-normal">Acompanhamento do nível socioemocional e gargalos antes que gerem insatisfações ou turnover na consultoria.</span>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
                                   </div>
-                                </div>
+                                )}
+
+                                {etapa3Tab === 'reflexao' && (
+                                  <div className="animate-fade-in space-y-3">
+                                    <div className="bg-[#5dcaa5]/5 border border-[#5dcaa5]/20 rounded-xl p-3 mb-2">
+                                      <h4 className="text-[10px] font-bold text-[#5dcaa5] uppercase font-mono tracking-widest mb-1">Diretrizes Práticas de Liderança</h4>
+                                      <p className="text-[9px] text-white/60 leading-relaxed">
+                                        Validação teórica e prática sobre os sistemas de estrutura e controle para subsidiar o relatório final da ATP.
+                                      </p>
+                                    </div>
+
+                                    <div className="space-y-3">
+                                      <div className="p-3 bg-black/40 border border-white/5 rounded-xl">
+                                        <span className="text-[9px] font-mono text-[#d4b87a] uppercase font-bold tracking-widest block mb-1">Racionalidade vs Improviso Empírico</span>
+                                        <p className="text-[10px] text-white/80 leading-relaxed font-sans">
+                                          A estrutura da <strong>Nossa Consultoria BI</strong> não nasceu pronta de um papel; ela amadureceu organicamente por meio do acúmulo de conhecimento prático de gestão. Os gestores iniciaram com uma estrutura totalmente informal e a adaptaram rationamente à medida que exigências como a LGPD e o crescimento da carteira de clientes demandaram rituais formais.
+                                        </p>
+                                      </div>
+
+                                      <div className="p-3 bg-black/40 border border-white/5 rounded-xl">
+                                        <span className="text-[9px] font-mono text-purple-400 uppercase font-bold tracking-widest block mb-1">Se você fosse o Gestor dessa Consultoria:</span>
+                                        <p className="text-[10px] text-white/80 leading-relaxed font-sans">
+                                          Escolheria uma **estrutura de squads/matricial descentralizada híbrida (65% orgânica)** para maximizar a velocidade técnica. Em contrapartida, faria o controle de objetivos de maneira altamente tecnológica utilizando **OKRs integrados ao SIG Pessoas** para monitorar a performance do time de maneira transparente, eliminando microgerenciamento.
+                                        </p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                )}
                               </div>
                             </div>
                           )}

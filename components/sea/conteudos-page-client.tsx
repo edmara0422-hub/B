@@ -102,7 +102,7 @@ const SYLLABUS_TO_DB_MAP: Record<string, string> = {
   // Pilar 2: Finanças e Inteligência Quantitativa
   'M4-T2-S1': 'M6-S1', // Análise Financeira (M6-S1 no BD)
   'M4-T2-S2': 'M4-T2-S2', // Análise Financeira
-  'M4-T2-S3': 'M4-T2-S3', // Matemática Financeira
+  'M4-T2-S3': 'M4-T1-S6', // Matemática Financeira
   'M4-T2-S4': 'M4-T1-S5', // Demonstrações Contábeis
   'M4-T2-S5': 'M6-S2', // Precificação (M6-S2 no BD)
   'M4-T2-S6': 'M4-S2', // Cálculo Aplicado a Negócios (M4-S2 no BD)
