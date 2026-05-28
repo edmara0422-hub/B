@@ -277,7 +277,7 @@ export function NeuroPumpSim({ className }: { className?: string }) {
 
       // Title
       ctx.fillStyle = COL_TEXT_DIM
-      ctx.font = `7.5px ${FONT_MONO}`
+      ctx.font = `9px ${FONT_MONO}`
       ctx.textAlign = 'left'
       ctx.textBaseline = 'top'
       ctx.fillText('REGULADOR DE VOLTAGEM (mV)', x + 8, y + 6)
@@ -316,8 +316,19 @@ export function NeuroPumpSim({ className }: { className?: string }) {
       }
       state.lastTimestamp = timestamp
 
-      const w = canvas.width / (window.devicePixelRatio || 1)
-      const h = canvas.height / (window.devicePixelRatio || 1)
+      const rect = canvas.getBoundingClientRect()
+      const dpr = window.devicePixelRatio || 1
+      const displayW = Math.floor(rect.width) || 300
+      const displayH = Math.floor(rect.height) || 150
+
+      if (canvas.width !== displayW * dpr || canvas.height !== displayH * dpr) {
+        canvas.width = displayW * dpr
+        canvas.height = displayH * dpr
+        ctx.scale(dpr, dpr)
+      }
+
+      const w = displayW
+      const h = displayH
 
       // Layout coordinates
       const memY = h * 0.5
@@ -811,22 +822,22 @@ export function NeuroPumpSim({ className }: { className?: string }) {
       // HUD / operational message
       ctx.textAlign = 'left'
       ctx.textBaseline = 'top'
-      ctx.font = `bold 8.5px ${FONT_MONO}`
+      ctx.font = `bold 12px ${FONT_MONO}`
       ctx.fillStyle = isSystemFault ? '#ef4444' : COL_TEAL_ACCENT
       
       const statusIcon = isSystemFault ? '⚠️' : '⚡'
       ctx.fillText(`${statusIcon} TELEMETRIA: ${stateMessage}`, 16, 16)
 
       ctx.fillStyle = COL_TEXT_DIM
-      ctx.font = `7px ${FONT_MONO}`
-      ctx.fillText(`POTENCIAL TRANSELETRÔNICO: ${state.potential.toFixed(2)} mV`, 16, 28)
+      ctx.font = `9.5px ${FONT_MONO}`
+      ctx.fillText(`POTENCIAL TRANSELETRÔNICO: ${state.potential.toFixed(2)} mV`, 16, 29)
 
       // stoichiometry display
       ctx.textAlign = 'center'
       ctx.textBaseline = 'bottom'
-      ctx.font = `8px ${FONT_MONO}`
+      ctx.font = `10.5px ${FONT_MONO}`
       ctx.fillStyle = 'rgba(255, 255, 255, 0.45)'
-      ctx.fillText('E1: Sítio Na⁺ (Citoplasmático)  |  E2: Sítio K⁺ (Extracelular)', cx, h - 14)
+      ctx.fillText('E1: Sítio Na⁺ (Citoplasmático)  |  E2: Sítio K⁺ (Extracelular)', cx, h - 15)
 
       /* ── Loop frame ── */
       rafId = requestAnimationFrame(render)
