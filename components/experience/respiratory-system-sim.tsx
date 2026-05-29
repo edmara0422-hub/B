@@ -6,11 +6,11 @@ import {
   Pause, 
   Wind, 
   Activity, 
-  ShieldAlert, 
-  Gauge, 
-  TrendingUp, 
-  Sliders,
-  RefreshCw
+  Eye, 
+  Heart, 
+  Sparkles,
+  RefreshCw,
+  Info
 } from 'lucide-react'
 
 /* ─────────────────────── types ─────────────────────── */
@@ -20,31 +20,32 @@ interface RespiratorySystemSimProps {
 }
 
 type AirwayPart = 'nose' | 'pharynx' | 'larynx' | 'trachea' | 'bronchi' | 'alveoli' | 'diaphragm' | 'lungs' | null
+type ViewMode = 'all' | 'airway' | 'hematosis' | 'mechanics'
 
 /* ─────────────────────── constants ─────────────────────── */
 
 const FPS = 30
 const FRAME_MS = 1000 / FPS
-const COL_BG = '#040712' // Premium dark slate blue
-const COL_GRID = 'rgba(56, 189, 248, 0.02)'
+const COL_BG = '#040610' // Immersive bio-medical dark navy
+const COL_GRID = 'rgba(56, 189, 248, 0.018)'
 const COL_TEXT_DIM = 'rgba(255, 255, 255, 0.35)'
 const COL_AIRWAY = 'rgba(34, 211, 238, 0.45)'
-const COL_AIRWAY_HI = 'rgba(34, 211, 238, 0.85)'
+const COL_AIRWAY_HI = 'rgba(34, 211, 238, 0.9)'
 const COL_AIRWAY_FILL = 'rgba(34, 211, 238, 0.05)'
-const COL_AIRWAY_FILL_HI = 'rgba(34, 211, 238, 0.12)'
-const COL_O2 = 'rgba(34, 211, 238, 0.9)'
-const COL_CO2 = 'rgba(244, 63, 94, 0.75)'
+const COL_AIRWAY_FILL_HI = 'rgba(34, 211, 238, 0.14)'
+const COL_O2 = 'rgba(34, 211, 238, 0.95)'
+const COL_CO2 = 'rgba(244, 63, 94, 0.85)'
 const COL_CONDUCT = 'rgba(45, 212, 191, 0.65)'
 const COL_RESP = 'rgba(250, 204, 21, 0.65)'
-const COL_LUNG_L = 'rgba(45, 212, 191, 0.07)'
-const COL_LUNG_R = 'rgba(45, 212, 191, 0.09)'
-const COL_LUNG_STROKE = 'rgba(45, 212, 191, 0.22)'
-const COL_RIB = 'rgba(255, 255, 255, 0.04)'
-const COL_RIB_STROKE = 'rgba(255, 255, 255, 0.07)'
+const COL_LUNG_L = 'rgba(20, 184, 166, 0.1)'
+const COL_LUNG_R = 'rgba(20, 184, 166, 0.12)'
+const COL_LUNG_STROKE = 'rgba(20, 184, 166, 0.3)'
+const COL_RIB = 'rgba(255, 255, 255, 0.03)'
+const COL_RIB_STROKE = 'rgba(255, 255, 255, 0.05)'
 const COL_DIAPHRAGM = 'rgba(244, 63, 94, 0.35)'
-const COL_MUCUS = 'rgba(45, 212, 191, 0.2)'
-const COL_CARTILAGE = 'rgba(167, 139, 250, 0.18)'
-const COL_EPIGLOTTIS = 'rgba(250, 204, 21, 0.45)'
+const COL_MUCUS = 'rgba(45, 212, 191, 0.22)'
+const COL_CARTILAGE = 'rgba(167, 139, 250, 0.22)'
+const COL_EPIGLOTTIS = 'rgba(250, 204, 21, 0.55)'
 const FONT_MONO = '"SF Mono", "Fira Code", "Cascadia Code", ui-monospace, monospace'
 
 const PART_INFO: Record<string, { title: string; zone: string; desc: string; details: string[] }> = {
@@ -52,49 +53,49 @@ const PART_INFO: Record<string, { title: string; zone: string; desc: string; det
     title: 'Nariz e Cavidade Nasal',
     zone: 'Zona Condutora',
     desc: 'Filtra, aquece e umidifica o ar inspirado.',
-    details: ['Pelos nasais (vibrissas)', 'Conchas nasais ↑ turbulência', 'Muco + IgA', 'Aquece ar a 37°C'],
+    details: ['Pelos nasais (vibrissas) filtram partículas', 'Conchas nasais ↑ turbulência', 'Muco captura patógenos', 'Aquece o ar a 37°C antes do pulmão'],
   },
   pharynx: {
     title: 'Faringe',
     zone: 'Zona Condutora',
-    desc: 'Via compartilhada para ar e alimento.',
-    details: ['Nasofaringe', 'Orofaringe', 'Laringofaringe', 'Tecido linfóide (tonsilas)'],
+    desc: 'Via comum compartilhada para ar e alimento.',
+    details: ['Nasofaringe (somente ar)', 'Orofaringe e Laringofaringe', 'Tecido linfóide (tonsilas faríngeas)', 'Úvula impede entrada de alimento na nasofaringe'],
   },
   larynx: {
     title: 'Laringe',
     zone: 'Zona Condutora',
-    desc: 'Pregas vocais + epiglote (protege aspiração).',
-    details: ['Cartilagem tireóidea', 'Epiglote fecha na deglutição', 'Pregas vocais: fonação', 'Glote: passagem do ar'],
+    desc: 'Pregas vocais e epiglote (proteção das vias).',
+    details: ['Cartilagem tireóidea (pomo de Adão)', 'Epiglote fecha na deglutição', 'Pregas vocais: fonação', 'Glote: abertura física de passagem'],
   },
   trachea: {
     title: 'Traqueia',
     zone: 'Zona Condutora',
-    desc: '16-20 anéis cartilaginosos em C. Epitélio mucociliar.',
-    details: ['Anéis em C (aberto posterior)', 'Músculo traqueal posterior', 'Cílios: 600-900 bat/min', 'Espaço morto: ~150 mL'],
+    desc: '16-20 anéis cartilaginosos em C para suporte. Epitélio mucociliar.',
+    details: ['Anéis de cartilagem hialina em C', 'Músculo traqueal na parte posterior', 'Cílios movem muco para a faringe', 'Espaço morto anatômico (~150 mL)'],
   },
   bronchi: {
     title: 'Brônquios e Bronquíolos',
     zone: 'Condutora → Respiratória',
-    desc: '23 gerações de ramificação dicotômica.',
-    details: ['Brônquio D mais vertical', 'Músculo liso → broncoconstrição', '23 gerações até alvéolos', 'Bronquíolo: <1mm diâmetro'],
+    desc: '23 gerações de ramificação dicotômica até os alvéolos.',
+    details: ['Brônquio D mais vertical e largo', 'Músculo liso substituindo cartilagem', '23 gerações de divisões', 'Bronquíolos: Ø < 1mm, muito responsivos'],
   },
   alveoli: {
     title: 'Alvéolos Pulmonares',
     zone: 'Zona Respiratória',
-    desc: '300-500 milhões. Superfície ≈70m². Hematose.',
-    details: ['Pneumócito I: troca gasosa', 'Pneumócito II: surfactante', 'Membrana: 0,2 µm', 'Capilares pulmonares'],
+    desc: '300-500 milhões de alvéolos. Superfície total de ~70-100 m².',
+    details: ['Pneumócito I: troca gasosa (hematose)', 'Pneumócito II: secreta surfactante', 'Membrana respiratória de 0,2 µm', 'Envolvidos por rede de capilares'],
   },
   diaphragm: {
     title: 'Diafragma',
     zone: 'Motor Primário',
-    desc: 'Principal músculo inspiratório. Inervação: nervo frênico (C3-C5).',
-    details: ['Contrai → desce → ↑ volume', 'Relaxa → sobe → ↓ volume', 'Responsável por 75% da ventilação', 'Nervo frênico: C3-C5'],
+    desc: 'Músculo esquelético principal da inspiração. Inervado pelo nervo frênico (C3-C5).',
+    details: ['Contração → desce → ↑ volume torácico', 'Relaxamento → sobe → ↓ volume torácico', 'Responsável por 75% da ventilação', 'Inervação: Nervo Frênico (C3-C5)'],
   },
   lungs: {
     title: 'Pulmões',
     zone: 'Órgão Central',
-    desc: 'Direito: 3 lobos. Esquerdo: 2 lobos + incisura cardíaca.',
-    details: ['Pulmão D: lobo sup/méd/inf', 'Pulmão E: lobo sup/inf', 'Incisura cardíaca (E)', 'Pleura visceral + parietal'],
+    desc: 'Órgãos esponjosos e elásticos. Direito: 3 lobos. Esquerdo: 2 lobos + incisura cardíaca.',
+    details: ['Pulmão D: sup/méd/inf (3 lobos)', 'Pulmão E: sup/inf (2 lobos)', 'Hilo: entrada de brônquios e vasos', 'Pleura visceral e parietal com líquido'],
   },
 }
 
@@ -119,20 +120,11 @@ export function RespiratorySystemSim({ className }: RespiratorySystemSimProps) {
   const [hoveredPart, setHoveredPart] = useState<AirwayPart>(null)
   const [selectedPart, setSelectedPart] = useState<AirwayPart>(null)
 
-  // Interactive controls
-  const [respiratoryRate, setRespiratoryRate] = useState(14) // 8 to 40 rpm
-  const [tidalVolume, setTidalVolume] = useState(500) // 200 to 800 mL
-  const [muscleEffort, setMuscleEffort] = useState(70) // 0 to 100%
-  const [compliance, setCompliance] = useState(50) // 10 to 80 mL/cmH2O
-  const [resistance, setResistance] = useState(8) // 5 to 50 cmH2O/L/s
+  // Physiological Controls (No mechanical ventilation)
+  const [respiratoryRate, setRespiratoryRate] = useState(14) // 12 to 30 rpm (physiological)
+  const [viewMode, setViewMode] = useState<ViewMode>('all') // view filters
   const [isPaused, setIsPaused] = useState(false)
-
-  // Real-time telemetries
-  const [liveVe, setLiveVe] = useState(7.0) // L/min (FR * Vt / 1000)
-  const [livePpeak, setLivePpeak] = useState(15.0) // cmH2O
-  const [liveSpO2, setLiveSpO2] = useState(98) // %
-  const [liveEtCO2, setLiveEtCO2] = useState(40) // mmHg
-  const [alertMessage, setAlertMessage] = useState('')
+  const [liveVolume, setLiveVolume] = useState(2400)
 
   const stateRef = useRef({
     t: 0,
@@ -143,229 +135,95 @@ export function RespiratorySystemSim({ className }: RespiratorySystemSimProps) {
 
     // Controls
     respiratoryRate: 14,
-    tidalVolume: 500,
-    muscleEffort: 70,
-    compliance: 50,
-    resistance: 8,
+    viewMode: 'all' as ViewMode,
     isPaused: false,
-
-    // Telemetry Values
-    ve: 7.0,
-    ppeak: 15.0,
-    spo2: 98.0,
-    etco2: 40.0,
-    pressureHistory: [] as number[],
-    alertMessage: ''
   })
 
   const regionsRef = useRef<{ part: AirwayPart; x: number; y: number; w: number; h: number }[]>([])
 
-  // Sync inputs into loop refs
+  // Sync inputs to loop refs
   useEffect(() => {
     const st = stateRef.current
     st.respiratoryRate = respiratoryRate
-    st.tidalVolume = tidalVolume
-    st.muscleEffort = muscleEffort
-    st.compliance = compliance
-    st.resistance = resistance
+    st.viewMode = viewMode
     st.isPaused = isPaused
-  }, [respiratoryRate, tidalVolume, muscleEffort, compliance, resistance, isPaused])
+  }, [respiratoryRate, viewMode, isPaused])
 
-  const handleResetCounters = () => {
+  const handleReset = () => {
     setRespiratoryRate(14)
-    setTidalVolume(500)
-    setMuscleEffort(70)
-    setCompliance(50)
-    setResistance(8)
+    setViewMode('all')
     setIsPaused(false)
-    stateRef.current.spo2 = 98.0
-    stateRef.current.etco2 = 40.0
-    stateRef.current.pressureHistory = []
   }
-
-  // Draw Pressure Telemetry Oscilloscope (bedside style)
-  const drawPressureTelemetry = useCallback(
-    (ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, history: number[], ppeak: number) => {
-      // background
-      ctx.fillStyle = 'rgba(2, 6, 18, 0.85)'
-      ctx.beginPath()
-      ctx.roundRect(x, y, w, h, 8)
-      ctx.fill()
-      ctx.strokeStyle = 'rgba(56, 189, 248, 0.15)'
-      ctx.lineWidth = 1
-      ctx.stroke()
-
-      // subtle grid
-      ctx.strokeStyle = 'rgba(56, 189, 248, 0.05)'
-      ctx.beginPath()
-      for (let i = 1; i < 4; i++) {
-        const lx = x + (w * i) / 4
-        ctx.moveTo(lx, y)
-        ctx.lineTo(lx, y + h)
-      }
-      for (let i = 1; i < 4; i++) {
-        const ly = y + (h * i) / 4
-        ctx.moveTo(x, ly)
-        ctx.lineTo(x + w, ly)
-      }
-      ctx.stroke()
-
-      // draw wave
-      if (history.length > 1) {
-        ctx.strokeStyle = '#38bdf8' // sky blue
-        ctx.lineWidth = 1.8
-        ctx.shadowColor = '#0ea5e9'
-        ctx.shadowBlur = 6
-        ctx.beginPath()
-
-        const step = w / 70 // show last 70 readings
-        const startIdx = Math.max(0, history.length - 70)
-        
-        for (let i = startIdx; i < history.length; i++) {
-          const val = history[i]
-          const px = x + (i - startIdx) * step
-          // map 0 cmH2O -> bottom, 45 cmH2O -> top
-          const py = y + h - 6 - ((val / 45) * (h - 12))
-          if (i === startIdx) ctx.moveTo(px, py)
-          else ctx.lineTo(px, py)
-        }
-        ctx.stroke()
-        ctx.shadowBlur = 0
-      }
-
-      // Title & Peak text
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.4)'
-      ctx.font = `600 8px ${FONT_MONO}`
-      ctx.textAlign = 'left'
-      ctx.textBaseline = 'top'
-      ctx.fillText('CURVA DE PRESSÃO (cmH₂O)', x + 8, y + 6)
-      
-      ctx.textAlign = 'right'
-      ctx.fillStyle = ppeak > 35 ? '#f43f5e' : '#38bdf8'
-      ctx.fillText(`PICO: ${ppeak.toFixed(1)} cmH₂O`, x + w - 8, y + 6)
-    },
-    [],
-  )
 
   const draw = useCallback((ctx: CanvasRenderingContext2D, w: number, h: number) => {
     const st = stateRef.current
-    const S = Math.min(w / 680, h / 500)
+    
+    // Scale up SIGNIFICANTLY to make the lung image prominent and large
+    const S = Math.min(w / 500, h / 450)
 
     ctx.fillStyle = COL_BG
     ctx.fillRect(0, 0, w, h)
 
-    // subtle grid
+    // subtle aesthetic grid
     ctx.strokeStyle = COL_GRID
     ctx.lineWidth = 0.5
-    const gs = 28 * S
+    const gs = 24 * S
     for (let gx = 0; gx < w; gx += gs) { ctx.beginPath(); ctx.moveTo(gx, 0); ctx.lineTo(gx, h); ctx.stroke() }
     for (let gy = 0; gy < h; gy += gs) { ctx.beginPath(); ctx.moveTo(0, gy); ctx.lineTo(w, gy); ctx.stroke() }
 
-    // ── breathing mechanics (physics update)
+    // ── breathing phase increment (physiological rate)
     const cycleIncrement = st.isPaused ? 0 : (st.respiratoryRate / 1800)
     st.breathCycle = (st.breathCycle + cycleIncrement) % 1
 
-    const isInhale = st.breathCycle < 0.38
-    const isHold = st.breathCycle >= 0.38 && st.breathCycle < 0.45
-    const isExhale = st.breathCycle >= 0.45 && st.breathCycle < 0.90
-    const isRest = st.breathCycle >= 0.90
+    const isInhale = st.breathCycle < 0.45
+    const isExhale = st.breathCycle >= 0.50 && st.breathCycle < 0.95
+    const breathT = isInhale ? easeInOut(st.breathCycle / 0.45) : (isExhale ? easeInOut((st.breathCycle - 0.5) / 0.45) : (st.breathCycle < 0.5 ? 1 : 0))
+    
+    const expand = isInhale ? breathT * 0.11 : (isExhale ? (1 - breathT) * 0.11 : (st.breathCycle < 0.5 ? 0.11 : 0))
+    st.volumeMl = Math.round(2400 + expand * 4500)
 
-    // compute current Volume above FRC (curVt)
-    let curVtRatio = 0
-    if (isInhale) {
-      curVtRatio = easeInOut(st.breathCycle / 0.38)
-    } else if (isHold) {
-      curVtRatio = 1.0
-    } else if (isExhale) {
-      curVtRatio = 1.0 - easeInOut((st.breathCycle - 0.45) / 0.45)
-    } else {
-      curVtRatio = 0
-    }
+    // centered coordinates for the massive lung/airway image
+    const cx = w * 0.44 // shifted slightly left to accommodate text labels on the right
+    const topY = 12 * S
 
-    const curVt = curVtRatio * st.tidalVolume
-    const effortMultiplier = st.muscleEffort / 100
-    st.volumeMl = Math.round(2400 + curVt * effortMultiplier)
-
-    // Compute Airway Flow (L/s)
-    let flow = 0
-    if (isInhale) {
-      flow = Math.sin((st.breathCycle / 0.38) * Math.PI) * (st.tidalVolume / 1000) * 2.5
-    } else if (isExhale) {
-      flow = -Math.sin(((st.breathCycle - 0.45) / 0.45) * Math.PI) * (st.tidalVolume / 1000) * 2.0
-    }
-
-    // Airway Pressure simulation model (PEEP=5 cmH2O baseline)
-    const PEEP = 5
-    const pElastic = curVt / st.compliance
-    const pResistive = flow * st.resistance
-    const pAw = Math.max(0, PEEP + pElastic + pResistive)
-
-    // Peak Airway Pressure
-    const maxFlow = (st.tidalVolume / 1000) * 2.5
-    st.ppeak = PEEP + (st.tidalVolume / st.compliance) + (maxFlow * st.resistance)
-
-    // Minute Ventilation (L/min)
-    st.ve = (st.respiratoryRate * st.tidalVolume) / 1000
-
-    // Oxygenation and carbon dioxide dynamics (with isPaused safety)
-    if (!st.isPaused) {
-      const activeVe = st.ve * (st.muscleEffort > 10 ? 1 : 0.1) // hyper-reduced if no muscle effort (apnea)
-      
-      if (activeVe < 3.2 || st.muscleEffort < 10) {
-        // Hypoventilation/Apnea: SpO2 drops, EtCO2 rises
-        st.spo2 = Math.max(70, st.spo2 - 0.03 * (3.5 - activeVe))
-        st.etco2 = Math.min(85, st.etco2 + 0.045 * (3.5 - activeVe))
-      } else if (activeVe >= 3.2 && activeVe <= 13.0) {
-        // Healthy range: SpO2 recovers to normal, EtCO2 returns to 40 mmHg
-        st.spo2 = Math.min(99, st.spo2 + 0.08)
-        
-        const diff = st.etco2 - 40
-        st.etco2 -= diff * 0.02
-      } else {
-        // Hyperventilation: EtCO2 drops (hypocapnia), SpO2 stays at 99
-        st.spo2 = Math.min(99, st.spo2 + 0.08)
-        st.etco2 = Math.max(18, st.etco2 - 0.035 * (activeVe - 13.0))
-      }
-    }
-
-    // Determine operational states / faults
-    let tempAlert = ''
-    if (st.respiratoryRate < 9 || st.muscleEffort < 10) {
-      tempAlert = 'CRÍTICO: APNEIA PROLONGADA (AUSÊNCIA DE ESFORÇO)'
-    } else if (st.spo2 < 90) {
-      tempAlert = 'ALERTA: HIPOXEMIA SISTÊMICA GRAVE (SpO₂ < 90%)'
-    } else if (st.ppeak > 35) {
-      tempAlert = 'CRÍTICO: HIPERPRESSÃO ALVEOLAR / RISCO DE BAROTRAUMA'
-    } else if (st.ve > 16) {
-      tempAlert = 'ALERTA: HIPERVENTILAÇÃO / ALCALOSE RESPIRATÓRIA ACUTA'
-    }
-    st.alertMessage = tempAlert
-
-    // layout centers — zoomed in
-    const cx = w * 0.36
-    const topY = 10 * S
-
-    // key Y positions — bigger structures
+    // key Y positions - enlarged structures
     const noseY = topY
-    const noseH = 44 * S
+    const noseH = 50 * S
     const pharY = noseY + noseH + 4
-    const pharH = 32 * S
+    const pharH = 38 * S
     const larY = pharY + pharH + 4
-    const larH = 30 * S
+    const larH = 34 * S
     const traY = larY + larH + 3
-    const traH = 72 * S
+    const traH = 80 * S
     const bifY = traY + traH
-    const bronchLen = 58 * S
-    const bronchSpread = 82 * S
+    const bronchLen = 65 * S
+    const bronchSpread = 90 * S
 
     const lungTop = bifY - 10
-    const lungW = 120 * S * (1 + curVtRatio * effortMultiplier * 0.10)
-    const lungH = 160 * S * (1 + curVtRatio * effortMultiplier * 0.08)
+    const lungW = 150 * S * (1 + expand)
+    const lungH = 205 * S * (1 + expand * 0.8)
     const lungCenterY = lungTop + lungH * 0.45
 
     const regions: typeof regionsRef.current = []
 
+    // Helper to compute opacity based on ViewMode to create an advanced biomedical hologram look
+    const getAlpha = (part: AirwayPart | 'ribs') => {
+      if (st.viewMode === 'all') return 1.0
+      if (st.viewMode === 'airway') {
+        return (part === 'nose' || part === 'pharynx' || part === 'larynx' || part === 'trachea' || part === 'bronchi') ? 1.0 : 0.08
+      }
+      if (st.viewMode === 'hematosis') {
+        return (part === 'alveoli' || part === 'lungs') ? 1.0 : 0.08
+      }
+      if (st.viewMode === 'mechanics') {
+        return (part === 'diaphragm' || part === 'lungs' || part === 'ribs') ? 1.0 : 0.08
+      }
+      return 1.0
+    }
+
     // ═══════════════════ RIB CAGE ═══════════════════
+    const isRibsActive = getAlpha('ribs') > 0.1
+    ctx.globalAlpha = getAlpha('ribs')
     const ribCount = 7
     for (let i = 0; i < ribCount; i++) {
       const ry = lungTop + 8 + i * (lungH - 16) / (ribCount - 1)
@@ -382,13 +240,16 @@ export function RespiratorySystemSim({ className }: RespiratorySystemSimProps) {
       ctx.lineWidth = 5 * S
       ctx.stroke()
     }
+    ctx.globalAlpha = 1.0
 
-    // ═══════════════════ LUNGS ═══════════════════
+    // ═══════════════════ LUNGS (Massive, vibrant and detailed) ═══════════════════
     const isLungHi = hoveredPart === 'lungs' || selectedPart === 'lungs'
     const lungBase = lungTop + lungH
-    const lungStroke = isLungHi ? 'rgba(45, 212, 191, 0.4)' : COL_LUNG_STROKE
-    const lungFillR = isLungHi ? 'rgba(45, 212, 191, 0.14)' : COL_LUNG_R
-    const lungFillL = isLungHi ? 'rgba(45, 212, 191, 0.12)' : COL_LUNG_L
+    
+    ctx.globalAlpha = getAlpha('lungs')
+    const lungStroke = isLungHi ? 'rgba(45, 212, 191, 0.5)' : COL_LUNG_STROKE
+    const lungFillR = isLungHi ? 'rgba(20, 184, 166, 0.18)' : COL_LUNG_R
+    const lungFillL = isLungHi ? 'rgba(20, 184, 166, 0.15)' : COL_LUNG_L
 
     // medial edges
     const rlx = cx + bronchSpread * 0.45
@@ -424,28 +285,29 @@ export function RespiratorySystemSim({ className }: RespiratorySystemSimProps) {
     ctx.fillStyle = lungFillR
     ctx.fill()
     ctx.strokeStyle = lungStroke
-    ctx.lineWidth = 1.8
+    ctx.lineWidth = 2.0
     ctx.stroke()
 
-    // fissures right (subtle)
+    // Fissures (oblique and horizontal)
     ctx.beginPath()
     ctx.moveTo(rlx + 6, rCy - lungH * 0.06)
     ctx.quadraticCurveTo(rCx, rCy - lungH * 0.02, rlx + lungW - 8, rCy + lungH * 0.04)
-    ctx.strokeStyle = 'rgba(45, 212, 191, 0.1)'
-    ctx.lineWidth = 0.8
+    ctx.strokeStyle = isLungHi ? 'rgba(45, 212, 191, 0.22)' : 'rgba(45, 212, 191, 0.12)'
+    ctx.lineWidth = 1.0
     ctx.stroke()
+    
     ctx.beginPath()
     ctx.moveTo(rlx + 10, rCy + lungH * 0.16)
     ctx.quadraticCurveTo(rCx, rCy + lungH * 0.2, rlx + lungW - 12, rCy + lungH * 0.22)
     ctx.stroke()
 
-    // lobe labels right
-    ctx.font = `500 ${Math.max(6, 7.5 * S)}px ${FONT_MONO}`
+    // Lobes labels
+    ctx.font = `600 ${Math.max(6.5, 8.5 * S)}px ${FONT_MONO}`
     ctx.textAlign = 'center'
-    ctx.fillStyle = 'rgba(45, 212, 191, 0.22)'
-    ctx.fillText('Sup', rCx, rCy - lungH * 0.17)
-    ctx.fillText('Méd', rCx, rCy + lungH * 0.08)
-    ctx.fillText('Inf', rCx, rCy + lungH * 0.34)
+    ctx.fillStyle = isLungHi ? 'rgba(45, 212, 191, 0.45)' : 'rgba(45, 212, 191, 0.25)'
+    ctx.fillText('Superior', rCx, rCy - lungH * 0.18)
+    ctx.fillText('Médio', rCx, rCy + lungH * 0.06)
+    ctx.fillText('Inferior', rCx, rCy + lungH * 0.32)
 
     // ── LEFT LUNG
     const lCx = llx - lW2 * 0.48
@@ -459,7 +321,7 @@ export function RespiratorySystemSim({ className }: RespiratorySystemSimProps) {
     )
     ctx.bezierCurveTo(
       llx - lW2 - 2, lCy + lungH * 0.32,
-      llx - lW2 * 0.75, lungBase + 2,
+      llx - lW2 * 0.75, lungBase + 4,
       lCx, lungBase + 2
     )
     ctx.bezierCurveTo(
@@ -467,9 +329,10 @@ export function RespiratorySystemSim({ className }: RespiratorySystemSimProps) {
       llx + 4, lungBase - lungH * 0.08,
       llx + 2, lCy + lungH * 0.2
     )
+    // Cardiac notch (Incisura cardíaca)
     ctx.bezierCurveTo(
-      llx + 6, lCy + lungH * 0.08,
-      llx + 6, lCy - lungH * 0.02,
+      llx + 8, lCy + lungH * 0.08,
+      llx + 8, lCy - lungH * 0.02,
       llx + 2, lCy - lungH * 0.1
     )
     ctx.bezierCurveTo(
@@ -481,74 +344,75 @@ export function RespiratorySystemSim({ className }: RespiratorySystemSimProps) {
     ctx.fillStyle = lungFillL
     ctx.fill()
     ctx.strokeStyle = lungStroke
-    ctx.lineWidth = 1.8
+    ctx.lineWidth = 2.0
     ctx.stroke()
 
-    // fissure left
+    // Left oblique fissure
     ctx.beginPath()
     ctx.moveTo(llx - 6, lCy + lungH * 0.02)
     ctx.quadraticCurveTo(lCx, lCy + lungH * 0.08, llx - lW2 + 10, lCy + lungH * 0.14)
-    ctx.strokeStyle = 'rgba(45, 212, 191, 0.1)'
-    ctx.lineWidth = 0.8
+    ctx.strokeStyle = isLungHi ? 'rgba(45, 212, 191, 0.22)' : 'rgba(45, 212, 191, 0.12)'
+    ctx.lineWidth = 1.0
     ctx.stroke()
 
-    // lobe labels left
-    ctx.font = `500 ${Math.max(6, 7.5 * S)}px ${FONT_MONO}`
-    ctx.fillStyle = 'rgba(45, 212, 191, 0.22)'
-    ctx.fillText('Sup', lCx, lCy - lungH * 0.12)
-    ctx.fillText('Inf', lCx, lCy + lungH * 0.28)
+    // Left lobes labels
+    ctx.font = `600 ${Math.max(6.5, 8.5 * S)}px ${FONT_MONO}`
+    ctx.fillStyle = isLungHi ? 'rgba(45, 212, 191, 0.45)' : 'rgba(45, 212, 191, 0.25)'
+    ctx.fillText('Superior', lCx, lCy - lungH * 0.12)
+    ctx.fillText('Inferior', lCx, lCy + lungH * 0.26)
 
-    // lung side labels
-    ctx.font = `600 ${Math.max(7, 8 * S)}px ${FONT_MONO}`
-    ctx.fillStyle = 'rgba(45, 212, 191, 0.15)'
-    ctx.fillText('D', rCx, lungTop + 18)
-    ctx.fillText('E', lCx, lungTop + 18)
+    // D/E indicator
+    ctx.font = `700 ${Math.max(8.5, 10 * S)}px ${FONT_MONO}`
+    ctx.fillStyle = 'rgba(45, 212, 191, 0.25)'
+    ctx.fillText('Pulmão D', rCx, lungTop - 2)
+    ctx.fillText('Pulmão E', lCx, lungTop - 2)
 
     const llxL = llx - lW2
     const rrx = rlx + lungW
     regions.push({ part: 'lungs', x: llxL - 5, y: lungTop, w: (rrx + 5) - (llxL - 5), h: lungH + 8 })
+    ctx.globalAlpha = 1.0
 
     // ═══════════════════ DIAPHRAGM ═══════════════════
+    ctx.globalAlpha = getAlpha('diaphragm')
     const isDiaHi = hoveredPart === 'diaphragm' || selectedPart === 'diaphragm'
-    const diaY = lungTop + lungH * (0.92 - curVtRatio * effortMultiplier * 0.5)
-    const diaW = (lungW * 2 + bronchSpread) * 0.9
+    const diaY = lungTop + lungH * (0.91 - expand * 0.52)
+    const diaW = (lungW * 2 + bronchSpread) * 0.88
 
     ctx.beginPath()
     ctx.moveTo(cx - diaW, diaY + 15 * S)
-    ctx.quadraticCurveTo(cx, diaY - 10 * S * (1 - curVtRatio * effortMultiplier * 3), cx + diaW, diaY + 15 * S)
-    ctx.strokeStyle = isDiaHi ? 'rgba(244, 63, 94, 0.7)' : COL_DIAPHRAGM
-    ctx.lineWidth = isDiaHi ? 4 : 3
+    ctx.quadraticCurveTo(cx, diaY - 12 * S * (1 - expand * 2.8), cx + diaW, diaY + 15 * S)
+    ctx.strokeStyle = isDiaHi ? 'rgba(244, 63, 94, 0.8)' : COL_DIAPHRAGM
+    ctx.lineWidth = isDiaHi ? 4.5 : 3
     ctx.stroke()
 
-    // diaphragm fill
     ctx.beginPath()
     ctx.moveTo(cx - diaW, diaY + 15 * S)
-    ctx.quadraticCurveTo(cx, diaY - 10 * S * (1 - curVtRatio * effortMultiplier * 3), cx + diaW, diaY + 15 * S)
+    ctx.quadraticCurveTo(cx, diaY - 12 * S * (1 - expand * 2.8), cx + diaW, diaY + 15 * S)
     ctx.lineTo(cx + diaW, diaY + 30 * S)
     ctx.quadraticCurveTo(cx, diaY + 10 * S, cx - diaW, diaY + 30 * S)
     ctx.closePath()
-    ctx.fillStyle = isDiaHi ? 'rgba(244, 63, 94, 0.1)' : 'rgba(244, 63, 94, 0.04)'
+    ctx.fillStyle = isDiaHi ? 'rgba(244, 63, 94, 0.12)' : 'rgba(244, 63, 94, 0.05)'
     ctx.fill()
 
-    // diaphragm arrows
+    // diaphragm physical arrows
     const arrowDir = isInhale ? 1 : -1
-    if ((isInhale || isExhale) && !st.isPaused && st.muscleEffort > 10) {
+    if ((isInhale || isExhale) && !st.isPaused) {
       for (let da = 0; da < 3; da++) {
-        const dax = cx + (da - 1) * diaW * 0.5
+        const dax = cx + (da - 1) * diaW * 0.45
         const day = diaY + 8 * S
         ctx.beginPath()
         ctx.moveTo(dax, day)
-        ctx.lineTo(dax, day + arrowDir * 10 * S)
-        ctx.lineTo(dax - 4, day + arrowDir * 6 * S)
-        ctx.moveTo(dax, day + arrowDir * 10 * S)
-        ctx.lineTo(dax + 4, day + arrowDir * 6 * S)
-        ctx.strokeStyle = `rgba(244, 63, 94, ${0.3 + Math.sin(st.t * 3) * 0.1})`
-        ctx.lineWidth = 1.2
+        ctx.lineTo(dax, day + arrowDir * 8 * S)
+        ctx.lineTo(dax - 4, day + arrowDir * 5 * S)
+        ctx.moveTo(dax, day + arrowDir * 8 * S)
+        ctx.lineTo(dax + 4, day + arrowDir * 5 * S)
+        ctx.strokeStyle = `rgba(244, 63, 94, ${0.45 + Math.sin(st.t * 3) * 0.1})`
+        ctx.lineWidth = 1.4
         ctx.stroke()
       }
     }
-
-    regions.push({ part: 'diaphragm', x: cx - diaW, y: diaY - 15, w: diaW * 2, h: 50 * S })
+    regions.push({ part: 'diaphragm', x: cx - diaW, y: diaY - 10, w: diaW * 2, h: 42 * S })
+    ctx.globalAlpha = 1.0
 
     // ═══════════════════ AIRWAY STRUCTURES ═══════════════════
 
@@ -556,66 +420,52 @@ export function RespiratorySystemSim({ className }: RespiratorySystemSimProps) {
     const col = (part: AirwayPart) => isHi(part) ? COL_AIRWAY_HI : COL_AIRWAY
     const colF = (part: AirwayPart) => isHi(part) ? COL_AIRWAY_FILL_HI : COL_AIRWAY_FILL
 
-    // ── NOSE
-    const nW = 34 * S
+    // ── NOSE (Enlarged)
+    ctx.globalAlpha = getAlpha('nose')
+    const nW = 40 * S
     const nX = cx - nW / 2
     ctx.beginPath()
     ctx.moveTo(nX + nW * 0.5, noseY)
-    ctx.bezierCurveTo(nX - 8 * S, noseY + 5, nX - 12 * S, noseY + noseH * 0.6, nX, noseY + noseH)
+    ctx.bezierCurveTo(nX - 9 * S, noseY + 5, nX - 14 * S, noseY + noseH * 0.6, nX, noseY + noseH)
     ctx.lineTo(nX + nW, noseY + noseH)
-    ctx.bezierCurveTo(nX + nW + 12 * S, noseY + noseH * 0.6, nX + nW + 8 * S, noseY + 5, nX + nW * 0.5, noseY)
+    ctx.bezierCurveTo(nX + nW + 14 * S, noseY + noseH * 0.6, nX + nW + 9 * S, noseY + 5, nX + nW * 0.5, noseY)
     ctx.closePath()
     ctx.fillStyle = colF('nose')
     ctx.fill()
     ctx.strokeStyle = col('nose')
-    ctx.lineWidth = 1.8
+    ctx.lineWidth = 2.0
     ctx.stroke()
 
-    // nasal conchas (turbinates)
+    // turbinates conchas (enlarged)
     for (let c = 0; c < 3; c++) {
       const cy2 = noseY + 8 + c * (noseH - 14) / 3
-      const cw = nW * (0.7 - c * 0.1)
+      const cw = nW * (0.75 - c * 0.1)
       ctx.beginPath()
-      ctx.moveTo(cx - cw * 0.4, cy2)
-      ctx.quadraticCurveTo(cx, cy2 + 4 + Math.sin(st.t * 1.5 + c) * 1, cx + cw * 0.4, cy2)
-      ctx.strokeStyle = isHi('nose') ? 'rgba(34, 211, 238, 0.4)' : 'rgba(34, 211, 238, 0.15)'
-      ctx.lineWidth = 1.5
+      ctx.moveTo(cx - cw * 0.42, cy2)
+      ctx.quadraticCurveTo(cx, cy2 + 4.5 + Math.sin(st.t * 1.5 + c) * 1, cx + cw * 0.42, cy2)
+      ctx.strokeStyle = isHi('nose') ? 'rgba(34, 211, 238, 0.45)' : 'rgba(34, 211, 238, 0.18)'
+      ctx.lineWidth = 1.8
       ctx.stroke()
     }
 
-    // nasal hairs
+    // hairs at nasal entrance
     for (let nh = 0; nh < 6; nh++) {
-      const nhx = nX + 5 + nh * (nW - 10) / 5
+      const nhx = nX + 6 + nh * (nW - 12) / 5
       const sway = Math.sin(st.t * 2 + nh * 0.9) * 3
       ctx.beginPath()
       ctx.moveTo(nhx, noseY + noseH - 3)
       ctx.quadraticCurveTo(nhx + sway, noseY + noseH - 10, nhx + sway * 0.5, noseY + noseH - 14)
-      ctx.strokeStyle = 'rgba(251, 146, 60, 0.35)'
-      ctx.lineWidth = 0.8
+      ctx.strokeStyle = 'rgba(251, 146, 60, 0.4)'
+      ctx.lineWidth = 0.9
       ctx.stroke()
     }
+    regions.push({ part: 'nose', x: nX - 16, y: noseY - 5, w: nW + 32, h: noseH + 10 })
+    ctx.globalAlpha = 1.0
 
-    // mucus layer
-    ctx.beginPath()
-    for (let my = noseY + 5; my < noseY + noseH - 3; my += 3) {
-      ctx.lineTo(nX + 3 + Math.sin(my * 0.15 + st.t * 1.5) * 2, my)
-    }
-    ctx.strokeStyle = COL_MUCUS
-    ctx.lineWidth = 2
-    ctx.stroke()
-    ctx.beginPath()
-    for (let my = noseY + 5; my < noseY + noseH - 3; my += 3) {
-      ctx.lineTo(nX + nW - 3 + Math.sin(my * 0.15 + st.t * 1.5 + 1) * 2, my)
-    }
-    ctx.strokeStyle = COL_MUCUS
-    ctx.lineWidth = 2
-    ctx.stroke()
-
-    regions.push({ part: 'nose', x: nX - 14, y: noseY - 5, w: nW + 28, h: noseH + 10 })
-
-    // ── PHARYNX
-    const phW1 = 22 * S
-    const phW2 = 18 * S
+    // ── PHARYNX (Enlarged)
+    ctx.globalAlpha = getAlpha('pharynx')
+    const phW1 = 26 * S
+    const phW2 = 21 * S
     ctx.beginPath()
     ctx.moveTo(cx - phW1 / 2, pharY)
     ctx.lineTo(cx - phW2 / 2, pharY + pharH)
@@ -625,23 +475,24 @@ export function RespiratorySystemSim({ className }: RespiratorySystemSimProps) {
     ctx.fillStyle = colF('pharynx')
     ctx.fill()
     ctx.strokeStyle = col('pharynx')
-    ctx.lineWidth = 1.5
+    ctx.lineWidth = 1.8
     ctx.stroke()
 
-    // tonsils
+    // tonsils (tonsilas linfóides)
     ctx.beginPath()
-    ctx.arc(cx - phW1 / 2 - 4, pharY + pharH * 0.4, 4, 0, Math.PI * 2)
-    ctx.arc(cx + phW1 / 2 + 4, pharY + pharH * 0.4, 4, 0, Math.PI * 2)
-    ctx.fillStyle = 'rgba(244, 63, 94, 0.08)'
+    ctx.arc(cx - phW1 / 2 - 4, pharY + pharH * 0.4, 4.5, 0, Math.PI * 2)
+    ctx.arc(cx + phW1 / 2 + 4, pharY + pharH * 0.4, 4.5, 0, Math.PI * 2)
+    ctx.fillStyle = 'rgba(244, 63, 94, 0.1)'
     ctx.fill()
-    ctx.strokeStyle = 'rgba(244, 63, 94, 0.15)'
+    ctx.strokeStyle = 'rgba(244, 63, 94, 0.2)'
     ctx.lineWidth = 0.8
     ctx.stroke()
+    regions.push({ part: 'pharynx', x: cx - phW1 / 2 - 10, y: pharY - 3, w: phW1 + 20, h: pharH + 6 })
+    ctx.globalAlpha = 1.0
 
-    regions.push({ part: 'pharynx', x: cx - phW1 / 2 - 8, y: pharY - 3, w: phW1 + 16, h: pharH + 6 })
-
-    // ── LARYNX
-    const lW = 28 * S
+    // ── LARYNX (Enlarged and highlighted)
+    ctx.globalAlpha = getAlpha('larynx')
+    const lW = 32 * S
     ctx.beginPath()
     ctx.moveTo(cx, larY)
     ctx.lineTo(cx + lW / 2, larY + larH * 0.2)
@@ -652,115 +503,86 @@ export function RespiratorySystemSim({ className }: RespiratorySystemSimProps) {
     ctx.fillStyle = colF('larynx')
     ctx.fill()
     ctx.strokeStyle = col('larynx')
-    ctx.lineWidth = 1.5
+    ctx.lineWidth = 1.8
     ctx.stroke()
 
-    // Adam's apple
+    // epiglottis flap (moving slightly with breath)
     ctx.beginPath()
-    ctx.moveTo(cx - 3, larY)
-    ctx.lineTo(cx, larY + 4)
-    ctx.lineTo(cx + 3, larY)
-    ctx.strokeStyle = col('larynx')
-    ctx.lineWidth = 1
-    ctx.stroke()
-
-    // epiglottis
-    ctx.beginPath()
-    ctx.moveTo(cx - 4, larY + 2)
-    ctx.quadraticCurveTo(cx - 8 * S, larY - 8 * S, cx, larY - 12 * S)
-    ctx.quadraticCurveTo(cx + 8 * S, larY - 8 * S, cx + 4, larY + 2)
-    ctx.fillStyle = 'rgba(250, 204, 21, 0.08)'
+    const epiSway = Math.sin(st.breathCycle * Math.PI * 2) * 1.5 * (st.isPaused ? 0 : 1)
+    ctx.moveTo(cx - 5, larY + 2)
+    ctx.quadraticCurveTo(cx - 8 * S + epiSway, larY - 8 * S, cx + epiSway, larY - 14 * S)
+    ctx.quadraticCurveTo(cx + 8 * S + epiSway, larY - 8 * S, cx + 5, larY + 2)
+    ctx.fillStyle = 'rgba(250, 204, 21, 0.1)'
     ctx.fill()
     ctx.strokeStyle = COL_EPIGLOTTIS
-    ctx.lineWidth = 1.2
+    ctx.lineWidth = 1.4
     ctx.stroke()
 
-    // vocal cords (wiggles based on flow)
+    // vocal cords (true anatomical movement during respiration)
     const vcY = larY + larH * 0.55
-    const vcGap = 2.5 + Math.sin(st.t * (st.isPaused ? 0 : 2.5)) * (flow !== 0 ? 3 : 1)
+    const vcGap = 3.0 + Math.sin(st.t * (st.isPaused ? 0 : 2)) * (isInhale ? 3 : 1)
     ctx.beginPath()
     ctx.moveTo(cx - lW / 2 + 5, vcY)
     ctx.lineTo(cx - vcGap, vcY)
     ctx.moveTo(cx + vcGap, vcY)
     ctx.lineTo(cx + lW / 2 - 5, vcY)
-    ctx.strokeStyle = isHi('larynx') ? 'rgba(250, 204, 21, 0.7)' : 'rgba(250, 204, 21, 0.35)'
-    ctx.lineWidth = 2
+    ctx.strokeStyle = isHi('larynx') ? 'rgba(250, 204, 21, 0.85)' : 'rgba(250, 204, 21, 0.45)'
+    ctx.lineWidth = 2.2
     ctx.stroke()
-    
-    ctx.beginPath()
-    ctx.ellipse(cx - vcGap - 3, vcY, 3, 1.5, 0, 0, Math.PI * 2)
-    ctx.ellipse(cx + vcGap + 3, vcY, 3, 1.5, 0, 0, Math.PI * 2)
-    ctx.fillStyle = 'rgba(250, 204, 21, 0.15)'
-    ctx.fill()
+    regions.push({ part: 'larynx', x: cx - lW / 2 - 8, y: larY - 16 * S, w: lW + 16, h: larH + 18 * S })
+    ctx.globalAlpha = 1.0
 
-    regions.push({ part: 'larynx', x: cx - lW / 2 - 5, y: larY - 14 * S, w: lW + 10, h: larH + 16 * S })
-
-    // ── TRACHEA
-    const tW = 18 * S
+    // ── TRACHEA (Anatomical C-rings)
+    ctx.globalAlpha = getAlpha('trachea')
+    const tW = 22 * S
     ctx.beginPath()
     ctx.roundRect(cx - tW / 2, traY, tW, traH, 3)
     ctx.fillStyle = colF('trachea')
     ctx.fill()
     ctx.strokeStyle = col('trachea')
-    ctx.lineWidth = 1.5
+    ctx.lineWidth = 1.8
     ctx.stroke()
 
-    // C-shaped rings
+    // Detailed cartilage rings
     const ringCount = 10
     for (let r = 0; r < ringCount; r++) {
       const ry = traY + 4 + r * (traH - 8) / (ringCount - 1)
       ctx.beginPath()
       ctx.arc(cx, ry, tW * 0.48, -0.6, Math.PI + 0.6)
-      ctx.strokeStyle = isHi('trachea') ? 'rgba(167, 139, 250, 0.4)' : COL_CARTILAGE
-      ctx.lineWidth = 2.5
+      ctx.strokeStyle = isHi('trachea') ? 'rgba(167, 139, 250, 0.5)' : COL_CARTILAGE
+      ctx.lineWidth = 2.8
       ctx.stroke()
     }
 
-    // cilia on inner walls (escalator wiggles)
+    // Cilia (wiggling pseudoestratified cilia)
     for (let ci = 0; ci < 12; ci++) {
       const ciy = traY + 3 + ci * (traH - 6) / 11
-      const phase = (st.isPaused ? 0 : st.t * 5) + ci * 0.6
+      const phase = (st.isPaused ? 0 : st.t * 5.2) + ci * 0.6
       const sway = Math.sin(phase) * 3
 
-      // left wall
       ctx.beginPath()
       ctx.moveTo(cx - tW / 2 + 2, ciy)
       ctx.quadraticCurveTo(cx - tW / 2 + 2 + sway, ciy - 4, cx - tW / 2 + 2 + sway * 1.2, ciy - 6)
-      ctx.strokeStyle = `rgba(45, 212, 191, ${0.25 + Math.sin(phase) * 0.1})`
-      ctx.lineWidth = 0.7
+      ctx.strokeStyle = `rgba(45, 212, 191, ${0.3 + Math.sin(phase) * 0.1})`
+      ctx.lineWidth = 0.8
       ctx.stroke()
 
-      // right wall
       ctx.beginPath()
       ctx.moveTo(cx + tW / 2 - 2, ciy)
       ctx.quadraticCurveTo(cx + tW / 2 - 2 - sway, ciy - 4, cx + tW / 2 - 2 - sway * 1.2, ciy - 6)
-      ctx.strokeStyle = `rgba(45, 212, 191, ${0.25 + Math.sin(phase) * 0.1})`
-      ctx.lineWidth = 0.7
-      ctx.stroke()
-    }
-
-    // escalator arrows
-    const mucArrowY = st.isPaused ? 0 : ((st.t * 20) % 15)
-    for (let ma = traY + 5; ma < traY + traH - 5; ma += 15) {
-      const may = ma - mucArrowY
-      if (may < traY || may > traY + traH) continue
-      ctx.beginPath()
-      ctx.moveTo(cx, may + 2)
-      ctx.lineTo(cx, may - 2)
-      ctx.lineTo(cx - 1.5, may)
-      ctx.moveTo(cx, may - 2)
-      ctx.lineTo(cx + 1.5, may)
-      ctx.strokeStyle = 'rgba(45, 212, 191, 0.12)'
+      ctx.strokeStyle = `rgba(45, 212, 191, ${0.3 + Math.sin(phase) * 0.1})`
       ctx.lineWidth = 0.8
       ctx.stroke()
     }
 
     regions.push({ part: 'trachea', x: cx - tW / 2 - 6, y: traY - 3, w: tW + 12, h: traH + 6 })
+    ctx.globalAlpha = 1.0
 
-    // ── BRONCHI
+    // ── BRONCHI (Detailed branchings)
+    ctx.globalAlpha = getAlpha('bronchi')
     ctx.beginPath()
     ctx.arc(cx, bifY + 3, 3, 0, Math.PI)
-    ctx.fillStyle = 'rgba(167, 139, 250, 0.2)'
+    ctx.fillStyle = 'rgba(167, 139, 250, 0.25)'
     ctx.fill()
 
     const drawMainBronchus = (side: number, spread: number, angle: number, bW2: number) => {
@@ -780,17 +602,18 @@ export function RespiratorySystemSim({ className }: RespiratorySystemSimProps) {
         const by = lerp(bifY, endY, bt)
         ctx.beginPath()
         ctx.arc(bx, by, bW2 * 0.7, angle - 0.5, angle + Math.PI + 0.5)
-        ctx.strokeStyle = isHi('bronchi') ? 'rgba(167, 139, 250, 0.25)' : 'rgba(167, 139, 250, 0.1)'
-        ctx.lineWidth = 1.5
+        ctx.strokeStyle = isHi('bronchi') ? 'rgba(167, 139, 250, 0.3)' : 'rgba(167, 139, 250, 0.15)'
+        ctx.lineWidth = 1.8
         ctx.stroke()
       }
 
       return { x: endX, y: endY }
     }
 
-    const leftEnd = drawMainBronchus(-1, bronchSpread, Math.PI * 0.3, 3.5 * S)
-    const rightEnd = drawMainBronchus(1, bronchSpread, -Math.PI * 0.3, 4 * S)
+    const leftEnd = drawMainBronchus(-1, bronchSpread, Math.PI * 0.3, 4.0 * S)
+    const rightEnd = drawMainBronchus(1, bronchSpread, -Math.PI * 0.3, 4.8 * S) // right is physically wider and more vertical
 
+    // Recursive bronchi tree (23 generations concept representation)
     const drawTree = (bx: number, by: number, angle: number, len: number, depth: number, maxD: number) => {
       if (depth > maxD) return
       const ex = bx + Math.cos(angle) * len
@@ -798,281 +621,289 @@ export function RespiratorySystemSim({ className }: RespiratorySystemSimProps) {
       ctx.beginPath()
       ctx.moveTo(bx, by)
       ctx.lineTo(ex, ey)
-      const alpha = isHi('bronchi') ? (0.55 - depth * 0.1) : (0.25 - depth * 0.04)
-      ctx.strokeStyle = `rgba(34, 211, 238, ${Math.max(0.05, alpha)})`
-      ctx.lineWidth = Math.max(0.4, (3.5 - depth * 0.7) * S)
-      ctx.stroke()
       
-      const spread = 0.45 - depth * 0.05
-      drawTree(ex, ey, angle - spread, len * 0.62, depth + 1, maxD)
-      drawTree(ex, ey, angle + spread, len * 0.62, depth + 1, maxD)
+      const alpha = isHi('bronchi') ? (0.6 - depth * 0.1) : (0.28 - depth * 0.04)
+      ctx.strokeStyle = `rgba(34, 211, 238, ${Math.max(0.05, alpha)})`
+      ctx.lineWidth = Math.max(0.4, (4.0 - depth * 0.8) * S)
+      ctx.stroke()
+
+      const spread = 0.44 - depth * 0.04
+      drawTree(ex, ey, angle - spread, len * 0.64, depth + 1, maxD)
+      drawTree(ex, ey, angle + spread, len * 0.64, depth + 1, maxD)
     }
 
-    drawTree(leftEnd.x, leftEnd.y, Math.PI * 0.58, 24 * S, 0, 4)
-    drawTree(leftEnd.x, leftEnd.y, Math.PI * 0.78, 20 * S, 0, 3)
+    // left lung branches (2 segments)
+    drawTree(leftEnd.x, leftEnd.y, Math.PI * 0.58, 28 * S, 0, 4)
+    drawTree(leftEnd.x, leftEnd.y, Math.PI * 0.78, 22 * S, 0, 3)
 
-    drawTree(rightEnd.x, rightEnd.y, Math.PI * 0.42, 24 * S, 0, 4)
-    drawTree(rightEnd.x, rightEnd.y, Math.PI * 0.28, 22 * S, 0, 3)
-    drawTree(rightEnd.x, rightEnd.y, Math.PI * 0.52, 18 * S, 0, 3)
+    // right lung branches (3 segments - physically more vertical)
+    drawTree(rightEnd.x, rightEnd.y, Math.PI * 0.42, 28 * S, 0, 4)
+    drawTree(rightEnd.x, rightEnd.y, Math.PI * 0.28, 24 * S, 0, 3)
+    drawTree(rightEnd.x, rightEnd.y, Math.PI * 0.52, 20 * S, 0, 3)
 
-    regions.push({ part: 'bronchi', x: leftEnd.x - 20, y: bifY - 5, w: rightEnd.x - leftEnd.x + 40, h: bronchLen + 30 })
+    regions.push({ part: 'bronchi', x: leftEnd.x - 25, y: bifY - 5, w: rightEnd.x - leftEnd.x + 50, h: bronchLen + 35 })
+    ctx.globalAlpha = 1.0
 
     // ═══════════════════ ALVEOLI CLUSTERS ═══════════════════
+    ctx.globalAlpha = getAlpha('alveoli')
     const isAlvHi = isHi('alveoli')
+    
     const drawAlvCluster = (ax: number, ay: number, count: number) => {
       for (let i = 0; i < count; i++) {
         const aa = (i / count) * Math.PI * 2
-        const ar = 7 * S * (1 + curVtRatio * effortMultiplier * 0.18)
+        const ar = 8.5 * S * (1 + expand * 2.6) // alveolar expansion animation
         const aox = ax + Math.cos(aa) * ar * 1.8
         const aoy = ay + Math.sin(aa) * ar * 1.8
 
         ctx.beginPath()
         ctx.arc(aox, aoy, ar, 0, Math.PI * 2)
-        ctx.fillStyle = isAlvHi ? 'rgba(250, 204, 21, 0.1)' : 'rgba(250, 204, 21, 0.03)'
+        ctx.fillStyle = isAlvHi ? 'rgba(250, 204, 21, 0.12)' : 'rgba(250, 204, 21, 0.04)'
         ctx.fill()
-        ctx.strokeStyle = isAlvHi ? 'rgba(250, 204, 21, 0.6)' : 'rgba(250, 204, 21, 0.2)'
-        ctx.lineWidth = 0.8
+        ctx.strokeStyle = isAlvHi ? 'rgba(250, 204, 21, 0.65)' : 'rgba(250, 204, 21, 0.22)'
+        ctx.lineWidth = 0.9
         ctx.stroke()
 
+        // capillary wrap representation
         ctx.beginPath()
         ctx.arc(aox, aoy, ar * 1.15, aa - 0.4, aa + 1.2)
-        ctx.strokeStyle = 'rgba(244, 63, 94, 0.18)'
-        ctx.lineWidth = 1.5
+        ctx.strokeStyle = 'rgba(244, 63, 94, 0.22)'
+        ctx.lineWidth = 1.6
         ctx.stroke()
 
+        // oxygen diffusion dot exchange
         if (isAlvHi && i % 2 === 0 && !st.isPaused) {
           const edx = aox + Math.cos(aa) * ar * 0.7
           const edy = aoy + Math.sin(aa) * ar * 0.7
           ctx.beginPath()
-          ctx.arc(edx + Math.sin(st.t * 3 + i) * 2, edy, 1.5, 0, Math.PI * 2)
+          ctx.arc(edx + Math.sin(st.t * 3.2 + i) * 2, edy, 1.6, 0, Math.PI * 2)
           ctx.fillStyle = COL_O2
           ctx.fill()
         }
       }
+      // alveolar duct center
       ctx.beginPath()
-      ctx.arc(ax, ay, 5 * S * (1 + curVtRatio * effortMultiplier * 0.18), 0, Math.PI * 2)
-      ctx.fillStyle = isAlvHi ? 'rgba(250, 204, 21, 0.12)' : 'rgba(250, 204, 21, 0.04)'
+      ctx.arc(ax, ay, 6 * S * (1 + expand * 2.6), 0, Math.PI * 2)
+      ctx.fillStyle = isAlvHi ? 'rgba(250, 204, 21, 0.14)' : 'rgba(250, 204, 21, 0.05)'
       ctx.fill()
-      ctx.strokeStyle = isAlvHi ? 'rgba(250, 204, 21, 0.5)' : 'rgba(250, 204, 21, 0.15)'
-      ctx.lineWidth = 0.8
+      ctx.strokeStyle = isAlvHi ? 'rgba(250, 204, 21, 0.55)' : 'rgba(250, 204, 21, 0.18)'
+      ctx.lineWidth = 0.9
       ctx.stroke()
     }
 
+    // Alveoli placements in respiratory zone
     const alvPositions = [
-      { x: rCx - lungW * 0.1, y: rCy - lungH * 0.1, n: 6 },
-      { x: rCx + lungW * 0.15, y: rCy + lungH * 0.15, n: 6 },
-      { x: rCx - lungW * 0.05, y: rCy + lungH * 0.32, n: 5 },
-      { x: lCx + lW2 * 0.1, y: lCy - lungH * 0.06, n: 6 },
-      { x: lCx - lW2 * 0.1, y: lCy + lungH * 0.13, n: 6 },
-      { x: lCx + lW2 * 0.05, y: lCy + lungH * 0.3, n: 5 },
+      { x: rCx - lungW * 0.12, y: rCy - lungH * 0.08, n: 6 },
+      { x: rCx + lungW * 0.18, y: rCy + lungH * 0.18, n: 6 },
+      { x: rCx - lungW * 0.04, y: rCy + lungH * 0.32, n: 5 },
+      { x: lCx + lW2 * 0.12, y: lCy - lungH * 0.05, n: 6 },
+      { x: lCx - lW2 * 0.12, y: lCy + lungH * 0.15, n: 6 },
+      { x: lCx + lW2 * 0.04, y: lCy + lungH * 0.3, n: 5 },
     ]
-    for (const ap of alvPositions) drawAlvCluster(ap.x, ap.y, ap.n)
-
-    regions.push({ part: 'alveoli', x: rlx, y: lungCenterY - lungH * 0.25, w: lungW * 0.7, h: lungH * 0.65 })
-
-    // ═══════════════════ FLOW PARTICLES ═══════════════════
-    if (!st.particles) {
-      st.particles = []
-      for (let i = 0; i < 20; i++) {
-        st.particles.push({
-          phase: Math.random(),
-          speed: 0.003 + Math.random() * 0.004,
-          type: i < 14 ? 'o2' : 'co2',
-          side: i % 3 === 0 ? 'left' : (i % 3 === 1 ? 'right' : 'center'),
-          wobble: Math.random() * 10,
-          size: 2 + Math.random() * 1.5,
-        })
-      }
+    
+    for (const ap of alvPositions) {
+      drawAlvCluster(ap.x, ap.y, ap.n)
     }
 
-    const centerPath = [
-      { x: cx, y: noseY - 8 },
-      { x: cx, y: noseY + noseH * 0.5 },
-      { x: cx, y: pharY + pharH * 0.5 },
-      { x: cx, y: larY + larH * 0.5 },
-      { x: cx, y: traY + traH * 0.3 },
-      { x: cx, y: traY + traH * 0.7 },
-      { x: cx, y: bifY },
-    ]
+    regions.push({ part: 'alveoli', x: rlx, y: lungCenterY - lungH * 0.25, w: lungW * 0.7, h: lungH * 0.65 })
+    ctx.globalAlpha = 1.0
 
-    const leftPath = [...centerPath, leftEnd, { x: lCx, y: lCy }]
-    const rightPath = [...centerPath, rightEnd, { x: rCx, y: rCy }]
-
-    for (const p of st.particles) {
-      const path = p.side === 'left' ? leftPath : (p.side === 'right' ? rightPath : centerPath)
-      const totalSeg = path.length - 1
-
-      if (!st.isPaused) {
-        if (p.type === 'o2') {
-          p.phase += p.speed * (isInhale ? 1.5 : 0.5)
-          if (p.phase > 1) p.phase = 0
-        } else {
-          p.phase += p.speed * (isExhale ? 1.5 : 0.5)
-          if (p.phase > 1) p.phase = 0
+    // ═══════════════════ FLOW PARTICLES (Cyan O2 and Rose CO2) ═══════════════════
+    // In airway or hematosis view mode, we highlight gas particles
+    const isGasActive = st.viewMode === 'all' || st.viewMode === 'hematosis' || st.viewMode === 'airway'
+    
+    if (isGasActive) {
+      if (!st.particles) {
+        st.particles = []
+        // generate 24 particles
+        for (let i = 0; i < 24; i++) {
+          st.particles.push({
+            phase: Math.random(),
+            speed: 0.0035 + Math.random() * 0.0045,
+            type: i < 16 ? 'o2' : 'co2',
+            side: i % 3 === 0 ? 'left' : (i % 3 === 1 ? 'right' : 'center'),
+            wobble: Math.random() * 10,
+            size: 2.2 + Math.random() * 1.5,
+          })
         }
       }
 
-      const drawT = p.type === 'o2' ? p.phase : (1 - p.phase)
-      const segIdx = Math.floor(drawT * totalSeg)
-      const segT = (drawT * totalSeg) - segIdx
-      const p1 = path[Math.min(segIdx, path.length - 1)]
-      const p2 = path[Math.min(segIdx + 1, path.length - 1)]
-      const px = lerp(p1.x, p2.x, segT) + Math.sin((st.isPaused ? 0 : st.t * 3) + p.wobble) * 3
-      const py = lerp(p1.y, p2.y, segT)
+      // pathway coordinates
+      const centerPath = [
+        { x: cx, y: noseY - 6 },
+        { x: cx, y: noseY + noseH * 0.5 },
+        { x: cx, y: pharY + pharH * 0.5 },
+        { x: cx, y: larY + larH * 0.5 },
+        { x: cx, y: traY + traH * 0.3 },
+        { x: cx, y: traY + traH * 0.7 },
+        { x: cx, y: bifY },
+      ]
 
-      if (p.type === 'o2') {
-        const grad = ctx.createRadialGradient(px, py, 0, px, py, p.size * 3)
-        grad.addColorStop(0, 'rgba(34, 211, 238, 0.25)')
-        grad.addColorStop(1, 'transparent')
-        ctx.fillStyle = grad
-        ctx.fillRect(px - p.size * 4, py - p.size * 4, p.size * 8, p.size * 8)
+      const leftPath = [...centerPath, leftEnd, { x: lCx, y: lCy }]
+      const rightPath = [...centerPath, rightEnd, { x: rCx, y: rCy }]
 
-        ctx.beginPath()
-        ctx.arc(px, py, p.size, 0, Math.PI * 2)
-        ctx.fillStyle = COL_O2
-        ctx.fill()
-      } else {
-        ctx.beginPath()
-        ctx.arc(px, py, p.size * 0.8, 0, Math.PI * 2)
-        ctx.fillStyle = COL_CO2
-        ctx.fill()
+      for (const p of st.particles) {
+        const path = p.side === 'left' ? leftPath : (p.side === 'right' ? rightPath : centerPath)
+        const totalSeg = path.length - 1
+
+        if (!st.isPaused) {
+          if (p.type === 'o2') {
+            p.phase += p.speed * (isInhale ? 1.6 : 0.4)
+            if (p.phase > 1) p.phase = 0
+          } else {
+            p.phase += p.speed * (isExhale ? 1.6 : 0.4)
+            if (p.phase > 1) p.phase = 0
+          }
+        }
+
+        const drawT = p.type === 'o2' ? p.phase : (1 - p.phase)
+        const segIdx = Math.floor(drawT * totalSeg)
+        const segT = (drawT * totalSeg) - segIdx
+        const p1 = path[Math.min(segIdx, path.length - 1)]
+        const p2 = path[Math.min(segIdx + 1, path.length - 1)]
+        const px = lerp(p1.x, p2.x, segT) + Math.sin((st.isPaused ? 0 : st.t * 3.2) + p.wobble) * 3.5
+        const py = lerp(p1.y, p2.y, segT)
+
+        ctx.globalAlpha = p.type === 'o2' ? getAlpha('nose') : getAlpha('alveoli')
+
+        if (p.type === 'o2') {
+          // oxygen glow
+          const grad = ctx.createRadialGradient(px, py, 0, px, py, p.size * 2.8)
+          grad.addColorStop(0, 'rgba(34, 211, 238, 0.25)')
+          grad.addColorStop(1, 'transparent')
+          ctx.fillStyle = grad
+          ctx.fillRect(px - p.size * 3.5, py - p.size * 3.5, p.size * 7, p.size * 7)
+
+          ctx.beginPath()
+          ctx.arc(px, py, p.size, 0, Math.PI * 2)
+          ctx.fillStyle = COL_O2
+          ctx.fill()
+        } else {
+          // carbon dioxide glow
+          const grad = ctx.createRadialGradient(px, py, 0, px, py, p.size * 2.4)
+          grad.addColorStop(0, 'rgba(244, 63, 94, 0.22)')
+          grad.addColorStop(1, 'transparent')
+          ctx.fillStyle = grad
+          ctx.fillRect(px - p.size * 3, py - p.size * 3, p.size * 6, p.size * 6)
+
+          ctx.beginPath()
+          ctx.arc(px, py, p.size * 0.85, 0, Math.PI * 2)
+          ctx.fillStyle = COL_CO2
+          ctx.fill()
+        }
       }
+      ctx.globalAlpha = 1.0
     }
 
-    // ═══════════════════ LABELS & UI ═══════════════════
-    const labelX = w * 0.73
-    const fontSize = Math.max(8, 9.5 * S)
+    // ═══════════════════ ANATOMICAL LABELS & POINTERS ═══════════════════
+    const labelX = w * 0.71
+    const fontSize = Math.max(8.5, 10.5 * S)
 
     const labels: { text: string; y: number; color: string; part: AirwayPart; anchorX?: number }[] = [
-      { text: 'NARIZ', y: noseY + noseH * 0.5, color: COL_CONDUCT, part: 'nose' },
-      { text: 'FARINGE', y: pharY + pharH * 0.5, color: COL_CONDUCT, part: 'pharynx' },
-      { text: 'LARINGE', y: larY + larH * 0.3, color: COL_CONDUCT, part: 'larynx' },
-      { text: 'TRAQUEIA', y: traY + traH * 0.4, color: COL_CONDUCT, part: 'trachea' },
-      { text: 'BRÔNQUIOS', y: bifY + bronchLen * 0.4, color: COL_CONDUCT, part: 'bronchi' },
-      { text: 'ALVÉOLOS', y: lungCenterY, color: COL_RESP, part: 'alveoli' },
-      { text: 'DIAFRAGMA', y: diaY + 5, color: COL_DIAPHRAGM, part: 'diaphragm' },
+      { text: 'NARIZ E CAV. NASAL', y: noseY + noseH * 0.5, color: COL_CONDUCT, part: 'nose' },
+      { text: 'FARINGE (VIA COMUM)', y: pharY + pharH * 0.5, color: COL_CONDUCT, part: 'pharynx' },
+      { text: 'LARINGE (GLOTE/EPIGLOTE)', y: larY + larH * 0.3, color: COL_CONDUCT, part: 'larynx' },
+      { text: 'TRAQUEIA (C-RINGS)', y: traY + traH * 0.4, color: COL_CONDUCT, part: 'trachea' },
+      { text: 'BRÔNQUIOS / BRONQUÍOLOS', y: bifY + bronchLen * 0.4, color: COL_CONDUCT, part: 'bronchi' },
+      { text: 'ALVÉOLOS (HEMATOSE)', y: lungCenterY, color: COL_RESP, part: 'alveoli' },
+      { text: 'PULMÕES (D / E)', y: lungTop + 24 * S, color: COL_LUNG_STROKE, part: 'lungs' },
+      { text: 'DIAFRAGMA (MOTOR INSP)', y: diaY + 5, color: COL_DIAPHRAGM, part: 'diaphragm' },
     ]
 
-    ctx.font = `600 ${fontSize}px ${FONT_MONO}`
+    ctx.font = `bold ${fontSize}px ${FONT_MONO}`
     ctx.textAlign = 'left'
 
     for (const lbl of labels) {
       const isActive = isHi(lbl.part)
-      const anchorX = lbl.anchorX ?? cx + 50 * S
+      const partAlpha = getAlpha(lbl.part === 'lungs' ? 'lungs' : (lbl.part === 'diaphragm' ? 'diaphragm' : 'nose'))
+      
+      // opacity of text matches filter mode
+      ctx.globalAlpha = partAlpha > 0.1 ? (isActive ? 1.0 : 0.6) : 0.15
+      
+      const anchorX = lbl.anchorX ?? cx + 62 * S
 
+      // dynamic connector dash
       ctx.beginPath()
       ctx.moveTo(anchorX, lbl.y)
       ctx.lineTo(labelX - 5, lbl.y)
-      ctx.strokeStyle = isActive ? lbl.color : 'rgba(255, 255, 255, 0.04)'
-      ctx.lineWidth = 0.6
+      ctx.strokeStyle = isActive ? lbl.color : 'rgba(255, 255, 255, 0.05)'
+      ctx.lineWidth = isActive ? 1.2 : 0.6
       ctx.setLineDash([2, 3])
       ctx.stroke()
       ctx.setLineDash([])
 
+      // glowing active dot
       ctx.beginPath()
-      ctx.arc(labelX - 8, lbl.y, 2, 0, Math.PI * 2)
-      ctx.fillStyle = isActive ? lbl.color : 'rgba(255,255,255,0.08)'
+      ctx.arc(labelX - 8, lbl.y, isActive ? 3 : 2, 0, Math.PI * 2)
+      ctx.fillStyle = isActive ? lbl.color : 'rgba(255,255,255,0.1)'
+      if (isActive) {
+        ctx.shadowColor = lbl.color
+        ctx.shadowBlur = 6
+      }
       ctx.fill()
+      ctx.shadowBlur = 0
 
-      ctx.fillStyle = isActive ? lbl.color : COL_TEXT_DIM
-      ctx.fillText(lbl.text, labelX, lbl.y + 4)
+      ctx.fillStyle = isActive ? lbl.color : 'rgba(255,255,255,0.7)'
+      ctx.fillText(lbl.text, labelX, lbl.y + 4.5)
     }
+    ctx.globalAlpha = 1.0
 
-    // zone indicators
-    ctx.font = `700 ${Math.max(7, 8 * S)}px ${FONT_MONO}`
-    const zoneX = w - 15
+    // ── ZONAS FUNCIONAIS DISPLAY ──
+    ctx.font = `800 ${Math.max(8, 9 * S)}px ${FONT_MONO}`
+    const zoneX = w - 18
     ctx.textAlign = 'right'
+    
+    // Condutora
     ctx.fillStyle = COL_CONDUCT
     ctx.fillText('ZONA CONDUTORA', zoneX, noseY - 2)
     ctx.beginPath()
     ctx.moveTo(zoneX, noseY + 2)
     ctx.lineTo(zoneX, bifY - 5)
-    ctx.strokeStyle = 'rgba(45, 212, 191, 0.12)'
-    ctx.lineWidth = 2
+    ctx.strokeStyle = 'rgba(45, 212, 191, 0.15)'
+    ctx.lineWidth = 2.5
     ctx.stroke()
 
+    // Respiratória
     ctx.fillStyle = COL_RESP
-    ctx.fillText('ZONA RESPIRATÓRIA', zoneX, bifY + bronchLen * 0.7)
+    ctx.fillText('ZONA RESPIRATÓRIA', zoneX, bifY + bronchLen * 0.65)
     ctx.beginPath()
-    ctx.moveTo(zoneX, bifY + bronchLen * 0.75)
+    ctx.moveTo(zoneX, bifY + bronchLen * 0.72)
     ctx.lineTo(zoneX, lungCenterY + lungH * 0.3)
-    ctx.strokeStyle = 'rgba(250, 204, 21, 0.12)'
-    ctx.lineWidth = 2
+    ctx.strokeStyle = 'rgba(250, 204, 21, 0.15)'
+    ctx.lineWidth = 2.5
     ctx.stroke()
 
-    // breathing phase indicator
-    ctx.font = `700 ${Math.max(11, 14 * S)}px ${FONT_MONO}`
-    ctx.textAlign = 'right'
-    ctx.fillStyle = isInhale ? COL_O2 : (isHold ? 'rgba(250, 204, 21, 0.8)' : (isExhale ? COL_CO2 : 'rgba(255,255,255,0.2)'))
+    // Breathing phase textual indicator
+    ctx.font = `800 ${Math.max(10, 13 * S)}px ${FONT_MONO}`
+    ctx.textAlign = 'left'
+    ctx.fillStyle = st.isPaused ? '#ef4444' : (isInhale ? COL_O2 : COL_CO2)
     
     let phaseText = '· · ·'
-    if (st.isPaused) phaseText = 'PAUSADO'
-    else if (isInhale) phaseText = '↓ INSPIRAÇÃO'
-    else if (isHold) phaseText = '❙ PAUSA INSP'
-    else if (isExhale) phaseText = '↑ EXPIRAÇÃO'
-    else if (isRest) phaseText = '❙ PAUSA EXP'
+    if (st.isPaused) phaseText = 'SIMULAÇÃO PAUSADA'
+    else if (isInhale) phaseText = 'INSPIRAÇÃO (ATIVO)'
+    else if (isExhale) phaseText = 'EXPIRAÇÃO (PASSIVO)'
+    
+    ctx.fillText(phaseText, 16, 26 * S)
 
-    ctx.fillText(phaseText, w - 15, h - 40 * S)
-
-    // volume bar
-    const volBarW = 80 * S
-    const volBarH = 6 * S
-    const volBarX = w - 15 - volBarW
-    const volBarY = h - 25 * S
-    const volFill = (st.volumeMl - 2400) / 5000
+    // Lung Volume dynamic scale bar
+    const volBarW = 100 * S
+    const volBarH = 7 * S
+    const volBarX = 16
+    const volBarY = 38 * S
+    const volFill = (st.volumeMl - 2400) / 4500
+    
     ctx.fillStyle = 'rgba(255, 255, 255, 0.04)'
     ctx.fillRect(volBarX, volBarY, volBarW, volBarH)
-    ctx.fillStyle = isInhale ? 'rgba(34, 211, 238, 0.4)' : 'rgba(244, 63, 94, 0.3)'
+    ctx.fillStyle = isInhale ? 'rgba(34, 211, 238, 0.5)' : 'rgba(244, 63, 94, 0.4)'
     ctx.fillRect(volBarX, volBarY, volBarW * Math.max(0.02, volFill), volBarH)
 
-    ctx.font = `600 ${Math.max(7, 8 * S)}px ${FONT_MONO}`
-    ctx.textAlign = 'right'
-    ctx.fillStyle = COL_TEXT_DIM
-    ctx.fillText(`${st.volumeMl} mL`, volBarX - 5, volBarY + volBarH)
-
-    // legend
-    ctx.font = `500 ${Math.max(7, 8 * S)}px ${FONT_MONO}`
-    ctx.textAlign = 'right'
-    ctx.fillStyle = COL_O2
-    ctx.fillText('● O₂', w - 15, h - 55 * S)
-    ctx.fillStyle = COL_CO2
-    ctx.fillText('● CO₂', w - 50, h - 55 * S)
-
-    // HUD
-    ctx.font = `600 ${Math.max(9, 10 * S)}px ${FONT_MONO}`
-    ctx.textAlign = 'left'
-    ctx.fillStyle = COL_TEXT_DIM
-    ctx.fillText('PNEUMO.ANATO.SYSTEM', 12, h - 12)
-    ctx.fillStyle = st.isPaused ? 'rgba(239, 68, 68, 0.45)' : 'rgba(45, 212, 191, 0.45)'
-    ctx.fillText(st.isPaused ? '▸ EM ESPERA' : '▸ SIMULAÇÃO ATIVA', 12, h - 26)
-
-    // ── DRAW PRESSURE OSCILLOSCOPE AND CLINICAL VITALS ──
-    drawPressureTelemetry(ctx, 16, 16, 185, 76, st.pressureHistory, st.ppeak)
-
-    // Vitals numeric display
-    ctx.textAlign = 'left'
-    ctx.textBaseline = 'top'
-    ctx.font = `bold 8px ${FONT_MONO}`
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.3)'
-    ctx.fillText('MONITOR MULTIPARAMÉTRICO ICU', 16, 100)
-
-    // SpO2
-    ctx.fillStyle = st.spo2 < 90 ? '#f43f5e' : '#10b981'
-    ctx.font = `bold 10px ${FONT_MONO}`
-    ctx.fillText(`● SpO₂: ${Math.round(st.spo2)}%`, 16, 112)
-
-    // EtCO2
-    ctx.fillStyle = (st.etco2 < 35 || st.etco2 > 45) ? '#fbbf24' : '#60a5fa'
-    ctx.fillText(`● EtCO₂: ${Math.round(st.etco2)} mmHg`, 16, 125)
-
-    // Ve
-    ctx.fillStyle = '#a78bfa'
-    ctx.fillText(`● Vₑ: ${st.ve.toFixed(1)} L/min`, 16, 138)
+    ctx.font = `600 ${Math.max(8.5, 9.5 * S)}px ${FONT_MONO}`
+    ctx.fillStyle = 'rgba(255,255,255,0.5)'
+    ctx.fillText(`Capacidade Pulmonar: ${st.volumeMl} mL`, volBarX, volBarY + volBarH + 11 * S)
 
     regionsRef.current = regions
-  }, [hoveredPart, selectedPart, drawPressureTelemetry])
+  }, [hoveredPart, selectedPart])
 
-  // rendering loop
+  // React Loop Sync
   useEffect(() => {
     const cvs = canvasRef.current
     if (!cvs) return
@@ -1086,49 +917,13 @@ export function RespiratorySystemSim({ className }: RespiratorySystemSimProps) {
       if (now - st.lastTimestamp < FRAME_MS) return
       st.lastTimestamp = now
 
-      // calculations during active loop
-      if (!st.isPaused) {
-        st.t += 0.03
-        
-        // pressure updates
-        const isInhale = st.breathCycle < 0.38
-        const isExhale = st.breathCycle >= 0.45 && st.breathCycle < 0.90
-        
-        let curVtRatio = 0
-        if (isInhale) {
-          curVtRatio = easeInOut(st.breathCycle / 0.38)
-        } else if (st.breathCycle >= 0.38 && st.breathCycle < 0.45) {
-          curVtRatio = 1.0
-        } else if (isExhale) {
-          curVtRatio = 1.0 - easeInOut((st.breathCycle - 0.45) / 0.45)
-        }
-
-        const curVt = curVtRatio * st.tidalVolume
-        let flow = 0
-        if (isInhale) {
-          flow = Math.sin((st.breathCycle / 0.38) * Math.PI) * (st.tidalVolume / 1000) * 2.5
-        } else if (isExhale) {
-          flow = -Math.sin(((st.breathCycle - 0.45) / 0.45) * Math.PI) * (st.tidalVolume / 1000) * 2.0
-        }
-
-        const PEEP = 5
-        const pElastic = curVt / st.compliance
-        const pResistive = flow * st.resistance
-        const pAw = Math.max(0, PEEP + pElastic + pResistive)
-
-        st.pressureHistory.push(pAw)
-        if (st.pressureHistory.length > 200) {
-          st.pressureHistory.shift()
-        }
+      // sync volume indicator to slider react
+      if (now % 100 < 10) {
+        setLiveVolume(st.volumeMl)
       }
 
-      // Sync refs to React state periodically
-      if (now % 180 < 10) {
-        setLiveVe(st.ve)
-        setLivePpeak(st.ppeak)
-        setLiveSpO2(Math.round(st.spo2))
-        setLiveEtCO2(Math.round(st.etco2))
-        setAlertMessage(st.alertMessage)
+      if (!st.isPaused) {
+        st.t += 0.03
       }
 
       const dpr = window.devicePixelRatio || 1
@@ -1170,7 +965,7 @@ export function RespiratorySystemSim({ className }: RespiratorySystemSimProps) {
     <div className={`flex flex-col lg:flex-row gap-4 h-full w-full min-h-0 ${className ?? ''}`}>
       
       {/* ── Left main simulation screen ── */}
-      <div className="relative flex-1 min-h-[350px] rounded-2xl overflow-hidden bg-[#040712] border border-white/5 shadow-2xl flex flex-col justify-end">
+      <div className="relative flex-1 min-h-[360px] rounded-2xl overflow-hidden bg-[#040610] border border-white/5 shadow-2xl flex flex-col justify-end">
         <canvas
           ref={canvasRef}
           className="absolute inset-0"
@@ -1180,21 +975,7 @@ export function RespiratorySystemSim({ className }: RespiratorySystemSimProps) {
           onMouseLeave={() => setHoveredPart(null)}
         />
 
-        {/* Warning clinical overlay */}
-        {alertMessage && (
-          <div className="absolute inset-0 bg-red-950/20 border border-red-500/20 pointer-events-none flex flex-col items-center justify-center p-4 backdrop-blur-[1.5px] z-10 animate-fade-in">
-            <div className="bg-black/85 border border-red-500/35 rounded-xl p-5 flex flex-col items-center max-w-[280px] shadow-[0_12px_32px_rgba(239,68,68,0.2)] animate-pulse pointer-events-auto">
-              <ShieldAlert className="h-10 w-10 text-red-500 mb-2.5" />
-              <span className="text-[10px] uppercase font-mono tracking-widest font-black text-red-500 mb-1">ALERTA CLÍNICO</span>
-              <p className="text-[9px] font-mono text-white/70 text-center leading-normal">
-                {alertMessage}
-              </p>
-              <span className="text-[8px] text-white/30 font-mono mt-3 uppercase tracking-wider">Ajuste os controles ao lado</span>
-            </div>
-          </div>
-        )}
-
-        {/* Selected / Hovered anatomy information */}
+        {/* Selected / Hovered anatomy information overlay */}
         {info && (
           <div className="absolute bottom-3 left-3 right-3 rounded-xl border border-white/10 bg-black/85 backdrop-blur-md px-4 py-3 pointer-events-none z-20">
             <div className="flex items-center gap-2 mb-1">
@@ -1217,130 +998,94 @@ export function RespiratorySystemSim({ className }: RespiratorySystemSimProps) {
         )}
       </div>
 
-      {/* ── Right control board (NASA-style) ── */}
+      {/* ── Right control board (View Filters & Physiological Rhythm) ── */}
       <div className="w-full lg:w-80 flex flex-col gap-4 p-4 rounded-2xl bg-black/55 border border-white/5 backdrop-blur-xl shrink-0 overflow-y-auto max-h-full">
         <div className="border-b border-white/[0.06] pb-2.5">
-          <span className="text-[8px] uppercase tracking-[0.2em] font-black text-sky-400 block mb-0.5">CONTROLES DA UNIDADE</span>
-          <h4 className="text-[12px] font-bold text-white/90 font-sans tracking-wide">Mecânica Ventilatória 6D</h4>
+          <span className="text-[8px] uppercase tracking-[0.2em] font-black text-sky-400 block mb-0.5">FILTROS & CONTROLES</span>
+          <h4 className="text-[12px] font-bold text-white/90 font-sans tracking-wide">Anatomofisiologia Respiratória</h4>
         </div>
 
-        {/* Dynamic Sliders */}
+        {/* View Mode Filters */}
+        <div className="space-y-3">
+          <span className="text-[7.5px] font-mono text-white/30 uppercase tracking-widest font-black block">Filtros de Estrutura</span>
+          <div className="grid grid-cols-2 gap-2">
+            {[
+              { id: 'all', label: 'Tudo (Holograma)', desc: 'Visão completa' },
+              { id: 'airway', label: 'Zona Condutora', desc: 'Vias e condução' },
+              { id: 'hematosis', label: 'Zona Resp.', desc: 'Lungs e troca' },
+              { id: 'mechanics', label: 'Mecânica Musc.', desc: 'Diafragma e costelas' }
+            ].map((mode) => {
+              const active = viewMode === mode.id
+              return (
+                <button
+                  key={mode.id}
+                  onClick={() => setViewMode(mode.id as ViewMode)}
+                  className={`p-2 rounded-lg border text-left cursor-pointer transition-all duration-200 flex flex-col justify-between h-[52px] ${
+                    active 
+                      ? 'bg-sky-500/10 border-sky-500/30 text-sky-400' 
+                      : 'bg-white/[0.01] border-white/5 text-white/60 hover:border-white/10 hover:text-white'
+                  }`}
+                >
+                  <span className="text-[9px] font-bold leading-tight flex items-center gap-1">
+                    <Eye className="h-3 w-3" /> {mode.label}
+                  </span>
+                  <span className="text-[7px] text-white/30 truncate leading-none">{mode.desc}</span>
+                </button>
+              )
+            })}
+          </div>
+        </div>
+
+        {/* Physiological Rhythm Controller */}
         <div className="space-y-4 flex-1">
-          {/* FR - Frequência Respiratória */}
-          <div className="space-y-1.5">
+          <div className="space-y-1.5 pt-2 border-t border-white/[0.06]">
             <div className="flex justify-between items-center text-[9px] font-mono text-white/70">
-              <span className="flex items-center gap-1.5"><Activity className="h-3.5 w-3.5 text-sky-400" /> FREQUÊNCIA RESP. (FR)</span>
-              <span className={`font-bold ${respiratoryRate < 9 ? 'text-red-500 animate-pulse' : 'text-sky-400'}`}>
+              <span className="flex items-center gap-1.5"><Activity className="h-3.5 w-3.5 text-sky-400" /> RITMO FISIOLÓGICO</span>
+              <span className="font-bold text-sky-400">
                 {respiratoryRate} <span className="text-[8px] text-white/40">rpm</span>
               </span>
             </div>
             <input 
               type="range" 
-              min="0" 
-              max="40" 
+              min="12" 
+              max="30" 
               value={respiratoryRate} 
               onChange={(e) => setRespiratoryRate(Number(e.target.value))}
               className="w-full accent-sky-400 h-1 bg-white/10 rounded-full appearance-none cursor-pointer"
             />
-            <span className="text-[7.5px] font-mono text-white/30 block leading-tight">
-              Ajusta o ciclo respiratório em ciclos por minuto. Zerado (0 rpm) simula apneia imediata.
+            <div className="flex justify-between text-[7.5px] font-mono text-white/30 pt-0.5 leading-none">
+              <span>Repouso (12 rpm)</span>
+              <span>Esforço (30 rpm)</span>
+            </div>
+            <span className="text-[7.5px] font-mono text-white/35 block leading-normal pt-1">
+              Ajusta o ritmo do ciclo de expansão pulmonar e o fluxo de ar ($O_2$/$CO_2$) simulando repouso ou exercício físico leve.
             </span>
           </div>
 
-          {/* Vt - Volume Corrente */}
-          <div className="space-y-1.5">
-            <div className="flex justify-between items-center text-[9px] font-mono text-white/70">
-              <span className="flex items-center gap-1.5"><Wind className="h-3.5 w-3.5 text-emerald-400" /> VOLUME CORRENTE (Vt)</span>
-              <span className="font-bold text-emerald-400">
-                {tidalVolume} <span className="text-[8px] text-white/40">mL</span>
-              </span>
+          {/* Quick Info card explaining the selected filter */}
+          <div className="p-2.5 rounded-lg border border-white/5 bg-white/[0.01] flex gap-2 items-start mt-2">
+            <Info className="h-3.5 w-3.5 text-sky-400 shrink-0 mt-0.5" />
+            <div className="flex flex-col min-w-0">
+              <span className="text-[8px] font-bold text-white/80 uppercase tracking-wider font-mono">Dica Anatômica</span>
+              <p className="text-[7.5px] text-white/45 leading-normal mt-0.5">
+                {viewMode === 'all' && 'Use o mouse para pairar ou clicar sobre as estruturas do sistema respiratório no holograma à esquerda para ver descrições clínicas.'}
+                {viewMode === 'airway' && 'O espaço morto anatômico é de ~150 mL nas vias condutoras (nariz à traqueia), onde NÃO ocorre hematose.'}
+                {viewMode === 'hematosis' && 'A hematose ocorre na zona respiratória (ductos e alvéolos pulmonares) através de uma delicada membrana de apenas 0,2 µm.'}
+                {viewMode === 'mechanics' && 'A inspiração é um processo ativo coordenado pelo diafragma. Em repouso, a expiração é um processo passivo gerado pela retração pulmonar.'}
+              </p>
             </div>
-            <input 
-              type="range" 
-              min="200" 
-              max="800" 
-              value={tidalVolume} 
-              onChange={(e) => setTidalVolume(Number(e.target.value))}
-              className="w-full accent-emerald-400 h-1 bg-white/10 rounded-full appearance-none cursor-pointer"
-            />
-            <span className="text-[7.5px] font-mono text-white/30 block leading-tight">
-              Volume total de ar inspirado e expirado por respiração.
-            </span>
-          </div>
-
-          {/* Esforço Muscular */}
-          <div className="space-y-1.5">
-            <div className="flex justify-between items-center text-[9px] font-mono text-white/70">
-              <span className="flex items-center gap-1.5"><Sliders className="h-3.5 w-3.5 text-amber-500" /> ESFORÇO MUSCULAR (Drive)</span>
-              <span className={`font-bold ${muscleEffort < 15 ? 'text-red-500 animate-pulse' : 'text-amber-500'}`}>
-                {muscleEffort}%
-              </span>
-            </div>
-            <input 
-              type="range" 
-              min="0" 
-              max="100" 
-              value={muscleEffort} 
-              onChange={(e) => setMuscleEffort(Number(e.target.value))}
-              className="w-full accent-amber-500 h-1 bg-white/10 rounded-full appearance-none cursor-pointer"
-            />
-            <span className="text-[7.5px] font-mono text-white/30 block leading-tight">
-              Grau de força e profundidade na contração do músculo diafragma.
-            </span>
-          </div>
-
-          {/* Complacência Pulmonar */}
-          <div className="space-y-1.5">
-            <div className="flex justify-between items-center text-[9px] font-mono text-white/70">
-              <span className="flex items-center gap-1.5"><Gauge className="h-3.5 w-3.5 text-purple-400" /> COMPLACÊNCIA (Cst)</span>
-              <span className={`font-bold ${compliance < 20 ? 'text-red-500 animate-pulse' : 'text-purple-400'}`}>
-                {compliance} <span className="text-[8px] text-white/40">mL/cmH₂O</span>
-              </span>
-            </div>
-            <input 
-              type="range" 
-              min="10" 
-              max="80" 
-              value={compliance} 
-              onChange={(e) => setCompliance(Number(e.target.value))}
-              className="w-full accent-purple-400 h-1 bg-white/10 rounded-full appearance-none cursor-pointer"
-            />
-            <span className="text-[7.5px] font-mono text-white/30 block leading-tight">
-              Elasticidade dos pulmões. Complacências baixas simulam fibroses ou SDRA (pulmão rígido).
-            </span>
-          </div>
-
-          {/* Resistência de Vias Aéreas */}
-          <div className="space-y-1.5">
-            <div className="flex justify-between items-center text-[9px] font-mono text-white/70">
-              <span className="flex items-center gap-1.5"><TrendingUp className="h-3.5 w-3.5 text-rose-500" /> RESISTÊNCIA DE VIAS (Raw)</span>
-              <span className={`font-bold ${resistance > 35 ? 'text-red-500 animate-pulse' : 'text-rose-500'}`}>
-                {resistance} <span className="text-[8px] text-white/40">cmH₂O/L/s</span>
-              </span>
-            </div>
-            <input 
-              type="range" 
-              min="5" 
-              max="50" 
-              value={resistance} 
-              onChange={(e) => setResistance(Number(e.target.value))}
-              className="w-full accent-rose-500 h-1 bg-white/10 rounded-full appearance-none cursor-pointer"
-            />
-            <span className="text-[7.5px] font-mono text-white/30 block leading-tight">
-              Oposição das vias aéreas ao fluxo de ar. Valores altos simulam broncoespasmo severo.
-            </span>
           </div>
         </div>
 
-        {/* Bottom controls and reset */}
-        <div className="pt-2.5 border-t border-white/[0.06] flex items-center justify-between">
+        {/* Bottom controls */}
+        <div className="pt-2 border-t border-white/[0.06] flex items-center justify-between">
           <div className="flex flex-col">
-            <span className="text-[7.5px] font-mono text-white/30 uppercase">Ventilação</span>
-            <span className="text-[10px] font-mono text-white/70 font-semibold">{isPaused ? 'Espera' : 'Operando'}</span>
+            <span className="text-[7.5px] font-mono text-white/30 uppercase leading-none">Simulação</span>
+            <span className="text-[9px] font-mono text-white/70 font-semibold">{isPaused ? 'Espera' : 'Operando'}</span>
           </div>
           <div className="flex gap-2">
             <button 
-              onClick={handleResetCounters}
+              onClick={handleReset}
               className="p-1.5 text-[8.5px] uppercase font-mono tracking-wider text-white/50 border border-white/10 hover:border-white/20 hover:text-white rounded-lg transition-all flex items-center gap-1 cursor-pointer"
             >
               <RefreshCw className="h-3 w-3" /> Reset
