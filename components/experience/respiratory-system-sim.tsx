@@ -13,7 +13,7 @@ import {
   Info
 } from 'lucide-react'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
-import { useGLTF } from '@react-three/drei'
+import { useGLTF, OrbitControls } from '@react-three/drei'
 import * as THREE from 'three'
 
 /* ─────────────────────── types ─────────────────────── */
@@ -300,8 +300,8 @@ function Lungs3DModel({
 
     // Scale lungs based on breathing expansion
     if (groupRef.current) {
-      groupRef.current.rotation.y = 1.57 + Math.sin(t * 0.08) * 0.05
-      groupRef.current.rotation.x = Math.sin(t * 0.06) * 0.02
+      groupRef.current.rotation.y = Math.sin(t * 0.04) * 0.05
+      groupRef.current.rotation.x = Math.sin(t * 0.03) * 0.02
       
       const b = 1.0 + expand
       groupRef.current.scale.set(b * 1.05, 1.0 + expand * 0.4, b * 0.95)
@@ -381,37 +381,120 @@ function LungsMechanics({
     return 1.0
   }
 
-  // Floating Upper Airway Nodes
-  const renderFloatingNode = (part: AirwayPart, y: number, z: number, color: string, activeColor: string) => {
-    const isNodeActive = activePart === part
-    const opacity = getAlpha(part)
-    if (opacity <= 0.01) return null
-
-    return (
-      <mesh
-        position={[0, y, z]}
-        onPointerOver={(e) => { e.stopPropagation(); setHoveredPart(part) }}
-        onPointerOut={(e) => { e.stopPropagation(); setHoveredPart(null) }}
-        onClick={(e) => { e.stopPropagation(); setSelectedPart(selectedPart === part ? null : part) }}
-      >
-        <sphereGeometry args={[0.075, 16, 16]} />
-        <meshStandardMaterial 
-          color={isNodeActive ? activeColor : color}
-          emissive={isNodeActive ? activeColor : color}
-          emissiveIntensity={isNodeActive ? 3.0 : 0.8}
-          transparent
-          opacity={opacity * 0.9}
-        />
-      </mesh>
-    )
-  }
-
   return (
     <group>
-      {/* Upper Airway Nodes */}
-      {renderFloatingNode('nose', 1.75, 0.05, '#0d9488', '#22d3ee')}
-      {renderFloatingNode('pharynx', 1.4, 0.05, '#0d9488', '#22d3ee')}
-      {renderFloatingNode('larynx', 1.05, 0.05, '#0d9488', '#22d3ee')}
+      {/* 3D Nose / Nasal Cavity (Glowing wireframe cage) */}
+      {getAlpha('nose') > 0.01 && (
+        <group 
+          position={[0, 1.75, 0.1]} 
+          onPointerOver={(e) => { e.stopPropagation(); setHoveredPart('nose') }}
+          onPointerOut={(e) => { e.stopPropagation(); setHoveredPart(null) }}
+          onClick={(e) => { e.stopPropagation(); setSelectedPart(selectedPart === 'nose' ? null : 'nose') }}
+        >
+          <mesh scale={[0.15, 0.20, 0.20]}>
+            <coneGeometry args={[1, 1.8, 4]} />
+            <meshStandardMaterial 
+              color={activePart === 'nose' ? '#22d3ee' : '#0d9488'} 
+              transparent 
+              opacity={activePart === 'nose' ? 0.8 : (viewMode === 'all' ? 0.35 : 0.05)}
+              emissive={activePart === 'nose' ? '#22d3ee' : '#0f766e'}
+              emissiveIntensity={activePart === 'nose' ? 2.5 : 0.8}
+              wireframe
+            />
+          </mesh>
+          <mesh position={[0, 0, 0.1]}>
+            <sphereGeometry args={[0.035, 8, 8]} />
+            <meshBasicMaterial color={activePart === 'nose' ? '#22d3ee' : '#0d9488'} />
+          </mesh>
+        </group>
+      )}
+
+      {/* 3D Pharynx (Glowing cylindrical vertical duct) */}
+      {getAlpha('pharynx') > 0.01 && (
+        <group 
+          position={[0, 1.4, 0.02]} 
+          onPointerOver={(e) => { e.stopPropagation(); setHoveredPart('pharynx') }}
+          onPointerOut={(e) => { e.stopPropagation(); setHoveredPart(null) }}
+          onClick={(e) => { e.stopPropagation(); setSelectedPart(selectedPart === 'pharynx' ? null : 'pharynx') }}
+        >
+          <mesh scale={[0.11, 0.40, 0.11]}>
+            <cylinderGeometry args={[1, 0.9, 1, 16, 2, true]} />
+            <meshStandardMaterial 
+              color={activePart === 'pharynx' ? '#22d3ee' : '#14b8a6'} 
+              transparent 
+              opacity={activePart === 'pharynx' ? 0.75 : (viewMode === 'all' ? 0.32 : 0.05)}
+              emissive={activePart === 'pharynx' ? '#22d3ee' : '#0f766e'}
+              emissiveIntensity={activePart === 'pharynx' ? 2.2 : 0.6}
+              wireframe
+            />
+          </mesh>
+          <mesh position={[0, 0, 0.1]}>
+            <sphereGeometry args={[0.035, 8, 8]} />
+            <meshBasicMaterial color={activePart === 'pharynx' ? '#22d3ee' : '#0d9488'} />
+          </mesh>
+        </group>
+      )}
+
+      {/* 3D Larynx with movable Epiglottis and vibrating/opening Vocal Cords */}
+      {getAlpha('larynx') > 0.01 && (
+        <group 
+          position={[0, 1.05, 0.0]} 
+          onPointerOver={(e) => { e.stopPropagation(); setHoveredPart('larynx') }}
+          onPointerOut={(e) => { e.stopPropagation(); setHoveredPart(null) }}
+          onClick={(e) => { e.stopPropagation(); setSelectedPart(selectedPart === 'larynx' ? null : 'larynx') }}
+        >
+          <mesh scale={[0.14, 0.24, 0.14]}>
+            <cylinderGeometry args={[1, 1, 1, 16, 1, true]} />
+            <meshStandardMaterial 
+              color={activePart === 'larynx' ? '#22d3ee' : '#0d9488'} 
+              transparent 
+              opacity={activePart === 'larynx' ? 0.8 : (viewMode === 'all' ? 0.38 : 0.05)}
+              emissive={activePart === 'larynx' ? '#22d3ee' : '#0f766e'}
+              emissiveIntensity={activePart === 'larynx' ? 2.4 : 0.6}
+              wireframe
+            />
+          </mesh>
+
+          {/* Epiglottis (3D active flap) */}
+          <mesh 
+            position={[0, 0.14, 0.05]} 
+            rotation={[0.35 + expand * 0.45, 0, 0]} 
+            scale={[0.11, 0.015, 0.15]}
+          >
+            <boxGeometry />
+            <meshStandardMaterial 
+              color="#facb20" 
+              transparent 
+              opacity={activePart === 'larynx' ? 0.85 : (viewMode === 'all' ? 0.55 : 0.05)}
+              emissive="#b45309"
+              emissiveIntensity={activePart === 'larynx' ? 2.0 : 0.5}
+            />
+          </mesh>
+
+          {/* Vocal Cords (Pregas Vocais) opening/closing actively in 3D */}
+          <mesh 
+            position={[-0.025 - expand * 0.035, -0.05, 0.0]} 
+            rotation={[0, 0, -0.2 - expand * 0.4]} 
+            scale={[0.01, 0.07, 0.07]}
+          >
+            <boxGeometry />
+            <meshBasicMaterial color="#ffffff" transparent opacity={0.85} />
+          </mesh>
+          <mesh 
+            position={[0.025 + expand * 0.035, -0.05, 0.0]} 
+            rotation={[0, 0, 0.2 + expand * 0.4]} 
+            scale={[0.01, 0.07, 0.07]}
+          >
+            <boxGeometry />
+            <meshBasicMaterial color="#ffffff" transparent opacity={0.85} />
+          </mesh>
+
+          <mesh position={[0, 0.06, 0.1]}>
+            <sphereGeometry args={[0.035, 8, 8]} />
+            <meshBasicMaterial color={activePart === 'larynx' ? '#22d3ee' : '#0d9488'} />
+          </mesh>
+        </group>
+      )}
 
       {/* Alveolar functional cluster representation (Yellow spheres in hematosis mode) */}
       {getAlpha('alveoli') > 0.01 && Array.from({ length: 12 }).map((_, i) => {
@@ -681,6 +764,8 @@ export function RespiratorySystemSim({ className }: RespiratorySystemSimProps) {
             <directionalLight position={[-2, 2, 4]} intensity={2.0} color="#88bbcc" />
             <pointLight position={[0, -5, -1]} intensity={20} color="#0088bb" distance={20} />
             
+            <OrbitControls enableZoom={true} enablePan={true} maxPolarAngle={Math.PI / 2 + 0.1} minPolarAngle={0.2} />
+
             <Lungs3DModel 
               respiratoryRate={respiratoryRate}
               viewMode={viewMode}
