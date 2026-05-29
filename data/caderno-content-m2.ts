@@ -10,8 +10,28 @@ export const M2_CONTENT: CadernoModuleContent = {
           {
             id: 'M2-T1-slides-respiracao',
             type: 'slides',
-            title: 'O Que é Respiração?',
+            title: 'O Que é Respiração e Funções Extras',
             slides: [
+              {
+                title: 'Desafio Fisiológico da Superfície de Troca',
+                bullets: [
+                  'Os órgãos respiratórios têm diversas formas, porém todos possuem uma grande área de superfície comprimida em um pequeno espaço.',
+                  'Além de necessitar de uma grande superfície de troca, seres humanos e outros animais terrestres enfrentam um desafio fisiológico adicional: a desidratação.',
+                  'A superfície de troca deve ser fina e úmida para permitir que os gases passem do ar para a solução.',
+                  'Ao mesmo tempo, deve ser protegida de secar como resultado da exposição ao ar.',
+                ],
+                highlight: 'A fina espessura e umidade da superfície respiratória são pré-requisitos físicos fundamentais para a difusão gasosa passiva eficiente.',
+              },
+              {
+                title: 'Internalização e a Bomba Muscular',
+                bullets: [
+                  'Solução anatômica: um epitélio respiratório internalizado nos pulmões encerrados na cavidade do tórax, limitando o contato direto com o ar exterior.',
+                  'A internalização cria um ambiente úmido ideal para as trocas gasosas com o sangue e protege a delicada superfície alveolar contra danos.',
+                  'Novo desafio: mover o ar entre a atmosfera e a superfície de troca profunda, o que requer uma bomba muscular para criar gradientes de pressão.',
+                  'Sistemas complexos consistem em dois componentes separados: uma bomba muscular (estruturas do tórax) e uma superfície de troca úmida e fina (epitélio alveolar com vasos associados).',
+                ],
+                highlight: 'O movimento de ar para os pulmões internalizados necessita do trabalho coordenado de estruturas musculoesqueléticas da caixa torácica.',
+              },
               {
                 title: 'Quatro Processos da Respiração',
                 bullets: [
@@ -44,13 +64,27 @@ export const M2_CONTENT: CadernoModuleContent = {
                 ],
                 highlight: 'Sem hemoglobina, o sangue carregaria apenas 1,5% do O₂ necessário.',
               },
-            ],
-          },
-          {
-            id: 'M2-T1-slides-funcoes',
-            type: 'slides',
-            title: 'Além da Respiração: 5 Funções Extras',
-            slides: [
+              {
+                title: 'Quatro Funções Primárias do Sistema',
+                bullets: [
+                  '1. Troca de gases: traz o O₂ da atmosfera e o distribui para os tecidos, eliminando o CO₂ metabólico.',
+                  '2. Regulação homeostática do pH: os pulmões alteram o pH corporal retendo ou eliminando seletivamente o CO₂.',
+                  '3. Proteção contra patógenos e irritantes inalados: o epitélio é suprido com defesas que capturam e destroem substâncias nocivas.',
+                  '4. Vocalização: o fluxo de ar move as pregas vocais, gerando as vibrações necessárias para a comunicação falada ou cantada.',
+                ],
+                highlight: 'Estas quatro funções integradas atuam simultaneamente para manter o equilíbrio fisiológico corporal e a interação com o ambiente.',
+              },
+              {
+                title: 'Outras Funções e Regulação',
+                bullets: [
+                  '1. Regulação do pH sanguíneo: alteração rápida do pH através da modificação dos níveis de dióxido de carbono dissolvido.',
+                  '2. Produção de mediadores químicos: síntese pulmonar da Enzima Conversora de Angiotensina (ECA), regulador crucial da pressão arterial.',
+                  '3. Produção da voz: pregas vocais como fonte de som com a passagem de fluxo aéreo.',
+                  '4. Olfação: percepção olfatória desencadeada por moléculas que penetram na cavidade nasal.',
+                  '5. Proteção integrada: barreira celular e imunológica contra patógenos na superfície respiratória.',
+                ],
+                highlight: 'A síntese da ECA pelo endotélio capilar pulmonar ilustra o papel sistêmico do pulmão na homeostase hemodinâmica.',
+              },
               {
                 title: 'Funções Adicionais do Sistema Respiratório',
                 bullets: [

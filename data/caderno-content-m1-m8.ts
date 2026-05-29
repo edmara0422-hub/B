@@ -502,8 +502,18 @@ export const SUBJECTS_DB: SubjectContent[] = [
       "videoUrls": [],
       "chapters": [
           {
-              "title": "O Que é Respiração?",
+              "title": "O Que é Respiração e Funções Extras",
               "subsections": [
+                  {
+                      "title": "Desafio Fisiológico da Superfície de Troca",
+                      "content": "• Os órgãos respiratórios têm diversas formas, porém todos possuem uma grande área de superfície comprimida em um pequeno espaço.\n• Além de necessitar de uma grande superfície de troca, seres humanos e outros animais terrestres enfrentam um desafio fisiológico adicional: a desidratação.\n• A superfície de troca deve ser fina e úmida para permitir que os gases passem do ar para a solução.\n• Ao mesmo tempo, deve ser protegida de secar como resultado da exposição ao ar.",
+                      "deepDive": "A fina espessura e umidade da superfície respiratória são pré-requisitos físicos fundamentais para a difusão gasosa passiva eficiente."
+                  },
+                  {
+                      "title": "Internalização e a Bomba Muscular",
+                      "content": "• Solução anatômica: um epitélio respiratório internalizado nos pulmões encerrados na cavidade do tórax, limitando o contato direto com o ar exterior.\n• A internalização cria um ambiente úmido ideal para as trocas gasosas com o sangue e protege a delicada superfície alveolar contra danos.\n• Novo desafio: mover o ar entre a atmosfera e a superfície de troca profunda, o que requer uma bomba muscular para criar gradientes de pressão.\n• Sistemas complexos consistem em dois componentes separados: uma bomba muscular (estruturas do tórax) e uma superfície de troca úmida e fina (epitélio alveolar com vasos associados).",
+                      "deepDive": "O movimento de ar para os pulmões internalizados necessita do trabalho coordenado de estruturas musculoesqueléticas da caixa torácica."
+                  },
                   {
                       "title": "Quatro Processos da Respiração",
                       "content": "• 1. Ventilação: movimento de entrada e saída de ar dos pulmões\n• 2. Hematose (respiração externa): troca gasosa entre ar alveolar e sangue nos capilares pulmonares\n• 3. Transporte: O₂ e CO₂ carregados pelo sangue (hemoglobina e plasma)\n• 4. Respiração interna: troca gasosa entre sangue e tecidos\n• Esses 4 processos são distintos porém interdependentes",
@@ -518,12 +528,17 @@ export const SUBJECTS_DB: SubjectContent[] = [
                       "title": "Transporte de O₂ no Sangue",
                       "content": "• Hemoglobina (Hb): proteína com 4 sítios de ligação ao O₂\n• Hb + 4O₂ ⇄ Hb(O₂)₄ — reação reversível\n• 98,5% do O₂ transportado ligado à Hb\n• 1,5% dissolvido no plasma\n• CO₂ transportado: 7% dissolvido, 23% ligado à Hb, 70% como HCO₃⁻",
                       "deepDive": "Sem hemoglobina, o sangue carregaria apenas 1,5% do O₂ necessário."
-                  }
-              ]
-          },
-          {
-              "title": "Além da Respiração: 5 Funções Extras",
-              "subsections": [
+                  },
+                  {
+                      "title": "Quatro Funções Primárias do Sistema",
+                      "content": "• 1. Troca de gases: traz o O₂ da atmosfera e o distribui para os tecidos, eliminando o CO₂ metabólico.\n• 2. Regulação homeostática do pH: os pulmões alteram o pH corporal retendo ou eliminando seletivamente o CO₂.\n• 3. Proteção contra patógenos e irritantes inalados: o epitélio é suprido com defesas que capturam e destroem substâncias nocivas.\n• 4. Vocalização: o fluxo de ar move as pregas vocais, gerando as vibrações necessárias para a comunicação falada ou cantada.",
+                      "deepDive": "Estas quatro funções integradas atuam simultaneamente para manter o equilíbrio fisiológico corporal e a interação com o ambiente."
+                  },
+                  {
+                      "title": "Outras Funções e Regulação",
+                      "content": "• 1. Regulação do pH sanguíneo: alteração rápida do pH através da modificação dos níveis de dióxido de carbono dissolvido.\n• 2. Produção de mediadores químicos: síntese pulmonar da Enzima Conversora de Angiotensina (ECA), regulador crucial da pressão arterial.\n• 3. Produção da voz: pregas vocais como fonte de som com a passagem de fluxo aéreo.\n• 4. Olfação: percepção olfatória desencadeada por moléculas que penetram na cavidade nasal.\n• 5. Proteção integrada: barreira celular e imunológica contra patógenos na superfície respiratória.",
+                      "deepDive": "A síntese da ECA pelo endotélio capilar pulmonar ilustra o papel sistêmico do pulmão na homeostase hemodinâmica."
+                  },
                   {
                       "title": "Funções Adicionais do Sistema Respiratório",
                       "content": "• 1. Regulação do pH sanguíneo — alterando níveis de CO₂ (tampão bicarbonato)\n• 2. Produção de mediadores químicos — ECA (enzima conversora da angiotensina) → regulação da PA\n• 3. Produção da voz — passagem do ar pelas pregas vocais gera som\n• 4. Olfação — moléculas do ar alcançam epitélio olfatório na cavidade nasal\n• 5. Proteção — barreiras contra microrganismos e partículas",

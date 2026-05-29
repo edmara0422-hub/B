@@ -1276,9 +1276,9 @@ function NASA6DSimulator({ dbId, chapterIndex, theme }: { dbId: string; chapterI
                 
                         {dbId === 'P2-S1' && (
               <div className="h-full w-full relative">
-                {chapterIndex < 3 && (() => { const C = RESPIRATORY_SIMS['respiratory-system']; return <C /> })()}
-                {chapterIndex === 3 && (() => { const C = RESPIRATORY_SIMS['respiratory-gas-exchange']; return <C /> })()}
-                {chapterIndex > 3 && (() => { const C = RESPIRATORY_SIMS['respiratory-defense']; return <C /> })()}
+                {chapterIndex < 2 && (() => { const C = RESPIRATORY_SIMS['respiratory-system']; return <C /> })()}
+                {chapterIndex === 2 && (() => { const C = RESPIRATORY_SIMS['respiratory-gas-exchange']; return <C /> })()}
+                {chapterIndex > 2 && (() => { const C = RESPIRATORY_SIMS['respiratory-defense']; return <C /> })()}
               </div>
             )}
             {dbId === 'P2-S2' && (
