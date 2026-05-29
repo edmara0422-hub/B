@@ -434,7 +434,7 @@ function LungsMechanics({
                 emissive={activePart === 'alveoli' ? '#fbbf24' : '#b45309'} 
                 emissiveIntensity={activePart === 'alveoli' ? 2.5 : 0.8}
                 transparent 
-                opacity={0.8} 
+                opacity={viewMode === 'all' ? 0.35 : (activePart === 'alveoli' ? 0.8 : 0.22)} 
               />
             </mesh>
           </group>
@@ -455,7 +455,7 @@ function LungsMechanics({
           <meshStandardMaterial 
             color="#f43f5e" 
             transparent 
-            opacity={activePart === 'diaphragm' ? 0.72 : (viewMode === 'mechanics' ? 0.42 : 0.08)}
+            opacity={activePart === 'diaphragm' ? 0.72 : (viewMode === 'mechanics' ? 0.65 : 0.35)}
             emissive="#be123c"
             emissiveIntensity={activePart === 'diaphragm' ? 2.5 : 0.8}
             side={THREE.DoubleSide}
@@ -473,7 +473,7 @@ function LungsMechanics({
             <meshBasicMaterial 
               color="#38bdf8" 
               transparent 
-              opacity={viewMode === 'mechanics' ? 0.32 : 0.08}
+              opacity={viewMode === 'mechanics' ? 0.32 : 0.20}
             />
           </mesh>
         )
@@ -665,7 +665,7 @@ export function RespiratorySystemSim({ className }: RespiratorySystemSimProps) {
     <div className={`flex flex-col lg:flex-row gap-4 h-full w-full min-h-0 ${className ?? ''}`}>
       
       {/* ── Left main 3D WebGL simulation screen ── */}
-      <div className="relative flex-1 min-h-[450px] rounded-2xl overflow-hidden bg-[#040610] border border-white/5 shadow-2xl flex flex-col justify-end">
+      <div className="relative flex-1 min-h-[220px] lg:h-full rounded-2xl overflow-hidden bg-[#040610] border border-white/5 shadow-2xl flex flex-col justify-end">
         
         {/* Canvas 3D (R3F) */}
         <div className="absolute inset-0 z-0">
@@ -796,7 +796,7 @@ export function RespiratorySystemSim({ className }: RespiratorySystemSimProps) {
       </div>
 
       {/* ── Right control board (View Filters & Physiological Rhythm) ── */}
-      <div className="w-full lg:w-80 flex flex-col gap-4 p-4 rounded-2xl bg-black/55 border border-white/5 backdrop-blur-xl shrink-0 overflow-y-auto max-h-full">
+      <div className="w-full lg:w-80 flex flex-col gap-3 p-4 rounded-2xl bg-black/55 border border-white/5 backdrop-blur-xl shrink-0 overflow-y-auto h-[240px] lg:h-full max-h-full">
         <div className="border-b border-white/[0.06] pb-2.5">
           <span className="text-[8px] uppercase tracking-[0.2em] font-black text-sky-400 block mb-0.5">FILTROS & CONTROLES</span>
           <h4 className="text-[12px] font-bold text-white/90 font-sans tracking-wide">Anatomofisiologia Respiratória</h4>
