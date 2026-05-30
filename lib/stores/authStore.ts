@@ -58,6 +58,7 @@ export type Profile = {
   theme: string
   created_at: string
   updated_at: string
+  blocked?: boolean
 }
 
 type AuthState = {
@@ -159,6 +160,11 @@ export const useAuthStore = create<AuthState & AuthActions>((set, get) => ({
     }
     if (data) {
       const profile = data as Profile
+      if (profile.blocked) {
+        console.warn('[authStore] Usuário bloqueado detectado. Efetuando logout...')
+        get().signOut()
+        return
+      }
       // Admin se: role='admin' no banco OU é a Edmara (fallback de segurança).
       // Isso permite que admins promovidos/transferidos via painel funcionem.
       const isAdmin = profile.role === 'admin' || isAdminByEmail(profile.email) || isAdminByEmail(get().user?.email)
@@ -183,6 +189,19 @@ export const useAuthStore = create<AuthState & AuthActions>((set, get) => ({
       if (error.message.includes('Email not confirmed')) return { error: 'Confirme seu email antes de entrar.' }
       return { error: error.message }
     }
+
+    // Verifica se a conta está bloqueada no banco antes de prosseguir
+    const { data: profileData } = await supabase
+      .from('profiles')
+      .select('blocked')
+      .eq('email', email)
+      .single()
+
+    if (profileData?.blocked) {
+      await supabase.auth.signOut()
+      return { error: 'Sua conta está bloqueada. Por favor, entre em contato com o administrador.' }
+    }
+
     // Limpa flag do splash — login bem-sucedido sempre mostra splash
     if (typeof window !== 'undefined') {
       try { sessionStorage.removeItem('sea-splash-shown') } catch { /* ignore */ }
