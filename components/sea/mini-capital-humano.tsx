@@ -76,8 +76,8 @@ export function MiniCapitalHumano() {
         {/* Left Side: SVG Sparkline with X/Y axes and coordinate labels */}
         <div className="w-[52%] h-[120px] flex flex-col justify-between border-r border-white/5 pr-2">
           <div className="flex justify-between items-center mb-0.5">
-            <span className="text-[7px] uppercase tracking-wider text-white/35 font-bold">Live SVG humor pulse sparkline</span>
-            <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+            <span className="text-[7.5px] font-normal text-white/45 tracking-wide">Live SVG humor pulse sparkline</span>
+            <span className="h-1 w-1 rounded-full bg-emerald-400 animate-pulse" />
           </div>
           
           <div className="flex-1 w-full relative">
@@ -112,39 +112,39 @@ export function MiniCapitalHumano() {
                 />
               )}
 
-              {/* Y Axis labels exactly as mockup */}
+              {/* Y Axis labels exactly as mockup in clean sans-serif */}
               {['100', '50', '0', '-5', '-10'].map((lbl, idx) => {
                 const y = 8 + idx * 10
                 return (
-                  <text key={idx} x="27" y={y + 2} fill="rgba(255,255,255,0.3)" fontSize="5.5" textAnchor="end" fontFamily="monospace">{lbl}</text>
+                  <text key={idx} x="27" y={y + 2} fill="rgba(255,255,255,0.35)" fontSize="5.5" textAnchor="end" fontFamily="sans-serif" fontWeight="300">{lbl}</text>
                 )
               })}
 
-              {/* X Axis labels exactly as mockup */}
-              <text x="34" y="56" fill="rgba(255,255,255,0.3)" fontSize="5.5" textAnchor="start" fontFamily="monospace">18:00</text>
-              <text x="106" y="56" fill="rgba(255,255,255,0.3)" fontSize="5.5" textAnchor="end" fontFamily="monospace">19:00</text>
+              {/* X Axis labels exactly as mockup in clean sans-serif */}
+              <text x="34" y="56" fill="rgba(255,255,255,0.35)" fontSize="5.5" textAnchor="start" fontFamily="sans-serif" fontWeight="300">18:00</text>
+              <text x="106" y="56" fill="rgba(255,255,255,0.35)" fontSize="5.5" textAnchor="end" fontFamily="sans-serif" fontWeight="300">19:00</text>
             </svg>
           </div>
         </div>
 
-        {/* Right Side: Metrics as Beautiful Gold-Bordered Capsules (Mockup Style) */}
-        <div className="flex-1 flex flex-col justify-center space-y-1.5 pl-1">
+        {/* Right Side: Metrics as Beautiful Gold-Bordered Capsules (Mockup Style with exact values) */}
+        <div className="flex-1 flex flex-col justify-center space-y-2 pl-1.5">
           {/* Burnout Capsule */}
-          <div className="border border-[#d4b87a]/20 bg-black/35 px-2 py-1 rounded-xl flex justify-between items-center text-[8.5px] leading-none hover:border-[#d4b87a]/45 transition-colors">
-            <span className="font-normal text-white/50">Burnout EEB</span>
-            <span className="font-medium text-[#d4b87a] bg-[#d4b87a]/10 px-1 py-0.5 rounded-md border border-[#d4b87a]/20 font-mono text-[9px]">{burnoutEEB}%</span>
+          <div className="border border-[#d4b87a]/15 bg-[#0e0d0a]/40 px-2.5 py-1 rounded-xl flex justify-between items-center text-[9px] hover:border-[#d4b87a]/35 transition-colors">
+            <span className="font-light text-white/55">Burnout EEB</span>
+            <span className="font-normal text-[#d4b87a] text-[9.5px]">({burnoutEEB}%)</span>
           </div>
 
           {/* Turnover Capsule */}
-          <div className="border border-[#d4b87a]/20 bg-black/35 px-2 py-1 rounded-xl flex justify-between items-center text-[8.5px] leading-none hover:border-[#d4b87a]/45 transition-colors">
-            <span className="font-normal text-white/50">Turnover</span>
-            <span className="font-medium text-[#d4b87a] bg-[#d4b87a]/10 px-1 py-0.5 rounded-md border border-[#d4b87a]/20 font-mono text-[9px]">{turnoverAnual}%</span>
+          <div className="border border-[#d4b87a]/15 bg-[#0e0d0a]/40 px-2.5 py-1 rounded-xl flex justify-between items-center text-[9px] hover:border-[#d4b87a]/35 transition-colors">
+            <span className="font-light text-white/55">Turnover</span>
+            <span className="font-normal text-[#d4b87a] text-[9.5px]">({turnoverAnual}%)</span>
           </div>
 
           {/* Estresse Capsule */}
-          <div className="border border-[#d4b87a]/20 bg-black/35 px-2 py-1 rounded-xl flex justify-between items-center text-[8.5px] leading-none hover:border-[#d4b87a]/45 transition-colors">
-            <span className="font-normal text-white/50">Estresse IAE</span>
-            <span className="font-medium text-[#d4b87a] bg-[#d4b87a]/10 px-1 py-0.5 rounded-md border border-[#d4b87a]/20 font-mono text-[9px]">{estresseIAE}%</span>
+          <div className="border border-[#d4b87a]/15 bg-[#0e0d0a]/40 px-2.5 py-1 rounded-xl flex justify-between items-center text-[9px] hover:border-[#d4b87a]/35 transition-colors">
+            <span className="font-light text-white/55">Estresse IAE</span>
+            <span className="font-normal text-[#d4b87a] text-[9.5px]">{estresseIAE}%</span>
           </div>
         </div>
       </div>

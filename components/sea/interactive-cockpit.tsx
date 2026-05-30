@@ -147,9 +147,9 @@ export function InteractiveCockpit() {
       {/* Cabeçalho Executivo Dourado do Cockpit com Abas de Navegação */}
       <div className="w-full flex flex-col sm:flex-row justify-between items-center bg-black/45 border border-white/5 p-4 rounded-2xl backdrop-blur-md select-none gap-4">
         <div className="flex items-center gap-3">
-          <div className="h-2.5 w-2.5 rounded-full bg-[#d4b87a] animate-pulse" />
-          <h1 className="text-white text-base font-black tracking-widest uppercase">
-            BUSINESS INTELLIGENCE <span className="text-[#d4b87a]">COCKPIT 6D</span>
+          <div className="h-2 w-2 rounded-full bg-[#d4b87a] animate-pulse" />
+          <h1 className="text-white text-xs font-light tracking-[0.15em] uppercase">
+            BUSINESS INTELLIGENCE <span className="text-[#d4b87a] font-normal">COCKPIT 6D</span>
           </h1>
         </div>
         
@@ -162,10 +162,10 @@ export function InteractiveCockpit() {
               <button
                 key={sysId}
                 onClick={() => setActivePanel(sysId)}
-                className={`px-3 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-wider transition-all cursor-pointer ${
+                className={`px-3 py-1.5 rounded-lg text-[9px] font-normal uppercase tracking-[0.08em] transition-all cursor-pointer ${
                   active 
-                    ? 'bg-[#d4b87a]/15 border border-[#d4b87a]/35 text-white shadow-[0_0_12px_rgba(212,184,122,0.15)]'
-                    : 'border border-transparent text-white/40 hover:text-white/70'
+                    ? 'bg-[#d4b87a]/12 border border-[#d4b87a]/30 text-white font-medium shadow-[0_0_8px_rgba(212,184,122,0.1)]'
+                    : 'border border-transparent text-white/45 hover:text-white/75'
                 }`}
               >
                 {sys.title.split(' ')[0]}
