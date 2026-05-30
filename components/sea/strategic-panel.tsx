@@ -49,9 +49,9 @@ function detectPhase(m: Metrics): PhaseId {
 function getSGI(m: Metrics): CheckItem[] {
   return [
     { label: 'Autenticação e perfis de usuário', ok: true, fonte: 'Supabase Auth', detalhe: 'Login, roles admin/user, perfis clínicos' },
-    { label: 'Prontuário eletrônico clínico', ok: true, fonte: 'stack SEA', detalhe: 'Ventilação, sedação, RASS, prontuário completo' },
-    { label: 'Calculadoras clínicas especializadas', ok: true, fonte: 'stack SEA', detalhe: 'S1–S6: ventilatórias, hemodinâmicas, sedação' },
-    { label: 'Simulações 3D interativas', ok: true, fonte: 'React Three Fiber', detalhe: 'Pulmão, coração, posicionamento prona' },
+    { label: 'Painel eletrônico executivo', ok: true, fonte: 'stack SEA', detalhe: 'EBITDA, LTV/CAC, Runway, PESTEL, SWOT' },
+    { label: 'Calculadoras corporativas especializadas', ok: true, fonte: 'stack SEA', detalhe: 'FN-01, ST-02, HR-03: financeiras, macro e RH' },
+    { label: 'Simulações 6D interativas', ok: true, fonte: 'React Three Fiber', detalhe: 'Finanças, Estratégia, Clima/ESG' },
     { label: 'IA Tutora (Groq/LLaMA)', ok: true, fonte: 'Groq API', detalhe: 'llama-3.3-70b-versatile em /api/tutor' },
     { label: 'Banco de dados estruturado', ok: true, fonte: 'Supabase Postgres', detalhe: 'Profiles, subscriptions, feedback, app_config' },
     { label: 'App mobile (iOS/Android)', ok: true, fonte: 'Capacitor', detalhe: 'Build nativo via capacitor.config.ts' },

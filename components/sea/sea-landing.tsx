@@ -5,19 +5,19 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { IpbBackground } from './ipb-background'
 
 const PHRASES = [
-  'Raciocínio clínico\nà beira do leito.',
-  'Simulações 3D reais.\nPulmão · Coração · Cérebro.',
+  'Raciocínio de negócios\ne estratégia de mercado.',
+  'Simulações 6D Avançadas.\nFinanças · Estratégia · Clima.',
   'IA especialista\nque ensina em segundos.',
-  'Prontuário inteligente.\nDetecção automática de desmame.',
-  'Zero papel. Zero infecção cruzada.\nDigital-first. Offline.',
+  'Cockpit inteligente.\nPredição automática de Turnover & Burnout.',
+  'Zero papel. Zero complicação.\nDigital-first. Offline.',
   'Cocriação com profissionais reais.\nCriatividade aplicada à prática.',
-  'Inovação e infraestrutura.\nIA adaptativa · Tecnologia à beira do leito.',
+  'Inovação e infraestrutura.\nIA adaptativa · Tecnologia e dados vivos.',
   'Planeta.\nEco-eficiência digital.\nMenos processamento, menos pegada de carbono.',
-  'Pessoas.\nProfissional preparado = paciente seguro.\nInclusão · Diversidade · Igualdade.',
-  'Prosperidade.\nMenos tempo de VM = menos custo hospitalar.\nValor compartilhado.',
-  'ODS: Saúde · Educação · Inovação.\nConsumo responsável · Redução das desigualdades.',
+  'Pessoas.\nProfissional preparado = resultado seguro.\nInclusão · Diversidade · Igualdade.',
+  'Prosperidade.\nMenos tempo de atrito = menos custo operacional.\nValor compartilhado.',
+  'ODS: Trabalho Decente · Educação · Inovação.\nConsumo responsável · Redução das desigualdades.',
   'Governança.\nCompliance · Transparência · Ética.',
-  'Acelerador de\ncompetência clínica.',
+  'Acelerador de\ncompetência corporativa.',
 ]
 
 const PHASE_DURATION = 3200

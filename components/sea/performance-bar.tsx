@@ -493,7 +493,7 @@ const GOV_CONTENT: Record<string, { title: string; sections: { heading: string; 
         heading: 'Práticas de Educação Baseada em Evidências',
         items: [
           'Conteúdo fundamentado em guidelines internacionais: AMIB, SBPT, ATS, ERS, ESICM, AARC',
-          'Simulações 3D interativas de órgãos reais (pulmão, coração, cérebro) para aprendizado imersivo',
+          'Simulações 6D interativas de cenários corporativos (finanças, estratégia, clima) para decisão imersiva',
           'IA tutor especialista com contexto clínico: responde com raciocínio fisiopatológico, não apenas definições',
           'Curvas de ventilação mecânica em tempo real: Pressão×Tempo, Fluxo×Tempo, Volume×Tempo',
           'Loops P×V e F×V com análise de histerese, WOB, padrão obstrutivo e restritivo',
