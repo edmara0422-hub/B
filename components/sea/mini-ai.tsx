@@ -8,79 +8,56 @@ export function MiniAi() {
       className="w-full h-full flex flex-col justify-between p-3 select-none"
       style={{ fontFamily: "'Poppins', -apple-system, system-ui, sans-serif" }}
     >
-      {/* Header Premium (Poppins Fina) */}
+      <style dangerouslySetInnerHTML={{ __html: `
+        @keyframes pulseOrbGlass {
+          0%, 100% { 
+            transform: scale(1); 
+            filter: drop-shadow(0 0 12px rgba(201, 148, 58, 0.45)) drop-shadow(0 0 20px rgba(201, 148, 58, 0.2));
+            opacity: 0.95;
+          }
+          50% { 
+            transform: scale(1.04); 
+            filter: drop-shadow(0 0 20px rgba(201, 148, 58, 0.75)) drop-shadow(0 0 35px rgba(201, 148, 58, 0.4));
+            opacity: 1;
+          }
+        }
+        @keyframes rotatePedestal {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+        .glow-orb-glass {
+          animation: pulseOrbGlass 4s infinite ease-in-out;
+        }
+        .rotate-pedestal-ring {
+          animation: rotatePedestal 25s linear infinite;
+          transform-origin: center;
+        }
+      `}} />
+
+      {/* Header Bicolor com 3 Pontos */}
       <div className="flex justify-between items-center w-full z-10 border-b border-white/5 pb-1">
-        <span className="text-xs font-normal text-white/95 tracking-wide">IPB AI Assistant</span>
-        <MoreHorizontal className="h-4 w-4 text-white/40 hover:text-white/80 cursor-pointer" />
+        <span className="text-[11px] font-normal text-white/95 tracking-wide">
+          <span className="text-[#c59740] font-bold">IPB</span> AI Assistant
+        </span>
+        <MoreHorizontal className="h-3.5 w-3.5 text-white/40 hover:text-white/80 cursor-pointer" />
       </div>
 
-      {/* Body: 2 Columns */}
-      <div className="flex-1 flex items-center gap-2 py-2">
-        
-        {/* Left Side: Glowing SVG Holographic AI Orb on Metallic Pedestal (Mockup Style) */}
+      <div className="flex-1 flex items-center gap-2 py-1">
+        {/* Holograma da Esfera de IA 3D */}
         <div className="w-[50%] h-[120px] flex flex-col justify-center items-center border-r border-white/5 pr-2 relative overflow-hidden">
-          <style dangerouslySetInnerHTML={{ __html: `
-            @keyframes pulseOrbGlass {
-              0%, 100% { 
-                transform: scale(1); 
-                filter: drop-shadow(0 0 12px rgba(201, 148, 58, 0.45)) drop-shadow(0 0 20px rgba(201, 148, 58, 0.2));
-                opacity: 0.95;
-              }
-              50% { 
-                transform: scale(1.04); 
-                filter: drop-shadow(0 0 20px rgba(201, 148, 58, 0.75)) drop-shadow(0 0 35px rgba(201, 148, 58, 0.4));
-                opacity: 1;
-              }
-            }
-            @keyframes rotatePedestal {
-              0% { transform: rotate(0deg); }
-              100% { transform: rotate(360deg); }
-            }
-            @keyframes pulseWave {
-              0% { r: 24px; opacity: 0.6; stroke-width: 0.8px; }
-              50% { r: 34px; opacity: 0.35; stroke-width: 0.6px; }
-              100% { r: 44px; opacity: 0; stroke-width: 0.3px; }
-            }
-            .glow-orb-glass {
-              animation: pulseOrbGlass 4s infinite ease-in-out;
-            }
-            .rotate-pedestal-ring {
-              animation: rotatePedestal 25s linear infinite;
-              transform-origin: center;
-            }
-            .pulse-radar-1 {
-              animation: pulseWave 3s infinite linear;
-              transform-origin: center;
-            }
-            .pulse-radar-2 {
-              animation: pulseWave 3s infinite linear;
-              animation-delay: 1.5s;
-              transform-origin: center;
-            }
-          `}} />
-          
-          <svg className="w-[78px] h-[78px] glow-orb-glass" viewBox="0 0 100 100">
+          <svg className="w-[82px] h-[82px] glow-orb-glass" viewBox="0 0 100 100">
             <defs>
-              {/* High-Fidelity 3D Glass Sphere Gradients using rich bronze-gold #c9943a */}
-              <radialGradient id="holoCore3D" cx="35%" cy="35%" r="65%" fx="30%" fy="30%">
+              <radialGradient id="holoCore3D" cx="35%" cy="35%" r="65%">
                 <stop offset="0%" stopColor="#ffffff" stopOpacity="0.9" />
                 <stop offset="35%" stopColor="#fff8e7" stopOpacity="0.65" />
-                <stop offset="75%" stopColor="#c9943a" stopOpacity="0.4" />
+                <stop offset="75%" stopColor="#c9943a" stopOpacity="0.45" />
                 <stop offset="100%" stopColor="#9a7a42" stopOpacity="0.05" />
               </radialGradient>
-
               <radialGradient id="goldSphereBorder" cx="50%" cy="50%" r="50%">
                 <stop offset="90%" stopColor="#c9943a" stopOpacity="0.15" />
                 <stop offset="98%" stopColor="#c9943a" stopOpacity="0.75" />
                 <stop offset="100%" stopColor="#ffffff" stopOpacity="0.9" />
               </radialGradient>
-
-              <linearGradient id="pedestalGrad" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#ffffff" stopOpacity="0.85" />
-                <stop offset="30%" stopColor="#c9943a" stopOpacity="0.55" />
-                <stop offset="100%" stopColor="#1e180d" stopOpacity="0.9" />
-              </linearGradient>
-
               <filter id="aiTextGlow">
                 <feGaussianBlur stdDeviation="1.5" result="coloredBlur"/>
                 <feMerge>
@@ -90,129 +67,88 @@ export function MiniAi() {
               </filter>
             </defs>
 
-            {/* Pulsing radar waves */}
-            <circle cx="50" cy="46" r="24" fill="none" stroke="#c9943a" strokeWidth="0.8" className="pulse-radar-1" />
-            <circle cx="50" cy="46" r="24" fill="none" stroke="#c9943a" strokeWidth="0.8" className="pulse-radar-2" />
-
-            {/* Concentric high-tech background coordinates */}
             <circle cx="50" cy="46" r="44" fill="none" stroke="#c9943a" strokeWidth="0.5" strokeDasharray="3,6" className="rotate-pedestal-ring" opacity="0.2" />
-            <circle cx="50" cy="46" r="39" fill="none" stroke="#c9943a" strokeWidth="0.4" strokeDasharray="10,8" className="rotate-pedestal-ring" style={{ animationDirection: 'reverse' }} opacity="0.15" />
-
-            {/* 3D Glass Sphere Backing Aura */}
             <circle cx="50" cy="46" r="28" fill="#c9943a" fillOpacity="0.04" stroke="url(#goldSphereBorder)" strokeWidth="0.8" />
 
-            {/* Holographic 3D Spherical Wireframe Lattice (Exactly like the mockup!) */}
+            {/* Malha Matemática de Elipses 3D Rotativas */}
             <g opacity="0.55" className="rotate-pedestal-ring">
-              {/* Tilted vertical/horizontal longitude and latitude coordinate lines in 3D perspective */}
               <ellipse cx="50" cy="46" rx="28" ry="8" fill="none" stroke="#c9943a" strokeWidth="0.6" />
               <ellipse cx="50" cy="46" rx="28" ry="16" fill="none" stroke="#c9943a" strokeWidth="0.5" />
               <ellipse cx="50" cy="46" rx="8" ry="28" fill="none" stroke="#c9943a" strokeWidth="0.6" />
               <ellipse cx="50" cy="46" rx="16" ry="28" fill="none" stroke="#c9943a" strokeWidth="0.5" />
-              
-              {/* Overlapping 30deg / -30deg tilted structural orbits */}
               <ellipse cx="50" cy="46" rx="27" ry="10" fill="none" stroke="#c9943a" strokeWidth="0.5" transform="rotate(30, 50, 46)" />
               <ellipse cx="50" cy="46" rx="27" ry="10" fill="none" stroke="#c9943a" strokeWidth="0.5" transform="rotate(-30, 50, 46)" />
-              <ellipse cx="50" cy="46" rx="27" ry="18" fill="none" stroke="#c9943a" strokeWidth="0.4" transform="rotate(60, 50, 46)" />
-              <ellipse cx="50" cy="46" rx="27" ry="18" fill="none" stroke="#c9943a" strokeWidth="0.4" transform="rotate(-60, 50, 46)" />
-
-              {/* Floating Quantum Node Stars at vector intersections */}
               <circle cx="50" cy="18" r="1.2" fill="#ffffff" />
               <circle cx="50" cy="74" r="1.2" fill="#ffffff" />
               <circle cx="22" cy="46" r="1.2" fill="#ffffff" />
               <circle cx="78" cy="46" r="1.2" fill="#ffffff" />
-              <circle cx="34" cy="30" r="1.2" fill="#ffffff" />
-              <circle cx="66" cy="30" r="1.2" fill="#ffffff" />
-              <circle cx="34" cy="62" r="1.2" fill="#ffffff" />
-              <circle cx="66" cy="62" r="1.2" fill="#ffffff" />
             </g>
 
-            {/* Core 3D Volumetric fill */}
             <circle cx="50" cy="46" r="27.5" fill="url(#holoCore3D)" />
-
-            {/* Exact Mockup central Glowing AI Text */}
-            <text 
-              x="50" 
-              y="52" 
-              fill="#ffffff" 
-              fontSize="16" 
-              fontWeight="900" 
-              fontFamily="sans-serif" 
-              textAnchor="middle" 
-              letterSpacing="0.05em" 
-              filter="url(#aiTextGlow)"
-              style={{ textShadow: '0 0 10px rgba(255,255,255,0.95), 0 0 20px rgba(201, 148, 58, 0.9)' }}
-            >
+            <text x="50" y="52" fill="#ffffff" fontSize="16" fontWeight="900" textAnchor="middle" filter="url(#aiTextGlow)" style={{ textShadow: '0 0 10px rgba(255,255,255,0.95), 0 0 20px rgba(201, 148, 58, 0.9)' }}>
               AI
             </text>
-
-            {/* Glare spotlight */}
             <circle cx="40" cy="36" r="3.5" fill="#ffffff" opacity="0.65" filter="blur(0.4px)" />
 
-            {/* HIGH-TECH METALLIC PEDESTAL (Mockup Style) */}
+            {/* Pedestal de Anéis Metálicos com Ticks */}
             <g transform="translate(0, 1)">
-              {/* Pedestal Base light reflection */}
               <ellipse cx="50" cy="74" rx="26" ry="3.5" fill="rgba(201,148,58,0.18)" filter="blur(1.5px)" />
-
-              {/* Pedestal Bottom Base */}
-              <path d="M 28,78 L 72,78 L 68,82 L 32,82 Z" fill="url(#pedestalGrad)" stroke="rgba(201,148,58,0.3)" strokeWidth="0.5" />
-              
-              {/* Pedestal Neck and Ring */}
+              <path d="M 28,78 L 72,78 L 68,82 L 32,82 Z" fill="#1e180d" stroke="rgba(201,148,58,0.4)" strokeWidth="0.5" />
               <path d="M 36,73 L 64,73 L 60,78 L 40,78 Z" fill="#0d0d0f" stroke="rgba(201,148,58,0.4)" strokeWidth="0.5" />
-              
-              {/* Telemetry coordinate ticks under base */}
               <line x1="22" y1="84" x2="78" y2="84" stroke="#c9943a" strokeWidth="0.5" strokeDasharray="1,4" opacity="0.6" />
             </g>
           </svg>
         </div>
 
-        {/* Right Side: Three Stacked Gold Buttons with Connector Lines (Mockup Style) */}
+        {/* Lado Direito: Botões com Conectores de Dados do Mockup */}
         <div className="flex-1 flex flex-col justify-center space-y-2.5 pl-1.5 relative">
           
-          {/* Button 1: Gemini */}
+          {/* Gemini */}
           <div className="relative flex items-center">
-            {/* Connector Line Grid */}
             <div className="absolute left-[-16px] w-[14px] flex items-center justify-between pointer-events-none">
               <div className="h-[0.5px] w-full bg-[#c9943a]/45" />
-              <div className="h-1.5 w-1.5 rounded-full bg-[#c9943a] shrink-0" style={{ transform: 'translateX(4px)' }} />
+              <div className="h-1.5 w-[0.5px] bg-[#c9943a]" />
             </div>
-            
-            <button className="w-full text-center py-1.5 bg-black/45 hover:bg-[#c9943a]/10 border border-[#c9943a]/30 hover:border-[#c9943a]/65 rounded-xl text-[10px] font-normal text-white tracking-widest uppercase transition-all duration-200 shadow-md">
+            <div className="absolute right-[-2px] w-[14px] flex items-center justify-between pointer-events-none">
+              <div className="h-1.5 w-[0.5px] bg-[#c9943a]" />
+              <div className="h-[0.5px] w-full bg-[#c9943a]/45" />
+            </div>
+            <button className="w-full text-center py-1 bg-[#090806]/90 hover:bg-[#c9943a]/12 border border-[#c9943a]/45 rounded-lg text-[9px] font-semibold text-white tracking-widest uppercase transition-all duration-200">
               Gemini
             </button>
           </div>
 
-          {/* Button 2: Grok */}
+          {/* Grok */}
           <div className="relative flex items-center">
-            {/* Connector Line Grid */}
             <div className="absolute left-[-16px] w-[14px] flex items-center justify-between pointer-events-none">
               <div className="h-[0.5px] w-full bg-[#c9943a]/45" />
-              <div className="h-1.5 w-1.5 rounded-full bg-[#c9943a] shrink-0" style={{ transform: 'translateX(4px)' }} />
+              <div className="h-1.5 w-[0.5px] bg-[#c9943a]" />
             </div>
-            
-            <button className="w-full text-center py-1.5 bg-black/45 hover:bg-[#c9943a]/10 border border-[#c9943a]/30 hover:border-[#c9943a]/65 rounded-xl text-[10px] font-normal text-white tracking-widest uppercase transition-all duration-200 shadow-md">
+            <div className="absolute right-[-2px] w-[14px] flex items-center justify-between pointer-events-none">
+              <div className="h-1.5 w-[0.5px] bg-[#c9943a]" />
+              <div className="h-[0.5px] w-full bg-[#c9943a]/45" />
+            </div>
+            <button className="w-full text-center py-1 bg-[#090806]/90 hover:bg-[#c9943a]/12 border border-[#c9943a]/45 rounded-lg text-[9px] font-semibold text-white tracking-widest uppercase transition-all duration-200">
               Grok
             </button>
           </div>
 
-          {/* Button 3: LLaMA */}
+          {/* LLaMA */}
           <div className="relative flex items-center">
-            {/* Connector Line Grid */}
             <div className="absolute left-[-16px] w-[14px] flex items-center justify-between pointer-events-none">
               <div className="h-[0.5px] w-full bg-[#c9943a]/45" />
-              <div className="h-1.5 w-1.5 rounded-full bg-[#c9943a] shrink-0" style={{ transform: 'translateX(4px)' }} />
+              <div className="h-1.5 w-[0.5px] bg-[#c9943a]" />
             </div>
-            
-            <button className="w-full text-center py-1.5 bg-black/45 hover:bg-[#c9943a]/10 border border-[#c9943a]/30 hover:border-[#c9943a]/65 rounded-xl text-[10px] font-normal text-white tracking-widest uppercase transition-all duration-200 shadow-md">
+            <div className="absolute right-[-2px] w-[14px] flex items-center justify-between pointer-events-none">
+              <div className="h-1.5 w-[0.5px] bg-[#c9943a]" />
+              <div className="h-[0.5px] w-full bg-[#c9943a]/45" />
+            </div>
+            <button className="w-full text-center py-1 bg-[#090806]/90 hover:bg-[#c9943a]/12 border border-[#c9943a]/45 rounded-lg text-[9px] font-semibold text-white tracking-widest uppercase transition-all duration-200">
               LLaMA
             </button>
           </div>
-        </div>
-      </div>
 
-      {/* Footer Vitals */}
-      <div className="flex justify-between items-center text-[7.5px] text-white/30 border-t border-white/5 pt-1.5">
-        <span>Vortex AI Node · AWS Cluster</span>
-        <span className="font-bold text-[#c9943a] tracking-widest uppercase">COCKPIT INTEGRATED</span>
+        </div>
       </div>
     </div>
   )
