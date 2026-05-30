@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState, useMemo } from 'react'
-import { MoreHorizontal } from 'lucide-react'
+import { MoreHorizontal, Activity } from 'lucide-react'
 
 export function MiniCapitalHumano() {
   const [pressaoMetas, setPressaoMetas] = useState(5)
@@ -18,7 +18,6 @@ export function MiniCapitalHumano() {
     return () => window.removeEventListener('ipb-telemetry', handleTelemetry)
   }, [])
 
-  // Mathematical alignment to return mockup baselines exactly at pressaoMetas = 5
   const burnoutEEB = useMemo(() => {
     return Math.round(31 + (pressaoMetas - 5) * 3.4)
   }, [pressaoMetas])
@@ -31,7 +30,6 @@ export function MiniCapitalHumano() {
     return Number((9.3 + (pressaoMetas - 5) * 1.2).toFixed(1))
   }, [pressaoMetas])
 
-  // Sparkline data representing Humor Pulse Surveys over 7 weeks
   const sparklineData = useMemo(() => {
     const basePoints = [85, 88, 82, 86, 75, 78, 82]
     const pressureDrop = pressaoMetas * 4.5
@@ -66,20 +64,35 @@ export function MiniCapitalHumano() {
       className="w-full h-full flex flex-col justify-between p-3 select-none"
       style={{ fontFamily: "'Poppins', -apple-system, system-ui, sans-serif" }}
     >
-      {/* Header Premium (Poppins Fina) */}
+      <style dangerouslySetInnerHTML={{ __html: `
+        .gold-metallic-gradient {
+          background: linear-gradient(90deg, #c59740 0%, #f3d89d 50%, #c59740 100%);
+          color: #0c0a07;
+        }
+        .dark-glass-value {
+          background: rgba(10, 10, 12, 0.45);
+          border: 1px solid rgba(197, 151, 64, 0.25);
+        }
+      `}} />
+
+      {/* Header Bicolor Premium com 3 Pontos */}
       <div className="flex justify-between items-center w-full z-10 border-b border-white/5 pb-1">
-        <span className="text-xs font-normal text-white/95 tracking-wide">Pilar 1: Cap. Humano & Liderança</span>
-        <MoreHorizontal className="h-4 w-4 text-white/40 hover:text-white/80 cursor-pointer" />
+        <span className="text-[11px] font-normal text-white/95 tracking-wide">
+          <span className="text-[#c59740] font-bold">Pilar 1:</span> Cap. Humano & Liderança
+        </span>
+        <MoreHorizontal className="h-3.5 w-3.5 text-white/40 hover:text-white/80 cursor-pointer" />
       </div>
 
-      {/* Body: 2 Columns */}
-      <div className="flex-1 flex items-center gap-2 py-2">
-        
-        {/* Left Side: SVG Sparkline with X/Y axes and coordinate labels */}
+      {/* Body: 2 Colunas */}
+      <div className="flex-1 flex items-center gap-2 py-1">
+        {/* Lado Esquerdo: Sparkline Neon e Eixos Reais */}
         <div className="w-[52%] h-[120px] flex flex-col justify-between border-r border-white/5 pr-2">
-          <div className="flex justify-between items-center mb-0.5">
-            <span className="text-[7.5px] font-normal text-white/45 tracking-wide">Live SVG humor pulse sparkline</span>
-            <span className="h-1 w-1 rounded-full bg-emerald-400 animate-pulse" />
+          <div className="flex items-center gap-1.5 mb-0.5">
+            <span className="text-[7px] font-normal text-white/45 tracking-wide">Live SVG humor pulse sparkline</span>
+            <div className="flex items-center gap-0.5">
+              <span className="h-1 w-1 rounded-full bg-emerald-500 animate-pulse" />
+              <Activity className="h-2.5 w-2.5 text-white/40" />
+            </div>
           </div>
           
           <div className="flex-1 w-full relative">
@@ -89,19 +102,23 @@ export function MiniCapitalHumano() {
                   <stop offset="0%" stopColor="#c9943a" stopOpacity="0.22" />
                   <stop offset="100%" stopColor="#c9943a" stopOpacity="0.01" />
                 </linearGradient>
+                <filter id="neonGlowLine" x="-20%" y="-20%" width="140%" height="140%">
+                  <feGaussianBlur stdDeviation="1.2" result="blur" />
+                  <feMerge>
+                    <feMergeNode in="blur" />
+                    <feMergeNode in="SourceGraphic" />
+                  </feMerge>
+                </filter>
               </defs>
               
-              {/* Axes lines */}
               <line x1="32" y1="48" x2="108" y2="48" stroke="rgba(255,255,255,0.15)" strokeWidth="0.6" />
               <line x1="32" y1="8" x2="32" y2="48" stroke="rgba(255,255,255,0.15)" strokeWidth="0.6" />
               
-              {/* Y Axis Grid lines */}
               <line x1="32" y1="28" x2="108" y2="28" stroke="rgba(255,255,255,0.04)" strokeWidth="0.5" strokeDasharray="2,2" />
               <line x1="32" y1="12" x2="108" y2="12" stroke="rgba(255,255,255,0.04)" strokeWidth="0.5" strokeDasharray="2,2" />
 
-              {/* Shaded Area & Line */}
               <polygon points={areaPoints} fill="url(#humorGrad)" />
-              <polyline fill="none" stroke="#c9943a" strokeWidth="1.5" points={polylinePoints} />
+              <polyline fill="none" stroke="#c9943a" strokeWidth="1.5" points={polylinePoints} filter="url(#neonGlowLine)" />
               
               {sparklineData.length > 0 && (
                 <circle
@@ -114,7 +131,6 @@ export function MiniCapitalHumano() {
                 />
               )}
 
-              {/* Y Axis labels exactly as mockup in clean sans-serif */}
               {['100', '50', '0', '-5', '-10'].map((lbl, idx) => {
                 const y = 8 + idx * 10
                 return (
@@ -122,31 +138,42 @@ export function MiniCapitalHumano() {
                 )
               })}
 
-              {/* X Axis labels exactly as mockup in clean sans-serif */}
               <text x="34" y="56" fill="rgba(255,255,255,0.35)" fontSize="5.5" textAnchor="start" fontFamily="sans-serif" fontWeight="300">18:00</text>
               <text x="106" y="56" fill="rgba(255,255,255,0.35)" fontSize="5.5" textAnchor="end" fontFamily="sans-serif" fontWeight="300">19:00</text>
             </svg>
           </div>
         </div>
 
-        {/* Right Side: Metrics as Beautiful Gold-Bordered Capsules (Mockup Style with exact values) */}
-        <div className="flex-1 flex flex-col justify-center space-y-2 pl-1.5">
-          {/* Burnout Capsule */}
-          <div className="border border-[#c9943a]/15 bg-[#0e0d0a]/40 px-2.5 py-1 rounded-xl flex justify-between items-center text-[9px] hover:border-[#c9943a]/35 transition-colors">
-            <span className="font-light text-white/55">Burnout EEB</span>
-            <span className="font-normal text-[#c9943a] text-[9.5px]">({burnoutEEB}%)</span>
+        {/* Lado Direito: Cápsulas Empilhadas tridimensionais (Split Capsules) */}
+        <div className="flex-1 flex flex-col justify-between h-[105px] pl-1.5 space-y-1">
+          {/* Burnout */}
+          <div className="flex flex-col w-full">
+            <div className="gold-metallic-gradient text-[7.5px] font-bold uppercase tracking-wider py-0.5 rounded-t-lg text-center font-mono leading-none">
+              Burnout EEB
+            </div>
+            <div className="dark-glass-value text-white text-center py-0.5 text-[10.5px] font-bold font-mono rounded-b-lg leading-tight">
+              {burnoutEEB}%
+            </div>
           </div>
 
-          {/* Turnover Capsule */}
-          <div className="border border-[#c9943a]/15 bg-[#0e0d0a]/40 px-2.5 py-1 rounded-xl flex justify-between items-center text-[9px] hover:border-[#c9943a]/35 transition-colors">
-            <span className="font-light text-white/55">Turnover</span>
-            <span className="font-normal text-[#c9943a] text-[9.5px]">({turnoverAnual}%)</span>
+          {/* Turnover */}
+          <div className="flex flex-col w-full">
+            <div className="gold-metallic-gradient text-[7.5px] font-bold uppercase tracking-wider py-0.5 rounded-t-lg text-center font-mono leading-none">
+              Turnover
+            </div>
+            <div className="dark-glass-value text-white text-center py-0.5 text-[10.5px] font-bold font-mono rounded-b-lg leading-tight">
+              {turnoverAnual}%
+            </div>
           </div>
 
-          {/* Estresse Capsule */}
-          <div className="border border-[#c9943a]/15 bg-[#0e0d0a]/40 px-2.5 py-1 rounded-xl flex justify-between items-center text-[9px] hover:border-[#c9943a]/35 transition-colors">
-            <span className="font-light text-white/55">Estresse IAE</span>
-            <span className="font-normal text-[#c9943a] text-[9.5px]">{estresseIAE}%</span>
+          {/* Estresse */}
+          <div className="flex flex-col w-full">
+            <div className="gold-metallic-gradient text-[7.5px] font-bold uppercase tracking-wider py-0.5 rounded-t-lg text-center font-mono leading-none">
+              Estresse IAE
+            </div>
+            <div className="dark-glass-value text-white text-center py-0.5 text-[10.5px] font-bold font-mono rounded-b-lg leading-tight">
+              {estresseIAE}%
+            </div>
           </div>
         </div>
       </div>
