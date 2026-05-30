@@ -32,6 +32,7 @@ import {
 } from 'lucide-react'
 import Link from 'next/link'
 import type { LucideIcon } from 'lucide-react'
+import { useAuthStore } from '@/lib/stores/authStore'
 import { CadernoModulePanel } from '@/components/caderno/caderno-module'
 import { loadModuleContent } from '@/data/caderno-content-loader'
 import { IpbBackground } from '@/components/sea/ipb-background'
@@ -2281,6 +2282,9 @@ function ModuleRail({
   activeIndex: number | null
   onSelect: (i: number) => void
 }) {
+  const isAdmin = useAuthStore((s) => s.isAdmin)
+  const ARCHIVED_MODULE_IDS = ['M2', 'M3']
+
   return (
     <div className="ipb-soft relative overflow-hidden rounded-[1.8rem] px-5 py-6 md:px-8">
       {/* Header */}
@@ -2321,15 +2325,17 @@ function ModuleRail({
             const ModuleIcon = module.icon
             const isGold = module.id === 'M4'
             const itemColor = isGold ? '#d4b87a' : '#cbd5e1'
+            const isArchived = ARCHIVED_MODULE_IDS.includes(module.id)
 
             return (
               <button
                 key={module.id}
                 onClick={() => onSelect(index)}
-                className="group flex min-w-0 flex-1 flex-col items-center gap-2 text-center cursor-pointer"
+                className="group flex min-w-0 flex-1 flex-col items-center gap-2 text-center cursor-pointer relative"
                 title={module.title}
+                style={{ opacity: isArchived && !active ? 0.6 : 1 }}
               >
-                <div className="flex flex-col items-center gap-2">
+                <div className="flex flex-col items-center gap-2 relative">
                   <motion.div
                     whileHover={{ y: -2, scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
@@ -2362,6 +2368,11 @@ function ModuleRail({
                     }
                   >
                     <ModuleIcon className="h-3.5 w-3.5" />
+                    {isAdmin && isArchived && (
+                      <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-amber-500/20 border border-amber-500/40 text-[8px] text-amber-300 shadow-[0_0_8px_rgba(245,158,11,0.2)]">
+                        📦
+                      </span>
+                    )}
                   </motion.div>
                 </div>
 
@@ -2381,6 +2392,9 @@ function ModuleRail({
                   style={{ color: active ? 'rgba(255,255,255,0.72)' : 'rgba(255,255,255,0.28)' }}
                 >
                   {module.title}
+                  {isAdmin && isArchived && (
+                    <span className="block text-[6.5px] text-amber-400/80 font-bold uppercase tracking-widest mt-0.5">(Arquivado)</span>
+                  )}
                 </span>
               </button>
             )
@@ -2394,6 +2408,10 @@ function ModuleRail({
 // ── Page ─────────────────────────────────────────────────────────────────────
 
 export default function ConteudosPageClient() {
+  const isAdmin = useAuthStore((s) => s.isAdmin)
+  const ARCHIVED_MODULE_IDS = ['M2', 'M3']
+  const visibleModules = MODULES.filter((m) => isAdmin || !ARCHIVED_MODULE_IDS.includes(m.id))
+
   const [activeIndex, setActiveIndex] = useState<number | null>(null)
 
   const [topicsMap, setTopicsMap] = useState<ModuleTopicsMap>({})
@@ -2452,6 +2470,18 @@ export default function ConteudosPageClient() {
       setActiveTopicId(null)
     }
   }
+
+  const filteredActiveIndex = activeIndex !== null 
+    ? visibleModules.findIndex(m => m.id === MODULES[activeIndex].id) 
+    : null;
+
+  const handleSelectModuleFiltered = (filteredIndex: number) => {
+    if (filteredIndex === -1 || filteredIndex === undefined || filteredIndex === null) return;
+    const selectedModule = visibleModules[filteredIndex];
+    if (!selectedModule) return;
+    const originalIndex = MODULES.findIndex(m => m.id === selectedModule.id);
+    handleSelectModule(originalIndex);
+  };
 
   function handleSelectTopic(moduleIndex: number, topicId: string) {
     setActiveIndex(moduleIndex)
@@ -2608,7 +2638,7 @@ export default function ConteudosPageClient() {
           <div className="flex flex-col gap-6">
               
               {/* Timeline Track */}
-              <ModuleRail modules={MODULES} activeIndex={activeIndex} onSelect={handleSelectModule} />
+              <ModuleRail modules={visibleModules} activeIndex={filteredActiveIndex} onSelect={handleSelectModuleFiltered} />
 
               <AnimatePresence mode="wait">
                 {current ? (
