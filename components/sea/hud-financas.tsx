@@ -1,14 +1,15 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, useMemo } from 'react'
 import { TrendingUp, AlertTriangle, CheckCircle2, Terminal as TerminalIcon } from 'lucide-react'
+import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip, CartesianGrid } from 'recharts'
 
 export function HudFinancas() {
-  // Inputs (Sliders sincronizados via Telemetria Global)
-  const [faturamento, setFaturamento] = useState(150) // em milhares (k R$)
-  const [cac, setCac] = useState(350) // em R$
-  const [opex, setOpex] = useState(60) // em milhares (k R$)
-  const [clientes, setClientes] = useState(1200)
+  // Sliders Dourados Premium (Mockup DESEMPENHO FINANCEIRO)
+  const [ebitdaMargin, setEbitdaMargin] = useState(83.5) // em %
+  const [revenueGrowth, setRevenueGrowth] = useState(12.5) // em %
+  const [opexSlider, setOpexSlider] = useState(27.0) // em $M
+  const [cashFlowSlider, setCashFlowSlider] = useState(50.4) // em $M
 
   // Variáveis vindas de outros módulos (via Telemetria Global)
   const [pressaoMetas, setPressaoMetas] = useState(5)
@@ -16,12 +17,14 @@ export function HudFinancas() {
 
   // Logs do Terminal de Controle
   const [logs, setLogs] = useState<string[]>([
-    '[INIT] Inicializando IPB Controladoria Engine...',
+    '[INIT] Inicializando IPB Controladoria & Tração 6D Engine...',
     '[SGS] Conectado ao Sistema de Expectativas de Mercado do Bacen.',
     '[VERTEX] Carregando modelo Monte Carlo de projeção financeira...'
   ])
 
-  // Constantes macroeconômicas baseadas no cenário
+  const terminalEndRef = useRef<HTMLDivElement>(null)
+
+  // Cálculos Macroeconômicos baseados no cenário
   const selic = cenario === 'juros_altos' ? 15.50 : 14.40
   const ipca = 4.39
   const jurosReais = Number(((1 + selic / 100) / (1 + ipca / 100) - 1) * 100)
@@ -32,46 +35,25 @@ export function HudFinancas() {
   const turnoverAnual = Math.min(75, 10 + Math.pow(pressaoMetas, 1.8))
   const totalColaboradores = 120
   const demissoesMes = Math.round((totalColaboradores * (turnoverAnual / 100)) / 12)
-  const custoTurnoverUnitario = 30 // k R$ (Rescisão + Recrutamento + Perda de Produtividade)
+  const custoTurnoverUnitario = 30 // k R$
   const custoRealTurnover = demissoesMes * custoTurnoverUnitario // k R$
-
-  // 2. Cálculos Derivados Financeiros
-  const ticketMedio = (faturamento * 1000) / clientes
-  const churn = 0.025
-  const ltv = ticketMedio / churn
-  const ltvCac = cac > 0 ? ltv / cac : 0
-
-  // EBITDA Líquido = Faturamento - Opex - CAC total - Custo de esgotamento humano (Turnover)
-  const cacTotalMensal = (clientes * churn * cac) / 1000
-  const ebitda = faturamento - opex - cacTotalMensal - custoRealTurnover
-  const margemEbitda = faturamento > 0 ? (ebitda / faturamento) * 100 : 0
-
-  // Runway & Capital de Giro
-  const capitalGiro = 850 // k R$
-  const burnRate = ebitda < 0 ? Math.abs(ebitda) : 0
-  const runway = burnRate > 0 ? capitalGiro / burnRate : 99
-
-  const canvasRef = useRef<HTMLCanvasElement>(null)
-  const terminalEndRef = useRef<HTMLDivElement>(null)
 
   // --- TELEMETRIA GLOBAL: Sincronização em Tempo Real ---
   useEffect(() => {
-    // Inicializa o estado compartilhado no window se não existir
     if (typeof window !== 'undefined') {
       const win = window as any
       if (!win.IPBTelemetry) {
         win.IPBTelemetry = {
-          faturamento,
-          cac,
-          opex,
-          clientes,
-          pressaoMetas,
-          cenario,
+          faturamento: 150,
+          cac: 350,
+          opex: 60,
+          clientes: 1200,
+          pressaoMetas: 5,
+          cenario: 'normal',
           climaFrequencia: 14,
           metaBudgetPercent: 80
         }
       } else {
-        // Garante que todos os campos existem se outro componente inicializou primeiro
         win.IPBTelemetry = {
           faturamento: 150,
           cac: 350,
@@ -85,22 +67,14 @@ export function HudFinancas() {
         }
       }
       
-      // Atualiza o estado local a partir do global
-      setFaturamento(win.IPBTelemetry.faturamento ?? 150)
-      setCac(win.IPBTelemetry.cac ?? 350)
-      setOpex(win.IPBTelemetry.opex ?? 60)
-      setClientes(win.IPBTelemetry.clientes ?? 1200)
+      // Atualiza estado local inicial a partir do global
       setPressaoMetas(win.IPBTelemetry.pressaoMetas ?? 5)
       setCenario(win.IPBTelemetry.cenario ?? 'normal')
     }
 
-    const handleTelemetry = (e: Event) => {
+    const handleTelemetry = () => {
       const telemetry = (window as any).IPBTelemetry
       if (telemetry) {
-        setFaturamento(telemetry.faturamento ?? 150)
-        setCac(telemetry.cac ?? 350)
-        setOpex(telemetry.opex ?? 60)
-        setClientes(telemetry.clientes ?? 1200)
         setPressaoMetas(telemetry.pressaoMetas ?? 5)
         setCenario(telemetry.cenario ?? 'normal')
       }
@@ -118,24 +92,39 @@ export function HudFinancas() {
     }
   }
 
+  // Sincroniza novos sliders com variáveis antigas da telemetria para compatibilidade retroativa
+  useEffect(() => {
+    const virtualFaturamento = Math.round(cashFlowSlider * 2.5 + revenueGrowth * 10)
+    const virtualOpex = Math.round(opexSlider * 2.2)
+    const virtualCac = Math.round((opexSlider * 12) / (revenueGrowth || 1) + 200)
+    const virtualClientes = 1000 + Math.round(revenueGrowth * 95)
+
+    updateTelemetry({
+      faturamento: virtualFaturamento,
+      opex: virtualOpex,
+      cac: virtualCac,
+      clientes: virtualClientes
+    })
+  }, [ebitdaMargin, revenueGrowth, opexSlider, cashFlowSlider])
+
   // --- TERMINAL LOGS GENERATOR ---
   useEffect(() => {
-    const safeMargem = Number(margemEbitda || 0)
-    const safeRunway = Number(runway || 0)
-    const safeCac = Number(cac || 0)
-    const safeLtvCac = Number(ltvCac || 0)
-    const safeTurnover = Number(custoRealTurnover || 0)
-    const safeSelic = Number(selic || 0)
-    const safeJuros = Number(jurosReais || 0)
+    const safeMargem = Number(ebitdaMargin || 0)
+    const safeGrowth = Number(revenueGrowth || 0)
+    const safeOpex = Number(opexSlider || 0)
+    const safeCash = Number(cashFlowSlider || 0)
     const safeWacc = Number(wacc || 0)
+    const safeJuros = Number(jurosReais || 0)
 
     const messages = [
-      `Recalculando margem EBITDA: ${safeMargem.toFixed(2)}%`,
-      `Atualizando Runway: ${safeRunway === 99 ? 'Infinito' : `${safeRunway.toFixed(1)} meses`}`,
-      `CAC atualizado a R$ ${safeCac.toFixed(0)}. Relação LTV/CAC: ${safeLtvCac.toFixed(1)}x`,
-      `Impacto indireto do Burnout: Custo de turnover de R$ ${safeTurnover.toFixed(0)}k/mês`,
-      `SELIC nominal a ${safeSelic.toFixed(2)}%. Juros reais projetados: ${safeJuros.toFixed(2)}%`,
-      `Processando matriz Monte Carlo: 5000 iterações concluídas com WACC de ${safeWacc.toFixed(1)}%`,
+      `EBITDA Margin recalibrada: ${safeMargem.toFixed(1)}%`,
+      `Projeção de Crescimento anual indexada a +${safeGrowth.toFixed(1)}%`,
+      `Simulando impacto de OPEX estrutural em $${safeOpex.toFixed(1)}M`,
+      `Fluxo de Caixa livre operacionalizado em $${safeCash.toFixed(1)}M`,
+      `Processando iterações Monte Carlo com WACC de ${safeWacc.toFixed(1)}%`,
+      `Curva Gaussiana centralizada em μ=${safeMargem.toFixed(1)}% com desvio de σ=10.0`,
+      `Alerta de esgotamento: Burnout Coletivo calculado em ${burnoutEEB}%`,
+      `SELIC nominal a ${selic.toFixed(2)}%. Juros reais projetados: ${safeJuros.toFixed(2)}%`,
     ]
 
     const interval = setInterval(() => {
@@ -145,351 +134,312 @@ export function HudFinancas() {
     }, 4500)
 
     return () => clearInterval(interval)
-  }, [margemEbitda, runway, cac, ltvCac, custoRealTurnover, selic, jurosReais, wacc])
+  }, [ebitdaMargin, revenueGrowth, opexSlider, cashFlowSlider, wacc, jurosReais, burnoutEEB])
 
   useEffect(() => {
     terminalEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [logs])
 
-  // --- CANVAS: Projeção 3D de Fluxo de Caixa Cibernético (NASA Style) ---
-  useEffect(() => {
-    const canvas = canvasRef.current
-    if (!canvas) return
-    const ctx = canvas.getContext('2d')
-    if (!ctx) return
+  // --- MODELAGEM MATEMÁTICA PARA GRÁFICOS RECHARTS ---
 
-    let frame = 0, raf: number
+  // 1. Gaussiana (Probability Density Bell Curve) baseada em ebitdaMargin
+  const probabilityData = useMemo(() => {
+    const data = []
+    const mean = ebitdaMargin
+    const stdDev = 5
+    const startX = Math.max(40, mean - 15)
+    const endX = Math.min(100, mean + 15)
     
-    // Partículas flutuantes de fluxo de caixa
-    const particles: {x: number, y: number, speed: number, size: number, alpha: number}[] = []
-    for (let i = 0; i < 30; i++) {
-      particles.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        speed: 0.5 + Math.random() * 1.5,
-        size: 1 + Math.random() * 2,
-        alpha: 0.1 + Math.random() * 0.5
+    for (let x = startX; x <= endX; x += 1) {
+      const exponent = -Math.pow(x - mean, 2) / (2 * Math.pow(stdDev, 2))
+      const y = (1 / (stdDev * Math.sqrt(2 * Math.PI))) * Math.exp(exponent) * 5
+      data.push({
+        x: Math.round(x) + '%',
+        y: Number(y.toFixed(3))
       })
     }
+    return data
+  }, [ebitdaMargin])
 
-    function draw() {
-      if (!canvas || !ctx) return
-      ctx.clearRect(0, 0, canvas.width, canvas.height)
-      
-      const w = canvas.width
-      const h = canvas.height
-      const vanishingY = 15 // Ponto de fuga 3D
-      const cx = w / 2
+  // 2. Sigmóide (Cumulative Forecast S-Curve) baseada em cashFlowSlider
+  const cumulativeData = useMemo(() => {
+    const data = []
+    const x0 = cashFlowSlider
+    const startX = Math.max(10, x0 - 30)
+    const endX = Math.min(200, x0 + 30)
 
-      // 1. Grade em Perspectiva 3D
-      ctx.strokeStyle = 'rgba(212, 184, 122, 0.05)'
-      ctx.lineWidth = 0.5
-
-      // Linhas que convergem ao ponto de fuga
-      const lineCount = 14
-      for (let i = 0; i <= lineCount; i++) {
-        const xOffset = ((i - lineCount / 2) / (lineCount / 2)) * cx * 1.8
-        ctx.beginPath()
-        ctx.moveTo(cx, vanishingY)
-        ctx.lineTo(cx + xOffset, h)
-        ctx.stroke()
-      }
-
-      // Linhas horizontais com espaçamento logarítmico (efeito 3D)
-      const hLines = 10
-      for (let i = 0; i < hLines; i++) {
-        const progress = i / hLines
-        const y = vanishingY + Math.pow(progress, 1.8) * (h - vanishingY)
-        ctx.strokeStyle = `rgba(212, 184, 122, ${0.02 + progress * 0.1})`
-        ctx.beginPath()
-        ctx.moveTo(0, y)
-        ctx.lineTo(w, y)
-        ctx.stroke()
-      }
-
-      // 2. Partículas Dinâmicas (Velocidade do Capital)
-      particles.forEach(p => {
-        p.y += p.speed
-        if (p.y > h) {
-          p.y = vanishingY
-          p.x = Math.random() * w
-        }
-        // Converte as coordenadas das partículas para acompanhar as linhas de perspectiva
-        const dy = (p.y - vanishingY) / (h - vanishingY)
-        const scaleX = 0.2 + dy * 0.8
-        const projectedX = cx + (p.x - cx) * scaleX
-
-        ctx.fillStyle = ebitda >= 0 ? `rgba(74, 222, 128, ${p.alpha * dy})` : `rgba(248, 113, 113, ${p.alpha * dy})`
-        ctx.beginPath()
-        ctx.arc(projectedX, p.y, p.size * scaleX, 0, Math.PI * 2)
-        ctx.fill()
+    for (let x = startX; x <= endX; x += 5) {
+      const y = 1 / (1 + Math.exp(-0.15 * (x - x0)))
+      data.push({
+        x: Math.round(x) + '%',
+        y: Number(y.toFixed(2))
       })
-
-      // 3. Projeção Gráfica do Fluxo do EBITDA 6D
-      ctx.strokeStyle = ebitda >= 0 ? '#4ade80' : '#f87171'
-      ctx.lineWidth = 2.5
-      ctx.shadowBlur = 12
-      ctx.shadowColor = ebitda >= 0 ? 'rgba(74, 222, 128, 0.4)' : 'rgba(248, 113, 113, 0.4)'
-
-      ctx.beginPath()
-      const points: {x: number, y: number}[] = []
-      
-      const segments = 50
-      for (let i = 0; i <= segments; i++) {
-        const t = i / segments
-        const dy = t // progressão do tempo
-        const scaleX = 0.25 + dy * 0.75
-        
-        // Simulação do caixa que sobe ou desce de acordo com o EBITDA acumulado
-        const ebitdaAcumulado = (ebitda / 3.2) * dy * 45 // Escala vertical
-        const oscilacaoMercado = Math.sin(t * 14 + frame * 0.035) * 6 + Math.cos(t * 22) * 2
-        
-        const y = h - 25 - ebitdaAcumulado - oscilacaoMercado
-        const x = cx + (t - 0.5) * w * 0.85 * scaleX
-
-        if (i === 0) ctx.moveTo(x, y)
-        else ctx.lineTo(x, y)
-        
-        points.push({ x, y })
-      }
-      ctx.stroke()
-      ctx.shadowBlur = 0 // Reseta o shadow blur
-
-      // Preenchimento de degrade sob a curva em perspectiva
-      if (points.length > 0) {
-        ctx.fillStyle = ebitda >= 0 
-          ? 'rgba(74, 222, 128, 0.04)' 
-          : 'rgba(248, 113, 113, 0.04)'
-        ctx.beginPath()
-        ctx.moveTo(points[0].x, h)
-        points.forEach(p => ctx.lineTo(p.x, p.y))
-        ctx.lineTo(points[points.length - 1].x, h)
-        ctx.closePath()
-        ctx.fill()
-      }
-
-      // Linha do Alvo de Equilíbrio
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)'
-      ctx.setLineDash([4, 6])
-      ctx.beginPath()
-      ctx.moveTo(cx - w * 0.1, h - 25)
-      ctx.lineTo(cx + w * 0.4, h - 25)
-      ctx.stroke()
-      ctx.setLineDash([])
-
-      frame++
-      raf = requestAnimationFrame(draw)
     }
+    return data
+  }, [cashFlowSlider])
 
-    draw()
-    return () => cancelAnimationFrame(raf)
-  }, [ebitda])
+  // 3. EBITDA Forecast 2024 Timeline (Confidence Interval Band)
+  const forecastData = useMemo(() => {
+    const scalePoints = [180, 160, 180, 200, 220, 240, 260]
+    const baseValue = cashFlowSlider * 3.8
+    const growth = 1 + (revenueGrowth / 100)
+
+    return scalePoints.map((xVal, index) => {
+      const t = index / 6
+      const projected = baseValue * Math.pow(growth, t) * (1 + 0.02 * Math.sin(t * Math.PI))
+      const lower = projected * (0.88 - 0.02 * t)
+      const upper = projected * (1.12 + 0.02 * t)
+      
+      return {
+        month: `$${xVal}M`,
+        projected: Number(projected.toFixed(1)),
+        lower: Number(lower.toFixed(1)),
+        upper: Number(upper.toFixed(1))
+      }
+    })
+  }, [cashFlowSlider, revenueGrowth])
 
   return (
-    <div className="hud-card-container relative w-full h-full flex flex-col justify-between">
-      <div className="scanlines z-10" />
+    <div className="relative w-full h-full flex flex-col justify-between p-4 bg-[#0a0a0c]/90 border border-[#d4b87a]/15 rounded-3xl backdrop-blur-xl shadow-[0_4px_30px_rgba(0,0,0,0.8)]">
+      <style dangerouslySetInnerHTML={{ __html: `
+        .gold-slider {
+          -webkit-appearance: none;
+          width: 100%;
+          height: 3px;
+          background: rgba(212, 184, 122, 0.15);
+          border-radius: 4px;
+          outline: none;
+        }
+        .gold-slider::-webkit-slider-thumb {
+          -webkit-appearance: none;
+          appearance: none;
+          width: 14px;
+          height: 14px;
+          border-radius: 50%;
+          background: #d4b87a;
+          border: 2px solid #000;
+          cursor: pointer;
+          box-shadow: 0 0 12px rgba(212, 184, 122, 0.8);
+          transition: transform 0.15s ease, background-color 0.15s ease;
+        }
+        .gold-slider::-webkit-slider-thumb:hover {
+          transform: scale(1.3);
+          background: #e5cb93;
+        }
+        .recharts-default-tooltip {
+          background-color: rgba(10, 8, 5, 0.9) !important;
+          border: 1px solid rgba(212, 184, 122, 0.3) !important;
+          border-radius: 8px !important;
+          box-shadow: 0 4px 20px rgba(0,0,0,0.5) !important;
+        }
+      `}} />
 
-      {/* Header do Painel */}
-      <div className="hero-header relative z-20">
-        <div className="live-head text-[#d4b87a] flex items-center gap-2">
-          <div className="pulse-dot" />
-          <span>FN-01 • CONTROLADORIA QUANTITATIVA & CAIXA 6D</span>
-        </div>
-        <div className="ch-label">WACC NACION: {wacc}% • JURO REAL BCB: {jurosReais.toFixed(2)}%</div>
+      {/* Header Premium */}
+      <div className="flex justify-between items-center mb-4 border-b border-white/5 pb-2">
+        <h2 className="text-white text-base font-semibold tracking-wider select-none uppercase">DESEMPENHO FINANCEIRO</h2>
+        <span className="text-[9px] font-mono text-[#d4b87a] uppercase tracking-widest bg-[#d4b87a]/10 px-2 py-0.5 rounded-full">FN-01 • ACTIVE 6D</span>
       </div>
 
-      {/* Conteúdo Principal */}
-      <div className="hero-content">
-        {/* Painel Visual */}
-        <div className="hero-visual-pane relative overflow-hidden">
-          <div className="pneumo-sim-screen w-full h-full relative z-10 grid grid-rows-[1fr_115px] gap-2">
+      <div className="flex-1 flex flex-col justify-between space-y-5">
+        
+        {/* Sliders Dourados do Mockup */}
+        <div className="space-y-4">
+          
+          {/* Slider 1: EBITDA Margin */}
+          <div className="flex flex-col">
+            <div className="flex justify-between items-center mb-1">
+              <span className="text-[10px] uppercase font-bold text-white/50 tracking-wider">EBITDA Margin</span>
+              <div className="flex items-center gap-4">
+                <span className="text-[10px] font-mono text-white/30 bg-white/5 px-2 py-0.5 rounded">83.5</span>
+                <span className="text-xs font-mono font-bold text-[#d4b87a]">{ebitdaMargin.toFixed(1)}%</span>
+              </div>
+            </div>
+            <input 
+              type="range" 
+              min="30" 
+              max="95" 
+              step="0.5" 
+              value={ebitdaMargin} 
+              onChange={(e) => setEbitdaMargin(Number(e.target.value))}
+              className="gold-slider"
+            />
+          </div>
+
+          {/* Slider 2: Revenue Growth */}
+          <div className="flex flex-col">
+            <div className="flex justify-between items-center mb-1">
+              <span className="text-[10px] uppercase font-bold text-white/50 tracking-wider">Revenue Growth</span>
+              <div className="flex items-center gap-4">
+                <span className="text-[10px] font-mono text-white/30 bg-white/5 px-2 py-0.5 rounded">+1200</span>
+                <span className="text-xs font-mono font-bold text-[#d4b87a]">+{revenueGrowth.toFixed(1)}%</span>
+              </div>
+            </div>
+            <input 
+              type="range" 
+              min="2" 
+              max="45" 
+              step="0.5" 
+              value={revenueGrowth} 
+              onChange={(e) => setRevenueGrowth(Number(e.target.value))}
+              className="gold-slider"
+            />
+          </div>
+
+          {/* Slider 3: OPEX */}
+          <div className="flex flex-col">
+            <div className="flex justify-between items-center mb-1">
+              <span className="text-[10px] uppercase font-bold text-white/50 tracking-wider">OPEX</span>
+              <div className="flex items-center gap-4">
+                <span className="text-[10px] font-mono text-white/30 bg-white/5 px-2 py-0.5 rounded">27.0</span>
+                <span className="text-xs font-mono font-bold text-[#d4b87a]">${opexSlider.toFixed(1)}M</span>
+              </div>
+            </div>
+            <input 
+              type="range" 
+              min="5" 
+              max="80" 
+              step="0.5" 
+              value={opexSlider} 
+              onChange={(e) => setOpexSlider(Number(e.target.value))}
+              className="gold-slider"
+            />
+          </div>
+
+          {/* Slider 4: Cash Flow */}
+          <div className="flex flex-col">
+            <div className="flex justify-between items-center mb-1">
+              <span className="text-[10px] uppercase font-bold text-white/50 tracking-wider">Cash Flow</span>
+              <div className="flex items-center gap-4">
+                <span className="text-[10px] font-mono text-white/30 bg-white/5 px-2 py-0.5 rounded">50.4</span>
+                <span className="text-xs font-mono font-bold text-[#d4b87a]">${cashFlowSlider.toFixed(1)}M</span>
+              </div>
+            </div>
+            <input 
+              type="range" 
+              min="10" 
+              max="180" 
+              step="0.5" 
+              value={cashFlowSlider} 
+              onChange={(e) => setCashFlowSlider(Number(e.target.value))}
+              className="gold-slider"
+            />
+          </div>
+
+        </div>
+
+        {/* EBITDA Simulation (Lado a Lado) */}
+        <div className="flex flex-col">
+          <div className="flex justify-between items-center mb-2">
+            <span className="text-[10.5px] uppercase font-bold text-white tracking-widest">EBITDA Simulation</span>
+            <span className="text-[8px] uppercase font-bold text-white/40 tracking-wider bg-white/5 px-2 py-0.5 rounded">Cumulative forecast</span>
+          </div>
+          <div className="grid grid-cols-2 gap-4">
             
-            {/* Display de Margem EBITDA */}
-            <div className="pneumo-lung-box flex flex-col items-center justify-center text-center select-none min-h-[130px] pt-2 relative">
-              <div className="absolute top-2 left-2 text-[7.5px] font-mono text-white/30 uppercase tracking-widest">
-                Monte Carlo Proj
+            {/* Probability Density (Bell Curve) */}
+            <div className="flex flex-col h-[110px]">
+              <div className="flex-1 w-full relative">
+                <ResponsiveContainer width="100%" height="100%">
+                  <AreaChart data={probabilityData} margin={{ top: 5, right: 5, left: -32, bottom: 0 }}>
+                    <defs>
+                      <linearGradient id="bellGrad" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="#d4b87a" stopOpacity={0.22}/>
+                        <stop offset="95%" stopColor="#d4b87a" stopOpacity={0.01}/>
+                      </linearGradient>
+                    </defs>
+                    <CartesianGrid stroke="rgba(212, 184, 122, 0.05)" strokeDasharray="3 3" vertical={false} />
+                    <XAxis dataKey="x" stroke="rgba(255,255,255,0.2)" fontSize={7.5} tickLine={false} />
+                    <YAxis stroke="rgba(255,255,255,0.2)" fontSize={7.5} tickLine={false} />
+                    <Area type="monotone" dataKey="y" stroke="#d4b87a" strokeWidth={1.5} fillOpacity={1} fill="url(#bellGrad)" />
+                  </AreaChart>
+                </ResponsiveContainer>
               </div>
-              <div className="select-none">
-                <h4 className="margin-0 text-[10px] text-white/45 uppercase font-medium tracking-widest">Margem EBITDA Preditiva</h4>
-                <b className={`font-mono text-5xl mt-1.5 block filter drop-shadow-[0_0_15px_rgba(212,184,122,0.3)] ${(margemEbitda ?? 0) >= 0 ? 'text-[#d4b87a]' : 'text-amber-500/80'}`}>
-                  {Number(margemEbitda ?? 0).toFixed(1)}%
-                </b>
-                <p className={`margin-0 mt-2 text-[10px] font-bold uppercase tracking-wider ${(margemEbitda ?? 0) >= 15 ? 'text-[#d4b87a]' : (margemEbitda ?? 0) >= 0 ? 'text-amber-400' : 'text-amber-500/60'}`}>
-                  {(margemEbitda ?? 0) >= 20 ? 'Excelente Eficiência' : (margemEbitda ?? 0) >= 0 ? 'Margem Positiva' : 'Déficit Operacional'}
-                </p>
-              </div>
+              <span className="text-[7.5px] font-semibold text-center text-white/40 tracking-wider mt-1 uppercase">Probability Density</span>
             </div>
 
-            {/* Projeção 3D de Fluxo em Canvas */}
-            <div className="canvas-graph-container w-full h-[115px] relative rounded-xl border border-white/5 bg-[#000]/70 shrink-0 overflow-hidden">
-              <canvas ref={canvasRef} width={420} height={115} className="w-full h-full block" />
-              <div className="graph-overlay-vals absolute right-3 top-2 text-[8px] font-mono text-white/40 flex flex-col gap-0.5 text-right pointer-events-none">
-                <span>EBITDA Operac: <b className="text-white">R$ {Number(ebitda ?? 0).toFixed(1)}k</b></span>
-                <span>Burnout Index: <b className="text-amber-500/80">{Number(burnoutEEB ?? 0).toFixed(0)}%</b></span>
-                <span>Runway Caixa: <b className="text-white">{(runway ?? 99) === 99 ? 'Infinito' : `${Number(runway ?? 0).toFixed(1)} meses`}</b></span>
-                <span>LTV/CAC Ratio: <b className="text-[#d4b87a]">{Number(ltvCac ?? 0).toFixed(1)}x</b></span>
+            {/* Cumulative Forecast (Sigmoid) */}
+            <div className="flex flex-col h-[110px]">
+              <div className="flex-1 w-full relative">
+                <ResponsiveContainer width="100%" height="100%">
+                  <AreaChart data={cumulativeData} margin={{ top: 5, right: 5, left: -32, bottom: 0 }}>
+                    <defs>
+                      <linearGradient id="sigmoidGrad" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="#d4b87a" stopOpacity={0.22}/>
+                        <stop offset="95%" stopColor="#d4b87a" stopOpacity={0.01}/>
+                      </linearGradient>
+                    </defs>
+                    <CartesianGrid stroke="rgba(212, 184, 122, 0.05)" strokeDasharray="3 3" vertical={false} />
+                    <XAxis dataKey="x" stroke="rgba(255,255,255,0.2)" fontSize={7.5} tickLine={false} />
+                    <YAxis stroke="rgba(255,255,255,0.2)" fontSize={7.5} tickLine={false} />
+                    <Area type="monotone" dataKey="y" stroke="#d4b87a" strokeWidth={1.5} fillOpacity={1} fill="url(#sigmoidGrad)" />
+                  </AreaChart>
+                </ResponsiveContainer>
               </div>
+              <span className="text-[7.5px] font-semibold text-center text-white/40 tracking-wider mt-1 uppercase">Cumulative Forecast</span>
             </div>
 
           </div>
         </div>
 
-        {/* Fórmulas Matemáticas da NASA (LaTeX Estilizado em HTML) */}
-        <div className="my-3 p-2.5 bg-black/60 border border-[#d4b87a]/15 rounded-xl text-white font-mono text-[9px] select-none">
-          <div className="text-[7.5px] uppercase tracking-wider text-[#d4b87a] mb-1.5 font-bold flex justify-between">
-            <span>Modelagem Preditiva</span>
-            <span>EBITDA Integrado 6D</span>
+        {/* EBITDA FORECAST 2024 (Full Width com Banda de Projeção Dourada) */}
+        <div className="flex flex-col h-[150px] border-t border-white/5 pt-3">
+          <div className="flex justify-between items-center mb-1">
+            <span className="text-[10.5px] uppercase font-bold text-white tracking-widest">EBITDA FORECAST 2024</span>
+            <span className="text-[8px] uppercase font-bold text-white/40 tracking-wider bg-white/5 px-2 py-0.5 rounded">Confidence Interval</span>
           </div>
-          <div className="flex justify-center items-center py-2.5 bg-black/30 rounded-lg border border-white/5 text-center text-[10px]">
-            <span>
-              EBITDA<sub>L</sub> = Φ - OPEX - 
-              <span className="inline-flex flex-col text-center align-middle mx-1.5">
-                <span className="border-b border-white/40 leading-none pb-0.5">Churn · N · CAC</span>
-                <span className="leading-none pt-0.5">1000</span>
-              </span> 
-              - C<sub>Turnover</sub>
-            </span>
+          <div className="flex-1 w-full relative">
+            <ResponsiveContainer width="100%" height="100%">
+              <AreaChart data={forecastData} margin={{ top: 10, right: 10, left: -25, bottom: 0 }}>
+                <defs>
+                  <linearGradient id="forecastGrad" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#d4b87a" stopOpacity={0.2}/>
+                    <stop offset="95%" stopColor="#d4b87a" stopOpacity={0.01}/>
+                  </linearGradient>
+                </defs>
+                <CartesianGrid stroke="rgba(212, 184, 122, 0.04)" strokeDasharray="3 3" />
+                <XAxis dataKey="month" stroke="rgba(255,255,255,0.2)" fontSize={8} tickLine={false} />
+                <YAxis stroke="rgba(255,255,255,0.2)" fontSize={8} tickLine={false} domain={[100, 300]} ticks={[100, 150, 200, 225, 300]} />
+                {/* Banda de Confiança */}
+                <Area type="monotone" dataKey="upper" stroke="none" fill="url(#forecastGrad)" />
+                <Area type="monotone" dataKey="lower" stroke="none" fill="#000" fillOpacity={0.55} />
+                {/* Linha Central de Projeção Real */}
+                <Area type="monotone" dataKey="projected" stroke="#d4b87a" strokeWidth={1.8} fill="none" dot={{ r: 2.5, stroke: '#d4b87a', strokeWidth: 1, fill: '#0a0a0c' }} />
+              </AreaChart>
+            </ResponsiveContainer>
+            
+            {/* Overlay da Banda do Mockup */}
+            <div className="absolute right-[45%] top-[30%] pointer-events-none text-[8.5px] font-mono text-[#d4b87a] bg-black/80 px-2 py-0.5 rounded border border-[#d4b87a]/30">
+              $180M - $225M
+            </div>
+            <div className="absolute right-[12%] top-[45%] pointer-events-none text-[8.5px] font-mono text-[#d4b87a] bg-black/80 px-2 py-0.5 rounded border border-[#d4b87a]/30">
+              $180M - $225M
+            </div>
           </div>
-          <div className="flex justify-between items-center text-[7.5px] text-white/50 mt-1.5 px-1 border-t border-white/5 pt-1.5">
-            <span>Φ: R$ {faturamento}k (Faturamento)</span>
-            <span>C<sub>Turnover</sub>: R$ -{custoRealTurnover.toFixed(0)}k (Burnout cost)</span>
-          </div>
+          <span className="text-[7.5px] font-semibold text-center text-white/40 tracking-wider mt-1 uppercase">Projected EBITDA</span>
         </div>
 
-        {/* Sliders de Simulação */}
-        <div className="hero-controls-pane select-none mt-2">
-          <div>
-            <h3 className="text-[11px] text-[#d4b87a] uppercase tracking-widest font-semibold mb-3 flex items-center gap-2">
-              Alavancas Financeiras 6D <div className="h-px flex-1 bg-gradient-to-r from-[#d4b87a]/20 to-transparent" />
-            </h3>
-
-            {/* Faturamento */}
-            <div className="c-slider-group mb-4">
-              <label>Faturamento Mensal (Φ) <span>R$ {faturamento}k</span></label>
-              <input 
-                type="range" 
-                min="50" 
-                max="500" 
-                step="5" 
-                value={faturamento} 
-                onChange={(e) => {
-                  const val = Number(e.target.value)
-                  setFaturamento(val)
-                  updateTelemetry({ faturamento: val })
-                }}
-                className="c-slider-input text-[#d4b87a]"
-              />
-            </div>
-
-            {/* Clientes */}
-            <div className="c-slider-group mb-4">
-              <label>Clientes Ativos (N) <span>{clientes}</span></label>
-              <input 
-                type="range" 
-                min="100" 
-                max="5000" 
-                step="50" 
-                value={clientes} 
-                onChange={(e) => {
-                  const val = Number(e.target.value)
-                  setClientes(val)
-                  updateTelemetry({ clientes: val })
-                }}
-                className="c-slider-input text-[#d4b87a]"
-              />
-            </div>
-
-            {/* CAC */}
-            <div className="c-slider-group mb-4">
-              <label>CAC (Aquisição Unitária) <span>R$ {cac}</span></label>
-              <input 
-                type="range" 
-                min="50" 
-                max="1500" 
-                step="10" 
-                value={cac} 
-                onChange={(e) => {
-                  const val = Number(e.target.value)
-                  setCac(val)
-                  updateTelemetry({ cac: val })
-                }}
-                className="c-slider-input text-[#d4b87a]"
-              />
-            </div>
-
-            {/* OPEX */}
-            <div className="c-slider-group">
-              <label>OPEX (Custo Fixo Mensal) <span>R$ {opex}k</span></label>
-              <input 
-                type="range" 
-                min="10" 
-                max="200" 
-                step="2.5" 
-                value={opex} 
-                onChange={(e) => {
-                  const val = Number(e.target.value)
-                  setOpex(val)
-                  updateTelemetry({ opex: val })
-                }}
-                className="c-slider-input text-[#d4b87a]"
-              />
-            </div>
-          </div>
-
-          {/* Avisos de Análise 6D e Conexões de Cascatas */}
-          <div className="border-t border-white/5 pt-3 mt-4 space-y-2">
-            {ltvCac < 3 ? (
-              <div className="flex items-start gap-1.5 text-[9px] text-amber-500/80 bg-amber-500/5 p-2 rounded-lg border border-amber-500/20">
-                <AlertTriangle className="h-3.5 w-3.5 shrink-0 mt-0.5" />
-                <span>Risco: CAC muito alto! LTV/CAC ({Number(ltvCac ?? 0).toFixed(1)}x) está abaixo do mínimo ideal de 3x. Reduza CAC ou melhore o ticket médio.</span>
-              </div>
-            ) : (
-              <div className="flex items-start gap-1.5 text-[9px] text-[#d4b87a] bg-[#d4b87a]/5 p-2 rounded-lg border border-[#d4b87a]/20">
-                <CheckCircle2 className="h-3.5 w-3.5 shrink-0 mt-0.5" />
-                <span>LTV/CAC saudável ({Number(ltvCac ?? 0).toFixed(1)}x). Tração digital sólida.</span>
-              </div>
-            )}
-
-            {burnoutEEB > 30 && (
-              <div className="flex items-start gap-1.5 text-[9px] text-amber-500/80 bg-amber-500/5 p-2 rounded-lg border border-amber-500/20">
-                <AlertTriangle className="h-3.5 w-3.5 shrink-0 mt-0.5" />
-                <span><b>Cascata 1 Alerta:</b> O Burnout Coletivo ({Number(burnoutEEB ?? 0).toFixed(0)}%) gera {Number(demissoesMes ?? 0).toFixed(0)} demissões/mês, drenando R$ -{Number(custoRealTurnover ?? 0).toFixed(0)}k de EBITDA!</span>
-              </div>
-            )}
-          </div>
+        {/* Alertas de Cascata de Burnout */}
+        <div className="flex items-start gap-1.5 text-[8.5px] text-amber-500/80 bg-amber-500/5 p-2 rounded-xl border border-amber-500/20 leading-normal select-none">
+          <AlertTriangle className="h-3.5 w-3.5 shrink-0 mt-0.5" />
+          <span><b>Atrito Preditivo 6D:</b> Risco de Burnout Coletivo calculado em {burnoutEEB}% impacta o caixa através de turnover indireto, drenando R$ -{custoRealTurnover.toFixed(0)}k/mês.</span>
         </div>
 
-        {/* Micro-Terminal de Processamento em Tempo Real */}
-        <div className="mt-4 border border-[#d4b87a]/15 bg-[#070707] rounded-xl overflow-hidden shadow-2xl">
-          <div className="bg-black/80 px-3 py-1.5 flex items-center justify-between border-b border-white/5">
-            <div className="flex items-center gap-1.5 text-[#d4b87a] font-mono text-[8px] font-bold">
-              <TerminalIcon className="h-3.5 w-3.5" />
-              <span>IPB NEURAL CALCULATION TERMINAL</span>
+        {/* Micro-Terminal Cibernético */}
+        <div className="border border-[#d4b87a]/15 bg-black/60 rounded-xl overflow-hidden">
+          <div className="bg-black/90 px-3 py-1 flex items-center justify-between border-b border-white/5 select-none">
+            <div className="flex items-center gap-1.5 text-[#d4b87a] font-mono text-[7.5px] font-bold">
+              <TerminalIcon className="h-3 w-3" />
+              <span>IPB ANALYTICAL CAIXA TERMINAL</span>
             </div>
-            <div className="text-[7.5px] font-mono text-white/30">ONLINE</div>
+            <div className="text-[6.5px] font-mono text-white/30">ONLINE</div>
           </div>
-          <div className="p-2.5 font-mono text-[7.5px] text-[#d4b87a]/90 h-[70px] overflow-y-auto space-y-0.5 leading-normal scrollbar-none">
+          <div className="p-2 font-mono text-[7px] text-[#d4b87a]/90 h-[40px] overflow-y-auto space-y-0.5 leading-normal scrollbar-none">
             {logs.map((log, index) => (
               <div key={index} className="whitespace-pre-wrap">{log}</div>
             ))}
             <div ref={terminalEndRef} />
           </div>
         </div>
-      </div>
 
-      {/* Footer do Painel */}
-      <div className="hero-footer relative z-20 mt-4">
-        <div className="title-group">
-          <div className="area">Controladoria & Tração</div>
-          <h2>Finanças & Projeção 6D</h2>
-          <p>Motor quantitativo integrado que simula a saúde de caixa, cruzando margens operacionais com inflação, juros e o custo humano do esgotamento.</p>
-        </div>
-        <div className="action-group">
-          <button className="btn-enter-scene text-[#1a120a]">
-            <TrendingUp className="h-4 w-4" />
-            <span>Simular ROI 6D</span>
-          </button>
-        </div>
       </div>
     </div>
   )

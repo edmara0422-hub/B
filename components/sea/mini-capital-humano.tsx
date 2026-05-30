@@ -5,7 +5,7 @@ import { Users } from 'lucide-react'
 import { Canvas, useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 
-function BrainParticles({ pressaoMetas }: { pressaoMetas: number }) {
+export function BrainParticles({ pressaoMetas }: { pressaoMetas: number }) {
   const groupRef = useRef<THREE.Group>(null)
   
   // Acelera a rotação conforme a pressão de metas aumenta

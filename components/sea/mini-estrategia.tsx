@@ -84,7 +84,7 @@ function createEarthTexture() {
   return new THREE.CanvasTexture(canvas)
 }
 
-function StrategyGlobe({ cenario }: { cenario: string }) {
+export function StrategyGlobe({ cenario }: { cenario: string }) {
   const globeRef = useRef<THREE.Group>(null)
   const ringRef1 = useRef<THREE.LineLoop>(null)
   const ringRef2 = useRef<THREE.LineLoop>(null)
