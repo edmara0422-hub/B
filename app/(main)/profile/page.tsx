@@ -301,7 +301,7 @@ export default function ProfilePage() {
           <Info className="h-4 w-4 text-white/75" />
           <div className="flex-1">
             <p className="text-[12px] font-semibold text-white/90">IPB</p>
-            <p className="text-[10px] text-white/60">Versão 1.0.0 · Sistema de Estudo Avançado.</p>
+            <p className="text-[10px] text-white/60">Versão 1.0.0 · Intelligence Platform Business.</p>
           </div>
         </div>
       </div>
