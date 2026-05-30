@@ -198,8 +198,8 @@ export function InteractiveCockpit() {
             onClick={() => setActivePanel('capital_humano')}
             className={`group relative overflow-hidden flex flex-col justify-between p-1 bg-[#0a0a0c]/85 border rounded-3xl backdrop-blur-xl transition-all duration-300 cursor-pointer select-none h-[220px] ${
               activePanel === 'capital_humano' 
-                ? 'border-[#d4b87a] shadow-[0_0_20px_rgba(212,184,122,0.15)] bg-[#0f0e0a]/90' 
-                : 'border-white/10 hover:border-white/20'
+                ? 'border-[#c9943a] shadow-[0_0_15px_rgba(201,148,58,0.25)] bg-[#030303]/95' 
+                : 'border-white/5 hover:border-white/15'
             }`}
           >
             <MiniCapitalHumano />
@@ -210,8 +210,8 @@ export function InteractiveCockpit() {
             onClick={() => setActivePanel('estrategia')}
             className={`group relative overflow-hidden flex flex-col justify-between p-1 bg-[#0a0a0c]/85 border rounded-3xl backdrop-blur-xl transition-all duration-300 cursor-pointer select-none h-[220px] ${
               activePanel === 'estrategia' 
-                ? 'border-[#d4b87a] shadow-[0_0_20px_rgba(212,184,122,0.15)] bg-[#0f0e0a]/90' 
-                : 'border-white/10 hover:border-white/20'
+                ? 'border-[#c9943a] shadow-[0_0_15px_rgba(201,148,58,0.25)] bg-[#030303]/95' 
+                : 'border-white/5 hover:border-white/15'
             }`}
           >
             <MiniEstrategia />
@@ -222,8 +222,8 @@ export function InteractiveCockpit() {
             onClick={() => setActivePanel('esg')}
             className={`group relative overflow-hidden flex flex-col justify-between p-1 bg-[#0a0a0c]/85 border rounded-3xl backdrop-blur-xl transition-all duration-300 cursor-pointer select-none h-[220px] ${
               activePanel === 'esg' 
-                ? 'border-[#d4b87a] shadow-[0_0_20px_rgba(212,184,122,0.15)] bg-[#0f0e0a]/90' 
-                : 'border-white/10 hover:border-white/20'
+                ? 'border-[#c9943a] shadow-[0_0_15px_rgba(201,148,58,0.25)] bg-[#030303]/95' 
+                : 'border-white/5 hover:border-white/15'
             }`}
           >
             <MiniEsg />
@@ -234,8 +234,8 @@ export function InteractiveCockpit() {
             onClick={() => setActivePanel('ai')}
             className={`group relative overflow-hidden flex flex-col justify-between p-1 bg-[#0a0a0c]/85 border rounded-3xl backdrop-blur-xl transition-all duration-300 cursor-pointer select-none h-[220px] ${
               activePanel === 'ai' 
-                ? 'border-[#d4b87a] shadow-[0_0_20px_rgba(212,184,122,0.15)] bg-[#0f0e0a]/90' 
-                : 'border-white/10 hover:border-white/20'
+                ? 'border-[#c9943a] shadow-[0_0_15px_rgba(201,148,58,0.25)] bg-[#030303]/95' 
+                : 'border-white/5 hover:border-white/15'
             }`}
           >
             <MiniAi />
@@ -252,10 +252,13 @@ export function InteractiveCockpit() {
           </div>
 
           {/* MATRIZ DE INTERDEPENDÊNCIA & REGRAS DE DECISÃO CRUZADAS (IA) no rodapé do HUD */}
-          <div className="p-4 rounded-3xl backdrop-blur-xl border select-none" style={{ background: 'rgba(15, 12, 8, 0.65)', borderColor: 'rgba(212, 184, 122, 0.15)' }}>
-            <div className="flex items-center gap-2 mb-3 pb-2" style={{ borderBottom: '1px solid rgba(212, 184, 122, 0.15)' }}>
-              <ShieldAlert className="h-4 w-4 text-[#d4b87a]" />
-              <span className="text-[10px] font-black uppercase tracking-widest text-[#d4b87a]">
+          <div 
+            className="p-4 rounded-3xl backdrop-blur-xl border select-none" 
+            style={{ background: 'rgba(3, 3, 3, 0.75)', borderColor: 'rgba(201, 148, 58, 0.15)' }}
+          >
+            <div className="flex items-center gap-2 mb-3 pb-2" style={{ borderBottom: '1px solid rgba(201, 148, 58, 0.15)' }}>
+              <ShieldAlert className="h-4 w-4 text-[#c9943a]" />
+              <span className="text-[10px] font-light uppercase tracking-[0.15em] text-[#c9943a]">
                 MATRIZ DE INTERDEPENDÊNCIA 6D • REGRAS DE DECISÃO DE IA
               </span>
             </div>
@@ -264,25 +267,23 @@ export function InteractiveCockpit() {
               {dynamicRules.map((rule, idx) => (
                 <div 
                   key={idx} 
-                  className="rounded-xl p-3 border text-[9px] leading-normal flex flex-col gap-1"
+                  className="rounded-xl p-3 border text-[9px] leading-normal flex flex-col gap-1.5 transition-all duration-200"
                   style={{
-                    borderColor: rule.type === 'critical' ? 'rgba(248,113,113,0.2)' : rule.type === 'warning' ? 'rgba(250,204,21,0.2)' : 'rgba(96,165,250,0.2)',
-                    background: rule.type === 'critical' ? 'rgba(248,113,113,0.03)' : rule.type === 'warning' ? 'rgba(250,204,21,0.03)' : 'rgba(96,165,250,0.02)',
+                    borderColor: 'rgba(201, 148, 58, 0.12)',
+                    background: 'rgba(255, 255, 255, 0.02)',
                   }}
                 >
                   <span 
-                    className="font-bold tracking-wider text-[8.5px] uppercase"
-                    style={{
-                      color: rule.type === 'critical' ? '#fca5a5' : rule.type === 'warning' ? '#fde68a' : '#93c5fd'
-                    }}
+                    className="font-normal tracking-[0.05em] text-[8.5px] uppercase"
+                    style={{ color: '#c9943a' }}
                   >
                     {rule.title}
                   </span>
-                  <p className="text-white/65 mt-0.5">{rule.desc}</p>
+                  <p className="text-white/65 mt-0.5 leading-relaxed">{rule.desc}</p>
                 </div>
               ))}
               {dynamicRules.length === 0 && (
-                <div className="col-span-3 text-center text-white/35 py-2 text-[9px] font-semibold">
+                <div className="col-span-3 text-center text-[#c9943a]/55 py-2 text-[9px] font-light tracking-wide">
                   Nenhum risco cruzado crítico detectado. Operação está em perfeito equilíbrio.
                 </div>
               )}
