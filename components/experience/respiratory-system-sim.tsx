@@ -745,7 +745,10 @@ export function RespiratorySystemSim({ className }: RespiratorySystemSimProps) {
   ]
 
   return (
-    <div className={`relative h-full w-full min-h-0 rounded-2xl overflow-hidden bg-[#040610] border border-white/5 shadow-2xl flex flex-col justify-end ${className ?? ''}`}>
+    <div 
+      className={`relative rounded-2xl overflow-hidden bg-[#040610] border border-white/5 shadow-2xl flex flex-col justify-end ${className ?? ''}`}
+      style={{ height: '340px', width: '100%' }}
+    >
       
       {/* Canvas 3D (R3F) */}
       <div className="absolute inset-0 z-0">
