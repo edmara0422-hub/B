@@ -198,6 +198,13 @@ export const useAuthStore = create<AuthState & AuthActions>((set, get) => ({
       .single()
 
     if (profileData?.blocked) {
+      // Dispara a notificação de tentativa de login bloqueado no servidor em background (fire-and-forget)
+      fetch('/api/user/notify-blocked', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      }).catch(() => {})
+
       await supabase.auth.signOut()
       return { error: 'Sua conta está bloqueada. Por favor, entre em contato com o administrador.' }
     }
