@@ -7,6 +7,7 @@ import { supabase } from '@/lib/supabase'
 import {
   ArrowLeft, Bell, Camera, ChevronRight, HelpCircle, Info,
   Key, LogOut, Mail, Moon, PencilLine, Save, Shield, Trash2, User, X, Phone,
+  BookOpen
 } from 'lucide-react'
 
 export default function ProfilePage() {
@@ -275,6 +276,17 @@ export default function ProfilePage() {
               <div className="flex-1 text-left">
                 <p className="text-[9px] font-semibold uppercase tracking-[0.12em] text-white/80">Painel Admin</p>
                 <p className="text-[7px] text-white/35">Usuários · Assinaturas · Analytics · Equipes</p>
+              </div>
+              <ChevronRight className="h-4 w-4 text-white/75" />
+            </button>
+            <button
+              onClick={() => router.push('/admin/conteudos-arquivados')}
+              className="flex w-full items-center gap-2 rounded-[0.7rem] ipb-soft px-3 py-2.5 transition-all mt-1"
+            >
+              <BookOpen className="h-4 w-4 text-white/70" />
+              <div className="flex-1 text-left">
+                <p className="text-[9px] font-semibold uppercase tracking-[0.12em] text-white/80">Biblioteca Arquivada</p>
+                <p className="text-[7px] text-white/35">Pneumo / VM · Cardio · Referência Clínica</p>
               </div>
               <ChevronRight className="h-4 w-4 text-white/75" />
             </button>

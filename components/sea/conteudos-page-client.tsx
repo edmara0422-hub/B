@@ -2407,10 +2407,9 @@ function ModuleRail({
 
 // ── Page ─────────────────────────────────────────────────────────────────────
 
-export default function ConteudosPageClient() {
+export default function ConteudosPageClient({ mode = 'normal' }: { mode?: 'normal' | 'archived' }) {
   const isAdmin = useAuthStore((s) => s.isAdmin)
-  const ARCHIVED_MODULE_IDS = ['M2', 'M3']
-  const visibleModules = MODULES.filter((m) => isAdmin || !ARCHIVED_MODULE_IDS.includes(m.id))
+  const visibleModules = MODULES.filter((m) => mode === 'archived' ? (m.id === 'M2' || m.id === 'M3') : (m.id === 'M1' || m.id === 'M4'))
 
   const [activeIndex, setActiveIndex] = useState<number | null>(null)
 
@@ -2617,7 +2616,7 @@ export default function ConteudosPageClient() {
           {/* Back + Title Header */}
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <Link href="/explore">
+              <Link href={mode === 'archived' ? '/profile' : '/explore'}>
                 <motion.div
                   whileTap={{ scale: 0.92 }}
                   className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/[0.04] transition-colors hover:bg-white/[0.08]"
@@ -2630,7 +2629,9 @@ export default function ConteudosPageClient() {
             </div>
             <div className="flex items-center gap-2">
               <BookOpen className="h-4 w-4 text-[#d4b87a] [.theme-silver_&]:text-[#cbd5e1]" />
-              <span className="text-[10px] font-semibold uppercase tracking-[0.28em] text-[#d4b87a] [.theme-silver_&]:text-[#cbd5e1]">Academic Cockpit</span>
+              <span className="text-[10px] font-semibold uppercase tracking-[0.28em] text-[#d4b87a] [.theme-silver_&]:text-[#cbd5e1]">
+                {mode === 'archived' ? 'Acervo Clínico Arquivado' : 'Academic Cockpit'}
+              </span>
             </div>
           </div>
 
