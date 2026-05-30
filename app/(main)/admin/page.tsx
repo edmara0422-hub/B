@@ -25,7 +25,7 @@ const COLORS = ['#4ade80', '#facc15', '#fb923c', '#f87171', '#60a5fa', '#a78bfa'
 
 export default function AdminPage() {
   const router = useRouter()
-  const { isAdmin, initialized, user } = useAuthStore()
+  const { isAdmin, initialized, user, profile } = useAuthStore()
   const [tab, setTab] = useState<AdminTab>('users')
   const [loading, setLoading] = useState(false)
   const [msg, setMsg] = useState('')
@@ -199,23 +199,23 @@ export default function AdminPage() {
   }
   const blockUser = async (id: string, block: boolean) => {
     if (!supabase) return
-    // Busca informações de telefone e nome do usuário antes de atualizar
-    const { data: targetUser } = await supabase.from('profiles').select('phone, name, email').eq('id', id).single()
+    // Busca informações e nome do usuário antes de atualizar
+    const { data: targetUser } = await supabase.from('profiles').select('name, email').eq('id', id).single()
     
     await supabase.from('profiles').update({ blocked: block }).eq('id', id)
     flash(block ? 'Bloqueado.' : 'Desbloqueado.')
     loadUsers()
 
-    // Se o usuário possuir um WhatsApp cadastrado, dispara a notificação
-    if (targetUser?.phone) {
+    // Envia o WhatsApp de confirmação de segurança APENAS para você (Admin)
+    if (profile?.phone && targetUser) {
       const msg = block
-        ? `Aviso IPB: Olá, ${targetUser.name || 'usuário'}. Notificamos que o seu acesso à plataforma IPB foi temporariamente suspenso pelo administrador. Entre em contato para suporte.`
-        : `Aviso IPB: Olá, ${targetUser.name || 'usuário'}. O seu acesso à plataforma IPB foi restabelecido pelo administrador! Já pode fazer login novamente.`
+        ? `Segurança IPB: Você bloqueou com sucesso o usuário ${targetUser.name || 'Sem nome'} (${targetUser.email}).`
+        : `Segurança IPB: Você desbloqueou com sucesso o usuário ${targetUser.name || 'Sem nome'} (${targetUser.email}).`
       
       fetch('/api/admin/users/notify-whatsapp', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ phone: targetUser.phone, message: msg }),
+        body: JSON.stringify({ phone: profile.phone, message: msg }),
       }).catch(() => {})
     }
   }

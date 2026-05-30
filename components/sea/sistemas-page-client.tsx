@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ArrowLeft, BookOpen, Calculator, Cpu, FileText, Search, PanelLeftClose, PanelLeftOpen } from 'lucide-react'
 import Link from 'next/link'
+import { useAuthStore } from '@/lib/stores/authStore'
 
 // Importações dos Painéis Clínicos Homologados (Intactos)
 import { ProntuarioSystemPanel } from '@/components/sea/prontuario-system-panel'
@@ -78,12 +79,23 @@ const SIDEBAR_GROUPS = [
 ]
 
 export default function SistemasPageClient() {
+  const { isAdmin, initialized } = useAuthStore()
+  const visibleGroups = SIDEBAR_GROUPS.filter(group => isAdmin || group.id !== 'clin')
+
   const [activeNavId, setActiveNavId] = useState<string>('S1')
   const [search, setSearch] = useState('')
   const [activeGroup, setActiveGroup] = useState<string | null>('clin')
   const [accMode, setAccMode] = useState<'padrao' | 'foco' | 'calmo' | 'contraste'>('padrao')
   const [timeStr, setTimeStr] = useState('')
   const [sidebarOpen, setSidebarOpen] = useState(true)
+
+  // Redirect non-admin users away from clinical systems S1/S2/S3
+  useEffect(() => {
+    if (initialized && !isAdmin && (activeNavId === 'S1' || activeNavId === 'S2' || activeNavId === 'S3')) {
+      setActiveNavId('sig-pessoas')
+      setActiveGroup('sig')
+    }
+  }, [initialized, isAdmin, activeNavId])
 
   // Efeito para manter relógio local atualizado em tempo real
   useEffect(() => {
@@ -101,7 +113,7 @@ export default function SistemasPageClient() {
 
   // Efeito para auto-expandir o grupo correspondente ao activeNavId selecionado
   useEffect(() => {
-    const matchedGroup = SIDEBAR_GROUPS.find(group => 
+    const matchedGroup = visibleGroups.find(group => 
       group.items.some(item => item.id === activeNavId)
     )
     if (matchedGroup) {
@@ -111,7 +123,7 @@ export default function SistemasPageClient() {
 
   // Lógica de filtragem baseada na busca
   const q = search.toLowerCase().trim()
-  const filteredGroups = SIDEBAR_GROUPS.map(group => {
+  const filteredGroups = visibleGroups.map(group => {
     const filteredItems = group.items.filter(item => {
       if (!q) return true
       return (
@@ -125,7 +137,7 @@ export default function SistemasPageClient() {
 
   // Mapeamento do crumb dinâmico no Top HUD
   const getBreadcrumb = () => {
-    const group = SIDEBAR_GROUPS.find(g => g.items.some(i => i.id === activeNavId))
+    const group = visibleGroups.find(g => g.items.some(i => i.id === activeNavId))
     const item = group?.items.find(i => i.id === activeNavId)
     if (group && item) {
       return `${group.code} · ${group.label} · ${item.title.toUpperCase()}`
