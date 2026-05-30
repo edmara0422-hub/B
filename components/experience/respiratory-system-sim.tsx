@@ -159,12 +159,12 @@ function Lungs3DModel({
     box.getCenter(center)
 
     const maxDim = Math.max(size.x, size.y, size.z)
-    const scale = 2.8 / maxDim // normalized dimensions
+    const scale = 3.35 / maxDim // normalized dimensions
     root.scale.setScalar(scale)
     root.position.sub(center.multiplyScalar(scale))
 
     // Position adjustment to center trachea in the viewport
-    root.position.y += 0.38
+    root.position.y += 0.42
 
     root.traverse((child) => {
       if (!(child instanceof THREE.Mesh)) return
@@ -745,247 +745,162 @@ export function RespiratorySystemSim({ className }: RespiratorySystemSimProps) {
   ]
 
   return (
-    <div className={`flex flex-col lg:flex-row gap-4 h-full w-full min-h-0 ${className ?? ''}`}>
+    <div className={`relative h-full w-full min-h-0 rounded-2xl overflow-hidden bg-[#040610] border border-white/5 shadow-2xl flex flex-col justify-end ${className ?? ''}`}>
       
-      {/* ── Left main 3D WebGL simulation screen ── */}
-      <div className="relative flex-1 min-h-[220px] lg:h-full rounded-2xl overflow-hidden bg-[#040610] border border-white/5 shadow-2xl flex flex-col justify-end">
-        
-        {/* Canvas 3D (R3F) */}
-        <div className="absolute inset-0 z-0">
-          <Canvas
-            camera={{ position: [0, 0, 4.2], fov: 38 }}
-            gl={{ alpha: true, antialias: true, powerPreference: 'high-performance' }}
-            dpr={[1, 1.5]}
-            style={{ width: '100%', height: '100%', display: 'block' }}
-          >
-            <ambientLight intensity={0.14} color="#050815" />
-            <directionalLight position={[3, 8, 2]} intensity={9.0} color="#ffffff" />
-            <directionalLight position={[0, 0, 6]} intensity={3.0} color="#ddf4ff" />
-            <directionalLight position={[-2, 2, 4]} intensity={2.0} color="#88bbcc" />
-            <pointLight position={[0, -5, -1]} intensity={20} color="#0088bb" distance={20} />
-            
-            <OrbitControls enableZoom={true} enablePan={true} maxPolarAngle={Math.PI / 2 + 0.1} minPolarAngle={0.2} />
-
-            <Lungs3DModel 
-              respiratoryRate={respiratoryRate}
-              viewMode={viewMode}
-              isPaused={isPaused}
-              hoveredPart={hoveredPart}
-              selectedPart={selectedPart}
-              setHoveredPart={setHoveredPart}
-              setSelectedPart={setSelectedPart}
-              onBreathUpdate={handleBreathUpdate}
-            />
-
-            <LungsMechanics 
-              expand={expandAmount}
-              viewMode={viewMode}
-              hoveredPart={hoveredPart}
-              selectedPart={selectedPart}
-              setHoveredPart={setHoveredPart}
-              setSelectedPart={setSelectedPart}
-            />
-
-            <FlowParticles3D 
-              isInhale={isInhale}
-              isPaused={isPaused}
-              viewMode={viewMode}
-              respiratoryRate={respiratoryRate}
-              expand={expandAmount}
-            />
-          </Canvas>
-        </div>
-
-        {/* 3D functional grid backdrop effect (HTML CSS Overlay) */}
-        <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(56,189,248,0.03),transparent)] z-0" />
-
-        {/* Floating HUD Overlay Labels on top of 3D Scene */}
-        <div className="absolute top-4 right-4 z-10 flex flex-col gap-1.5 pointer-events-auto bg-[#040610]/70 backdrop-blur-md p-3 rounded-xl border border-white/5 max-w-[220px]">
-          <span className="text-[7px] font-mono text-white/35 uppercase tracking-widest font-black mb-1 block leading-none">Estruturas Fisiológicas</span>
-          {hudLabels.map(lbl => {
-            const active = activePart === lbl.part
-            const visible = getAlpha(lbl.part) > 0.1
-            return (
-              <button
-                key={lbl.part}
-                onClick={() => setSelectedPart(prev => prev === lbl.part ? null : lbl.part)}
-                onMouseEnter={() => setHoveredPart(lbl.part)}
-                onMouseLeave={() => setHoveredPart(null)}
-                className={`flex items-center gap-2 px-2 py-1.5 rounded-lg border text-left transition-all duration-150 cursor-pointer ${
-                  active 
-                    ? 'bg-sky-500/15 border-sky-500/40 text-sky-400 font-bold shadow-[0_0_10px_rgba(56,189,248,0.1)]' 
-                    : visible
-                      ? 'bg-white/[0.02] border-white/5 text-white/60 hover:border-white/10 hover:text-white'
-                      : 'opacity-25 bg-transparent border-transparent text-white/30 hover:opacity-50'
-                }`}
-              >
-                <div className="h-1.5 w-1.5 rounded-full shrink-0" style={{
-                  background: lbl.color,
-                  boxShadow: active ? `0 0 6px ${lbl.color}` : 'none'
-                }} />
-                <span className="text-[8px] font-mono tracking-wide uppercase truncate leading-none">{lbl.text}</span>
-              </button>
-            )
-          })}
-        </div>
-
-        {/* Top-Left Sim Title */}
-        <div className="absolute top-4 left-4 z-10 pointer-events-none flex flex-col gap-1">
-          <span className="text-[9px] font-mono font-black text-sky-400 block tracking-wider leading-none">PNEUMO.3D.HOLOGRAM</span>
-          <span className="text-[7.5px] font-mono text-white/35 tracking-widest leading-none">▸ FISIOLOGIA ATIVA</span>
-        </div>
-
-        {/* Bottom-Left Live Ventilation Stats */}
-        <div className="absolute bottom-4 left-4 z-10 pointer-events-none flex flex-col gap-1.5">
-          <span className="text-[12px] font-mono font-black leading-none" style={{
-            color: isPaused ? '#ef4444' : (isInhale ? '#22d3ee' : '#f43f5e')
-          }}>
-            {isPaused ? 'SIMULAÇÃO PAUSADA' : (isInhale ? 'INSPIRAÇÃO (ATIVO)' : 'EXPIRAÇÃO (PASSIVO)')}
-          </span>
+      {/* Canvas 3D (R3F) */}
+      <div className="absolute inset-0 z-0">
+        <Canvas
+          camera={{ position: [0, 0, 3.45], fov: 36 }}
+          gl={{ alpha: true, antialias: true, powerPreference: 'high-performance' }}
+          dpr={[1, 1.5]}
+          style={{ width: '100%', height: '100%', display: 'block' }}
+        >
+          <ambientLight intensity={0.14} color="#050815" />
+          <directionalLight position={[3, 8, 2]} intensity={9.0} color="#ffffff" />
+          <directionalLight position={[0, 0, 6]} intensity={3.0} color="#ddf4ff" />
+          <directionalLight position={[-2, 2, 4]} intensity={2.0} color="#88bbcc" />
+          <pointLight position={[0, -5, -1]} intensity={20} color="#0088bb" distance={20} />
           
-          <div className="flex flex-col gap-1">
-            <div className="w-[125px] h-1.5 bg-white/5 rounded-full overflow-hidden">
-              <div 
-                className="h-full transition-all duration-75"
-                style={{
-                  width: `${((liveVolume - 2400) / 4500) * 100}%`,
-                  background: isInhale ? 'rgba(34, 211, 238, 0.7)' : 'rgba(244, 63, 94, 0.6)'
-                }}
-              />
-            </div>
-            <span className="text-[8.5px] font-mono text-white/50 leading-none">Capacidade: {liveVolume} mL</span>
-          </div>
-        </div>
+          <OrbitControls enableZoom={true} enablePan={true} maxPolarAngle={Math.PI / 2 + 0.1} minPolarAngle={0.2} />
 
-        {/* Selected / Hovered anatomy information overlay */}
-        {info && (
-          <div className="absolute bottom-3 left-3 right-3 rounded-xl border border-white/10 bg-black/85 backdrop-blur-md px-4 py-3 pointer-events-none z-20">
-            <div className="flex items-center gap-2 mb-1">
-              <div className="h-2 w-2 rounded-full shrink-0" style={{
-                background: info.zone.includes('Respiratória') ? COL_RESP
-                  : info.zone.includes('Motor') ? COL_DIAPHRAGM
-                  : info.zone.includes('Órgão') ? COL_LUNG_STROKE
-                  : COL_CONDUCT
-              }} />
-              <span className="text-[11px] font-semibold text-white/90 uppercase tracking-wider">{info.title}</span>
-              <span className="text-[9px] text-white/40 ml-1">{info.zone}</span>
-            </div>
-            <p className="text-[10px] text-white/50 mb-1 leading-relaxed">{info.desc}</p>
-            <div className="flex flex-wrap gap-x-3 gap-y-0.5">
-              {info.details.map((d, i) => (
-                <span key={i} className="text-[9px] text-white/35">▸ {d}</span>
-              ))}
-            </div>
-          </div>
-        )}
+          <Lungs3DModel 
+            respiratoryRate={respiratoryRate}
+            viewMode={viewMode}
+            isPaused={isPaused}
+            hoveredPart={hoveredPart}
+            selectedPart={selectedPart}
+            setHoveredPart={setHoveredPart}
+            setSelectedPart={setSelectedPart}
+            onBreathUpdate={handleBreathUpdate}
+          />
+
+          <LungsMechanics 
+            expand={expandAmount}
+            viewMode={viewMode}
+            hoveredPart={hoveredPart}
+            selectedPart={selectedPart}
+            setHoveredPart={setHoveredPart}
+            setSelectedPart={setSelectedPart}
+          />
+
+          <FlowParticles3D 
+            isInhale={isInhale}
+            isPaused={isPaused}
+            viewMode={viewMode}
+            respiratoryRate={respiratoryRate}
+            expand={expandAmount}
+          />
+        </Canvas>
       </div>
 
-      {/* ── Right control board (View Filters & Physiological Rhythm) ── */}
-      <div className="w-full lg:w-80 flex flex-col gap-3 p-4 rounded-2xl bg-black/55 border border-white/5 backdrop-blur-xl shrink-0 overflow-y-auto h-[240px] lg:h-full max-h-full">
-        <div className="border-b border-white/[0.06] pb-2.5">
-          <span className="text-[8px] uppercase tracking-[0.2em] font-black text-sky-400 block mb-0.5">FILTROS & CONTROLES</span>
-          <h4 className="text-[12px] font-bold text-white/90 font-sans tracking-wide">Anatomofisiologia Respiratória</h4>
-        </div>
+      {/* 3D functional grid backdrop effect (HTML CSS Overlay) */}
+      <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(56,189,248,0.03),transparent)] z-0" />
 
-        {/* View Mode Filters */}
-        <div className="space-y-3">
-          <span className="text-[7.5px] font-mono text-white/30 uppercase tracking-widest font-black block">Filtros de Estrutura</span>
-          <div className="grid grid-cols-2 gap-2">
-            {[
-              { id: 'all', label: 'Tudo (Holograma)', desc: 'Visão completa' },
-              { id: 'airway', label: 'Zona Condutora', desc: 'Vias e condução' },
-              { id: 'hematosis', label: 'Zona Resp.', desc: 'Lungs e troca' },
-              { id: 'mechanics', label: 'Mecânica Musc.', desc: 'Diafragma e costelas' }
-            ].map((mode) => {
-              const active = viewMode === mode.id
-              return (
-                <button
-                  key={mode.id}
-                  onClick={() => setViewMode(mode.id as ViewMode)}
-                  className={`p-2 rounded-lg border text-left cursor-pointer transition-all duration-200 flex flex-col justify-between h-[52px] ${
-                    active 
-                      ? 'bg-sky-500/10 border-sky-500/30 text-sky-400 shadow-[0_0_10px_rgba(56,189,248,0.05)]' 
-                      : 'bg-white/[0.01] border-white/5 text-white/60 hover:border-white/10 hover:text-white'
-                  }`}
-                >
-                  <span className="text-[9px] font-bold leading-tight flex items-center gap-1">
-                    <Eye className="h-3 w-3" /> {mode.label}
-                  </span>
-                  <span className="text-[7px] text-white/30 truncate leading-none">{mode.desc}</span>
-                </button>
-              )
-            })}
-          </div>
-        </div>
-
-        {/* Physiological Rhythm Controller */}
-        <div className="space-y-4 flex-1">
-          <div className="space-y-1.5 pt-2 border-t border-white/[0.06]">
-            <div className="flex justify-between items-center text-[9px] font-mono text-white/70">
-              <span className="flex items-center gap-1.5"><Activity className="h-3.5 w-3.5 text-sky-400" /> RITMO FISIOLÓGICO</span>
-              <span className="font-bold text-sky-400">
-                {respiratoryRate} <span className="text-[8px] text-white/40">rpm</span>
-              </span>
-            </div>
-            <input 
-              type="range" 
-              min="12" 
-              max="30" 
-              value={respiratoryRate} 
-              onChange={(e) => setRespiratoryRate(Number(e.target.value))}
-              className="w-full accent-sky-400 h-1 bg-white/10 rounded-full appearance-none cursor-pointer"
-            />
-            <div className="flex justify-between text-[7.5px] font-mono text-white/30 pt-0.5 leading-none">
-              <span>Repouso (12 rpm)</span>
-              <span>Esforço (30 rpm)</span>
-            </div>
-            <span className="text-[7.5px] font-mono text-white/35 block leading-normal pt-1">
-              Ajusta o ritmo do ciclo de expansão pulmonar e o fluxo de ar ($O_2$/$CO_2$) simulando repouso ou exercício físico leve.
-            </span>
-          </div>
-
-          {/* Quick Info card explaining the selected filter */}
-          <div className="p-2.5 rounded-lg border border-white/5 bg-white/[0.01] flex gap-2 items-start mt-2">
-            <Info className="h-3.5 w-3.5 text-sky-400 shrink-0 mt-0.5" />
-            <div className="flex flex-col min-w-0">
-              <span className="text-[8px] font-bold text-white/80 uppercase tracking-wider font-mono">Dica Anatômica</span>
-              <p className="text-[7.5px] text-white/45 leading-normal mt-0.5">
-                {viewMode === 'all' && 'Use o menu interativo ou interaja diretamente com as malhas 3D para destacar e estudar cada estrutura anatômica detalhadamente.'}
-                {viewMode === 'airway' && 'O espaço morto anatômico é de ~150 mL nas vias condutoras (nariz à traqueia), onde NÃO ocorre hematose.'}
-                {viewMode === 'hematosis' && 'A hematose ocorre na zona respiratória (ductos e alvéolos pulmonares) através de uma delicada membrana de apenas 0,2 µm.'}
-                {viewMode === 'mechanics' && 'A inspiração é um processo ativo coordenado pelo diafragma. Em repouso, a expiração é um processo passivo gerado pela retração pulmonar.'}
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* Bottom controls */}
-        <div className="pt-2 border-t border-white/[0.06] flex items-center justify-between">
-          <div className="flex flex-col">
-            <span className="text-[7.5px] font-mono text-white/30 uppercase leading-none">Simulação</span>
-            <span className="text-[9px] font-mono text-white/70 font-semibold">{isPaused ? 'Espera' : 'Operando'}</span>
-          </div>
-          <div className="flex gap-2">
-            <button 
-              onClick={handleReset}
-              className="p-1.5 text-[8.5px] uppercase font-mono tracking-wider text-white/50 border border-white/10 hover:border-white/20 hover:text-white rounded-lg transition-all flex items-center gap-1 cursor-pointer"
-            >
-              <RefreshCw className="h-3 w-3" /> Reset
-            </button>
-            <button 
-              onClick={() => setIsPaused(!isPaused)}
-              className={`px-3 py-1.5 text-[9px] uppercase font-mono tracking-wider font-bold rounded-lg border transition-all flex items-center gap-1.5 cursor-pointer ${
-                isPaused 
-                  ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/20' 
-                  : 'bg-amber-500/10 border-amber-500/30 text-amber-400 hover:bg-amber-500/20'
+      {/* Floating HUD Overlay Labels on top of 3D Scene */}
+      <div className="absolute top-4 right-4 z-10 flex flex-col gap-1.5 pointer-events-auto bg-[#040610]/70 backdrop-blur-md p-3 rounded-xl border border-white/5 max-w-[220px]">
+        <span className="text-[7px] font-mono text-white/35 uppercase tracking-widest font-black mb-1 block leading-none">Estruturas Fisiológicas</span>
+        {hudLabels.map(lbl => {
+          const active = activePart === lbl.part
+          const visible = getAlpha(lbl.part) > 0.1
+          return (
+            <button
+              key={lbl.part}
+              onClick={() => setSelectedPart(prev => prev === lbl.part ? null : lbl.part)}
+              onMouseEnter={() => setHoveredPart(lbl.part)}
+              onMouseLeave={() => setHoveredPart(null)}
+              className={`flex items-center gap-2 px-2 py-1.5 rounded-lg border text-left transition-all duration-150 cursor-pointer ${
+                active 
+                  ? 'bg-sky-500/15 border-sky-500/40 text-sky-400 font-bold shadow-[0_0_10px_rgba(56,189,248,0.1)]' 
+                  : visible
+                    ? 'bg-white/[0.02] border-white/5 text-white/60 hover:border-white/10 hover:text-white'
+                    : 'opacity-25 bg-transparent border-transparent text-white/30 hover:opacity-50'
               }`}
             >
-              {isPaused ? <Play className="h-3 w-3 fill-emerald-400" /> : <Pause className="h-3 w-3 fill-amber-400" />}
-              {isPaused ? 'Ligar' : 'Pausar'}
+              <div className="h-1.5 w-1.5 rounded-full shrink-0" style={{
+                background: lbl.color,
+                boxShadow: active ? `0 0 6px ${lbl.color}` : 'none'
+              }} />
+              <span className="text-[8px] font-mono tracking-wide uppercase truncate leading-none">{lbl.text}</span>
             </button>
+          )
+        })}
+      </div>
+
+      {/* Top-Left Sim Title */}
+      <div className="absolute top-4 left-4 z-10 pointer-events-none flex flex-col gap-1">
+        <span className="text-[9px] font-mono font-black text-sky-400 block tracking-wider leading-none">PNEUMO.3D.HOLOGRAM</span>
+        <span className="text-[7.5px] font-mono text-white/35 tracking-widest leading-none">▸ FISIOLOGIA ATIVA</span>
+      </div>
+
+      {/* Selected / Hovered anatomy information overlay (Floats on left, above Capacity Bar) */}
+      {info && (
+        <div className="absolute bottom-16 left-4 z-20 max-w-[280px] rounded-xl border border-sky-500/20 bg-[#040610]/95 backdrop-blur-md px-4 py-3 shadow-[0_4px_24px_rgba(0,0,0,0.6)]">
+          <div className="flex items-center gap-2 mb-1.5">
+            <div className="h-2 w-2 rounded-full shrink-0 animate-pulse" style={{
+              background: info.zone.includes('Respiratória') ? COL_RESP
+                : info.zone.includes('Motor') ? COL_DIAPHRAGM
+                : info.zone.includes('Órgão') ? COL_LUNG_STROKE
+                : COL_CONDUCT
+            }} />
+            <span className="text-[10px] font-bold text-white/90 uppercase tracking-wider font-mono">{info.title}</span>
+            <span className="text-[7.5px] font-mono text-white/40 ml-auto bg-white/5 px-1 py-0.5 rounded uppercase">{info.zone}</span>
+          </div>
+          <p className="text-[9px] text-white/60 mb-2 leading-relaxed font-sans">{info.desc}</p>
+          <div className="flex flex-col gap-1 border-t border-white/5 pt-1.5">
+            {info.details.map((d, i) => (
+              <span key={i} className="text-[8px] font-mono text-sky-300/70 leading-tight">▸ {d}</span>
+            ))}
           </div>
         </div>
+      )}
+
+      {/* Bottom-Left Live Ventilation Stats */}
+      <div className="absolute bottom-4 left-4 z-10 pointer-events-none flex flex-col gap-1">
+        <span className="text-[10px] font-mono font-bold leading-none" style={{
+          color: isPaused ? '#ef4444' : (isInhale ? '#22d3ee' : '#f43f5e')
+        }}>
+          {isPaused ? 'SIMULAÇÃO PAUSADA' : (isInhale ? 'INSPIRAÇÃO (ATIVO)' : 'EXPIRAÇÃO (PASSIVO)')}
+        </span>
+        
+        <div className="flex flex-col gap-1">
+          <div className="w-[125px] h-1 bg-white/5 rounded-full overflow-hidden">
+            <div 
+              className="h-full transition-all duration-75"
+              style={{
+                width: `${((liveVolume - 2400) / 4500) * 100}%`,
+                background: isInhale ? 'rgba(34, 211, 238, 0.7)' : 'rgba(244, 63, 94, 0.6)'
+              }}
+            />
+          </div>
+          <span className="text-[8px] font-mono text-white/45 leading-none">Capacidade: {liveVolume} mL</span>
+        </div>
       </div>
+
+      {/* Modern Segmented Controller for Structure Filters */}
+      <div className="absolute bottom-4 right-4 z-10 flex items-center gap-1 bg-[#040610]/75 backdrop-blur-md p-1 rounded-xl border border-white/5 shadow-2xl">
+        {[
+          { id: 'all', label: 'Tudo' },
+          { id: 'airway', label: 'Condutora' },
+          { id: 'hematosis', label: 'Respiratória' },
+          { id: 'mechanics', label: 'Mecânica' }
+        ].map((mode) => {
+          const active = viewMode === mode.id
+          return (
+            <button
+              key={mode.id}
+              onClick={() => setViewMode(mode.id as ViewMode)}
+              className={`px-3 py-1.5 rounded-lg border text-[9px] font-mono tracking-wider font-bold transition-all duration-200 cursor-pointer ${
+                active 
+                  ? 'bg-sky-500/15 border-sky-500/35 text-sky-400 font-black shadow-[0_0_10px_rgba(56,189,248,0.15)]' 
+                  : 'bg-transparent border-transparent text-white/50 hover:text-white hover:bg-white/[0.03]'
+              }`}
+            >
+              {mode.label.toUpperCase()}
+            </button>
+          )
+        })}
+      </div>
+
     </div>
   )
 }
