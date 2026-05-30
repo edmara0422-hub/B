@@ -1,18 +1,16 @@
 'use client'
 
 import { useEffect, useState, useMemo } from 'react'
-import { Users, TrendingUp, TrendingDown, AlertTriangle } from 'lucide-react'
+import { TrendingUp, TrendingDown } from 'lucide-react'
 
 export function MiniCapitalHumano() {
   const [pressaoMetas, setPressaoMetas] = useState(5)
-  const [climaFrequencia, setClimaFrequencia] = useState(14)
 
   useEffect(() => {
     const handleTelemetry = () => {
       const telemetry = (window as any).IPBTelemetry
       if (telemetry) {
         setPressaoMetas(telemetry.pressaoMetas ?? 5)
-        setClimaFrequencia(telemetry.climaFrequencia ?? 14)
       }
     }
 
@@ -30,13 +28,12 @@ export function MiniCapitalHumano() {
     return Number((38 + Math.pow(pressaoMetas, 1.4) * 2.5).toFixed(1))
   }, [pressaoMetas])
 
-  const climaIndex = useMemo(() => {
-    return 100 - burnoutEEB
-  }, [burnoutEEB])
+  const estresseIAE = useMemo(() => {
+    return Number((9.3 + pressaoMetas * 7.5).toFixed(1))
+  }, [pressaoMetas])
 
   // Sparkline data representing Humor Pulse Surveys over 7 weeks
   const sparklineData = useMemo(() => {
-    // Under high pressure, the trend drops significantly
     const basePoints = [85, 88, 82, 86, 75, 78, 82]
     const pressureDrop = pressaoMetas * 4.5
     return basePoints.map((val, idx) => {
@@ -45,106 +42,87 @@ export function MiniCapitalHumano() {
     })
   }, [pressaoMetas])
 
-  // Compute SVG polyline path for the sparkline
   const polylinePoints = useMemo(() => {
     return sparklineData.map((val, idx) => {
-      const x = (idx / 6) * 160 // x-axis mapping
-      const y = 50 - (val / 100) * 35 // y-axis mapping (inverted y in SVG)
+      const x = (idx / 6) * 110 // adapted width
+      const y = 60 - (val / 100) * 45 // adapted height
       return `${x},${y}`
     }).join(' ')
   }, [sparklineData])
 
-  // Compute SVG gradient area path
   const areaPoints = useMemo(() => {
     if (sparklineData.length === 0) return ''
     const points = sparklineData.map((val, idx) => {
-      const x = (idx / 6) * 160
-      const y = 50 - (val / 100) * 35
+      const x = (idx / 6) * 110
+      const y = 60 - (val / 100) * 45
       return `${x},${y}`
     })
-    return `0,50 ${points.join(' ')} 160,50`
+    return `0,60 ${points.join(' ')} 110,60`
   }, [sparklineData])
 
   return (
     <div className="w-full h-full flex flex-col justify-between p-3 select-none">
-      <div className="flex justify-between items-center w-full z-10">
-        <div className="live-tag">
-          <div className="dot" />
-          <span>Pulse Surveys · Estresse · LIVE</span>
+      {/* Header */}
+      <div className="flex justify-between items-center w-full z-10 border-b border-white/5 pb-1">
+        <span className="text-[10px] font-black text-white tracking-widest uppercase">1) CAP. HUMANO & LIDERANÇA</span>
+        <span className="text-[8px] font-mono text-white/40 uppercase tracking-widest font-bold">Pessoas & Saúde</span>
+      </div>
+
+      {/* Body: 2 Columns */}
+      <div className="flex-1 flex items-center gap-3 py-2">
+        {/* Left Side: SVG Sparkline */}
+        <div className="w-[50%] h-[75px] flex flex-col justify-between border-r border-white/5 pr-3">
+          <div className="flex justify-between items-center">
+            <span className="text-[7px] uppercase tracking-wider text-white/30 font-bold">Humor Pulse (7w)</span>
+            <span className="text-[9px] font-mono font-bold text-[#d4b87a] flex items-center gap-0.5">
+              {100 - burnoutEEB}% {burnoutEEB < 35 ? <TrendingUp className="h-2.5 w-2.5 text-emerald-400" /> : <TrendingDown className="h-2.5 w-2.5 text-amber-500" />}
+            </span>
+          </div>
+          <div className="flex-1 flex items-end">
+            <svg className="w-full h-[50px] overflow-visible" viewBox="0 0 110 60" preserveAspectRatio="none">
+              <defs>
+                <linearGradient id="humorGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#d4b87a" stopOpacity="0.25" />
+                  <stop offset="100%" stopColor="#d4b87a" stopOpacity="0.01" />
+                </linearGradient>
+              </defs>
+              <polygon points={areaPoints} fill="url(#humorGrad)" />
+              <polyline fill="none" stroke="#d4b87a" strokeWidth="1.8" points={polylinePoints} />
+              {sparklineData.length > 0 && (
+                <circle
+                  cx="110"
+                  cy={60 - (sparklineData[sparklineData.length - 1] / 100) * 45}
+                  r="2.5"
+                  fill="#fff"
+                  stroke="#d4b87a"
+                  strokeWidth="1.2"
+                />
+              )}
+            </svg>
+          </div>
         </div>
-        <div className="badge text-[8px] bg-[#d4b87a]/15 text-[#d4b87a] px-1.5 py-0.5 rounded font-mono uppercase font-bold">
-          EEB {burnoutEEB}%
+
+        {/* Right Side: Metrics */}
+        <div className="flex-1 flex flex-col justify-center space-y-1.5 pl-1.5">
+          <div className="flex flex-col text-left">
+            <span className="text-[7.5px] uppercase tracking-wider text-white/35 font-bold leading-none">Burnout EEB</span>
+            <span className="text-sm font-bold text-[#d4b87a] font-mono leading-none mt-1">{burnoutEEB}%</span>
+          </div>
+          <div className="flex flex-col text-left">
+            <span className="text-[7.5px] uppercase tracking-wider text-white/35 font-bold leading-none">Turnover</span>
+            <span className="text-sm font-bold text-[#d4b87a] font-mono leading-none mt-1">{turnoverAnual}%</span>
+          </div>
+          <div className="flex flex-col text-left">
+            <span className="text-[7.5px] uppercase tracking-wider text-white/35 font-bold leading-none">Estresse IAE</span>
+            <span className="text-sm font-bold text-[#d4b87a] font-mono leading-none mt-1">{estresseIAE}%</span>
+          </div>
         </div>
       </div>
 
-      {/* Sparkline of Humor Pulse Trend (Real Analytical Widget) */}
-      <div className="relative w-full h-[60px] flex flex-col justify-end mt-2 mb-1 border-b border-white/5 pb-1">
-        <div className="absolute top-0 left-0 text-[7px] text-white/30 uppercase tracking-widest font-mono font-bold">
-          Humor Pulse Trend (7w)
-        </div>
-        <div className="absolute top-0 right-0 text-[8.5px] font-mono font-bold text-[#d4b87a] flex items-center gap-0.5">
-          {climaIndex}% {climaIndex > 65 ? <TrendingUp className="h-3 w-3 text-emerald-400" /> : <TrendingDown className="h-3 w-3 text-amber-500" />}
-        </div>
-        <svg className="w-full h-[40px] overflow-visible" viewBox="0 0 160 50" preserveAspectRatio="none">
-          <defs>
-            <linearGradient id="humorGrad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#d4b87a" stopOpacity="0.25" />
-              <stop offset="100%" stopColor="#d4b87a" stopOpacity="0.01" />
-            </linearGradient>
-          </defs>
-          {/* Shaded Area */}
-          <polygon points={areaPoints} fill="url(#humorGrad)" />
-          {/* Trend Line */}
-          <polyline
-            fill="none"
-            stroke="#d4b87a"
-            strokeWidth="1.8"
-            points={polylinePoints}
-          />
-          {/* Indicator Dot on the last point */}
-          {sparklineData.length > 0 && (
-            <circle
-              cx="160"
-              cy={50 - (sparklineData[sparklineData.length - 1] / 100) * 35}
-              r="2.5"
-              fill="#fff"
-              stroke="#d4b87a"
-              strokeWidth="1.2"
-            />
-          )}
-        </svg>
-      </div>
-
-      {/* Vitals Grid with Gauge Reading */}
-      <div className="grid grid-cols-3 gap-2 mt-1 relative z-10 text-left">
-        <div className="p-1 rounded bg-black/40 border border-white/5">
-          <span className="text-[7.5px] uppercase text-white/30 block font-bold leading-none">Burnout EEB</span>
-          <b className={`text-[12.5px] font-mono mt-0.5 block leading-none ${burnoutEEB > 35 ? 'text-amber-500' : 'text-[#d4b87a]'}`}>
-            {burnoutEEB}%
-          </b>
-        </div>
-        <div className="p-1 rounded bg-black/40 border border-white/5">
-          <span className="text-[7.5px] uppercase text-white/30 block font-bold leading-none">Turnover</span>
-          <b className="text-[12.5px] text-[#d4b87a] font-mono mt-0.5 block leading-none">
-            {turnoverAnual}%
-          </b>
-        </div>
-        <div className="p-1 rounded bg-black/40 border border-white/5">
-          <span className="text-[7.5px] uppercase text-white/30 block font-bold leading-none">Clima Index</span>
-          <b className="text-[12.5px] text-[#d4b87a] font-mono mt-0.5 block leading-none">
-            {climaIndex}/100
-          </b>
-        </div>
-      </div>
-      
-      <div className="title-area relative z-10 mt-1 select-none flex justify-between items-end">
-        <div>
-          <span className="text-[8px] uppercase text-white/40 block leading-none font-bold">Pessoas & Liderança</span>
-          <h2 className="text-white text-xs font-bold mt-0.5 tracking-wider uppercase leading-none flex items-center gap-1.5">
-            <div className="h-2 w-2 rounded-sm bg-[#d4b87a]" /> Cap. Humano
-          </h2>
-        </div>
-        <span className="text-[8px] font-mono text-white/30 uppercase tracking-widest leading-none font-semibold">Pulse surveys</span>
+      {/* Footer Vitals */}
+      <div className="flex justify-between items-center text-[7.5px] text-white/20 border-t border-white/5 pt-1">
+        <span>Pulse Surveys · Estresse</span>
+        <span className="font-bold text-[#d4b87a]/60 font-mono">LIVE FEED</span>
       </div>
     </div>
   )

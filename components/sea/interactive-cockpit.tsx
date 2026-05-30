@@ -1,7 +1,6 @@
 'use client'
 
 import { useState, useEffect, useMemo } from 'react'
-import { motion } from 'framer-motion'
 import { Sparkles, TrendingUp, Globe, Users, Leaf, ShieldAlert } from 'lucide-react'
 
 import dynamic from 'next/dynamic'
@@ -9,7 +8,6 @@ import dynamic from 'next/dynamic'
 // Lightweight Mini components are imported from separate lightweight files
 import { MiniEstrategia } from './mini-estrategia'
 import { MiniCapitalHumano } from './mini-capital-humano'
-import { MiniFinancas } from './mini-financas'
 import { MiniEsg } from './mini-esg'
 import { MiniAi } from './mini-ai'
 
@@ -20,7 +18,7 @@ const HudFinancas = dynamic(() => import('./hud-financas').then(m => m.HudFinanc
 const HudEsg = dynamic(() => import('./hud-esg').then(m => m.HudEsg), { ssr: false, loading: () => <div className="w-full h-full animate-pulse bg-white/5 rounded-3xl" /> })
 const HudAi = dynamic(() => import('./hud-ai').then(m => m.HudAi), { ssr: false, loading: () => <div className="w-full h-full animate-pulse bg-white/5 rounded-3xl" /> })
 
-type SystemId = 'ai' | 'financas' | 'estrategia' | 'capital_humano' | 'esg'
+type SystemId = 'financas' | 'capital_humano' | 'estrategia' | 'esg' | 'ai'
 
 interface SystemDef {
   id: SystemId
@@ -30,18 +28,15 @@ interface SystemDef {
 }
 
 const SYSTEMS: Record<SystemId, SystemDef> = {
-  ai: { id: 'ai', title: 'IPB AI', icon: Sparkles, color: '#d4b87a' },
-  financas: { id: 'financas', title: 'Finanças', icon: TrendingUp, color: '#d4b87a' },
-  estrategia: { id: 'estrategia', title: 'Estratégia', icon: Globe, color: '#d4b87a' },
-  capital_humano: { id: 'capital_humano', title: 'Cap. Humano', icon: Users, color: '#d4b87a' },
-  esg: { id: 'esg', title: 'Governança & ESG', icon: Leaf, color: '#d4b87a' },
+  financas: { id: 'financas', title: 'Finanças & Controladoria', icon: TrendingUp, color: '#d4b87a' },
+  capital_humano: { id: 'capital_humano', title: 'Pessoas & Liderança', icon: Users, color: '#d4b87a' },
+  estrategia: { id: 'estrategia', title: 'Estratégia & Economia', icon: Globe, color: '#d4b87a' },
+  esg: { id: 'esg', title: 'Sustentabilidade & ESG', icon: Leaf, color: '#d4b87a' },
+  ai: { id: 'ai', title: 'IPB AI Assistant', icon: Sparkles, color: '#d4b87a' },
 }
 
-const ALL_SYSTEMS: SystemId[] = ['capital_humano', 'estrategia', 'financas', 'ai', 'esg']
-
 export function InteractiveCockpit() {
-  // L1, L2, Center, R1, R2
-  const [layout, setLayout] = useState<SystemId[]>(['capital_humano', 'estrategia', 'financas', 'ai', 'esg'])
+  const [activePanel, setActivePanel] = useState<SystemId>('financas')
 
   // Telemetria real-time integrada para a Matriz de Interdependência da Home
   const [faturamento, setFaturamento] = useState(150)
@@ -135,170 +130,155 @@ export function InteractiveCockpit() {
     return rules
   }, [eebBurnout, ltvCac, turnover, cenario, wacc, ebitdaMarginVal, iaeStress, selicVal])
 
-  const handleSwap = (clickedId: SystemId) => {
-    if (layout[2] === clickedId) return // Already center
-
-    setLayout((prev) => {
-      const newLayout = [...prev]
-      const centerIdx = 2
-      const clickedIdx = newLayout.indexOf(clickedId)
-
-      // Swap
-      const temp = newLayout[centerIdx]
-      newLayout[centerIdx] = newLayout[clickedIdx]
-      newLayout[clickedIdx] = temp
-
-      return newLayout
-    })
-  }
-
-  // Render a specific card (either mini or hero)
-  const renderCard = (sysId: SystemId) => {
-    const index = layout.indexOf(sysId)
-    const isHero = index === 2
-    const isInteractive = !isHero
-
-    // Tradução de IDs para manter compatibilidade com as classes CSS de globals.css
-    const styleClass = sysId === 'financas' ? 'pneumo' : sysId === 'estrategia' ? 'cardio' : sysId === 'capital_humano' ? 'neuro' : sysId
-
-    // Determine the exact class based on system ID and whether it's hero
-    const wrapperClass = isHero
-      ? `hero-wrapper ${styleClass}`
-      : sysId === 'ai'
-        ? 'mini-ai-card'
-        : sysId === 'esg'
-          ? 'mini-esg-card'
-          : `mini-sim-card ${styleClass}`
-
-    const cardProps = {
-      className: `cockpit-card ${wrapperClass} w-full h-full`,
-      onClick: isInteractive ? () => handleSwap(sysId) : undefined,
-      style: {
-        cursor: isInteractive ? 'pointer' : 'default',
-      },
-    }
-
-    const slotClass = `slot-${
-      index === 0 ? 'L1' : index === 1 ? 'L2' : index === 2 ? 'C' : index === 3 ? 'R1' : 'R2'
-    }`
-
-    return (
-      <motion.div
-        layout
-        key={sysId}
-        className={`cockpit-slot ${slotClass}`}
-        transition={{ type: 'spring', stiffness: 220, damping: 28 }}
-      >
-        <div {...cardProps}>
-          {/* We keep both mini and hero contents mounted so canvases stay alive. */}
-          <div className="mini-container" style={{ display: isHero ? 'none' : 'block', height: '100%', width: '100%' }}>
-            {renderMiniContent(sysId)}
-          </div>
-          <div className="hero-inner-scroll" style={{ display: isHero ? 'flex' : 'none', flex: 1, overflowY: 'auto', minHeight: 0, flexDirection: 'column', paddingBottom: '100px', height: '100%' }}>
-            {renderHeroContent(sysId)}
-          </div>
-          {isInteractive && (
-            <div className="card-expand-hint">
-              <span>Abrir</span> no Centro
-            </div>
-          )}
-        </div>
-      </motion.div>
-    )
-  }
-
-  const renderHeroContent = (sysId: SystemId) => {
-    switch (sysId) {
-      case 'estrategia': return <HudEstrategia />
-      case 'capital_humano': return <HudCapitalHumano />
+  const renderHeroContent = () => {
+    switch (activePanel) {
       case 'financas': return <HudFinancas />
+      case 'capital_humano': return <HudCapitalHumano />
+      case 'estrategia': return <HudEstrategia />
       case 'esg': return <HudEsg />
       case 'ai': return <HudAi />
-      default: return null
-    }
-  }
-
-  const renderMiniContent = (sysId: SystemId) => {
-    switch (sysId) {
-      case 'estrategia': return <MiniEstrategia />
-      case 'capital_humano': return <MiniCapitalHumano />
-      case 'financas': return <MiniFinancas />
-      case 'esg': return <MiniEsg />
-      case 'ai': return <MiniAi />
-      default: return null
+      default: return <HudFinancas />
     }
   }
 
   return (
-    <div className="w-full flex flex-col gap-4">
-      {/* Mobile Systems Switcher */}
-      <div className="flex min-[1025px]:hidden items-center justify-between gap-1 p-1 rounded-2xl bg-black/45 border border-white/5 backdrop-blur-xl">
-        {ALL_SYSTEMS.map((sysId) => {
-          const sys = SYSTEMS[sysId]
-          const active = layout[2] === sysId
-          const Icon = sys.icon
-          return (
-            <button
-              key={sysId}
-              onClick={() => handleSwap(sysId)}
-              className="flex flex-col items-center gap-1 flex-1 py-2 rounded-xl transition cursor-pointer"
-              style={{
-                background: active ? 'rgba(212, 184, 122, 0.12)' : 'transparent',
-                border: active ? '0.2px solid rgba(212, 184, 122, 0.35)' : '0.2px solid transparent',
-                boxShadow: active ? 'inset 0 1px 0 rgba(212,184,122,0.12), 0 4px 12px rgba(0,0,0,0.2)' : 'none'
-              }}
-            >
-              <Icon className="h-4 w-4 shrink-0" style={{ color: active ? '#d4b87a' : 'rgba(255,255,255,0.36)' }} />
-              <span className="text-[7.5px] font-semibold tracking-wider uppercase text-center" style={{ color: active ? '#fff' : 'rgba(255,255,255,0.26)' }}>
-                {sys.title.split(' ')[0]}
-              </span>
-            </button>
-          )
-        })}
-      </div>
-
-      {/* Main Grid */}
-      <div className="cockpit-stage-grid">
-        {/* The 5 absolute-positioned card slots */}
-        {ALL_SYSTEMS.map((sysId) => renderCard(sysId))}
-      </div>
-
-      {/* MATRIZ DE INTERDEPENDÊNCIA & REGRAS DE DECISÃO CRUZADAS (IA) */}
-      <div className="p-4 rounded-3xl backdrop-blur-xl border select-none mt-2" style={{ background: 'rgba(15, 12, 8, 0.65)', borderColor: 'rgba(212, 184, 122, 0.15)' }}>
-        <div className="flex items-center gap-2 mb-3 pb-2" style={{ borderBottom: '1px solid rgba(212, 184, 122, 0.15)' }}>
-          <ShieldAlert className="h-4 w-4 text-[#d4b87a]" />
-          <span className="text-[10px] font-black uppercase tracking-widest text-[#d4b87a]">
-            MATRIZ DE INTERDEPENDÊNCIA 6D • REGRAS DE DECISÃO DE IA
-          </span>
+    <div className="w-full flex flex-col gap-6">
+      
+      {/* Cabeçalho Executivo Dourado do Cockpit com Abas de Navegação */}
+      <div className="w-full flex flex-col sm:flex-row justify-between items-center bg-black/45 border border-white/5 p-4 rounded-2xl backdrop-blur-md select-none gap-4">
+        <div className="flex items-center gap-3">
+          <div className="h-2.5 w-2.5 rounded-full bg-[#d4b87a] animate-pulse" />
+          <h1 className="text-white text-base font-black tracking-widest uppercase">
+            BUSINESS INTELLIGENCE <span className="text-[#d4b87a]">COCKPIT 6D</span>
+          </h1>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-          {dynamicRules.map((rule, idx) => (
-            <div 
-              key={idx} 
-              className="rounded-xl p-3 border text-[9px] leading-normal flex flex-col gap-1"
-              style={{
-                borderColor: rule.type === 'critical' ? 'rgba(248,113,113,0.2)' : rule.type === 'warning' ? 'rgba(250,204,21,0.2)' : 'rgba(96,165,250,0.2)',
-                background: rule.type === 'critical' ? 'rgba(248,113,113,0.03)' : rule.type === 'warning' ? 'rgba(250,204,21,0.03)' : 'rgba(96,165,250,0.02)',
-              }}
-            >
-              <span 
-                className="font-bold tracking-wider text-[8.5px] uppercase"
-                style={{
-                  color: rule.type === 'critical' ? '#fca5a5' : rule.type === 'warning' ? '#fde68a' : '#93c5fd'
-                }}
+        {/* Elegant Gold Switcher Tabs */}
+        <div className="flex flex-wrap justify-center items-center gap-1.5 p-1 bg-black/40 border border-white/5 rounded-xl">
+          {(Object.keys(SYSTEMS) as SystemId[]).map((sysId) => {
+            const sys = SYSTEMS[sysId]
+            const active = activePanel === sysId
+            return (
+              <button
+                key={sysId}
+                onClick={() => setActivePanel(sysId)}
+                className={`px-3 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-wider transition-all cursor-pointer ${
+                  active 
+                    ? 'bg-[#d4b87a]/15 border border-[#d4b87a]/35 text-white shadow-[0_0_12px_rgba(212,184,122,0.15)]'
+                    : 'border border-transparent text-white/40 hover:text-white/70'
+                }`}
               >
-                {rule.title}
-              </span>
-              <p className="text-white/65 mt-0.5">{rule.desc}</p>
-            </div>
-          ))}
-          {dynamicRules.length === 0 && (
-            <div className="col-span-3 text-center text-white/35 py-2 text-[9px] font-semibold">
-              Nenhum risco cruzado crítico detectado. Operação está em perfeito equilíbrio.
-            </div>
-          )}
+                {sys.title.split(' ')[0]}
+              </button>
+            )
+          })}
         </div>
+      </div>
+
+      {/* Grade Principal de 2 Colunas Fixas (Igual ao Mockup e Estrutura da Home) */}
+      <div className="w-full grid grid-cols-1 lg:grid-cols-[38%_62%] gap-6 items-stretch min-h-[750px]">
+        
+        {/* COLUNA ESQUERDA: Os 4 Mini-Cards Analíticos Reais em SVG */}
+        <div className="flex flex-col gap-5 justify-between">
+          
+          {/* Card 1: CAP. HUMANO */}
+          <div 
+            onClick={() => setActivePanel('capital_humano')}
+            className={`group relative overflow-hidden flex flex-col justify-between p-1 bg-[#0a0a0c]/85 border rounded-3xl backdrop-blur-xl transition-all duration-300 cursor-pointer select-none h-[220px] ${
+              activePanel === 'capital_humano' 
+                ? 'border-[#d4b87a] shadow-[0_0_20px_rgba(212,184,122,0.15)] bg-[#0f0e0a]/90' 
+                : 'border-white/10 hover:border-white/20'
+            }`}
+          >
+            <MiniCapitalHumano />
+          </div>
+
+          {/* Card 2: ESTRATÉGIA */}
+          <div 
+            onClick={() => setActivePanel('estrategia')}
+            className={`group relative overflow-hidden flex flex-col justify-between p-1 bg-[#0a0a0c]/85 border rounded-3xl backdrop-blur-xl transition-all duration-300 cursor-pointer select-none h-[220px] ${
+              activePanel === 'estrategia' 
+                ? 'border-[#d4b87a] shadow-[0_0_20px_rgba(212,184,122,0.15)] bg-[#0f0e0a]/90' 
+                : 'border-white/10 hover:border-white/20'
+            }`}
+          >
+            <MiniEstrategia />
+          </div>
+
+          {/* Card 3: GOVERNANÇA & ESG */}
+          <div 
+            onClick={() => setActivePanel('esg')}
+            className={`group relative overflow-hidden flex flex-col justify-between p-1 bg-[#0a0a0c]/85 border rounded-3xl backdrop-blur-xl transition-all duration-300 cursor-pointer select-none h-[220px] ${
+              activePanel === 'esg' 
+                ? 'border-[#d4b87a] shadow-[0_0_20px_rgba(212,184,122,0.15)] bg-[#0f0e0a]/90' 
+                : 'border-white/10 hover:border-white/20'
+            }`}
+          >
+            <MiniEsg />
+          </div>
+
+          {/* Card 4: IPB AI ASSISTANT */}
+          <div 
+            onClick={() => setActivePanel('ai')}
+            className={`group relative overflow-hidden flex flex-col justify-between p-1 bg-[#0a0a0c]/85 border rounded-3xl backdrop-blur-xl transition-all duration-300 cursor-pointer select-none h-[220px] ${
+              activePanel === 'ai' 
+                ? 'border-[#d4b87a] shadow-[0_0_20px_rgba(212,184,122,0.15)] bg-[#0f0e0a]/90' 
+                : 'border-white/10 hover:border-white/20'
+            }`}
+          >
+            <MiniAi />
+          </div>
+
+        </div>
+
+        {/* COLUNA DIREITA: O Painel de Análise Dinâmico Ativo + Matriz 6D no rodapé */}
+        <div className="flex-1 flex flex-col gap-5 justify-between">
+          
+          {/* Main Hero HUD Panel */}
+          <div className="flex-1 min-h-[500px]">
+            {renderHeroContent()}
+          </div>
+
+          {/* MATRIZ DE INTERDEPENDÊNCIA & REGRAS DE DECISÃO CRUZADAS (IA) no rodapé do HUD */}
+          <div className="p-4 rounded-3xl backdrop-blur-xl border select-none" style={{ background: 'rgba(15, 12, 8, 0.65)', borderColor: 'rgba(212, 184, 122, 0.15)' }}>
+            <div className="flex items-center gap-2 mb-3 pb-2" style={{ borderBottom: '1px solid rgba(212, 184, 122, 0.15)' }}>
+              <ShieldAlert className="h-4 w-4 text-[#d4b87a]" />
+              <span className="text-[10px] font-black uppercase tracking-widest text-[#d4b87a]">
+                MATRIZ DE INTERDEPENDÊNCIA 6D • REGRAS DE DECISÃO DE IA
+              </span>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+              {dynamicRules.map((rule, idx) => (
+                <div 
+                  key={idx} 
+                  className="rounded-xl p-3 border text-[9px] leading-normal flex flex-col gap-1"
+                  style={{
+                    borderColor: rule.type === 'critical' ? 'rgba(248,113,113,0.2)' : rule.type === 'warning' ? 'rgba(250,204,21,0.2)' : 'rgba(96,165,250,0.2)',
+                    background: rule.type === 'critical' ? 'rgba(248,113,113,0.03)' : rule.type === 'warning' ? 'rgba(250,204,21,0.03)' : 'rgba(96,165,250,0.02)',
+                  }}
+                >
+                  <span 
+                    className="font-bold tracking-wider text-[8.5px] uppercase"
+                    style={{
+                      color: rule.type === 'critical' ? '#fca5a5' : rule.type === 'warning' ? '#fde68a' : '#93c5fd'
+                    }}
+                  >
+                    {rule.title}
+                  </span>
+                  <p className="text-white/65 mt-0.5">{rule.desc}</p>
+                </div>
+              ))}
+              {dynamicRules.length === 0 && (
+                <div className="col-span-3 text-center text-white/35 py-2 text-[9px] font-semibold">
+                  Nenhum risco cruzado crítico detectado. Operação está em perfeito equilíbrio.
+                </div>
+              )}
+            </div>
+          </div>
+
+        </div>
+
       </div>
     </div>
   )
