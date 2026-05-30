@@ -43,7 +43,7 @@ export function MiniCapitalHumano() {
     const xPositions = [32, 44, 56, 68, 80, 92, 104]
     return sparklineData.map((val, idx) => {
       const x = xPositions[idx]
-      const y = 48 - (val / 100) * 36
+      const y = 52 - (val / 100) * 40
       return `${x},${y}`
     }).join(' ')
   }, [sparklineData])
@@ -53,10 +53,10 @@ export function MiniCapitalHumano() {
     const xPositions = [32, 44, 56, 68, 80, 92, 104]
     const points = sparklineData.map((val, idx) => {
       const x = xPositions[idx]
-      const y = 48 - (val / 100) * 36
+      const y = 52 - (val / 100) * 40
       return `${x},${y}`
     })
-    return `32,48 ${points.join(' ')} 104,48`
+    return `32,52 ${points.join(' ')} 104,52`
   }, [sparklineData])
 
   return (
@@ -66,19 +66,19 @@ export function MiniCapitalHumano() {
     >
       <style dangerouslySetInnerHTML={{ __html: `
         .gold-metallic-gradient {
-          background: linear-gradient(90deg, #c9943a 0%, #e0b85e 50%, #c9943a 100%);
+          background: linear-gradient(90deg, #d2af5a 0%, #f3ddaa 50%, #d2af5a 100%);
           color: #0c0a07;
         }
         .dark-glass-value {
           background: rgba(10, 10, 12, 0.45);
-          border: 1px solid rgba(197, 151, 64, 0.25);
+          border: 1px solid rgba(210, 175, 90, 0.25);
         }
       `}} />
 
       {/* Header Bicolor Premium com 3 Pontos */}
       <div className="flex justify-between items-center w-full z-10 border-b border-white/5 pb-1">
         <span className="text-[11px] font-normal text-white/95 tracking-wide">
-          <span className="text-[#c9943a] font-bold">Pilar 1:</span> Cap. Humano & Liderança
+          <span className="text-[#d2af5a] font-bold">Pilar 1:</span> Cap. Humano & Liderança
         </span>
         <MoreHorizontal className="h-3.5 w-3.5 text-white/40 hover:text-white/80 cursor-pointer" />
       </div>
@@ -86,7 +86,7 @@ export function MiniCapitalHumano() {
       {/* Body: 2 Colunas */}
       <div className="flex-1 flex items-center gap-2 py-1">
         {/* Lado Esquerdo: Sparkline Neon e Eixos Reais */}
-        <div className="w-[52%] h-[120px] flex flex-col justify-between border-r border-white/5 pr-2">
+        <div className="w-[52%] h-[155px] flex flex-col justify-between border-r border-white/5 pr-2">
           <div className="flex items-center gap-1.5 mb-0.5">
             <span className="text-[7px] font-normal text-white/45 tracking-wide">Live SVG humor pulse sparkline</span>
             <div className="flex items-center gap-0.5">
@@ -96,11 +96,11 @@ export function MiniCapitalHumano() {
           </div>
           
           <div className="flex-1 w-full relative">
-            <svg className="w-full h-full overflow-visible" viewBox="0 0 115 60">
+            <svg className="w-full h-full overflow-visible" viewBox="0 0 115 65">
               <defs>
                 <linearGradient id="humorGrad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#c9943a" stopOpacity="0.22" />
-                  <stop offset="100%" stopColor="#c9943a" stopOpacity="0.01" />
+                  <stop offset="0%" stopColor="#d2af5a" stopOpacity="0.22" />
+                  <stop offset="100%" stopColor="#d2af5a" stopOpacity="0.01" />
                 </linearGradient>
                 <filter id="neonGlowLine" x="-20%" y="-20%" width="140%" height="140%">
                   <feGaussianBlur stdDeviation="1.2" result="blur" />
@@ -111,47 +111,47 @@ export function MiniCapitalHumano() {
                 </filter>
               </defs>
               
-              <line x1="32" y1="48" x2="108" y2="48" stroke="rgba(255,255,255,0.15)" strokeWidth="0.6" />
-              <line x1="32" y1="8" x2="32" y2="48" stroke="rgba(255,255,255,0.15)" strokeWidth="0.6" />
+              <line x1="32" y1="52" x2="108" y2="52" stroke="rgba(255,255,255,0.15)" strokeWidth="0.6" />
+              <line x1="32" y1="8" x2="32" y2="52" stroke="rgba(255,255,255,0.15)" strokeWidth="0.6" />
               
-              <line x1="32" y1="28" x2="108" y2="28" stroke="rgba(255,255,255,0.04)" strokeWidth="0.5" strokeDasharray="2,2" />
-              <line x1="32" y1="12" x2="108" y2="12" stroke="rgba(255,255,255,0.04)" strokeWidth="0.5" strokeDasharray="2,2" />
+              <line x1="32" y1="30" x2="108" y2="30" stroke="rgba(255,255,255,0.04)" strokeWidth="0.5" strokeDasharray="2,2" />
+              <line x1="32" y1="14" x2="108" y2="14" stroke="rgba(255,255,255,0.04)" strokeWidth="0.5" strokeDasharray="2,2" />
 
               <polygon points={areaPoints} fill="url(#humorGrad)" />
-              <polyline fill="none" stroke="#c9943a" strokeWidth="1.5" points={polylinePoints} filter="url(#neonGlowLine)" />
+              <polyline fill="none" stroke="#d2af5a" strokeWidth="1.5" points={polylinePoints} filter="url(#neonGlowLine)" />
               
               {sparklineData.length > 0 && (
                 <circle
                   cx={104}
-                  cy={48 - (sparklineData[sparklineData.length - 1] / 100) * 36}
+                  cy={52 - (sparklineData[sparklineData.length - 1] / 100) * 40}
                   r="1.8"
                   fill="#fff"
-                  stroke="#c9943a"
+                  stroke="#d2af5a"
                   strokeWidth="0.8"
                 />
               )}
 
               {['100', '50', '0', '-5', '-10'].map((lbl, idx) => {
-                const y = 8 + idx * 10
+                const y = 8 + idx * 11
                 return (
                   <text key={idx} x="27" y={y + 2} fill="rgba(255,255,255,0.35)" fontSize="5.5" textAnchor="end" fontFamily="sans-serif" fontWeight="300">{lbl}</text>
                 )
               })}
 
-              <text x="34" y="56" fill="rgba(255,255,255,0.35)" fontSize="5.5" textAnchor="start" fontFamily="sans-serif" fontWeight="300">18:00</text>
-              <text x="106" y="56" fill="rgba(255,255,255,0.35)" fontSize="5.5" textAnchor="end" fontFamily="sans-serif" fontWeight="300">19:00</text>
+              <text x="34" y="61" fill="rgba(255,255,255,0.35)" fontSize="5.5" textAnchor="start" fontFamily="sans-serif" fontWeight="300">18:00</text>
+              <text x="106" y="61" fill="rgba(255,255,255,0.35)" fontSize="5.5" textAnchor="end" fontFamily="sans-serif" fontWeight="300">19:00</text>
             </svg>
           </div>
         </div>
 
         {/* Lado Direito: Cápsulas Empilhadas tridimensionais (Split Capsules) */}
-        <div className="flex-1 flex flex-col justify-between h-[105px] pl-1.5 space-y-1">
+        <div className="flex-1 flex flex-col justify-between h-[135px] pl-1.5 space-y-1">
           {/* Burnout */}
           <div className="flex flex-col w-full">
             <div className="gold-metallic-gradient text-[7.5px] font-bold uppercase tracking-wider py-0.5 rounded-t-lg text-center font-mono leading-none">
               Burnout EEB
             </div>
-            <div className="dark-glass-value text-white text-center py-0.5 text-[10.5px] font-bold font-mono rounded-b-lg leading-tight">
+            <div className="dark-glass-value text-white text-center py-1 text-[11px] font-bold font-mono rounded-b-lg leading-tight">
               {burnoutEEB}%
             </div>
           </div>
@@ -161,7 +161,7 @@ export function MiniCapitalHumano() {
             <div className="gold-metallic-gradient text-[7.5px] font-bold uppercase tracking-wider py-0.5 rounded-t-lg text-center font-mono leading-none">
               Turnover
             </div>
-            <div className="dark-glass-value text-white text-center py-0.5 text-[10.5px] font-bold font-mono rounded-b-lg leading-tight">
+            <div className="dark-glass-value text-white text-center py-1 text-[11px] font-bold font-mono rounded-b-lg leading-tight">
               {turnoverAnual}%
             </div>
           </div>
@@ -171,7 +171,7 @@ export function MiniCapitalHumano() {
             <div className="gold-metallic-gradient text-[7.5px] font-bold uppercase tracking-wider py-0.5 rounded-t-lg text-center font-mono leading-none">
               Estresse IAE
             </div>
-            <div className="dark-glass-value text-white text-center py-0.5 text-[10.5px] font-bold font-mono rounded-b-lg leading-tight">
+            <div className="dark-glass-value text-white text-center py-1 text-[11px] font-bold font-mono rounded-b-lg leading-tight">
               {estresseIAE}%
             </div>
           </div>
