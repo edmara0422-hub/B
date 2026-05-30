@@ -142,7 +142,7 @@ export function InteractiveCockpit() {
   }
 
   return (
-    <div className="w-full flex flex-col gap-6">
+    <div className="w-full flex flex-col gap-6" style={{ fontFamily: "'Poppins', -apple-system, system-ui, sans-serif" }}>
       
       {/* Cabeçalho Executivo Dourado do Cockpit com Abas de Navegação */}
       <div className="w-full flex flex-col sm:flex-row justify-between items-center bg-black/45 border border-white/5 p-4 rounded-2xl backdrop-blur-md select-none gap-4">
@@ -176,7 +176,19 @@ export function InteractiveCockpit() {
       </div>
 
       {/* Grade Principal de 2 Colunas Fixas (Igual ao Mockup e Estrutura da Home) */}
-      <div className="w-full grid grid-cols-1 lg:grid-cols-[38%_62%] gap-6 items-stretch min-h-[750px]">
+      <style dangerouslySetInnerHTML={{ __html: `
+        .cockpit-grid {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 24px;
+        }
+        @media (min-width: 1024px) {
+          .cockpit-grid {
+            grid-template-columns: 38% 62% !important;
+          }
+        }
+      `}} />
+      <div className="w-full cockpit-grid items-stretch min-h-[750px]">
         
         {/* COLUNA ESQUERDA: Os 4 Mini-Cards Analíticos Reais em SVG */}
         <div className="flex flex-col gap-5 justify-between">

@@ -7,6 +7,8 @@
 @source '../app/(main)/sea/page.tsx';
 @source '../app/(main)/explore/page.tsx';
 @source '../app/(main)/explore/conteudos/page.tsx';
+@source '../components';
+@source '../components/sea';
 @source '../components/experience';
 @source '../components/sea/bottom-nav.tsx';
 @source '../components/sea/conteudos-page-client.tsx';
