@@ -45,6 +45,17 @@ export function MiniEstrategia() {
           background: rgba(10, 10, 12, 0.45);
           border: 1px solid rgba(197, 151, 64, 0.25);
         }
+        @keyframes floatBar {
+          0%, 100% {
+            transform: scaleY(1);
+          }
+          50% {
+            transform: scaleY(1.15);
+          }
+        }
+        .animate-bar {
+          animation: floatBar 4s ease-in-out infinite;
+        }
       `}} />
 
       {/* Header Bicolor com 3 Pontos */}
@@ -56,7 +67,7 @@ export function MiniEstrategia() {
       </div>
 
       <div className="flex-1 flex items-center gap-2 py-1">
-        {/* Barras 3D Cilíndricas do Google Trends */}
+        {/* Barras 3D Cilíndricas do Google Trends com animação staggered e reflexo */}
         <div className="w-[52%] h-[120px] flex flex-col justify-between border-r border-white/5 pr-2">
           <div className="flex justify-between items-center mb-0.5">
             <span className="text-[7px] font-normal text-white/45 tracking-wide">Google Trends style</span>
@@ -66,12 +77,13 @@ export function MiniEstrategia() {
           <div className="flex-1 w-full relative">
             <svg className="w-full h-full overflow-visible" viewBox="0 0 115 60">
               <defs>
-                {/* O Gradiente que gera o efeito cilíndrico metálico 3D real */}
+                {/* Gradiente que gera o efeito cilíndrico metálico 3D real com reflexos lineares */}
                 <linearGradient id="cylinderGold" x1="0" y1="0" x2="1" y2="0">
                   <stop offset="0%" stopColor="#9c732c" />
-                  <stop offset="35%" stopColor="#e0b85e" />
-                  <stop offset="65%" stopColor="#ecd399" />
-                  <stop offset="100%" stopColor="#835f1e" />
+                  <stop offset="30%" stopColor="#e0b85e" />
+                  <stop offset="50%" stopColor="#fff2cc" />
+                  <stop offset="70%" stopColor="#e0b85e" />
+                  <stop offset="100%" stopColor="#7a581a" />
                 </linearGradient>
               </defs>
               
@@ -88,6 +100,8 @@ export function MiniEstrategia() {
                 const x = 36 + idx * (barWidth + barGap)
                 const barHeight = (val / 100) * 36
                 const y = 48 - barHeight
+                const originX = x + barWidth / 2
+                const originY = 48
                 return (
                   <rect
                     key={idx}
@@ -97,6 +111,11 @@ export function MiniEstrategia() {
                     height={barHeight}
                     rx="0.8"
                     fill="url(#cylinderGold)"
+                    style={{
+                      transformOrigin: `${originX}px ${originY}px`,
+                      animationDelay: `${idx * 0.2}s`
+                    }}
+                    className="animate-bar"
                   />
                 )
               })}
