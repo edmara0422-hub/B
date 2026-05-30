@@ -2660,7 +2660,7 @@ export default function ConteudosPageClient({ mode = 'normal' }: { mode?: 'norma
                     ].map((sys) => (
                       <Link 
                         key={sys.id} 
-                        href={`/sistemas?active=${sys.id}&clinical=true`}
+                        href={`/explore/sistemas?active=${sys.id}&clinical=true`}
                         className="group relative flex flex-col p-4 rounded-xl border border-white/[0.04] bg-white/[0.01] hover:bg-white/[0.03] hover:border-amber-500/20 transition-all duration-300 pointer-events-auto"
                       >
                         <div className="flex items-center justify-between mb-2">
