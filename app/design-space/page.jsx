@@ -1581,92 +1581,96 @@ function ERBLogo() {
           <line x1="348" y1="200" x2="356" y2="200" stroke="url(#goldStroke)" strokeWidth="1.5" />
         </g>
 
-        {/* 3. The Bespoke Monogram: Intertwined "B" and "ER" */}
+        {/* 3. The Bespoke Monogram: Intertwined "B" and "ER" using PURE vector paths */}
         <g filter="url(#nobleShadow)">
-          {/* BACKGROUND "B" (for Business / IPB) - Golden Serif */}
-          <motion.text
-            x="192"
-            y="256"
-            fill="url(#goldMetallic)"
-            fontFamily="var(--serif), 'Cinzel', 'Playfair Display', 'Didot', 'Georgia', serif"
-            fontSize="182"
-            fontWeight="300"
-            textAnchor="middle"
-            letterSpacing="-0.05em"
-            style={{ userSelect: 'none', filter: hovered ? 'url(#glowFilter)' : 'none' }}
+          {/* Shared Vertical Backbone (Silver) */}
+          <motion.rect
+            x="194"
+            y="110"
+            width="12"
+            height="180"
+            rx="6"
+            fill="url(#silverMetallic)"
             animate={{
-              scale: hovered ? 1.02 : 1,
-              x: hovered ? -2 : 0,
-              y: hovered ? 254 : 256
+              scaleY: hovered ? 1.02 : 1,
             }}
             transition={{ type: "spring", stiffness: 60, damping: 15 }}
-          >
-            B
-          </motion.text>
+          />
 
-          {/* FOREGROUND "E" and "R" (for Edmara Rocha) - Silver Modern Ligature */}
+          {/* Left "E" Bars extending from Backbone (Silver) */}
           <g>
-            {/* Elegant horizontal axis line that binds the letters */}
-            <motion.line
-              x1="95"
-              y1="200"
-              x2="305"
-              y2="200"
-              stroke="url(#silverStroke)"
-              strokeWidth="0.8"
-              strokeOpacity="0.45"
+            {/* Top Bar */}
+            <motion.path
+              d="M194 110 H 130 C 124 110, 120 114, 120 120 C 120 126, 124 130, 130 130 H 194 Z"
+              fill="url(#silverMetallic)"
               animate={{
-                x1: hovered ? 90 : 95,
-                x2: hovered ? 310 : 305,
+                x: hovered ? -3 : 0,
               }}
-              transition={{ duration: 0.6 }}
+              transition={{ type: "spring", stiffness: 50, damping: 12 }}
             />
-
-            {/* "E" - Left Positioned */}
-            <motion.text
-              x="138"
-              y="222"
+            {/* Middle Bar */}
+            <motion.path
+              d="M194 194 H 145 C 139 194, 135 198, 135 204 C 135 210, 139 214, 145 214 H 194 Z"
               fill="url(#silverMetallic)"
-              fontFamily="var(--sans), 'Montserrat', 'Inter', 'Outfit', sans-serif"
-              fontSize="78"
-              fontWeight="200"
-              textAnchor="middle"
-              style={{ userSelect: 'none', letterSpacing: '0.05em' }}
               animate={{
-                x: hovered ? 134 : 138,
-                y: hovered ? 220 : 222,
-                opacity: 0.95
+                x: hovered ? -5 : 0,
               }}
               transition={{ type: "spring", stiffness: 50, damping: 12 }}
-            >
-              E
-            </motion.text>
-
-            {/* "R" - Right Positioned */}
-            <motion.text
-              x="256"
-              y="222"
+            />
+            {/* Bottom Bar */}
+            <motion.path
+              d="M194 278 H 130 C 124 278, 120 282, 120 288 C 120 294, 124 298, 130 298 H 194 Z"
               fill="url(#silverMetallic)"
-              fontFamily="var(--sans), 'Montserrat', 'Inter', 'Outfit', sans-serif"
-              fontSize="78"
-              fontWeight="200"
-              textAnchor="middle"
-              style={{ userSelect: 'none', letterSpacing: '0.05em' }}
               animate={{
-                x: hovered ? 260 : 256,
-                y: hovered ? 220 : 222,
-                opacity: 0.95
+                x: hovered ? -3 : 0,
               }}
               transition={{ type: "spring", stiffness: 50, damping: 12 }}
-            >
-              R
-            </motion.text>
+            />
           </g>
+
+          {/* Right "B" Loops (Gold) */}
+          <g>
+            {/* Top Loop */}
+            <motion.path
+              d="M206 110 H 242 C 267 110, 287 130, 287 155 C 287 180, 267 200, 242 200 H 206 Z"
+              fill="url(#goldMetallic)"
+              stroke="#060608"
+              strokeWidth="2"
+              animate={{
+                scale: hovered ? 1.01 : 1,
+                x: hovered ? 2 : 0,
+              }}
+              transition={{ type: "spring", stiffness: 60, damping: 15 }}
+            />
+            {/* Bottom Loop */}
+            <motion.path
+              d="M206 200 H 246 C 271 200, 291 220, 291 245 C 291 270, 271 290, 246 290 H 206 Z"
+              fill="url(#goldMetallic)"
+              stroke="#060608"
+              strokeWidth="2"
+              animate={{
+                scale: hovered ? 1.01 : 1,
+                x: hovered ? 2 : 0,
+              }}
+              transition={{ type: "spring", stiffness: 60, damping: 15 }}
+            />
+          </g>
+
+          {/* Right "R" Diagonal Leg flowing out of the middle-right intersection (Silver) */}
+          <motion.path
+            d="M225 240 L 275 285 C 280 289, 287 289, 291 285 C 295 281, 295 274, 291 270 L 245 230 Z"
+            fill="url(#silverMetallic)"
+            animate={{
+              x: hovered ? 4 : 0,
+              y: hovered ? 2 : 0,
+            }}
+            transition={{ type: "spring", stiffness: 50, damping: 12 }}
+          />
 
           {/* 4. Elegant "BUSINESS" subscript */}
           <motion.text
             x="200"
-            y="298"
+            y="322"
             fill="url(#goldStroke)"
             fontFamily="var(--sans), 'Montserrat', 'Inter', sans-serif"
             fontSize="10.5"
