@@ -59,6 +59,12 @@ export function MiniCapitalHumano() {
     return `32,52 ${points.join(' ')} 104,52`
   }, [sparklineData])
 
+  const triggerMetricClick = (metricId: string) => {
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('ipb-metric-click', { detail: { metricId } }))
+    }
+  }
+
   return (
     <div 
       className="w-full h-full flex flex-col justify-between p-3 select-none"
@@ -72,6 +78,14 @@ export function MiniCapitalHumano() {
         .dark-glass-value {
           background: rgba(10, 10, 12, 0.45);
           border: 1px solid rgba(210, 175, 90, 0.25);
+          transition: all 0.2s ease;
+        }
+        .interactive-capsule:hover .dark-glass-value {
+          border-color: rgba(210, 175, 90, 0.7) !important;
+          background: rgba(210, 175, 90, 0.1) !important;
+        }
+        .interactive-capsule:hover .gold-metallic-gradient {
+          filter: brightness(1.1);
         }
       `}} />
 
@@ -147,7 +161,10 @@ export function MiniCapitalHumano() {
         {/* Lado Direito: Cápsulas Empilhadas tridimensionais (Split Capsules) */}
         <div className="flex-1 flex flex-col justify-between h-[135px] pl-1.5 space-y-1">
           {/* Burnout */}
-          <div className="flex flex-col w-full">
+          <div 
+            onClick={() => triggerMetricClick('burnout')}
+            className="interactive-capsule flex flex-col w-full cursor-pointer transition-transform duration-200 active:scale-95"
+          >
             <div className="gold-metallic-gradient text-[7.5px] font-bold uppercase tracking-wider py-0.5 rounded-t-lg text-center font-mono leading-none">
               Burnout EEB
             </div>
@@ -157,7 +174,10 @@ export function MiniCapitalHumano() {
           </div>
 
           {/* Turnover */}
-          <div className="flex flex-col w-full">
+          <div 
+            onClick={() => triggerMetricClick('turnover')}
+            className="interactive-capsule flex flex-col w-full cursor-pointer transition-transform duration-200 active:scale-95"
+          >
             <div className="gold-metallic-gradient text-[7.5px] font-bold uppercase tracking-wider py-0.5 rounded-t-lg text-center font-mono leading-none">
               Turnover
             </div>
@@ -167,7 +187,10 @@ export function MiniCapitalHumano() {
           </div>
 
           {/* Estresse */}
-          <div className="flex flex-col w-full">
+          <div 
+            onClick={() => triggerMetricClick('estresse')}
+            className="interactive-capsule flex flex-col w-full cursor-pointer transition-transform duration-200 active:scale-95"
+          >
             <div className="gold-metallic-gradient text-[7.5px] font-bold uppercase tracking-wider py-0.5 rounded-t-lg text-center font-mono leading-none">
               Estresse IAE
             </div>

@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState, useMemo } from 'react'
-import { MoreHorizontal } from 'lucide-react'
+import { MoreHorizontal, Shield, Flame, Activity } from 'lucide-react'
 
 export function HudFinancas() {
   const [capVal, setCapVal] = useState(1000)
@@ -43,6 +43,12 @@ export function HudFinancas() {
     return `M 30,80 L ${points.join(' ')} L 240,80 Z`
   }, [])
 
+  const triggerMetricClick = (metricId: string) => {
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('ipb-metric-click', { detail: { metricId } }))
+    }
+  }
+
   return (
     <div 
       className="w-full h-full flex flex-col justify-between p-5 bg-[#08080a]/85 border border-[#d2af5a]/25 rounded-3xl backdrop-blur-xl select-none"
@@ -74,22 +80,47 @@ export function HudFinancas() {
         }
         .rotate-y-label {
           writing-mode: vertical-rl;
-          transform: transform 180deg;
+          transform: rotate(180deg);
           transform-origin: center;
         }
       `}} />
 
       {/* Header Bicolor com 3 Pontos */}
-      <div className="flex justify-between items-center mb-4 border-b border-white/5 pb-2">
+      <div className="flex justify-between items-center mb-3 border-b border-white/5 pb-2">
         <span className="text-[11px] font-normal text-white/95 tracking-wide">
           <span className="text-[#d2af5a] font-bold">Pilar 2:</span> Finanças & Controladoria
         </span>
         <MoreHorizontal className="h-4 w-4 text-white/40 hover:text-white/80 cursor-pointer" />
       </div>
 
-      <div className="flex-1 flex flex-col justify-between space-y-4">
+      {/* Marcadores de saúde financeira clicáveis e interativos (NASA-tech) */}
+      <div className="grid grid-cols-3 gap-2 mb-3">
+        <div 
+          onClick={() => triggerMetricClick('wacc')} 
+          className="py-1 px-1.5 bg-[#d2af5a]/5 hover:bg-[#d2af5a]/15 border border-[#d2af5a]/25 rounded-xl cursor-pointer text-center transition-all duration-200 active:scale-95"
+        >
+          <span className="text-[7.5px] text-white/45 uppercase block font-mono tracking-wider">WACC</span>
+          <span className="text-[11px] font-bold text-[#d2af5a] font-mono">17.2%</span>
+        </div>
+        <div 
+          onClick={() => triggerMetricClick('ltv_cac')} 
+          className="py-1 px-1.5 bg-[#d2af5a]/5 hover:bg-[#d2af5a]/15 border border-[#d2af5a]/25 rounded-xl cursor-pointer text-center transition-all duration-200 active:scale-95"
+        >
+          <span className="text-[7.5px] text-white/45 uppercase block font-mono tracking-wider">LTV / CAC</span>
+          <span className="text-[11px] font-bold text-[#d2af5a] font-mono">3.2x</span>
+        </div>
+        <div 
+          onClick={() => triggerMetricClick('ebitda')} 
+          className="py-1 px-1.5 bg-[#d2af5a]/5 hover:bg-[#d2af5a]/15 border border-[#d2af5a]/25 rounded-xl cursor-pointer text-center transition-all duration-200 active:scale-95"
+        >
+          <span className="text-[7.5px] text-white/45 uppercase block font-mono tracking-wider">EBITDA</span>
+          <span className="text-[11px] font-bold text-[#d2af5a] font-mono">24.5%</span>
+        </div>
+      </div>
+
+      <div className="flex-1 flex flex-col justify-between space-y-3">
         {/* Sliders de Mesa de Controle do Mockup */}
-        <div className="space-y-2">
+        <div className="space-y-1.5">
           {/* Cap */}
           <div className="flex flex-col">
             <div className="flex justify-between items-center mb-0.5">
@@ -119,9 +150,9 @@ export function HudFinancas() {
         </div>
 
         {/* Eixos de Curvas de Telemetria com Tooltips do Mockup */}
-        <div className="flex-1 flex flex-col space-y-4 pt-2 border-t border-white/5">
+        <div className="flex-1 flex flex-col space-y-3 pt-2 border-t border-white/5">
           {/* 1. Probability Density */}
-          <div className="relative w-full h-[95px] flex items-center pr-2">
+          <div className="relative w-full h-[85px] flex items-center pr-2">
             <div className="w-[18px] flex items-center justify-center text-[6px] uppercase font-bold text-white/35 tracking-widest rotate-y-label">
               Density
             </div>
@@ -159,7 +190,7 @@ export function HudFinancas() {
           </div>
 
           {/* 2. Cumulative Forecast */}
-          <div className="relative w-full h-[95px] flex items-center pr-2">
+          <div className="relative w-full h-[85px] flex items-center pr-2">
             <div className="w-[18px] flex items-center justify-center text-[6px] uppercase font-bold text-white/35 tracking-widest rotate-y-label">
               Cumulative forecast
             </div>
