@@ -3983,6 +3983,184 @@ const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
   "bgMode": "noir"
 }/*EDITMODE-END*/;
 
+const LogoMonogram = ({ size = 30 }) => (
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 400 400"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    style={{ overflow: 'visible' }}
+  >
+    <defs>
+      {/* Metallic Gold Gradients */}
+      <linearGradient id="goldMetallic" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stopColor="#dfb950" />
+        <stop offset="20%" stopColor="#ffd97a" />
+        <stop offset="45%" stopColor="#c39a30" />
+        <stop offset="60%" stopColor="#8c6610" />
+        <stop offset="80%" stopColor="#f7dc8c" />
+        <stop offset="100%" stopColor="#a17b18" />
+      </linearGradient>
+      
+      <linearGradient id="goldStroke" x1="100%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" stopColor="#f7dc8c" />
+        <stop offset="50%" stopColor="#c39a30" />
+        <stop offset="100%" stopColor="#694d07" />
+      </linearGradient>
+
+      {/* Metallic Silver/Chrome Gradients */}
+      <linearGradient id="silverMetallic" x1="0%" y1="100%" x2="100%" y2="0%">
+        <stop offset="0%" stopColor="#7f8895" />
+        <stop offset="25%" stopColor="#ffffff" />
+        <stop offset="50%" stopColor="#a3aab5" />
+        <stop offset="75%" stopColor="#eef1f5" />
+        <stop offset="100%" stopColor="#4e545c" />
+      </linearGradient>
+
+      <linearGradient id="silverStroke" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stopColor="#ffffff" />
+        <stop offset="50%" stopColor="#7f8895" />
+        <stop offset="100%" stopColor="#2c3035" />
+      </linearGradient>
+
+      {/* Ambient Glows */}
+      <radialGradient id="centerGlow" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stopColor="rgba(224, 185, 80, 0.14)" />
+        <stop offset="50%" stopColor="rgba(127, 136, 149, 0.05)" />
+        <stop offset="100%" stopColor="rgba(0, 0, 0, 0)" />
+      </radialGradient>
+
+      {/* High-End Drop Shadow Filter */}
+      <filter id="nobleShadow" x="-10%" y="-10%" width="120%" height="120%">
+        <feDropShadow dx="0" dy="16" stdDeviation="24" floodColor="#000000" floodOpacity="0.65" />
+        <feDropShadow dx="0" dy="4" stdDeviation="6" floodColor="#d4b87a" floodOpacity="0.1" />
+      </filter>
+    </defs>
+
+    {/* 1. Ambient Background Glow */}
+    <circle
+      cx="200"
+      cy="200"
+      r="172"
+      fill="url(#centerGlow)"
+    />
+
+    {/* 2. Noble Geometric Shield/Circle Frame */}
+    <g filter="url(#nobleShadow)">
+      {/* Rounded Glassmorphic Circle */}
+      <circle
+        cx="200"
+        cy="200"
+        r="150"
+        fill="rgba(6, 6, 8, 0.75)"
+        stroke="url(#silverStroke)"
+        strokeWidth="0.8"
+        style={{ backdropFilter: 'blur(20px)' }}
+      />
+
+      {/* Inner Decorative Golden Dashed Ring */}
+      <circle
+        cx="200"
+        cy="200"
+        r="135"
+        stroke="url(#goldStroke)"
+        strokeWidth="1.2"
+        strokeDasharray="6 8 20 8"
+        fill="transparent"
+      />
+
+      {/* Thin Outer Silver Accent Ring */}
+      <circle
+        cx="200"
+        cy="200"
+        r="142"
+        stroke="url(#silverStroke)"
+        strokeWidth="0.5"
+        strokeOpacity="0.6"
+        fill="transparent"
+      />
+
+      {/* Four Compass Coordinates for Executive Touch */}
+      <line x1="200" y1="44" x2="200" y2="52" stroke="url(#goldStroke)" strokeWidth="1.5" />
+      <line x1="200" y1="348" x2="200" y2="356" stroke="url(#goldStroke)" strokeWidth="1.5" />
+      <line x1="44" y1="200" x2="52" y2="200" stroke="url(#goldStroke)" strokeWidth="1.5" />
+      <line x1="348" y1="200" x2="356" y2="200" stroke="url(#goldStroke)" strokeWidth="1.5" />
+    </g>
+
+    {/* 3. The Bespoke Monogram: Intertwined "B" and "ER" using PURE vector paths */}
+    <g filter="url(#nobleShadow)">
+      {/* Shared Vertical Backbone (Silver) */}
+      <rect
+        x="194"
+        y="110"
+        width="12"
+        height="180"
+        rx="6"
+        fill="url(#silverMetallic)"
+      />
+
+      {/* Left "E" Bars extending from Backbone (Silver) */}
+      <g>
+        {/* Top Bar */}
+        <path
+          d="M194 110 H 130 C 124 110, 120 114, 120 120 C 120 126, 124 130, 130 130 H 194 Z"
+          fill="url(#silverMetallic)"
+        />
+        {/* Middle Bar */}
+        <path
+          d="M194 194 H 145 C 139 194, 135 198, 135 204 C 135 210, 139 214, 145 214 H 194 Z"
+          fill="url(#silverMetallic)"
+        />
+        {/* Bottom Bar */}
+        <path
+          d="M194 278 H 130 C 124 278, 120 282, 120 288 C 120 294, 124 298, 130 298 H 194 Z"
+          fill="url(#silverMetallic)"
+        />
+      </g>
+
+      {/* Right "B" Loops (Gold) */}
+      <g>
+        {/* Top Loop */}
+        <path
+          d="M206 110 H 242 C 267 110, 287 130, 287 155 C 287 180, 267 200, 242 200 H 206 Z"
+          fill="url(#goldMetallic)"
+          stroke="#060608"
+          strokeWidth="2"
+        />
+        {/* Bottom Loop */}
+        <path
+          d="M206 200 H 246 C 271 200, 291 220, 291 245 C 291 270, 271 290, 246 290 H 206 Z"
+          fill="url(#goldMetallic)"
+          stroke="#060608"
+          strokeWidth="2"
+        />
+      </g>
+
+      {/* Right "R" Diagonal Leg flowing out of the middle-right intersection (Silver) */}
+      <path
+        d="M225 240 L 275 285 C 280 289, 287 289, 291 285 C 295 281, 295 274, 291 270 L 245 230 Z"
+        fill="url(#silverMetallic)"
+      />
+
+      {/* 4. Elegant "BUSINESS" subscript */}
+      <text
+        x="200"
+        y="322"
+        fill="url(#goldStroke)"
+        fontFamily="var(--sans), 'Montserrat', 'Inter', sans-serif"
+        fontSize="10.5"
+        fontWeight="500"
+        letterSpacing="0.65em"
+        textAnchor="middle"
+        style={{ userSelect: 'none', opacity: 0.8 }}
+      >
+        BUSINESS
+      </text>
+    </g>
+  </svg>
+);
+
 // ──────────────────────────────────────────────────────────────────────────────
 // Top — minimal masthead
 // ──────────────────────────────────────────────────────────────────────────────
@@ -3990,7 +4168,9 @@ function Masthead() {
   return (
     <header className="masthead">
       <div className="masthead-left">
-        <div className="masthead-mark">ER</div>
+        <div className="masthead-mark" style={{ display: 'flex', alignItems: 'center' }}>
+          <LogoMonogram size={30} />
+        </div>
         <div className="masthead-meta">
           <span>edmara rocha</span>
           <span className="sep">·</span>
@@ -4229,7 +4409,9 @@ function Foot() {
     <footer className="colophon">
       <div className="colophon-rule"></div>
       <div className="colophon-row">
-        <div className="colophon-mark text-shimmer-noble">ER</div>
+        <div className="colophon-mark text-shimmer-noble" style={{ display: 'flex', alignItems: 'center' }}>
+          <LogoMonogram size={32} />
+        </div>
         <div className="colophon-meta">
           <span>© 2026 · edmara rocha</span>
           <span className="sep">·</span>
