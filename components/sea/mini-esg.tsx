@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState, useMemo } from 'react'
-import { MoreHorizontal, RefreshCw, Footprint, Users } from 'lucide-react'
+import { MoreHorizontal, RefreshCw, Footprints, Users } from 'lucide-react'
 
 export function MiniEsg() {
   const [pressaoMetas, setPressaoMetas] = useState(5)
@@ -82,7 +82,7 @@ export function MiniEsg() {
           {/* Carbon Footprint Capsule */}
           <div className="border border-[#d4b87a]/20 bg-black/35 px-2 py-1 rounded-xl flex justify-between items-center text-[8px] leading-none hover:border-[#d4b87a]/45 transition-colors">
             <div className="flex items-center gap-1">
-              <Footprint className="h-2.5 w-2.5 text-[#d4b87a]" />
+              <Footprints className="h-2.5 w-2.5 text-[#d4b87a]" />
               <span className="font-normal text-white/50">Footprint carbont</span>
             </div>
             <span className="font-medium text-[#d4b87a] bg-[#d4b87a]/10 px-1 py-0.5 rounded border border-[#d4b87a]/20 font-mono text-[8px] scale-90 whitespace-nowrap">data rha OC 1023.00/t/h</span>
