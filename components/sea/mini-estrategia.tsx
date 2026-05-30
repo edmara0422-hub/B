@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState, useRef, useMemo } from 'react'
 import { Globe } from 'lucide-react'
 import { Canvas, useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
