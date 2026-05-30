@@ -197,7 +197,28 @@ export default function AdminPage() {
       setCreatingBusy(false)
     }
   }
-  const blockUser = async (id: string, block: boolean) => { if (!supabase) return; await supabase.from('profiles').update({ blocked: block }).eq('id', id); flash(block ? 'Bloqueado.' : 'Desbloqueado.'); loadUsers() }
+  const blockUser = async (id: string, block: boolean) => {
+    if (!supabase) return
+    // Busca informações de telefone e nome do usuário antes de atualizar
+    const { data: targetUser } = await supabase.from('profiles').select('phone, name, email').eq('id', id).single()
+    
+    await supabase.from('profiles').update({ blocked: block }).eq('id', id)
+    flash(block ? 'Bloqueado.' : 'Desbloqueado.')
+    loadUsers()
+
+    // Se o usuário possuir um WhatsApp cadastrado, dispara a notificação
+    if (targetUser?.phone) {
+      const msg = block
+        ? `Aviso IPB: Olá, ${targetUser.name || 'usuário'}. Notificamos que o seu acesso à plataforma IPB foi temporariamente suspenso pelo administrador. Entre em contato para suporte.`
+        : `Aviso IPB: Olá, ${targetUser.name || 'usuário'}. O seu acesso à plataforma IPB foi restabelecido pelo administrador! Já pode fazer login novamente.`
+      
+      fetch('/api/admin/users/notify-whatsapp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phone: targetUser.phone, message: msg }),
+      }).catch(() => {})
+    }
+  }
   const deleteUser = async (id: string, email: string) => { if (!confirm(`Excluir ${email}?`)) return; if (!supabase) return; await supabase.from('profiles').delete().eq('id', id); flash('Excluido.'); loadUsers() }
   const saveUserEdit = async (id: string) => { if (!supabase) return; await supabase.from('profiles').update({ name: editName, email: editEmail }).eq('id', id); setEditingUser(null); flash('Atualizado.'); loadUsers() }
   const resetUserPassword = async (userId: string, _email: string) => {
