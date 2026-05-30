@@ -28,7 +28,9 @@ import {
   Target,
   Layers,
   MessageSquare,
-  Send
+  Send,
+  Cpu,
+  Calculator
 } from 'lucide-react'
 import Link from 'next/link'
 import type { LucideIcon } from 'lucide-react'
@@ -2637,6 +2639,41 @@ export default function ConteudosPageClient({ mode = 'normal' }: { mode?: 'norma
 
           {/* Content Layout — Full Width */}
           <div className="flex flex-col gap-6">
+
+              {/* Premium Archived Systems Launcher (Only for Admin in Archived Mode) */}
+              {mode === 'archived' && (
+                <div className="ipb-soft relative overflow-hidden rounded-[1.8rem] px-5 py-6 md:px-8 bg-gradient-to-br from-amber-500/5 to-transparent border border-amber-500/10">
+                  <div className="flex items-center gap-2.5 mb-4">
+                    <div className="flex h-8 w-8 items-center justify-center rounded-[0.7rem] border border-amber-500/20 bg-amber-500/10">
+                      <Calculator className="h-4 w-4 text-amber-400" />
+                    </div>
+                    <div>
+                      <span className="text-[10px] font-semibold uppercase tracking-[0.28em] text-amber-400 block">Sistemas Clínicos de Plantão</span>
+                      <span className="text-[7.5px] text-white/45 uppercase tracking-wider font-mono">Ferramentas homologadas para suporte à decisão na beira do leito</span>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    {[
+                      { id: 'S1', title: 'IPB ICU', desc: 'Prontuário clínico eletrônico e monitoramento de leitos', icon: Cpu },
+                      { id: 'S2', title: 'Calculadoras VM', desc: 'Ventilação Mecânica Protetora, desmame e VNI', icon: Calculator },
+                      { id: 'S3', title: 'Referência Clínica', desc: 'Protocolos de intensivismo, fisiologia e ventilação', icon: FileText }
+                    ].map((sys) => (
+                      <Link 
+                        key={sys.id} 
+                        href={`/sistemas?active=${sys.id}&clinical=true`}
+                        className="group relative flex flex-col p-4 rounded-xl border border-white/[0.04] bg-white/[0.01] hover:bg-white/[0.03] hover:border-amber-500/20 transition-all duration-300 pointer-events-auto"
+                      >
+                        <div className="flex items-center justify-between mb-2">
+                          <sys.icon className="h-5 w-5 text-white/50 group-hover:text-amber-400 transition-colors" />
+                          <span className="text-[7px] font-mono font-bold px-1.5 py-0.5 rounded bg-white/5 border border-white/10 text-white/40 group-hover:border-amber-500/20 group-hover:text-amber-300 transition-all">{sys.id}</span>
+                        </div>
+                        <h4 className="text-[11.5px] font-bold text-white/95 group-hover:text-amber-300 transition-colors leading-tight">{sys.title}</h4>
+                        <p className="text-[9px] text-white/40 leading-snug mt-1">{sys.desc}</p>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              )}
               
               {/* Timeline Track */}
               <ModuleRail modules={visibleModules} activeIndex={filteredActiveIndex} onSelect={handleSelectModuleFiltered} />

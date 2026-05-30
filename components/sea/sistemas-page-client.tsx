@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { ArrowLeft, BookOpen, Calculator, Cpu, FileText, Search, PanelLeftClose, PanelLeftOpen } from 'lucide-react'
 import Link from 'next/link'
 import { useAuthStore } from '@/lib/stores/authStore'
+import { useSearchParams } from 'next/navigation'
 
 // Importações dos Painéis Clínicos Homologados (Intactos)
 import { ProntuarioSystemPanel } from '@/components/sea/prontuario-system-panel'
@@ -79,15 +80,33 @@ const SIDEBAR_GROUPS = [
 ]
 
 export default function SistemasPageClient() {
-  const { isAdmin, initialized } = useAuthStore()
-  const visibleGroups = SIDEBAR_GROUPS.filter(group => isAdmin || group.id !== 'clin')
+  const searchParams = useSearchParams()
+  const clinicalParam = searchParams ? searchParams.get('clinical') === 'true' : false
+  const activeParam = searchParams ? searchParams.get('active') : null
 
-  const [activeNavId, setActiveNavId] = useState<string>('S1')
+  const { isAdmin, initialized } = useAuthStore()
+  const showClinical = isAdmin && clinicalParam
+  const visibleGroups = SIDEBAR_GROUPS.filter(group => showClinical || group.id !== 'clin')
+
+  const [activeNavId, setActiveNavId] = useState<string>('sig-pessoas')
   const [search, setSearch] = useState('')
-  const [activeGroup, setActiveGroup] = useState<string | null>('clin')
+  const [activeGroup, setActiveGroup] = useState<string | null>(showClinical ? 'clin' : 'sig')
   const [accMode, setAccMode] = useState<'padrao' | 'foco' | 'calmo' | 'contraste'>('padrao')
   const [timeStr, setTimeStr] = useState('')
   const [sidebarOpen, setSidebarOpen] = useState(true)
+
+  // Sync with search parameter on load/change
+  useEffect(() => {
+    if (activeParam) {
+      const isClinicalItem = ['S1', 'S2', 'S3'].includes(activeParam)
+      if (!isClinicalItem || (isAdmin && showClinical)) {
+        setActiveNavId(activeParam)
+        if (isClinicalItem) {
+          setActiveGroup('clin')
+        }
+      }
+    }
+  }, [activeParam, isAdmin, showClinical])
 
   // Redirect non-admin users away from clinical systems S1/S2/S3
   useEffect(() => {
