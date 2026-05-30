@@ -59,6 +59,7 @@ export type Profile = {
   created_at: string
   updated_at: string
   blocked?: boolean
+  phone?: string | null
 }
 
 type AuthState = {
@@ -78,7 +79,7 @@ type AuthActions = {
   signOut: () => Promise<void>
   resetPassword: (email: string) => Promise<{ error: string | null }>
   fetchProfile: (userId: string) => Promise<void>
-  updateProfile: (data: Partial<Pick<Profile, 'name' | 'photo_url' | 'notifications_enabled' | 'theme'>>) => Promise<{ error: string | null }>
+  updateProfile: (data: Partial<Pick<Profile, 'name' | 'photo_url' | 'notifications_enabled' | 'theme' | 'phone'>>) => Promise<{ error: string | null }>
   setSession: (session: Session | null) => void
 }
 

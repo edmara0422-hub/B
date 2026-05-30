@@ -6,7 +6,7 @@ import { useAuthStore } from '@/lib/stores/authStore'
 import { supabase } from '@/lib/supabase'
 import {
   ArrowLeft, Bell, Camera, ChevronRight, HelpCircle, Info,
-  Key, LogOut, Mail, Moon, PencilLine, Save, Shield, Trash2, User, X,
+  Key, LogOut, Mail, Moon, PencilLine, Save, Shield, Trash2, User, X, Phone,
 } from 'lucide-react'
 
 export default function ProfilePage() {
@@ -14,7 +14,7 @@ export default function ProfilePage() {
   const { profile, user, isAdmin, signOut, updateProfile } = useAuthStore()
 
   // Edit states
-  const [editField, setEditField] = useState<'name' | 'email' | null>(null)
+  const [editField, setEditField] = useState<'name' | 'email' | 'phone' | null>(null)
   const [editValue, setEditValue] = useState('')
   const [changePassword, setChangePassword] = useState(false)
   const [newPassword, setNewPassword] = useState('')
@@ -54,6 +54,15 @@ export default function ProfilePage() {
     setSaving(false)
     setEditField(null)
     flash('Email atualizado. Verifique a caixa de entrada para confirmar.')
+  }
+
+  const handleSavePhone = async () => {
+    setSaving(true)
+    const result = await updateProfile({ phone: editValue.trim() || null })
+    setSaving(false)
+    if (result.error) { flashErr(result.error); return }
+    setEditField(null)
+    flash('WhatsApp atualizado.')
   }
 
   const handleChangePassword = async () => {
@@ -192,6 +201,25 @@ export default function ProfilePage() {
             <div className="flex-1">
               <p className="text-[9px] uppercase tracking-wider text-white/50">Email</p>
               <p className="text-[12px] font-medium text-white/95">{profile?.email || user?.email}</p>
+            </div>
+            <PencilLine className="h-3.5 w-3.5 text-white/55" />
+          </button>
+        )}
+
+        {/* ── WhatsApp / Telefone ── */}
+        {editField === 'phone' ? (
+          <div className="flex items-center gap-1 rounded-[0.7rem] ipb-soft px-3 py-1.5">
+            <Phone className="h-3.5 w-3.5 shrink-0 text-white/30" />
+            <input className={inputClass} value={editValue} onChange={(e) => setEditValue(e.target.value)} placeholder="Seu WhatsApp (ex: 5511999999999)" autoFocus />
+            <button onClick={handleSavePhone} disabled={saving} className="shrink-0 text-[#4ade80]"><Save className="h-3.5 w-3.5" /></button>
+            <button onClick={() => setEditField(null)} className="shrink-0 text-white/30"><X className="h-3.5 w-3.5" /></button>
+          </div>
+        ) : (
+          <button onClick={() => { setEditField('phone'); setEditValue(profile?.phone || '') }} className={menuBtn}>
+            <Phone className="h-4 w-4 text-white/75" />
+            <div className="flex-1">
+              <p className="text-[9px] uppercase tracking-wider text-white/50">WhatsApp / Telefone</p>
+              <p className="text-[12px] font-medium text-white/95">{profile?.phone || 'Não informado'}</p>
             </div>
             <PencilLine className="h-3.5 w-3.5 text-white/55" />
           </button>
