@@ -5,6 +5,85 @@ import { Globe } from 'lucide-react'
 import { Canvas, useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 
+// Função auxiliar para criar a textura da Terra com continentes dourados procedurais
+function createEarthTexture() {
+  if (typeof window === 'undefined') return null
+  const canvas = document.createElement('canvas')
+  canvas.width = 512
+  canvas.height = 256
+  const ctx = canvas.getContext('2d')
+  if (!ctx) return null
+  
+  // Preenche oceanos com preto profundo e acetinado
+  ctx.fillStyle = '#08080a'
+  ctx.fillRect(0, 0, 512, 256)
+  
+  // Desenha os continentes estilizados com a paleta Champagne Gold oficial do cockpit
+  ctx.fillStyle = '#d4b87a'
+  
+  // América do Norte
+  ctx.beginPath()
+  ctx.moveTo(80, 45)
+  ctx.lineTo(120, 35)
+  ctx.lineTo(135, 55)
+  ctx.lineTo(130, 85)
+  ctx.lineTo(110, 95)
+  ctx.lineTo(90, 80)
+  ctx.closePath()
+  ctx.fill()
+  
+  // América do Sul
+  ctx.beginPath()
+  ctx.moveTo(125, 98)
+  ctx.lineTo(142, 115)
+  ctx.lineTo(152, 135)
+  ctx.lineTo(132, 180)
+  ctx.lineTo(122, 220)
+  ctx.lineTo(112, 180)
+  ctx.lineTo(112, 125)
+  ctx.closePath()
+  ctx.fill()
+  
+  // Eurásia
+  ctx.beginPath()
+  ctx.moveTo(220, 45)
+  ctx.lineTo(310, 30)
+  ctx.lineTo(440, 40)
+  ctx.lineTo(425, 95)
+  ctx.lineTo(385, 120)
+  ctx.lineTo(345, 100)
+  ctx.lineTo(285, 110)
+  ctx.lineTo(245, 85)
+  ctx.closePath()
+  ctx.fill()
+  
+  // África
+  ctx.beginPath()
+  ctx.moveTo(230, 105)
+  ctx.lineTo(282, 100)
+  ctx.lineTo(298, 125)
+  ctx.lineTo(282, 165)
+  ctx.lineTo(258, 200)
+  ctx.lineTo(242, 165)
+  ctx.lineTo(222, 120)
+  ctx.closePath()
+  ctx.fill()
+  
+  // Austrália
+  ctx.beginPath()
+  ctx.moveTo(395, 160)
+  ctx.lineTo(435, 170)
+  ctx.lineTo(425, 200)
+  ctx.lineTo(390, 190)
+  ctx.closePath()
+  ctx.fill()
+  
+  // Antártida
+  ctx.fillRect(0, 242, 512, 14)
+  
+  return new THREE.CanvasTexture(canvas)
+}
+
 function StrategyGlobe({ cenario }: { cenario: string }) {
   const globeRef = useRef<THREE.Group>(null)
   const ringRef1 = useRef<THREE.LineLoop>(null)
@@ -17,6 +96,9 @@ function StrategyGlobe({ cenario }: { cenario: string }) {
 
   // Satélites e órbitas giram mais rápido dependendo do boom tecnológico/mercado
   const speed = cenario === 'ia_boom' ? 1.5 : cenario === 'juros_altos' ? 0.6 : 1.0
+
+  // Gera textura procedural da Terra com cache seguro
+  const earthTexture = useMemo(() => createEarthTexture(), [])
 
   // Definição dos Arcos de Dados Globais (NY -> Londres, Tóquio -> Sydney)
   const [dataArcs, cities] = useMemo(() => {
@@ -111,28 +193,44 @@ function StrategyGlobe({ cenario }: { cenario: string }) {
 
   return (
     <group scale={1.2}>
-      {/* 1. Globo Terrestre Geodésico Wireframe Premium */}
+      {/* 1. Globo Terrestre Procedural de Alta Fidelidade (Mockup NASA style) */}
       <group ref={globeRef}>
-        {/* Camada Geodésica Principal */}
+        {/* Esfera Realista da Terra */}
         <mesh>
+          <sphereGeometry args={[0.72, 32, 32]} />
+          {earthTexture ? (
+            <meshStandardMaterial
+              map={earthTexture}
+              roughness={0.22}
+              metalness={0.85}
+            />
+          ) : (
+            <meshBasicMaterial color="#d4b87a" wireframe transparent opacity={0.18} />
+          )}
+        </mesh>
+        
+        {/* Anel Aramado Geodésico sutil por cima dos continentes */}
+        <mesh scale={1.002}>
           <icosahedronGeometry args={[0.72, 3]} />
           <meshBasicMaterial
             color="#d4b87a"
             wireframe
             transparent
-            opacity={0.18}
-          />
-        </mesh>
-        {/* Camada Interna Opaca de Sombra */}
-        <mesh scale={0.97}>
-          <icosahedronGeometry args={[0.72, 2]} />
-          <meshBasicMaterial
-            color="#000000"
-            transparent
-            opacity={0.28}
+            opacity={0.06}
           />
         </mesh>
       </group>
+
+      {/* Camada Fresnel / Brilho de Atmosfera */}
+      <mesh scale={1.025}>
+        <sphereGeometry args={[0.72, 32, 32]} />
+        <meshBasicMaterial
+          color="#d4b87a"
+          transparent
+          opacity={0.06}
+          side={THREE.BackSide}
+        />
+      </mesh>
 
       {/* 2. Anéis Orbitais de Dados de Alta Resolução */}
       <lineLoop ref={ringRef1} rotation={[0.6, 0.4, 0]}>
