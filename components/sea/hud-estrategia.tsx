@@ -50,14 +50,30 @@ export function HudEstrategia() {
           cenario,
           metaBudgetPercent,
           faturamento,
-          clientes
+          clientes,
+          cac: 350,
+          opex: 60,
+          pressaoMetas: 5,
+          climaFrequencia: 14
         }
       } else {
-        setCenario(win.IPBTelemetry.cenario ?? 'normal')
-        setMetaBudgetPercent(win.IPBTelemetry.metaBudgetPercent ?? 80)
-        setFaturamento(win.IPBTelemetry.faturamento ?? 150)
-        setClientes(win.IPBTelemetry.clientes ?? 1200)
+        win.IPBTelemetry = {
+          faturamento: 150,
+          cac: 350,
+          opex: 60,
+          clientes: 1200,
+          pressaoMetas: 5,
+          cenario: 'normal',
+          climaFrequencia: 14,
+          metaBudgetPercent: 80,
+          ...win.IPBTelemetry
+        }
       }
+
+      setCenario(win.IPBTelemetry.cenario ?? 'normal')
+      setMetaBudgetPercent(win.IPBTelemetry.metaBudgetPercent ?? 80)
+      setFaturamento(win.IPBTelemetry.faturamento ?? 150)
+      setClientes(win.IPBTelemetry.clientes ?? 1200)
     }
 
     const handleTelemetry = (e: Event) => {
@@ -167,11 +183,11 @@ export function HudEstrategia() {
 
       // 3. Área Poligonal PESTEL
       const scores = [politicoScore, economicoScore, socialScore, tecnologicoScore, ecol_legalScore]
-      ctx.fillStyle = cenario === 'ia_boom' ? 'rgba(52, 211, 153, 0.15)' : 'rgba(96, 165, 250, 0.18)'
-      ctx.strokeStyle = cenario === 'ia_boom' ? '#34d399' : '#60a5fa'
+      ctx.fillStyle = cenario === 'ia_boom' ? 'rgba(52, 211, 153, 0.15)' : 'rgba(212, 184, 122, 0.18)'
+      ctx.strokeStyle = cenario === 'ia_boom' ? '#d4b87a' : '#b89d5c'
       ctx.lineWidth = 2
       ctx.shadowBlur = 10
-      ctx.shadowColor = cenario === 'ia_boom' ? 'rgba(52, 211, 153, 0.3)' : 'rgba(96, 165, 250, 0.3)'
+      ctx.shadowColor = cenario === 'ia_boom' ? 'rgba(52, 211, 153, 0.3)' : 'rgba(212, 184, 122, 0.3)'
 
       ctx.beginPath()
       scores.forEach((s, i) => {
@@ -224,11 +240,11 @@ export function HudEstrategia() {
 
       {/* Header do Painel */}
       <div className="hero-header relative z-20">
-        <div className="live-head text-blue-400 flex items-center gap-2">
+        <div className="live-head text-[#d4b87a] flex items-center gap-2">
           <div className="pulse-dot" />
           <span>ST-02 • INTEGRAÇÃO MACROECONÔMICA VIVA</span>
         </div>
-        <div className="ch-label">JUROS REAL SELIC: {juroReal}% • P/E BR: {peRatioBR}</div>
+        <div className="ch-label">JUROS REAL SELIC: {Number(juroReal ?? 0).toFixed(2)}% • P/E BR: {peRatioBR}</div>
       </div>
 
       {/* Conteúdo Principal */}
@@ -241,27 +257,27 @@ export function HudEstrategia() {
             <div className="pneumo-lung-box flex items-center justify-center relative min-h-[140px]">
               <canvas ref={canvasRef} width={220} height={220} className="block select-none" />
               <div className="absolute inset-0 flex flex-col justify-between p-2 pointer-events-none text-[8.5px] font-mono">
-                <div className="text-center text-teal-400 font-bold uppercase tracking-wider">Tecnológico / IA</div>
+                <div className="text-center text-[#d4b87a] font-bold uppercase tracking-wider">Tecnológico / IA</div>
                 <div className="flex justify-between w-full">
-                  <div className="text-rose-400 font-bold uppercase tracking-wider">Econômico</div>
+                  <div className="text-amber-500/80 font-bold uppercase tracking-wider">Econômico</div>
                   <div className="text-[#d4b87a] font-bold uppercase tracking-wider">Político</div>
                 </div>
                 <div className="flex justify-between w-full mt-auto">
-                  <div className="text-purple-400 font-bold uppercase tracking-wider">Ecológico / Legal</div>
-                  <div className="text-cyan-400 font-bold uppercase tracking-wider">Social</div>
+                  <div className="text-amber-200 font-bold uppercase tracking-wider">Ecológico / Legal</div>
+                  <div className="text-[#d4b87a] font-bold uppercase tracking-wider">Social</div>
                 </div>
               </div>
             </div>
 
             {/* SWOT VIVA Real-time */}
             <div className="w-full bg-[#000]/70 p-2.5 rounded-xl border border-white/5 text-[9.5px] flex flex-col justify-center gap-1 font-mono">
-              <div className="text-blue-400 font-bold uppercase flex items-center gap-1"><Zap className="h-3 w-3 animate-pulse" /> SWOT Viva e Alocação</div>
+              <div className="text-[#d4b87a] font-bold uppercase flex items-center gap-1"><Zap className="h-3 w-3 animate-pulse" /> SWOT Viva e Alocação</div>
               <div className="text-white/70 leading-relaxed text-[8.5px]">
-                O share orgânico recuou <span className="text-rose-400 font-bold">{shareOrganicoQueda}%</span>. 
+                O share orgânico recuou <span className="text-amber-500/80 font-bold">{shareOrganicoQueda}%</span>. 
                 {metaBudgetPercent > 50 ? (
-                  <span className="text-amber-400"> Sugere-se migrar 20% do orçamento para o TikTok Ads, aproveitando CPM de US$ {tiktokCpm.toFixed(2)} vs US$ {metaCpm.toFixed(2)} do Meta.</span>
+                  <span className="text-amber-400"> Sugere-se migrar 20% do orçamento para o TikTok Ads, aproveitando CPM de US$ {Number(tiktokCpm ?? 0).toFixed(2)} vs US$ {Number(metaCpm ?? 0).toFixed(2)} do Meta.</span>
                 ) : (
-                  <span className="text-green-400"> Otimização do orçamento amortizou e blindou a marca contra a queda do orgânico!</span>
+                  <span className="text-[#d4b87a]"> Otimização do orçamento amortizou e blindou a marca contra a queda do orgânico!</span>
                 )}
               </div>
             </div>
@@ -270,8 +286,8 @@ export function HudEstrategia() {
         </div>
 
         {/* Fórmulas Matemáticas PESTEL (Estilo NASA) */}
-        <div className="my-3 p-2.5 bg-black/60 border border-blue-400/20 rounded-xl text-white font-mono text-[9px] select-none">
-          <div className="text-[7.5px] uppercase tracking-wider text-blue-400 mb-1.5 font-bold flex justify-between">
+        <div className="my-3 p-2.5 bg-black/60 border border-[#d4b87a]/15 rounded-xl text-white font-mono text-[9px] select-none">
+          <div className="text-[7.5px] uppercase tracking-wider text-[#d4b87a] mb-1.5 font-bold flex justify-between">
             <span>Matriz Multivariada</span>
             <span>Índice Macroeconômico</span>
           </div>
@@ -287,15 +303,15 @@ export function HudEstrategia() {
           </div>
           <div className="flex justify-between items-center text-[7.5px] text-white/50 mt-1.5 px-1 border-t border-white/5 pt-1.5">
             <span>S<sub>i</sub>: Peso de Fatores</span>
-            <span>SELIC Viva: {selic.toFixed(2)}% (Banco Central)</span>
+            <span>SELIC Viva: {Number(selic ?? 0).toFixed(2)}% (Banco Central)</span>
           </div>
         </div>
 
         {/* Cenários e Sliders */}
         <div className="hero-controls-pane select-none mt-2">
           <div>
-            <h3 className="text-[11px] text-blue-400 uppercase tracking-widest font-semibold mb-3 flex items-center gap-2">
-              PESTEL Choques 6D <div className="h-px flex-1 bg-gradient-to-r from-blue-400/20 to-transparent" />
+            <h3 className="text-[11px] text-[#d4b87a] uppercase tracking-widest font-semibold mb-3 flex items-center gap-2">
+              PESTEL Choques 6D <div className="h-px flex-1 bg-gradient-to-r from-[#d4b87a]/20 to-transparent" />
             </h3>
 
             {/* Choque de Cenário */}
@@ -307,8 +323,8 @@ export function HudEstrategia() {
                     setCenario('normal')
                     updateTelemetry({ cenario: 'normal' })
                   }} 
-                  className={`cardio-btn py-2 ${cenario === 'normal' ? 'on text-white bg-blue-500/10' : 'text-white/40'}`}
-                  style={{ borderColor: cenario === 'normal' ? '#60a5fa' : 'rgba(255,255,255,0.06)' }}
+                  className={`cardio-btn py-2 ${cenario === 'normal' ? 'on text-white bg-[#d4b87a]/10' : 'text-white/40'}`}
+                  style={{ borderColor: cenario === 'normal' ? '#d4b87a' : 'rgba(255,255,255,0.06)' }}
                 >
                   Estável
                 </button>
@@ -317,8 +333,8 @@ export function HudEstrategia() {
                     setCenario('juros_altos')
                     updateTelemetry({ cenario: 'juros_altos' })
                   }} 
-                  className={`cardio-btn py-2 ${cenario === 'juros_altos' ? 'on text-white bg-rose-500/10' : 'text-white/40'}`}
-                  style={{ borderColor: cenario === 'juros_altos' ? '#f87171' : 'rgba(255,255,255,0.06)' }}
+                  className={`cardio-btn py-2 ${cenario === 'juros_altos' ? 'on text-white bg-amber-500/10' : 'text-white/40'}`}
+                  style={{ borderColor: cenario === 'juros_altos' ? '#e5af65' : 'rgba(255,255,255,0.06)' }}
                 >
                   SELIC Alta
                 </button>
@@ -327,8 +343,8 @@ export function HudEstrategia() {
                     setCenario('ia_boom')
                     updateTelemetry({ cenario: 'ia_boom' })
                   }} 
-                  className={`cardio-btn py-2 ${cenario === 'ia_boom' ? 'on text-white bg-emerald-500/10' : 'text-white/40'}`}
-                  style={{ borderColor: cenario === 'ia_boom' ? '#34d399' : 'rgba(255,255,255,0.06)' }}
+                  className={`cardio-btn py-2 ${cenario === 'ia_boom' ? 'on text-white bg-[#d4b87a]/10' : 'text-white/40'}`}
+                  style={{ borderColor: cenario === 'ia_boom' ? '#d4b87a' : 'rgba(255,255,255,0.06)' }}
                 >
                   IA Boom
                 </button>
@@ -348,7 +364,7 @@ export function HudEstrategia() {
                   setMetaBudgetPercent(val)
                   updateTelemetry({ metaBudgetPercent: val })
                 }}
-                className="c-slider-input text-blue-400"
+                className="c-slider-input text-[#d4b87a]"
               />
             </div>
           </div>
@@ -363,7 +379,7 @@ export function HudEstrategia() {
             )}
 
             {cenario === 'ia_boom' && (
-              <div className="flex items-start gap-1.5 text-[9px] text-green-400 bg-green-400/5 p-2 rounded-lg border border-green-400/20">
+              <div className="flex items-start gap-1.5 text-[9px] text-[#d4b87a] bg-[#d4b87a]/5 p-2 rounded-lg border border-[#d4b87a]/20">
                 <Lightbulb className="h-3.5 w-3.5 shrink-0 mt-0.5" />
                 <span><b>IA Eficiência:</b> Disrupção de criação e marketing ativa. Custos de copywriting e criativos reduzidos em 60%. Acelerar via LLMs locais.</span>
               </div>
@@ -372,15 +388,15 @@ export function HudEstrategia() {
         </div>
 
         {/* Micro-Terminal de Processamento em Tempo Real */}
-        <div className="mt-4 border border-blue-400/20 bg-[#070707] rounded-xl overflow-hidden shadow-2xl">
+        <div className="mt-4 border border-[#d4b87a]/15 bg-[#070707] rounded-xl overflow-hidden shadow-2xl">
           <div className="bg-black/80 px-3 py-1.5 flex items-center justify-between border-b border-white/5">
-            <div className="flex items-center gap-1.5 text-blue-400 font-mono text-[8px] font-bold">
+            <div className="flex items-center gap-1.5 text-[#d4b87a] font-mono text-[8px] font-bold">
               <TerminalIcon className="h-3.5 w-3.5" />
               <span>IPB TRENDS SCANNER TERMINAL</span>
             </div>
             <div className="text-[7.5px] font-mono text-white/30">ACTIVE SCAN</div>
           </div>
-          <div className="p-2.5 font-mono text-[7.5px] text-blue-400/90 h-[70px] overflow-y-auto space-y-0.5 leading-normal scrollbar-none">
+          <div className="p-2.5 font-mono text-[7.5px] text-[#d4b87a]/90 h-[70px] overflow-y-auto space-y-0.5 leading-normal scrollbar-none">
             {logs.map((log, index) => (
               <div key={index} className="whitespace-pre-wrap">{log}</div>
             ))}

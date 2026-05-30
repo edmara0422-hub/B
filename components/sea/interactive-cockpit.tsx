@@ -32,8 +32,8 @@ interface SystemDef {
 const SYSTEMS: Record<SystemId, SystemDef> = {
   ai: { id: 'ai', title: 'IPB AI', icon: Sparkles, color: '#d4b87a' },
   financas: { id: 'financas', title: 'Finanças', icon: TrendingUp, color: '#d4b87a' },
-  estrategia: { id: 'estrategia', title: 'Estratégia', icon: Globe, color: '#60a5fa' },
-  capital_humano: { id: 'capital_humano', title: 'Cap. Humano', icon: Users, color: '#34d399' },
+  estrategia: { id: 'estrategia', title: 'Estratégia', icon: Globe, color: '#d4b87a' },
+  capital_humano: { id: 'capital_humano', title: 'Cap. Humano', icon: Users, color: '#d4b87a' },
   esg: { id: 'esg', title: 'Governança & ESG', icon: Leaf, color: '#d4b87a' },
 }
 
@@ -140,7 +140,7 @@ export function InteractiveCockpit() {
   return (
     <div className="w-full flex flex-col gap-4">
       {/* Mobile Systems Switcher */}
-      <div className="flex lg:hidden items-center justify-between gap-1 p-1 rounded-2xl bg-black/45 border border-white/5 backdrop-blur-xl">
+      <div className="flex min-[1025px]:hidden items-center justify-between gap-1 p-1 rounded-2xl bg-black/45 border border-white/5 backdrop-blur-xl">
         {ALL_SYSTEMS.map((sysId) => {
           const sys = SYSTEMS[sysId]
           const active = layout[2] === sysId

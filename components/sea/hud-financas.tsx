@@ -66,17 +66,32 @@ export function HudFinancas() {
           opex,
           clientes,
           pressaoMetas,
-          cenario
+          cenario,
+          climaFrequencia: 14,
+          metaBudgetPercent: 80
         }
       } else {
-        // Se já existe, atualiza o estado local
-        setFaturamento(win.IPBTelemetry.faturamento)
-        setCac(win.IPBTelemetry.cac)
-        setOpex(win.IPBTelemetry.opex)
-        setClientes(win.IPBTelemetry.clientes)
-        setPressaoMetas(win.IPBTelemetry.pressaoMetas)
-        setCenario(win.IPBTelemetry.cenario)
+        // Garante que todos os campos existem se outro componente inicializou primeiro
+        win.IPBTelemetry = {
+          faturamento: 150,
+          cac: 350,
+          opex: 60,
+          clientes: 1200,
+          pressaoMetas: 5,
+          cenario: 'normal',
+          climaFrequencia: 14,
+          metaBudgetPercent: 80,
+          ...win.IPBTelemetry
+        }
       }
+      
+      // Atualiza o estado local a partir do global
+      setFaturamento(win.IPBTelemetry.faturamento ?? 150)
+      setCac(win.IPBTelemetry.cac ?? 350)
+      setOpex(win.IPBTelemetry.opex ?? 60)
+      setClientes(win.IPBTelemetry.clientes ?? 1200)
+      setPressaoMetas(win.IPBTelemetry.pressaoMetas ?? 5)
+      setCenario(win.IPBTelemetry.cenario ?? 'normal')
     }
 
     const handleTelemetry = (e: Event) => {
@@ -105,13 +120,22 @@ export function HudFinancas() {
 
   // --- TERMINAL LOGS GENERATOR ---
   useEffect(() => {
+    const safeMargem = Number(margemEbitda || 0)
+    const safeRunway = Number(runway || 0)
+    const safeCac = Number(cac || 0)
+    const safeLtvCac = Number(ltvCac || 0)
+    const safeTurnover = Number(custoRealTurnover || 0)
+    const safeSelic = Number(selic || 0)
+    const safeJuros = Number(jurosReais || 0)
+    const safeWacc = Number(wacc || 0)
+
     const messages = [
-      `Recalculando margem EBITDA: ${margemEbitda.toFixed(2)}%`,
-      `Atualizando Runway: ${runway === 99 ? 'Infinito' : `${runway.toFixed(1)} meses`}`,
-      `CAC atualizado a R$ ${cac.toFixed(0)}. Relação LTV/CAC: ${ltvCac.toFixed(1)}x`,
-      `Impacto indireto do Burnout: Custo de turnover de R$ ${custoRealTurnover.toFixed(0)}k/mês`,
-      `SELIC nominal a ${selic.toFixed(2)}%. Juros reais projetados: ${jurosReais.toFixed(2)}%`,
-      `Processando matriz Monte Carlo: 5000 iterações concluídas com WACC de ${wacc}%`,
+      `Recalculando margem EBITDA: ${safeMargem.toFixed(2)}%`,
+      `Atualizando Runway: ${safeRunway === 99 ? 'Infinito' : `${safeRunway.toFixed(1)} meses`}`,
+      `CAC atualizado a R$ ${safeCac.toFixed(0)}. Relação LTV/CAC: ${safeLtvCac.toFixed(1)}x`,
+      `Impacto indireto do Burnout: Custo de turnover de R$ ${safeTurnover.toFixed(0)}k/mês`,
+      `SELIC nominal a ${safeSelic.toFixed(2)}%. Juros reais projetados: ${safeJuros.toFixed(2)}%`,
+      `Processando matriz Monte Carlo: 5000 iterações concluídas com WACC de ${safeWacc.toFixed(1)}%`,
     ]
 
     const interval = setInterval(() => {
@@ -287,11 +311,11 @@ export function HudFinancas() {
               </div>
               <div className="select-none">
                 <h4 className="margin-0 text-[10px] text-white/45 uppercase font-medium tracking-widest">Margem EBITDA Preditiva</h4>
-                <b className={`font-mono text-5xl mt-1.5 block filter drop-shadow-[0_0_15px_rgba(212,184,122,0.3)] ${margemEbitda >= 0 ? 'text-[#4ade80]' : 'text-[#f87171]'}`}>
-                  {margemEbitda.toFixed(1)}%
+                <b className={`font-mono text-5xl mt-1.5 block filter drop-shadow-[0_0_15px_rgba(212,184,122,0.3)] ${(margemEbitda ?? 0) >= 0 ? 'text-[#d4b87a]' : 'text-amber-500/80'}`}>
+                  {Number(margemEbitda ?? 0).toFixed(1)}%
                 </b>
-                <p className={`margin-0 mt-2 text-[10px] font-bold uppercase tracking-wider ${margemEbitda >= 15 ? 'text-[#4ade80]' : margemEbitda >= 0 ? 'text-amber-400' : 'text-[#f87171]'}`}>
-                  {margemEbitda >= 20 ? 'Excelente Eficiência' : margemEbitda >= 0 ? 'Margem Positiva' : 'Déficit Operacional'}
+                <p className={`margin-0 mt-2 text-[10px] font-bold uppercase tracking-wider ${(margemEbitda ?? 0) >= 15 ? 'text-[#d4b87a]' : (margemEbitda ?? 0) >= 0 ? 'text-amber-400' : 'text-amber-500/60'}`}>
+                  {(margemEbitda ?? 0) >= 20 ? 'Excelente Eficiência' : (margemEbitda ?? 0) >= 0 ? 'Margem Positiva' : 'Déficit Operacional'}
                 </p>
               </div>
             </div>
@@ -300,10 +324,10 @@ export function HudFinancas() {
             <div className="canvas-graph-container w-full h-[115px] relative rounded-xl border border-white/5 bg-[#000]/70 shrink-0 overflow-hidden">
               <canvas ref={canvasRef} width={420} height={115} className="w-full h-full block" />
               <div className="graph-overlay-vals absolute right-3 top-2 text-[8px] font-mono text-white/40 flex flex-col gap-0.5 text-right pointer-events-none">
-                <span>EBITDA Operac: <b className="text-white">R$ {ebitda.toFixed(1)}k</b></span>
-                <span>Burnout Index: <b className="text-[#f87171]">{burnoutEEB}%</b></span>
-                <span>Runway Caixa: <b className="text-white">{runway === 99 ? 'Infinito' : `${runway.toFixed(1)} meses`}</b></span>
-                <span>LTV/CAC Ratio: <b className="text-[#d4b87a]">{ltvCac.toFixed(1)}x</b></span>
+                <span>EBITDA Operac: <b className="text-white">R$ {Number(ebitda ?? 0).toFixed(1)}k</b></span>
+                <span>Burnout Index: <b className="text-amber-500/80">{Number(burnoutEEB ?? 0).toFixed(0)}%</b></span>
+                <span>Runway Caixa: <b className="text-white">{(runway ?? 99) === 99 ? 'Infinito' : `${Number(runway ?? 0).toFixed(1)} meses`}</b></span>
+                <span>LTV/CAC Ratio: <b className="text-[#d4b87a]">{Number(ltvCac ?? 0).toFixed(1)}x</b></span>
               </div>
             </div>
 
@@ -415,21 +439,21 @@ export function HudFinancas() {
           {/* Avisos de Análise 6D e Conexões de Cascatas */}
           <div className="border-t border-white/5 pt-3 mt-4 space-y-2">
             {ltvCac < 3 ? (
-              <div className="flex items-start gap-1.5 text-[9px] text-[#f87171] bg-[#f87171]/5 p-2 rounded-lg border border-[#f87171]/20">
+              <div className="flex items-start gap-1.5 text-[9px] text-amber-500/80 bg-amber-500/5 p-2 rounded-lg border border-amber-500/20">
                 <AlertTriangle className="h-3.5 w-3.5 shrink-0 mt-0.5" />
-                <span>Risco: CAC muito alto! LTV/CAC ({ltvCac.toFixed(1)}x) está abaixo do mínimo ideal de 3x. Reduza CAC ou melhore o ticket médio.</span>
+                <span>Risco: CAC muito alto! LTV/CAC ({Number(ltvCac ?? 0).toFixed(1)}x) está abaixo do mínimo ideal de 3x. Reduza CAC ou melhore o ticket médio.</span>
               </div>
             ) : (
-              <div className="flex items-start gap-1.5 text-[9px] text-[#34d399] bg-[#34d399]/5 p-2 rounded-lg border border-[#34d399]/20">
+              <div className="flex items-start gap-1.5 text-[9px] text-[#d4b87a] bg-[#d4b87a]/5 p-2 rounded-lg border border-[#d4b87a]/20">
                 <CheckCircle2 className="h-3.5 w-3.5 shrink-0 mt-0.5" />
-                <span>LTV/CAC saudável ({ltvCac.toFixed(1)}x). Tração digital sólida.</span>
+                <span>LTV/CAC saudável ({Number(ltvCac ?? 0).toFixed(1)}x). Tração digital sólida.</span>
               </div>
             )}
 
             {burnoutEEB > 30 && (
-              <div className="flex items-start gap-1.5 text-[9px] text-[#f87171] bg-[#f87171]/5 p-2 rounded-lg border border-[#f87171]/20">
+              <div className="flex items-start gap-1.5 text-[9px] text-amber-500/80 bg-amber-500/5 p-2 rounded-lg border border-amber-500/20">
                 <AlertTriangle className="h-3.5 w-3.5 shrink-0 mt-0.5" />
-                <span><b>Cascata 1 Alerta:</b> O Burnout Coletivo ({burnoutEEB}%) gera {demissoesMes} demissões/mês, drenando R$ -{custoRealTurnover.toFixed(0)}k de EBITDA!</span>
+                <span><b>Cascata 1 Alerta:</b> O Burnout Coletivo ({Number(burnoutEEB ?? 0).toFixed(0)}%) gera {Number(demissoesMes ?? 0).toFixed(0)} demissões/mês, drenando R$ -{Number(custoRealTurnover ?? 0).toFixed(0)}k de EBITDA!</span>
               </div>
             )}
           </div>
@@ -444,7 +468,7 @@ export function HudFinancas() {
             </div>
             <div className="text-[7.5px] font-mono text-white/30">ONLINE</div>
           </div>
-          <div className="p-2.5 font-mono text-[7.5px] text-[#4ade80]/90 h-[70px] overflow-y-auto space-y-0.5 leading-normal scrollbar-none">
+          <div className="p-2.5 font-mono text-[7.5px] text-[#d4b87a]/90 h-[70px] overflow-y-auto space-y-0.5 leading-normal scrollbar-none">
             {logs.map((log, index) => (
               <div key={index} className="whitespace-pre-wrap">{log}</div>
             ))}
