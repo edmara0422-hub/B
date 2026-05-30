@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState, useMemo } from 'react'
-import { TrendingUp, TrendingDown } from 'lucide-react'
+import { MoreHorizontal } from 'lucide-react'
 
 export function MiniCapitalHumano() {
   const [pressaoMetas, setPressaoMetas] = useState(5)
@@ -13,23 +13,22 @@ export function MiniCapitalHumano() {
         setPressaoMetas(telemetry.pressaoMetas ?? 5)
       }
     }
-
     handleTelemetry()
-
     window.addEventListener('ipb-telemetry', handleTelemetry)
     return () => window.removeEventListener('ipb-telemetry', handleTelemetry)
   }, [])
 
+  // Mathematical alignment to return mockup baselines exactly at pressaoMetas = 5
   const burnoutEEB = useMemo(() => {
-    return Math.round(Math.min(98, 5 + Math.pow(pressaoMetas, 2.1)))
+    return Math.round(31 + (pressaoMetas - 5) * 3.4)
   }, [pressaoMetas])
 
   const turnoverAnual = useMemo(() => {
-    return Number((38 + Math.pow(pressaoMetas, 1.4) * 2.5).toFixed(1))
+    return Number((38 + (pressaoMetas - 5) * 1.8).toFixed(1))
   }, [pressaoMetas])
 
   const estresseIAE = useMemo(() => {
-    return Number((9.3 + pressaoMetas * 7.5).toFixed(1))
+    return Number((9.3 + (pressaoMetas - 5) * 1.2).toFixed(1))
   }, [pressaoMetas])
 
   // Sparkline data representing Humor Pulse Surveys over 7 weeks
@@ -44,8 +43,8 @@ export function MiniCapitalHumano() {
 
   const polylinePoints = useMemo(() => {
     return sparklineData.map((val, idx) => {
-      const x = (idx / 6) * 110 // adapted width
-      const y = 60 - (val / 100) * 45 // adapted height
+      const x = 32 + (idx / 6) * 72 // fitted x axis inside axes margins
+      const y = 48 - (val / 100) * 36 // fitted y axis inside axes margins
       return `${x},${y}`
     }).join(' ')
   }, [sparklineData])
@@ -53,76 +52,101 @@ export function MiniCapitalHumano() {
   const areaPoints = useMemo(() => {
     if (sparklineData.length === 0) return ''
     const points = sparklineData.map((val, idx) => {
-      const x = (idx / 6) * 110
-      const y = 60 - (val / 100) * 45
+      const x = 32 + (idx / 6) * 72
+      const y = 48 - (val / 100) * 36
       return `${x},${y}`
     })
-    return `0,60 ${points.join(' ')} 110,60`
+    return `32,48 ${points.join(' ')} 104,48`
   }, [sparklineData])
 
   return (
-    <div className="w-full h-full flex flex-col justify-between p-3 select-none">
-      {/* Header */}
+    <div 
+      className="w-full h-full flex flex-col justify-between p-3 select-none"
+      style={{ fontFamily: "'Poppins', -apple-system, system-ui, sans-serif" }}
+    >
+      {/* Header Premium (Poppins Fina) */}
       <div className="flex justify-between items-center w-full z-10 border-b border-white/5 pb-1">
-        <span className="text-[10px] font-black text-white tracking-widest uppercase">1) CAP. HUMANO & LIDERANÇA</span>
-        <span className="text-[8px] font-mono text-white/40 uppercase tracking-widest font-bold">Pessoas & Saúde</span>
+        <span className="text-xs font-normal text-white/95 tracking-wide">Pilar 1: Cap. Humano & Liderança</span>
+        <MoreHorizontal className="h-4 w-4 text-white/40 hover:text-white/80 cursor-pointer" />
       </div>
 
       {/* Body: 2 Columns */}
-      <div className="flex-1 flex items-center gap-3 py-2">
-        {/* Left Side: SVG Sparkline */}
-        <div className="w-[50%] h-[75px] flex flex-col justify-between border-r border-white/5 pr-3">
-          <div className="flex justify-between items-center">
-            <span className="text-[7px] uppercase tracking-wider text-white/30 font-bold">Humor Pulse (7w)</span>
-            <span className="text-[9px] font-mono font-bold text-[#d4b87a] flex items-center gap-0.5">
-              {100 - burnoutEEB}% {burnoutEEB < 35 ? <TrendingUp className="h-2.5 w-2.5 text-emerald-400" /> : <TrendingDown className="h-2.5 w-2.5 text-amber-500" />}
-            </span>
+      <div className="flex-1 flex items-center gap-2 py-2">
+        
+        {/* Left Side: SVG Sparkline with X/Y axes and coordinate labels */}
+        <div className="w-[52%] h-[120px] flex flex-col justify-between border-r border-white/5 pr-2">
+          <div className="flex justify-between items-center mb-0.5">
+            <span className="text-[7px] uppercase tracking-wider text-white/35 font-bold">Live SVG humor pulse sparkline</span>
+            <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
           </div>
-          <div className="flex-1 flex items-end">
-            <svg className="w-full h-[50px] overflow-visible" viewBox="0 0 110 60" preserveAspectRatio="none">
+          
+          <div className="flex-1 w-full relative">
+            <svg className="w-full h-full overflow-visible" viewBox="0 0 115 60">
               <defs>
                 <linearGradient id="humorGrad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#d4b87a" stopOpacity="0.25" />
+                  <stop offset="0%" stopColor="#d4b87a" stopOpacity="0.22" />
                   <stop offset="100%" stopColor="#d4b87a" stopOpacity="0.01" />
                 </linearGradient>
               </defs>
+              
+              {/* Axes lines */}
+              <line x1="32" y1="48" x2="108" y2="48" stroke="rgba(255,255,255,0.15)" strokeWidth="0.6" />
+              <line x1="32" y1="8" x2="32" y2="48" stroke="rgba(255,255,255,0.15)" strokeWidth="0.6" />
+              
+              {/* Y Axis Grid lines */}
+              <line x1="32" y1="28" x2="108" y2="28" stroke="rgba(255,255,255,0.04)" strokeWidth="0.5" strokeDasharray="2,2" />
+              <line x1="32" y1="12" x2="108" y2="12" stroke="rgba(255,255,255,0.04)" strokeWidth="0.5" strokeDasharray="2,2" />
+
+              {/* Shaded Area & Line */}
               <polygon points={areaPoints} fill="url(#humorGrad)" />
-              <polyline fill="none" stroke="#d4b87a" strokeWidth="1.8" points={polylinePoints} />
+              <polyline fill="none" stroke="#d4b87a" strokeWidth="1.5" points={polylinePoints} />
+              
               {sparklineData.length > 0 && (
                 <circle
-                  cx="110"
-                  cy={60 - (sparklineData[sparklineData.length - 1] / 100) * 45}
-                  r="2.5"
+                  cx={32 + 72}
+                  cy={48 - (sparklineData[sparklineData.length - 1] / 100) * 36}
+                  r="1.8"
                   fill="#fff"
                   stroke="#d4b87a"
-                  strokeWidth="1.2"
+                  strokeWidth="0.8"
                 />
               )}
+
+              {/* Y Axis labels exactly as mockup */}
+              {['100', '50', '0', '-5', '-10'].map((lbl, idx) => {
+                const y = 8 + idx * 10
+                return (
+                  <text key={idx} x="27" y={y + 2} fill="rgba(255,255,255,0.3)" fontSize="5.5" textAnchor="end" fontFamily="monospace">{lbl}</text>
+                )
+              })}
+
+              {/* X Axis labels exactly as mockup */}
+              <text x="34" y="56" fill="rgba(255,255,255,0.3)" fontSize="5.5" textAnchor="start" fontFamily="monospace">18:00</text>
+              <text x="106" y="56" fill="rgba(255,255,255,0.3)" fontSize="5.5" textAnchor="end" fontFamily="monospace">19:00</text>
             </svg>
           </div>
         </div>
 
-        {/* Right Side: Metrics */}
-        <div className="flex-1 flex flex-col justify-center space-y-1.5 pl-1.5">
-          <div className="flex flex-col text-left">
-            <span className="text-[7.5px] uppercase tracking-wider text-white/35 font-bold leading-none">Burnout EEB</span>
-            <span className="text-sm font-bold text-[#d4b87a] font-mono leading-none mt-1">{burnoutEEB}%</span>
+        {/* Right Side: Metrics as Beautiful Gold-Bordered Capsules (Mockup Style) */}
+        <div className="flex-1 flex flex-col justify-center space-y-1.5 pl-1">
+          {/* Burnout Capsule */}
+          <div className="border border-[#d4b87a]/20 bg-black/35 px-2 py-1 rounded-xl flex justify-between items-center text-[8.5px] leading-none hover:border-[#d4b87a]/45 transition-colors">
+            <span className="font-normal text-white/50">Burnout EEB</span>
+            <span className="font-medium text-[#d4b87a] bg-[#d4b87a]/10 px-1 py-0.5 rounded-md border border-[#d4b87a]/20 font-mono text-[9px]">{burnoutEEB}%</span>
           </div>
-          <div className="flex flex-col text-left">
-            <span className="text-[7.5px] uppercase tracking-wider text-white/35 font-bold leading-none">Turnover</span>
-            <span className="text-sm font-bold text-[#d4b87a] font-mono leading-none mt-1">{turnoverAnual}%</span>
+
+          {/* Turnover Capsule */}
+          <div className="border border-[#d4b87a]/20 bg-black/35 px-2 py-1 rounded-xl flex justify-between items-center text-[8.5px] leading-none hover:border-[#d4b87a]/45 transition-colors">
+            <span className="font-normal text-white/50">Turnover</span>
+            <span className="font-medium text-[#d4b87a] bg-[#d4b87a]/10 px-1 py-0.5 rounded-md border border-[#d4b87a]/20 font-mono text-[9px]">{turnoverAnual}%</span>
           </div>
-          <div className="flex flex-col text-left">
-            <span className="text-[7.5px] uppercase tracking-wider text-white/35 font-bold leading-none">Estresse IAE</span>
-            <span className="text-sm font-bold text-[#d4b87a] font-mono leading-none mt-1">{estresseIAE}%</span>
+
+          {/* Estresse Capsule */}
+          <div className="border border-[#d4b87a]/20 bg-black/35 px-2 py-1 rounded-xl flex justify-between items-center text-[8.5px] leading-none hover:border-[#d4b87a]/45 transition-colors">
+            <span className="font-normal text-white/50">Estresse IAE</span>
+            <span className="font-medium text-[#d4b87a] bg-[#d4b87a]/10 px-1 py-0.5 rounded-md border border-[#d4b87a]/20 font-mono text-[9px]">{estresseIAE}%</span>
           </div>
         </div>
-      </div>
-
-      {/* Footer Vitals */}
-      <div className="flex justify-between items-center text-[7.5px] text-white/20 border-t border-white/5 pt-1">
-        <span>Pulse Surveys · Estresse</span>
-        <span className="font-bold text-[#d4b87a]/60 font-mono">LIVE FEED</span>
       </div>
     </div>
   )

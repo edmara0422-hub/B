@@ -1,152 +1,177 @@
 'use client'
 
+import { MoreHorizontal } from 'lucide-react'
+
 export function MiniAi() {
   return (
-    <div className="w-full h-full flex flex-col justify-between p-3 select-none" style={{ fontFamily: "'Poppins', -apple-system, system-ui, sans-serif" }}>
-      {/* Header */}
+    <div 
+      className="w-full h-full flex flex-col justify-between p-3 select-none"
+      style={{ fontFamily: "'Poppins', -apple-system, system-ui, sans-serif" }}
+    >
+      {/* Header Premium (Poppins Fina) */}
       <div className="flex justify-between items-center w-full z-10 border-b border-white/5 pb-1">
-        <span className="text-[10px] font-black text-white tracking-widest uppercase">4) IPB AI ASSISTANT</span>
-        <span className="text-[8px] font-mono text-[#d4b87a] uppercase tracking-widest font-bold bg-[#d4b87a]/10 px-1.5 py-0.5 rounded border border-[#d4b87a]/20">Active Engine</span>
+        <span className="text-xs font-normal text-white/95 tracking-wide">IPB AI Assistant</span>
+        <MoreHorizontal className="h-4 w-4 text-white/40 hover:text-white/80 cursor-pointer" />
       </div>
 
       {/* Body: 2 Columns */}
-      <div className="flex-1 flex items-center gap-3 py-2">
-        {/* Left Side: Glowing SVG Holographic AI Orb */}
-        <div className="w-[50%] h-[80px] flex flex-col justify-center items-center border-r border-white/5 pr-3 relative overflow-hidden">
+      <div className="flex-1 flex items-center gap-2 py-2">
+        
+        {/* Left Side: Glowing SVG Holographic AI Orb on Metallic Pedestal (Mockup Style) */}
+        <div className="w-[50%] h-[120px] flex flex-col justify-center items-center border-r border-white/5 pr-2 relative overflow-hidden">
           <style dangerouslySetInnerHTML={{ __html: `
-            @keyframes pulseOrb3D {
+            @keyframes pulseOrbGlass {
               0%, 100% { 
                 transform: scale(1); 
-                filter: drop-shadow(0 0 15px rgba(212, 184, 122, 0.45)) drop-shadow(0 0 30px rgba(212, 184, 122, 0.2)); 
+                filter: drop-shadow(0 0 12px rgba(212, 184, 122, 0.4)) drop-shadow(0 0 20px rgba(212, 184, 122, 0.15));
                 opacity: 0.95;
               }
               50% { 
-                transform: scale(1.06); 
-                filter: drop-shadow(0 0 25px rgba(212, 184, 122, 0.8)) drop-shadow(0 0 45px rgba(212, 184, 122, 0.4)); 
+                transform: scale(1.04); 
+                filter: drop-shadow(0 0 20px rgba(212, 184, 122, 0.75)) drop-shadow(0 0 35px rgba(212, 184, 122, 0.35));
                 opacity: 1;
               }
             }
-            @keyframes rotateRingClockwise {
+            @keyframes rotatePedestal {
               0% { transform: rotate(0deg); }
               100% { transform: rotate(360deg); }
             }
-            @keyframes rotateRingCounter {
-              0% { transform: rotate(360deg); }
-              100% { transform: rotate(0deg); }
+            .glow-orb-glass {
+              animation: pulseOrbGlass 4s infinite ease-in-out;
             }
-            @keyframes pulseWave {
-              0% { r: 24px; opacity: 0.7; stroke-width: 1px; }
-              50% { r: 36px; opacity: 0.3; stroke-width: 0.8px; }
-              100% { r: 46px; opacity: 0; stroke-width: 0.4px; }
-            }
-            .glow-orb-3d {
-              animation: pulseOrb3D 3.5s infinite ease-in-out;
-            }
-            .rotate-ring-cw {
-              animation: rotateRingClockwise 20s linear infinite;
-              transform-origin: center;
-            }
-            .rotate-ring-ccw {
-              animation: rotateRingCounter 14s linear infinite;
-              transform-origin: center;
-            }
-            .pulse-radar-1 {
-              animation: pulseWave 3s infinite linear;
-              transform-origin: center;
-            }
-            .pulse-radar-2 {
-              animation: pulseWave 3s infinite linear;
-              animation-delay: 1.5s;
+            .rotate-pedestal-ring {
+              animation: rotatePedestal 25s linear infinite;
               transform-origin: center;
             }
           `}} />
           
-          <svg className="w-[60px] h-[60px] glow-orb-3d" viewBox="0 0 100 100">
+          <svg className="w-[78px] h-[78px] glow-orb-glass" viewBox="0 0 100 100">
             <defs>
-              {/* Premium holographic 3D gradients */}
-              <radialGradient id="goldHoloCore" cx="35%" cy="35%" r="65%" fx="30%" fy="30%">
-                <stop offset="0%" stopColor="#ffffff" />
-                <stop offset="25%" stopColor="#fff5db" />
-                <stop offset="60%" stopColor="#d4b87a" />
-                <stop offset="85%" stopColor="#9a7a42" />
-                <stop offset="100%" stopColor="#3d2c12" />
+              {/* High-Fidelity 3D Glass Sphere Gradients */}
+              <radialGradient id="holoCore3D" cx="35%" cy="35%" r="65%" fx="30%" fy="30%">
+                <stop offset="0%" stopColor="#ffffff" stopOpacity="0.8" />
+                <stop offset="35%" stopColor="#fffaec" stopOpacity="0.6" />
+                <stop offset="75%" stopColor="#d4b87a" stopOpacity="0.25" />
+                <stop offset="100%" stopColor="#9a7a42" stopOpacity="0.05" />
               </radialGradient>
-              
-              <radialGradient id="ambientGlow" cx="50%" cy="50%" r="50%">
-                <stop offset="0%" stopColor="#d4b87a" stopOpacity="0.4" />
-                <stop offset="60%" stopColor="#9a7a42" stopOpacity="0.1" />
-                <stop offset="100%" stopColor="#000000" stopOpacity="0" />
+
+              <radialGradient id="goldSphereBorder" cx="50%" cy="50%" r="50%">
+                <stop offset="90%" stopColor="#d4b87a" stopOpacity="0.1" />
+                <stop offset="98%" stopColor="#d4b87a" stopOpacity="0.65" />
+                <stop offset="100%" stopColor="#ffffff" stopOpacity="0.85" />
               </radialGradient>
-              
-              <filter id="hologramGlow" x="-30%" y="-30%" width="160%" height="160%">
-                <feGaussianBlur stdDeviation="4.5" result="blur1" />
-                <feGaussianBlur stdDeviation="2" result="blur2" />
+
+              <linearGradient id="pedestalGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#ffffff" stopOpacity="0.8" />
+                <stop offset="30%" stopColor="#d4b87a" stopOpacity="0.5" />
+                <stop offset="100%" stopColor="#1e180d" stopOpacity="0.9" />
+              </linearGradient>
+
+              <filter id="aiTextGlow">
+                <feGaussianBlur stdDeviation="1.5" result="coloredBlur"/>
                 <feMerge>
-                  <feMergeNode in="blur1" />
-                  <feMergeNode in="blur2" />
-                  <feMergeNode in="SourceGraphic" />
+                  <feMergeNode in="coloredBlur"/>
+                  <feMergeNode in="SourceGraphic"/>
                 </feMerge>
               </filter>
             </defs>
 
-            {/* Ambient Background Aura */}
-            <circle cx="50" cy="50" r="48" fill="url(#ambientGlow)" />
+            {/* Concentric high-tech background coordinates */}
+            <circle cx="50" cy="46" r="42" fill="none" stroke="#d4b87a" strokeWidth="0.5" strokeDasharray="3,6" className="rotate-pedestal-ring" opacity="0.2" />
+            <circle cx="50" cy="46" r="38" fill="none" stroke="#d4b87a" strokeWidth="0.4" strokeDasharray="10,8" className="rotate-pedestal-ring" style={{ animationDirection: 'reverse' }} opacity="0.15" />
 
-            {/* Pulsing Radar Waves */}
-            <circle cx="50" cy="50" r="24" fill="none" stroke="#d4b87a" className="pulse-radar-1" />
-            <circle cx="50" cy="50" r="24" fill="none" stroke="#d4b87a" className="pulse-radar-2" />
+            {/* 3D Glass Sphere Backing Aura */}
+            <circle cx="50" cy="46" r="28" fill="#d4b87a" fillOpacity="0.04" stroke="url(#goldSphereBorder)" strokeWidth="0.8" />
 
-            {/* Concentric Telemetry Rings */}
-            <circle cx="50" cy="50" r="44" fill="none" stroke="#d4b87a" strokeWidth="0.75" strokeDasharray="4,8" className="rotate-ring-cw" opacity="0.4" />
-            <circle cx="50" cy="50" r="40" fill="none" stroke="#d4b87a" strokeWidth="0.5" strokeDasharray="18,12" className="rotate-ring-ccw" opacity="0.3" />
-            <circle cx="50" cy="50" r="36" fill="none" stroke="#fff" strokeWidth="0.4" strokeDasharray="2,4" className="rotate-ring-cw" opacity="0.2" />
-
-            {/* Volumetric 3D Core Sphere */}
-            <circle cx="50" cy="50" r="22" fill="url(#goldHoloCore)" filter="url(#hologramGlow)" />
-
-            {/* Quantum Intelligence Grid Overlays */}
-            <g opacity="0.35">
-              {/* Rotating inner network coordinates */}
-              <line x1="50" y1="28" x2="50" y2="72" stroke="#ffffff" strokeWidth="0.5" className="rotate-ring-cw" />
-              <line x1="28" y1="50" x2="72" y2="50" stroke="#ffffff" strokeWidth="0.5" className="rotate-ring-cw" />
-              
-              {/* Connected node stars */}
-              <circle cx="50" cy="34" r="1.5" fill="#ffffff" className="rotate-ring-cw" />
-              <circle cx="50" cy="66" r="1.5" fill="#ffffff" className="rotate-ring-cw" />
-              <circle cx="34" cy="50" r="1.5" fill="#ffffff" className="rotate-ring-cw" />
-              <circle cx="66" cy="50" r="1.5" fill="#ffffff" className="rotate-ring-cw" />
+            {/* Holographic glowing grids inside sphere */}
+            <g opacity="0.3">
+              <ellipse cx="50" cy="46" rx="28" ry="8" fill="none" stroke="#d4b87a" strokeWidth="0.5" />
+              <ellipse cx="50" cy="46" rx="8" ry="28" fill="none" stroke="#d4b87a" strokeWidth="0.5" />
+              <ellipse cx="50" cy="46" rx="20" ry="20" fill="none" stroke="#fff" strokeWidth="0.4" strokeDasharray="2,2" />
             </g>
 
-            {/* Specular Glare Dot for 3D realism */}
-            <circle cx="43" cy="43" r="3.5" fill="#ffffff" opacity="0.7" filter="blur(0.5px)" />
+            {/* Core 3D Volumetric fill */}
+            <circle cx="50" cy="46" r="27.5" fill="url(#holoCore3D)" />
+
+            {/* Exact Mockup central Glowing AI Text */}
+            <text 
+              x="50" 
+              y="52" 
+              fill="#ffffff" 
+              fontSize="16" 
+              fontWeight="900" 
+              fontFamily="sans-serif" 
+              textAnchor="middle" 
+              letterSpacing="0.05em" 
+              filter="url(#aiTextGlow)"
+              style={{ textShadow: '0 0 10px rgba(255,255,255,0.95), 0 0 20px rgba(212,184,122,0.85)' }}
+            >
+              AI
+            </text>
+
+            {/* Glare spotlight */}
+            <circle cx="40" cy="36" r="3.5" fill="#ffffff" opacity="0.65" filter="blur(0.4px)" />
+
+            {/* HIGH-TECH METALLIC PEDESTAL (Mockup Style) */}
+            <g transform="translate(0, 1)">
+              {/* Pedestal Base light reflection */}
+              <ellipse cx="50" cy="74" rx="26" ry="3.5" fill="rgba(212,184,122,0.18)" filter="blur(1.5px)" />
+
+              {/* Pedestal Bottom Base */}
+              <path d="M 28,78 L 72,78 L 68,82 L 32,82 Z" fill="url(#pedestalGrad)" stroke="rgba(212,184,122,0.3)" strokeWidth="0.5" />
+              
+              {/* Pedestal Neck and Ring */}
+              <path d="M 36,73 L 64,73 L 60,78 L 40,78 Z" fill="#0d0d0f" stroke="rgba(212,184,122,0.4)" strokeWidth="0.5" />
+              
+              {/* Telemetry coordinate ticks under base */}
+              <line x1="22" y1="84" x2="78" y2="84" stroke="#d4b87a" strokeWidth="0.5" strokeDasharray="1,4" opacity="0.6" />
+            </g>
           </svg>
         </div>
 
-        {/* Right Side: Chips/Engines list */}
-        <div className="flex-1 flex flex-col justify-center space-y-1.5 pl-1">
-          <div className="text-[7.5px] uppercase tracking-widest text-white/40 font-bold leading-none mb-1">Mecanismos de IA</div>
+        {/* Right Side: Three Stacked Gold Buttons with Connector Lines (Mockup Style) */}
+        <div className="flex-1 flex flex-col justify-center space-y-2.5 pl-1.5 relative">
           
-          <div className="flex items-center gap-1 bg-black/40 border border-white/5 px-2 py-1 rounded-lg text-[8px] text-white/90 font-bold leading-none justify-between hover:border-[#d4b87a]/30 transition-colors">
-            <span>Gemini Pro 1.5</span>
-            <div className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+          {/* Button 1: Gemini */}
+          <div className="relative flex items-center">
+            {/* Connector Line Grid */}
+            <div className="absolute left-[-16px] w-[14px] flex items-center justify-between pointer-events-none">
+              <div className="h-[0.5px] w-full bg-[#d4b87a]/45" />
+              <div className="h-1.5 w-1.5 rounded-full bg-[#d4b87a] shrink-0" style={{ transform: 'translateX(4px)' }} />
+            </div>
+            
+            <button className="w-full text-center py-1 bg-black/45 hover:bg-[#d4b87a]/10 border border-[#d4b87a]/35 hover:border-[#d4b87a]/70 rounded-xl text-[10px] font-normal text-white tracking-widest uppercase transition-all duration-200 shadow-md">
+              Gemini
+            </button>
           </div>
-          <div className="flex items-center gap-1 bg-black/40 border border-white/5 px-2 py-1 rounded-lg text-[8px] text-white/90 font-bold leading-none justify-between hover:border-[#d4b87a]/30 transition-colors">
-            <span>Grok 2.0 Ultra</span>
-            <div className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+
+          {/* Button 2: Grok */}
+          <div className="relative flex items-center">
+            {/* Connector Line Grid */}
+            <div className="absolute left-[-16px] w-[14px] flex items-center justify-between pointer-events-none">
+              <div className="h-[0.5px] w-full bg-[#d4b87a]/45" />
+              <div className="h-1.5 w-1.5 rounded-full bg-[#d4b87a] shrink-0" style={{ transform: 'translateX(4px)' }} />
+            </div>
+            
+            <button className="w-full text-center py-1 bg-black/45 hover:bg-[#d4b87a]/10 border border-[#d4b87a]/35 hover:border-[#d4b87a]/70 rounded-xl text-[10px] font-normal text-white tracking-widest uppercase transition-all duration-200 shadow-md">
+              Grok
+            </button>
           </div>
-          <div className="flex items-center gap-1 bg-black/40 border border-white/5 px-2 py-1 rounded-lg text-[8px] text-white/90 font-bold leading-none justify-between hover:border-[#d4b87a]/30 transition-colors">
-            <span>LLaMA 3.1 Instruct</span>
-            <div className="h-1.5 w-1.5 rounded-full bg-[#d4b87a] animate-pulse" />
+
+          {/* Button 3: LLaMA */}
+          <div className="relative flex items-center">
+            {/* Connector Line Grid */}
+            <div className="absolute left-[-16px] w-[14px] flex items-center justify-between pointer-events-none">
+              <div className="h-[0.5px] w-full bg-[#d4b87a]/45" />
+              <div className="h-1.5 w-1.5 rounded-full bg-[#d4b87a] shrink-0" style={{ transform: 'translateX(4px)' }} />
+            </div>
+            
+            <button className="w-full text-center py-1 bg-black/45 hover:bg-[#d4b87a]/10 border border-[#d4b87a]/35 hover:border-[#d4b87a]/70 rounded-xl text-[10px] font-normal text-white tracking-widest uppercase transition-all duration-200 shadow-md">
+              LLaMA
+            </button>
           </div>
         </div>
-      </div>
-
-      {/* Footer Vitals */}
-      <div className="flex justify-between items-center text-[7.5px] text-white/30 border-t border-white/5 pt-1.5">
-        <span>Vortex AI Node · AWS Cluster</span>
-        <span className="font-bold text-[#d4b87a] tracking-widest uppercase">COCKPIT INTEGRATED</span>
       </div>
     </div>
   )
 }
-
