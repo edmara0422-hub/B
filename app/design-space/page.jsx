@@ -1438,6 +1438,276 @@ function StoryScroll() {
 
 
 
+function ERBLogo() {
+  const [hovered, setHovered] = useState(false);
+
+  return (
+    <motion.div
+      style={{
+        width: '100%',
+        maxWidth: '440px',
+        height: 'auto',
+        aspectRatio: '1',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        cursor: 'pointer',
+      }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      whileHover={{ scale: 1.03 }}
+      whileTap={{ scale: 0.98 }}
+    >
+      <svg
+        viewBox="0 0 400 400"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        style={{ width: '100%', height: '100%', overflow: 'visible' }}
+      >
+        <defs>
+          {/* Metallic Gold Gradients */}
+          <linearGradient id="goldMetallic" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#dfb950" />
+            <stop offset="20%" stopColor="#ffd97a" />
+            <stop offset="45%" stopColor="#c39a30" />
+            <stop offset="60%" stopColor="#8c6610" />
+            <stop offset="80%" stopColor="#f7dc8c" />
+            <stop offset="100%" stopColor="#a17b18" />
+          </linearGradient>
+          
+          <linearGradient id="goldStroke" x1="100%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stopColor="#f7dc8c" />
+            <stop offset="50%" stopColor="#c39a30" />
+            <stop offset="100%" stopColor="#694d07" />
+          </linearGradient>
+
+          {/* Metallic Silver/Chrome Gradients */}
+          <linearGradient id="silverMetallic" x1="0%" y1="100%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="#7f8895" />
+            <stop offset="25%" stopColor="#ffffff" />
+            <stop offset="50%" stopColor="#a3aab5" />
+            <stop offset="75%" stopColor="#eef1f5" />
+            <stop offset="100%" stopColor="#4e545c" />
+          </linearGradient>
+
+          <linearGradient id="silverStroke" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#ffffff" />
+            <stop offset="50%" stopColor="#7f8895" />
+            <stop offset="100%" stopColor="#2c3035" />
+          </linearGradient>
+
+          {/* Ambient Glows */}
+          <radialGradient id="centerGlow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stopColor="rgba(224, 185, 80, 0.14)" />
+            <stop offset="50%" stopColor="rgba(127, 136, 149, 0.05)" />
+            <stop offset="100%" stopColor="rgba(0, 0, 0, 0)" />
+          </radialGradient>
+
+          {/* Dynamic Shimmer Glow */}
+          <linearGradient id="shimmerGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="rgba(255,255,255,0)" />
+            <stop offset="50%" stopColor="rgba(255,255,255,0.3)" />
+            <stop offset="100%" stopColor="rgba(255,255,255,0)" />
+          </linearGradient>
+
+          {/* High-End Drop Shadow Filter */}
+          <filter id="nobleShadow" x="-10%" y="-10%" width="120%" height="120%">
+            <feDropShadow dx="0" dy="16" stdDeviation="24" floodColor="#000000" floodOpacity="0.65" />
+            <feDropShadow dx="0" dy="4" stdDeviation="6" floodColor="#d4b87a" floodOpacity="0.1" />
+          </filter>
+          
+          <filter id="glowFilter" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="6" result="blur" />
+            <feComposite in="SourceGraphic" in2="blur" operator="over" />
+          </filter>
+        </defs>
+
+        {/* 1. Ambient Background Glow */}
+        <motion.circle
+          cx="200"
+          cy="200"
+          r="180"
+          fill="url(#centerGlow)"
+          animate={{
+            r: hovered ? 185 : 172,
+            opacity: hovered ? 0.95 : 0.75,
+          }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+        />
+
+        {/* 2. Noble Geometric Shield/Circle Frame */}
+        <g filter="url(#nobleShadow)">
+          {/* Rounded Glassmorphic Circle */}
+          <circle
+            cx="200"
+            cy="200"
+            r="150"
+            fill="rgba(6, 6, 8, 0.75)"
+            stroke="url(#silverStroke)"
+            strokeWidth="0.8"
+            style={{ backdropFilter: 'blur(20px)' }}
+          />
+
+          {/* Inner Decorative Golden Dashed Ring */}
+          <motion.circle
+            cx="200"
+            cy="200"
+            r="135"
+            stroke="url(#goldStroke)"
+            strokeWidth="1.2"
+            strokeDasharray="6 8 20 8"
+            fill="transparent"
+            animate={{ rotate: hovered ? 15 : 0 }}
+            transition={{ type: "spring", stiffness: 40, damping: 10 }}
+          />
+
+          {/* Thin Outer Silver Accent Ring */}
+          <motion.circle
+            cx="200"
+            cy="200"
+            r="142"
+            stroke="url(#silverStroke)"
+            strokeWidth="0.5"
+            strokeOpacity="0.6"
+            fill="transparent"
+            animate={{ rotate: hovered ? -10 : 0 }}
+            transition={{ type: "spring", stiffness: 35, damping: 12 }}
+          />
+
+          {/* Four Compass Coordinates for Executive Touch */}
+          <line x1="200" y1="44" x2="200" y2="52" stroke="url(#goldStroke)" strokeWidth="1.5" />
+          <line x1="200" y1="348" x2="200" y2="356" stroke="url(#goldStroke)" strokeWidth="1.5" />
+          <line x1="44" y1="200" x2="52" y2="200" stroke="url(#goldStroke)" strokeWidth="1.5" />
+          <line x1="348" y1="200" x2="356" y2="200" stroke="url(#goldStroke)" strokeWidth="1.5" />
+        </g>
+
+        {/* 3. The Bespoke Monogram: Intertwined "B" and "ER" */}
+        <g filter="url(#nobleShadow)">
+          {/* BACKGROUND "B" (for Business / IPB) - Golden Serif */}
+          <motion.text
+            x="192"
+            y="256"
+            fill="url(#goldMetallic)"
+            fontFamily="var(--serif), 'Cinzel', 'Playfair Display', 'Didot', 'Georgia', serif"
+            fontSize="182"
+            fontWeight="300"
+            textAnchor="middle"
+            letterSpacing="-0.05em"
+            style={{ userSelect: 'none', filter: hovered ? 'url(#glowFilter)' : 'none' }}
+            animate={{
+              scale: hovered ? 1.02 : 1,
+              x: hovered ? -2 : 0,
+              y: hovered ? 254 : 256
+            }}
+            transition={{ type: "spring", stiffness: 60, damping: 15 }}
+          >
+            B
+          </motion.text>
+
+          {/* FOREGROUND "E" and "R" (for Edmara Rocha) - Silver Modern Ligature */}
+          <g>
+            {/* Elegant horizontal axis line that binds the letters */}
+            <motion.line
+              x1="95"
+              y1="200"
+              x2="305"
+              y2="200"
+              stroke="url(#silverStroke)"
+              strokeWidth="0.8"
+              strokeOpacity="0.45"
+              animate={{
+                x1: hovered ? 90 : 95,
+                x2: hovered ? 310 : 305,
+              }}
+              transition={{ duration: 0.6 }}
+            />
+
+            {/* "E" - Left Positioned */}
+            <motion.text
+              x="138"
+              y="222"
+              fill="url(#silverMetallic)"
+              fontFamily="var(--sans), 'Montserrat', 'Inter', 'Outfit', sans-serif"
+              fontSize="78"
+              fontWeight="200"
+              textAnchor="middle"
+              style={{ userSelect: 'none', letterSpacing: '0.05em' }}
+              animate={{
+                x: hovered ? 134 : 138,
+                y: hovered ? 220 : 222,
+                opacity: 0.95
+              }}
+              transition={{ type: "spring", stiffness: 50, damping: 12 }}
+            >
+              E
+            </motion.text>
+
+            {/* "R" - Right Positioned */}
+            <motion.text
+              x="256"
+              y="222"
+              fill="url(#silverMetallic)"
+              fontFamily="var(--sans), 'Montserrat', 'Inter', 'Outfit', sans-serif"
+              fontSize="78"
+              fontWeight="200"
+              textAnchor="middle"
+              style={{ userSelect: 'none', letterSpacing: '0.05em' }}
+              animate={{
+                x: hovered ? 260 : 256,
+                y: hovered ? 220 : 222,
+                opacity: 0.95
+              }}
+              transition={{ type: "spring", stiffness: 50, damping: 12 }}
+            >
+              R
+            </motion.text>
+          </g>
+
+          {/* 4. Elegant "BUSINESS" subscript */}
+          <motion.text
+            x="200"
+            y="298"
+            fill="url(#goldStroke)"
+            fontFamily="var(--sans), 'Montserrat', 'Inter', sans-serif"
+            fontSize="10.5"
+            fontWeight="500"
+            letterSpacing="0.65em"
+            textAnchor="middle"
+            style={{ userSelect: 'none', opacity: 0.8 }}
+            animate={{
+              letterSpacing: hovered ? "0.75em" : "0.65em"
+            }}
+            transition={{ duration: 0.4 }}
+          >
+            BUSINESS
+          </motion.text>
+        </g>
+        
+        {/* Subtle dynamic shine overlay that sweeps across when hovered */}
+        <motion.rect
+          x="-100"
+          y="0"
+          width="150"
+          height="400"
+          fill="url(#shimmerGrad)"
+          style={{ pointerEvents: 'none', transform: 'skewX(-25deg)' }}
+          animate={hovered ? {
+            x: ["0px", "600px"]
+          } : {
+            x: "0px"
+          }}
+          transition={{
+            duration: 1.5,
+            ease: "easeInOut",
+            repeat: hovered ? Infinity : 0,
+            repeatDelay: 1.0
+          }}
+        />
+      </svg>
+    </motion.div>
+  );
+}
+
 function BusinessManifestoPage() {
   return (
     <div style={{
@@ -1456,18 +1726,14 @@ function BusinessManifestoPage() {
         justifyContent: 'center', 
         alignItems: 'center', 
       }}>
-        {/* Imagem Centralizada com tamanho restrito para nunca cortar na tela */}
+        {/* Monograma Centralizado Interativo com tamanho restrito para nunca cortar na tela */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1.2, ease: "easeOut" }}
           style={{ width: '100%', height: '100%', padding: '2rem', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
         >
-          <img 
-            src="/business_cube_straight.png" 
-            alt="IPB Cover" 
-            style={{ maxWidth: '100%', maxHeight: '90%', objectFit: 'contain' }} 
-          />
+          <ERBLogo />
         </motion.div>
       </section><section style={{ 
         minHeight: '100vh', 
