@@ -534,7 +534,7 @@ export default function AdminPage() {
           </div>
 
           {creatingUser && (
-            <div className="rounded-[0.6rem] border border-white/10 bg-white/[0.03] p-2 space-y-1.5">
+            <div className="rounded-[0.8rem] ipb-soft p-3.5 space-y-2.5">
               <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-white/50">Criar novo login</p>
               <p className="text-[9px] leading-relaxed text-white/65">Cria conta com email já confirmado — o usuário entra direto com email e senha, sem precisar confirmar caixa de entrada.</p>
               <input className={inputClass} placeholder="Nome" value={newName} onChange={(e) => setNewName(e.target.value)} />
@@ -574,7 +574,7 @@ export default function AdminPage() {
           <p className="text-[9px] text-white/65">{filteredUsers.length} usuario(s)</p>
           <div className="space-y-1 max-h-[60vh] overflow-y-auto scrollbar-hide">
             {filteredUsers.map((u) => (
-              <div key={u.id} className="rounded-[0.6rem] border border-white/6 bg-white/[0.02] px-2 py-1.5">
+              <div key={u.id} className="rounded-[0.8rem] ipb-soft px-3 py-2.5">
                 {editingUser === u.id ? (
                   <div className="space-y-1">
                     <input className={inputClass} value={editName} onChange={(e) => setEditName(e.target.value)} placeholder="Nome" />
@@ -687,9 +687,9 @@ export default function AdminPage() {
       {tab === 'subscriptions' && !loading && (
         <div className="space-y-2">
           <p className="text-[9px] text-white/55">Conta admin excluída das estatísticas</p>
-          <div className="grid grid-cols-5 gap-1">
+          <div className="grid grid-cols-5 gap-1.5">
             {[{ l: 'Total', v: nonAdminSubs.length, c: '#60a5fa' }, { l: 'Ativos', v: nonAdminSubs.filter((s: SubRow) => s.status === 'active').length, c: '#4ade80' }, { l: 'Trial', v: nonAdminSubs.filter((s: SubRow) => s.status === 'trial').length, c: '#facc15' }, { l: 'Cancel.', v: nonAdminSubs.filter((s: SubRow) => s.status === 'cancelled').length, c: '#fb923c' }, { l: 'Devendo', v: nonAdminSubs.filter((s: SubRow) => s.status === 'overdue').length, c: '#f87171' }].map((s) => (
-              <div key={s.l} className="rounded-[0.5rem] border border-white/6 bg-black/20 px-1 py-1.5 text-center"><p className="text-[10px] font-bold" style={{ color: s.c }}>{s.v}</p><p className="text-[8px] text-white/65">{s.l}</p></div>
+              <div key={s.l} className="rounded-[0.7rem] ipb-soft px-1.5 py-2 text-center"><p className="text-[10px] font-bold" style={{ color: s.c }}>{s.v}</p><p className="text-[8px] text-white/65">{s.l}</p></div>
             ))}
           </div>
           {subDistribution.length > 0 && (
@@ -701,7 +701,7 @@ export default function AdminPage() {
           )}
           {nonAdminSubs.length === 0 && <p className="text-center text-[10px] text-white/65 py-4">Nenhuma assinatura de usuário registrada.</p>}
           {subs.filter((s: SubRow) => { const u = users.find(u => u.id === s.user_id); return !u || u.role !== 'admin' }).map((s: SubRow) => { const up = users.find(u => u.id === s.user_id); return (
-            <div key={s.id} className="flex items-center gap-2 rounded-[0.6rem] border border-white/6 bg-white/[0.02] px-2 py-1.5">
+            <div key={s.id} className="flex items-center gap-3 rounded-[0.8rem] ipb-soft px-3 py-2.5">
               <div className="min-w-0 flex-1"><p className="truncate text-[11px] font-semibold text-white/70">{up?.name || up?.email || s.user_id}</p><p className="text-[9px] text-white/65">{s.plan} · {s.status} · {new Date(s.started_at).toLocaleDateString('pt-BR')}</p></div>
               <select className="h-5 rounded-[0.3rem] border border-white/10 bg-black/30 px-1 text-[9px] text-white/60 outline-none" value={s.status} onChange={(e) => changeSubStatus(s.id, e.target.value)}><option value="active">Ativo</option><option value="trial">Trial</option><option value="cancelled">Cancelado</option><option value="overdue">Devendo</option><option value="expired">Expirado</option></select>
               <select className="h-5 rounded-[0.3rem] border border-white/10 bg-black/30 px-1 text-[9px] text-white/60 outline-none" value={s.plan} onChange={(e) => changeSubPlan(s.id, e.target.value)}><option value="free">Free</option><option value="monthly">Mensal</option><option value="yearly">Anual</option><option value="trial">Trial</option></select>
@@ -722,7 +722,7 @@ export default function AdminPage() {
       {tab === 'communication' && !loading && (
         <div className="space-y-2">
           {/* Como funciona */}
-          <div className="rounded-[0.8rem] border border-white/6 bg-white/[0.02] px-3 py-3">
+          <div className="rounded-[0.8rem] ipb-soft p-3.5">
             <div className="mb-2 flex items-center gap-1.5">
               <TrendingUp className="h-3 w-3 text-white/70" />
               <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-white/70">Como funciona</p>
@@ -774,7 +774,7 @@ export default function AdminPage() {
             <p className="py-6 text-center text-[11px] text-white/65">Nenhuma equipe criada. Adicione uma acima.</p>
           )}
           {teams.map(team => (
-            <div key={team.id} className="rounded-[0.8rem] border border-white/7 bg-white/[0.02] p-3 space-y-2">
+            <div key={team.id} className="rounded-[0.8rem] ipb-soft p-3.5 space-y-2.5">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <p className="text-[9px] font-semibold text-white/75">{team.nome}</p>
@@ -806,7 +806,7 @@ export default function AdminPage() {
           ))}
 
           {/* Gestão de admins */}
-          <div className="rounded-[0.8rem] border border-white/6 p-3 space-y-2">
+          <div className="rounded-[0.8rem] ipb-soft p-3.5 space-y-2.5">
             <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-white/65">Admins</p>
             {users.filter(u => u.id !== user?.id).map(u => (
               <div key={u.id} className="flex items-center gap-2">
@@ -834,7 +834,7 @@ export default function AdminPage() {
           </div>
 
           {/* Transferir admin */}
-          <div className="rounded-[0.8rem] border border-[#f8717115] bg-[#f8717106] p-3 space-y-2">
+          <div className="rounded-[0.8rem] ipb-soft border-[#f8717120] bg-[#f8717104] p-3.5 space-y-2.5">
             <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[#fca5a5]/50">Transferir sua conta admin</p>
             <p className="text-[7.5px] text-white/65">Você perderá o acesso imediatamente. Selecione para quem transferir:</p>
             <div className="space-y-1">
@@ -863,7 +863,7 @@ export default function AdminPage() {
         <div className="space-y-2">
           <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-white/65">Configuracoes do app</p>
           {Object.entries(configs).map(([key, value]) => (
-            <div key={key} className="rounded-[0.6rem] border border-white/6 bg-white/[0.02] px-2 py-1.5">
+            <div key={key} className="rounded-[0.8rem] ipb-soft px-3 py-2">
               <p className="mb-0.5 text-[10px] font-semibold text-white/50">{key}</p>
               <div className="flex gap-1"><input className={inputClass} value={value} onChange={(e) => setConfigs((prev) => ({ ...prev, [key]: e.target.value }))} /><button onClick={() => saveConfig(key, value)} className="flex h-7 w-7 shrink-0 items-center justify-center rounded-[0.4rem] border border-white/10 bg-white/5 text-white/70 hover:text-white/60"><Save className="h-3 w-3" /></button></div>
             </div>
@@ -899,7 +899,7 @@ export default function AdminPage() {
               <div className="space-y-3 max-h-[70vh] overflow-y-auto pr-1">
                 {/* Último login (sempre disponível do auth.users) */}
                 {activityData.lastSignIn && (
-                  <div className="rounded-[0.5rem] border border-white/8 bg-white/[0.02] px-2.5 py-1.5">
+                  <div className="rounded-[0.7rem] ipb-soft px-3 py-2">
                     <p className="text-[8px] uppercase tracking-[0.16em] text-white/35">Último login</p>
                     <p className="text-[10px] text-white/72">{new Date(activityData.lastSignIn).toLocaleString('pt-BR')}</p>
                   </div>
