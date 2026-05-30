@@ -3,7 +3,7 @@ import { getSupabaseServerClient, getSupabaseAdminClient } from '@/lib/supabase-
 
 export const runtime = 'nodejs'
 
-const ALWAYS_ADMIN_EMAILS = new Set<string>(['edmararbusiness1@gmail.com'])
+const ALWAYS_ADMIN_EMAILS = new Set<string>(['erbusiness0422@gmail.com'])
 
 // ─────────────────────────────────────────────────────────────
 // Tipos
@@ -215,7 +215,7 @@ export async function PATCH(request: Request) {
 // ─────────────────────────────────────────────────────────────
 async function dispatchWebhooks(alerts: StrategicAlert[]) {
   const webhookUrl = process.env.ALERT_WEBHOOK_URL
-  const emailTo = process.env.ALERT_EMAIL_TO ?? 'edmararbusiness1@gmail.com'
+  const emailTo = process.env.ALERT_EMAIL_TO ?? 'erbusiness0422@gmail.com'
 
   const payload = {
     text: alerts.map((a) => `*${a.title}*\n${a.message}\n✅ Ação: ${a.action ?? '—'}`).join('\n\n'),

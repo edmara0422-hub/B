@@ -141,8 +141,8 @@ export function HudEstrategia() {
       const cy = h / 2
       const maxR = Math.min(cx, cy) * 0.82
 
-      // 1. Círculos e Grelhas Concorrentes
-      ctx.strokeStyle = 'rgba(96, 165, 250, 0.05)'
+      // 1. Círculos e Grelhas Concêntricas (Champagne Gold Suave)
+      ctx.strokeStyle = 'rgba(212, 184, 122, 0.06)'
       ctx.lineWidth = 1
       for (let r = 0.2; r <= 1; r += 0.2) {
         ctx.beginPath()
@@ -150,8 +150,8 @@ export function HudEstrategia() {
         ctx.stroke()
       }
 
-      // Eixos Angulares
-      ctx.strokeStyle = 'rgba(96, 165, 250, 0.08)'
+      // Eixos Angulares (Gold Médio)
+      ctx.strokeStyle = 'rgba(212, 184, 122, 0.12)'
       const axesCount = 5
       for (let i = 0; i < axesCount; i++) {
         const angle = (i * Math.PI * 2) / axesCount - Math.PI / 2
@@ -161,33 +161,32 @@ export function HudEstrategia() {
         ctx.stroke()
       }
 
-      // 2. Laser Radar Sweep (Varredor 360° NASA)
-      const sweepAngle = (frame * 0.02) % (Math.PI * 2)
+      // 2. Laser Radar Sweep (Varredor 360° NASA em Dourado Ativo)
+      const sweepAngle = (frame * 0.025) % (Math.PI * 2)
       
       // Desenha o rastro do laser sweep
-      const sweepGrad = ctx.createRadialGradient(cx, cy, 0, cx, cy, maxR)
-      ctx.fillStyle = 'rgba(96, 165, 250, 0.03)'
+      ctx.fillStyle = 'rgba(212, 184, 122, 0.035)'
       ctx.beginPath()
       ctx.moveTo(cx, cy)
-      ctx.arc(cx, cy, maxR, sweepAngle - 0.2, sweepAngle, false)
+      ctx.arc(cx, cy, maxR, sweepAngle - 0.22, sweepAngle, false)
       ctx.closePath()
       ctx.fill()
 
       // Feixe do laser principal
-      ctx.strokeStyle = 'rgba(96, 165, 250, 0.35)'
-      ctx.lineWidth = 1.5
+      ctx.strokeStyle = 'rgba(212, 184, 122, 0.38)'
+      ctx.lineWidth = 1.6
       ctx.beginPath()
       ctx.moveTo(cx, cy)
       ctx.lineTo(cx + Math.cos(sweepAngle) * maxR, cy + Math.sin(sweepAngle) * maxR)
       ctx.stroke()
 
-      // 3. Área Poligonal PESTEL
+      // 3. Área Poligonal PESTEL (Âmbar e Ouro com Brilho Profundo)
       const scores = [politicoScore, economicoScore, socialScore, tecnologicoScore, ecol_legalScore]
-      ctx.fillStyle = cenario === 'ia_boom' ? 'rgba(52, 211, 153, 0.15)' : 'rgba(212, 184, 122, 0.18)'
-      ctx.strokeStyle = cenario === 'ia_boom' ? '#d4b87a' : '#b89d5c'
-      ctx.lineWidth = 2
-      ctx.shadowBlur = 10
-      ctx.shadowColor = cenario === 'ia_boom' ? 'rgba(52, 211, 153, 0.3)' : 'rgba(212, 184, 122, 0.3)'
+      ctx.fillStyle = cenario === 'ia_boom' ? 'rgba(229, 175, 101, 0.16)' : 'rgba(212, 184, 122, 0.18)'
+      ctx.strokeStyle = cenario === 'ia_boom' ? '#e5af65' : '#d4b87a'
+      ctx.lineWidth = 2.2
+      ctx.shadowBlur = 12
+      ctx.shadowColor = cenario === 'ia_boom' ? 'rgba(229, 175, 101, 0.4)' : 'rgba(212, 184, 122, 0.4)'
 
       ctx.beginPath()
       scores.forEach((s, i) => {
@@ -210,17 +209,17 @@ export function HudEstrategia() {
         const x = cx + Math.cos(angle) * radius
         const y = cy + Math.sin(angle) * radius
 
-        // Satélite girando
+        // Satélite girando ao redor de cada vértice da força SWOT/PESTEL
         const satAngle = frame * 0.05 + i
         const satX = x + Math.cos(satAngle) * 5
         const satY = y + Math.sin(satAngle) * 5
 
-        ctx.fillStyle = '#fff'
+        ctx.fillStyle = '#ffffff'
         ctx.beginPath()
         ctx.arc(satX, satY, 1.8, 0, Math.PI * 2)
         ctx.fill()
 
-        ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)'
+        ctx.strokeStyle = 'rgba(212, 184, 122, 0.35)'
         ctx.beginPath()
         ctx.arc(x, y, 5, 0, Math.PI * 2)
         ctx.stroke()

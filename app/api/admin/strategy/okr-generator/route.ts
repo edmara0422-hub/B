@@ -3,7 +3,7 @@ import { getSupabaseServerClient, getSupabaseAdminClient } from '@/lib/supabase-
 
 export const runtime = 'nodejs'
 
-const ALWAYS_ADMIN_EMAILS = new Set<string>(['edmararbusiness1@gmail.com', 'edmara0422@gmail.com'])
+const ALWAYS_ADMIN_EMAILS = new Set<string>(['erbusiness0422@gmail.com', 'edmara0422@gmail.com'])
 const GROQ_API = 'https://api.groq.com/openai/v1/chat/completions'
 const MODEL = 'llama-3.1-8b-instant'
 

@@ -4,7 +4,7 @@ import { sendWhatsAppNotification } from '@/lib/notifications/whatsapp'
 
 export const runtime = 'nodejs'
 
-const ALWAYS_ADMIN_EMAILS = new Set<string>(['edmararbusiness1@gmail.com', 'erbusiness0422@gmail.com'])
+const ALWAYS_ADMIN_EMAILS = new Set<string>(['erbusiness0422@gmail.com', 'erbusiness0422@gmail.com'])
 
 export async function POST(request: Request) {
   try {

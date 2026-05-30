@@ -30,7 +30,7 @@ export async function POST(request: Request) {
     const resendKey = process.env.RESEND_API_KEY
     const emailTo = process.env.ALERT_EMAIL_TO 
       ? process.env.ALERT_EMAIL_TO.split(',').map((e: string) => e.trim()) 
-      : ['edmararbusiness1@gmail.com', 'erbusiness0422@gmail.com']
+      : ['erbusiness0422@gmail.com', 'erbusiness0422@gmail.com']
 
     if (resendKey) {
       const nowStr = new Date().toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' })

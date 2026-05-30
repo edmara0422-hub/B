@@ -10,7 +10,7 @@ import type { User, Session } from '@supabase/supabase-js'
 // mesmo se a role no banco for zerada por engano. Promover/transferir admin
 // continua funcionando via painel (altera role no banco).
 const ADMIN_EMAILS = new Set<string>([
-  'edmararbusiness1@gmail.com',
+  'erbusiness0422@gmail.com',
   'edmara0422@gmail.com',
 ])
 

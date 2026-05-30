@@ -101,7 +101,7 @@ export default function PrivacidadePage() {
             <li>Ser informado quando uma analise automatica contribuiu para uma decisao clinica.</li>
           </ul>
           <p className="mt-2 text-white/72">Importante: as analises automatizadas sao <span className="text-white/85">ferramentas de apoio</span>. A decisao clinica final e sempre do profissional de saude usuario — o app NAO substitui o julgamento clinico. Os criterios usados sao baseados em diretrizes clinicas publicas (SCCM, ATS, Sociedade Brasileira de Pneumologia, etc.) e nao em modelos opacos de aprendizado de maquina (com excecao da analise de imagem de RX/TC de torax, que utiliza modelos de IA — neste caso, as medidas sao sempre apresentadas com a possibilidade de revisao manual).</p>
-          <p className="mt-1">Para exercer o direito de revisao: <span className="text-white/70">edmararbusiness1@gmail.com</span></p>
+          <p className="mt-1">Para exercer o direito de revisao: <span className="text-white/70">erbusiness0422@gmail.com</span></p>
         </section>
 
         <section>
@@ -126,7 +126,7 @@ export default function PrivacidadePage() {
             <li>Revogar o consentimento a qualquer momento (sem prejuizo da legalidade do tratamento anterior).</li>
             <li>Excluir sua conta e todos os dados associados (Perfil → Excluir minha conta).</li>
           </ul>
-          <p className="mt-1">Para exercer seus direitos: <span className="text-white/70">edmararbusiness1@gmail.com</span></p>
+          <p className="mt-1">Para exercer seus direitos: <span className="text-white/70">erbusiness0422@gmail.com</span></p>
           <p className="mt-0.5">Prazo de resposta: ate 15 dias uteis conforme LGPD Art. 18, §5.</p>
         </section>
 
@@ -153,7 +153,7 @@ export default function PrivacidadePage() {
         <section>
           <h2 className="text-[9px] font-semibold text-white/80 mb-1">13. Encarregado de Protecao de Dados (DPO)</h2>
           <p>Responsavel pelo tratamento de dados: <span className="text-white/70">Edmara Rocha</span></p>
-          <p>Email: <span className="text-white/70">edmararbusiness1@gmail.com</span></p>
+          <p>Email: <span className="text-white/70">erbusiness0422@gmail.com</span></p>
           <p className="mt-0.5 text-white/40">IPB — Plataforma educacional para profissionais de fisioterapia.</p>
         </section>
 

@@ -340,7 +340,7 @@ const GOV_CONTENT: Record<string, { title: string; sections: { heading: string; 
           'A qualquer momento, acesse as configurações do seu navegador para gerenciar ou excluir cookies armazenados',
           'A desativação de cookies essenciais pode impedir o funcionamento correto da plataforma',
           'Para limpar todos os dados locais do IPB, acesse Perfil → Excluir minha conta ou limpe o localStorage pelo navegador',
-          'Suporte para dúvidas sobre cookies: edmararbusiness1@gmail.com',
+          'Suporte para dúvidas sobre cookies: erbusiness0422@gmail.com',
         ],
       },
       {
@@ -369,7 +369,7 @@ const GOV_CONTENT: Record<string, { title: string; sections: { heading: string; 
       {
         heading: 'Como Contatar o DPO',
         items: [
-          'E-mail oficial: edmararbusiness1@gmail.com — assunto: "DPO IPB"',
+          'E-mail oficial: erbusiness0422@gmail.com — assunto: "DPO IPB"',
           'Prazo de resposta: até 5 dias úteis para solicitações gerais; até 15 dias para exercício de direitos previstos na LGPD',
           'O canal de contato com o DPO é independente do suporte técnico — utilize-o exclusivamente para questões relacionadas à privacidade e proteção de dados',
           'Em caso de não resposta dentro do prazo, o titular pode contatar diretamente a ANPD: www.gov.br/anpd',
@@ -602,7 +602,7 @@ const GOV_CONTENT: Record<string, { title: string; sections: { heading: string; 
           'O usuário pode rescindir o contrato a qualquer momento excluindo sua conta — os dados são removidos permanentemente em até 30 dias',
           'O IPB pode suspender ou encerrar contas que violem estes Termos, sem aviso prévio em casos de violação grave',
           'Foro: fica eleito o foro da Comarca de São Paulo/SP para resolução de disputas, com preferência por mediação extrajudicial',
-          'Dúvidas sobre estes Termos: edmararbusiness1@gmail.com — resposta em até 5 dias úteis',
+          'Dúvidas sobre estes Termos: erbusiness0422@gmail.com — resposta em até 5 dias úteis',
         ],
       },
     ],

@@ -156,50 +156,97 @@ export function HudCapitalHumano() {
         ctx.stroke()
       }
 
-      // Desenha a onda principal EEG reativa
-      ctx.strokeStyle = (burnoutEEB ?? 0) > 35 ? '#e5af65' : '#d4b87a'
-      ctx.lineWidth = 1.8
-      ctx.shadowBlur = 10
-      ctx.shadowColor = (burnoutEEB ?? 0) > 35 ? 'rgba(229, 175, 101, 0.4)' : 'rgba(212, 184, 122, 0.4)'
-
+      // 1. CANAL BETA (Alertness / Ansiedade - Âmbar Quente)
+      ctx.strokeStyle = 'rgba(229, 175, 101, 0.65)'
+      ctx.lineWidth = 1.2
       ctx.beginPath()
       for (let x = 0; x <= w; x++) {
         const t = x / w
         let y = cy
-
-        // Simulando batimento cardíaco (QRS Complex) no meio da onda de clima
         const pulseCycle = (frame * 0.02) % 1
         const distToPulse = Math.abs(t - pulseCycle)
         let heartbeatOffset = 0
         
-        if (distToPulse < 0.05) {
-          const pulseT = (distToPulse / 0.05) * Math.PI
-          // Pico QRS: alta perturbação
-          heartbeatOffset = Math.sin(pulseT * 2.5) * 16 * (burnoutEEB > 35 ? 1.5 : 1)
+        if (distToPulse < 0.04) {
+          const pulseT = (distToPulse / 0.04) * Math.PI
+          heartbeatOffset = Math.sin(pulseT * 2.5) * 15 * (burnoutEEB > 35 ? 1.6 : 1)
         }
 
         if (burnoutEEB > 30) {
-          // Onda errática e caótica com spikes e ruídos digitais de ansiedade
-          y += Math.sin(t * 22 + frame * 0.18) * 8 * (pressaoMetas / 3.5)
-             + Math.cos(t * 44 + frame * 0.35) * 4 * (pressaoMetas / 4)
+          // Ondas rápidas, erráticas de estresse ativo
+          y += Math.sin(t * 30 + frame * 0.28) * 9.5 * (pressaoMetas / 4)
+             + Math.cos(t * 55 + frame * 0.45) * 5 * (pressaoMetas / 3.5)
              + heartbeatOffset
-             + (Math.random() - 0.5) * 4.5 // Ruído digital errático
+             + (Math.random() - 0.5) * 3.5
         } else {
-          // Onda harmônica tranquila de alta performance em equilíbrio
-          y += Math.sin(t * 8 + frame * 0.05) * 5.5
-             + Math.cos(t * 16 - frame * 0.02) * 2.2
+          // Ondas suaves de alerta concentrado
+          y += Math.sin(t * 18 + frame * 0.09) * 3.5
+             + Math.cos(t * 32 - frame * 0.05) * 1.5
              + heartbeatOffset
         }
-
         if (x === 0) ctx.moveTo(x, y)
         else ctx.lineTo(x, y)
       }
       ctx.stroke()
-      ctx.shadowBlur = 0 // Reseta o shadow blur
+
+      // 2. CANAL ALPHA (Foco Saudável - Dourado Premium)
+      ctx.strokeStyle = '#d4b87a'
+      ctx.lineWidth = 1.8
+      ctx.shadowBlur = 8
+      ctx.shadowColor = 'rgba(212, 184, 122, 0.35)'
+      ctx.beginPath()
+      for (let x = 0; x <= w; x++) {
+        const t = x / w
+        let y = cy
+        const pulseCycle = (frame * 0.02) % 1
+        const distToPulse = Math.abs(t - pulseCycle)
+        let heartbeatOffset = 0
+        
+        if (distToPulse < 0.045) {
+          const pulseT = (distToPulse / 0.045) * Math.PI
+          heartbeatOffset = Math.sin(pulseT * 2.5) * 18 * (burnoutEEB > 35 ? 1.4 : 1)
+        }
+
+        if (burnoutEEB > 30) {
+          // Alpha recua e fica irregular sob estresse alto
+          y += Math.sin(t * 12 + frame * 0.12) * 4 * (2 / pressaoMetas)
+             + Math.cos(t * 24 - frame * 0.18) * 2
+             + heartbeatOffset
+        } else {
+          // Alpha regular, amplo e estável em alto desempenho
+          y += Math.sin(t * 7.5 + frame * 0.045) * 7
+             + Math.cos(t * 15 - frame * 0.02) * 3
+             + heartbeatOffset
+        }
+        if (x === 0) ctx.moveTo(x, y)
+        else ctx.lineTo(x, y)
+      }
+      ctx.stroke()
+      ctx.shadowBlur = 0 // Reseta sombra
+
+      // 3. CANAL DELTA (Estresse Profundo subconsciente - Bronze Bronze)
+      ctx.strokeStyle = 'rgba(184, 157, 92, 0.45)'
+      ctx.lineWidth = 1.0
+      ctx.beginPath()
+      for (let x = 0; x <= w; x++) {
+        const t = x / w
+        let y = cy
+        
+        if (burnoutEEB > 30) {
+          // Ondas lentas, porém pesadas de exaustão profunda
+          y += Math.sin(t * 4.5 + frame * 0.04) * 12 * (pressaoMetas / 5)
+             + Math.cos(t * 9 + frame * 0.08) * 4.5
+        } else {
+          y += Math.sin(t * 3.2 + frame * 0.025) * 4.5
+        }
+        if (x === 0) ctx.moveTo(x, y)
+        else ctx.lineTo(x, y)
+      }
+      ctx.stroke()
 
       // Desenha varredor de pulso vertical (efeito scanner de osciloscópio)
       const scanX = (frame * 1.5) % w
-      ctx.strokeStyle = burnoutEEB > 35 ? 'rgba(248, 113, 113, 0.3)' : 'rgba(52, 211, 153, 0.3)'
+      ctx.strokeStyle = burnoutEEB > 35 ? 'rgba(229, 175, 101, 0.25)' : 'rgba(212, 184, 122, 0.25)'
       ctx.lineWidth = 1
       ctx.beginPath()
       ctx.moveTo(scanX, 0)

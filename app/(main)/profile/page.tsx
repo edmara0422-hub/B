@@ -361,7 +361,7 @@ const FAQ_ITEMS = [
   },
   {
     q: 'Encontrei um erro ou tenho uma sugestão. Como reporto?',
-    a: 'Use o Canal de Denúncias e Feedback em Home → Governança, ou envie um e-mail para edmararbusiness1@gmail.com com o assunto "Suporte IPB".',
+    a: 'Use o Canal de Denúncias e Feedback em Home → Governança, ou envie um e-mail para erbusiness0422@gmail.com com o assunto "Suporte IPB".',
   },
 ]
 
@@ -418,13 +418,13 @@ function AjudaModal({ onClose }: { onClose: () => void }) {
             <p className="mb-2 text-[8px] font-semibold uppercase tracking-wider text-white/40">Falar com o Suporte</p>
             <div className="space-y-1.5">
               <a
-                href="mailto:edmararbusiness1@gmail.com?subject=Suporte IPB"
+                href="mailto:erbusiness0422@gmail.com?subject=Suporte IPB"
                 className="flex items-center gap-2 rounded-[0.8rem] ipb-soft px-3 py-2.5 hover:bg-white/[0.04]"
               >
                 <Mail className="h-3.5 w-3.5 shrink-0 text-white/40" />
                 <div>
                   <p className="text-[9px] font-medium text-white/60">E-mail</p>
-                  <p className="text-[8px] text-white/35">edmararbusiness1@gmail.com · resposta em até 2 dias úteis</p>
+                  <p className="text-[8px] text-white/35">erbusiness0422@gmail.com · resposta em até 2 dias úteis</p>
                 </div>
               </a>
             </div>

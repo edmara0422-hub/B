@@ -4,7 +4,7 @@ import { tavilySearch, type TavilyResult } from '@/lib/tavily'
 
 export const runtime = 'nodejs'
 
-const ALWAYS_ADMIN_EMAILS = new Set<string>(['edmararbusiness1@gmail.com'])
+const ALWAYS_ADMIN_EMAILS = new Set<string>(['erbusiness0422@gmail.com'])
 const GROQ_API = 'https://api.groq.com/openai/v1/chat/completions'
 const MODEL = 'llama-3.1-8b-instant'
 

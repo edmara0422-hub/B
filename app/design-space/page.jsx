@@ -666,7 +666,7 @@ const GOV_CONTENT = {
     sections: [
       { heading: "Contato", items: [
         "Nome: Edmara Rocha",
-        "E-mail: edmararbusiness1@gmail.com",
+        "E-mail: erbusiness0422@gmail.com",
         "Resposta em até 5 dias úteis",
       ]},
       { heading: "Direitos LGPD Art. 18", items: [

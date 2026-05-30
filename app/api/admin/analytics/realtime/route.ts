@@ -3,7 +3,7 @@ import { getSupabaseServerClient, getSupabaseAdminClient } from '@/lib/supabase-
 
 export const runtime = 'nodejs'
 
-const ALWAYS_ADMIN_EMAILS = new Set<string>(['edmararbusiness1@gmail.com'])
+const ALWAYS_ADMIN_EMAILS = new Set<string>(['erbusiness0422@gmail.com'])
 
 // Geolocaliza IPs novos via ip-api.com (sem chave, free tier: 45 req/min).
 // Resultado vai pro cache em public.ip_geolocation.

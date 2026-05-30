@@ -51,7 +51,7 @@ export default function TermosPage() {
         </section>
         <section>
           <h2 className="text-[9px] font-semibold text-white/80 mb-1">9. Contato</h2>
-          <p>Duvidas ou solicitacoes: edmararbusiness1@gmail.com</p>
+          <p>Duvidas ou solicitacoes: erbusiness0422@gmail.com</p>
         </section>
       </div>
     </div>
