@@ -86,7 +86,7 @@ export default function SistemasPageClient() {
 
   const { isAdmin, initialized } = useAuthStore()
   const showClinical = isAdmin && clinicalParam
-  const visibleGroups = SIDEBAR_GROUPS.filter(group => showClinical || group.id !== 'clin')
+  const visibleGroups = SIDEBAR_GROUPS.filter(group => showClinical ? group.id === 'clin' : group.id !== 'clin')
 
   const [activeNavId, setActiveNavId] = useState<string>('sig-pessoas')
   const [search, setSearch] = useState('')
