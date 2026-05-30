@@ -90,22 +90,22 @@ export function InteractiveCockpit() {
         {/* COLUNA ESQUERDA: Os 4 Mini-Cards em vidro e dourado */}
         <div className="flex flex-col gap-5 justify-between">
           {/* Card 1: Pessoas */}
-          <div className="group relative overflow-hidden flex flex-col justify-between p-0.5 bg-[#0a0a0c]/85 border border-[#c59740]/25 rounded-3xl backdrop-blur-xl transition-all duration-300 h-[175px]">
+          <div className="group relative overflow-hidden flex flex-col justify-between p-0.5 bg-[#0a0a0c]/85 border border-[#c9943a]/25 rounded-3xl backdrop-blur-xl transition-all duration-300 h-[175px]">
             <MiniCapitalHumano />
           </div>
 
           {/* Card 2: Estratégia */}
-          <div className="group relative overflow-hidden flex flex-col justify-between p-0.5 bg-[#0a0a0c]/85 border border-[#c59740]/25 rounded-3xl backdrop-blur-xl transition-all duration-300 h-[175px]">
+          <div className="group relative overflow-hidden flex flex-col justify-between p-0.5 bg-[#0a0a0c]/85 border border-[#c9943a]/25 rounded-3xl backdrop-blur-xl transition-all duration-300 h-[175px]">
             <MiniEstrategia />
           </div>
 
           {/* Card 3: ESG */}
-          <div className="group relative overflow-hidden flex flex-col justify-between p-0.5 bg-[#0a0a0c]/85 border border-[#c59740]/25 rounded-3xl backdrop-blur-xl transition-all duration-300 h-[175px]">
+          <div className="group relative overflow-hidden flex flex-col justify-between p-0.5 bg-[#0a0a0c]/85 border border-[#c9943a]/25 rounded-3xl backdrop-blur-xl transition-all duration-300 h-[175px]">
             <MiniEsg />
           </div>
 
           {/* Card 4: AI Assistant */}
-          <div className="group relative overflow-hidden flex flex-col justify-between p-0.5 bg-[#0a0a0c]/85 border border-[#c59740]/25 rounded-3xl backdrop-blur-xl transition-all duration-300 h-[175px]">
+          <div className="group relative overflow-hidden flex flex-col justify-between p-0.5 bg-[#0a0a0c]/85 border border-[#c9943a]/25 rounded-3xl backdrop-blur-xl transition-all duration-300 h-[175px]">
             <MiniAi />
           </div>
         </div>

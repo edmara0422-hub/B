@@ -37,7 +37,7 @@ export function MiniAi() {
       {/* Header Bicolor com 3 Pontos */}
       <div className="flex justify-between items-center w-full z-10 border-b border-white/5 pb-1">
         <span className="text-[11px] font-normal text-white/95 tracking-wide">
-          <span className="text-[#c59740] font-bold">IPB</span> AI Assistant
+          <span className="text-[#c9943a] font-bold">IPB</span> AI Assistant
         </span>
         <MoreHorizontal className="h-3.5 w-3.5 text-white/40 hover:text-white/80 cursor-pointer" />
       </div>

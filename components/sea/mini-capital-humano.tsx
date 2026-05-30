@@ -66,7 +66,7 @@ export function MiniCapitalHumano() {
     >
       <style dangerouslySetInnerHTML={{ __html: `
         .gold-metallic-gradient {
-          background: linear-gradient(90deg, #c59740 0%, #f3d89d 50%, #c59740 100%);
+          background: linear-gradient(90deg, #c9943a 0%, #e0b85e 50%, #c9943a 100%);
           color: #0c0a07;
         }
         .dark-glass-value {
@@ -78,7 +78,7 @@ export function MiniCapitalHumano() {
       {/* Header Bicolor Premium com 3 Pontos */}
       <div className="flex justify-between items-center w-full z-10 border-b border-white/5 pb-1">
         <span className="text-[11px] font-normal text-white/95 tracking-wide">
-          <span className="text-[#c59740] font-bold">Pilar 1:</span> Cap. Humano & Liderança
+          <span className="text-[#c9943a] font-bold">Pilar 1:</span> Cap. Humano & Liderança
         </span>
         <MoreHorizontal className="h-3.5 w-3.5 text-white/40 hover:text-white/80 cursor-pointer" />
       </div>

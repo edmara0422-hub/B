@@ -38,7 +38,7 @@ export function MiniEstrategia() {
     >
       <style dangerouslySetInnerHTML={{ __html: `
         .gold-metallic-gradient {
-          background: linear-gradient(90deg, #c59740 0%, #f3d89d 50%, #c59740 100%);
+          background: linear-gradient(90deg, #c9943a 0%, #e0b85e 50%, #c9943a 100%);
           color: #0c0a07;
         }
         .dark-glass-value {
@@ -50,7 +50,7 @@ export function MiniEstrategia() {
       {/* Header Bicolor com 3 Pontos */}
       <div className="flex justify-between items-center w-full z-10 border-b border-white/5 pb-1">
         <span className="text-[11px] font-normal text-white/95 tracking-wide">
-          <span className="text-[#c59740] font-bold">Pilar 3:</span> Economia & Mercado
+          <span className="text-[#c9943a] font-bold">Pilar 3:</span> Economia & Mercado
         </span>
         <MoreHorizontal className="h-3.5 w-3.5 text-white/40 hover:text-white/80 cursor-pointer" />
       </div>
@@ -69,7 +69,7 @@ export function MiniEstrategia() {
                 {/* O Gradiente que gera o efeito cilíndrico metálico 3D real */}
                 <linearGradient id="cylinderGold" x1="0" y1="0" x2="1" y2="0">
                   <stop offset="0%" stopColor="#9c732c" />
-                  <stop offset="35%" stopColor="#f3d89d" />
+                  <stop offset="35%" stopColor="#e0b85e" />
                   <stop offset="65%" stopColor="#ecd399" />
                   <stop offset="100%" stopColor="#835f1e" />
                 </linearGradient>

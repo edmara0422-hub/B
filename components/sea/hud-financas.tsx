@@ -45,7 +45,7 @@ export function HudFinancas() {
 
   return (
     <div 
-      className="w-full h-full flex flex-col justify-between p-5 bg-[#08080a]/85 border border-[#c59740]/25 rounded-3xl backdrop-blur-xl select-none"
+      className="w-full h-full flex flex-col justify-between p-5 bg-[#08080a]/85 border border-[#c9943a]/25 rounded-3xl backdrop-blur-xl select-none"
       style={{ fontFamily: "'Poppins', -apple-system, system-ui, sans-serif" }}
     >
       <style dangerouslySetInnerHTML={{ __html: `
@@ -63,7 +63,7 @@ export function HudFinancas() {
           width: 11px;
           height: 11px;
           border-radius: 50%;
-          background: #c59740;
+          background: #c9943a;
           border: 1.5px solid #000;
           cursor: pointer;
           box-shadow: 0 0 8px rgba(197, 151, 64, 0.85);
@@ -82,7 +82,7 @@ export function HudFinancas() {
       {/* Header Bicolor com 3 Pontos */}
       <div className="flex justify-between items-center mb-4 border-b border-white/5 pb-2">
         <span className="text-[11px] font-normal text-white/95 tracking-wide">
-          <span className="text-[#c59740] font-bold">Pilar 2:</span> Finanças & Controladoria
+          <span className="text-[#c9943a] font-bold">Pilar 2:</span> Finanças & Controladoria
         </span>
         <MoreHorizontal className="h-4 w-4 text-white/40 hover:text-white/80 cursor-pointer" />
       </div>
@@ -94,7 +94,7 @@ export function HudFinancas() {
           <div className="flex flex-col">
             <div className="flex justify-between items-center mb-0.5">
               <span className="text-[9px] font-light text-white/55">Cap</span>
-              <span className="text-[10px] font-semibold text-[#c59740]">{capVal}</span>
+              <span className="text-[10px] font-semibold text-[#c9943a]">{capVal}</span>
             </div>
             <input type="range" min="100" max="2000" step="10" value={capVal} onChange={(e) => setCapVal(Number(e.target.value))} className="gold-slider-premium" />
           </div>
@@ -103,7 +103,7 @@ export function HudFinancas() {
           <div className="flex flex-col">
             <div className="flex justify-between items-center mb-0.5">
               <span className="text-[9px] font-light text-white/55">Fin</span>
-              <span className="text-[10px] font-semibold text-[#c59740]">{finVal}</span>
+              <span className="text-[10px] font-semibold text-[#c9943a]">{finVal}</span>
             </div>
             <input type="range" min="100" max="2000" step="10" value={finVal} onChange={(e) => setFinVal(Number(e.target.value))} className="gold-slider-premium" />
           </div>
@@ -112,7 +112,7 @@ export function HudFinancas() {
           <div className="flex flex-col">
             <div className="flex justify-between items-center mb-0.5">
               <span className="text-[9px] font-light text-white/55">Sold</span>
-              <span className="text-[10px] font-semibold text-[#c59740]">${soldVal}</span>
+              <span className="text-[10px] font-semibold text-[#c9943a]">${soldVal}</span>
             </div>
             <input type="range" min="10" max="1000" step="5" value={soldVal} onChange={(e) => setSoldVal(Number(e.target.value))} className="gold-slider-premium" />
           </div>
@@ -129,8 +129,8 @@ export function HudFinancas() {
               <svg className="w-full h-full overflow-visible" viewBox="0 0 260 90" preserveAspectRatio="none">
                 <defs>
                   <linearGradient id="bellGrad" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#c59740" stopOpacity="0.22" />
-                    <stop offset="100%" stopColor="#c59740" stopOpacity="0.01" />
+                    <stop offset="0%" stopColor="#c9943a" stopOpacity="0.22" />
+                    <stop offset="100%" stopColor="#c9943a" stopOpacity="0.01" />
                   </linearGradient>
                 </defs>
                 <line x1="30" y1="80" x2="245" y2="80" stroke="rgba(255,255,255,0.12)" strokeWidth="0.6" />
@@ -138,9 +138,9 @@ export function HudFinancas() {
                 <line x1="30" y1="45" x2="245" y2="45" stroke="rgba(255,255,255,0.03)" strokeWidth="0.5" strokeDasharray="3,3" />
                 <line x1="135" y1="10" x2="135" y2="80" stroke="rgba(197,151,64,0.22)" strokeWidth="0.8" strokeDasharray="2,2" />
                 <path d={bellPath} fill="url(#bellGrad)" />
-                <path d={bellPath} fill="none" stroke="#c59740" strokeWidth="1.2" />
-                <circle cx="85" cy="62" r="1.5" fill="#fff" stroke="#c59740" strokeWidth="0.8" />
-                <circle cx="185" cy="62" r="1.5" fill="#fff" stroke="#c59740" strokeWidth="0.8" />
+                <path d={bellPath} fill="none" stroke="#c9943a" strokeWidth="1.2" />
+                <circle cx="85" cy="62" r="1.5" fill="#fff" stroke="#c9943a" strokeWidth="0.8" />
+                <circle cx="185" cy="62" r="1.5" fill="#fff" stroke="#c9943a" strokeWidth="0.8" />
                 {['-3', '-2', '-1', '0', '1', '2', '3'].map((lbl, idx) => (
                   <text key={idx} x={30 + idx * 35} y="88" fill="rgba(255,255,255,0.25)" fontSize="5.5" textAnchor="middle" fontFamily="monospace">{lbl}</text>
                 ))}
@@ -149,7 +149,7 @@ export function HudFinancas() {
                 ))}
               </svg>
               {/* Tooltip do Mockup */}
-              <div className="absolute left-[54%] top-[1%] pointer-events-none text-[6px] font-mono text-[#c59740] bg-[#070708]/95 px-1.5 py-0.5 rounded border border-[#c59740]/30 shadow-md">
+              <div className="absolute left-[54%] top-[1%] pointer-events-none text-[6px] font-mono text-[#c9943a] bg-[#070708]/95 px-1.5 py-0.5 rounded border border-[#c9943a]/30 shadow-md">
                 Probability density = 0.930
               </div>
             </div>
@@ -167,8 +167,8 @@ export function HudFinancas() {
               <svg className="w-full h-full overflow-visible" viewBox="0 0 260 90" preserveAspectRatio="none">
                 <defs>
                   <linearGradient id="sigmoidGrad" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#c59740" stopOpacity="0.22" />
-                    <stop offset="100%" stopColor="#c59740" stopOpacity="0.01" />
+                    <stop offset="0%" stopColor="#c9943a" stopOpacity="0.22" />
+                    <stop offset="100%" stopColor="#c9943a" stopOpacity="0.01" />
                   </linearGradient>
                 </defs>
                 <line x1="30" y1="80" x2="245" y2="80" stroke="rgba(255,255,255,0.12)" strokeWidth="0.6" />
@@ -176,9 +176,9 @@ export function HudFinancas() {
                 <line x1="30" y1="45" x2="245" y2="45" stroke="rgba(255,255,255,0.03)" strokeWidth="0.5" strokeDasharray="3,3" />
                 <line x1="135" y1="10" x2="135" y2="80" stroke="rgba(197,151,64,0.15)" strokeWidth="0.8" strokeDasharray="2,2" />
                 <path d={sigmoidPath} fill="url(#sigmoidGrad)" />
-                <path d={sigmoidPath} fill="none" stroke="#c59740" strokeWidth="1.2" />
-                <circle cx="160" cy="28" r="1.5" fill="#fff" stroke="#c59740" strokeWidth="0.8" />
-                <circle cx="110" cy="62" r="1.5" fill="#fff" stroke="#c59740" strokeWidth="0.8" />
+                <path d={sigmoidPath} fill="none" stroke="#c9943a" strokeWidth="1.2" />
+                <circle cx="160" cy="28" r="1.5" fill="#fff" stroke="#c9943a" strokeWidth="0.8" />
+                <circle cx="110" cy="62" r="1.5" fill="#fff" stroke="#c9943a" strokeWidth="0.8" />
                 {['-30', '-20', '-10', '0', '10', '20', '30'].map((lbl, idx) => (
                   <text key={idx} x={30 + idx * 35} y="88" fill="rgba(255,255,255,0.25)" fontSize="5.5" textAnchor="middle" fontFamily="monospace">{lbl}</text>
                 ))}
@@ -187,10 +187,10 @@ export function HudFinancas() {
                 ))}
               </svg>
               {/* Tooltips do Mockup */}
-              <div className="absolute left-[33%] top-[45%] pointer-events-none text-[6px] font-mono text-[#c59740] bg-[#070708]/95 px-1.5 py-0.5 rounded border border-[#c59740]/30 shadow-md">
+              <div className="absolute left-[33%] top-[45%] pointer-events-none text-[6px] font-mono text-[#c9943a] bg-[#070708]/95 px-1.5 py-0.5 rounded border border-[#c9943a]/30 shadow-md">
                 Lignaà: 0.17%
               </div>
-              <div className="absolute right-[21%] top-[24%] pointer-events-none text-[6px] font-mono text-[#c59740] bg-[#070708]/95 px-1.5 py-0.5 rounded border border-[#c59740]/30 shadow-md">
+              <div className="absolute right-[21%] top-[24%] pointer-events-none text-[6px] font-mono text-[#c9943a] bg-[#070708]/95 px-1.5 py-0.5 rounded border border-[#c9943a]/30 shadow-md">
                 Sigmoid: 0.35%
               </div>
             </div>
