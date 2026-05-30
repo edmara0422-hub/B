@@ -40,6 +40,7 @@ const SIDEBAR_GROUPS = [
     label: 'GERENCIAL',
     items: [
       { id: 'sig-pessoas', title: 'Pessoas', desc: 'Líderes & Gestores' },
+      { id: 'sig-empresa', title: 'Empresa', desc: 'Estratégia · BI · Canais' },
       { id: 'sig-mercado', title: 'Mercado', desc: 'Panorama Cruzado' },
       { id: 'sig-esg', title: 'ESG', desc: 'Sustentabilidade & Governança' },
       { id: 'sig-feedback', title: 'Feedback & NPS', desc: 'Cultura & Feedback' },
@@ -174,7 +175,9 @@ export default function SistemasPageClient() {
       case 'S3':
         return <ICUSystemPanel />
       case 'sig-pessoas':
-        return <SigPessoasPanel />
+        return <SigPessoasPanel mode="pessoas" />
+      case 'sig-empresa':
+        return <SigPessoasPanel mode="empresa" />
       case 'sig-mercado':
         return <SigMercadoPanel />
       case 'sig-esg':

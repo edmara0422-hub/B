@@ -70,8 +70,8 @@ type OkrItem = {
   progress: number
 }
 
-export function SigPessoasPanel() {
-  const [activeTab, setActiveTab] = useState<TabOption>('home')
+export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empresa' }) {
+  const [activeTab, setActiveTab] = useState<TabOption>(mode === 'empresa' ? 'empresa' : 'home')
   const [lideresTab, setLideresTab] = useState<LideresSubTab>('voce')
   const [timeTab, setTimeTab] = useState<TimeSubTab>('formar')
   const [empresaTab, setEmpresaTab] = useState<EmpresaSubTab>('diagnostico')
@@ -1554,24 +1554,35 @@ export function SigPessoasPanel() {
 
       {/* Tabs HUD Header (Mockup exact replica) */}
       <div className="tab-pessoas-row">
-        {[
-          { id: 'home', label: 'Home', sub: 'panorama cruzado' },
-          { id: 'lideres', label: 'Líderes / Gestores', sub: 'Liderança · Gerir · Delegar' },
-          { id: 'time', label: 'Time', sub: 'demais equipes · Formar' },
-          { id: 'empresa', label: 'Empresa', sub: 'Estratégia · BI · Canais' }
-        ].map(t => (
-          <button
-            key={t.id}
-            onClick={() => setActiveTab(t.id as TabOption)}
-            className={`tab-p-btn ${activeTab === t.id ? 'active' : ''}`}
-          >
-            {t.label} <span className="tab-sub">{t.sub}</span>
-          </button>
-        ))}
+        {mode === 'pessoas' ? (
+          [
+            { id: 'home', label: 'Home', sub: 'panorama cruzado' },
+            { id: 'lideres', label: 'Líderes / Gestores', sub: 'Liderança · Gerir · Delegar' },
+            { id: 'time', label: 'Time', sub: 'demais equipes · Formar' }
+          ].map(t => (
+            <button
+              key={t.id}
+              onClick={() => setActiveTab(t.id as TabOption)}
+              className={`tab-p-btn ${activeTab === t.id ? 'active' : ''}`}
+            >
+              {t.label} <span className="tab-sub">{t.sub}</span>
+            </button>
+          ))
+        ) : (
+          <div className="flex items-center gap-2 mr-auto pl-2">
+            <span className="px-3 py-1 bg-[#5dcaa5]/10 border border-[#5dcaa5]/30 rounded-xl text-[10px] font-mono font-bold text-[#5dcaa5] tracking-widest uppercase">
+              EMPRESA
+            </span>
+            <span className="text-[9px] font-mono text-white/40 tracking-widest uppercase hidden sm:inline-block">
+              Direção &amp; Estratégia Corporativa
+            </span>
+          </div>
+        )}
         
         <button 
           onClick={() => triggerToast('Professor de IA iniciando mentoria de liderança...', 'ok')}
           className="btn-professor-ia"
+          style={{ marginLeft: mode === 'empresa' ? 'auto' : '0px' }}
         >
           ▶ PROFESSOR IA
         </button>

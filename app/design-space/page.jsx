@@ -1445,76 +1445,269 @@ function ERBLogo() {
     <motion.div
       style={{
         width: '100%',
-        maxWidth: '500px',
+        maxWidth: '440px',
+        height: 'auto',
+        aspectRatio: '1',
         display: 'flex',
-        flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
         cursor: 'pointer',
-        textAlign: 'center',
-        padding: '2rem',
-        userSelect: 'none',
       }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      whileHover={{ scale: 1.02 }}
+      whileHover={{ scale: 1.03 }}
       whileTap={{ scale: 0.98 }}
-      transition={{ duration: 0.4, ease: "easeOut" }}
     >
-      {/* "ER" Logo with a classic serif typography */}
-      <motion.div
-        style={{
-          fontFamily: "var(--serif), 'Cinzel', 'Playfair Display', 'Didot', 'Georgia', serif",
-          fontSize: "clamp(4.5rem, 10vw, 7.5rem)",
-          fontWeight: 200,
-          color: "#ffffff",
-          letterSpacing: "0.22em",
-          lineHeight: 1.0,
-          paddingLeft: "0.22em",
-        }}
-        animate={{
-          color: hovered ? "#d4b87a" : "#ffffff",
-          textShadow: hovered ? "0 0 35px rgba(212, 184, 122, 0.3)" : "0 0 0px rgba(0,0,0,0)",
-        }}
-        transition={{ duration: 0.4 }}
+      <svg
+        viewBox="0 0 400 400"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        style={{ width: '100%', height: '100%', overflow: 'visible' }}
       >
-        ER
-      </motion.div>
+        <defs>
+          {/* Metallic Gold Gradients */}
+          <linearGradient id="goldMetallic" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#dfb950" />
+            <stop offset="20%" stopColor="#ffd97a" />
+            <stop offset="45%" stopColor="#c39a30" />
+            <stop offset="60%" stopColor="#8c6610" />
+            <stop offset="80%" stopColor="#f7dc8c" />
+            <stop offset="100%" stopColor="#a17b18" />
+          </linearGradient>
+          
+          <linearGradient id="goldStroke" x1="100%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stopColor="#f7dc8c" />
+            <stop offset="50%" stopColor="#c39a30" />
+            <stop offset="100%" stopColor="#694d07" />
+          </linearGradient>
 
-      {/* A thin, ultra-luxurious separator line */}
-      <motion.div
-        style={{
-          width: '60px',
-          height: '1px',
-          backgroundColor: '#d4b87a',
-          margin: '2rem 0',
-          opacity: 0.6,
-        }}
-        animate={{
-          width: hovered ? '90px' : '60px',
-          opacity: hovered ? 1 : 0.6,
-        }}
-        transition={{ duration: 0.4 }}
-      />
+          {/* Metallic Silver/Chrome Gradients */}
+          <linearGradient id="silverMetallic" x1="0%" y1="100%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="#7f8895" />
+            <stop offset="25%" stopColor="#ffffff" />
+            <stop offset="50%" stopColor="#a3aab5" />
+            <stop offset="75%" stopColor="#eef1f5" />
+            <stop offset="100%" stopColor="#4e545c" />
+          </linearGradient>
 
-      {/* "BUSINESS" Subtitle in elegant clean typography */}
-      <motion.div
-        style={{
-          fontFamily: "var(--sans), 'Montserrat', 'Inter', sans-serif",
-          fontSize: "clamp(0.8rem, 1.8vw, 1.0rem)",
-          fontWeight: 400,
-          color: "rgba(244, 244, 246, 0.6)",
-          letterSpacing: "0.55em",
-          paddingLeft: "0.55em",
-          textTransform: "uppercase",
-        }}
-        animate={{
-          color: hovered ? "#ffffff" : "rgba(244, 244, 246, 0.6)",
-        }}
-        transition={{ duration: 0.4 }}
-      >
-        BUSINESS
-      </motion.div>
+          <linearGradient id="silverStroke" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#ffffff" />
+            <stop offset="50%" stopColor="#7f8895" />
+            <stop offset="100%" stopColor="#2c3035" />
+          </linearGradient>
+
+          {/* Ambient Glows */}
+          <radialGradient id="centerGlow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stopColor="rgba(224, 185, 80, 0.14)" />
+            <stop offset="50%" stopColor="rgba(127, 136, 149, 0.05)" />
+            <stop offset="100%" stopColor="rgba(0, 0, 0, 0)" />
+          </radialGradient>
+
+          {/* Dynamic Shimmer Glow */}
+          <linearGradient id="shimmerGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="rgba(255,255,255,0)" />
+            <stop offset="50%" stopColor="rgba(255,255,255,0.3)" />
+            <stop offset="100%" stopColor="rgba(255,255,255,0)" />
+          </linearGradient>
+
+          {/* High-End Drop Shadow Filter */}
+          <filter id="nobleShadow" x="-10%" y="-10%" width="120%" height="120%">
+            <feDropShadow dx="0" dy="16" stdDeviation="24" floodColor="#000000" floodOpacity="0.65" />
+            <feDropShadow dx="0" dy="4" stdDeviation="6" floodColor="#d4b87a" floodOpacity="0.1" />
+          </filter>
+          
+          <filter id="glowFilter" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="6" result="blur" />
+            <feComposite in="SourceGraphic" in2="blur" operator="over" />
+          </filter>
+        </defs>
+
+        {/* 1. Ambient Background Glow */}
+        <motion.circle
+          cx="200"
+          cy="200"
+          r="180"
+          fill="url(#centerGlow)"
+          animate={{
+            r: hovered ? 185 : 172,
+            opacity: hovered ? 0.95 : 0.75,
+          }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+        />
+
+        {/* 2. Noble Geometric Shield/Circle Frame */}
+        <g filter="url(#nobleShadow)">
+          {/* Rounded Glassmorphic Circle */}
+          <circle
+            cx="200"
+            cy="200"
+            r="150"
+            fill="rgba(6, 6, 8, 0.75)"
+            stroke="url(#silverStroke)"
+            strokeWidth="0.8"
+            style={{ backdropFilter: 'blur(20px)' }}
+          />
+
+          {/* Inner Decorative Golden Dashed Ring */}
+          <motion.circle
+            cx="200"
+            cy="200"
+            r="135"
+            stroke="url(#goldStroke)"
+            strokeWidth="1.2"
+            strokeDasharray="6 8 20 8"
+            fill="transparent"
+            animate={{ rotate: hovered ? 15 : 0 }}
+            transition={{ type: "spring", stiffness: 40, damping: 10 }}
+          />
+
+          {/* Thin Outer Silver Accent Ring */}
+          <motion.circle
+            cx="200"
+            cy="200"
+            r="142"
+            stroke="url(#silverStroke)"
+            strokeWidth="0.5"
+            strokeOpacity="0.6"
+            fill="transparent"
+            animate={{ rotate: hovered ? -10 : 0 }}
+            transition={{ type: "spring", stiffness: 35, damping: 12 }}
+          />
+
+          {/* Four Compass Coordinates for Executive Touch */}
+          <line x1="200" y1="44" x2="200" y2="52" stroke="url(#goldStroke)" strokeWidth="1.5" />
+          <line x1="200" y1="348" x2="200" y2="356" stroke="url(#goldStroke)" strokeWidth="1.5" />
+          <line x1="44" y1="200" x2="52" y2="200" stroke="url(#goldStroke)" strokeWidth="1.5" />
+          <line x1="348" y1="200" x2="356" y2="200" stroke="url(#goldStroke)" strokeWidth="1.5" />
+        </g>
+
+        {/* 3. The Bespoke Monogram: Intertwined "B" and "ER" using PURE vector paths */}
+        <g filter="url(#nobleShadow)">
+          {/* Shared Vertical Backbone (Silver) */}
+          <motion.rect
+            x="194"
+            y="110"
+            width="12"
+            height="180"
+            rx="6"
+            fill="url(#silverMetallic)"
+            animate={{
+              scaleY: hovered ? 1.02 : 1,
+            }}
+            transition={{ type: "spring", stiffness: 60, damping: 15 }}
+          />
+
+          {/* Left "E" Bars extending from Backbone (Silver) */}
+          <g>
+            {/* Top Bar */}
+            <motion.path
+              d="M194 110 H 130 C 124 110, 120 114, 120 120 C 120 126, 124 130, 130 130 H 194 Z"
+              fill="url(#silverMetallic)"
+              animate={{
+                x: hovered ? -3 : 0,
+              }}
+              transition={{ type: "spring", stiffness: 50, damping: 12 }}
+            />
+            {/* Middle Bar */}
+            <motion.path
+              d="M194 194 H 145 C 139 194, 135 198, 135 204 C 135 210, 139 214, 145 214 H 194 Z"
+              fill="url(#silverMetallic)"
+              animate={{
+                x: hovered ? -5 : 0,
+              }}
+              transition={{ type: "spring", stiffness: 50, damping: 12 }}
+            />
+            {/* Bottom Bar */}
+            <motion.path
+              d="M194 278 H 130 C 124 278, 120 282, 120 288 C 120 294, 124 298, 130 298 H 194 Z"
+              fill="url(#silverMetallic)"
+              animate={{
+                x: hovered ? -3 : 0,
+              }}
+              transition={{ type: "spring", stiffness: 50, damping: 12 }}
+            />
+          </g>
+
+          {/* Right "B" Loops (Gold) */}
+          <g>
+            {/* Top Loop */}
+            <motion.path
+              d="M206 110 H 242 C 267 110, 287 130, 287 155 C 287 180, 267 200, 242 200 H 206 Z"
+              fill="url(#goldMetallic)"
+              stroke="#060608"
+              strokeWidth="2"
+              animate={{
+                scale: hovered ? 1.01 : 1,
+                x: hovered ? 2 : 0,
+              }}
+              transition={{ type: "spring", stiffness: 60, damping: 15 }}
+            />
+            {/* Bottom Loop */}
+            <motion.path
+              d="M206 200 H 246 C 271 200, 291 220, 291 245 C 291 270, 271 290, 246 290 H 206 Z"
+              fill="url(#goldMetallic)"
+              stroke="#060608"
+              strokeWidth="2"
+              animate={{
+                scale: hovered ? 1.01 : 1,
+                x: hovered ? 2 : 0,
+              }}
+              transition={{ type: "spring", stiffness: 60, damping: 15 }}
+            />
+          </g>
+
+          {/* Right "R" Diagonal Leg flowing out of the middle-right intersection (Silver) */}
+          <motion.path
+            d="M225 240 L 275 285 C 280 289, 287 289, 291 285 C 295 281, 295 274, 291 270 L 245 230 Z"
+            fill="url(#silverMetallic)"
+            animate={{
+              x: hovered ? 4 : 0,
+              y: hovered ? 2 : 0,
+            }}
+            transition={{ type: "spring", stiffness: 50, damping: 12 }}
+          />
+
+          {/* 4. Elegant "BUSINESS" subscript */}
+          <motion.text
+            x="200"
+            y="322"
+            fill="url(#goldStroke)"
+            fontFamily="var(--sans), 'Montserrat', 'Inter', sans-serif"
+            fontSize="10.5"
+            fontWeight="500"
+            letterSpacing="0.65em"
+            textAnchor="middle"
+            style={{ userSelect: 'none', opacity: 0.8 }}
+            animate={{
+              letterSpacing: hovered ? "0.75em" : "0.65em"
+            }}
+            transition={{ duration: 0.4 }}
+          >
+            BUSINESS
+          </motion.text>
+        </g>
+        
+        {/* Subtle dynamic shine overlay that sweeps across when hovered */}
+        <motion.rect
+          x="-100"
+          y="0"
+          width="150"
+          height="400"
+          fill="url(#shimmerGrad)"
+          style={{ pointerEvents: 'none', transform: 'skewX(-25deg)' }}
+          animate={hovered ? {
+            x: ["0px", "600px"]
+          } : {
+            x: "0px"
+          }}
+          transition={{
+            duration: 1.5,
+            ease: "easeInOut",
+            repeat: hovered ? Infinity : 0,
+            repeatDelay: 1.0
+          }}
+        />
+      </svg>
     </motion.div>
   );
 }
