@@ -1246,8 +1246,8 @@ export default function SistemasPageClient() {
               <b>{timeStr || '00:00:00'}</b>
             </div>
 
-            {/* Link de Retorno ao Explore */}
-            <Link href="/explore" className="thd-chip font-sans">
+            {/* Link de Retorno ao Explore ou Biblioteca Arquivada */}
+            <Link href={showClinical ? '/admin/conteudos-arquivados' : '/explore'} className="thd-chip font-sans">
               <ArrowLeft className="h-3 w-3 mr-0.5" />
               <span>Voltar</span>
             </Link>
