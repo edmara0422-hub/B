@@ -74,7 +74,7 @@ export function HudEstrategia() {
     return () => window.removeEventListener('ipb-telemetry', handleTelemetry)
   }, [])
 
-  const updateTelemetry = (updates: Partial<typeof window.IPBTelemetry>) => {
+  const updateTelemetry = (updates: Record<string, any>) => {
     if (typeof window !== 'undefined') {
       const win = window as any
       win.IPBTelemetry = { ...win.IPBTelemetry, ...updates }
