@@ -196,7 +196,7 @@ export function InteractiveCockpit() {
           {/* Card 1: CAP. HUMANO */}
           <div 
             onClick={() => setActivePanel('capital_humano')}
-            className={`group relative overflow-hidden flex flex-col justify-between p-1 bg-[#0a0a0c]/85 border rounded-3xl backdrop-blur-xl transition-all duration-300 cursor-pointer select-none h-[220px] ${
+            className={`group relative overflow-hidden flex flex-col justify-between p-1 bg-[#0a0a0c]/85 border rounded-3xl backdrop-blur-xl transition-all duration-300 cursor-pointer select-none h-[175px] ${
               activePanel === 'capital_humano' 
                 ? 'border-[#c9943a] shadow-[0_0_15px_rgba(201,148,58,0.25)] bg-[#030303]/95' 
                 : 'border-white/5 hover:border-white/15'
@@ -208,7 +208,7 @@ export function InteractiveCockpit() {
           {/* Card 2: ESTRATÉGIA */}
           <div 
             onClick={() => setActivePanel('estrategia')}
-            className={`group relative overflow-hidden flex flex-col justify-between p-1 bg-[#0a0a0c]/85 border rounded-3xl backdrop-blur-xl transition-all duration-300 cursor-pointer select-none h-[220px] ${
+            className={`group relative overflow-hidden flex flex-col justify-between p-1 bg-[#0a0a0c]/85 border rounded-3xl backdrop-blur-xl transition-all duration-300 cursor-pointer select-none h-[175px] ${
               activePanel === 'estrategia' 
                 ? 'border-[#c9943a] shadow-[0_0_15px_rgba(201,148,58,0.25)] bg-[#030303]/95' 
                 : 'border-white/5 hover:border-white/15'
@@ -220,7 +220,7 @@ export function InteractiveCockpit() {
           {/* Card 3: GOVERNANÇA & ESG */}
           <div 
             onClick={() => setActivePanel('esg')}
-            className={`group relative overflow-hidden flex flex-col justify-between p-1 bg-[#0a0a0c]/85 border rounded-3xl backdrop-blur-xl transition-all duration-300 cursor-pointer select-none h-[220px] ${
+            className={`group relative overflow-hidden flex flex-col justify-between p-1 bg-[#0a0a0c]/85 border rounded-3xl backdrop-blur-xl transition-all duration-300 cursor-pointer select-none h-[175px] ${
               activePanel === 'esg' 
                 ? 'border-[#c9943a] shadow-[0_0_15px_rgba(201,148,58,0.25)] bg-[#030303]/95' 
                 : 'border-white/5 hover:border-white/15'
@@ -232,7 +232,7 @@ export function InteractiveCockpit() {
           {/* Card 4: IPB AI ASSISTANT */}
           <div 
             onClick={() => setActivePanel('ai')}
-            className={`group relative overflow-hidden flex flex-col justify-between p-1 bg-[#0a0a0c]/85 border rounded-3xl backdrop-blur-xl transition-all duration-300 cursor-pointer select-none h-[220px] ${
+            className={`group relative overflow-hidden flex flex-col justify-between p-1 bg-[#0a0a0c]/85 border rounded-3xl backdrop-blur-xl transition-all duration-300 cursor-pointer select-none h-[175px] ${
               activePanel === 'ai' 
                 ? 'border-[#c9943a] shadow-[0_0_15px_rgba(201,148,58,0.25)] bg-[#030303]/95' 
                 : 'border-white/5 hover:border-white/15'
@@ -244,10 +244,10 @@ export function InteractiveCockpit() {
         </div>
 
         {/* COLUNA DIREITA: O Painel de Análise Dinâmico Ativo + Matriz 6D no rodapé */}
-        <div className="flex-1 flex flex-col gap-5 justify-between">
+        <div className="flex-1 flex flex-col gap-5 justify-start">
           
           {/* Main Hero HUD Panel */}
-          <div className="flex-1 min-h-[500px]">
+          <div className="w-full min-h-[500px]">
             {renderHeroContent()}
           </div>
 
