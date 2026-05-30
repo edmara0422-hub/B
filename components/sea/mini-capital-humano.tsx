@@ -1,146 +1,18 @@
 'use client'
 
-import { useEffect, useState, useRef, useMemo } from 'react'
-import { Users } from 'lucide-react'
-import { Canvas, useFrame } from '@react-three/fiber'
-import * as THREE from 'three'
-
-export function BrainParticles({ pressaoMetas }: { pressaoMetas: number }) {
-  const groupRef = useRef<THREE.Group>(null)
-  
-  // Acelera a rotação conforme a pressão de metas aumenta
-  const speed = 0.25 + pressaoMetas * 0.15
-
-  // Cor transiciona de champagne gold para um âmbar quente caso o estresse passe de 6
-  const isHighStress = pressaoMetas > 6
-  const color = isHighStress ? '#e5af65' : '#d4b87a'
-
-  // Gera partículas detalhadas distribuídas imitando lobos cerebrais e cerebelo
-  const [positions, linePositions] = useMemo(() => {
-    const pts: [number, number, number][] = []
-    const countPerLobe = 100
-    
-    // Lobo esquerdo
-    for (let i = 0; i < countPerLobe; i++) {
-      const theta = Math.random() * Math.PI * 2
-      const phi = Math.acos((Math.random() * 2) - 1)
-      const r = 0.35 + Math.random() * 0.45
-      const x = r * Math.sin(phi) * Math.cos(theta) * 0.42 - 0.16
-      const y = r * Math.sin(phi) * Math.sin(theta) * 0.72
-      const z = r * Math.cos(phi) * 0.42
-      pts.push([x, y, z])
-    }
-    
-    // Lobo direito
-    for (let i = 0; i < countPerLobe; i++) {
-      const theta = Math.random() * Math.PI * 2
-      const phi = Math.acos((Math.random() * 2) - 1)
-      const r = 0.35 + Math.random() * 0.45
-      const x = r * Math.sin(phi) * Math.cos(theta) * 0.42 + 0.16
-      const y = r * Math.sin(phi) * Math.sin(theta) * 0.72
-      const z = r * Math.cos(phi) * 0.42
-      pts.push([x, y, z])
-    }
-    
-    // Cerebelo (base traseira inferior)
-    const cerebellumCount = 45
-    for (let i = 0; i < cerebellumCount; i++) {
-      const theta = Math.random() * Math.PI * 2
-      const phi = Math.acos((Math.random() * 2) - 1)
-      const r = 0.22 + Math.random() * 0.22
-      const x = r * Math.sin(phi) * Math.cos(theta) * 0.35
-      const y = r * Math.sin(phi) * Math.sin(theta) * 0.35 - 0.38
-      const z = r * Math.cos(phi) * 0.35 - 0.22
-      pts.push([x, y, z])
-    }
-
-    const posArray = new Float32Array(pts.length * 3)
-    pts.forEach((p, idx) => {
-      posArray[idx * 3] = p[0]
-      posArray[idx * 3 + 1] = p[1]
-      posArray[idx * 3 + 2] = p[2]
-    })
-
-    // Fibras sinápticas (linhas que conectam nós próximos)
-    const lines: number[] = []
-    const maxDist = 0.25
-    for (let i = 0; i < pts.length; i++) {
-      for (let j = i + 1; j < pts.length; j++) {
-        const dx = pts[i][0] - pts[j][0]
-        const dy = pts[i][1] - pts[j][1]
-        const dz = pts[i][2] - pts[j][2]
-        const dist = Math.sqrt(dx * dx + dy * dy + dz * dz)
-        if (dist < maxDist) {
-          lines.push(...pts[i], ...pts[j])
-        }
-      }
-    }
-
-    return [posArray, new Float32Array(lines)]
-  }, [])
-
-  useFrame((state) => {
-    const elapsed = state.clock.getElapsedTime()
-    const currentSpeed = speed * 0.15
-    if (groupRef.current) {
-      // Rotação orbital
-      groupRef.current.rotation.y = elapsed * currentSpeed
-      groupRef.current.rotation.x = Math.sin(elapsed * 0.3) * 0.05
-      
-      // Pulso orgânico de respiração sináptica
-      const breathing = 1.0 + Math.sin(elapsed * 1.5) * 0.03
-      groupRef.current.scale.set(breathing, breathing, breathing)
-    }
-  })
-
-  return (
-    <group ref={groupRef}>
-      {/* Neurônios / Partículas */}
-      <points>
-        <bufferGeometry>
-          <bufferAttribute
-            attach="attributes-position"
-            args={[positions, 3]}
-          />
-        </bufferGeometry>
-        <pointsMaterial
-          color={color}
-          size={0.038}
-          sizeAttenuation
-          transparent
-          opacity={0.7}
-        />
-      </points>
-
-      {/* Fibras Neurais de Conexão */}
-      <lineSegments>
-        <bufferGeometry>
-          <bufferAttribute
-            attach="attributes-position"
-            args={[linePositions, 3]}
-          />
-        </bufferGeometry>
-        <lineBasicMaterial
-          color={color}
-          transparent
-          opacity={0.16}
-          linewidth={1}
-        />
-      </lineSegments>
-    </group>
-  )
-}
+import { useEffect, useState, useMemo } from 'react'
+import { Users, TrendingUp, TrendingDown, AlertTriangle } from 'lucide-react'
 
 export function MiniCapitalHumano() {
   const [pressaoMetas, setPressaoMetas] = useState(5)
-  const [mounted, setMounted] = useState(false)
+  const [climaFrequencia, setClimaFrequencia] = useState(14)
 
   useEffect(() => {
-    setMounted(true)
     const handleTelemetry = () => {
       const telemetry = (window as any).IPBTelemetry
       if (telemetry) {
         setPressaoMetas(telemetry.pressaoMetas ?? 5)
+        setClimaFrequencia(telemetry.climaFrequencia ?? 14)
       }
     }
 
@@ -150,46 +22,130 @@ export function MiniCapitalHumano() {
     return () => window.removeEventListener('ipb-telemetry', handleTelemetry)
   }, [])
 
-  const burnoutEEB = Math.round(Math.min(98, 5 + Math.pow(pressaoMetas, 2.1)))
-  const turnoverAnual = Math.min(75, 10 + Math.pow(pressaoMetas, 1.8))
-  const climaIndex = 100 - burnoutEEB
+  const burnoutEEB = useMemo(() => {
+    return Math.round(Math.min(98, 5 + Math.pow(pressaoMetas, 2.1)))
+  }, [pressaoMetas])
+
+  const turnoverAnual = useMemo(() => {
+    return Number((38 + Math.pow(pressaoMetas, 1.4) * 2.5).toFixed(1))
+  }, [pressaoMetas])
+
+  const climaIndex = useMemo(() => {
+    return 100 - burnoutEEB
+  }, [burnoutEEB])
+
+  // Sparkline data representing Humor Pulse Surveys over 7 weeks
+  const sparklineData = useMemo(() => {
+    // Under high pressure, the trend drops significantly
+    const basePoints = [85, 88, 82, 86, 75, 78, 82]
+    const pressureDrop = pressaoMetas * 4.5
+    return basePoints.map((val, idx) => {
+      const drop = idx >= 4 ? pressureDrop : pressureDrop * (idx / 4)
+      return Math.max(10, Math.min(100, val - drop))
+    })
+  }, [pressaoMetas])
+
+  // Compute SVG polyline path for the sparkline
+  const polylinePoints = useMemo(() => {
+    return sparklineData.map((val, idx) => {
+      const x = (idx / 6) * 160 // x-axis mapping
+      const y = 50 - (val / 100) * 35 // y-axis mapping (inverted y in SVG)
+      return `${x},${y}`
+    }).join(' ')
+  }, [sparklineData])
+
+  // Compute SVG gradient area path
+  const areaPoints = useMemo(() => {
+    if (sparklineData.length === 0) return ''
+    const points = sparklineData.map((val, idx) => {
+      const x = (idx / 6) * 160
+      const y = 50 - (val / 100) * 35
+      return `${x},${y}`
+    })
+    return `0,50 ${points.join(' ')} 160,50`
+  }, [sparklineData])
 
   return (
-    <>
-      {/* 3D WebGL Neural Background Canvas */}
-      {mounted && (
-        <div className="absolute inset-0 z-0 pointer-events-none opacity-45">
-          <Canvas camera={{ position: [0, 0, 2.4], fov: 45 }}>
-            <ambientLight intensity={1.5} />
-            <BrainParticles pressaoMetas={pressaoMetas} />
-          </Canvas>
+    <div className="w-full h-full flex flex-col justify-between p-3 select-none">
+      <div className="flex justify-between items-center w-full z-10">
+        <div className="live-tag">
+          <div className="dot" />
+          <span>Pulse Surveys · Estresse · LIVE</span>
         </div>
-      )}
-
-      <div className="live-tag relative z-10">
-        <div className="dot" />
-        <span>Pulse Surveys · Estresse · LIVE</span>
-      </div>
-      
-      {/* Fallback Static SVG rings behind text only when not mounted yet */}
-      {!mounted && (
-        <div className="mini-bg-art">
-          <Users size={48} strokeWidth={1} className="opacity-20" />
+        <div className="badge text-[8px] bg-[#d4b87a]/15 text-[#d4b87a] px-1.5 py-0.5 rounded font-mono uppercase font-bold">
+          EEB {burnoutEEB}%
         </div>
-      )}
+      </div>
 
-      <div className="hud-vitals relative z-10 select-none">
-        <div><span>Burnout EEB:</span><b>{burnoutEEB}%</b></div>
-        <div><span>Turnover:</span><b>{Number(turnoverAnual).toFixed(0)}%</b></div>
-        <div><span>Clima Index:</span><b>{climaIndex}/100</b></div>
+      {/* Sparkline of Humor Pulse Trend (Real Analytical Widget) */}
+      <div className="relative w-full h-[60px] flex flex-col justify-end mt-2 mb-1 border-b border-white/5 pb-1">
+        <div className="absolute top-0 left-0 text-[7px] text-white/30 uppercase tracking-widest font-mono font-bold">
+          Humor Pulse Trend (7w)
+        </div>
+        <div className="absolute top-0 right-0 text-[8.5px] font-mono font-bold text-[#d4b87a] flex items-center gap-0.5">
+          {climaIndex}% {climaIndex > 65 ? <TrendingUp className="h-3 w-3 text-emerald-400" /> : <TrendingDown className="h-3 w-3 text-amber-500" />}
+        </div>
+        <svg className="w-full h-[40px] overflow-visible" viewBox="0 0 160 50" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="humorGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#d4b87a" stopOpacity="0.25" />
+              <stop offset="100%" stopColor="#d4b87a" stopOpacity="0.01" />
+            </linearGradient>
+          </defs>
+          {/* Shaded Area */}
+          <polygon points={areaPoints} fill="url(#humorGrad)" />
+          {/* Trend Line */}
+          <polyline
+            fill="none"
+            stroke="#d4b87a"
+            strokeWidth="1.8"
+            points={polylinePoints}
+          />
+          {/* Indicator Dot on the last point */}
+          {sparklineData.length > 0 && (
+            <circle
+              cx="160"
+              cy={50 - (sparklineData[sparklineData.length - 1] / 100) * 35}
+              r="2.5"
+              fill="#fff"
+              stroke="#d4b87a"
+              strokeWidth="1.2"
+            />
+          )}
+        </svg>
+      </div>
+
+      {/* Vitals Grid with Gauge Reading */}
+      <div className="grid grid-cols-3 gap-2 mt-1 relative z-10 text-left">
+        <div className="p-1 rounded bg-black/40 border border-white/5">
+          <span className="text-[7.5px] uppercase text-white/30 block font-bold leading-none">Burnout EEB</span>
+          <b className={`text-[12.5px] font-mono mt-0.5 block leading-none ${burnoutEEB > 35 ? 'text-amber-500' : 'text-[#d4b87a]'}`}>
+            {burnoutEEB}%
+          </b>
+        </div>
+        <div className="p-1 rounded bg-black/40 border border-white/5">
+          <span className="text-[7.5px] uppercase text-white/30 block font-bold leading-none">Turnover</span>
+          <b className="text-[12.5px] text-[#d4b87a] font-mono mt-0.5 block leading-none">
+            {turnoverAnual}%
+          </b>
+        </div>
+        <div className="p-1 rounded bg-black/40 border border-white/5">
+          <span className="text-[7.5px] uppercase text-white/30 block font-bold leading-none">Clima Index</span>
+          <b className="text-[12.5px] text-[#d4b87a] font-mono mt-0.5 block leading-none">
+            {climaIndex}/100
+          </b>
+        </div>
       </div>
       
-      <div className="title-area relative z-10 select-none">
-        <span>Comportamento & ESG</span>
-        <h2><div className="indicator-box" /> Cap. Humano</h2>
+      <div className="title-area relative z-10 mt-1 select-none flex justify-between items-end">
+        <div>
+          <span className="text-[8px] uppercase text-white/40 block leading-none font-bold">Pessoas & Liderança</span>
+          <h2 className="text-white text-xs font-bold mt-0.5 tracking-wider uppercase leading-none flex items-center gap-1.5">
+            <div className="h-2 w-2 rounded-sm bg-[#d4b87a]" /> Cap. Humano
+          </h2>
+        </div>
+        <span className="text-[8px] font-mono text-white/30 uppercase tracking-widest leading-none font-semibold">Pulse surveys</span>
       </div>
-      
-      <div className="badge relative z-10 select-none">EEB {burnoutEEB}%</div>
-    </>
+    </div>
   )
 }

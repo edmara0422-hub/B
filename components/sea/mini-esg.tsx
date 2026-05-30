@@ -1,162 +1,11 @@
 'use client'
 
-import { useEffect, useState, useRef, useMemo } from 'react'
-import { Canvas, useFrame } from '@react-three/fiber'
-import * as THREE from 'three'
-
-export function EsgShield() {
-  const groupRef = useRef<THREE.Group>(null)
-  const particlesRef = useRef<THREE.Points>(null)
-
-  // Altura de subida dos detritos dourados
-  const speed = 1.0
-
-  // Gera o escudo de compliance via Extrude Shape
-  const shieldGeometry = useMemo(() => {
-    const shape = new THREE.Shape()
-    shape.moveTo(0, 0.42)
-    shape.quadraticCurveTo(0.22, 0.42, 0.3, 0.2)
-    shape.quadraticCurveTo(0.3, -0.15, 0, -0.42)
-    shape.quadraticCurveTo(-0.3, -0.15, -0.3, 0.2)
-    shape.quadraticCurveTo(-0.22, 0.42, 0, 0.42)
-
-    const extrudeSettings = {
-      depth: 0.04,
-      bevelEnabled: true,
-      bevelSegments: 3,
-      steps: 1,
-      bevelSize: 0.015,
-      bevelThickness: 0.015
-    }
-    const geom = new THREE.ExtrudeGeometry(shape, extrudeSettings)
-    geom.center() // Alinha o centro ao ponto local (0,0,0)
-    return geom
-  }, [])
-
-  // Gera 50 micro-partículas de poeira de ouro flutuando dentro de um cilindro virtual
-  const particlesPos = useMemo(() => {
-    const temp = []
-    for (let i = 0; i < 50; i++) {
-      const theta = Math.random() * Math.PI * 2
-      const r = 0.5 + Math.random() * 0.5
-      temp.push(
-        Math.cos(theta) * r,
-        (Math.random() - 0.5) * 1.6, // Coordenada Y
-        Math.sin(theta) * r
-      )
-    }
-    return new Float32Array(temp)
-  }, [])
-
-  useFrame((state) => {
-    const t = state.clock.getElapsedTime()
-    if (groupRef.current) {
-      // Flutuação harmônica vertical e rotação suave
-      groupRef.current.position.y = Math.sin(t * 0.8) * 0.06
-      groupRef.current.rotation.y = t * 0.18
-      groupRef.current.rotation.z = Math.sin(t * 0.45) * 0.04
-    }
-    if (particlesRef.current) {
-      const posAttr = particlesRef.current.geometry.attributes.position
-      const positions = posAttr.array as Float32Array
-      for (let i = 1; i < positions.length; i += 3) {
-        positions[i] += 0.0028 * speed // Velocidade de subida gradual
-        if (positions[i] > 0.85) {
-          positions[i] = -0.85 // Reseta na base
-        }
-      }
-      posAttr.needsUpdate = true
-    }
-  })
-
-  return (
-    <group scale={1.25}>
-      {/* Grupo Principal Flutuante (Escudo + Folhas) */}
-      <group ref={groupRef}>
-        {/* Camada Refrativa Principal - Glassmorphism */}
-        <mesh geometry={shieldGeometry}>
-          <meshPhysicalMaterial
-            color="#ffffff"
-            transparent
-            opacity={0.35}
-            roughness={0.12}
-            metalness={0.05}
-            transmission={0.9} // Transmissão de vidro translúcido refrativo
-            thickness={0.15}
-            clearcoat={1.0}
-            clearcoatRoughness={0.08}
-          />
-        </mesh>
-        
-        {/* Contorno Dourado Estilizado do Escudo */}
-        <mesh geometry={shieldGeometry} scale={0.93}>
-          <meshBasicMaterial
-            color="#d4b87a"
-            wireframe
-            transparent
-            opacity={0.22}
-          />
-        </mesh>
-
-        {/* Três Folhas Metálicas Douradas Flutuantes (Representando a sustentabilidade) */}
-        {/* Folha Esquerda */}
-        <group position={[-0.09, 0.04, 0.03]} rotation={[0.2, -0.3, 0.35]}>
-          <mesh>
-            <coneGeometry args={[0.035, 0.12, 4]} />
-            <meshStandardMaterial color="#d4b87a" metalness={0.95} roughness={0.2} />
-          </mesh>
-        </group>
-        {/* Folha Direita */}
-        <group position={[0.09, 0.04, 0.03]} rotation={[0.2, 0.3, -0.35]}>
-          <mesh>
-            <coneGeometry args={[0.035, 0.12, 4]} />
-            <meshStandardMaterial color="#d4b87a" metalness={0.95} roughness={0.2} />
-          </mesh>
-        </group>
-        {/* Folha Central */}
-        <group position={[0, 0.12, 0.03]} rotation={[0.1, 0, 0]}>
-          <mesh>
-            <coneGeometry args={[0.04, 0.14, 4]} />
-            <meshStandardMaterial color="#d4b87a" metalness={0.95} roughness={0.2} />
-          </mesh>
-        </group>
-      </group>
-
-      {/* 2. Anéis Orbitais de Proteção */}
-      <lineLoop rotation={[Math.PI / 2.2, 0.25, 0]}>
-        <ringGeometry args={[1.05, 1.06, 36]} />
-        <meshBasicMaterial color="#d4b87a" transparent opacity={0.22} side={THREE.DoubleSide} />
-      </lineLoop>
-      <lineLoop rotation={[Math.PI / -2.4, -0.2, 0]}>
-        <ringGeometry args={[1.15, 1.16, 36]} />
-        <meshBasicMaterial color="#d4b87a" transparent opacity={0.12} side={THREE.DoubleSide} />
-      </lineLoop>
-
-      {/* 3. Poeira Cósmica Flutuante Dourada */}
-      <points ref={particlesRef}>
-        <bufferGeometry>
-          <bufferAttribute
-            attach="attributes-position"
-            args={[particlesPos, 3]}
-          />
-        </bufferGeometry>
-        <pointsMaterial
-          color="#d4b87a"
-          size={0.032}
-          transparent
-          opacity={0.6}
-        />
-      </points>
-    </group>
-  )
-}
+import { useEffect, useState, useMemo } from 'react'
 
 export function MiniEsg() {
   const [pressaoMetas, setPressaoMetas] = useState(5)
-  const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
-    setMounted(true)
     const handleTelemetry = () => {
       const telemetry = (window as any).IPBTelemetry
       if (telemetry) {
@@ -170,47 +19,85 @@ export function MiniEsg() {
     return () => window.removeEventListener('ipb-telemetry', handleTelemetry)
   }, [])
 
-  // Índice de Compliance dinâmico afetado pelo estresse de metas da equipe
-  const complianceScore = Math.max(70, Math.round(98 - pressaoMetas * 2.8))
+  // Dynamic compliance index affected by target pressure
+  const complianceScore = useMemo(() => {
+    return Math.max(70, Math.round(98 - pressaoMetas * 2.8))
+  }, [pressaoMetas])
 
   return (
-    <>
-      {/* 3D WebGL Compliance Shield Background Canvas */}
-      {mounted && (
-        <div className="absolute inset-0 z-0 pointer-events-none opacity-45">
-          <Canvas camera={{ position: [0, 0, 2.2], fov: 45 }}>
-            <ambientLight intensity={1.5} />
-            <EsgShield />
-          </Canvas>
+    <div className="w-full h-full flex flex-col justify-between p-3 select-none">
+      <div className="flex justify-between items-center w-full z-10">
+        <div className="live-tag">
+          <div className="dot" />
+          <span>ESG & Governança · Real-Time · LIVE</span>
         </div>
-      )}
+        <div className="badge text-[8px] bg-[#d4b87a]/15 text-[#d4b87a] px-1.5 py-0.5 rounded font-mono uppercase font-bold">
+          COMPL. {complianceScore}%
+        </div>
+      </div>
 
-      <div className="header-esg relative z-10 select-none">
-        <div className="seal">✦</div>
+      {/* SVG Materiality Ring & ODS Indicators (Real Analytical Widget) */}
+      <div className="relative w-full h-[60px] flex items-center justify-between mt-2 mb-1 border-b border-white/5 pb-1 gap-2">
+        <div className="absolute top-0 left-0 text-[7px] text-white/30 uppercase tracking-widest font-mono font-bold">
+          Materialidade & Carbono
+        </div>
+        
+        {/* Left Side: Circular SVG Compliance Ring */}
+        <div className="flex items-center gap-2 mt-2">
+          <div className="relative h-[36px] w-[36px] shrink-0">
+            <svg className="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
+              <path className="text-white/5" stroke="currentColor" strokeWidth="3" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+              <path className="text-[#d4b87a] transition-all duration-300" strokeDasharray={`${complianceScore}, 100`} stroke="currentColor" strokeWidth="3" strokeLinecap="round" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+            </svg>
+            <div className="absolute inset-0 flex items-center justify-center text-[7.5px] font-mono font-bold text-[#d4b87a]">
+              {complianceScore}%
+            </div>
+          </div>
+          <div className="text-left">
+            <div className="text-[7.5px] uppercase font-bold text-white/50 leading-none">Matriz Energética</div>
+            <div className="text-[9px] font-mono font-bold text-[#d4b87a] mt-0.5 leading-none">94.0% Renovável</div>
+          </div>
+        </div>
+
+        {/* Right Side: Carbon & Diversity indicators */}
+        <div className="text-right mt-2 flex flex-col justify-end">
+          <div className="text-[7px] uppercase font-bold text-white/30 leading-none">Carbon Footprint</div>
+          <div className="text-[10px] font-mono font-bold text-white/80 mt-0.5 leading-none">13.50t CO2e</div>
+          <div className="text-[6.5px] text-white/40 mt-1">Liderança Fem: <span className="text-[#d4b87a] font-bold font-mono">17%</span></div>
+        </div>
+      </div>
+
+      {/* ODS Vitals */}
+      <div className="grid grid-cols-3 gap-2 mt-1 relative z-10 text-left">
+        <div className="p-1 rounded bg-black/40 border border-white/5">
+          <span className="text-[7.5px] uppercase text-white/30 block font-bold leading-none">ODS 03</span>
+          <b className="text-[9.5px] text-[#d4b87a] font-mono mt-0.5 block leading-none">
+            Saúde Humana
+          </b>
+        </div>
+        <div className="p-1 rounded bg-black/40 border border-white/5">
+          <span className="text-[7.5px] uppercase text-white/30 block font-bold leading-none">ODS 09</span>
+          <b className="text-[9.5px] text-[#d4b87a] font-mono mt-0.5 block leading-none">
+            Infr. & Inov.
+          </b>
+        </div>
+        <div className="p-1 rounded bg-black/40 border border-white/5">
+          <span className="text-[7.5px] uppercase text-white/30 block font-bold leading-none">ODS 12</span>
+          <b className="text-[9.5px] text-[#d4b87a] font-mono mt-0.5 block leading-none">
+            Eficiên. Cloud
+          </b>
+        </div>
+      </div>
+      
+      <div className="title-area relative z-10 mt-1 select-none flex justify-between items-end">
         <div>
-          <span>Compliance &amp; ESG</span>
-          <b>Sustentabilidade <em>&amp; Gov</em></b>
+          <span className="text-[8px] uppercase text-white/40 block leading-none font-bold">Materialidade & Sustentabilidade</span>
+          <h2 className="text-white text-xs font-bold mt-0.5 tracking-wider uppercase leading-none flex items-center gap-1.5">
+            <div className="h-2 w-2 rounded-sm bg-[#d4b87a]" /> Governança & ESG
+          </h2>
         </div>
+        <span className="text-[8px] font-mono text-white/30 uppercase tracking-widest leading-none font-semibold">ESG 6D</span>
       </div>
-      
-      <div className="relative z-10 flex flex-col justify-center gap-1.5 my-3" style={{ flex: 1 }}>
-        <div className="text-center p-2.5 rounded-xl border border-white/5 bg-black/40 backdrop-blur-md select-none">
-          <span className="text-[7.5px] uppercase tracking-wider text-white/35">Compliance Index</span>
-          <div className="text-[20px] font-extrabold text-white leading-none mt-1 font-mono">{complianceScore}%</div>
-          <span className="text-[8.5px] text-[#d4b87a] mt-0.5 block leading-none font-medium">Auditado 6D · OK</span>
-        </div>
-      </div>
-      
-      <div className="ods-row relative z-10 select-none">
-        <span><b>03</b>Saúde</span>
-        <span><b>04</b>Educ.</span>
-        <span><b>09</b>Inov.</span>
-      </div>
-      
-      <div className="features-strip relative z-10 select-none">
-        <div className="feat-pill gold"><div className="d" />Offline-First</div>
-        <div className="feat-pill gold"><div className="d" />Pegada digital</div>
-      </div>
-    </>
+    </div>
   )
 }
