@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Conector de WhatsApp - IPB</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #030712;
+      --card-bg: rgba(17, 24, 39, 0.45);
+      --border: rgba(255, 255, 255, 0.08);
+      --primary: #d4b87a;
+      --primary-hover: #e5cb93;
+      --text: #f3f4f6;
+      --text-muted: #9ca3af;
+      --success: #34d399;
+      --error: #f87171;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: 'Outfit', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      overflow-x: hidden;
+      background-image: 
+        radial-gradient(at top left, rgba(212, 184, 122, 0.05), transparent 40%),
+        radial-gradient(at bottom right, rgba(124, 58, 237, 0.05), transparent 40%);
+    }
+
+    .container {
+      width: 100%;
+      max-width: 500px;
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 32px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      position: relative;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    .logo-container {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 60px;
+      height: 60px;
+      border-radius: 16px;
+      background: rgba(214, 184, 122, 0.08);
+      border: 1px solid rgba(214, 184, 122, 0.2);
+      color: var(--primary);
+      font-size: 24px;
+      margin-bottom: 16px;
+      box-shadow: 0 0 20px rgba(214, 184, 122, 0.15);
+    }
+
+    h1 {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+
+    .subtitle {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    input {
+      width: 100%;
+      height: 44px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 0 16px;
+      color: #fff;
+      font-family: inherit;
+      font-size: 14px;
+      outline: none;
+      transition: all 0.2s ease;
+    }
+
+    input:focus {
+      border-color: var(--primary);
+      background: rgba(255, 255, 255, 0.07);
+      box-shadow: 0 0 10px rgba(214, 184, 122, 0.1);
+    }
+
+    input::placeholder {
+      color: rgba(255, 255, 255, 0.25);
+    }
+
+    .btn {
+      width: 100%;
+      height: 48px;
+      background: var(--primary);
+      border: none;
+      border-radius: 12px;
+      color: #000;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 24px;
+    }
+
+    .btn:hover {
+      background: var(--primary-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 8px 20px rgba(214, 184, 122, 0.25);
+    }
+
+    .btn:active {
+      transform: translateY(1px);
+    }
+
+    .btn:disabled {
+      background: rgba(255, 255, 255, 0.1);
+      color: rgba(255, 255, 255, 0.3);
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .spinner {
+      width: 18px;
+      height: 18px;
+      border: 2px solid rgba(0, 0, 0, 0.1);
+      border-top-color: #000;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .qr-container {
+      margin-top: 28px;
+      border-top: 1px solid var(--border);
+      padding-top: 28px;
+      text-align: center;
+      display: none;
+    }
+
+    .qr-title {
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--primary);
+      margin-bottom: 12px;
+    }
+
+    .qr-frame {
+      display: inline-flex;
+      background: white;
+      padding: 16px;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+      margin-bottom: 16px;
+    }
+
+    .qr-frame img {
+      width: 220px;
+      height: 220px;
+      display: block;
+    }
+
+    .qr-instruction {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      max-width: 320px;
+      margin: 0 auto;
+    }
+
+    .alert {
+      margin-top: 20px;
+      padding: 12px 16px;
+      border-radius: 12px;
+      font-size: 12px;
+      line-height: 1.5;
+      display: none;
+    }
+
+    .alert-success {
+      background: rgba(52, 211, 153, 0.08);
+      border: 1px solid rgba(52, 211, 153, 0.2);
+      color: var(--success);
+    }
+
+    .alert-error {
+      background: rgba(248, 113, 113, 0.08);
+      border: 1px solid rgba(248, 113, 113, 0.2);
+      color: var(--error);
+    }
+
+    .info-footer {
+      text-align: center;
+      margin-top: 28px;
+      font-size: 10px;
+      color: rgba(255, 255, 255, 0.2);
+      font-family: 'JetBrains Mono', monospace;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="header">
+      <div class="logo-container">✨</div>
+      <h1>Conectar WhatsApp</h1>
+      <p class="subtitle">Integração rápida do robô de notificações IPB</p>
+    </div>
+
+    <div class="form-group">
+      <label for="apiUrl">URL da Evolution API</label>
+      <input type="text" id="apiUrl" value="https://evolution-api-latest-s2rw.onrender.com" placeholder="Ex: https://sua-api.onrender.com">
+    </div>
+
+    <div class="form-group">
+      <label for="apiKey">Sua Chave API (API_KEY)</label>
+      <input type="password" id="apiKey" placeholder="Cole a senha definida no Render" autocomplete="off">
+    </div>
+
+    <button id="connectBtn" class="btn">
+      <span>Criar Instância & Gerar QR Code</span>
+    </button>
+
+    <div id="alertBox" class="alert"></div>
+
+    <div id="qrContainer" class="qr-container">
+      <p class="qr-title">Escaneie o QR Code</p>
+      <div class="qr-frame">
+        <img id="qrImage" src="" alt="QR Code de Conexão">
+      </div>
+      <p class="qr-instruction">
+        Abra o WhatsApp no seu celular, vá em <strong>Aparelhos Conectados</strong> > <strong>Conectar um Aparelho</strong> e aponte a câmera para a tela.
+      </p>
+    </div>
+
+    <div class="info-footer">
+      IPB · Intelligence Platform Business
+    </div>
+  </div>
+
+  <script>
+    const apiUrlInput = document.getElementById('apiUrl');
+    const apiKeyInput = document.getElementById('apiKey');
+    const connectBtn = document.getElementById('connectBtn');
+    const alertBox = document.getElementById('alertBox');
+    const qrContainer = document.getElementById('qrContainer');
+    const qrImage = document.getElementById('qrImage');
+
+    function showAlert(message, type = 'error') {
+      alertBox.textContent = message;
+      alertBox.className = `alert alert-${type}`;
+      alertBox.style.display = 'block';
+    }
+
+    function hideAlert() {
+      alertBox.style.display = 'none';
+    }
+
+    async function handleConnect() {
+      const baseUrl = apiUrlInput.value.trim().replace(/\/$/, '');
+      const apiKey = apiKeyInput.value.trim();
+
+      if (!baseUrl) {
+        showAlert('A URL da API é obrigatória.');
+        return;
+      }
+      if (!apiKey) {
+        showAlert('A Chave API (API_KEY) é obrigatória.');
+        return;
+      }
+
+      // UI Loading state
+      connectBtn.disabled = true;
+      connectBtn.innerHTML = '<div class="spinner"></div><span>Conectando...</span>';
+      hideAlert();
+      qrContainer.style.display = 'none';
+
+      try {
+        // 1. Tenta criar a instância 'ipb_sistema'
+        const response = await fetch(`${baseUrl}/instance/create`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'apikey': apiKey
+          },
+          body: JSON.stringify({
+            instanceName: 'ipb_sistema',
+            qrcode: true
+          })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          // Instância criada com sucesso! Mostra o QR Code
+          const qrCodeBase64 = data.qrcode?.base64 || (data.instance && data.instance.qrcode && data.instance.qrcode.base64);
+          if (qrCodeBase64) {
+            qrImage.src = qrCodeBase64;
+            qrContainer.style.display = 'block';
+            showAlert('Instância criada! Escaneie o QR Code abaixo para conectar.', 'success');
+          } else {
+            showAlert('Instância criada, mas o QR Code não foi gerado automaticamente. Tente buscar a conexão direta.', 'success');
+          }
+        } else {
+          // Se falhou, pode ser que a instância já exista. Vamos tentar conectar na instância existente.
+          if (data.message && (data.message.includes('already exists') || data.message.includes('existente'))) {
+            showAlert('Instância já existe! Buscando o QR Code de conexão...', 'success');
+            await fetchExistingQrCode(baseUrl, apiKey);
+          } else {
+            showAlert(data.message || `Erro ao criar instância: Código ${response.status}`);
+          }
+        }
+      } catch (err) {
+        console.error(err);
+        showAlert('Falha na comunicação com a API. Verifique a URL e se ela está ligada (lembre-se que no plano grátis do Render ela pode demorar 50 segundos para ligar da primeira vez).');
+      } finally {
+        connectBtn.disabled = false;
+        connectBtn.innerHTML = '<span>Criar Instância & Gerar QR Code</span>';
+      }
+    }
+
+    async function fetchExistingQrCode(baseUrl, apiKey) {
+      try {
+        const response = await fetch(`${baseUrl}/instance/connect/ipb_sistema`, {
+          method: 'GET',
+          headers: {
+            'apikey': apiKey
+          }
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          const qrCodeBase64 = data.base64 || (data.code && data.code.base64) || data.qrcode;
+          if (qrCodeBase64) {
+            qrImage.src = qrCodeBase64.startsWith('data:') ? qrCodeBase64 : `data:image/png;base64,${qrCodeBase64}`;
+            qrContainer.style.display = 'block';
+            showAlert('Instância existente encontrada! Escaneie o QR Code abaixo para conectar.', 'success');
+          } else {
+            // Se já estiver conectado!
+            if (data.message && data.message.includes('already connected')) {
+              showAlert('Seu WhatsApp já está conectado e pronto para uso!', 'success');
+            } else {
+              showAlert('Não foi possível obter o QR Code da instância ativa. Certifique-se de que ela não está conectada.');
+            }
+          }
+        } else {
+          showAlert(data.message || `Erro ao obter conexão: Código ${response.status}`);
+        }
+      } catch (err) {
+        console.error(err);
+        showAlert('Erro ao buscar a conexão da instância existente.');
+      }
+    }
+
+    connectBtn.addEventListener('click', handleConnect);
+  </script>
+</body>
+</html>
