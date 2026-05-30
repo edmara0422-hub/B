@@ -159,12 +159,12 @@ function Lungs3DModel({
     box.getCenter(center)
 
     const maxDim = Math.max(size.x, size.y, size.z)
-    const scale = 3.35 / maxDim // normalized dimensions
+    const scale = 2.8 / maxDim // normalized dimensions
     root.scale.setScalar(scale)
     root.position.sub(center.multiplyScalar(scale))
 
     // Position adjustment to center trachea in the viewport
-    root.position.y += 0.42
+    root.position.y += 0.38
 
     root.traverse((child) => {
       if (!(child instanceof THREE.Mesh)) return
@@ -750,7 +750,7 @@ export function RespiratorySystemSim({ className }: RespiratorySystemSimProps) {
       {/* Canvas 3D (R3F) */}
       <div className="absolute inset-0 z-0">
         <Canvas
-          camera={{ position: [0, 0, 3.45], fov: 36 }}
+          camera={{ position: [0, 0, 4.2], fov: 38 }}
           gl={{ alpha: true, antialias: true, powerPreference: 'high-performance' }}
           dpr={[1, 1.5]}
           style={{ width: '100%', height: '100%', display: 'block' }}
