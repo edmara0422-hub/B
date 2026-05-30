@@ -78,7 +78,7 @@ export function TopBarSEA() {
           <linearGradient id="tb-gold-grad" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%"   stopColor="#fff8e7" />
             <stop offset="30%"  stopColor="#f0d080" />
-            <stop offset="60%"  stopColor="#d4b87a" />
+            <stop offset="60%"  stopColor="#c9943a" />
             <stop offset="85%"  stopColor="#b8975a" />
             <stop offset="100%" stopColor="#8b6914" />
           </linearGradient>
@@ -98,7 +98,7 @@ export function TopBarSEA() {
           right: '16px',
           top: '12px',
           borderRadius: '100px',
-          boxShadow: '0 10px 40px rgba(0,0,0,0.75), 0 0 20px rgba(212,184,122,0.10)',
+          boxShadow: '0 10px 40px rgba(0,0,0,0.75), 0 0 20px rgba(201, 148, 58,0.10)',
         }}
       >
       <header
@@ -120,7 +120,7 @@ export function TopBarSEA() {
           inset: 0,
           borderRadius: 'inherit',
           padding: '0.2px',
-          background: 'linear-gradient(90deg, #e2e8f0 0%, #cbd5e1 45%, #d4b87a 55%, #b8975a 100%)',
+          background: 'linear-gradient(90deg, #e2e8f0 0%, #cbd5e1 45%, #c9943a 55%, #b8975a 100%)',
           WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
           WebkitMaskComposite: 'xor',
           maskComposite: 'exclude',
@@ -132,7 +132,7 @@ export function TopBarSEA() {
       <div
         className="absolute bottom-0 left-0 right-0 h-px pointer-events-none"
         style={{
-          background: 'linear-gradient(90deg, transparent 8%, rgba(255,255,255,0.05) 28%, rgba(212,184,122,0.20) 50%, rgba(255,255,255,0.05) 72%, transparent 92%)',
+          background: 'linear-gradient(90deg, transparent 8%, rgba(255,255,255,0.05) 28%, rgba(201, 148, 58,0.20) 50%, rgba(255,255,255,0.05) 72%, transparent 92%)',
           opacity: 0.82,
         }}
       />
@@ -144,10 +144,10 @@ export function TopBarSEA() {
             className="flex h-7 w-7 shrink-0 items-center justify-center rounded-[0.55rem] relative overflow-hidden"
             style={{
               background:
-                'linear-gradient(135deg, #e8f0f8 0%, #cbd5e1 20%, #d4b87a 50%, #b8975a 75%, #8b6914 100%)',
-              border: '0.2px solid rgba(212,184,122,0.50)',
+                'linear-gradient(135deg, #e8f0f8 0%, #cbd5e1 20%, #c9943a 50%, #b8975a 75%, #8b6914 100%)',
+              border: '0.2px solid rgba(201, 148, 58,0.50)',
               boxShadow:
-                'inset 0 1px 2px rgba(255,255,255,0.55), inset 0 -1px 2px rgba(0,0,0,0.35), 0 0 14px rgba(212,184,122,0.35), 0 4px 12px rgba(0,0,0,0.55)',
+                'inset 0 1px 2px rgba(255,255,255,0.55), inset 0 -1px 2px rgba(0,0,0,0.35), 0 0 14px rgba(201, 148, 58,0.35), 0 4px 12px rgba(0,0,0,0.55)',
             }}
           >
             {/* Reflexo brilhante superior — polido */}
@@ -278,8 +278,8 @@ export function TopBarSEA() {
             className="flex h-6 w-6 items-center justify-center rounded-[0.5rem] transition md:h-7 md:w-7 md:rounded-[0.6rem]"
             style={{
               background: btnShellBg,
-              border: '0.2px solid rgba(212,184,122,0.24)',
-              boxShadow: 'inset 0 0.2px 0 rgba(255,255,255,0.08), 0 0 8px rgba(212,184,122,0.10)',
+              border: '0.2px solid rgba(201, 148, 58,0.24)',
+              boxShadow: 'inset 0 0.2px 0 rgba(255,255,255,0.08), 0 0 8px rgba(201, 148, 58,0.10)',
             }}
           >
             {profile?.photo_url ? (
@@ -290,7 +290,7 @@ export function TopBarSEA() {
                 style={{
                   stroke: 'url(#tb-gold-grad)',
                   strokeWidth: '2px',
-                  filter: 'drop-shadow(0 0 4px rgba(212,184,122,0.4))',
+                  filter: 'drop-shadow(0 0 4px rgba(201, 148, 58,0.4))',
                 }}
               />
             )}

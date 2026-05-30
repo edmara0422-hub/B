@@ -227,8 +227,8 @@ export default function SistemasPageClient() {
           --g-line: rgba(224,200,135,.15);
           --g-line-on: rgba(224,200,135,.38);
           --g-glow: rgba(224,200,135,.10);
-          --c-gold: #d4b87a;
-          --c-gold-dim: rgba(212, 184, 122, 0.35);
+          --c-gold: #c9943a;
+          --c-gold-dim: rgba(201, 148, 58, 0.35);
           --s-1: #c8cdd3;
           --s-2: #8a9098;
           --s-3: #f3f5f8;
@@ -244,9 +244,9 @@ export default function SistemasPageClient() {
           --ink-mute: #8a9098;
           --green: #7fa37a;
           --grad-silver: linear-gradient(135deg, #8a9098 0%, #e2e8f0 25%, #ffffff 50%, #cbd5e1 75%, #64748b 100%);
-          --grad-gold: linear-gradient(135deg, #b8975a 0%, #d4b87a 28%, #e8cc88 50%, #d4b87a 72%, #b8975a 100%);
+          --grad-gold: linear-gradient(135deg, #b8975a 0%, #c9943a 28%, #e8cc88 50%, #c9943a 72%, #b8975a 100%);
           --grad-gold-soft: linear-gradient(135deg, #b8975a 0%, #e0c887 50%, #b8975a 100%);
-          --grad-gold-warm: linear-gradient(135deg, #b8975a 0%, #d4b87a 28%, #e8cc88 50%, #d4b87a 72%, #b8975a 100%);
+          --grad-gold-warm: linear-gradient(135deg, #b8975a 0%, #c9943a 28%, #e8cc88 50%, #c9943a 72%, #b8975a 100%);
           --f-display: 'Poppins', sans-serif;
           --f-mono: 'Poppins', sans-serif;
           --f-body: 'Poppins', sans-serif;
@@ -523,9 +523,9 @@ export default function SistemasPageClient() {
         .app-workspace-layout .bg-nebulas {
           position: absolute; inset: -15%;
           background: 
-            radial-gradient(circle at 75% 20%, rgba(212, 184, 122, 0.22), transparent 50%),
+            radial-gradient(circle at 75% 20%, rgba(201, 148, 58, 0.22), transparent 50%),
             radial-gradient(circle at 15% 45%, rgba(184, 151, 90, 0.12), transparent 40%),
-            radial-gradient(circle at 80% 80%, rgba(212, 184, 122, 0.1), transparent 45%),
+            radial-gradient(circle at 80% 80%, rgba(201, 148, 58, 0.1), transparent 45%),
             radial-gradient(circle at 35% 20%, rgba(40, 60, 110, 0.22), transparent 50%),
             radial-gradient(circle at 50% 85%, rgba(13, 11, 16, 0.95), transparent 70%);
           filter: blur(50px);
@@ -536,7 +536,7 @@ export default function SistemasPageClient() {
           background:
             radial-gradient(white, rgba(255, 255, 255, .45) 1px, transparent 35px) 40px 50px / 160px 160px,
             radial-gradient(white, rgba(255, 255, 255, .3) 1.5px, transparent 25px) 150px 300px / 220px 220px,
-            radial-gradient(var(--c-gold), rgba(212, 184, 122, .25) 2px, transparent 45px) 380px 120px / 320px 320px,
+            radial-gradient(var(--c-gold), rgba(201, 148, 58, .25) 2px, transparent 45px) 380px 120px / 320px 320px,
             radial-gradient(white, rgba(255, 255, 255, .25) 1.2px, transparent 28px) 80px 480px / 180px 180px,
             radial-gradient(var(--c-gold), rgba(255, 255, 255, .15) 1px, transparent 20px) 450px 550px / 290px 290px;
           animation: twinkle 6s ease-in-out infinite;
@@ -550,7 +550,7 @@ export default function SistemasPageClient() {
             transparent 35%, 
             rgba(255, 255, 255, 0.015) 38%, 
             rgba(255, 255, 255, 0.03) 40%, 
-            rgba(212, 184, 122, 0.02) 42%, 
+            rgba(201, 148, 58, 0.02) 42%, 
             transparent 45%, 
             transparent 100%
           );
@@ -583,8 +583,8 @@ export default function SistemasPageClient() {
           50% { transform: translate(5%, 5%) rotate(-8deg); opacity: 0.25; }
         }
         @keyframes bevelShimmer {
-          0%, 100% { border-color: rgba(212, 184, 122, 0.08) rgba(255, 255, 255, 0.04) rgba(212, 184, 122, 0.08) rgba(255, 255, 255, 0.04); }
-          50% { border-color: rgba(255, 255, 255, 0.08) rgba(212, 184, 122, 0.04) rgba(255, 255, 255, 0.08) rgba(212, 184, 122, 0.04); }
+          0%, 100% { border-color: rgba(201, 148, 58, 0.08) rgba(255, 255, 255, 0.04) rgba(201, 148, 58, 0.08) rgba(255, 255, 255, 0.04); }
+          50% { border-color: rgba(255, 255, 255, 0.08) rgba(201, 148, 58, 0.04) rgba(255, 255, 255, 0.08) rgba(201, 148, 58, 0.04); }
         }
 
         /* Sidebar positioning & styling */
@@ -624,8 +624,8 @@ export default function SistemasPageClient() {
           width: 36px; height: 36px; border-radius: 50%;
           position: relative; display: flex; align-items: center; justify-content: center;
           background: rgba(0,0,0,0.4);
-          border: 0.2px solid rgba(212, 184, 122, 0.5); /* Círculo interno dourado */
-          box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.2), 0 0 12px rgba(212, 184, 122, 0.2); /* Círculo externo prata */
+          border: 0.2px solid rgba(201, 148, 58, 0.5); /* Círculo interno dourado */
+          box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.2), 0 0 12px rgba(201, 148, 58, 0.2); /* Círculo externo prata */
           flex-shrink: 0;
         }
         .app-workspace-layout .brand-mark::before {
@@ -731,7 +731,7 @@ export default function SistemasPageClient() {
         }
         .app-workspace-layout .sidebar-hexagon-group + .sidebar-hexagon-group::before {
           content: ''; width: 1px; height: 14px;
-          background: linear-gradient(180deg, transparent, rgba(212,184,122,0.25), transparent);
+          background: linear-gradient(180deg, transparent, rgba(201, 148, 58,0.25), transparent);
           margin-bottom: 4px;
           display: block;
         }
@@ -822,9 +822,9 @@ export default function SistemasPageClient() {
           transform: translateX(2px);
         }
         .app-workspace-layout .side-nav-item.active {
-          background: rgba(212, 184, 122, 0.08) !important;
-          border: 0.2px solid rgba(212, 184, 122, 0.25) !important;
-          box-shadow: inset 0 1px 0 rgba(212, 184, 122, 0.06), 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+          background: rgba(201, 148, 58, 0.08) !important;
+          border: 0.2px solid rgba(201, 148, 58, 0.25) !important;
+          box-shadow: inset 0 1px 0 rgba(201, 148, 58, 0.06), 0 4px 12px rgba(0, 0, 0, 0.15) !important;
         }
         .app-workspace-layout .side-nav-item .bullet {
           width: 5px; height: 5px; border-radius: 50%;
@@ -862,7 +862,7 @@ export default function SistemasPageClient() {
           margin-top: 1px;
         }
         .app-workspace-layout .side-nav-item.active .desc {
-          color: rgba(212, 184, 122, 0.5);
+          color: rgba(201, 148, 58, 0.5);
         }
 
         .app-workspace-layout .telemetry-widget {
@@ -984,7 +984,7 @@ export default function SistemasPageClient() {
           backdrop-filter: blur(28px) saturate(1.4) !important;
           -webkit-backdrop-filter: blur(28px) saturate(1.4) !important;
           border: none !important;
-          box-shadow: 0 10px 40px rgba(0, 0, 0, 0.75), 0 0 15px rgba(212, 184, 122, 0.15) !important;
+          box-shadow: 0 10px 40px rgba(0, 0, 0, 0.75), 0 0 15px rgba(201, 148, 58, 0.15) !important;
           border-radius: 100px !important;
           z-index: 100;
           box-sizing: border-box;
@@ -995,7 +995,7 @@ export default function SistemasPageClient() {
           inset: 0;
           border-radius: 100px;
           padding: 1px;
-          background: linear-gradient(90deg, #e2e8f0 0%, #cbd5e1 45%, #d4b87a 55%, #b8975a 100%);
+          background: linear-gradient(90deg, #e2e8f0 0%, #cbd5e1 45%, #c9943a 55%, #b8975a 100%);
           -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
           -webkit-mask-composite: xor;
           mask-composite: exclude;
@@ -1003,7 +1003,7 @@ export default function SistemasPageClient() {
         }
         .app-workspace-layout .tophud::after {
           content: ''; position: absolute; left: 10%; right: 10%; bottom: 0; height: 1px;
-          background: linear-gradient(90deg, transparent 0%, rgba(212,184,122,.18) 30%, rgba(255,255,255,.2) 50%, rgba(212,184,122,.18) 70%, transparent 100%);
+          background: linear-gradient(90deg, transparent 0%, rgba(201, 148, 58,.18) 30%, rgba(255,255,255,.2) 50%, rgba(201, 148, 58,.18) 70%, transparent 100%);
         }
 
         .app-workspace-layout .thd-left { display: flex; align-items: center; gap: 20px }
@@ -1235,7 +1235,7 @@ export default function SistemasPageClient() {
                 onClick={() => setSidebarOpen(true)}
                 className="mr-3 flex items-center gap-2 rounded-[0.85rem] border border-white/[0.08] bg-white/[0.04] px-2.5 py-1.5 text-[9px] uppercase tracking-[0.2em] text-white/60 transition hover:text-white"
               >
-                <PanelLeftOpen className="h-3.5 w-3.5 text-[#d4b87a]" />
+                <PanelLeftOpen className="h-3.5 w-3.5 text-[#c9943a]" />
                 <span>Abrir Menu</span>
               </button>
             )}

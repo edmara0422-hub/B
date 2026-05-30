@@ -347,7 +347,7 @@ export function SimInnovationIgnition({ theme, addLog }: SimulationProps) {
 
          <div className="relative z-20 w-48 h-48 md:w-56 md:h-56 flex items-center justify-center">
            <motion.div className="absolute inset-0 rounded-full border-[3px] border-t-transparent border-white/30" animate={{ rotate: ignited ? 360 : 0 }} transition={{ duration: 1, repeat: Infinity, ease: 'linear' }} />
-           <motion.div className="absolute inset-4 rounded-full border-2 border-b-transparent border-[#d4b87a]" animate={{ rotate: ignited ? -360 : 0 }} transition={{ duration: 1.5, repeat: Infinity, ease: 'linear' }} />
+           <motion.div className="absolute inset-4 rounded-full border-2 border-b-transparent border-[#c9943a]" animate={{ rotate: ignited ? -360 : 0 }} transition={{ duration: 1.5, repeat: Infinity, ease: 'linear' }} />
            <motion.div className="absolute inset-8 rounded-full border border-x-transparent border-[#00ffd0]" animate={{ rotate: ignited ? 720 : 0 }} transition={{ duration: 0.5, repeat: Infinity, ease: 'linear' }} />
 
            <button
@@ -415,7 +415,7 @@ export function SimHorizonsBalancer({ theme, addLog }: SimulationProps) {
            </div>
          </div>
          <div className="relative w-16 h-full flex items-end justify-center z-30">
-           <motion.div className="w-full rounded-t-lg shadow-[0_0_15px_#d4b87a]" style={{ background: 'rgba(212, 184, 122, 0.8)' }} animate={{ height: `${h2}%` }} transition={{ type: 'spring' }} />
+           <motion.div className="w-full rounded-t-lg shadow-[0_0_15px_#c9943a]" style={{ background: 'rgba(201, 148, 58, 0.8)' }} animate={{ height: `${h2}%` }} transition={{ type: 'spring' }} />
            <div className="absolute -bottom-2 bg-black/80 px-2 py-1 rounded backdrop-blur-sm border border-white/10 flex flex-col items-center">
              <span className="text-[8px] font-mono text-white/50">H2</span>
              <span className="text-xs font-bold text-white">{h2}%</span>
@@ -432,7 +432,7 @@ export function SimHorizonsBalancer({ theme, addLog }: SimulationProps) {
 
        <div className="space-y-4 pt-4">
          <input type="range" min="0" max="100" value={h1} onChange={e => handleH1(Number(e.target.value))} className="w-full h-1.5 rounded bg-[#cbd5e1]/30" style={{ accentColor: '#cbd5e1' }} />
-         <input type="range" min="0" max="100" value={h2} onChange={e => handleH2(Number(e.target.value))} className="w-full h-1.5 rounded bg-[#d4b87a]/30" style={{ accentColor: theme?.primary }} />
+         <input type="range" min="0" max="100" value={h2} onChange={e => handleH2(Number(e.target.value))} className="w-full h-1.5 rounded bg-[#c9943a]/30" style={{ accentColor: theme?.primary }} />
        </div>
 
        <div className="p-3 bg-[#00ffd0]/10 backdrop-blur-md rounded-xl border border-[#00ffd0]/30 flex justify-between items-center shadow-[0_0_20px_rgba(0,255,208,0.1)]">
@@ -772,7 +772,7 @@ export function SimNestedSustainability({ theme, addLog }: { theme: any, addLog?
         <div className={`absolute inset-0 flex items-center justify-center transition-all duration-1000 ${isNested ? 'opacity-0 scale-50' : 'opacity-100 scale-100'}`}>
           <div className="relative w-40 h-40">
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-24 rounded-full border-2 border-[#00ffd0] bg-[#00ffd0]/10 flex items-top justify-center pt-2 text-[10px] font-bold text-[#00ffd0] mix-blend-screen shadow-[0_0_15px_rgba(0,255,208,0.3)]">PLANET</div>
-            <div className="absolute bottom-4 left-2 w-24 h-24 rounded-full border-2 border-[#d4b87a] bg-[#d4b87a]/10 flex items-end justify-start pb-4 pl-3 text-[10px] font-bold text-[#d4b87a] mix-blend-screen shadow-[0_0_15px_rgba(212,184,122,0.3)]">PEOPLE</div>
+            <div className="absolute bottom-4 left-2 w-24 h-24 rounded-full border-2 border-[#c9943a] bg-[#c9943a]/10 flex items-end justify-start pb-4 pl-3 text-[10px] font-bold text-[#c9943a] mix-blend-screen shadow-[0_0_15px_rgba(201, 148, 58,0.3)]">PEOPLE</div>
             <div className="absolute bottom-4 right-2 w-24 h-24 rounded-full border-2 border-[#ff0055] bg-[#ff0055]/10 flex items-end justify-end pb-4 pr-3 text-[10px] font-bold text-[#ff0055] mix-blend-screen shadow-[0_0_15px_rgba(255,0,85,0.3)]">PROFIT</div>
             
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-white/20 animate-pulse mix-blend-overlay shadow-[0_0_20px_#fff]" />
@@ -787,8 +787,8 @@ export function SimNestedSustainability({ theme, addLog }: { theme: any, addLog?
               <span className="absolute -top-4 text-[8px] text-[#00ffd0] font-mono tracking-widest whitespace-nowrap" style={{ transform: `rotateZ(-${rotate}deg)` }}>MEIO AMBIENTE (LIMITES GLOBAIS)</span>
             </div>
             {/* Sociedade */}
-            <div className="absolute w-32 h-32 rounded-full border-2 border-[#d4b87a] bg-[#d4b87a]/10 flex items-center justify-center shadow-[0_0_20px_rgba(212,184,122,0.4)]">
-              <span className="absolute -left-6 text-[8px] text-[#d4b87a] font-mono tracking-widest" style={{ transform: `rotateZ(-${rotate}deg)` }}>SOCIEDADE</span>
+            <div className="absolute w-32 h-32 rounded-full border-2 border-[#c9943a] bg-[#c9943a]/10 flex items-center justify-center shadow-[0_0_20px_rgba(201, 148, 58,0.4)]">
+              <span className="absolute -left-6 text-[8px] text-[#c9943a] font-mono tracking-widest" style={{ transform: `rotateZ(-${rotate}deg)` }}>SOCIEDADE</span>
             </div>
             {/* Economia */}
             <div className="absolute w-16 h-16 rounded-full border-2 border-[#ff0055] bg-[#ff0055]/20 flex items-center justify-center shadow-[0_0_15px_rgba(255,0,85,0.5)]">
@@ -816,7 +816,7 @@ export function SimESGScanner({ theme, addLog }: { theme: any, addLog?: (msg: st
   
   const pillars = {
     E: { name: 'ENVIRONMENTAL', color: '#00ffd0', desc: 'Emissões Escopo 1-3, Água, Resíduos', risk: 'Risco Climático Físico / Multas Ambientais' },
-    S: { name: 'SOCIAL', color: '#d4b87a', desc: 'Diversidade, Direitos Humanos, Segurança', risk: 'Risco de Reputação / Boicote de Consumidor' },
+    S: { name: 'SOCIAL', color: '#c9943a', desc: 'Diversidade, Direitos Humanos, Segurança', risk: 'Risco de Reputação / Boicote de Consumidor' },
     G: { name: 'GOVERNANCE', color: '#ff0055', desc: 'Comitê de Auditoria, Ética, Anti-Corrupção', risk: 'Fraude Contábil / Risco Regulatório' }
   }
 
@@ -871,7 +871,7 @@ export function SimFrameworkConstellation({ theme, addLog }: { theme: any, addLo
   const [activeFw, setActiveFw] = useState<number>(0)
   const frameworks = [
     { id: 'GRI', target: 'Stakeholders Amplos', focus: 'Impacto da empresa no mundo', color: '#00ffd0' },
-    { id: 'SASB', target: 'Investidores', focus: 'Impacto do mundo no financeiro da empresa', color: '#d4b87a' },
+    { id: 'SASB', target: 'Investidores', focus: 'Impacto do mundo no financeiro da empresa', color: '#c9943a' },
     { id: 'ODS', target: 'Agenda ONU 2030', focus: 'Metas globais de impacto social/ambiental', color: '#3b82f6' },
     { id: 'CSV', target: 'Vantagem Competitiva', focus: 'Lucro através da solução de problemas sociais', color: '#ff0055' }
   ]
@@ -1046,7 +1046,7 @@ export function SimBPMNFlow({ theme, addLog }: { theme: any, addLog?: (msg: stri
   return (
     <div className="flex flex-col h-full w-full justify-between">
       <div className="flex justify-between items-center mb-4">
-        <button onClick={() => setGateway('XOR')} className={`px-2 py-1 text-[9px] font-bold font-mono rounded border ${gateway === 'XOR' ? 'bg-[#d4b87a]/20 border-[#d4b87a] text-[#d4b87a]' : 'bg-transparent border-white/20 text-white/50'}`}>XOR (Exclusivo)</button>
+        <button onClick={() => setGateway('XOR')} className={`px-2 py-1 text-[9px] font-bold font-mono rounded border ${gateway === 'XOR' ? 'bg-[#c9943a]/20 border-[#c9943a] text-[#c9943a]' : 'bg-transparent border-white/20 text-white/50'}`}>XOR (Exclusivo)</button>
         <button onClick={() => setGateway('AND')} className={`px-2 py-1 text-[9px] font-bold font-mono rounded border ${gateway === 'AND' ? 'bg-[#00ffd0]/20 border-[#00ffd0] text-[#00ffd0]' : 'bg-transparent border-white/20 text-white/50'}`}>AND (Paralelo)</button>
         <button onClick={fireToken} disabled={tokenActive} className="px-3 py-1 bg-white text-black text-[9px] font-bold rounded hover:bg-white/80 disabled:opacity-50">START TOKEN</button>
       </div>
@@ -1075,7 +1075,7 @@ export function SimBPMNFlow({ theme, addLog }: { theme: any, addLog?: (msg: stri
             
             {/* Se XOR, vai só para A. Se AND, vai para A e B */}
             <div className="absolute top-[30%] left-[86px] w-3 h-3 rounded-full -mt-1.5 shadow-[0_0_10px_currentColor] opacity-0 animate-[tokenPathA_2s_linear_1s_forwards]"
-                 style={{ backgroundColor: gateway === 'XOR' ? '#d4b87a' : '#00ffd0', color: gateway === 'XOR' ? '#d4b87a' : '#00ffd0' }} />
+                 style={{ backgroundColor: gateway === 'XOR' ? '#c9943a' : '#00ffd0', color: gateway === 'XOR' ? '#c9943a' : '#00ffd0' }} />
             
             {gateway === 'AND' && (
               <div className="absolute top-[70%] left-[86px] w-3 h-3 bg-[#00ffd0] text-[#00ffd0] rounded-full -mt-1.5 opacity-0 animate-[tokenPathB_2s_linear_1s_forwards] shadow-[0_0_10px_#00ffd0]" />
@@ -1099,7 +1099,7 @@ export function SimCertGlobe({ theme, addLog }: { theme: any, addLog?: (msg: str
   const certs = [
     { name: 'B Corps', desc: 'Propósito + Lucro (Global)', x: '20%', y: '30%', color: '#00ffd0' },
     { name: 'ISE B3', desc: 'Maturidade ESG (Brasil)', x: '35%', y: '65%', color: '#ff0055' },
-    { name: 'Fair Trade', desc: 'Preço Mínimo & Ética', x: '50%', y: '50%', color: '#d4b87a' },
+    { name: 'Fair Trade', desc: 'Preço Mínimo & Ética', x: '50%', y: '50%', color: '#c9943a' },
     { name: 'Cradle to Cradle', desc: 'Zero Resíduo (Economia Circular)', x: '70%', y: '25%', color: '#3b82f6' }
   ]
 
@@ -1159,7 +1159,7 @@ export function SimPDCACycle({ theme, addLog }: { theme: any, addLog?: (msg: str
   const stages = [
     { name: 'PLAN', color: '#00ffd0', desc: 'Análise de Cenários e Metas', angle: 0 },
     { name: 'DO', color: '#ff0055', desc: 'Organização e Direção (Execução)', angle: 90 },
-    { name: 'CHECK', color: '#d4b87a', desc: 'Controle e Medição de KPIs', angle: 180 },
+    { name: 'CHECK', color: '#c9943a', desc: 'Controle e Medição de KPIs', angle: 180 },
     { name: 'ACT', color: '#3b82f6', desc: 'Correção de Desvios (Melhoria Contínua)', angle: 270 }
   ]
 
@@ -1234,10 +1234,10 @@ export function SimBusinessCanvas({ theme, addLog }: { theme: any, addLog?: (msg
     { id: 'Parcerias', group: 'Custo', color: '#3b82f6' },
     { id: 'Atividades', group: 'Custo', color: '#3b82f6' },
     { id: 'Proposta de Valor', group: 'Valor', color: '#00ffd0' },
-    { id: 'Relacionamento', group: 'Receita', color: '#d4b87a' },
-    { id: 'Segmentos', group: 'Receita', color: '#d4b87a' },
+    { id: 'Relacionamento', group: 'Receita', color: '#c9943a' },
+    { id: 'Segmentos', group: 'Receita', color: '#c9943a' },
     { id: 'Recursos', group: 'Custo', color: '#3b82f6' },
-    { id: 'Canais', group: 'Receita', color: '#d4b87a' },
+    { id: 'Canais', group: 'Receita', color: '#c9943a' },
     { id: 'Custos', group: 'Base', color: '#ff0055' },
     { id: 'Receitas', group: 'Base', color: '#ff0055' }
   ]
@@ -1293,7 +1293,7 @@ export function SimStrategicTripod({ theme, addLog }: { theme: any, addLog?: (ms
   const frameworks = [
     { name: 'SWOT', color: '#00ffd0', desc: 'Forças, Fraquezas, Oportunidades, Ameaças' },
     { name: 'PORTER (5 Forças)', color: '#ff0055', desc: 'Rivalidade, Entrantes, Substitutos, Fornecedores, Compradores' },
-    { name: 'MATRIZ BCG', color: '#d4b87a', desc: 'Estrela, Vaca Leiteira, Ponto de Interrogação, Vira-Lata' }
+    { name: 'MATRIZ BCG', color: '#c9943a', desc: 'Estrela, Vaca Leiteira, Ponto de Interrogação, Vira-Lata' }
   ]
 
   return (
@@ -1337,11 +1337,11 @@ export function SimStrategicTripod({ theme, addLog }: { theme: any, addLog?: (ms
           
           {/* Face 2: BCG */}
           <div className="absolute w-40 h-40 border-2 bg-black/80 flex flex-wrap items-center justify-center p-2 backface-hidden"
-               style={{ borderColor: '#d4b87a', transform: 'rotateY(240deg) translateZ(35px)', boxShadow: face === 2 ? '0 0 30px rgba(212,184,122,0.3)' : 'none' }}>
-            <div className="w-1/2 h-1/2 border border-[#d4b87a]/30 flex items-center justify-center text-xl">⭐</div>
-            <div className="w-1/2 h-1/2 border border-[#d4b87a]/30 flex items-center justify-center text-xl">❓</div>
-            <div className="w-1/2 h-1/2 border border-[#d4b87a]/30 flex items-center justify-center text-xl">🐄</div>
-            <div className="w-1/2 h-1/2 border border-[#d4b87a]/30 flex items-center justify-center text-xl">🐕</div>
+               style={{ borderColor: '#c9943a', transform: 'rotateY(240deg) translateZ(35px)', boxShadow: face === 2 ? '0 0 30px rgba(201, 148, 58,0.3)' : 'none' }}>
+            <div className="w-1/2 h-1/2 border border-[#c9943a]/30 flex items-center justify-center text-xl">⭐</div>
+            <div className="w-1/2 h-1/2 border border-[#c9943a]/30 flex items-center justify-center text-xl">❓</div>
+            <div className="w-1/2 h-1/2 border border-[#c9943a]/30 flex items-center justify-center text-xl">🐄</div>
+            <div className="w-1/2 h-1/2 border border-[#c9943a]/30 flex items-center justify-center text-xl">🐕</div>
           </div>
 
         </div>
@@ -1402,7 +1402,7 @@ export function SimValueChain({ theme, addLog }: { theme: any, addLog?: (msg: st
         <div className="w-full max-w-[240px] h-16 border border-white/30 rounded flex items-center justify-between p-1 relative">
            <span className="absolute -bottom-3 right-2 text-[7px] text-white/50 bg-black px-1 uppercase">Cadeia Primária (Margem)</span>
            {['Inbound', 'Ops', 'Outbound', 'MKT', 'Serviço'].map((a, i) => (
-             <div key={i} className="flex-1 h-full mx-0.5 bg-[#d4b87a]/20 border border-[#d4b87a]/40 flex items-center justify-center text-[7px] font-bold text-[#d4b87a] rotate-180" style={{ writingMode: 'vertical-rl' }}>
+             <div key={i} className="flex-1 h-full mx-0.5 bg-[#c9943a]/20 border border-[#c9943a]/40 flex items-center justify-center text-[7px] font-bold text-[#c9943a] rotate-180" style={{ writingMode: 'vertical-rl' }}>
                {a}
              </div>
            ))}
@@ -1464,10 +1464,10 @@ export function SimTaxMatrix({ theme, addLog }: { theme: any, addLog?: (msg: str
         <div className="flex-1 p-2 border border-white/20 rounded bg-white/5 flex flex-col items-center">
           <span className="text-[9px] uppercase font-bold text-white/70 mb-2">SIMPLES</span>
           <div className="w-12 h-12 rounded-full border-2 border-white/20 relative flex items-center justify-center">
-            <div className="absolute w-[2px] h-5 bg-[#d4b87a] origin-bottom -mt-5 transition-transform duration-200"
+            <div className="absolute w-[2px] h-5 bg-[#c9943a] origin-bottom -mt-5 transition-transform duration-200"
                  style={{ transform: `rotate(${(revenue / 300) * 180 - 90}deg)` }} />
           </div>
-          <span className="text-[10px] font-mono mt-2 text-[#d4b87a]">
+          <span className="text-[10px] font-mono mt-2 text-[#c9943a]">
             {isMeiBlown ? `~${(revenue * 0.06).toFixed(1)}k imposto` : 'Inativo'}
           </span>
         </div>
@@ -1691,9 +1691,9 @@ export function SimCashflowTanks({ theme, addLog }: { theme: any, addLog?: (msg:
         <div className="flex flex-col items-center">
           <span className="text-[7px] mb-1 text-white/50">FINANCIAMENTO</span>
           <div className="w-10 h-24 border border-white/20 rounded-t-lg relative overflow-hidden bg-black/50">
-             <div className="absolute bottom-0 w-full bg-[#d4b87a] transition-all duration-500" style={{ height: `${fin}%` }} />
+             <div className="absolute bottom-0 w-full bg-[#c9943a] transition-all duration-500" style={{ height: `${fin}%` }} />
           </div>
-          <button onClick={() => { setFin(f => Math.min(100, f + 20)); if(addLog) addLog('Empréstimo captado: Injeção no Fluxo de Financiamento.') }} className="mt-2 text-[8px] px-2 py-0.5 border border-[#d4b87a] text-[#d4b87a] rounded">+ CAPTAR</button>
+          <button onClick={() => { setFin(f => Math.min(100, f + 20)); if(addLog) addLog('Empréstimo captado: Injeção no Fluxo de Financiamento.') }} className="mt-2 text-[8px] px-2 py-0.5 border border-[#c9943a] text-[#c9943a] rounded">+ CAPTAR</button>
         </div>
 
         {/* Transferência Fin -> Op */}
@@ -1842,8 +1842,8 @@ export function SimTimeDilator({ theme, addLog }: { theme: any, addLog?: (msg: s
           />
           <polyline 
             points={data.map(d => `${d.x},${maxVal - d.composto}`).join(' ')}
-            fill="none" stroke="#d4b87a" strokeWidth="0.1"
-            style={{ filter: 'drop-shadow(0 0 4px #d4b87a)' }}
+            fill="none" stroke="#c9943a" strokeWidth="0.1"
+            style={{ filter: 'drop-shadow(0 0 4px #c9943a)' }}
           />
         </svg>
 
@@ -1862,11 +1862,11 @@ export function SimTimeDilator({ theme, addLog }: { theme: any, addLog?: (msg: s
         <input 
           type="range" min="1" max="30" value={years} 
           onChange={e => setYears(Number(e.target.value))}
-          className="w-full accent-[#d4b87a]"
+          className="w-full accent-[#c9943a]"
         />
         <div className="flex justify-between w-full text-[9px] mt-2 border border-white/10 p-2 rounded bg-white/5">
           <div>LINEAR (Simples): <span className="text-[#cbd5e1] font-bold">R$ {data[years].simples.toFixed(0)}</span></div>
-          <div>EXPONENCIAL (Composto): <span className="text-[#d4b87a] font-bold">R$ {data[years].composto.toFixed(0)}</span></div>
+          <div>EXPONENCIAL (Composto): <span className="text-[#c9943a] font-bold">R$ {data[years].composto.toFixed(0)}</span></div>
         </div>
       </div>
     </div>
@@ -1887,7 +1887,7 @@ export function SimCompoundGravity({ theme, addLog }: { theme: any, addLog?: (ms
     <div className="relative w-full h-full flex items-center justify-center bg-black overflow-hidden perspective-[800px]">
       
       {/* Central Mass */}
-      <div className="absolute w-12 h-12 bg-[#d4b87a] rounded-full shadow-[0_0_50px_#d4b87a] flex items-center justify-center z-10">
+      <div className="absolute w-12 h-12 bg-[#c9943a] rounded-full shadow-[0_0_50px_#c9943a] flex items-center justify-center z-10">
         <div className="w-8 h-8 bg-black/40 rounded-full animate-pulse" />
       </div>
 
@@ -1904,7 +1904,7 @@ export function SimCompoundGravity({ theme, addLog }: { theme: any, addLog?: (ms
          <div className="text-[10px] text-white/60 tracking-widest">FORÇA DA GRAVIDADE COMPOSTA</div>
          <div className="flex items-center gap-2">
             <span className="text-[8px]">TAXA (%)</span>
-            <input type="range" min="1" max="30" value={rate} onChange={e => setRate(Number(e.target.value))} className="w-24 accent-[#d4b87a]"/>
+            <input type="range" min="1" max="30" value={rate} onChange={e => setRate(Number(e.target.value))} className="w-24 accent-[#c9943a]"/>
             <span className="text-[10px] font-bold">{rate}%</span>
          </div>
          <button onClick={() => setActive(true)} className="mt-2 px-3 py-1 border border-[#00ffd0]/40 text-[#00ffd0] text-[9px] hover:bg-[#00ffd0]/10 rounded uppercase">
@@ -1958,8 +1958,8 @@ export function SimVPLSpectrometer({ theme, addLog }: { theme: any, addLog?: (ms
             {fc.map((val, i) => (
               <div key={i} className="flex items-center gap-2 px-2">
                  <span className="text-[8px] text-white/40">Ano {i+1}</span>
-                 <div className="h-[1px] bg-[#d4b87a] flex-1 relative" style={{ opacity: val/500 }}>
-                    <div className="absolute right-0 top-1/2 -translate-y-1/2 w-3 h-3 bg-[#d4b87a] rounded-full blur-sm animate-pulse" />
+                 <div className="h-[1px] bg-[#c9943a] flex-1 relative" style={{ opacity: val/500 }}>
+                    <div className="absolute right-0 top-1/2 -translate-y-1/2 w-3 h-3 bg-[#c9943a] rounded-full blur-sm animate-pulse" />
                  </div>
               </div>
             ))}
@@ -1979,7 +1979,7 @@ export function SimVPLSpectrometer({ theme, addLog }: { theme: any, addLog?: (ms
       <div className="w-full max-w-lg mt-6 flex justify-between gap-4">
          <div className="flex-1 flex flex-col gap-1">
             <span className="text-[8px]">TAXA DE DESCONTO (WACC)</span>
-            <input type="range" min="1" max="30" value={wacc} onChange={e=>setWacc(Number(e.target.value))} className="accent-[#d4b87a]" />
+            <input type="range" min="1" max="30" value={wacc} onChange={e=>setWacc(Number(e.target.value))} className="accent-[#c9943a]" />
          </div>
          <div className="flex-1 border-l border-white/10 pl-4">
             <span className="text-[8px] block mb-1">INVESTIMENTO INICIAL: R$ 700</span>
@@ -2010,7 +2010,7 @@ export function SimCorporateGyroscope({ theme, addLog }: { theme: any, addLog?: 
   // Velocidade e rotação dependem da saúde
   const animDuration = isHealthy ? '10s' : isDanger ? '1s' : '3s'
   const wobble = isDanger ? 'rotateX(45deg) rotateY(45deg)' : 'rotateX(0deg) rotateY(0deg)'
-  const color = isDanger ? '#ff0055' : isHealthy ? '#00ffd0' : '#d4b87a'
+  const color = isDanger ? '#ff0055' : isHealthy ? '#00ffd0' : '#c9943a'
 
   return (
     <div className="relative w-full h-full flex bg-black overflow-hidden font-mono text-white p-6">
@@ -2069,7 +2069,7 @@ export function SimCorporateGyroscope({ theme, addLog }: { theme: any, addLog?: 
 
 export function SimMarketEras({ theme, addLog }: { theme: any, addLog?: (msg: string) => void }) {
   const eras = [
-    { id: 'producao', name: 'ERA DA PRODUÇÃO', desc: 'Foco no produto. Oferta cria sua demanda.', color: '#d4b87a' },
+    { id: 'producao', name: 'ERA DA PRODUÇÃO', desc: 'Foco no produto. Oferta cria sua demanda.', color: '#c9943a' },
     { id: 'marketing', name: 'ERA DO MARKETING', desc: 'Foco no cliente. Entender para atender.', color: '#00ffd0' },
     { id: 'digital', name: 'ERA DIGITAL', desc: 'Foco no ecossistema. Co-criação algorítmica.', color: '#ff0055' }
   ]
@@ -2095,12 +2095,12 @@ export function SimMarketEras({ theme, addLog }: { theme: any, addLog?: (msg: st
         {activeEra === 0 && (
           <div className="relative w-full h-full flex items-center justify-center">
              {/* Fábrica / Linha de montagem */}
-             <div className="absolute w-24 h-4 bg-[#d4b87a]/20 border border-[#d4b87a] rounded flex items-center justify-around overflow-hidden shadow-[0_0_15px_#d4b87a]">
+             <div className="absolute w-24 h-4 bg-[#c9943a]/20 border border-[#c9943a] rounded flex items-center justify-around overflow-hidden shadow-[0_0_15px_#c9943a]">
                 {Array.from({length: 3}).map((_, i) => (
-                  <div key={i} className="w-4 h-4 bg-[#d4b87a] animate-[slide-right_2s_linear_infinite]" style={{ animationDelay: `${i * 0.6}s` }} />
+                  <div key={i} className="w-4 h-4 bg-[#c9943a] animate-[slide-right_2s_linear_infinite]" style={{ animationDelay: `${i * 0.6}s` }} />
                 ))}
              </div>
-             <div className="absolute bottom-10 text-[10px] text-[#d4b87a] tracking-widest">PRODUTO PADRONIZADO (FORD T)</div>
+             <div className="absolute bottom-10 text-[10px] text-[#c9943a] tracking-widest">PRODUTO PADRONIZADO (FORD T)</div>
           </div>
         )}
 
@@ -2283,7 +2283,7 @@ export function SimNeedsDesiresDemand({ theme, addLog }: { theme: any, addLog?: 
         <div onClick={() => setActiveLayer(2)} className={`absolute w-64 h-64 rounded-full border-2 transition-all cursor-pointer ${activeLayer >= 2 ? 'border-[#00ffd0] shadow-[inset_0_0_20px_rgba(0,255,208,0.2)]' : 'border-white/10 hover:border-white/30'}`} />
         
         {/* Layer 2: Desejo (Middle) */}
-        <div onClick={() => setActiveLayer(1)} className={`absolute w-40 h-40 rounded-full border-2 transition-all cursor-pointer ${activeLayer >= 1 ? 'border-[#d4b87a] shadow-[inset_0_0_20px_rgba(212,184,122,0.2)]' : 'border-white/20 hover:border-white/40'}`} />
+        <div onClick={() => setActiveLayer(1)} className={`absolute w-40 h-40 rounded-full border-2 transition-all cursor-pointer ${activeLayer >= 1 ? 'border-[#c9943a] shadow-[inset_0_0_20px_rgba(201, 148, 58,0.2)]' : 'border-white/20 hover:border-white/40'}`} />
 
         {/* Layer 1: Necessidade (Core) */}
         <div onClick={() => setActiveLayer(0)} className={`absolute w-16 h-16 rounded-full border-2 transition-all cursor-pointer ${activeLayer >= 0 ? 'border-[#ff0055] bg-[#ff0055]/20 shadow-[0_0_30px_#ff0055]' : 'border-white/40 hover:border-white/60'}`} />
@@ -2299,8 +2299,8 @@ export function SimNeedsDesiresDemand({ theme, addLog }: { theme: any, addLog?: 
           <div className="text-[10px] text-[#ff0055] font-bold mb-1">1. NECESSIDADE</div>
           <div className="text-[8px] text-white/70">Fome, segurança, pertencimento. É universal e inata. O marketing não cria.</div>
         </div>
-        <div className={`flex-1 p-3 rounded border transition-all ${activeLayer >= 1 ? 'border-[#d4b87a]/50 bg-[#d4b87a]/10' : 'border-white/10 opacity-30'}`}>
-          <div className="text-[10px] text-[#d4b87a] font-bold mb-1">2. DESEJO</div>
+        <div className={`flex-1 p-3 rounded border transition-all ${activeLayer >= 1 ? 'border-[#c9943a]/50 bg-[#c9943a]/10' : 'border-white/10 opacity-30'}`}>
+          <div className="text-[10px] text-[#c9943a] font-bold mb-1">2. DESEJO</div>
           <div className="text-[8px] text-white/70">A forma cultural que a necessidade assume. Ex: Necessidade de status = Desejo de um Rolex.</div>
         </div>
         <div className={`flex-1 p-3 rounded border transition-all ${activeLayer >= 2 ? 'border-[#00ffd0]/50 bg-[#00ffd0]/10' : 'border-white/10 opacity-30'}`}>
@@ -2324,7 +2324,7 @@ export function SimNeedsDesiresDemand({ theme, addLog }: { theme: any, addLog?: 
 export function SimLeadershipTheories({ theme, addLog }: { theme: any, addLog?: (msg: string) => void }) {
   const [active, setActive] = useState(0)
   const theories = [
-    { name: 'Traços (1940)', desc: 'Carisma inato. (Falhou pois ignora contexto)', color: '#d4b87a' },
+    { name: 'Traços (1940)', desc: 'Carisma inato. (Falhou pois ignora contexto)', color: '#c9943a' },
     { name: 'Comportamental (1950)', desc: 'Foco na Tarefa vs Pessoas.', color: '#00ffd0' },
     { name: 'Situacional (1969)', desc: 'Adaptar o estilo à maturidade.', color: '#ff0055' },
     { name: 'Transformacional (1978)', desc: 'Inspirar propósito maior.', color: '#a855f7' },
@@ -2412,7 +2412,7 @@ export function SimTuckmanModel({ theme, addLog }: { theme: any, addLog?: (msg: 
 
           {/* Norming */}
           {stage === 2 && Array.from({length: 8}).map((_, i) => (
-             <div key={i} className="absolute w-4 h-4 bg-[#d4b87a] rounded-sm transition-all duration-1000"
+             <div key={i} className="absolute w-4 h-4 bg-[#c9943a] rounded-sm transition-all duration-1000"
                   style={{ transform: `rotate(${i*45}deg) translateY(-60px)` }} />
           ))}
 
@@ -2447,7 +2447,7 @@ export function SimTuckmanModel({ theme, addLog }: { theme: any, addLog?: (msg: 
           <div className="p-4 bg-white/5 border border-white/10 rounded min-h-[100px]">
             {stage === 0 && <div className="text-[10px] text-white/80"><span className="text-white font-bold mb-2 block">Formação:</span> Grupo cauteloso, polido. Membros se conhecem. Parece harmonia, mas é superficialidade. Dependência total do líder.</div>}
             {stage === 1 && <div className="text-[10px] text-[#ff0055]"><span className="font-bold mb-2 block">Conflito (O Gargalo):</span> Tensão e disputa por papéis. 70% das equipes ficam presas aqui. O líder não deve evitar o conflito, mas mediá-lo para gerar maturidade.</div>}
-            {stage === 2 && <div className="text-[10px] text-[#d4b87a]"><span className="font-bold mb-2 block">Normatização:</span> Regras estabelecidas. Confiabilidade mútua aumenta. A equipe começa a agir como unidade em vez de indivíduos isolados.</div>}
+            {stage === 2 && <div className="text-[10px] text-[#c9943a]"><span className="font-bold mb-2 block">Normatização:</span> Regras estabelecidas. Confiabilidade mútua aumenta. A equipe começa a agir como unidade em vez de indivíduos isolados.</div>}
             {stage === 3 && <div className="text-[10px] text-[#00ffd0]"><span className="font-bold mb-2 block">Alta Performance:</span> Autonomia máxima. Grupo resolve problemas sozinhos. Foco em execução. Líder vira facilitador.</div>}
             {stage === 4 && <div className="text-[10px] text-white/80"><span className="text-white font-bold mb-2 block">Dissolução:</span> Fim do projeto. Retrospectiva e aprendizados para a próxima formação.</div>}
           </div>
@@ -2597,7 +2597,7 @@ export function SimTeamDysfunctions({ theme, addLog }: { theme: any, addLog?: (m
   }, [built])
 
   const layers = [
-    { name: 'Confiança (Vulnerabilidade)', color: '#d4b87a', w: 'w-64' },
+    { name: 'Confiança (Vulnerabilidade)', color: '#c9943a', w: 'w-64' },
     { name: 'Conflito Produtivo', color: '#ff7700', w: 'w-52' },
     { name: 'Comprometimento', color: '#ff0055', w: 'w-40' },
     { name: 'Responsabilidade Mútua', color: '#a855f7', w: 'w-28' },
@@ -2606,7 +2606,7 @@ export function SimTeamDysfunctions({ theme, addLog }: { theme: any, addLog?: (m
 
   return (
     <div className="relative w-full h-full flex flex-col items-center justify-center bg-black font-mono overflow-hidden p-4">
-      <div className="absolute top-4 right-4 text-[9px] text-[#d4b87a]">AS 5 DISFUNÇÕES DE EQUIPE (LENCIONI)</div>
+      <div className="absolute top-4 right-4 text-[9px] text-[#c9943a]">AS 5 DISFUNÇÕES DE EQUIPE (LENCIONI)</div>
 
       <div className="relative h-72 flex flex-col-reverse items-center justify-start pb-10">
         {layers.map((layer, i) => {
@@ -2806,8 +2806,8 @@ export function SimEthicsFrameworks({ theme, addLog }: { theme: any, addLog?: (m
 
       <div className="relative w-64 h-64 border border-white/20 flex items-center justify-center mb-8 rounded"
            style={{ 
-             borderColor: lens===0 ? '#ff0055' : lens===1 ? '#00ffd0' : lens===2 ? '#d4b87a' : '#a855f7',
-             boxShadow: `inset 0 0 50px ${lens===0 ? 'rgba(255,0,85,0.1)' : lens===1 ? 'rgba(0,255,208,0.1)' : lens===2 ? 'rgba(212,184,122,0.1)' : 'rgba(168,85,247,0.1)'}`
+             borderColor: lens===0 ? '#ff0055' : lens===1 ? '#00ffd0' : lens===2 ? '#c9943a' : '#a855f7',
+             boxShadow: `inset 0 0 50px ${lens===0 ? 'rgba(255,0,85,0.1)' : lens===1 ? 'rgba(0,255,208,0.1)' : lens===2 ? 'rgba(201, 148, 58,0.1)' : 'rgba(168,85,247,0.1)'}`
            }}>
         
         {/* Cena do Dilema (Abstrata) */}
@@ -2837,9 +2837,9 @@ export function SimEthicsFrameworks({ theme, addLog }: { theme: any, addLog?: (m
 
         {/* Virtude: Caráter */}
         {lens === 2 && (
-          <div className="flex flex-col items-center text-[#d4b87a]">
+          <div className="flex flex-col items-center text-[#c9943a]">
             <div className="text-[12px] font-bold mb-2">CARÁTER DA EMPRESA</div>
-            <div className="w-24 h-24 border-4 border-[#d4b87a] rounded-full flex items-center justify-center animate-[spin_10s_linear_infinite]">
+            <div className="w-24 h-24 border-4 border-[#c9943a] rounded-full flex items-center justify-center animate-[spin_10s_linear_infinite]">
                <div className="text-[8px] rotate-45">PRUDÊNCIA</div>
                <div className="text-[8px] -rotate-45 ml-2">JUSTIÇA</div>
             </div>
@@ -2866,7 +2866,7 @@ export function SimEthicsFrameworks({ theme, addLog }: { theme: any, addLog?: (m
       <div className="flex gap-2 z-20">
         <button onClick={()=>setLens(0)} className={`px-2 py-1 text-[9px] border transition-all ${lens===0 ? 'bg-[#ff0055]/20 border-[#ff0055] text-[#ff0055]' : 'border-white/20'}`}>Utilitarismo</button>
         <button onClick={()=>setLens(1)} className={`px-2 py-1 text-[9px] border transition-all ${lens===1 ? 'bg-[#00ffd0]/20 border-[#00ffd0] text-[#00ffd0]' : 'border-white/20'}`}>Deontologia</button>
-        <button onClick={()=>setLens(2)} className={`px-2 py-1 text-[9px] border transition-all ${lens===2 ? 'bg-[#d4b87a]/20 border-[#d4b87a] text-[#d4b87a]' : 'border-white/20'}`}>Virtude</button>
+        <button onClick={()=>setLens(2)} className={`px-2 py-1 text-[9px] border transition-all ${lens===2 ? 'bg-[#c9943a]/20 border-[#c9943a] text-[#c9943a]' : 'border-white/20'}`}>Virtude</button>
         <button onClick={()=>setLens(3)} className={`px-2 py-1 text-[9px] border transition-all ${lens===3 ? 'bg-[#a855f7]/20 border-[#a855f7] text-[#a855f7]' : 'border-white/20'}`}>Cuidado</button>
       </div>
     </div>
@@ -2934,7 +2934,7 @@ export function SimPoliticalPhilosophy({ theme, addLog }: { theme: any, addLog?:
                </div>
              </div>
              {/* Base system randomly shifting underneath the blur */}
-             <div className="absolute bottom-0 w-full h-8 bg-gradient-to-r from-[#ff0055] via-[#d4b87a] to-[#00ffd0] animate-pulse" />
+             <div className="absolute bottom-0 w-full h-8 bg-gradient-to-r from-[#ff0055] via-[#c9943a] to-[#00ffd0] animate-pulse" />
           </div>
         )}
       </div>
@@ -2962,7 +2962,7 @@ export function SimEasternAesthetics({ theme, addLog }: { theme: any, addLog?: (
 
   return (
     <div className="relative w-full h-full flex flex-col items-center justify-center bg-[#0a0a0a] font-mono overflow-hidden">
-      <div className="absolute top-4 right-4 text-[9px] text-[#d4b87a]">ESTÉTICA WABI-SABI E WU WEI</div>
+      <div className="absolute top-4 right-4 text-[9px] text-[#c9943a]">ESTÉTICA WABI-SABI E WU WEI</div>
 
       <div className="relative w-64 h-64 flex items-center justify-center mb-8">
          {/* O Objeto (Começa rígido/tech, vira orgânico/imperfeito) */}
@@ -2973,9 +2973,9 @@ export function SimEasternAesthetics({ theme, addLog }: { theme: any, addLog?: (
              height: `${150 + (zen * 0.2)}px`,
              borderRadius: `${(zen * 0.5)}%`,
              backgroundColor: zen === 0 ? '#ffffff' : 'transparent',
-             border: `${1 + (zen * 0.05)}px solid rgba(212, 184, 122, ${0.2 + (zen * 0.008)})`,
+             border: `${1 + (zen * 0.05)}px solid rgba(201, 148, 58, ${0.2 + (zen * 0.008)})`,
              transform: `rotate(${zen * 0.4}deg)`,
-             boxShadow: zen > 50 ? `inset 0 0 ${zen}px rgba(212,184,122,0.1)` : 'none'
+             boxShadow: zen > 50 ? `inset 0 0 ${zen}px rgba(201, 148, 58,0.1)` : 'none'
            }}
          >
            <div className="transition-all duration-700"
@@ -2986,7 +2986,7 @@ export function SimEasternAesthetics({ theme, addLog }: { theme: any, addLog?: (
              <div className="w-16 h-16 bg-black border border-white/50 rotate-45 flex items-center justify-center text-[8px] text-white tracking-widest font-bold">PERFEITO</div>
            </div>
 
-           <div className="absolute transition-all duration-700 text-[#d4b87a] text-[12px] font-bold tracking-widest"
+           <div className="absolute transition-all duration-700 text-[#c9943a] text-[12px] font-bold tracking-widest"
                 style={{ opacity: (zen/100) }}>
              IMPERMANENTE
            </div>
@@ -2994,11 +2994,11 @@ export function SimEasternAesthetics({ theme, addLog }: { theme: any, addLog?: (
       </div>
 
       <div className="w-full max-w-sm flex flex-col items-center">
-         <div className="flex justify-between w-full text-[9px] text-[#d4b87a] mb-2">
+         <div className="flex justify-between w-full text-[9px] text-[#c9943a] mb-2">
             <span>Rígido (Controle Ocidental)</span>
             <span>Orgânico (Fluxo Oriental)</span>
          </div>
-         <input type="range" min="0" max="100" value={zen} onChange={(e)=>setZen(Number(e.target.value))} className="w-full accent-[#d4b87a]" />
+         <input type="range" min="0" max="100" value={zen} onChange={(e)=>setZen(Number(e.target.value))} className="w-full accent-[#c9943a]" />
       </div>
 
       <div className="mt-8 text-center text-[10px] text-white/50 max-w-md">
@@ -3433,7 +3433,7 @@ export function SimCohortStorytelling({ theme, addLog }: { theme: any, addLog?: 
 
   return (
     <div className="relative w-full h-full flex flex-col items-center justify-center bg-black font-mono overflow-hidden">
-      <div className="absolute top-4 left-4 text-[9px] text-[#d4b87a]">ANÁLISE DE COHORT: RETENÇÃO</div>
+      <div className="absolute top-4 left-4 text-[9px] text-[#c9943a]">ANÁLISE DE COHORT: RETENÇÃO</div>
 
       <div className="flex gap-4">
         {/* Gráfico de Matriz de Calor */}
@@ -3468,7 +3468,7 @@ export function SimCohortStorytelling({ theme, addLog }: { theme: any, addLog?: 
 
         {/* Data Storytelling Panel */}
         <div className="w-64 border border-white/10 bg-white/5 p-4 text-[10px]">
-           <div className="text-[#d4b87a] font-bold mb-2">DATA STORYTELLING</div>
+           <div className="text-[#c9943a] font-bold mb-2">DATA STORYTELLING</div>
            <div className="mb-4 text-white/60">
              Sem cohort, a média geral de cancelamento esconde os problemas estruturais.
            </div>
@@ -3652,7 +3652,7 @@ export function SimToulminModel({ theme, addLog }: { theme: any, addLog?: (msg: 
     { id: 'data', label: 'DADOS (Data)', desc: 'Evidência concreta (números, fatos).', pos: 'bottom-10 left-10', color: '#ff7700' },
     { id: 'warrant', label: 'JUSTIFICATIVA (Warrant)', desc: 'A ponte lógica que conecta os dados à tese.', pos: 'top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2', color: '#ffffff' },
     { id: 'backing', label: 'SUPORTE (Backing)', desc: 'Validação externa para a justificativa.', pos: 'bottom-10 right-10', color: '#a855f7' },
-    { id: 'qualifier', label: 'QUALIFICADOR (Qualifier)', desc: 'Grau de certeza ("Na maioria dos casos...").', pos: 'top-1/4 right-10', color: '#d4b87a' },
+    { id: 'qualifier', label: 'QUALIFICADOR (Qualifier)', desc: 'Grau de certeza ("Na maioria dos casos...").', pos: 'top-1/4 right-10', color: '#c9943a' },
     { id: 'rebuttal', label: 'CONTRA-ARG. (Rebuttal)', desc: 'Antecipação de objeções.', pos: 'top-1/4 left-10', color: '#ff0055' }
   ]
 
@@ -4172,8 +4172,8 @@ export function SimMacroIndicatorsPanel({ theme, addLog }: { theme: any, addLog?
          {/* Desemprego */}
          <div className="flex flex-col items-center p-2 border border-white/10 bg-black">
             <div className="text-[10px] text-white/50">Desemprego</div>
-            <div className={`text-[20px] font-black ${desemprego > 10 ? 'text-[#ff0055]' : 'text-[#d4b87a]'}`}>{desemprego.toFixed(1)}%</div>
-            <div className="w-full h-1 bg-white/10 mt-2"><div className="h-full bg-[#d4b87a]" style={{ width: `${(desemprego/15)*100}%` }} /></div>
+            <div className={`text-[20px] font-black ${desemprego > 10 ? 'text-[#ff0055]' : 'text-[#c9943a]'}`}>{desemprego.toFixed(1)}%</div>
+            <div className="w-full h-1 bg-white/10 mt-2"><div className="h-full bg-[#c9943a]" style={{ width: `${(desemprego/15)*100}%` }} /></div>
          </div>
 
          {/* Cambio */}
@@ -4284,7 +4284,7 @@ export function SimBrazilStructuralChallenges({ theme, addLog }: { theme: any, a
 
   return (
     <div className="relative w-full h-full flex flex-col items-center justify-center bg-[#0a0a0a] font-mono overflow-hidden">
-      <div className="absolute top-4 left-4 text-[9px] text-[#d4b87a]">BRASIL: PARADOXOS ESTRUTURAIS</div>
+      <div className="absolute top-4 left-4 text-[9px] text-[#c9943a]">BRASIL: PARADOXOS ESTRUTURAIS</div>
 
       <div className="flex w-full max-w-lg justify-between gap-4 mb-8 h-64">
          {/* Desafios */}
@@ -4371,10 +4371,10 @@ export function SimWorkforceFinanceSystem({ theme, addLog }: { theme: any, addLo
 
             <div>
               <div className="flex justify-between text-[10px] mb-1">
-                 <span className="text-[#d4b87a]">Velocidade de Setup</span>
+                 <span className="text-[#c9943a]">Velocidade de Setup</span>
                  <span className="text-white/50">{speed}d</span>
               </div>
-              <div className="w-full h-1 bg-white/10"><div className="h-full bg-[#d4b87a] transition-all duration-500" style={{width: `${speed}%`}} /></div>
+              <div className="w-full h-1 bg-white/10"><div className="h-full bg-[#c9943a] transition-all duration-500" style={{width: `${speed}%`}} /></div>
             </div>
 
             <div className="mt-4 pt-4 border-t border-white/10">

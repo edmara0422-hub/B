@@ -59,7 +59,7 @@ export function HudFinancas() {
           -webkit-appearance: none;
           width: 100%;
           height: 3px;
-          background: rgba(212, 184, 122, 0.15);
+          background: rgba(201, 148, 58, 0.15);
           border-radius: 4px;
           outline: none;
         }
@@ -69,15 +69,15 @@ export function HudFinancas() {
           width: 12px;
           height: 12px;
           border-radius: 50%;
-          background: #d4b87a;
+          background: #c9943a;
           border: 1.5px solid #000;
           cursor: pointer;
-          box-shadow: 0 0 10px rgba(212, 184, 122, 0.7);
+          box-shadow: 0 0 10px rgba(201, 148, 58, 0.7);
           transition: transform 0.15s ease, background-color 0.15s ease;
         }
         .gold-slider-premium::-webkit-slider-thumb:hover {
           transform: scale(1.3);
-          background: #e5cb93;
+          background: #e0b85e;
         }
         .rotate-y-label {
           writing-mode: vertical-rl;
@@ -103,7 +103,7 @@ export function HudFinancas() {
           <div className="flex flex-col">
             <div className="flex justify-between items-center mb-1">
               <span className="text-[10px] font-normal text-white/55 tracking-wide">Cap</span>
-              <span className="text-[11px] font-normal text-[#d4b87a]">{capVal}</span>
+              <span className="text-[11px] font-normal text-[#c9943a]">{capVal}</span>
             </div>
             <input 
               type="range" 
@@ -120,7 +120,7 @@ export function HudFinancas() {
           <div className="flex flex-col">
             <div className="flex justify-between items-center mb-1">
               <span className="text-[10px] font-normal text-white/55 tracking-wide">Fin</span>
-              <span className="text-[11px] font-normal text-[#d4b87a]">{finVal}</span>
+              <span className="text-[11px] font-normal text-[#c9943a]">{finVal}</span>
             </div>
             <input 
               type="range" 
@@ -137,7 +137,7 @@ export function HudFinancas() {
           <div className="flex flex-col">
             <div className="flex justify-between items-center mb-1">
               <span className="text-[10px] font-normal text-white/55 tracking-wide">Sold</span>
-              <span className="text-[11px] font-normal text-[#d4b87a]">${soldVal}</span>
+              <span className="text-[11px] font-normal text-[#c9943a]">${soldVal}</span>
             </div>
             <input 
               type="range" 
@@ -166,8 +166,8 @@ export function HudFinancas() {
               <svg className="w-full h-full overflow-visible" viewBox="0 0 260 90" preserveAspectRatio="none">
                 <defs>
                   <linearGradient id="bellGrad" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#d4b87a" stopOpacity="0.22" />
-                    <stop offset="100%" stopColor="#d4b87a" stopOpacity="0.01" />
+                    <stop offset="0%" stopColor="#c9943a" stopOpacity="0.22" />
+                    <stop offset="100%" stopColor="#c9943a" stopOpacity="0.01" />
                   </linearGradient>
                 </defs>
                 {/* Axes */}
@@ -176,16 +176,16 @@ export function HudFinancas() {
                 
                 {/* Grid Lines */}
                 <line x1="30" y1="45" x2="245" y2="45" stroke="rgba(255,255,255,0.04)" strokeWidth="0.5" strokeDasharray="3,3" />
-                <line x1="135" y1="10" x2="135" y2="80" stroke="rgba(212,184,122,0.22)" strokeWidth="0.8" strokeDasharray="2,2" />
+                <line x1="135" y1="10" x2="135" y2="80" stroke="rgba(201,148,58,0.22)" strokeWidth="0.8" strokeDasharray="2,2" />
 
                 {/* Shaded Area */}
                 <path d={bellPath} fill="url(#bellGrad)" />
                 {/* Golden Line */}
-                <path d={bellPath} fill="none" stroke="#d4b87a" strokeWidth="1.5" />
+                <path d={bellPath} fill="none" stroke="#c9943a" strokeWidth="1.5" />
                 
                 {/* Dots on Curve */}
-                <circle cx="85" cy="62" r="2" fill="#fff" stroke="#d4b87a" strokeWidth="0.8" />
-                <circle cx="185" cy="62" r="2" fill="#fff" stroke="#d4b87a" strokeWidth="0.8" />
+                <circle cx="85" cy="62" r="2" fill="#fff" stroke="#c9943a" strokeWidth="0.8" />
+                <circle cx="185" cy="62" r="2" fill="#fff" stroke="#c9943a" strokeWidth="0.8" />
 
                 {/* X Axis Labels */}
                 {['-3', '-2', '-1', '0', '1', '2', '3'].map((lbl, idx) => {
@@ -205,7 +205,7 @@ export function HudFinancas() {
 
               {/* Exact floating Gold Tooltip at Peak as shown in the Mockup */}
               <div 
-                className="absolute left-[52%] top-[3%] pointer-events-none text-[6.5px] font-mono text-[#d4b87a] bg-[#0c0a06]/95 px-1.5 py-0.5 rounded border border-[#d4b87a]/25 scale-90 leading-none whitespace-nowrap shadow-md"
+                className="absolute left-[52%] top-[3%] pointer-events-none text-[6.5px] font-mono text-[#c9943a] bg-[#0c0a06]/95 px-1.5 py-0.5 rounded border border-[#c9943a]/25 scale-90 leading-none whitespace-nowrap shadow-md"
                 style={{ transform: 'translateX(-50%)' }}
               >
                 Probability density = 0.930
@@ -229,8 +229,8 @@ export function HudFinancas() {
               <svg className="w-full h-full overflow-visible" viewBox="0 0 260 90" preserveAspectRatio="none">
                 <defs>
                   <linearGradient id="sigmoidGrad" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#d4b87a" stopOpacity="0.22" />
-                    <stop offset="100%" stopColor="#d4b87a" stopOpacity="0.01" />
+                    <stop offset="0%" stopColor="#c9943a" stopOpacity="0.22" />
+                    <stop offset="100%" stopColor="#c9943a" stopOpacity="0.01" />
                   </linearGradient>
                 </defs>
                 {/* Axes */}
@@ -239,16 +239,16 @@ export function HudFinancas() {
                 
                 {/* Grid Lines */}
                 <line x1="30" y1="45" x2="245" y2="45" stroke="rgba(255,255,255,0.04)" strokeWidth="0.5" strokeDasharray="3,3" />
-                <line x1="135" y1="10" x2="135" y2="80" stroke="rgba(212,184,122,0.15)" strokeWidth="0.8" strokeDasharray="2,2" />
+                <line x1="135" y1="10" x2="135" y2="80" stroke="rgba(201,148,58,0.15)" strokeWidth="0.8" strokeDasharray="2,2" />
 
                 {/* Shaded Area */}
                 <path d={sigmoidPath} fill="url(#sigmoidGrad)" />
                 {/* Golden Line */}
-                <path d={sigmoidPath} fill="none" stroke="#d4b87a" strokeWidth="1.5" />
+                <path d={sigmoidPath} fill="none" stroke="#c9943a" strokeWidth="1.5" />
                 
                 {/* Dots on Curve */}
-                <circle cx="160" cy="28" r="2" fill="#fff" stroke="#d4b87a" strokeWidth="0.8" />
-                <circle cx="110" cy="62" r="2" fill="#fff" stroke="#d4b87a" strokeWidth="0.8" />
+                <circle cx="160" cy="28" r="2" fill="#fff" stroke="#c9943a" strokeWidth="0.8" />
+                <circle cx="110" cy="62" r="2" fill="#fff" stroke="#c9943a" strokeWidth="0.8" />
 
                 {/* X Axis Labels */}
                 {['-30', '-20', '-10', '0', '10', '20', '30'].map((lbl, idx) => {
@@ -268,13 +268,13 @@ export function HudFinancas() {
 
               {/* Exact floating Tooltip Bubbles overlay as shown in the Mockup */}
               <div 
-                className="absolute left-[34%] top-[45%] pointer-events-none text-[6.5px] font-mono text-[#d4b87a] bg-[#0c0a06]/95 px-1.5 py-0.5 rounded border border-[#d4b87a]/25 scale-90 leading-none whitespace-nowrap shadow-md"
+                className="absolute left-[34%] top-[45%] pointer-events-none text-[6.5px] font-mono text-[#c9943a] bg-[#0c0a06]/95 px-1.5 py-0.5 rounded border border-[#c9943a]/25 scale-90 leading-none whitespace-nowrap shadow-md"
                 style={{ transform: 'translateY(-50%)' }}
               >
                 Lignaà: 0.17%
               </div>
               <div 
-                className="absolute right-[22%] top-[24%] pointer-events-none text-[6.5px] font-mono text-[#d4b87a] bg-[#0c0a06]/95 px-1.5 py-0.5 rounded border border-[#d4b87a]/25 scale-90 leading-none whitespace-nowrap shadow-md"
+                className="absolute right-[22%] top-[24%] pointer-events-none text-[6.5px] font-mono text-[#c9943a] bg-[#0c0a06]/95 px-1.5 py-0.5 rounded border border-[#c9943a]/25 scale-90 leading-none whitespace-nowrap shadow-md"
                 style={{ transform: 'translateY(-50%)' }}
               >
                 Sigmoid: 0.35%

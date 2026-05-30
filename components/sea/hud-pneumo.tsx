@@ -192,7 +192,7 @@ export function HudPneumo() {
       ctx.stroke()
 
       // Draw Flow Curve (Gold)
-      ctx.strokeStyle = '#d4b87a' // var(--g-3)
+      ctx.strokeStyle = '#c9943a' // var(--g-3)
       ctx.lineWidth = 1.75
       ctx.shadowColor = 'rgba(232, 204, 136, 0.35)'
       ctx.shadowBlur = 6
@@ -235,7 +235,7 @@ export function HudPneumo() {
       <div className="scanlines z-10" />
 
       <div className="hero-header relative z-20">
-        <div className="live-head text-blue-400 flex items-center gap-2">
+        <div className="live-head text-[#c9943a] flex items-center gap-2">
           <div className="pulse-dot" />
           <span>Ventilador Clínico Ativo • Curva P-V</span>
         </div>
@@ -279,7 +279,7 @@ export function HudPneumo() {
               <select
                 value={preset}
                 onChange={(e) => changePreset(e.target.value)}
-                className="bg-[#0b0d12] border border-[#d4b87a]/15 text-white rounded-lg p-2 text-[10px] w-full outline-none mt-1 focus:border-[#d4b87a]/45"
+                className="bg-[#0b0d12] border border-[#c9943a]/15 text-white rounded-lg p-2 text-[10px] w-full outline-none mt-1 focus:border-[#c9943a]/45"
               >
                 <option value="normal">Pulmão Sadio (Complacência 50)</option>
                 <option value="ards">SDRA / SARA (Complacência 25)</option>
@@ -296,7 +296,7 @@ export function HudPneumo() {
                 step="10"
                 value={vol}
                 onChange={(e) => setVol(Number(e.target.value))}
-                className="c-slider-input text-blue-400"
+                className="c-slider-input text-[#c9943a]"
               />
             </div>
 
@@ -308,7 +308,7 @@ export function HudPneumo() {
                 max="20"
                 value={peep}
                 onChange={(e) => setPeep(Number(e.target.value))}
-                className="c-slider-input text-blue-400"
+                className="c-slider-input text-[#c9943a]"
               />
             </div>
 
@@ -320,7 +320,7 @@ export function HudPneumo() {
                 max="100"
                 value={fio2}
                 onChange={(e) => setFio2(Number(e.target.value))}
-                className="c-slider-input text-blue-400"
+                className="c-slider-input text-[#c9943a]"
               />
             </div>
 
@@ -332,14 +332,14 @@ export function HudPneumo() {
                 max="40"
                 value={fr}
                 onChange={(e) => setFr(Number(e.target.value))}
-                className="c-slider-input text-blue-400"
+                className="c-slider-input text-[#c9943a]"
               />
             </div>
 
             <div className="border-t border-white/5 pt-3 mt-4 flex flex-col gap-1 font-mono text-[10px] text-white/45">
               <div className="flex justify-between"><span>Complacência (C):</span><b className="text-white">{compliance} ml/cmH₂O</b></div>
               <div className="flex justify-between"><span>Driving Press (DP):</span><b className="text-green-400">{DP.toFixed(0)} cmH₂O</b></div>
-              <div className="flex justify-between"><span>Power Mecânico:</span><b className="text-[#d4b87a]">{mechanicalPower.toFixed(1)} J/min</b></div>
+              <div className="flex justify-between"><span>Power Mecânico:</span><b className="text-[#c9943a]">{mechanicalPower.toFixed(1)} J/min</b></div>
             </div>
           </div>
         </div>

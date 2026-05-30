@@ -58,8 +58,8 @@ export function MiniEstrategia() {
             <svg className="w-full h-full overflow-visible" viewBox="0 0 115 60">
               <defs>
                 <linearGradient id="barGrad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#d4b87a" stopOpacity="0.85" />
-                  <stop offset="100%" stopColor="#d4b87a" stopOpacity="0.15" />
+                  <stop offset="0%" stopColor="#c9943a" stopOpacity="0.85" />
+                  <stop offset="100%" stopColor="#c9943a" stopOpacity="0.15" />
                 </linearGradient>
               </defs>
               
@@ -112,15 +112,15 @@ export function MiniEstrategia() {
         {/* Right Side: Metrics as Beautiful Gold-Bordered Capsules (Mockup Style) */}
         <div className="flex-1 flex flex-col justify-center space-y-2 pl-1 font-sans">
           {/* Juro Real Capsule */}
-          <div className="border border-[#d4b87a]/15 bg-[#0e0d0a]/40 px-2.5 py-1 rounded-xl flex justify-between items-center text-[9px] hover:border-[#d4b87a]/35 transition-colors">
+          <div className="border border-[#c9943a]/15 bg-[#0e0d0a]/40 px-2.5 py-1 rounded-xl flex justify-between items-center text-[9px] hover:border-[#c9943a]/35 transition-colors">
             <span className="font-light text-white/55">Juro Real</span>
-            <span className="font-normal text-[#d4b87a] text-[9.5px]">{jurosReais}%</span>
+            <span className="font-normal text-[#c9943a] text-[9.5px]">{jurosReais}%</span>
           </div>
 
           {/* P/E Ratio Capsule */}
-          <div className="border border-[#d4b87a]/15 bg-[#0e0d0a]/40 px-2.5 py-1 rounded-xl flex justify-between items-center text-[9px] hover:border-[#d4b87a]/35 transition-colors">
+          <div className="border border-[#c9943a]/15 bg-[#0e0d0a]/40 px-2.5 py-1 rounded-xl flex justify-between items-center text-[9px] hover:border-[#c9943a]/35 transition-colors">
             <span className="font-light text-white/55">P/E Ratio</span>
-            <span className="font-normal text-[#d4b87a] text-[9.5px]">{peRatio}</span>
+            <span className="font-normal text-[#c9943a] text-[9.5px]">{peRatio}</span>
           </div>
         </div>
       </div>

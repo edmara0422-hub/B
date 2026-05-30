@@ -42,17 +42,19 @@ export function MiniCapitalHumano() {
   }, [pressaoMetas])
 
   const polylinePoints = useMemo(() => {
+    const xPositions = [32, 44, 56, 68, 80, 92, 104]
     return sparklineData.map((val, idx) => {
-      const x = 32 + (idx / 6) * 72 // fitted x axis inside axes margins
-      const y = 48 - (val / 100) * 36 // fitted y axis inside axes margins
+      const x = xPositions[idx]
+      const y = 48 - (val / 100) * 36
       return `${x},${y}`
     }).join(' ')
   }, [sparklineData])
 
   const areaPoints = useMemo(() => {
     if (sparklineData.length === 0) return ''
+    const xPositions = [32, 44, 56, 68, 80, 92, 104]
     const points = sparklineData.map((val, idx) => {
-      const x = 32 + (idx / 6) * 72
+      const x = xPositions[idx]
       const y = 48 - (val / 100) * 36
       return `${x},${y}`
     })
@@ -84,8 +86,8 @@ export function MiniCapitalHumano() {
             <svg className="w-full h-full overflow-visible" viewBox="0 0 115 60">
               <defs>
                 <linearGradient id="humorGrad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#d4b87a" stopOpacity="0.22" />
-                  <stop offset="100%" stopColor="#d4b87a" stopOpacity="0.01" />
+                  <stop offset="0%" stopColor="#c9943a" stopOpacity="0.22" />
+                  <stop offset="100%" stopColor="#c9943a" stopOpacity="0.01" />
                 </linearGradient>
               </defs>
               
@@ -99,15 +101,15 @@ export function MiniCapitalHumano() {
 
               {/* Shaded Area & Line */}
               <polygon points={areaPoints} fill="url(#humorGrad)" />
-              <polyline fill="none" stroke="#d4b87a" strokeWidth="1.5" points={polylinePoints} />
+              <polyline fill="none" stroke="#c9943a" strokeWidth="1.5" points={polylinePoints} />
               
               {sparklineData.length > 0 && (
                 <circle
-                  cx={32 + 72}
+                  cx={104}
                   cy={48 - (sparklineData[sparklineData.length - 1] / 100) * 36}
                   r="1.8"
                   fill="#fff"
-                  stroke="#d4b87a"
+                  stroke="#c9943a"
                   strokeWidth="0.8"
                 />
               )}
@@ -130,24 +132,24 @@ export function MiniCapitalHumano() {
         {/* Right Side: Metrics as Beautiful Gold-Bordered Capsules (Mockup Style with exact values) */}
         <div className="flex-1 flex flex-col justify-center space-y-2 pl-1.5">
           {/* Burnout Capsule */}
-          <div className="border border-[#d4b87a]/15 bg-[#0e0d0a]/40 px-2.5 py-1 rounded-xl flex justify-between items-center text-[9px] hover:border-[#d4b87a]/35 transition-colors">
+          <div className="border border-[#c9943a]/15 bg-[#0e0d0a]/40 px-2.5 py-1 rounded-xl flex justify-between items-center text-[9px] hover:border-[#c9943a]/35 transition-colors">
             <span className="font-light text-white/55">Burnout EEB</span>
-            <span className="font-normal text-[#d4b87a] text-[9.5px]">({burnoutEEB}%)</span>
+            <span className="font-normal text-[#c9943a] text-[9.5px]">({burnoutEEB}%)</span>
           </div>
 
           {/* Turnover Capsule */}
-          <div className="border border-[#d4b87a]/15 bg-[#0e0d0a]/40 px-2.5 py-1 rounded-xl flex justify-between items-center text-[9px] hover:border-[#d4b87a]/35 transition-colors">
+          <div className="border border-[#c9943a]/15 bg-[#0e0d0a]/40 px-2.5 py-1 rounded-xl flex justify-between items-center text-[9px] hover:border-[#c9943a]/35 transition-colors">
             <span className="font-light text-white/55">Turnover</span>
-            <span className="font-normal text-[#d4b87a] text-[9.5px]">({turnoverAnual}%)</span>
+            <span className="font-normal text-[#c9943a] text-[9.5px]">({turnoverAnual}%)</span>
           </div>
 
           {/* Estresse Capsule */}
-          <div className="border border-[#d4b87a]/15 bg-[#0e0d0a]/40 px-2.5 py-1 rounded-xl flex justify-between items-center text-[9px] hover:border-[#d4b87a]/35 transition-colors">
+          <div className="border border-[#c9943a]/15 bg-[#0e0d0a]/40 px-2.5 py-1 rounded-xl flex justify-between items-center text-[9px] hover:border-[#c9943a]/35 transition-colors">
             <span className="font-light text-white/55">Estresse IAE</span>
-            <span className="font-normal text-[#d4b87a] text-[9.5px]">{estresseIAE}%</span>
+            <span className="font-normal text-[#c9943a] text-[9.5px]">{estresseIAE}%</span>
           </div>
         </div>
-      </div>
+      </div>>
     </div>
   )
 }

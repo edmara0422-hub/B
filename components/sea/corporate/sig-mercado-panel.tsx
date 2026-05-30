@@ -78,7 +78,7 @@ export function SigMercadoPanel() {
           inset: 0;
           border-radius: 14px;
           padding: 1px;
-          background: linear-gradient(90deg, #cbd5e1 0%, #d4b87a 100%) !important;
+          background: linear-gradient(90deg, #cbd5e1 0%, #c9943a 100%) !important;
           -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
           -webkit-mask-composite: xor;
           mask-composite: exclude;
@@ -89,7 +89,7 @@ export function SigMercadoPanel() {
         .sec-head .lhs { display: flex; flex-direction: column; gap: 5px }
         .sec-id { display: flex; align-items: center; gap: 12px }
         .sec-id .num {
-          font-family: monospace; font-size: 9.5px; letter-spacing: .1em; color: #d4b87a; font-weight: 500;
+          font-family: monospace; font-size: 9.5px; letter-spacing: .1em; color: #c9943a; font-weight: 500;
           border: 0.2px solid rgba(255, 255, 255, 0.08); padding: 3px 9px; border-radius: 4px; background: rgba(218,165,32,.04);
         }
         .sec-id .tag { font-family: monospace; font-size: 10px; letter-spacing: .1em; color: #8a9098; text-transform: uppercase }
@@ -99,7 +99,7 @@ export function SigMercadoPanel() {
           margin-top: 4px; margin-bottom: 0;
         }
         .sec-h .em {
-          background: linear-gradient(135deg, #b8975a 0%, #d4b87a 28%, #e8cc88 50%, #d4b87a 72%, #b8975a 100%);
+          background: linear-gradient(135deg, #b8975a 0%, #c9943a 28%, #e8cc88 50%, #c9943a 72%, #b8975a 100%);
           background-clip: text; -webkit-background-clip: text;
           color: transparent; -webkit-text-fill-color: transparent;
           font-weight: 600;
@@ -114,7 +114,7 @@ export function SigMercadoPanel() {
         }
         .mercado-check-label:hover {
           background: rgba(255, 255, 255, 0.04);
-          border-color: rgba(212, 184, 122, 0.25);
+          border-color: rgba(201, 148, 58, 0.25);
         }
         .heatmap-row:hover {
           background: rgba(255, 255, 255, 0.02);
@@ -138,7 +138,7 @@ export function SigMercadoPanel() {
           <div className="rhs">
             <div className="sec-meta">
               <span>
-                Aderência Setorial: <b style={{ color: '#d4b87a' }}>{score}%</b>
+                Aderência Setorial: <b style={{ color: '#c9943a' }}>{score}%</b>
               </span>
               <span>
                 Status: <b style={{ color: color }}>{level}</b>
@@ -150,11 +150,11 @@ export function SigMercadoPanel() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-6 relative z-10">
           {/* LEFT COLUMN: AUDITORIA DE STANDARDS & DIAL */}
           <div className="lg:col-span-5 bg-black/25 border border-white/[0.06] rounded-xl p-5 flex flex-col gap-4">
-            <b className="font-mono text-[10px] text-[#d4b87a] tracking-wider uppercase border-b border-white/[0.08] pb-2">
+            <b className="font-mono text-[10px] text-[#c9943a] tracking-wider uppercase border-b border-white/[0.08] pb-2">
               STANDARDS DE CONFORMIDADE
             </b>
 
-            <div className="flex items-center gap-5 bg-[#d4b87a]/[0.02] p-4 rounded-lg border border-[#d4b87a]/[0.08]">
+            <div className="flex items-center gap-5 bg-[#c9943a]/[0.02] p-4 rounded-lg border border-[#c9943a]/[0.08]">
               {/* SVG Circular Dial */}
               <div className="relative w-20 h-20 shrink-0">
                 <svg viewBox="0 0 120 120" className="w-full h-full transform -rotate-90">
@@ -164,14 +164,14 @@ export function SigMercadoPanel() {
                     cy="60"
                     r="50"
                     fill="none"
-                    stroke="#d4b87a"
+                    stroke="#c9943a"
                     strokeWidth="8"
                     strokeDasharray="314.16"
                     strokeDashoffset={offset}
                     style={{
                       transition: 'stroke-dashoffset 0.6s cubic-bezier(0.2, 0.8, 0.2, 1)',
                       strokeLinecap: 'round',
-                      filter: 'drop-shadow(0 0 4px rgba(212,184,122,0.4))'
+                      filter: 'drop-shadow(0 0 4px rgba(201, 148, 58,0.4))'
                     }}
                   />
                 </svg>
@@ -200,11 +200,11 @@ export function SigMercadoPanel() {
                       type="checkbox"
                       checked={item.checked}
                       onChange={() => handleToggle(item.id)}
-                      className="h-3.5 w-3.5 accent-[#d4b87a] cursor-pointer"
+                      className="h-3.5 w-3.5 accent-[#c9943a] cursor-pointer"
                     />
                     <span className="text-[11px] text-white/80 truncate">{item.label}</span>
                   </span>
-                  <b className="text-[#d4b87a] font-mono text-[9px]">{item.weight}%</b>
+                  <b className="text-[#c9943a] font-mono text-[9px]">{item.weight}%</b>
                 </label>
               ))}
             </div>
@@ -212,7 +212,7 @@ export function SigMercadoPanel() {
 
           {/* RIGHT COLUMN: SECTOR STANDARDS HEATMAP */}
           <div className="lg:col-span-7 bg-black/25 border border-white/[0.06] rounded-xl p-5 flex flex-col gap-4">
-            <b className="font-mono text-[10px] text-[#d4b87a] tracking-wider uppercase border-b border-white/[0.08] pb-2">
+            <b className="font-mono text-[10px] text-[#c9943a] tracking-wider uppercase border-b border-white/[0.08] pb-2">
               HEATMAP DE ADERÊNCIA SETORIAL (AUDIT)
             </b>
 
@@ -352,7 +352,7 @@ export function SigMercadoPanel() {
               </table>
             </div>
 
-            <div className="bg-[#d4b87a]/[0.02] p-3 rounded-lg border border-[#d4b87a]/[0.08] text-[10px] opacity-80 leading-normal">
+            <div className="bg-[#c9943a]/[0.02] p-3 rounded-lg border border-[#c9943a]/[0.08] text-[10px] opacity-80 leading-normal">
               💡 <b>Insight do Setor:</b> A regulação de segurança (ISO 27001) e proteção de dados (LGPD) são pré-requisitos vitais para empresas de tecnologia no Brasil.
             </div>
           </div>

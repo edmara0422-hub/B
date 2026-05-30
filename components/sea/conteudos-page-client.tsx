@@ -246,13 +246,13 @@ const MODULE_THEMES: Record<string, {
     gradient: 'linear-gradient(90deg, #f43f5e 0%, #fb7185 100%)'
   },
   M4: {
-    primary: '#d4b87a', // gold
+    primary: '#c9943a', // gold
     secondary: '#cbd5e1', // silver
-    accent: 'rgba(212, 184, 122, 0.35)',
-    glow: 'rgba(212, 184, 122, 0.18)',
-    badgeBg: 'rgba(212, 184, 122, 0.14)',
-    badgeText: '#d4b87a',
-    gradient: 'linear-gradient(90deg, #cbd5e1 0%, #d4b87a 100%)'
+    accent: 'rgba(201, 148, 58, 0.35)',
+    glow: 'rgba(201, 148, 58, 0.18)',
+    badgeBg: 'rgba(201, 148, 58, 0.14)',
+    badgeText: '#c9943a',
+    gradient: 'linear-gradient(90deg, #cbd5e1 0%, #c9943a 100%)'
   },
   M5: {
     primary: '#a855f7', // purple
@@ -291,16 +291,16 @@ function MiniNetworkGraph({ moduleId }: { moduleId?: string }) {
           
           <div className="relative w-12 h-12 flex items-center justify-center">
             <motion.div 
-              className="absolute inset-0 rounded-full border border-white/5 border-t-[#d4b87a] [.theme-silver_&]:border-t-[#cbd5e1] border-r-[#d4b87a] [.theme-silver_&]:border-r-[#cbd5e1]"
+              className="absolute inset-0 rounded-full border border-white/5 border-t-[#c9943a] [.theme-silver_&]:border-t-[#cbd5e1] border-r-[#c9943a] [.theme-silver_&]:border-r-[#cbd5e1]"
               animate={{ rotate: 360 }}
               transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}
             />
             <motion.div 
-              className="absolute inset-2 rounded-full border border-white/10 border-b-[#d4b87a] [.theme-silver_&]:border-b-[#cbd5e1]"
+              className="absolute inset-2 rounded-full border border-white/10 border-b-[#c9943a] [.theme-silver_&]:border-b-[#cbd5e1]"
               animate={{ rotate: -360 }}
               transition={{ duration: 6, repeat: Infinity, ease: 'linear' }}
             />
-            <div className="w-1.5 h-1.5 rounded-full bg-[#d4b87a] [.theme-silver_&]:bg-[#cbd5e1] shadow-[0_0_10px_#d4b87a] [.theme-silver_&]:shadow-[0_0_10px_#cbd5e1] animate-pulse" />
+            <div className="w-1.5 h-1.5 rounded-full bg-[#c9943a] [.theme-silver_&]:bg-[#cbd5e1] shadow-[0_0_10px_#c9943a] [.theme-silver_&]:shadow-[0_0_10px_#cbd5e1] animate-pulse" />
           </div>
         </div>
 
@@ -690,7 +690,7 @@ function ExecutiveMasterclassTheater({
             {playlist.map((item, idx) => {
               const isSelected = idx === activeLessonIndex
               const isGold = idx % 2 === 0
-              const itemColor = isGold ? '#d4b87a' : '#cbd5e1'
+              const itemColor = isGold ? '#c9943a' : '#cbd5e1'
               const itemBgSelected = isGold ? 'rgba(var(--theme-primary-rgb),0.12)' : 'rgba(203,213,225,0.12)'
               
               return (
@@ -943,7 +943,7 @@ function ExecutivePerformanceDashboard({ moduleId }: { moduleId?: string }) {
       <div>
         <div className="flex justify-between items-center">
           <span className="text-[7.5px] uppercase tracking-wider font-bold" style={{ color: theme.primary }}>KPIs Estratégicos</span>
-          <span className="text-[8px] px-1.5 py-0.5 rounded bg-[#d4b87a]/10 [.theme-silver_&]:bg-[#cbd5e1]/10 border border-[#d4b87a]/20 [.theme-silver_&]:border-[#cbd5e1]/20 text-[#d4b87a] [.theme-silver_&]:text-[#cbd5e1] font-mono">Executive Mode</span>
+          <span className="text-[8px] px-1.5 py-0.5 rounded bg-[#c9943a]/10 [.theme-silver_&]:bg-[#cbd5e1]/10 border border-[#c9943a]/20 [.theme-silver_&]:border-[#cbd5e1]/20 text-[#c9943a] [.theme-silver_&]:text-[#cbd5e1] font-mono">Executive Mode</span>
         </div>
         <h4 className="text-[12px] font-bold text-white/90 mt-1">Indicadores de Competência (30 Disciplinas)</h4>
       </div>
@@ -1113,13 +1113,13 @@ function StrategicRoadmapBoard({ moduleId }: { moduleId?: string }) {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
-            className="absolute bottom-2 inset-x-2 p-2 rounded bg-black/85 border border-[#d4b87a]/30 [.theme-silver_&]:border-[#cbd5e1]/30 backdrop-blur-md z-20 flex flex-col gap-0.5"
+            className="absolute bottom-2 inset-x-2 p-2 rounded bg-black/85 border border-[#c9943a]/30 [.theme-silver_&]:border-[#cbd5e1]/30 backdrop-blur-md z-20 flex flex-col gap-0.5"
           >
             <div className="flex justify-between items-center">
               <span className="text-[8px] font-bold text-white uppercase tracking-wider">
                 Fluxo {STRATEGIC_NODES.findIndex(n => n.id === hoveredNode) + 1}: {STRATEGIC_NODES.find(n => n.id === hoveredNode)?.label}
               </span>
-              <span className="text-[7px] font-mono text-[#d4b87a] [.theme-silver_&]:text-[#cbd5e1] font-semibold">Foco Estratégico</span>
+              <span className="text-[7px] font-mono text-[#c9943a] [.theme-silver_&]:text-[#cbd5e1] font-semibold">Foco Estratégico</span>
             </div>
             <p className="text-[8.5px] text-white/70 leading-snug">
               {STRATEGIC_NODES.find(n => n.id === hoveredNode)?.desc}
@@ -1247,7 +1247,7 @@ function NASA6DSimulator({ dbId, chapterIndex, theme }: { dbId: string; chapterI
           <div className="flex flex-col justify-between h-full space-y-3">
             <div className="flex justify-between items-start">
               <div>
-                <span className="text-[8.5px] px-2 py-0.5 rounded font-mono bg-[#d4b87a]/10 [.theme-silver_&]:bg-[#cbd5e1]/10 border border-[#d4b87a]/20 [.theme-silver_&]:border-[#cbd5e1]/20 text-[#d4b87a] [.theme-silver_&]:text-[#cbd5e1] uppercase font-bold tracking-wider">
+                <span className="text-[8.5px] px-2 py-0.5 rounded font-mono bg-[#c9943a]/10 [.theme-silver_&]:bg-[#cbd5e1]/10 border border-[#c9943a]/20 [.theme-silver_&]:border-[#cbd5e1]/20 text-[#c9943a] [.theme-silver_&]:text-[#cbd5e1] uppercase font-bold tracking-wider">
                   NASA 6D CORE · CAPÍTULO {chapterIndex + 1}
                 </span>
                 <h5 className="text-xs font-bold text-white/95 mt-1">
@@ -1410,8 +1410,8 @@ function NASA6DSimulator({ dbId, chapterIndex, theme }: { dbId: string; chapterI
                 )}
               </h5>
             </div>
-            <div className="flex items-center gap-1.5 text-[#d4b87a] [.theme-silver_&]:text-[#cbd5e1]">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#d4b87a] [.theme-silver_&]:bg-[#cbd5e1] animate-ping" />
+            <div className="flex items-center gap-1.5 text-[#c9943a] [.theme-silver_&]:text-[#cbd5e1]">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#c9943a] [.theme-silver_&]:bg-[#cbd5e1] animate-ping" />
               <span className="text-[7.5px] font-mono font-bold tracking-wider">TELEMETRIA ATIVA</span>
             </div>
           </div>
@@ -1625,7 +1625,7 @@ function NASA6DSimulator({ dbId, chapterIndex, theme }: { dbId: string; chapterI
       <div className="p-3 bg-black/60 rounded-xl border border-white/[0.04] font-mono h-[96px] overflow-hidden shrink-0 flex flex-col justify-between">
         <div className="flex justify-between items-center pb-1.5 border-b border-white/[0.04]">
           <span className="text-[7.5px] uppercase font-bold text-white/35">Advisor Terminal Diagnostic Logs</span>
-          <span className="text-[7px] text-[#d4b87a] [.theme-silver_&]:text-[#cbd5e1] font-bold">STATUS: OK</span>
+          <span className="text-[7px] text-[#c9943a] [.theme-silver_&]:text-[#cbd5e1] font-bold">STATUS: OK</span>
         </div>
         <div className="flex-1 flex flex-col justify-start space-y-1 mt-1.5 select-none pointer-events-none">
           {logs.map((log, idx) => (
@@ -1753,11 +1753,11 @@ function ExecutiveStudyBriefing({
       {/* Top Strategic Navigation Header */}
       <div className="flex items-center justify-between pb-4 border-b border-white/[0.04] flex-wrap gap-3" style={{ borderBottom: '0.2px solid rgba(255,255,255,0.04)' }}>
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg bg-[#d4b87a]/10 [.theme-silver_&]:bg-[#cbd5e1]/10 border border-[#d4b87a]/20 [.theme-silver_&]:border-[#cbd5e1]/20 flex items-center justify-center">
-            <BookOpen className="h-4 w-4 text-[#d4b87a] [.theme-silver_&]:text-[#cbd5e1]" />
+          <div className="w-8 h-8 rounded-lg bg-[#c9943a]/10 [.theme-silver_&]:bg-[#cbd5e1]/10 border border-[#c9943a]/20 [.theme-silver_&]:border-[#cbd5e1]/20 flex items-center justify-center">
+            <BookOpen className="h-4 w-4 text-[#c9943a] [.theme-silver_&]:text-[#cbd5e1]" />
           </div>
           <div>
-            <span className="text-xs uppercase tracking-[0.25em] font-bold text-[#d4b87a] [.theme-silver_&]:text-[#cbd5e1]">MBA Executive Cockpit</span>
+            <span className="text-xs uppercase tracking-[0.25em] font-bold text-[#c9943a] [.theme-silver_&]:text-[#cbd5e1]">MBA Executive Cockpit</span>
             <h3 className="text-base font-bold text-white/95 leading-none mt-1">{syllabusItem.title}</h3>
           </div>
         </div>
@@ -1792,7 +1792,7 @@ function ExecutiveStudyBriefing({
       {/* 30-Discipline Horizontal Rail Selector (Replaces Vertical Sidebar) */}
       <div className="border-b border-white/[0.04] pb-4">
         <div className="flex items-center justify-between mb-2">
-          <span className="text-xs uppercase tracking-wider font-bold text-[#d4b87a] [.theme-silver_&]:text-[#cbd5e1]">Grade de Disciplinas</span>
+          <span className="text-xs uppercase tracking-wider font-bold text-[#c9943a] [.theme-silver_&]:text-[#cbd5e1]">Grade de Disciplinas</span>
           <span className="text-[10px] px-2 py-0.5 rounded bg-white/5 border border-white/10 text-white/40 font-mono uppercase">Mapeamento Integrado</span>
         </div>
         
@@ -1800,7 +1800,7 @@ function ExecutiveStudyBriefing({
           {syllabusList.map((item, idx) => {
             const isSelected = idx === activeSubjectIndex
             const isGold = idx % 2 === 0
-            const itemColor = isGold ? '#d4b87a' : '#cbd5e1'
+            const itemColor = isGold ? '#c9943a' : '#cbd5e1'
             
             return (
               <button
@@ -1815,7 +1815,7 @@ function ExecutiveStudyBriefing({
                     ? activeTheme.primary 
                     : 'rgba(255, 255, 255, 0.05)',
                   boxShadow: isSelected 
-                    ? '0 0 12px rgba(212, 184, 122, 0.15)' 
+                    ? '0 0 12px rgba(201, 148, 58, 0.15)' 
                     : 'none'
                 }}
               >
@@ -1855,17 +1855,17 @@ function ExecutiveStudyBriefing({
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
                   
                   {/* Left Column: Textbook content (Spacious text) */}
-                  <div className="lg:col-span-7 p-6 rounded-2xl bg-[#0c0905]/40 border border-white/[0.04] backdrop-blur-md relative overflow-hidden transition-all duration-300 hover:border-[#d4b87a]/20 [.theme-silver_&]:hover:border-[#cbd5e1]/20 [.theme-silver_&]:border-[#cbd5e1]/20 flex flex-col h-[600px] lg:h-[720px] group"
+                  <div className="lg:col-span-7 p-6 rounded-2xl bg-[#0c0905]/40 border border-white/[0.04] backdrop-blur-md relative overflow-hidden transition-all duration-300 hover:border-[#c9943a]/20 [.theme-silver_&]:hover:border-[#cbd5e1]/20 [.theme-silver_&]:border-[#cbd5e1]/20 flex flex-col h-[600px] lg:h-[720px] group"
                     style={{ boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.02), 0 8px 24px rgba(0,0,0,0.15)' }}
                   >
                     <div className="absolute inset-0 opacity-[0.015] pointer-events-none group-hover:opacity-[0.03] transition-all" style={{
-                      background: `radial-gradient(circle at 0% 0%, ${isGoldTheme ? '#d4b87a' : '#cbd5e1'}, transparent 50%)`
+                      background: `radial-gradient(circle at 0% 0%, ${isGoldTheme ? '#c9943a' : '#cbd5e1'}, transparent 50%)`
                     }} />
 
                     <div className="overflow-y-auto space-y-4 pr-2 ipb-thinscroll h-full">
                       <div className="flex justify-between items-start border-b border-white/[0.06] pb-3 w-full sticky top-0 bg-[#0c0905]/95 backdrop-blur-md z-10">
                         <div>
-                          <span className="text-xs px-2 py-0.5 rounded font-mono bg-[#d4b87a]/10 [.theme-silver_&]:bg-[#cbd5e1]/10 border border-[#d4b87a]/20 [.theme-silver_&]:border-[#cbd5e1]/20 text-[#d4b87a] [.theme-silver_&]:text-[#cbd5e1] uppercase">SUMÁRIO ACADÊMICO</span>
+                          <span className="text-xs px-2 py-0.5 rounded font-mono bg-[#c9943a]/10 [.theme-silver_&]:bg-[#cbd5e1]/10 border border-[#c9943a]/20 [.theme-silver_&]:border-[#cbd5e1]/20 text-[#c9943a] [.theme-silver_&]:text-[#cbd5e1] uppercase">SUMÁRIO ACADÊMICO</span>
                           <h4 className="text-base font-bold text-white/95 leading-tight mt-1 uppercase">
                             {syllabusItem.title}
                           </h4>
@@ -1883,7 +1883,7 @@ function ExecutiveStudyBriefing({
                               onClick={() => setActiveChapterIndex(idx)}
                               className={`px-3 py-1.5 rounded-lg text-xs font-mono transition-all duration-200 whitespace-nowrap flex items-center gap-1.5 ${
                                 isSelected
-                                  ? 'bg-[#d4b87a]/15 [.theme-silver_&]:bg-[#cbd5e1]/15 text-[#d4b87a] border border-[#d4b87a]/30 [.theme-silver_&]:border-[#cbd5e1]/30 font-bold'
+                                  ? 'bg-[#c9943a]/15 [.theme-silver_&]:bg-[#cbd5e1]/15 text-[#c9943a] border border-[#c9943a]/30 [.theme-silver_&]:border-[#cbd5e1]/30 font-bold'
                                   : 'bg-white/[0.02] text-white/60 border border-white/[0.04] hover:bg-white/[0.05] hover:text-white/80'
                               }`}
                             >
@@ -1902,7 +1902,7 @@ function ExecutiveStudyBriefing({
                             <div key={cIdx} className="space-y-4 pb-4">
                               <div className="flex items-start justify-between gap-4">
                                 <div className="flex items-start gap-2.5">
-                                  <span className="text-xs font-mono font-bold text-[#d4b87a] [.theme-silver_&]:text-[#cbd5e1] mt-0.5">Cap {cIdx + 1}</span>
+                                  <span className="text-xs font-mono font-bold text-[#c9943a] [.theme-silver_&]:text-[#cbd5e1] mt-0.5">Cap {cIdx + 1}</span>
                                   <div>
                                     <h5 className="text-sm font-bold text-white/90 leading-tight uppercase">
                                       {chapter.title}
@@ -1929,9 +1929,9 @@ function ExecutiveStudyBriefing({
                                     </p>
 
                                     {sub.studyCase && (
-                                      <div className="mt-3 rounded-xl p-4 bg-[#d4b87a]/5 [.theme-silver_&]:bg-[#cbd5e1]/5 border-l-2 border-[#d4b87a] [.theme-silver_&]:border-[#cbd5e1] border border-[#d4b87a]/10 [.theme-silver_&]:border-[#cbd5e1]/10 space-y-1.5">
-                                        <span className="text-[10px] uppercase tracking-wider font-bold text-[#d4b87a] [.theme-silver_&]:text-[#cbd5e1] block">Estudo de Caso · {sub.studyCase.title}</span>
-                                        <p className="text-xs text-[#d4b87a]/80 [.theme-silver_&]:text-[#cbd5e1]/80 leading-relaxed text-justify whitespace-pre-line">
+                                      <div className="mt-3 rounded-xl p-4 bg-[#c9943a]/5 [.theme-silver_&]:bg-[#cbd5e1]/5 border-l-2 border-[#c9943a] [.theme-silver_&]:border-[#cbd5e1] border border-[#c9943a]/10 [.theme-silver_&]:border-[#cbd5e1]/10 space-y-1.5">
+                                        <span className="text-[10px] uppercase tracking-wider font-bold text-[#c9943a] [.theme-silver_&]:text-[#cbd5e1] block">Estudo de Caso · {sub.studyCase.title}</span>
+                                        <p className="text-xs text-[#c9943a]/80 [.theme-silver_&]:text-[#cbd5e1]/80 leading-relaxed text-justify whitespace-pre-line">
                                           {sub.studyCase.body}
                                         </p>
                                       </div>
@@ -1950,7 +1950,7 @@ function ExecutiveStudyBriefing({
 
                                 {chapter.synthesis && (
                                   <div className="mt-4 rounded-xl p-4 bg-white/[0.01] border border-white/[0.04] space-y-2.5">
-                                    <span className="text-[10px] uppercase tracking-wider font-bold text-[#d4b87a]/80 [.theme-silver_&]:text-[#cbd5e1]/80 block">Síntese Estratégica & Insights</span>
+                                    <span className="text-[10px] uppercase tracking-wider font-bold text-[#c9943a]/80 [.theme-silver_&]:text-[#cbd5e1]/80 block">Síntese Estratégica & Insights</span>
                                     <ul className="space-y-2">
                                       {chapter.synthesis.bullets.map((bullet: string, bIdx: number) => (
                                         <li key={bIdx} className="text-xs text-white/60 leading-relaxed flex items-start gap-2.5 text-justify">
@@ -1974,12 +1974,12 @@ function ExecutiveStudyBriefing({
                     style={{ boxShadow: '0 8px 24px rgba(0,0,0,0.15)' }}
                   >
                     <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{
-                      background: `radial-gradient(circle at 100% 0%, ${isGoldTheme ? '#d4b87a' : '#cbd5e1'}, transparent 50%)`
+                      background: `radial-gradient(circle at 100% 0%, ${isGoldTheme ? '#c9943a' : '#cbd5e1'}, transparent 50%)`
                     }} />
 
                     <div className="space-y-4 flex-1 flex flex-col">
                       <div>
-                        <span className="text-[10px] uppercase tracking-wider font-bold text-[#d4b87a] [.theme-silver_&]:text-[#cbd5e1]">
+                        <span className="text-[10px] uppercase tracking-wider font-bold text-[#c9943a] [.theme-silver_&]:text-[#cbd5e1]">
                           {dbId === 'M4-S1' ? 'Simulador NASA 6D Ativo' : 'Simulador Ativo'}
                         </span>
                         <h4 className="text-sm font-bold text-white/95 mt-1">
@@ -2057,11 +2057,11 @@ function ExecutiveStudyBriefing({
                       onChange={(e) => setTutorInput(e.target.value)}
                       onKeyDown={(e) => e.key === 'Enter' && handleAskTutor(tutorInput)}
                       placeholder="Faça uma pergunta sobre o sumário executivo..."
-                      className="flex-1 bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-xs lg:text-sm text-white outline-none focus:border-[#d4b87a]/40 [.theme-silver_&]:focus:border-[#cbd5e1]/40 [.theme-silver_&]:border-[#cbd5e1]/40"
+                      className="flex-1 bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-xs lg:text-sm text-white outline-none focus:border-[#c9943a]/40 [.theme-silver_&]:focus:border-[#cbd5e1]/40 [.theme-silver_&]:border-[#cbd5e1]/40"
                     />
                     <button
                       onClick={() => handleAskTutor(tutorInput)}
-                      className="px-4 py-2.5 rounded-lg bg-[#d4b87a] [.theme-silver_&]:bg-[#cbd5e1] hover:bg-[#d4b87a]/80 [.theme-silver_&]:hover:bg-[#cbd5e1]/80 text-black flex items-center justify-center shrink-0 cursor-pointer transition-all"
+                      className="px-4 py-2.5 rounded-lg bg-[#c9943a] [.theme-silver_&]:bg-[#cbd5e1] hover:bg-[#c9943a]/80 [.theme-silver_&]:hover:bg-[#cbd5e1]/80 text-black flex items-center justify-center shrink-0 cursor-pointer transition-all"
                     >
                       <Send className="h-4 w-4" />
                     </button>
@@ -2081,12 +2081,12 @@ function ExecutiveStudyBriefing({
               >
                 <div className="p-6 rounded-2xl bg-white/[0.015] border border-white/[0.04] relative overflow-hidden h-[600px] lg:h-[720px] flex flex-col justify-between">
                   <div className="absolute inset-0 opacity-[0.01] pointer-events-none" style={{
-                    background: `radial-gradient(circle at 100% 100%, ${isGoldTheme ? '#d4b87a' : '#cbd5e1'}, transparent 50%)`
+                    background: `radial-gradient(circle at 100% 100%, ${isGoldTheme ? '#c9943a' : '#cbd5e1'}, transparent 50%)`
                   }} />
                   <div className="flex flex-col h-full space-y-4">
                     <div className="flex items-center justify-between shrink-0">
                       <div className="flex items-center gap-2.5">
-                        <FileText className="h-5 w-5 text-[#d4b87a] [.theme-silver_&]:text-[#cbd5e1]" />
+                        <FileText className="h-5 w-5 text-[#c9943a] [.theme-silver_&]:text-[#cbd5e1]" />
                         <span className="text-xs uppercase tracking-widest font-bold text-white/40">Notas de Implementação Operacional</span>
                       </div>
                       <span className="text-xs text-white/30 font-mono">Salvo automaticamente</span>
@@ -2096,7 +2096,7 @@ function ExecutiveStudyBriefing({
                       value={notes}
                       onChange={(e) => handleSaveNotes(e.target.value)}
                       placeholder={`Escreva suas notas estratégicas e memorandos de implementação para a disciplina: ${syllabusItem.title}...`}
-                      className="flex-1 bg-white/[0.02] border border-white/[0.05] rounded-xl p-4 text-xs lg:text-sm text-white/80 leading-relaxed outline-none focus:border-[#d4b87a]/30 [.theme-silver_&]:focus:border-[#cbd5e1]/30 [.theme-silver_&]:border-[#cbd5e1]/30 resize-none placeholder:text-white/20 ipb-thinscroll"
+                      className="flex-1 bg-white/[0.02] border border-white/[0.05] rounded-xl p-4 text-xs lg:text-sm text-white/80 leading-relaxed outline-none focus:border-[#c9943a]/30 [.theme-silver_&]:focus:border-[#cbd5e1]/30 [.theme-silver_&]:border-[#cbd5e1]/30 resize-none placeholder:text-white/20 ipb-thinscroll"
                     />
                   </div>
                 </div>
@@ -2143,7 +2143,7 @@ function WorkspaceSidebar({
         style={{ borderBottom: '1px solid rgba(var(--theme-primary-rgb),0.12)' }}
       >
         <div className="mb-2 flex items-center justify-between lg:mb-3">
-          <p className="text-[7px] uppercase tracking-[0.22em] text-[#d4b87a] [.theme-silver_&]:text-[#cbd5e1] lg:text-[9px] lg:tracking-[0.44em]">Academic Trilha</p>
+          <p className="text-[7px] uppercase tracking-[0.22em] text-[#c9943a] [.theme-silver_&]:text-[#cbd5e1] lg:text-[9px] lg:tracking-[0.44em]">Academic Trilha</p>
           <button
             onClick={onClose}
             title="Fechar sidebar"
@@ -2201,13 +2201,13 @@ function WorkspaceSidebar({
                     : { border: '1px solid transparent' }
                 }
               >
-                <div className={`module-icon flex h-6 w-6 items-center justify-center rounded-[6px] shrink-0 ${isActive ? 'bg-[#d4b87a]/15 [.theme-silver_&]:bg-[#cbd5e1]/15 text-[#d4b87a] [.theme-silver_&]:text-[#cbd5e1]' : 'bg-white/5 text-white/32'}`}>
+                <div className={`module-icon flex h-6 w-6 items-center justify-center rounded-[6px] shrink-0 ${isActive ? 'bg-[#c9943a]/15 [.theme-silver_&]:bg-[#cbd5e1]/15 text-[#c9943a] [.theme-silver_&]:text-[#cbd5e1]' : 'bg-white/5 text-white/32'}`}>
                   <ModIcon className="h-3.5 w-3.5" />
                 </div>
                 <div className="min-w-0 flex-1">
                   <p
                     className={`text-[7px] uppercase tracking-[0.16em] lg:text-[8px] lg:tracking-[0.22em] ${
-                      isActive ? 'text-[#d4b87a]/80 [.theme-silver_&]:text-[#cbd5e1]/80' : 'text-white/20'
+                      isActive ? 'text-[#c9943a]/80 [.theme-silver_&]:text-[#cbd5e1]/80' : 'text-white/20'
                     }`}
                   >
                     {mod.id} · {topics.length || '…'}
@@ -2221,7 +2221,7 @@ function WorkspaceSidebar({
                   </p>
                 </div>
                 <div className={`h-[1px] w-[1px] rounded-full transition-all duration-300 lg:h-1 lg:w-1 ${
-                    isActive ? 'bg-[#d4b87a] [.theme-silver_&]:bg-[#cbd5e1] shadow-[0_0_6px_rgba(var(--theme-primary-rgb),0.8)] [.theme-silver_&]:shadow-[0_0_6px_rgba(203,213,225,0.8)]' : 'bg-white/16'
+                    isActive ? 'bg-[#c9943a] [.theme-silver_&]:bg-[#cbd5e1] shadow-[0_0_6px_rgba(var(--theme-primary-rgb),0.8)] [.theme-silver_&]:shadow-[0_0_6px_rgba(203,213,225,0.8)]' : 'bg-white/16'
                   }`} />
               </button>
 
@@ -2244,11 +2244,11 @@ function WorkspaceSidebar({
                         }
                       >
                         <FileText
-                          className={`h-2.5 w-2.5 shrink-0 lg:h-3 lg:w-3 ${isTopicActive ? 'text-[#d4b87a]' : 'text-white/28'}`}
+                          className={`h-2.5 w-2.5 shrink-0 lg:h-3 lg:w-3 ${isTopicActive ? 'text-[#c9943a]' : 'text-white/28'}`}
                         />
                         <span
                           className={`shrink-0 font-mono text-[7px] tracking-[0.04em] lg:text-[7.5px] lg:tracking-[0.06em] ${
-                            isTopicActive ? 'text-[#d4b87a]/70 [.theme-silver_&]:text-[#cbd5e1]/70' : 'text-white/26'
+                            isTopicActive ? 'text-[#c9943a]/70 [.theme-silver_&]:text-[#cbd5e1]/70' : 'text-white/26'
                           }`}
                         >
                           {String(ti + 1).padStart(2, '0')}
@@ -2296,12 +2296,12 @@ function ModuleRail({
             className="flex h-8 w-8 items-center justify-center rounded-[0.7rem] border border-white/10"
             style={{ background: 'rgba(255,255,255,0.05)' }}
           >
-            <BookOpen className="h-4 w-4 text-[#d4b87a] [.theme-silver_&]:text-[#cbd5e1]" />
+            <BookOpen className="h-4 w-4 text-[#c9943a] [.theme-silver_&]:text-[#cbd5e1]" />
           </div>
-          <span className="text-[10px] font-semibold uppercase tracking-[0.28em] text-[#d4b87a] [.theme-silver_&]:text-[#cbd5e1]">Trilhas Acadêmicas</span>
+          <span className="text-[10px] font-semibold uppercase tracking-[0.28em] text-[#c9943a] [.theme-silver_&]:text-[#cbd5e1]">Trilhas Acadêmicas</span>
         </div>
         <div className="flex items-center gap-3">
-          <span className="text-[8.5px] px-2 py-0.5 rounded font-mono bg-[#d4b87a]/10 [.theme-silver_&]:bg-[#cbd5e1]/10 border border-[#d4b87a]/20 [.theme-silver_&]:border-[#cbd5e1]/20 text-[#d4b87a] [.theme-silver_&]:text-[#cbd5e1]">TRILHA OURO</span>
+          <span className="text-[8.5px] px-2 py-0.5 rounded font-mono bg-[#c9943a]/10 [.theme-silver_&]:bg-[#cbd5e1]/10 border border-[#c9943a]/20 [.theme-silver_&]:border-[#cbd5e1]/20 text-[#c9943a] [.theme-silver_&]:text-[#cbd5e1]">TRILHA OURO</span>
           <span className="text-[8.5px] px-2 py-0.5 rounded font-mono bg-[#cbd5e1]/10 border border-[#cbd5e1]/20 text-[#cbd5e1]">TRILHA PRATA</span>
         </div>
       </div>
@@ -2311,7 +2311,7 @@ function ModuleRail({
         {/* Upper Track Line (Gold - Dourado) */}
         <div className="pointer-events-none absolute inset-x-0 top-[2.05rem] h-[1.5px]" style={{
           background: 'linear-gradient(90deg, transparent 0%, rgba(var(--theme-primary-rgb),0.08) 12%, rgba(var(--theme-primary-rgb),0.38) 45%, rgba(var(--theme-primary-rgb),0.48) 50%, rgba(var(--theme-primary-rgb),0.38) 55%, rgba(var(--theme-primary-rgb),0.08) 88%, transparent 100%)',
-          boxShadow: '0 0 4px rgba(212, 184, 122, 0.2)'
+          boxShadow: '0 0 4px rgba(201, 148, 58, 0.2)'
         }} />
 
         {/* Lower Track Line (Silver - Prata) */}
@@ -2326,7 +2326,7 @@ function ModuleRail({
             const done = activeIndex !== null && index < activeIndex
             const ModuleIcon = module.icon
             const isGold = module.id === 'M4'
-            const itemColor = isGold ? '#d4b87a' : '#cbd5e1'
+            const itemColor = isGold ? '#c9943a' : '#cbd5e1'
             const isArchived = ARCHIVED_MODULE_IDS.includes(module.id)
 
             return (
@@ -2345,18 +2345,18 @@ function ModuleRail({
                     style={
                       active
                         ? {
-                            borderColor: isGold ? 'rgba(212, 184, 122, 0.55)' : 'rgba(203, 213, 225, 0.55)',
+                            borderColor: isGold ? 'rgba(201, 148, 58, 0.55)' : 'rgba(203, 213, 225, 0.55)',
                             background: isGold 
                               ? 'radial-gradient(circle at 30% 28%, rgba(var(--theme-primary-rgb),0.55) 0%, rgba(var(--theme-primary-rgb),0.35) 45%, rgba(40,28,8,0.95) 100%)'
                               : 'radial-gradient(circle at 30% 28%, rgba(203,213,225,0.45) 0%, rgba(203,213,225,0.25) 45%, rgba(15,18,22,0.95) 100%)',
                             boxShadow: isGold
-                              ? '0 0 16px rgba(212, 184, 122, 0.32), 0 0 32px rgba(212, 184, 122, 0.16), inset 0 0.2px 0.2px rgba(255,235,180,0.32)'
+                              ? '0 0 16px rgba(201, 148, 58, 0.32), 0 0 32px rgba(201, 148, 58, 0.16), inset 0 0.2px 0.2px rgba(255,235,180,0.32)'
                               : '0 0 16px rgba(203, 213, 225, 0.22), 0 0 32px rgba(203, 213, 225, 0.11), inset 0 0.2px 0.2px rgba(255,255,255,0.22)',
                             color: '#fff',
                           }
                         : done
                         ? {
-                            borderColor: isGold ? 'rgba(212, 184, 122, 0.32)' : 'rgba(203, 213, 225, 0.32)',
+                            borderColor: isGold ? 'rgba(201, 148, 58, 0.32)' : 'rgba(203, 213, 225, 0.32)',
                             background: isGold
                               ? 'linear-gradient(180deg, rgba(var(--theme-primary-rgb),0.18) 0%, rgba(20,16,8,0.92) 100%)'
                               : 'linear-gradient(180deg, rgba(203,213,225,0.18) 0%, rgba(12,14,18,0.92) 100%)',
@@ -2371,7 +2371,7 @@ function ModuleRail({
                   >
                     <ModuleIcon className="h-3.5 w-3.5" />
                     {isAdmin && isArchived && (
-                      <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-amber-500/20 border border-amber-500/40 text-[8px] text-amber-300 shadow-[0_0_8px_rgba(245,158,11,0.2)]">
+                      <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-[#c9943a]/20 border border-[#c9943a]/40 text-[8px] text-[#e0b85e] shadow-[0_0_8px_rgba(245,158,11,0.2)]">
                         📦
                       </span>
                     )}
@@ -2395,7 +2395,7 @@ function ModuleRail({
                 >
                   {module.title}
                   {isAdmin && isArchived && (
-                    <span className="block text-[6.5px] text-amber-400/80 font-bold uppercase tracking-widest mt-0.5">(Arquivado)</span>
+                    <span className="block text-[6.5px] text-[#c9943a]/80 font-bold uppercase tracking-widest mt-0.5">(Arquivado)</span>
                   )}
                 </span>
               </button>
@@ -2630,8 +2630,8 @@ export default function ConteudosPageClient({ mode = 'normal' }: { mode?: 'norma
 
             </div>
             <div className="flex items-center gap-2">
-              <BookOpen className="h-4 w-4 text-[#d4b87a] [.theme-silver_&]:text-[#cbd5e1]" />
-              <span className="text-[10px] font-semibold uppercase tracking-[0.28em] text-[#d4b87a] [.theme-silver_&]:text-[#cbd5e1]">
+              <BookOpen className="h-4 w-4 text-[#c9943a] [.theme-silver_&]:text-[#cbd5e1]" />
+              <span className="text-[10px] font-semibold uppercase tracking-[0.28em] text-[#c9943a] [.theme-silver_&]:text-[#cbd5e1]">
                 {mode === 'archived' ? 'Acervo Clínico Arquivado' : 'Academic Cockpit'}
               </span>
             </div>
@@ -2642,13 +2642,13 @@ export default function ConteudosPageClient({ mode = 'normal' }: { mode?: 'norma
 
               {/* Premium Archived Systems Launcher (Only for Admin in Archived Mode) */}
               {mode === 'archived' && (
-                <div className="ipb-soft relative overflow-hidden rounded-[1.8rem] px-5 py-6 md:px-8 bg-gradient-to-br from-amber-500/5 to-transparent border border-amber-500/10">
+                <div className="ipb-soft relative overflow-hidden rounded-[1.8rem] px-5 py-6 md:px-8 bg-gradient-to-br from-amber-500/5 to-transparent border border-[#c9943a]/10">
                   <div className="flex items-center gap-2.5 mb-4">
-                    <div className="flex h-8 w-8 items-center justify-center rounded-[0.7rem] border border-amber-500/20 bg-amber-500/10">
-                      <Calculator className="h-4 w-4 text-amber-400" />
+                    <div className="flex h-8 w-8 items-center justify-center rounded-[0.7rem] border border-[#c9943a]/20 bg-[#c9943a]/10">
+                      <Calculator className="h-4 w-4 text-[#c9943a]" />
                     </div>
                     <div>
-                      <span className="text-[10px] font-semibold uppercase tracking-[0.28em] text-amber-400 block">Sistemas Clínicos de Plantão</span>
+                      <span className="text-[10px] font-semibold uppercase tracking-[0.28em] text-[#c9943a] block">Sistemas Clínicos de Plantão</span>
                       <span className="text-[7.5px] text-white/45 uppercase tracking-wider font-mono">Ferramentas homologadas para suporte à decisão na beira do leito</span>
                     </div>
                   </div>
@@ -2661,13 +2661,13 @@ export default function ConteudosPageClient({ mode = 'normal' }: { mode?: 'norma
                       <Link 
                         key={sys.id} 
                         href={`/explore/sistemas?active=${sys.id}&clinical=true`}
-                        className="group relative flex flex-col p-4 rounded-xl border border-white/[0.04] bg-white/[0.01] hover:bg-white/[0.03] hover:border-amber-500/20 transition-all duration-300 pointer-events-auto"
+                        className="group relative flex flex-col p-4 rounded-xl border border-white/[0.04] bg-white/[0.01] hover:bg-white/[0.03] hover:border-[#c9943a]/20 transition-all duration-300 pointer-events-auto"
                       >
                         <div className="flex items-center justify-between mb-2">
-                          <sys.icon className="h-5 w-5 text-white/50 group-hover:text-amber-400 transition-colors" />
-                          <span className="text-[7px] font-mono font-bold px-1.5 py-0.5 rounded bg-white/5 border border-white/10 text-white/40 group-hover:border-amber-500/20 group-hover:text-amber-300 transition-all">{sys.id}</span>
+                          <sys.icon className="h-5 w-5 text-white/50 group-hover:text-[#c9943a] transition-colors" />
+                          <span className="text-[7px] font-mono font-bold px-1.5 py-0.5 rounded bg-white/5 border border-white/10 text-white/40 group-hover:border-[#c9943a]/20 group-hover:text-[#e0b85e] transition-all">{sys.id}</span>
                         </div>
-                        <h4 className="text-[11.5px] font-bold text-white/95 group-hover:text-amber-300 transition-colors leading-tight">{sys.title}</h4>
+                        <h4 className="text-[11.5px] font-bold text-white/95 group-hover:text-[#e0b85e] transition-colors leading-tight">{sys.title}</h4>
                         <p className="text-[9px] text-white/40 leading-snug mt-1">{sys.desc}</p>
                       </Link>
                     ))}
@@ -2695,7 +2695,7 @@ export default function ConteudosPageClient({ mode = 'normal' }: { mode?: 'norma
                       {/* Sub-Header / Topbar */}
                       <div className="flex items-center justify-between px-6 py-3.5 border-bottom border-white/[0.04]" style={{ borderBottom: '0.2px solid rgba(255,255,255,0.04)' }}>
                         <div className="flex items-center gap-2 text-white/30 text-[9px] uppercase tracking-widest">
-                          <Radar className="h-3.5 w-3.5 text-[#d4b87a] [.theme-silver_&]:text-[#cbd5e1]" />
+                          <Radar className="h-3.5 w-3.5 text-[#c9943a] [.theme-silver_&]:text-[#cbd5e1]" />
                           <span>Operational Module System</span>
                         </div>
                       </div>
@@ -2708,14 +2708,14 @@ export default function ConteudosPageClient({ mode = 'normal' }: { mode?: 'norma
                             className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
                             style={{
                               background: 'radial-gradient(circle at 30% 25%, rgba(var(--theme-primary-rgb),0.35) 0%, rgba(var(--theme-primary-rgb),0.20) 50%, rgba(20,16,8,0.95) 100%)',
-                              border: '0.2px solid rgba(212, 184, 122, 0.40)',
+                              border: '0.2px solid rgba(201, 148, 58, 0.40)',
                               boxShadow: 'inset 0 1px 1px rgba(255,235,180,0.22), 0 0 16px rgba(var(--theme-primary-rgb),0.18)'
                             }}
                           >
                             <span className="text-[12px] font-bold text-white tracking-wider">{current.id}</span>
                           </div>
                           <div>
-                            <span className="text-[8px] text-[#d4b87a] [.theme-silver_&]:text-[#cbd5e1] uppercase tracking-[0.25em] font-semibold">{current.eyebrow}</span>
+                            <span className="text-[8px] text-[#c9943a] [.theme-silver_&]:text-[#cbd5e1] uppercase tracking-[0.25em] font-semibold">{current.eyebrow}</span>
                             <h1 className="text-xl md:text-2xl font-bold tracking-tight text-white/90 leading-tight mt-0.5">
                               {current.title}
                             </h1>
@@ -2900,10 +2900,10 @@ export default function ConteudosPageClient({ mode = 'normal' }: { mode?: 'norma
                         transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
                         className="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-white/30 mb-2"
                       >
-                        <BookOpen className="h-7 w-7 text-[#d4b87a] [.theme-silver_&]:text-[#cbd5e1]" />
+                        <BookOpen className="h-7 w-7 text-[#c9943a] [.theme-silver_&]:text-[#cbd5e1]" />
                       </motion.div>
                       <div className="h-px w-12 bg-gradient-to-r from-transparent via-white/20 to-transparent" />
-                      <p className="text-[10px] uppercase tracking-[0.38em] text-[#d4b87a] [.theme-silver_&]:text-[#cbd5e1] font-semibold">Plataforma Acadêmica IPB</p>
+                      <p className="text-[10px] uppercase tracking-[0.38em] text-[#c9943a] [.theme-silver_&]:text-[#cbd5e1] font-semibold">Plataforma Acadêmica IPB</p>
                       <p className="max-w-xs text-[12px] leading-relaxed text-white/44">
                         Selecione um dos módulos acadêmicos acima na trilha para inicializar o cockpit operacional e carregar o caderno de estudos.
                       </p>

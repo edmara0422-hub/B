@@ -190,10 +190,10 @@ export function HudCapitalHumano() {
       ctx.stroke()
 
       // 2. CANAL ALPHA (Foco Saudável - Dourado Premium)
-      ctx.strokeStyle = '#d4b87a'
+      ctx.strokeStyle = '#c9943a'
       ctx.lineWidth = 1.8
       ctx.shadowBlur = 8
-      ctx.shadowColor = 'rgba(212, 184, 122, 0.35)'
+      ctx.shadowColor = 'rgba(201, 148, 58, 0.35)'
       ctx.beginPath()
       for (let x = 0; x <= w; x++) {
         const t = x / w
@@ -246,7 +246,7 @@ export function HudCapitalHumano() {
 
       // Desenha varredor de pulso vertical (efeito scanner de osciloscópio)
       const scanX = (frame * 1.5) % w
-      ctx.strokeStyle = burnoutEEB > 35 ? 'rgba(229, 175, 101, 0.25)' : 'rgba(212, 184, 122, 0.25)'
+      ctx.strokeStyle = burnoutEEB > 35 ? 'rgba(229, 175, 101, 0.25)' : 'rgba(201, 148, 58, 0.25)'
       ctx.lineWidth = 1
       ctx.beginPath()
       ctx.moveTo(scanX, 0)
@@ -267,7 +267,7 @@ export function HudCapitalHumano() {
 
       {/* Header do Painel */}
       <div className="hero-header relative z-20">
-        <div className="live-head text-[#d4b87a] flex items-center gap-2">
+        <div className="live-head text-[#c9943a] flex items-center gap-2">
           <div className="pulse-dot" />
           <span>HR-03 • CAPITAL HUMANO & RISCOS PSICOSSOCIAIS</span>
         </div>
@@ -287,10 +287,10 @@ export function HudCapitalHumano() {
               </div>
               <div className="select-none">
                 <h4 className="margin-0 text-[10px] text-white/45 uppercase font-medium tracking-widest">Estresse Coletivo Preditivo</h4>
-                <b className={`font-mono text-5xl mt-1.5 block filter drop-shadow-[0_0_15px_rgba(212,184,122,0.3)] ${(burnoutEEB ?? 0) > 35 ? 'text-amber-500/80' : 'text-[#d4b87a]'}`}>
+                <b className={`font-mono text-5xl mt-1.5 block filter drop-shadow-[0_0_15px_rgba(201, 148, 58,0.3)] ${(burnoutEEB ?? 0) > 35 ? 'text-[#c9943a]/80' : 'text-[#c9943a]'}`}>
                   {Number(burnoutEEB ?? 0).toFixed(0)}%
                 </b>
-                <p className={`margin-0 mt-2 text-[10px] font-bold uppercase tracking-wider ${(burnoutEEB ?? 0) > 35 ? 'text-amber-500/80' : 'text-[#d4b87a]'}`}>
+                <p className={`margin-0 mt-2 text-[10px] font-bold uppercase tracking-wider ${(burnoutEEB ?? 0) > 35 ? 'text-[#c9943a]/80' : 'text-[#c9943a]'}`}>
                   {(burnoutEEB ?? 0) > 35 ? 'Risco Alto de Estafa/Burnout' : 'Ambiente Saudável e Resiliente'}
                 </p>
               </div>
@@ -302,8 +302,8 @@ export function HudCapitalHumano() {
               <div className="graph-overlay-vals absolute right-3 top-2 text-[8px] font-mono text-white/40 flex flex-col gap-0.5 text-right pointer-events-none">
                 <span>Eficiência Saudável: <b className="text-white">{Number(eficienciaSaudavel ?? 0).toFixed(1)}</b></span>
                 <span>Demissões/Mês: <b className="text-white">{Number(demissoesMes ?? 0).toFixed(0)} colab.</b></span>
-                <span>Faturamento (Φ): <b className="text-[#d4b87a]">R$ {Number(faturamento ?? 0).toFixed(0)}k</b></span>
-                <span>Perda de Caixa: <b className="text-amber-500/80">R$ -{Number(custoRealTurnover ?? 0).toFixed(0)}k</b></span>
+                <span>Faturamento (Φ): <b className="text-[#c9943a]">R$ {Number(faturamento ?? 0).toFixed(0)}k</b></span>
+                <span>Perda de Caixa: <b className="text-[#c9943a]/80">R$ -{Number(custoRealTurnover ?? 0).toFixed(0)}k</b></span>
               </div>
             </div>
 
@@ -311,8 +311,8 @@ export function HudCapitalHumano() {
         </div>
 
         {/* Fórmulas Matemáticas do Esgotamento Humano (LaTeX em HTML) */}
-        <div className="my-3 p-2.5 bg-black/60 border border-[#d4b87a]/15 rounded-xl text-white font-mono text-[9px] select-none">
-          <div className="text-[7.5px] uppercase tracking-wider text-[#d4b87a] mb-1.5 font-bold flex justify-between">
+        <div className="my-3 p-2.5 bg-black/60 border border-[#c9943a]/15 rounded-xl text-white font-mono text-[9px] select-none">
+          <div className="text-[7.5px] uppercase tracking-wider text-[#c9943a] mb-1.5 font-bold flex justify-between">
             <span>Modelagem Comportamental</span>
             <span>Estafa & Impacto Organizacional</span>
           </div>
@@ -335,8 +335,8 @@ export function HudCapitalHumano() {
         {/* Sliders e Controles de Pressão */}
         <div className="hero-controls-pane select-none mt-2">
           <div>
-            <h3 className="text-[11px] text-[#d4b87a] uppercase tracking-widest font-semibold mb-3 flex items-center gap-2">
-              Alavancas Psico-Operacionais <div className="h-px flex-1 bg-gradient-to-r from-[#d4b87a]/20 to-transparent" />
+            <h3 className="text-[11px] text-[#c9943a] uppercase tracking-widest font-semibold mb-3 flex items-center gap-2">
+              Alavancas Psico-Operacionais <div className="h-px flex-1 bg-gradient-to-r from-[#c9943a]/20 to-transparent" />
             </h3>
 
             {/* Pressão de Metas */}
@@ -353,7 +353,7 @@ export function HudCapitalHumano() {
                   setPressaoMetas(val)
                   updateTelemetry({ pressaoMetas: val })
                 }}
-                className="c-slider-input text-[#d4b87a]"
+                className="c-slider-input text-[#c9943a]"
               />
             </div>
 
@@ -371,7 +371,7 @@ export function HudCapitalHumano() {
                   setClimaFrequencia(val)
                   updateTelemetry({ climaFrequencia: val })
                 }}
-                className="c-slider-input text-[#d4b87a]"
+                className="c-slider-input text-[#c9943a]"
               />
             </div>
           </div>
@@ -379,12 +379,12 @@ export function HudCapitalHumano() {
           {/* Análises das Cascatas 1 e 3 */}
           <div className="border-t border-white/5 pt-3 mt-4 space-y-2">
             {burnoutEEB > 30 ? (
-              <div className="flex items-start gap-1.5 text-[9px] text-amber-500/80 bg-amber-500/5 p-2 rounded-lg border border-amber-500/20">
+              <div className="flex items-start gap-1.5 text-[9px] text-[#c9943a]/80 bg-[#c9943a]/5 p-2 rounded-lg border border-[#c9943a]/20">
                 <AlertTriangle className="h-3.5 w-3.5 shrink-0 mt-0.5" />
                 <span><b>Cascata 1 Ativa:</b> Burnout de {Number(burnoutEEB ?? 0).toFixed(0)}% gera desligamento em massa. Custo do turnover totaliza R$ {Number(custoRealTurnover ?? 0).toFixed(0)}k/mês. EBITDA Líquido cai para R$ {Number(ebitdaLiquido ?? 0).toFixed(0)}k!</span>
               </div>
             ) : (
-              <div className="flex items-start gap-1.5 text-[9px] text-[#d4b87a] bg-[#d4b87a]/5 p-2 rounded-lg border border-[#d4b87a]/20">
+              <div className="flex items-start gap-1.5 text-[9px] text-[#c9943a] bg-[#c9943a]/5 p-2 rounded-lg border border-[#c9943a]/20">
                 <Heart className="h-3.5 w-3.5 shrink-0 mt-0.5" />
                 <span><b>Equilíbrio Saudável:</b> A produtividade está em excelente harmonia com a saúde da equipe (Eficiência: {Number(eficienciaSaudavel ?? 0).toFixed(1)}).</span>
               </div>
@@ -393,15 +393,15 @@ export function HudCapitalHumano() {
         </div>
 
         {/* Micro-Terminal de NLP em Tempo Real */}
-        <div className="mt-4 border border-[#d4b87a]/15 bg-[#070707] rounded-xl overflow-hidden shadow-2xl">
+        <div className="mt-4 border border-[#c9943a]/15 bg-[#070707] rounded-xl overflow-hidden shadow-2xl">
           <div className="bg-black/80 px-3 py-1.5 flex items-center justify-between border-b border-white/5">
-            <div className="flex items-center gap-1.5 text-[#d4b87a] font-mono text-[8px] font-bold">
+            <div className="flex items-center gap-1.5 text-[#c9943a] font-mono text-[8px] font-bold">
               <TerminalIcon className="h-3.5 w-3.5" />
               <span>IPB GEMINI NLP SENTIMENT ANALYZER</span>
             </div>
             <div className="text-[7.5px] font-mono text-white/30">NLP SCANNING</div>
           </div>
-          <div className="p-2.5 font-mono text-[7.5px] text-[#d4b87a]/90 h-[70px] overflow-y-auto space-y-0.5 leading-normal scrollbar-none">
+          <div className="p-2.5 font-mono text-[7.5px] text-[#c9943a]/90 h-[70px] overflow-y-auto space-y-0.5 leading-normal scrollbar-none">
             {logs.map((log, index) => (
               <div key={index} className="whitespace-pre-wrap">{log}</div>
             ))}

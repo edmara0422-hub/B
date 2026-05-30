@@ -125,7 +125,7 @@ Diretoria de Governança Corporativa IPB`
       <div className="scanlines" />
 
       <div className="hero-header">
-        <div className="live-head text-[#d4b87a]">
+        <div className="live-head text-[#c9943a]">
           <div className="pulse-dot" />
           <span>Sustentabilidade &amp; ESG Dashboard</span>
         </div>
@@ -178,7 +178,7 @@ Diretoria de Governança Corporativa IPB`
                 {feedbacksList.length === 0 ? (
                   <div style={{ padding: '16px', textAlign: 'center', fontSize: '11px', color: 'rgba(255,255,255,0.45)', lineHeight: '1.6' }}>
                     Nenhum feedback ainda.<br />
-                    <span style={{ color: '#d4b87a', fontSize: '10px' }}>Avalie o sistema acima e seja o primeiro →</span>
+                    <span style={{ color: '#c9943a', fontSize: '10px' }}>Avalie o sistema acima e seja o primeiro →</span>
                   </div>
                 ) : (
                   feedbacksList.map((f, i) => (
@@ -194,7 +194,7 @@ Diretoria de Governança Corporativa IPB`
             {/* Gerador de Documentos Corporativos com IA */}
             <div className="esg-section-card font-sans">
               <h3>Gerador de Documentos Corporativos com IA</h3>
-              <div className="p-3 border border-[#d4b87a]/20 bg-[#d4b87a]/5 rounded-xl flex flex-col gap-2.5 mt-2">
+              <div className="p-3 border border-[#c9943a]/20 bg-[#c9943a]/5 rounded-xl flex flex-col gap-2.5 mt-2">
                 <p className="text-[9px] text-white/60 leading-relaxed">
                   Gere atas de assembleia, termos de conduta ou declarações de compliance em conformidade com as regras ESG do IPB automaticamente.
                 </p>
@@ -209,7 +209,7 @@ Diretoria de Governança Corporativa IPB`
                     <option value="declaracao">Declaração de Compliance Ambiental</option>
                   </select>
                   <button
-                    className="bg-[#d4b87a] hover:bg-[#d4b87a]/90 text-black font-bold uppercase tracking-wider text-[9px] px-3.5 py-2 rounded-lg transition-colors cursor-pointer select-none"
+                    className="bg-[#c9943a] hover:bg-[#c9943a]/90 text-black font-bold uppercase tracking-wider text-[9px] px-3.5 py-2 rounded-lg transition-colors cursor-pointer select-none"
                     onClick={handleGenerateDoc}
                     disabled={generating}
                   >
@@ -281,7 +281,7 @@ Diretoria de Governança Corporativa IPB`
               <h3>Estrutura de Documentos de Governança</h3>
               <div className="space-y-2 mt-2 font-sans select-none">
                 <details className="group border border-white/10 rounded-xl bg-white/[0.02] overflow-hidden">
-                  <summary className="flex justify-between items-center p-3 text-[10px] font-bold text-[#d4b87a] cursor-pointer hover:bg-white/[0.04]">
+                  <summary className="flex justify-between items-center p-3 text-[10px] font-bold text-[#c9943a] cursor-pointer hover:bg-white/[0.04]">
                     <span>POLÍTICAS (4 DOCUMENTOS)</span>
                     <span className="transition-transform group-open:rotate-180">▼</span>
                   </summary>
@@ -294,7 +294,7 @@ Diretoria de Governança Corporativa IPB`
                 </details>
 
                 <details className="group border border-white/10 rounded-xl bg-white/[0.02] overflow-hidden">
-                  <summary className="flex justify-between items-center p-3 text-[10px] font-bold text-[#d4b87a] cursor-pointer hover:bg-white/[0.04]">
+                  <summary className="flex justify-between items-center p-3 text-[10px] font-bold text-[#c9943a] cursor-pointer hover:bg-white/[0.04]">
                     <span>PRÁTICAS (4 DOCUMENTOS)</span>
                     <span className="transition-transform group-open:rotate-180">▼</span>
                   </summary>
@@ -307,7 +307,7 @@ Diretoria de Governança Corporativa IPB`
                 </details>
 
                 <details className="group border border-white/10 rounded-xl bg-white/[0.02] overflow-hidden">
-                  <summary className="flex justify-between items-center p-3 text-[10px] font-bold text-[#d4b87a] cursor-pointer hover:bg-white/[0.04]">
+                  <summary className="flex justify-between items-center p-3 text-[10px] font-bold text-[#c9943a] cursor-pointer hover:bg-white/[0.04]">
                     <span>COMPLIANCE (4 DOCUMENTOS)</span>
                     <span className="transition-transform group-open:rotate-180">▼</span>
                   </summary>
@@ -320,7 +320,7 @@ Diretoria de Governança Corporativa IPB`
                 </details>
 
                 <details className="group border border-white/10 rounded-xl bg-white/[0.02] overflow-hidden">
-                  <summary className="flex justify-between items-center p-3 text-[10px] font-bold text-[#d4b87a] cursor-pointer hover:bg-white/[0.04]">
+                  <summary className="flex justify-between items-center p-3 text-[10px] font-bold text-[#c9943a] cursor-pointer hover:bg-white/[0.04]">
                     <span>CÓDIGOS (3 DOCUMENTOS)</span>
                     <span className="transition-transform group-open:rotate-180">▼</span>
                   </summary>

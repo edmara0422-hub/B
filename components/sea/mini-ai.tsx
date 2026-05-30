@@ -63,21 +63,21 @@ export function MiniAi() {
             <defs>
               {/* High-Fidelity 3D Glass Sphere Gradients using rich bronze-gold #c9943a */}
               <radialGradient id="holoCore3D" cx="35%" cy="35%" r="65%" fx="30%" fy="30%">
-                <stop offset="0%" stopColor="#ffffff" stopOpacity="0.8" />
-                <stop offset="35%" stopColor="#fff8e7" stopOpacity="0.6" />
-                <stop offset="75%" stopColor="#c9943a" stopOpacity="0.3" />
+                <stop offset="0%" stopColor="#ffffff" stopOpacity="0.9" />
+                <stop offset="35%" stopColor="#fff8e7" stopOpacity="0.65" />
+                <stop offset="75%" stopColor="#c9943a" stopOpacity="0.4" />
                 <stop offset="100%" stopColor="#9a7a42" stopOpacity="0.05" />
               </radialGradient>
 
               <radialGradient id="goldSphereBorder" cx="50%" cy="50%" r="50%">
-                <stop offset="90%" stopColor="#c9943a" stopOpacity="0.1" />
-                <stop offset="98%" stopColor="#c9943a" stopOpacity="0.65" />
-                <stop offset="100%" stopColor="#ffffff" stopOpacity="0.85" />
+                <stop offset="90%" stopColor="#c9943a" stopOpacity="0.15" />
+                <stop offset="98%" stopColor="#c9943a" stopOpacity="0.75" />
+                <stop offset="100%" stopColor="#ffffff" stopOpacity="0.9" />
               </radialGradient>
 
               <linearGradient id="pedestalGrad" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#ffffff" stopOpacity="0.8" />
-                <stop offset="30%" stopColor="#c9943a" stopOpacity="0.5" />
+                <stop offset="0%" stopColor="#ffffff" stopOpacity="0.85" />
+                <stop offset="30%" stopColor="#c9943a" stopOpacity="0.55" />
                 <stop offset="100%" stopColor="#1e180d" stopOpacity="0.9" />
               </linearGradient>
 
@@ -91,21 +91,39 @@ export function MiniAi() {
             </defs>
 
             {/* Pulsing radar waves */}
-            <circle cx="50" cy="46" r="24" fill="none" stroke="#c9943a" className="pulse-radar-1" />
-            <circle cx="50" cy="46" r="24" fill="none" stroke="#c9943a" className="pulse-radar-2" />
+            <circle cx="50" cy="46" r="24" fill="none" stroke="#c9943a" strokeWidth="0.8" className="pulse-radar-1" />
+            <circle cx="50" cy="46" r="24" fill="none" stroke="#c9943a" strokeWidth="0.8" className="pulse-radar-2" />
 
             {/* Concentric high-tech background coordinates */}
-            <circle cx="50" cy="46" r="42" fill="none" stroke="#c9943a" strokeWidth="0.5" strokeDasharray="3,6" className="rotate-pedestal-ring" opacity="0.2" />
-            <circle cx="50" cy="46" r="38" fill="none" stroke="#c9943a" strokeWidth="0.4" strokeDasharray="10,8" className="rotate-pedestal-ring" style={{ animationDirection: 'reverse' }} opacity="0.15" />
+            <circle cx="50" cy="46" r="44" fill="none" stroke="#c9943a" strokeWidth="0.5" strokeDasharray="3,6" className="rotate-pedestal-ring" opacity="0.2" />
+            <circle cx="50" cy="46" r="39" fill="none" stroke="#c9943a" strokeWidth="0.4" strokeDasharray="10,8" className="rotate-pedestal-ring" style={{ animationDirection: 'reverse' }} opacity="0.15" />
 
             {/* 3D Glass Sphere Backing Aura */}
             <circle cx="50" cy="46" r="28" fill="#c9943a" fillOpacity="0.04" stroke="url(#goldSphereBorder)" strokeWidth="0.8" />
 
-            {/* Holographic glowing grids inside sphere */}
-            <g opacity="0.3">
-              <ellipse cx="50" cy="46" rx="28" ry="8" fill="none" stroke="#c9943a" strokeWidth="0.5" />
-              <ellipse cx="50" cy="46" rx="8" ry="28" fill="none" stroke="#c9943a" strokeWidth="0.5" />
-              <ellipse cx="50" cy="46" rx="20" ry="20" fill="none" stroke="#fff" strokeWidth="0.4" strokeDasharray="2,2" />
+            {/* Holographic 3D Spherical Wireframe Lattice (Exactly like the mockup!) */}
+            <g opacity="0.55" className="rotate-pedestal-ring">
+              {/* Tilted vertical/horizontal longitude and latitude coordinate lines in 3D perspective */}
+              <ellipse cx="50" cy="46" rx="28" ry="8" fill="none" stroke="#c9943a" strokeWidth="0.6" />
+              <ellipse cx="50" cy="46" rx="28" ry="16" fill="none" stroke="#c9943a" strokeWidth="0.5" />
+              <ellipse cx="50" cy="46" rx="8" ry="28" fill="none" stroke="#c9943a" strokeWidth="0.6" />
+              <ellipse cx="50" cy="46" rx="16" ry="28" fill="none" stroke="#c9943a" strokeWidth="0.5" />
+              
+              {/* Overlapping 30deg / -30deg tilted structural orbits */}
+              <ellipse cx="50" cy="46" rx="27" ry="10" fill="none" stroke="#c9943a" strokeWidth="0.5" transform="rotate(30, 50, 46)" />
+              <ellipse cx="50" cy="46" rx="27" ry="10" fill="none" stroke="#c9943a" strokeWidth="0.5" transform="rotate(-30, 50, 46)" />
+              <ellipse cx="50" cy="46" rx="27" ry="18" fill="none" stroke="#c9943a" strokeWidth="0.4" transform="rotate(60, 50, 46)" />
+              <ellipse cx="50" cy="46" rx="27" ry="18" fill="none" stroke="#c9943a" strokeWidth="0.4" transform="rotate(-60, 50, 46)" />
+
+              {/* Floating Quantum Node Stars at vector intersections */}
+              <circle cx="50" cy="18" r="1.2" fill="#ffffff" />
+              <circle cx="50" cy="74" r="1.2" fill="#ffffff" />
+              <circle cx="22" cy="46" r="1.2" fill="#ffffff" />
+              <circle cx="78" cy="46" r="1.2" fill="#ffffff" />
+              <circle cx="34" cy="30" r="1.2" fill="#ffffff" />
+              <circle cx="66" cy="30" r="1.2" fill="#ffffff" />
+              <circle cx="34" cy="62" r="1.2" fill="#ffffff" />
+              <circle cx="66" cy="62" r="1.2" fill="#ffffff" />
             </g>
 
             {/* Core 3D Volumetric fill */}
@@ -122,7 +140,7 @@ export function MiniAi() {
               textAnchor="middle" 
               letterSpacing="0.05em" 
               filter="url(#aiTextGlow)"
-              style={{ textShadow: '0 0 10px rgba(255,255,255,0.95), 0 0 20px rgba(201, 148, 58, 0.85)' }}
+              style={{ textShadow: '0 0 10px rgba(255,255,255,0.95), 0 0 20px rgba(201, 148, 58, 0.9)' }}
             >
               AI
             </text>

@@ -28,11 +28,11 @@ interface SystemDef {
 }
 
 const SYSTEMS: Record<SystemId, SystemDef> = {
-  financas: { id: 'financas', title: 'Finanças & Controladoria', icon: TrendingUp, color: '#d4b87a' },
-  capital_humano: { id: 'capital_humano', title: 'Pessoas & Liderança', icon: Users, color: '#d4b87a' },
-  estrategia: { id: 'estrategia', title: 'Estratégia & Economia', icon: Globe, color: '#d4b87a' },
-  esg: { id: 'esg', title: 'Sustentabilidade & ESG', icon: Leaf, color: '#d4b87a' },
-  ai: { id: 'ai', title: 'IPB AI Assistant', icon: Sparkles, color: '#d4b87a' },
+  financas: { id: 'financas', title: 'Finanças & Controladoria', icon: TrendingUp, color: '#c9943a' },
+  capital_humano: { id: 'capital_humano', title: 'Pessoas & Liderança', icon: Users, color: '#c9943a' },
+  estrategia: { id: 'estrategia', title: 'Estratégia & Economia', icon: Globe, color: '#c9943a' },
+  esg: { id: 'esg', title: 'Sustentabilidade & ESG', icon: Leaf, color: '#c9943a' },
+  ai: { id: 'ai', title: 'IPB AI Assistant', icon: Sparkles, color: '#c9943a' },
 }
 
 export function InteractiveCockpit() {
@@ -147,9 +147,9 @@ export function InteractiveCockpit() {
       {/* Cabeçalho Executivo Dourado do Cockpit com Abas de Navegação */}
       <div className="w-full flex flex-col sm:flex-row justify-between items-center bg-black/45 border border-white/5 p-4 rounded-2xl backdrop-blur-md select-none gap-4">
         <div className="flex items-center gap-3">
-          <div className="h-2 w-2 rounded-full bg-[#d4b87a] animate-pulse" />
+          <div className="h-2 w-2 rounded-full bg-[#c9943a] animate-pulse" />
           <h1 className="text-white text-xs font-light tracking-[0.15em] uppercase">
-            BUSINESS INTELLIGENCE <span className="text-[#d4b87a] font-normal">COCKPIT 6D</span>
+            BUSINESS INTELLIGENCE <span className="text-[#c9943a] font-normal">COCKPIT 6D</span>
           </h1>
         </div>
         
@@ -164,7 +164,7 @@ export function InteractiveCockpit() {
                 onClick={() => setActivePanel(sysId)}
                 className={`px-3 py-1.5 rounded-lg text-[9px] font-normal uppercase tracking-[0.08em] transition-all cursor-pointer ${
                   active 
-                    ? 'bg-[#d4b87a]/12 border border-[#d4b87a]/30 text-white font-medium shadow-[0_0_8px_rgba(212,184,122,0.1)]'
+                    ? 'bg-[#c9943a]/12 border border-[#c9943a]/30 text-white font-medium shadow-[0_0_8px_rgba(201, 148, 58,0.1)]'
                     : 'border border-transparent text-white/45 hover:text-white/75'
                 }`}
               >

@@ -154,7 +154,7 @@ export function AdminStrategicCockpit() {
                 IPB · COCKPIT ESTRATÉGICO
               </h1>
               <div className="flex items-center flex-wrap gap-2 mt-1.5">
-                <span className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-[10px] font-black text-emerald-400 uppercase tracking-wider">
+                <span className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#c9943a]/10 border border-white/10 text-[10px] font-black text-white/90 uppercase tracking-wider">
                   <div className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
                   Diagnóstico Clínico Ativo
                 </span>
@@ -179,8 +179,8 @@ export function AdminStrategicCockpit() {
              <div className="px-5 py-3 rounded-2xl bg-white/[0.03] border border-white/5 flex flex-col justify-between min-w-[160px] hover:border-white/10 transition-all">
                 <p className="text-[9px] font-black text-white/30 uppercase tracking-widest mb-1.5">Fase de Adoção</p>
                 <div className="flex items-center gap-2">
-                  <div className="h-8 w-8 rounded-lg bg-amber-500/10 border border-amber-500/20 flex items-center justify-center shrink-0">
-                    <Target className="h-4.5 w-4.5 text-amber-400" />
+                  <div className="h-8 w-8 rounded-lg bg-[#c9943a]/10 border border-[#c9943a]/20 flex items-center justify-center shrink-0">
+                    <Target className="h-4.5 w-4.5 text-[#c9943a]" />
                   </div>
                   <div>
                     <span className="text-xs font-black text-white uppercase tracking-wider block">{data.state.phase?.label === 'Validação Alpha' ? 'Validação Clínica' : (data.state.phase?.label || 'Validação')}</span>
@@ -309,8 +309,8 @@ export function AdminStrategicCockpit() {
                         
                         <div className="space-y-3">
                           <div className="flex items-center gap-2">
-                             <Zap className="h-3.5 w-3.5 text-amber-400" />
-                             <span className="text-[10px] font-black text-amber-400 uppercase tracking-widest">Ação Corretiva Imediata</span>
+                             <Zap className="h-3.5 w-3.5 text-[#c9943a]" />
+                             <span className="text-[10px] font-black text-[#c9943a] uppercase tracking-widest">Ação Corretiva Imediata</span>
                           </div>
                           <div className="bg-gradient-to-r from-violet-500/10 to-transparent border-l-4 border-violet-400 p-5 rounded-r-2xl">
                             <p className="text-sm font-semibold text-white leading-relaxed">
@@ -357,11 +357,11 @@ export function AdminStrategicCockpit() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <AlertsList alerts={alerts.filter(a => !a.read && a.level !== 'critical')} onDismiss={dismissAlert} onRun={runAnalysis} loading={alertsLoading} />
                 <div className="rounded-3xl border border-white/10 bg-slate-900/20 p-6 flex flex-col justify-center items-center text-center space-y-4 hover:border-white/20 transition-all shadow-lg">
-                  <div className="h-12 w-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center">
-                    <Shield className="h-6 w-6 text-emerald-400" />
+                  <div className="h-12 w-12 rounded-2xl bg-[#c9943a]/10 border border-white/10 flex items-center justify-center">
+                    <Shield className="h-6 w-6 text-white/90" />
                   </div>
                   <div className="space-y-1">
-                    <p className="text-[10px] font-black text-emerald-400 uppercase tracking-[0.2em]">Escudo Regulatório Ativo</p>
+                    <p className="text-[10px] font-black text-white/90 uppercase tracking-[0.2em]">Escudo Regulatório Ativo</p>
                     <p className="text-xs text-white/60 px-6 leading-relaxed">
                       O sistema monitora integridade regulatória, criptografia local de prontuários e integridade de fórmulas clínicas em tempo real.
                     </p>
@@ -442,8 +442,8 @@ export function AdminStrategicCockpit() {
                  </div>
                  <div className="rounded-[2rem] border border-white/10 bg-gradient-to-br from-slate-900/40 to-slate-950/60 p-6 md:p-8 flex flex-col items-center justify-between text-center space-y-6 shadow-xl">
                     <div className="space-y-4 w-full flex flex-col items-center">
-                      <div className="h-14 w-14 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center">
-                        <Users className="h-7 w-7 text-amber-400" />
+                      <div className="h-14 w-14 rounded-2xl bg-[#c9943a]/10 border border-[#c9943a]/20 flex items-center justify-center">
+                        <Users className="h-7 w-7 text-[#c9943a]" />
                       </div>
                       <h4 className="text-sm font-extrabold text-white uppercase tracking-widest">Cultura de Execução</h4>
                       <p className="text-xs text-white/50 leading-relaxed max-w-[240px]">
@@ -454,14 +454,14 @@ export function AdminStrategicCockpit() {
                     <div className="w-full space-y-2">
                       <div className="flex justify-between items-center text-[10px] uppercase font-bold text-white/40 tracking-wider">
                         <span>Saúde Operacional do Time</span>
-                        <span className="text-amber-400 font-extrabold">85%</span>
+                        <span className="text-[#c9943a] font-extrabold">85%</span>
                       </div>
                       <div className="w-full h-2 bg-white/5 rounded-full overflow-hidden">
                          <div className="h-full bg-gradient-to-r from-amber-500 to-orange-500 rounded-full" style={{ width: '85%' }} />
                       </div>
                     </div>
                     
-                    <span className="text-[9px] font-black text-amber-400 uppercase tracking-widest bg-amber-400/10 border border-amber-400/20 px-3 py-1 rounded-full">Operação Sincronizada</span>
+                    <span className="text-[9px] font-black text-[#c9943a] uppercase tracking-widest bg-[#c9943a]/10 border border-amber-400/20 px-3 py-1 rounded-full">Operação Sincronizada</span>
                  </div>
               </div>
             </motion.div>
@@ -535,7 +535,7 @@ function PositionSynthesisCard({ data, onReload }: { data: CockpitData; onReload
 
   const status = isRevenueGap && !isStructuralGap ? 'ALERTA CONVERSÃO' : isStructuralGap ? 'BLOQUEIO OPERACIONAL' : windowOpen ? 'OPORTUNIDADE CLÍNICA' : 'EVOLUÇÃO SAÚDE'
   const statusColor = isRevenueGap && !isStructuralGap ? '#ef4444' : isStructuralGap ? '#f97316' : windowOpen ? '#eab308' : '#6b7280'
-  const statusBg = isRevenueGap && !isStructuralGap ? 'bg-red-500/10 border-red-500/20' : isStructuralGap ? 'bg-orange-500/10 border-orange-500/20' : windowOpen ? 'bg-amber-500/10 border-amber-500/20' : 'bg-slate-500/10 border-slate-500/20'
+  const statusBg = isRevenueGap && !isStructuralGap ? 'bg-red-500/10 border-red-500/20' : isStructuralGap ? 'bg-orange-500/10 border-orange-500/20' : windowOpen ? 'bg-[#c9943a]/10 border-[#c9943a]/20' : 'bg-slate-500/10 border-slate-500/20'
 
   const toggleBlocker = async () => {
     try {
@@ -575,7 +575,7 @@ function PositionSynthesisCard({ data, onReload }: { data: CockpitData; onReload
       <div className="grid grid-cols-2 gap-3.5">
         <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/5 text-center flex flex-col justify-center">
           <p className="text-[9px] font-black text-white/30 uppercase tracking-wider mb-1">MRR Faturamento</p>
-          <p className={`text-xl font-black tabular-nums tracking-tighter ${mrr === 0 ? 'text-red-400' : 'text-emerald-400'}`}>R${mrr}</p>
+          <p className={`text-xl font-black tabular-nums tracking-tighter ${mrr === 0 ? 'text-red-400' : 'text-white/90'}`}>R${mrr}</p>
         </div>
         <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/5 text-center relative group flex flex-col justify-center cursor-help">
           <p className="text-[9px] font-black text-white/30 uppercase tracking-wider mb-1">Estabilidade Clínica</p>
@@ -596,7 +596,7 @@ function PositionSynthesisCard({ data, onReload }: { data: CockpitData; onReload
       <div className={`p-4 rounded-2xl border ${
         isRevenueGap && !isStructuralGap ? 'bg-red-500/5 border-red-500/20' :
         isStructuralGap ? 'bg-orange-500/5 border-orange-500/20' :
-        windowOpen ? 'bg-amber-500/5 border-amber-500/20' : 'bg-slate-500/5 border-slate-500/20'
+        windowOpen ? 'bg-[#c9943a]/5 border-[#c9943a]/20' : 'bg-slate-500/5 border-slate-500/20'
       }`}>
          <p className="text-[11px] font-bold leading-relaxed" style={{ color: statusColor }}>
             {isRevenueGap && !isStructuralGap 
@@ -698,7 +698,7 @@ function InnovationFunnelCard({ data, onReload }: { data: CockpitData; onReload:
                <div className="flex flex-col items-center gap-2">
                  <div className={`h-12 w-12 rounded-2xl border-2 flex items-center justify-center transition-all duration-500 shrink-0 ${
                    isCurrent ? 'bg-sky-500 border-sky-400 text-slate-950 shadow-[0_0_25px_rgba(56,189,248,0.4)] scale-110' : 
-                   isPast ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400' : 
+                   isPast ? 'bg-[#c9943a]/10 border-[#c9943a]/30 text-white/90' : 
                    'bg-white/5 border-white/10 text-white/20'
                  }`}>
                     {isPast ? <CheckSquare className="h-5 w-5" /> : <span className="text-sm font-extrabold">{s.id}</span>}
@@ -723,8 +723,8 @@ function LeadershipProcessCard({ state }: { state?: CockpitData['state']['leader
   return (
     <div className="rounded-[2.5rem] border border-white/10 bg-slate-900/30 p-6 md:p-8 shadow-xl">
       <div className="flex items-center gap-3 mb-8">
-        <div className="h-12 w-12 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center">
-          <Users2 className="h-6 w-6 text-amber-400" />
+        <div className="h-12 w-12 rounded-2xl bg-[#c9943a]/10 border border-[#c9943a]/20 flex items-center justify-center">
+          <Users2 className="h-6 w-6 text-[#c9943a]" />
         </div>
         <div>
           <h3 className="text-base font-extrabold text-white tracking-tight">Pilares de Gestão da Plataforma</h3>
@@ -741,8 +741,8 @@ function LeadershipProcessCard({ state }: { state?: CockpitData['state']['leader
           { id: 'results', label: 'Adesão Médica', sub: 'Impacto Clínico Real na UTI', val: p.results, icon: Trophy },
         ].map(item => (
           <div key={item.id} className="relative p-5 rounded-2xl bg-white/[0.02] border border-white/5 flex flex-col justify-between items-center text-center space-y-4 hover:bg-white/[0.04] transition-all group">
-             <div className="p-3 rounded-xl bg-white/5 group-hover:bg-amber-400/10 transition-all">
-                <item.icon className={`h-6 w-6 transition-all duration-300 ${item.val > 50 ? 'text-amber-400 scale-110' : 'text-white/20'}`} />
+             <div className="p-3 rounded-xl bg-white/5 group-hover:bg-[#c9943a]/10 transition-all">
+                <item.icon className={`h-6 w-6 transition-all duration-300 ${item.val > 50 ? 'text-[#c9943a] scale-110' : 'text-white/20'}`} />
              </div>
              <div>
                 <p className="text-xs font-black text-white uppercase tracking-wider">{item.label}</p>
@@ -752,7 +752,7 @@ function LeadershipProcessCard({ state }: { state?: CockpitData['state']['leader
                 <div className="h-1.5 w-full bg-white/5 rounded-full overflow-hidden relative">
                    <div className="h-full bg-gradient-to-r from-amber-500 to-orange-500 transition-all duration-1000 rounded-full" style={{ width: `${item.val}%` }} />
                 </div>
-                <span className="text-[10px] font-black text-amber-400 block">{item.val}%</span>
+                <span className="text-[10px] font-black text-[#c9943a] block">{item.val}%</span>
              </div>
           </div>
         ))}
@@ -767,8 +767,8 @@ function FinancialCockpitCard({ cockpit }: { cockpit: CockpitData['cockpit'] }) 
     <div className="rounded-[2.5rem] border border-white/10 bg-gradient-to-br from-slate-900/40 via-slate-900/20 to-slate-950/60 p-6 md:p-8 shadow-xl">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8 border-b border-white/5 pb-6">
         <div className="flex items-center gap-3">
-          <div className="h-12 w-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center shadow-lg shadow-emerald-500/10">
-            <DollarSign className="h-6 w-6 text-emerald-400" />
+          <div className="h-12 w-12 rounded-2xl bg-[#c9943a]/10 border border-white/10 flex items-center justify-center shadow-lg shadow-emerald-500/10">
+            <DollarSign className="h-6 w-6 text-white/90" />
           </div>
           <div>
             <h3 className="text-base font-extrabold text-white tracking-tight">Indicadores de Crescimento e Tração</h3>
@@ -895,7 +895,7 @@ function ComplianceTrackerCard({ compliance, onReload }: { compliance: Complianc
           {Object.entries(compliance.items).map(([label, active]) => (
             <div key={label} className="flex items-center justify-between p-3 rounded-xl bg-white/[0.02] border border-white/5 hover:border-white/10 transition-all">
                <span className="text-xs font-semibold text-white/80">{labelsMap[label] || label}</span>
-               <div className={`h-5 w-5 rounded-lg border flex items-center justify-center shrink-0 ${active ? 'bg-emerald-500 border-emerald-400 text-slate-950 shadow-md shadow-emerald-500/10' : 'border-white/10 bg-white/5'}`}>
+               <div className={`h-5 w-5 rounded-lg border flex items-center justify-center shrink-0 ${active ? 'bg-[#c9943a] border-emerald-400 text-slate-950 shadow-md shadow-emerald-500/10' : 'border-white/10 bg-white/5'}`}>
                  {active && <CheckSquare className="h-3.5 w-3.5" />}
                </div>
             </div>
@@ -929,7 +929,7 @@ function AdoptionTrailCard({ state, onReload }: { state?: CockpitData['state']['
               <div key={label} className="relative z-10 flex flex-col items-center gap-3">
                  <div className={`h-11 w-11 rounded-2xl border-2 flex items-center justify-center transition-all duration-700 shrink-0 ${
                    isCurrent ? 'bg-sky-500 border-sky-400 text-slate-950 shadow-[0_0_20px_rgba(56,189,248,0.4)] scale-110' : 
-                   isDone ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400' : 
+                   isDone ? 'bg-[#c9943a]/10 border-[#c9943a]/30 text-white/90' : 
                    'bg-white/5 border-white/10 text-white/20'
                  }`}>
                    {isDone ? <CheckSquare className="h-5 w-5" /> : <span className="text-xs font-black">{i + 1}</span>}
@@ -1031,7 +1031,7 @@ function SprintAlphaCard({ state, onReload }: { state?: CockpitData['state']['sp
               <div 
                 key={day} 
                 className={`h-6 w-6 rounded-lg flex items-center justify-center text-[10px] font-black border transition-all ${
-                  done ? 'bg-emerald-500/20 border-emerald-500/40 text-emerald-400' : 
+                  done ? 'bg-[#c9943a]/20 border-emerald-500/40 text-white/90' : 
                   current ? 'bg-gradient-to-br from-violet-500 to-indigo-600 border-violet-400 text-white shadow-[0_0_12px_rgba(139,92,246,0.4)] scale-110' : 
                   'bg-white/5 border-white/10 text-white/30'
                 }`}
@@ -1069,7 +1069,7 @@ function AlertsList({ alerts, onDismiss, onRun, loading }: { alerts: StrategicAl
         ) : (
           alerts.map(a => (
             <div key={a.id} className="p-4 bg-white/[0.01] border border-white/5 hover:border-violet-500/35 rounded-2xl flex items-start gap-4 group transition-all duration-300">
-              <div className={`h-2.5 w-2.5 rounded-full mt-1.5 shrink-0 ${a.level === 'warning' ? 'bg-amber-400 shadow-[0_0_8px_rgba(245,158,11,0.5)]' : 'bg-sky-400 shadow-[0_0_8px_rgba(56,189,248,0.5)]'}`} />
+              <div className={`h-2.5 w-2.5 rounded-full mt-1.5 shrink-0 ${a.level === 'warning' ? 'bg-[#c9943a] shadow-[0_0_8px_rgba(245,158,11,0.5)]' : 'bg-sky-400 shadow-[0_0_8px_rgba(56,189,248,0.5)]'}`} />
               <div className="flex-1 min-w-0">
                 <p className="text-xs font-extrabold text-white leading-tight mb-1">{a.title.replace('SaaS', 'Plataforma').replace('Foco', 'Foco Clínico')}</p>
                 <p className="text-[10px] text-white/50 leading-relaxed">{a.message.replace('SaaS', 'Plataforma').replace('leads', 'fisioterapeutas')}</p>
@@ -1107,8 +1107,8 @@ function OKRGeneratorCard() {
     <div className="rounded-[2rem] border border-white/10 bg-slate-900/30 p-6 md:p-8 shadow-xl">
        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
           <div className="flex items-center gap-3">
-            <div className="h-10 w-10 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center">
-              <Goal className="h-5 w-5 text-amber-400" />
+            <div className="h-10 w-10 rounded-xl bg-[#c9943a]/10 border border-[#c9943a]/20 flex items-center justify-center">
+              <Goal className="h-5 w-5 text-[#c9943a]" />
             </div>
             <div>
               <h3 className="text-sm font-extrabold text-white uppercase tracking-wider">Gerador de Diretrizes de Operação (OKR)</h3>
@@ -1116,7 +1116,7 @@ function OKRGeneratorCard() {
             </div>
           </div>
           {!okrs && (
-            <button onClick={generate} disabled={loading} className="px-6 py-2.5 rounded-xl bg-amber-400 text-slate-950 text-xs font-black uppercase tracking-widest hover:bg-amber-300 transition-all hover:scale-105 active:scale-95 disabled:opacity-30 shadow-lg shadow-amber-400/10 shrink-0">
+            <button onClick={generate} disabled={loading} className="px-6 py-2.5 rounded-xl bg-[#c9943a] text-slate-950 text-xs font-black uppercase tracking-widest hover:bg-amber-300 transition-all hover:scale-105 active:scale-95 disabled:opacity-30 shadow-lg shadow-amber-400/10 shrink-0">
               {loading ? 'Consultando IA...' : 'Gerar Proposta OKR Trimestral'}
             </button>
           )}
@@ -1124,20 +1124,20 @@ function OKRGeneratorCard() {
 
        {okrs ? (
          <div className="space-y-5">
-            <div className="p-4 rounded-xl bg-amber-500/5 border border-amber-500/10">
-               <span className="text-[8px] font-black text-amber-400 uppercase tracking-widest">Ciclo: {horizon}</span>
+            <div className="p-4 rounded-xl bg-[#c9943a]/5 border border-[#c9943a]/10">
+               <span className="text-[8px] font-black text-[#c9943a] uppercase tracking-widest">Ciclo: {horizon}</span>
                <p className="text-xs font-semibold text-white/90 mt-1">"{rationale}"</p>
             </div>
             {okrs.map((o: any, i: number) => (
                <div key={i} className="p-5 rounded-2xl bg-white/[0.01] border border-white/5 space-y-4 hover:border-white/10 transition-all">
                   <div className="flex items-center gap-3">
-                     <span className="text-xs font-black text-amber-400 bg-amber-400/5 border border-amber-400/10 px-2 py-0.5 rounded font-mono">OBJETIVO {i+1}</span>
+                     <span className="text-xs font-black text-[#c9943a] bg-[#c9943a]/5 border border-amber-400/10 px-2 py-0.5 rounded font-mono">OBJETIVO {i+1}</span>
                      <p className="text-sm font-bold text-white">{o.title ?? o.objective}</p>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pl-4 border-l-2 border-white/10">
                      {(o.key_results ?? []).map((krObj: any, j: number) => (
                        <div key={j} className="flex gap-2.5">
-                          <div className="h-1.5 w-1.5 rounded-full bg-amber-400/40 mt-1.5 shrink-0" />
+                          <div className="h-1.5 w-1.5 rounded-full bg-[#c9943a]/40 mt-1.5 shrink-0" />
                           <p className="text-xs text-white/60 leading-relaxed">{typeof krObj === 'string' ? krObj : (krObj.kr ?? krObj.description)}</p>
                        </div>
                      ))}

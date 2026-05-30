@@ -49,12 +49,12 @@ export function MiniEsg() {
                 cy="18" 
                 r="15.9155" 
                 fill="none" 
-                stroke="#d4b87a" 
+                stroke="#c9943a" 
                 strokeWidth="3" 
                 strokeDasharray={`${complianceScore}, 100`} 
                 strokeLinecap="round" 
                 className="transition-all duration-300"
-                style={{ filter: 'drop-shadow(0 0 6px rgba(212, 184, 122, 0.4))' }}
+                style={{ filter: 'drop-shadow(0 0 6px rgba(201, 148, 58, 0.4))' }}
               />
             </svg>
             
@@ -71,30 +71,30 @@ export function MiniEsg() {
           <div className="text-[7.5px] uppercase tracking-widest text-white/40 font-bold leading-none mb-1">ODS valores</div>
           
           {/* Renewability Capsule */}
-          <div className="border border-[#d4b87a]/15 bg-[#0e0d0a]/40 px-2.5 py-1.5 rounded-xl flex justify-between items-center text-[8.5px] hover:border-[#d4b87a]/35 transition-colors">
+          <div className="border border-[#c9943a]/15 bg-[#0e0d0a]/40 px-2.5 py-1.5 rounded-xl flex justify-between items-center text-[8.5px] hover:border-[#c9943a]/35 transition-colors">
             <div className="flex items-center gap-1.5">
-              <RefreshCw className="h-2.5 w-2.5 text-[#d4b87a]" />
+              <RefreshCw className="h-2.5 w-2.5 text-[#c9943a]" />
               <span className="font-light text-white/55">Renewabilide ecomómica</span>
             </div>
-            <span className="font-normal text-[#d4b87a] text-[9.5px]">94%</span>
+            <span className="font-normal text-[#c9943a] text-[9.5px]">94%</span>
           </div>
 
           {/* Carbon Footprint Capsule */}
-          <div className="border border-[#d4b87a]/15 bg-[#0e0d0a]/40 px-2.5 py-1.5 rounded-xl flex justify-between items-center text-[8.5px] hover:border-[#d4b87a]/35 transition-colors">
+          <div className="border border-[#c9943a]/15 bg-[#0e0d0a]/40 px-2.5 py-1.5 rounded-xl flex justify-between items-center text-[8.5px] hover:border-[#c9943a]/35 transition-colors">
             <div className="flex items-center gap-1.5">
-              <Footprints className="h-2.5 w-2.5 text-[#d4b87a]" />
+              <Footprints className="h-2.5 w-2.5 text-[#c9943a]" />
               <span className="font-light text-white/55">Footprint carbont</span>
             </div>
-            <span className="font-normal text-[#d4b87a] text-[8.5px] scale-95 whitespace-nowrap">data rha OC 1023.00/t/h</span>
+            <span className="font-normal text-[#c9943a] text-[8.5px] scale-95 whitespace-nowrap">data rha OC 1023.00/t/h</span>
           </div>
 
           {/* Female C-Level Capsule */}
-          <div className="border border-[#d4b87a]/15 bg-[#0e0d0a]/40 px-2.5 py-1.5 rounded-xl flex justify-between items-center text-[8.5px] hover:border-[#d4b87a]/35 transition-colors">
+          <div className="border border-[#c9943a]/15 bg-[#0e0d0a]/40 px-2.5 py-1.5 rounded-xl flex justify-between items-center text-[8.5px] hover:border-[#c9943a]/35 transition-colors">
             <div className="flex items-center gap-1.5">
-              <Users className="h-2.5 w-2.5 text-[#d4b87a]" />
+              <Users className="h-2.5 w-2.5 text-[#c9943a]" />
               <span className="font-light text-white/55">Mulher C-Level representação</span>
             </div>
-            <span className="font-normal text-[#d4b87a] text-[9.5px]">17%</span>
+            <span className="font-normal text-[#c9943a] text-[9.5px]">17%</span>
           </div>
         </div>
       </div>

@@ -86,7 +86,7 @@ export function HudNeuro() {
   // Dynamic EEG Wave parameters based on Glasgow Coma Scale
   const getEEGParams = (currentGcs: number) => {
     if (gammaBurstRef.current > 0) {
-      return { freq: 0.55, amp: 18, noise: 3.5, color: '#f5e9a0', shadow: 'rgba(212,184,122,0.5)' } // Gamma burst
+      return { freq: 0.55, amp: 18, noise: 3.5, color: '#f5e9a0', shadow: 'rgba(201, 148, 58,0.5)' } // Gamma burst
     }
     if (currentGcs >= 14) {
       return { freq: 0.38, amp: 10, noise: 1.5, color: '#4ade80', shadow: 'rgba(74,222,128,0.4)' } // Beta

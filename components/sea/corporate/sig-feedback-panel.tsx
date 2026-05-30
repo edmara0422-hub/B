@@ -73,7 +73,7 @@ export function SigFeedbackPanel() {
           inset: 0;
           border-radius: 14px;
           padding: 1px;
-          background: linear-gradient(90deg, #cbd5e1 0%, #d4b87a 100%) !important;
+          background: linear-gradient(90deg, #cbd5e1 0%, #c9943a 100%) !important;
           -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
           -webkit-mask-composite: xor;
           mask-composite: exclude;
@@ -84,7 +84,7 @@ export function SigFeedbackPanel() {
         .sec-head .lhs { display: flex; flex-direction: column; gap: 5px }
         .sec-id { display: flex; align-items: center; gap: 12px }
         .sec-id .num {
-          font-family: monospace; font-size: 9.5px; letter-spacing: .1em; color: #d4b87a; font-weight: 500;
+          font-family: monospace; font-size: 9.5px; letter-spacing: .1em; color: #c9943a; font-weight: 500;
           border: 0.2px solid rgba(255, 255, 255, 0.08); padding: 3px 9px; border-radius: 4px; background: rgba(218,165,32,.04);
         }
         .sec-id .tag { font-family: monospace; font-size: 10px; letter-spacing: .1em; color: #8a9098; text-transform: uppercase }
@@ -94,7 +94,7 @@ export function SigFeedbackPanel() {
           margin-top: 4px; margin-bottom: 0;
         }
         .sec-h .em {
-          background: linear-gradient(135deg, #b8975a 0%, #d4b87a 28%, #e8cc88 50%, #d4b87a 72%, #b8975a 100%);
+          background: linear-gradient(135deg, #b8975a 0%, #c9943a 28%, #e8cc88 50%, #c9943a 72%, #b8975a 100%);
           background-clip: text; -webkit-background-clip: text;
           color: transparent; -webkit-text-fill-color: transparent;
           font-weight: 600;
@@ -109,14 +109,14 @@ export function SigFeedbackPanel() {
           background: rgba(255,255,255,0.08);
           border-radius: 2px;
           outline: none;
-          accent-color: #d4b87a;
+          accent-color: #c9943a;
           margin: 8px 0;
           cursor: pointer;
         }
         .p-btn {
-          background: rgba(212,184,122,0.1) !important;
-          border: 0.2px solid rgba(212,184,122,0.3) !important;
-          color: #d4b87a;
+          background: rgba(201, 148, 58,0.1) !important;
+          border: 0.2px solid rgba(201, 148, 58,0.3) !important;
+          color: #c9943a;
           font-family: monospace;
           font-size: 10px;
           letter-spacing: 0.08em;
@@ -127,7 +127,7 @@ export function SigFeedbackPanel() {
           transition: all 0.2s;
         }
         .p-btn:hover {
-          background: rgba(212,184,122,0.2) !important;
+          background: rgba(201, 148, 58,0.2) !important;
         }
       `}</style>
 
@@ -161,7 +161,7 @@ export function SigFeedbackPanel() {
             <div className="bg-black/25 border border-white/[0.06] rounded-xl p-5 flex flex-col gap-3">
               <span className="font-mono text-[8px] color-[#8a9098] tracking-widest uppercase">NPS Categoria</span>
               <div className="flex justify-between items-end">
-                <span className="text-xl font-semibold text-[#d4b87a]">NPS 42</span>
+                <span className="text-xl font-semibold text-[#c9943a]">NPS 42</span>
                 <span className="text-[#5dcaa5] text-[10.5px]">▲ +4 pts vs S20</span>
               </div>
               <div className="h-2 bg-black/40 rounded-full overflow-hidden flex mt-1">
@@ -177,14 +177,14 @@ export function SigFeedbackPanel() {
             </div>
 
             <div className="bg-black/25 border border-white/[0.06] rounded-xl p-5 flex flex-col gap-4">
-              <span className="font-mono text-[9px] text-[#d4b87a] tracking-wider uppercase border-b border-white/[0.08] pb-2">
+              <span className="font-mono text-[9px] text-[#c9943a] tracking-wider uppercase border-b border-white/[0.08] pb-2">
                 PULSE SEMANAL (CLIMA)
               </span>
 
               <div>
                 <div className="flex justify-between text-[11px] text-white/85">
                   <span>Energia / Ânimo</span>
-                  <b className="text-[#d4b87a]">{energy}%</b>
+                  <b className="text-[#c9943a]">{energy}%</b>
                 </div>
                 <input
                   type="range"
@@ -199,7 +199,7 @@ export function SigFeedbackPanel() {
               <div>
                 <div className="flex justify-between text-[11px] text-white/85">
                   <span>Foco / Direção</span>
-                  <b className="text-[#d4b87a]">{focus}%</b>
+                  <b className="text-[#c9943a]">{focus}%</b>
                 </div>
                 <input
                   type="range"
@@ -243,7 +243,7 @@ export function SigFeedbackPanel() {
           <div className="lg:col-span-7 flex flex-col gap-5">
             {/* SBI Feedback Compiler */}
             <div className="bg-black/25 border border-white/[0.06] rounded-xl p-5 flex flex-col gap-4">
-              <span className="font-mono text-[9px] text-[#d4b87a] tracking-wider uppercase border-b border-white/[0.08] pb-2">
+              <span className="font-mono text-[9px] text-[#c9943a] tracking-wider uppercase border-b border-white/[0.08] pb-2">
                 SBI COACHING: MAPEADOR DE FEEDBACK
               </span>
 
@@ -296,7 +296,7 @@ export function SigFeedbackPanel() {
               </div>
 
               {sbiResult && (
-                <div className="p-3 bg-[#d4b87a]/5 border border-[#d4b87a]/15 rounded-md text-[11px] leading-relaxed text-[#d4b87a]/90 font-medium italic">
+                <div className="p-3 bg-[#c9943a]/5 border border-[#c9943a]/15 rounded-md text-[11px] leading-relaxed text-[#c9943a]/90 font-medium italic">
                   {sbiResult}
                 </div>
               )}
@@ -316,7 +316,7 @@ export function SigFeedbackPanel() {
                     className="background-rgba(255,255,255,0.02) border border-white/[0.04] p-3 rounded-lg flex flex-col gap-1.5"
                     style={{ background: 'rgba(255,255,255,0.02)' }}
                   >
-                    <div className="flex justify-between items-center text-[9px] text-[#d4b87a] font-mono">
+                    <div className="flex justify-between items-center text-[9px] text-[#c9943a] font-mono">
                       <span>
                         {feed.squad} · {feed.time}
                       </span>

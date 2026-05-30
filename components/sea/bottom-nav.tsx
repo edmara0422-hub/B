@@ -32,7 +32,7 @@ export function BottomNav({
           <linearGradient id="nav-gold-grad" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%"   stopColor="#fff8e7" />
             <stop offset="25%"  stopColor="#f0d080" />
-            <stop offset="58%"  stopColor="#d4b87a" />
+            <stop offset="58%"  stopColor="#c9943a" />
             <stop offset="82%"  stopColor="#b8975a" />
             <stop offset="100%" stopColor="#8b6914" />
           </linearGradient>
@@ -59,7 +59,7 @@ export function BottomNav({
           className="pointer-events-auto"
           style={{
             borderRadius: '100px',
-            boxShadow: '0 16px 48px rgba(0,0,0,0.75), 0 4px 16px rgba(212,184,122,0.10)',
+            boxShadow: '0 16px 48px rgba(0,0,0,0.75), 0 4px 16px rgba(201, 148, 58,0.10)',
           }}
           initial={{ y: 100, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
@@ -84,7 +84,7 @@ export function BottomNav({
                 inset: 0,
                 borderRadius: 'inherit',
                 padding: '0.2px',
-                background: 'linear-gradient(90deg, #e2e8f0 0%, #cbd5e1 45%, #d4b87a 55%, #b8975a 100%)',
+                background: 'linear-gradient(90deg, #e2e8f0 0%, #cbd5e1 45%, #c9943a 55%, #b8975a 100%)',
                 WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
                 WebkitMaskComposite: 'xor',
                 maskComposite: 'exclude',
@@ -100,7 +100,7 @@ export function BottomNav({
                 right: '10%',
                 top: 0,
                 height: '1px',
-                background: 'linear-gradient(90deg, transparent 0%, rgba(200,210,220,0.50) 30%, rgba(255,255,255,0.70) 50%, rgba(212,184,122,0.50) 70%, transparent 100%)',
+                background: 'linear-gradient(90deg, transparent 0%, rgba(200,210,220,0.50) 30%, rgba(255,255,255,0.70) 50%, rgba(201, 148, 58,0.50) 70%, transparent 100%)',
                 pointerEvents: 'none',
               }}
             />
@@ -116,14 +116,14 @@ export function BottomNav({
                     width: '50%',
                     background: isHome
                       ? 'linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(200,205,215,0.05) 100%)'
-                      : 'linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(212,184,122,0.07) 100%)',
+                      : 'linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(201, 148, 58,0.07) 100%)',
                     border: isHome
                       ? '0.2px solid rgba(200, 205, 215, 0.30)'
-                      : '0.2px solid rgba(212, 184, 122, 0.35)',
+                      : '0.2px solid rgba(201, 148, 58, 0.35)',
                     borderRadius: '90px',
                     boxShadow: isHome
                       ? '0 0 18px rgba(200, 205, 215, 0.20), inset 0 0.2px 0 rgba(255, 255, 255, 0.15)'
-                      : '0 0 18px rgba(212, 184, 122, 0.22), inset 0 0.2px 0 rgba(255, 255, 255, 0.15)',
+                      : '0 0 18px rgba(201, 148, 58, 0.22), inset 0 0.2px 0 rgba(255, 255, 255, 0.15)',
                     pointerEvents: 'none',
                   }}
                   animate={{ x: isExplore ? '100%' : '0%' }}
@@ -144,7 +144,7 @@ export function BottomNav({
                 label="EXPLORAR"
                 active={isExplore}
                 gradientId="nav-gold-grad"
-                activeTextGradient="linear-gradient(135deg, #fff8e7 0%, #f0d080 30%, #d4b87a 65%, #b8975a 100%)"
+                activeTextGradient="linear-gradient(135deg, #fff8e7 0%, #f0d080 30%, #c9943a 65%, #b8975a 100%)"
                 onClick={() => onSwitch?.('explorar')}
               />
             </div>

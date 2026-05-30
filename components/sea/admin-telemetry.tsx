@@ -190,7 +190,7 @@ function DevicePieCard({ devices }: { devices: DeviceRow[] }) {
   return (
     <div className="rounded-2xl border border-white/5 bg-white/[0.02] p-4 h-full">
       <div className="mb-4 flex items-center gap-2">
-        <Smartphone className="h-4 w-4 text-blue-400" />
+        <Smartphone className="h-4 w-4 text-[#c9943a]" />
         <p className="text-[10px] font-black uppercase tracking-widest text-white/60">Devices (30d)</p>
       </div>
       {total === 0 ? (
@@ -260,7 +260,7 @@ function GeographyCard({ geography }: { geography: GeographyRow[] }) {
     <div className="rounded-2xl border border-white/5 bg-white/[0.02] p-4">
       <div className="mb-4 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <Globe className="h-4 w-4 text-emerald-400" />
+          <Globe className="h-4 w-4 text-white/90" />
           <p className="text-[10px] font-black uppercase tracking-widest text-white/60">Global Distribution</p>
         </div>
         <p className="text-[8px] text-white/20 font-bold uppercase">{geography.length} Active Nodes</p>
@@ -274,7 +274,7 @@ function GeographyCard({ geography }: { geography: GeographyRow[] }) {
               <p className="truncate text-[8px] text-white/20 font-mono">{g.ip}</p>
             </div>
             <div className="text-right">
-              <p className="text-[10px] font-black text-emerald-500">{g.events}</p>
+              <p className="text-[10px] font-black text-white/80">{g.events}</p>
               <p className="text-[7px] text-white/20 uppercase">Hits</p>
             </div>
           </div>

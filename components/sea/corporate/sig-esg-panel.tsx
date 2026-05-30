@@ -213,7 +213,7 @@ export function SigEsgPanel() {
           inset: 0;
           border-radius: 14px;
           padding: 1px;
-          background: linear-gradient(90deg, #cbd5e1 0%, #d4b87a 100%) !important;
+          background: linear-gradient(90deg, #cbd5e1 0%, #c9943a 100%) !important;
           -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
           -webkit-mask-composite: xor;
           mask-composite: exclude;
@@ -224,7 +224,7 @@ export function SigEsgPanel() {
         .sec-head .lhs { display: flex; flex-direction: column; gap: 5px }
         .sec-id { display: flex; align-items: center; gap: 12px }
         .sec-id .num {
-          font-family: monospace; font-size: 9.5px; letter-spacing: .1em; color: #d4b87a; font-weight: 500;
+          font-family: monospace; font-size: 9.5px; letter-spacing: .1em; color: #c9943a; font-weight: 500;
           border: 0.2px solid rgba(255, 255, 255, 0.08); padding: 3px 9px; border-radius: 4px; background: rgba(218,165,32,.04);
         }
         .sec-id .tag { font-family: monospace; font-size: 10px; letter-spacing: .1em; color: #8a9098; text-transform: uppercase }
@@ -234,7 +234,7 @@ export function SigEsgPanel() {
           margin-top: 4px; margin-bottom: 0;
         }
         .sec-h .em {
-          background: linear-gradient(135deg, #b8975a 0%, #d4b87a 28%, #e8cc88 50%, #d4b87a 72%, #b8975a 100%);
+          background: linear-gradient(135deg, #b8975a 0%, #c9943a 28%, #e8cc88 50%, #c9943a 72%, #b8975a 100%);
           background-clip: text; -webkit-background-clip: text;
           color: transparent; -webkit-text-fill-color: transparent;
           font-weight: 600;
@@ -263,7 +263,7 @@ export function SigEsgPanel() {
         }
         .esg-ring-item:hover {
           background: rgba(255, 255, 255, 0.03);
-          border-color: rgba(212, 184, 122, 0.15);
+          border-color: rgba(201, 148, 58, 0.15);
         }
         .esg-ring-svg {
           width: 60px;
@@ -279,7 +279,7 @@ export function SigEsgPanel() {
           font-family: monospace;
           font-size: 13px;
           font-weight: bold;
-          color: #d4b87a;
+          color: #c9943a;
         }
 
         .sub-tab-btn {
@@ -289,8 +289,8 @@ export function SigEsgPanel() {
           transition: all .2s ease-in-out;
         }
         .sub-tab-btn.active {
-          background: rgba(212, 184, 122, 0.1) !important;
-          border: 0.2px solid rgba(212, 184, 122, 0.3) !important;
+          background: rgba(201, 148, 58, 0.1) !important;
+          border: 0.2px solid rgba(201, 148, 58, 0.3) !important;
           color: #e0c887 !important;
         }
 
@@ -327,7 +327,7 @@ export function SigEsgPanel() {
         .esg-q-tag.env { background: rgba(93,202,165,0.12); color: #5dcaa5; }
         .esg-q-tag.soc { background: rgba(250,199,117,0.12); color: #fac775; }
         .esg-q-tag.gov { background: rgba(80,130,230,0.12); color: #5082e6; }
-        .esg-q-tag.strat { background: rgba(212,184,122,0.12); color: #d4b87a; }
+        .esg-q-tag.strat { background: rgba(201, 148, 58,0.12); color: #c9943a; }
         .esg-q-tag.mkt { background: rgba(226,232,240,0.1); color: #cbd5e1; }
         
         .esg-q-text {
@@ -466,7 +466,7 @@ export function SigEsgPanel() {
                 <h3 className="text-sm font-normal text-white/90">Diagnóstico ESG Inteligente</h3>
                 <span className="text-[10px] text-white/40">10 perguntas · 8 frameworks · IA recomenda o caminho</span>
               </div>
-              <div className="bg-[#d4b87a]/10 border border-[#d4b87a]/30 px-3.5 py-1.5 rounded-full text-[#d4b87a] font-mono text-[10px]">
+              <div className="bg-[#c9943a]/10 border border-[#c9943a]/30 px-3.5 py-1.5 rounded-full text-[#c9943a] font-mono text-[10px]">
                 {answeredCount}/10 RESPONDIDAS
               </div>
             </div>
@@ -498,7 +498,7 @@ export function SigEsgPanel() {
 
             <div className="mt-6 text-right">
               <button
-                className="bg-[#d4b87a]/15 hover:bg-[#d4b87a]/25 border border-[#d4b87a]/30 text-[#d4b87a] text-[10px] font-mono uppercase tracking-widest px-6 py-2.5 rounded-md transition"
+                className="bg-[#c9943a]/15 hover:bg-[#c9943a]/25 border border-[#c9943a]/30 text-[#c9943a] text-[10px] font-mono uppercase tracking-widest px-6 py-2.5 rounded-md transition"
                 onClick={handleAnalyze}
                 disabled={answeredCount === 0 || analyzing}
                 style={{ opacity: answeredCount === 0 ? 0.5 : 1 }}
@@ -526,7 +526,7 @@ export function SigEsgPanel() {
                 <span className="text-[9px] opacity-40 block">Global Reporting Initiative</span>
                 <div className="h-1 bg-white/[0.08] rounded-full overflow-hidden">
                   <div
-                    className="h-full bg-[#d4b87a] rounded-full transition-all duration-1000"
+                    className="h-full bg-[#c9943a] rounded-full transition-all duration-1000"
                     style={{ width: `${Math.min(overallScore * 1.1, 100)}%` }}
                   />
                 </div>
