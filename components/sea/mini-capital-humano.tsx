@@ -149,7 +149,7 @@ export function MiniCapitalHumano() {
             <span className="font-normal text-[#c9943a] text-[9.5px]">{estresseIAE}%</span>
           </div>
         </div>
-      </div>>
+      </div>
     </div>
   )
 }
