@@ -2317,20 +2317,6 @@ curl -X POST \\
 
       </div>
 
-      {/* Footer do Painel */}
-      <div className="hero-footer relative z-20">
-        <div className="title-group">
-          <span className="area">Apoio Decisor & GCP Multimodal Studio</span>
-          <h2>Assistente IPB-AI & GCP Imagen/Veo Studio</h2>
-          <p>Tire dúvidas sobre finanças com o Gemini 3.5 Flash e a suíte Grok 4, execute traduções de glossário com o Translation LLM ou gere embeddings com o Jina v3 e Voyage 4.</p>
-        </div>
-        <div className="action-group">
-          <button className="btn-enter-scene text-[#1a120a] flex items-center gap-1.5 bg-[#d2af5a] hover:bg-[#e0b85e]">
-            <Sparkles className="h-4 w-4" />
-            <span>Consultar Gemini Pro</span>
-          </button>
-        </div>
-      </div>
     </div>
   )
 }

@@ -190,8 +190,11 @@ Diretoria de Governança Corporativa IPB`
         style={{
           display: 'flex',
           flexDirection: 'column',
+          maxHeight: '490px',
+          overflowY: 'auto',
+          paddingRight: '6px'
         }}
-        className="ipb-esg-scroll"
+        className="ipb-esg-scroll ipb-thinscroll"
       >
         <div className="hero-content" style={{ gridTemplateColumns: '1fr', paddingBottom: '0' }}>
           <div className="esg-dashboard-grid">
