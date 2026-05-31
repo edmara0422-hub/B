@@ -2479,6 +2479,8 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                     </div>
                   </div>
                 </div>
+              </div>
+            </div>
 
             {/* ROW 4: AGILE & SQUADS WORKSPACE */}
             <div className="home-row full mt-6">
