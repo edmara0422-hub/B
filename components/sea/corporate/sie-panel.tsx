@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { TrendingUp, HelpCircle, Lightbulb, Edit3, Sparkles, Copy, Check } from 'lucide-react'
+import { TrendingUp, HelpCircle, Lightbulb, Edit3, Sparkles, Copy, Check, Calendar, Loader2 } from 'lucide-react'
 
 type SieSubTab = 'forecast' | 'inovacao' | 'canvas'
 
@@ -40,6 +40,148 @@ export function SiePanel({ initialTab }: { initialTab?: SieSubTab }) {
 
   // State for Forecast Sliders (Live Update)
   const [runwayMultiplier, setRunwayMultiplier] = useState(1)
+
+  // Estados do Design Sprint (Google Ventures, 2016)
+  const [activeSprintDay, setActiveSprintDay] = useState<number>(0)
+  const [sprintChallenge, setSprintChallenge] = useState<string>('denuncias')
+  const [sprintCustomText, setSprintCustomText] = useState<string>('')
+  const [generatingSprint, setGeneratingSprint] = useState<boolean>(false)
+  const [generationStep, setGenerationStep] = useState<string>('')
+  const [sprintResult, setSprintResult] = useState<any | null>(null)
+
+  const handleGenerateSprint = () => {
+    if (sprintChallenge === 'custom' && !sprintCustomText.trim()) {
+      alert('Por favor, descreva o seu desafio customizado!')
+      return
+    }
+    setGeneratingSprint(true)
+    setGenerationStep('Mapeando o problema estratégico...')
+    
+    setTimeout(() => {
+      setGenerationStep('Estruturando soluções e rascunhos de design...')
+      setTimeout(() => {
+        setGenerationStep('Definindo critérios de votação e storyboard...')
+        setTimeout(() => {
+          setGenerationStep('Modelando fachada de prototipagem rápida...')
+          setTimeout(() => {
+            setGenerationStep('Criando roteiro de teste com usuários finais...')
+            setTimeout(() => {
+              let challengeTitle = 'Desafio Customizado'
+              let customText = sprintCustomText
+              if (sprintChallenge === 'denuncias') {
+                challengeTitle = 'Canal de Denúncias Anônimo & Seguro IPB'
+              } else if (sprintChallenge === 'telemetria') {
+                challengeTitle = 'MVP de Telemetria & Saúde Comportamental de Lideranças IPB'
+              } else if (sprintChallenge === 'pricing') {
+                challengeTitle = 'Smart Pricing Dinâmico baseado em IA para Assinaturas'
+              }
+
+              const presetDays = [
+                {
+                  focus: sprintChallenge === 'denuncias' 
+                    ? 'Mapear a jornada de um colaborador ao relatar uma conduta sensível.' 
+                    : sprintChallenge === 'telemetria'
+                    ? 'Mapear como a liderança monitora o esgotamento (burnout) e a fadiga dos times.'
+                    : sprintChallenge === 'pricing'
+                    ? 'Mapear o processo de perda de conversão (churn e abandono de carrinho).'
+                    : `Mapear o problema central: ${customText}`,
+                  instructions: sprintChallenge === 'denuncias'
+                    ? 'Identifique os pontos críticos onde o colaborador pode sentir medo de identificação ou retaliação. Mapeie os canais atuais (geralmente e-mail ou reuniões individuais) e defina o Alvo Principal do Sprint: Garantir anonimato técnico absoluto com 100% de sentimento de segurança visual.'
+                    : sprintChallenge === 'telemetria'
+                    ? 'Mapeie os fluxos de atrito semanais entre squads. O Alvo Principal é criar um painel centralizado que cruze horas extras com indicadores subjetivos de stress sem sobrecarregar os gestores.'
+                    : sprintChallenge === 'pricing'
+                    ? 'Mapeie os pontos de preço atuais e a elasticidade do cliente IPB. Defina o Alvo Principal: Testar um sistema de cupons dinâmicos da IA que detecta intenção de saída na página de checkout.'
+                    : `Analise as dores, processos atuais e frustrações ligadas ao desafio "${customText}". Monte um mapa simples de jornada do usuário final e defina o Alvo Principal do Sprint: validar a menor fração possível da ideia na sexta-feira.`,
+                  deliverable: 'Mapa de Jornada do Usuário & Alvo Definido',
+                  tip: 'O Decisor deve dar a palavra final sobre qual área focar no mapa de fluxo para evitar desperdício.'
+                },
+                {
+                  focus: sprintChallenge === 'denuncias'
+                    ? 'Rascunhar soluções de interface ultra-seguras.'
+                    : sprintChallenge === 'telemetria'
+                    ? 'Pesquisar soluções de health metrics corporativas.'
+                    : sprintChallenge === 'pricing'
+                    ? 'Buscar modelos de e-commerce e SaaS de alta conversão.'
+                    : 'Rascunhar soluções práticas baseadas em benchmarks.',
+                  instructions: sprintChallenge === 'denuncias'
+                    ? 'Pesquise referências de sistemas de criptografia simples (ex: Bitwarden, Proton). Cada participante do squad desenha individualmente o fluxo ideal de denúncia em 3 telas (envio rápido, recebimento de chave token única de 12 palavras, e chat anônimo temporário sem cadastro).'
+                    : sprintChallenge === 'telemetria'
+                    ? 'Faça Lightning Demos de ferramentas como Gallup Q12 e Slack health-checks. Desenhe um widget de check-in diário de 3 segundos que roda direto no chat corporativo do IPB.'
+                    : sprintChallenge === 'pricing'
+                    ? 'Pesquise como Netflix e Amazon oferecem upsells. Desenhe individualmente um pop-up inteligente que oferece desconto progressivo ou extensão de trial de forma ultra-personalizada.'
+                    : `Pesquise no mercado quem já resolveu desafios semelhantes. Faça rascunhos rápidos individuais (sendo 8 variações em 8 minutos usando Crazy Eights) e prepare uma proposta em 3 etapas com foco em extrema facilidade de uso.`,
+                  deliverable: 'Desenho de Solução Executivo de 3 Etapas',
+                  tip: 'Não se preocupe com beleza artística, o foco total é na clareza e estrutura do fluxo lógico.'
+                },
+                {
+                  focus: sprintChallenge === 'denuncias'
+                    ? 'Escolher a melhor proposta sem discussões exaustivas.'
+                    : sprintChallenge === 'telemetria'
+                    ? 'Avaliar os painéis de visualização dos gestores.'
+                    : sprintChallenge === 'pricing'
+                    ? 'Votar na melhor oferta de valor dinâmica.'
+                    : 'Criticar rascunhos, votar na melhor tese e criar Storyboard.',
+                  instructions: sprintChallenge === 'denuncias'
+                    ? 'Exponha os rascunhos na parede virtual. Realize a Crítica Silenciosa com dot-voting (votos em adesivos) para criar um mapa de calor das ideias mais confiáveis. Escolha a vencedora e monte o Storyboard detalhado passo a passo de como o protótipo funcionará.'
+                    : sprintChallenge === 'telemetria'
+                    ? 'Decida pelo layout de semáforo (Verde/Amarelo/Vermelho) para saúde das equipes. Monte o Storyboard do fluxo de alerta automático quando uma squad entra em zona crítica de burnout por 3 dias seguidos.'
+                    : sprintChallenge === 'pricing'
+                    ? 'Escolha o rascunho de pop-up que oferece um "upgrade de plano com desconto por 3 meses" ao invés de redução de preço permanente. Desenhe o Storyboard de checkout completo.'
+                    : `Cole os desenhos na parede virtual de forma anônima. Realize uma crítica em silêncio marcando pontos de interesse com votos rápidos (dot-voting). O Decisor escolhe o vencedor estratégico. Com base na escolha, desenhe o Storyboard passo-a-passo (6 a 8 quadros).`,
+                  deliverable: 'Storyboard Aprovado de 8 Passos',
+                  tip: 'Use a técnica do Supervoto para dar ao Decisor a decisão final sobre o escopo que será de fato desenvolvido.'
+                },
+                {
+                  focus: sprintChallenge === 'denuncias'
+                    ? 'Construir uma fachada interativa realista (Fake it before you make it).'
+                    : sprintChallenge === 'telemetria'
+                    ? 'Montar a interface do dashboard estratégico no IPB App.'
+                    : sprintChallenge === 'pricing'
+                    ? 'Prototipar a experiência de finalização de compra.'
+                    : 'Construir a "fachada" realista e interativa.',
+                  instructions: sprintChallenge === 'denuncias'
+                    ? 'Use ferramentas no-code (Figma, Tailwind, formulários estáticos) para criar uma tela de denúncia premium, com selo de criptografia simulado e o gerador de chave de acompanhamento. O protótipo deve parecer 100% real, embora não tenha banco de dados robusto por trás ainda.'
+                    : sprintChallenge === 'telemetria'
+                    ? 'Crie o mockup de telemetria com gráficos dinâmicos de stress acumulado e sugestões de intervenção ágil da IA. Use dados mockados realistas para dar substância.'
+                    : sprintChallenge === 'pricing'
+                    ? 'Monte uma landing page de checkout simulando a IA calculando o preço ideal em tempo real. Adicione uma barra de carregamento premium com a chamada "Ajustando plano ao perfil do IPB".'
+                    : `Use as melhores ferramentas visuais disponíveis para simular a experiência real para o desafio "${challengeTitle}". Construa apenas o necessário para simular o Storyboard de quarta-feira. Deve parecer um produto polido e finalizado.`,
+                  deliverable: 'Protótipo Interativo em Alta Fidelidade (Mock real)',
+                  tip: 'Divida o time: um "Criador" desenha as telas, outro escreve os textos ("Redator") e um reúne tudo.'
+                },
+                {
+                  focus: sprintChallenge === 'denuncias'
+                    ? 'Testar com 5 colaboradores reais em sessões individuais.'
+                    : sprintChallenge === 'telemetria'
+                    ? 'Validar com 5 Gerentes de Squad e C-Levels.'
+                    : sprintChallenge === 'pricing'
+                    ? 'Testar com 5 potenciais clientes das PMEs.'
+                    : 'Conduzir testes individuais com 5 usuários reais.',
+                  instructions: sprintChallenge === 'denuncias'
+                    ? 'Conduza 5 entrevistas de 45 minutos com colaboradores de diferentes squads. Peça para usarem o protótipo para denunciar um cenário fictício. Monitore suas expressões, hesitações e se o gerador de token de 12 palavras transmite confiança técnica real.'
+                    : sprintChallenge === 'telemetria'
+                    ? 'Coloque os gestores para simular uma tomada de decisão ao ver o alerta crítico de uma squad. Avalie se eles sabem exatamente qual ação corretiva tomar com base no dashboard.'
+                    : sprintChallenge === 'pricing'
+                    ? 'Apresente o protótipo a 5 Founders que abandonaram cadastros anteriores. Veja se a oferta da IA parece justa e se os incentiva a finalizar a compra imediatamente.'
+                    : `Agende sessões de 1 hora com 5 usuários que representem o público-alvo real. Peça para executarem tarefas no protótipo enquanto pensam em voz alta. Documente reações, hesitações e feedbacks. Ao fim, classifique o resultado para tomar a decisão de escala.`,
+                  deliverable: 'Matriz de Padrões de Feedback & Decisão Executiva',
+                  tip: 'Geralmente 5 entrevistas estruturadas encontram mais de 85% de todos os problemas críticos de usabilidade e proposta de valor.'
+                }
+              ]
+
+              setSprintResult({
+                challenge: challengeTitle,
+                customText: sprintChallenge === 'custom' ? customText : '',
+                days: presetDays
+              })
+              setGeneratingSprint(false)
+              setActiveSprintDay(0)
+            }, 600)
+          }, 600)
+        }, 600)
+      }, 600)
+    }, 600)
+  }
 
   const handleCanvasChange = (key: keyof typeof canvasData, val: string) => {
     setCanvasData(prev => ({ ...prev, [key]: val }))
@@ -124,7 +266,7 @@ export function SiePanel({ initialTab }: { initialTab?: SieSubTab }) {
             onClick={() => setSubTab(tab)}
             className={`system-tab-btn ${subTab === tab ? 'active' : ''}`}
           >
-            {tab === 'forecast' && 'Cenários & Forecast'}
+            {tab === 'forecast' && 'Meu Negócio, Cenários & Forecast'}
             {tab === 'inovacao' && 'Inovação'}
             {tab === 'canvas' && 'Canvas & Pitch'}
           </button>
@@ -237,15 +379,211 @@ export function SiePanel({ initialTab }: { initialTab?: SieSubTab }) {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className="space-y-4"
+            className="space-y-6 animate-fadeIn"
           >
+            {/* DESIGN SPRINT WORKSPACE - GOOGLE VENTURES */}
             <div className="dash-card-systems">
               <div className="flex justify-between items-start mb-6">
                 <div>
-                  <div className="text-[7.5px] font-mono text-[#d2af5a] tracking-[0.2em] font-bold uppercase mb-1">SEC · 02 ◆ Inovação</div>
+                  <div className="text-[7.5px] font-mono text-[#d2af5a] tracking-[0.2em] font-bold uppercase mb-1">
+                    METODOLOGIA ÁGIL ◆ GOOGLE VENTURES (2016)
+                  </div>
                   <h3 className="text-[15px] lg:text-xl font-light text-white tracking-wide">
-                    Matriz de <span className="text-[#d2af5a] font-medium">Inovação</span>
+                    Design Sprint <span className="text-[#d2af5a] font-medium">Guiado por IA</span>
                   </h3>
+                  <p className="text-[10px] lg:text-[11.5px] text-white/50 mt-1 max-w-xl">
+                    Valide ideias críticas em apenas 5 dias sem construir produto: mapear o problema (segunda), desenhar soluções (terça), decidir a melhor (quarta), prototipar (quinta) e testar com usuários (sexta).
+                  </p>
+                </div>
+                <div className="flex items-center gap-1.5 px-2 py-1 rounded bg-[#d2af5a]/5 border border-[#d2af5a]/15 text-[8.5px] font-mono text-[#d2af5a]">
+                  <Sparkles className="h-3 w-3 animate-pulse" />
+                  <span>SPRINT COPILOT ATIVO</span>
+                </div>
+              </div>
+
+              {/* AI Copilot Input Box */}
+              <div className="bg-black/25 border border-white/[0.04] p-5 rounded-xl mb-6 space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-1.5">
+                    <label className="block text-[9px] font-mono uppercase text-[#d2af5a] tracking-wider">
+                      Selecione o Desafio do Sprint
+                    </label>
+                    <select
+                      value={sprintChallenge}
+                      onChange={(e) => setSprintChallenge(e.target.value)}
+                      className="w-full bg-black/40 border border-white/10 rounded-md px-3 py-2 text-xs text-white outline-none focus:border-[#d2af5a]/50 transition cursor-pointer"
+                    >
+                      <option value="denuncias">Canal de Denúncias Anônimo & Seguro (Compliance)</option>
+                      <option value="telemetria">MVP de Telemetria de Liderança (Capital Humano)</option>
+                      <option value="pricing">Smart Pricing Dinâmico de Assinaturas (Financeiro)</option>
+                      <option value="custom">Descrever um Desafio Customizado...</option>
+                    </select>
+                  </div>
+
+                  {sprintChallenge === 'custom' && (
+                    <div className="space-y-1.5 animate-fadeIn">
+                      <label className="block text-[9px] font-mono uppercase text-[#d2af5a] tracking-wider">
+                        Descreva o seu Desafio de Negócio
+                      </label>
+                      <input
+                        type="text"
+                        value={sprintCustomText}
+                        onChange={(e) => setSprintCustomText(e.target.value)}
+                        placeholder="Ex: Criar um onboarding automatizado para clientes enterprise"
+                        className="w-full bg-black/40 border border-white/10 rounded-md px-3 py-2 text-xs text-white placeholder-white/35 outline-none focus:border-[#d2af5a]/50 transition"
+                      />
+                    </div>
+                  )}
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <button
+                    onClick={handleGenerateSprint}
+                    disabled={generatingSprint}
+                    className="px-5 py-2.5 rounded-md bg-[#d2af5a] hover:bg-[#c5a55a] text-black font-semibold text-xs tracking-wide transition flex items-center gap-2 disabled:opacity-40 disabled:pointer-events-none cursor-pointer"
+                  >
+                    {generatingSprint ? (
+                      <>
+                        <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                        <span>Planejando Sprint...</span>
+                      </>
+                    ) : (
+                      <>
+                        <Sparkles className="h-3.5 w-3.5" />
+                        <span>Gerar Roteiro Customizado de 5 Dias com IA</span>
+                      </>
+                    )}
+                  </button>
+
+                  {generatingSprint && (
+                    <span className="text-[10px] font-mono text-[#d2af5a] animate-pulse">
+                      {generationStep}
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              {/* Design Sprint Timeline & Details */}
+              {sprintResult ? (
+                <div className="space-y-6 border-t border-white/[0.06] pt-6 animate-fadeIn">
+                  {/* Selected Challenge Badge */}
+                  <div className="flex justify-between items-center bg-[#d2af5a]/5 border-l-2 border-[#d2af5a] px-4 py-2.5 rounded-r-md">
+                    <div className="text-[11.5px] text-white/90">
+                      🎯 Sprint Planejado para: <strong className="text-[#e0c887] font-semibold">{sprintResult.challenge}</strong>
+                    </div>
+                    <span className="text-[8px] font-mono bg-[#d2af5a]/10 text-[#d2af5a] px-1.5 py-0.5 rounded uppercase">
+                      5 Dias Ativos
+                    </span>
+                  </div>
+
+                  {/* 5-Day Visual Timeline Tabs */}
+                  <div className="grid grid-cols-5 gap-2">
+                    {['SEG', 'TER', 'QUA', 'QUI', 'SEX'].map((dayLabel, index) => {
+                      const isActive = activeSprintDay === index
+                      return (
+                        <button
+                          key={index}
+                          onClick={() => setActiveSprintDay(index)}
+                          className={`p-3 rounded-lg border text-center transition flex flex-col justify-center items-center gap-1 cursor-pointer select-none ${
+                            isActive 
+                              ? 'bg-[#d2af5a]/10 border-[#d2af5a]/50 text-white shadow-[0_0_15px_rgba(210,175,90,0.15)]'
+                              : 'bg-black/15 border-white/[0.04] text-white/40 hover:border-white/10 hover:text-white/60'
+                          }`}
+                        >
+                          <span className="block text-[8px] font-mono tracking-widest font-bold uppercase">{dayLabel}</span>
+                          <span className="block text-[9.5px] font-medium leading-none truncate max-w-full">
+                            {index === 0 && 'Mapear'}
+                            {index === 1 && 'Desenhar'}
+                            {index === 2 && 'Decidir'}
+                            {index === 3 && 'Prototipar'}
+                            {index === 4 && 'Testar'}
+                          </span>
+                        </button>
+                      )
+                    })}
+                  </div>
+
+                  {/* Day Content Card */}
+                  <div className="bg-black/20 border border-white/[0.04] rounded-xl p-5 space-y-4">
+                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 border-b border-white/[0.05] pb-3">
+                      <div>
+                        <span className="block text-[8.5px] font-mono text-[#d2af5a] tracking-wider uppercase font-semibold">
+                          DIA {activeSprintDay + 1} ◆ DETALHAMENTO DO ROTEIRO
+                        </span>
+                        <h4 className="text-sm font-semibold text-white mt-0.5">
+                          {activeSprintDay === 0 && 'Segunda-feira: Mapear o Problema Principal'}
+                          {activeSprintDay === 1 && 'Terça-feira: Desenhar Soluções Alternativas'}
+                          {activeSprintDay === 2 && 'Quarta-feira: Decidir as Melhores Ideias'}
+                          {activeSprintDay === 3 && 'Quinta-feira: Prototipar a Fachada do Produto'}
+                          {activeSprintDay === 4 && 'Sexta-feira: Entrevistar Usuários Reais'}
+                        </h4>
+                      </div>
+                      <div className="self-start sm:self-center px-2 py-0.5 rounded bg-[#d2af5a]/10 text-[9px] font-mono text-[#d2af5a] border border-[#d2af5a]/20">
+                        {activeSprintDay === 0 && 'MAPEAMENTO E ALVO'}
+                        {activeSprintDay === 1 && 'BENCHMARK E ESBOÇO'}
+                        {activeSprintDay === 2 && 'VOTAÇÃO E STORYBOARD'}
+                        {activeSprintDay === 3 && 'CONSTRUÇÃO DE FACHADA'}
+                        {activeSprintDay === 4 && 'VALIDAÇÃO EM CAMPO'}
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                      {/* Left 2 Cols: Main Instructions & Goal */}
+                      <div className="lg:col-span-2 space-y-4">
+                        <div className="space-y-1">
+                          <span className="block text-[9px] font-mono text-white/40 uppercase">Foco Estratégico do Dia</span>
+                          <p className="text-xs text-white/90 leading-relaxed font-medium">
+                            {sprintResult.days[activeSprintDay].focus}
+                          </p>
+                        </div>
+
+                        <div className="space-y-1.5">
+                          <span className="block text-[9px] font-mono text-white/40 uppercase">Instruções de Execução da IA</span>
+                          <p className="text-xs text-white/70 leading-relaxed">
+                            {sprintResult.days[activeSprintDay].instructions}
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Right 1 Col: Deliverable & Action Strategy */}
+                      <div className="bg-[#d2af5a]/[0.02] border-l border-white/10 p-4 rounded-r-xl space-y-4">
+                        <div className="space-y-1">
+                          <span className="block text-[8px] font-mono text-[#5dcaa5] uppercase font-bold tracking-wider">ENTREGÁVEL DO DIA</span>
+                          <span className="block text-xs font-bold text-white/90 leading-snug">
+                            📌 {sprintResult.days[activeSprintDay].deliverable}
+                          </span>
+                        </div>
+
+                        <div className="space-y-1 border-t border-white/[0.05] pt-3">
+                          <span className="block text-[8px] font-mono text-[#d2af5a] uppercase font-bold tracking-wider">DICA ESTRATÉGICA</span>
+                          <p className="text-[10.5px] italic text-white/60 leading-relaxed">
+                            💡 "{sprintResult.days[activeSprintDay].tip}"
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div className="border border-dashed border-white/10 rounded-xl p-8 text-center bg-black/10">
+                  <Calendar className="h-8 w-8 text-[#d2af5a]/50 mx-auto mb-3" />
+                  <h4 className="text-xs font-semibold text-white mb-1">Aguardando desafio para planejar o Design Sprint</h4>
+                  <p className="text-[10px] text-white/40 max-w-sm mx-auto leading-relaxed">
+                    Selecione ou descreva o desafio crítico do seu negócio e use nosso AI Copilot acima para gerar um roteiro de validação Google Ventures completo e adaptado de 5 dias.
+                  </p>
+                </div>
+              )}
+            </div>
+
+            {/* MATRIZ DE INOVAÇÃO & GOVERNANÇA DE P&D COMPLEMENTAR */}
+            <div className="dash-card-systems">
+              <div className="flex justify-between items-start mb-6">
+                <div>
+                  <div className="text-[7.5px] font-mono text-[#d2af5a] tracking-[0.2em] font-bold uppercase mb-1">SEC · 03 ◆ Inovação</div>
+                  <h3 className="text-[15px] lg:text-xl font-light text-white tracking-wide">
+                    Governança e <span className="text-[#d2af5a] font-medium">Matriz de Inovação</span>
+                  </h3>
+                  <p className="text-[10px] text-white/45 mt-0.5">Complementação de alocação P&D e maturidade no Hype Cycle</p>
                 </div>
                 <div className="flex items-center gap-1.5 px-2 py-1 rounded bg-[#d2af5a]/5 border border-[#d2af5a]/15 text-[8.5px] font-mono text-[#d2af5a]">
                   <Lightbulb className="h-3 w-3" />

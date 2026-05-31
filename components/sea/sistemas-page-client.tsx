@@ -52,8 +52,7 @@ const SIDEBAR_GROUPS = [
     code: 'SIE',
     label: 'ESTRATÉGICO',
     items: [
-      { id: 'meu-negocio', title: 'Meu Negócio', desc: 'Runway · OKRs · TRL' },
-      { id: 'sie-forecast', title: 'Cenários & Forecast', desc: 'Planejamento e forecast' },
+      { id: 'meu-negocio', title: 'Meu Negócio, Cenários & Forecast', desc: 'Runway · OKRs · Forecast' },
       { id: 'sie-inovacao', title: 'Inovação', desc: 'Ambiente P&D' },
       { id: 'sie-canvas', title: 'Canvas & Pitch', desc: 'Modelo Canvas' },
     ]
@@ -187,8 +186,6 @@ export default function SistemasPageClient() {
       case 'arquivos':
         return <SigArquivosPanel />
       case 'meu-negocio':
-        return <SiePanel initialTab="forecast" />
-      case 'sie-forecast':
         return <SiePanel initialTab="forecast" />
       case 'sie-inovacao':
         return <SiePanel initialTab="inovacao" />

@@ -7,6 +7,7 @@ export function HudCapitalHumano() {
   // Inputs (Sliders sincronizados via Telemetria Global)
   const [pressaoMetas, setPressaoMetas] = useState(5)
   const [climaFrequencia, setClimaFrequencia] = useState(14)
+  const [estruturaOrg, setEstruturaOrg] = useState<'tradicional' | 'squads'>('squads') // Padrão: Squads Ágeis (Spotify/Magalu)
 
   // Variáveis recebidas de outros módulos (via Telemetria Global)
   const [faturamento, setFaturamento] = useState(150)
@@ -29,8 +30,12 @@ export function HudCapitalHumano() {
   const perdaProdutividade = 9.5 
 
   // Equações de Inteligência Central (Camada 2 & 3)
-  const burnoutEEB = Math.round(Math.min(98, 5 + Math.pow(pressaoMetas, 2.1)))
-  const turnoverAnual = Math.min(75, 10 + Math.pow(pressaoMetas, 1.8))
+  const baseBurnout = Math.round(Math.min(98, 5 + Math.pow(pressaoMetas, 2.1)))
+  const burnoutEEB = estruturaOrg === 'squads' ? Math.round(baseBurnout * 0.65) : baseBurnout
+
+  const baseTurnover = Math.min(75, 10 + Math.pow(pressaoMetas, 1.8))
+  const turnoverAnual = estruturaOrg === 'squads' ? Math.round(baseTurnover * 0.6) : Math.round(baseTurnover)
+
   const estresseFator = pressaoMetas * 12
   
   const totalColaboradores = 120
@@ -41,7 +46,8 @@ export function HudCapitalHumano() {
   // EBITDA Líquido e Eficiência Saudável
   const ebitdaBrutoSimulado = pressaoMetas * 42 
   const ebitdaLiquido = ebitdaBrutoSimulado - custoRealTurnover
-  const eficienciaSaudavel = estresseFator > 0 ? (ebitdaBrutoSimulado / estresseFator) * 10 : 0
+  const baseEficiencia = estresseFator > 0 ? (ebitdaBrutoSimulado / estresseFator) * 10 : 0
+  const eficienciaSaudavel = estruturaOrg === 'squads' ? baseEficiencia * 1.45 : baseEficiencia
 
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const terminalEndRef = useRef<HTMLDivElement>(null)
@@ -369,6 +375,27 @@ export function HudCapitalHumano() {
               Alavancas Psico-Operacionais <div className="h-px flex-1 bg-gradient-to-r from-[#d2af5a]/20 to-transparent" />
             </h3>
 
+            {/* Cultura Organizacional / Estrutura de Squads */}
+            <div className="mb-4">
+              <label className="text-[8.5px] font-bold text-white/55 uppercase block mb-1.5">Estrutura &amp; Cultura Organizacional</label>
+              <div className="flex gap-2">
+                <button
+                  type="button"
+                  onClick={() => setEstruturaOrg('tradicional')}
+                  className={`flex-1 text-[8px] uppercase font-bold py-1.5 px-2 rounded-lg border transition-all cursor-pointer ${estruturaOrg === 'tradicional' ? 'bg-[#d2af5a] text-black border-[#d2af5a]' : 'bg-[#000]/40 text-white/60 border-white/10 hover:border-white/20'}`}
+                >
+                  Tradicional (Hierárquica)
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setEstruturaOrg('squads')}
+                  className={`flex-1 text-[8px] uppercase font-bold py-1.5 px-2 rounded-lg border transition-all cursor-pointer ${estruturaOrg === 'squads' ? 'bg-[#d2af5a] text-black border-[#d2af5a]' : 'bg-[#000]/40 text-white/60 border-white/10 hover:border-white/20'}`}
+                >
+                  Squads Ágeis (Spotify/Magalu)
+                </button>
+              </div>
+            </div>
+
             {/* Pressão de Metas */}
             <div className="c-slider-group mb-4">
               <label>Pressão de Metas <span>Escala {pressaoMetas}</span></label>
@@ -429,7 +456,15 @@ export function HudCapitalHumano() {
             <span className="animate-pulse">● LIVE INTERACTIVE</span>
           </div>
           <p className="text-[8.5px] text-white/70 leading-relaxed font-mono">
-            Sob pressão de metas no nível <b className="text-white">{pressaoMetas}/10</b>, a exaustão Maslach projetada atinge <b className="text-[#d2af5a]">{burnoutEEB}%</b>, gerando <b className="text-white">{demissoesMes}</b> desligamentos voluntários mensais. Com custos de rescisão e recrutamento em R$ <b className="text-white">{custoUnitarioTurnover}k</b> por colaborador, a perda de caixa invisível é de <b className="text-[#d2af5a]">R$ -{custoRealTurnover}k/mês</b>. Isso reduz a eficiência saudável do time para <b className="text-[#d2af5a]">{eficienciaSaudavel.toFixed(1)}</b>.
+            {estruturaOrg === 'squads' ? (
+              <span>
+                Sob cultura de <b>Squads Ágeis (Scrum)</b> inspirada em Spotify e Magalu (sprints de 2 semanas com autonomia na borda e POs dedicados), a exaustão Maslach é mitigada em 35% para <b className="text-[#d2af5a]">{burnoutEEB}%</b>. Com volume de metas em <b className="text-white">{pressaoMetas}/10</b>, ocorrem <b className="text-white">{demissoesMes}</b> desligamentos/mês, gerando perda de caixa de <b className="text-[#d2af5a]">R$ -{custoRealTurnover}k/mês</b>. A eficiência do time sobe 1.45x para <b className="text-[#d2af5a]">{eficienciaSaudavel.toFixed(1)}</b>!
+              </span>
+            ) : (
+              <span>
+                Sob estrutura <b>Tradicional (Hierárquica mecanicista)</b>, a centralização de decisões eleva o estresse. Sob pressão de metas no nível <b className="text-white">{pressaoMetas}/10</b>, a exaustão Maslach atinge <b className="text-[#d2af5a]">{burnoutEEB}%</b>, gerando <b className="text-white">{demissoesMes}</b> desligamentos/mês e perda de caixa invisível de <b className="text-[#d2af5a]">R$ -{custoRealTurnover}k/mês</b>. A eficiência saudável cai para <b className="text-white">{eficienciaSaudavel.toFixed(1)}</b>.
+              </span>
+            )}
           </p>
         </div>
 
