@@ -73,7 +73,7 @@ export function LiveStream() {
               animate={{ opacity: 1, x: 0 }}
               className="flex gap-2 items-start text-xs bg-white/5 p-2 rounded border border-white/10"
             >
-              <Activity className="w-3 h-3 mt-0.5 flex-shrink-0 text-[#c9943a]" />
+              <Activity className="w-3 h-3 mt-0.5 flex-shrink-0 text-[#d2af5a]" />
               <div className="flex-1 min-w-0">
                 <p className="text-white/90 truncate">{update.message}</p>
                 <p className="text-white/40 text-[10px]">

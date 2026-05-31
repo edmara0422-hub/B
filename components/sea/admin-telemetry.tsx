@@ -190,7 +190,7 @@ function DevicePieCard({ devices }: { devices: DeviceRow[] }) {
   return (
     <div className="rounded-2xl border border-white/5 bg-white/[0.02] p-4 h-full">
       <div className="mb-4 flex items-center gap-2">
-        <Smartphone className="h-4 w-4 text-[#c9943a]" />
+        <Smartphone className="h-4 w-4 text-[#d2af5a]" />
         <p className="text-[10px] font-black uppercase tracking-widest text-white/60">Devices (30d)</p>
       </div>
       {total === 0 ? (

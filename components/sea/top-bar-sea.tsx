@@ -78,7 +78,7 @@ export function TopBarSEA() {
           <linearGradient id="tb-gold-grad" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%"   stopColor="#fff8e7" />
             <stop offset="30%"  stopColor="#f0d080" />
-            <stop offset="60%"  stopColor="#c9943a" />
+            <stop offset="60%"  stopColor="#d2af5a" />
             <stop offset="85%"  stopColor="#b8975a" />
             <stop offset="100%" stopColor="#8b6914" />
           </linearGradient>
@@ -120,7 +120,7 @@ export function TopBarSEA() {
           inset: 0,
           borderRadius: 'inherit',
           padding: '0.2px',
-          background: 'linear-gradient(90deg, #e2e8f0 0%, #cbd5e1 45%, #c9943a 55%, #b8975a 100%)',
+          background: 'linear-gradient(90deg, #e2e8f0 0%, #cbd5e1 45%, #d2af5a 55%, #b8975a 100%)',
           WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
           WebkitMaskComposite: 'xor',
           maskComposite: 'exclude',
@@ -144,7 +144,7 @@ export function TopBarSEA() {
             className="flex h-7 w-7 shrink-0 items-center justify-center rounded-[0.55rem] relative overflow-hidden"
             style={{
               background:
-                'linear-gradient(135deg, #e8f0f8 0%, #cbd5e1 20%, #c9943a 50%, #b8975a 75%, #8b6914 100%)',
+                'linear-gradient(135deg, #e8f0f8 0%, #cbd5e1 20%, #d2af5a 50%, #b8975a 75%, #8b6914 100%)',
               border: '0.2px solid rgba(201, 148, 58,0.50)',
               boxShadow:
                 'inset 0 1px 2px rgba(255,255,255,0.55), inset 0 -1px 2px rgba(0,0,0,0.35), 0 0 14px rgba(201, 148, 58,0.35), 0 4px 12px rgba(0,0,0,0.55)',

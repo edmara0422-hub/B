@@ -32,7 +32,7 @@ export function BottomNav({
           <linearGradient id="nav-gold-grad" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%"   stopColor="#fff8e7" />
             <stop offset="25%"  stopColor="#f0d080" />
-            <stop offset="58%"  stopColor="#c9943a" />
+            <stop offset="58%"  stopColor="#d2af5a" />
             <stop offset="82%"  stopColor="#b8975a" />
             <stop offset="100%" stopColor="#8b6914" />
           </linearGradient>
@@ -84,7 +84,7 @@ export function BottomNav({
                 inset: 0,
                 borderRadius: 'inherit',
                 padding: '0.2px',
-                background: 'linear-gradient(90deg, #e2e8f0 0%, #cbd5e1 45%, #c9943a 55%, #b8975a 100%)',
+                background: 'linear-gradient(90deg, #e2e8f0 0%, #cbd5e1 45%, #d2af5a 55%, #b8975a 100%)',
                 WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
                 WebkitMaskComposite: 'xor',
                 maskComposite: 'exclude',
@@ -144,7 +144,7 @@ export function BottomNav({
                 label="EXPLORAR"
                 active={isExplore}
                 gradientId="nav-gold-grad"
-                activeTextGradient="linear-gradient(135deg, #fff8e7 0%, #f0d080 30%, #c9943a 65%, #b8975a 100%)"
+                activeTextGradient="linear-gradient(135deg, #fff8e7 0%, #f0d080 30%, #d2af5a 65%, #b8975a 100%)"
                 onClick={() => onSwitch?.('explorar')}
               />
             </div>

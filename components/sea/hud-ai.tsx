@@ -1332,7 +1332,7 @@ curl -X POST \\
 
       {/* Header do Painel */}
       <div className="hero-header relative z-20">
-        <div className="live-head text-[#c9943a] flex items-center gap-2">
+        <div className="live-head text-[#d2af5a] flex items-center gap-2">
           <div className="pulse-dot" />
           <span>AI-04 • IPB ADVANCED MODEL GARDEN (GEMINI 3.5, VOYAGE 4 & MIMO v2.5)</span>
         </div>
@@ -1347,7 +1347,7 @@ curl -X POST \\
           
           {/* Seletor de Modelo e Configurações de Raciocínio */}
           <div className="p-2 bg-black/60 border-b border-white/5 flex items-center justify-between gap-1.5 flex-wrap">
-            <div className="flex items-center gap-1.5 text-[#c9943a] font-mono text-[8px] uppercase tracking-wider font-bold">
+            <div className="flex items-center gap-1.5 text-[#d2af5a] font-mono text-[8px] uppercase tracking-wider font-bold">
               <Cpu className="h-3.5 w-3.5" />
               <span>Modelo & Raciocínio</span>
             </div>
@@ -1356,7 +1356,7 @@ curl -X POST \\
               <select 
                 value={model} 
                 onChange={(e: any) => setModel(e.target.value as ModelType)}
-                className="bg-black/85 text-[8.5px] font-mono text-[#c9943a] border border-[#c9943a]/30 rounded px-1 py-0.5 outline-none focus:border-[#c9943a]"
+                className="bg-black/85 text-[8.5px] font-mono text-[#d2af5a] border border-[#d2af5a]/30 rounded px-1 py-0.5 outline-none focus:border-[#d2af5a]"
               >
                 <optgroup label="Suíte Google Gemini">
                   <option value="gemini-3.1-pro">Gemini 3.1 Pro (1M)</option>
@@ -1391,7 +1391,7 @@ curl -X POST \\
                 <select
                   value={reasoningMode}
                   onChange={(e: any) => setReasoningMode(e.target.value)}
-                  className="bg-black/90 text-[7.5px] font-mono text-[#c9943a] border border-[#c9943a]/30 rounded px-1 py-0.5 outline-none"
+                  className="bg-black/90 text-[7.5px] font-mono text-[#d2af5a] border border-[#d2af5a]/30 rounded px-1 py-0.5 outline-none"
                 >
                   <option value="non-think">Non-think (Rápido)</option>
                   <option value="think-high">Think High (Lógico)</option>
@@ -1402,7 +1402,7 @@ curl -X POST \\
               {(model.startsWith('gemma') || model.startsWith('deepseek') || model === 'grok-4.1-fast-reasoning') && (
                 <button 
                   onClick={() => setShowThinking(!showThinking)}
-                  className={`px-1.5 py-0.5 rounded text-[7.5px] font-mono border transition-all flex items-center gap-0.5 cursor-pointer ${showThinking ? 'bg-[#c9943a]/10 text-[#c9943a] border-[#c9943a]/35' : 'text-white/20 border-white/10'}`}
+                  className={`px-1.5 py-0.5 rounded text-[7.5px] font-mono border transition-all flex items-center gap-0.5 cursor-pointer ${showThinking ? 'bg-[#d2af5a]/10 text-[#d2af5a] border-[#d2af5a]/35' : 'text-white/20 border-white/10'}`}
                 >
                   {showThinking ? <Eye className="h-2.5 w-2.5" /> : <EyeOff className="h-2.5 w-2.5" />}
                   <span>PENSAR</span>
@@ -1417,20 +1417,20 @@ curl -X POST \\
               <div key={idx} className="space-y-1.5">
                 {/* Linha de Raciocínio do DeepSeek/Gemma/Grok */}
                 {m.thought && (
-                  <details className="group border border-[#c9943a]/25 bg-[#c9943a]/0.04 rounded-lg p-2.5 font-mono text-[7.5px] text-[#c9943a]/90 max-w-[85%] select-none cursor-pointer">
-                    <summary className="font-bold flex items-center gap-1 uppercase tracking-wider text-[#c9943a]/70">
+                  <details className="group border border-[#d2af5a]/25 bg-[#d2af5a]/0.04 rounded-lg p-2.5 font-mono text-[7.5px] text-[#d2af5a]/90 max-w-[85%] select-none cursor-pointer">
+                    <summary className="font-bold flex items-center gap-1 uppercase tracking-wider text-[#d2af5a]/70">
                       <span>✦ Linha de Raciocínio (Internal Thinking)</span>
                       <span className="text-[6.5px] text-white/30 ml-auto group-open:hidden">(Ver Pensamento)</span>
                       <span className="text-[6.5px] text-white/30 ml-auto hidden group-open:inline">(Ocultar)</span>
                     </summary>
-                    <div className="mt-1.5 border-t border-[#c9943a]/10 pt-1.5 whitespace-pre-wrap leading-relaxed">
+                    <div className="mt-1.5 border-t border-[#d2af5a]/10 pt-1.5 whitespace-pre-wrap leading-relaxed">
                       {m.thought}
                     </div>
                   </details>
                 )}
                 
                 <div
-                  className={`chat-msg p-2 px-3 rounded-xl max-w-[85%] leading-relaxed ${m.sender === 'user' ? 'bg-white/10 ml-auto text-white' : 'bg-[#c9943a]/5 text-[#c9943a] border border-[#c9943a]/15'}`}
+                  className={`chat-msg p-2 px-3 rounded-xl max-w-[85%] leading-relaxed ${m.sender === 'user' ? 'bg-white/10 ml-auto text-white' : 'bg-[#d2af5a]/5 text-[#d2af5a] border border-[#d2af5a]/15'}`}
                   dangerouslySetInnerHTML={{ __html: m.text }}
                 />
               </div>
@@ -1438,12 +1438,12 @@ curl -X POST \\
 
             {/* Simulação de Escrita do Pensamento (Thinking Real-time) */}
             {thinkingOutput && (
-              <div className="border border-[#c9943a]/30 bg-[#c9943a]/0.05 rounded-lg p-2.5 font-mono text-[7.5px] text-[#c9943a] max-w-[85%] animate-pulse space-y-1">
-                <div className="font-bold uppercase tracking-wider text-[#c9943a] flex items-center gap-1">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#c9943a] animate-ping" />
+              <div className="border border-[#d2af5a]/30 bg-[#d2af5a]/0.05 rounded-lg p-2.5 font-mono text-[7.5px] text-[#d2af5a] max-w-[85%] animate-pulse space-y-1">
+                <div className="font-bold uppercase tracking-wider text-[#d2af5a] flex items-center gap-1">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#d2af5a] animate-ping" />
                   <span>Modelo Pensando Passo a Passo...</span>
                 </div>
-                <div className="whitespace-pre-wrap leading-relaxed border-t border-[#c9943a]/10 pt-1 mt-1 font-light">
+                <div className="whitespace-pre-wrap leading-relaxed border-t border-[#d2af5a]/10 pt-1 mt-1 font-light">
                   {thinkingOutput}
                 </div>
               </div>
@@ -1462,7 +1462,7 @@ curl -X POST \\
           {/* Selo Built with Llama (Licensing Compliance Llama 4) */}
           {model.startsWith('llama') && (
             <div className="absolute top-12 right-3 z-30 select-none animate-fadeIn">
-              <span className="flex items-center gap-1 text-[7.5px] font-mono font-bold text-[#c9943a] bg-[#c9943a]/10 border border-[#c9943a]/30 px-2 py-0.5 rounded-full shadow-2xl">
+              <span className="flex items-center gap-1 text-[7.5px] font-mono font-bold text-[#d2af5a] bg-[#d2af5a]/10 border border-[#d2af5a]/30 px-2 py-0.5 rounded-full shadow-2xl">
                 <ShieldCheck className="h-3 w-3" />
                 <span>BUILT WITH LLAMA</span>
               </span>
@@ -1472,19 +1472,19 @@ curl -X POST \\
           {/* Chips de Comando Rápido */}
           <div className="flex flex-wrap gap-1 px-3 pb-2 select-none">
             <span
-              className="cursor-pointer px-2.5 py-1 text-[8.5px] font-mono font-semibold rounded-full bg-[#c9943a]/10 border border-[#c9943a]/25 text-[#c9943a] hover:bg-[#c9943a]/20 transition"
+              className="cursor-pointer px-2.5 py-1 text-[8.5px] font-mono font-semibold rounded-full bg-[#d2af5a]/10 border border-[#d2af5a]/25 text-[#d2af5a] hover:bg-[#d2af5a]/20 transition"
               onClick={() => triggerQuickAi('SWOT Viva Meta vs TikTok')}
             >
               SWOT Viva (Ads)
             </span>
             <span
-              className="cursor-pointer px-2.5 py-1 text-[8.5px] font-mono font-semibold rounded-full bg-white/5 border border-white/10 text-[#c9943a] hover:bg-blue-500/20 transition"
+              className="cursor-pointer px-2.5 py-1 text-[8.5px] font-mono font-semibold rounded-full bg-white/5 border border-white/10 text-[#d2af5a] hover:bg-blue-500/20 transition"
               onClick={() => triggerQuickAi('Investir Caixa em CDI')}
             >
               Decisão CDI
             </span>
             <span
-              className="cursor-pointer px-2.5 py-1 text-[8.5px] font-mono font-semibold rounded-full bg-[#c9943a]/10 border border-white/10 text-white/90 hover:bg-[#c9943a]/20 transition"
+              className="cursor-pointer px-2.5 py-1 text-[8.5px] font-mono font-semibold rounded-full bg-[#d2af5a]/10 border border-white/10 text-white/90 hover:bg-[#d2af5a]/20 transition"
               onClick={() => triggerQuickAi('Deploy do Modelo no Model Garden')}
             >
               Model Garden
@@ -1505,7 +1505,7 @@ curl -X POST \\
             />
             <button 
               onClick={() => sendChatMessage(inputValue)}
-              className="h-7 w-7 rounded-xl bg-[#c9943a] text-black font-bold flex items-center justify-center cursor-pointer hover:scale-105 active:scale-98 transition"
+              className="h-7 w-7 rounded-xl bg-[#d2af5a] text-black font-bold flex items-center justify-center cursor-pointer hover:scale-105 active:scale-98 transition"
             >
               ›
             </button>
@@ -1520,34 +1520,34 @@ curl -X POST \\
             <div className="flex items-center gap-1">
               <button 
                 onClick={() => setRightPanelTab('garden')}
-                className={`px-2 py-1 rounded-lg text-[8px] font-mono font-bold transition flex items-center gap-1 ${rightPanelTab === 'garden' ? 'bg-[#c9943a] text-black' : 'text-white/40'}`}
+                className={`px-2 py-1 rounded-lg text-[8px] font-mono font-bold transition flex items-center gap-1 ${rightPanelTab === 'garden' ? 'bg-[#d2af5a] text-black' : 'text-white/40'}`}
               >
                 <Sliders className="h-3 w-3" />
                 <span>Model SDK</span>
               </button>
               <button 
                 onClick={() => setRightPanelTab('multimodal')}
-                className={`px-2 py-1 rounded-lg text-[8px] font-mono font-bold transition flex items-center gap-1 ${rightPanelTab === 'multimodal' ? 'bg-[#c9943a] text-black' : 'text-white/40'}`}
+                className={`px-2 py-1 rounded-lg text-[8px] font-mono font-bold transition flex items-center gap-1 ${rightPanelTab === 'multimodal' ? 'bg-[#d2af5a] text-black' : 'text-white/40'}`}
               >
                 <ImageIcon className="h-3 w-3" />
                 <span>GCP GenAI</span>
               </button>
               <button 
                 onClick={() => setRightPanelTab('translate')}
-                className={`px-2 py-1 rounded-lg text-[8px] font-mono font-bold transition flex items-center gap-1 ${rightPanelTab === 'translate' ? 'bg-[#c9943a] text-black' : 'text-white/40'}`}
+                className={`px-2 py-1 rounded-lg text-[8px] font-mono font-bold transition flex items-center gap-1 ${rightPanelTab === 'translate' ? 'bg-[#d2af5a] text-black' : 'text-white/40'}`}
               >
                 <Languages className="h-3 w-3" />
                 <span>Glossary</span>
               </button>
               <button 
                 onClick={() => setRightPanelTab('embeddings')}
-                className={`px-2 py-1 rounded-lg text-[8px] font-mono font-bold transition flex items-center gap-1 ${rightPanelTab === 'embeddings' ? 'bg-[#c9943a] text-black' : 'text-white/40'}`}
+                className={`px-2 py-1 rounded-lg text-[8px] font-mono font-bold transition flex items-center gap-1 ${rightPanelTab === 'embeddings' ? 'bg-[#d2af5a] text-black' : 'text-white/40'}`}
               >
                 <Compass className="h-3 w-3" />
                 <span>Embed Sandbox</span>
               </button>
             </div>
-            <span className="text-[7px] font-mono bg-white/5 text-[#c9943a] border border-white/10 px-1 py-0.5 rounded">
+            <span className="text-[7px] font-mono bg-white/5 text-[#d2af5a] border border-white/10 px-1 py-0.5 rounded">
               FREE
             </span>
           </div>
@@ -1566,7 +1566,7 @@ curl -X POST \\
                     <span className="text-white/60">GCP Express Mode (Chave API direta)</span>
                     <button
                       onClick={() => setExpressMode(!expressMode)}
-                      className={`px-2 py-0.5 rounded text-[7.5px] font-mono border transition ${expressMode ? 'bg-[#c9943a]/20 text-[#c9943a] border-[#c9943a]/40' : 'bg-black/40 text-white/40 border-white/10'}`}
+                      className={`px-2 py-0.5 rounded text-[7.5px] font-mono border transition ${expressMode ? 'bg-[#d2af5a]/20 text-[#d2af5a] border-[#d2af5a]/40' : 'bg-black/40 text-white/40 border-white/10'}`}
                     >
                       {expressMode ? 'ATIVO' : 'DESATIVADO'}
                     </button>
@@ -1599,12 +1599,12 @@ curl -X POST \\
                 {(model.startsWith('gemma') || model.startsWith('deepseek') || model.startsWith('llama') || model === 'mimo-v2.5' || model === 'voyage-multimodal-3.5' || model === 'voyage-4-lite') && (
                   <div className="mt-1 space-y-1">
                     <div className="flex justify-between text-[8px] font-mono">
-                      <span className="text-[#c9943a] font-bold">Status do Cluster TPU:</span>
+                      <span className="text-[#d2af5a] font-bold">Status do Cluster TPU:</span>
                       <span>{tuningProgress}%</span>
                     </div>
                     <div className="w-full h-1 bg-black/60 rounded-full overflow-hidden border border-white/5">
                       <div 
-                        className="h-full bg-gradient-to-r from-[#c9943a] to-blue-400 transition-all duration-700" 
+                        className="h-full bg-gradient-to-r from-[#d2af5a] to-blue-400 transition-all duration-700" 
                         style={{ width: `${tuningProgress}%` }}
                       />
                     </div>
@@ -1634,8 +1634,8 @@ curl -X POST \\
                 </div>
               ) : (
                 <div className="border border-white/5 bg-black/40 rounded-lg p-2.5 mt-2 flex-1 flex flex-col justify-center items-center gap-1 text-center font-mono">
-                  <Binary className="h-6 w-6 text-[#c9943a]/40" />
-                  <span className="text-[8px] text-[#c9943a]">Conexão Instantânea de API Ativa</span>
+                  <Binary className="h-6 w-6 text-[#d2af5a]/40" />
+                  <span className="text-[8px] text-[#d2af5a]">Conexão Instantânea de API Ativa</span>
                   <span className="text-[6.5px] text-white/30 max-w-[200px]">Sem custos de infraestrutura. Escala automática com tempo de resposta estável na GCP.</span>
                 </div>
               )}
@@ -1644,7 +1644,7 @@ curl -X POST \\
               {(model.startsWith('gemma') || model.startsWith('deepseek') || model.startsWith('llama') || model === 'mimo-v2.5' || model === 'voyage-multimodal-3.5' || model === 'voyage-4-lite') && (
                 <div className="mt-2">
                   {tuningProgress === 100 ? (
-                    <div className="w-full py-1.5 bg-[#c9943a]/10 border border-[#c9943a]/30 text-white/90 rounded-xl text-[8px] font-mono font-bold flex items-center justify-center gap-1.5">
+                    <div className="w-full py-1.5 bg-[#d2af5a]/10 border border-[#d2af5a]/30 text-white/90 rounded-xl text-[8px] font-mono font-bold flex items-center justify-center gap-1.5">
                       <CheckCircle2 className="h-3.5 w-3.5" />
                       <span>TPU CLUSTER OPERACIONAL!</span>
                     </div>
@@ -1652,7 +1652,7 @@ curl -X POST \\
                     <button 
                       onClick={startModelDeployment}
                       disabled={tuningActive}
-                      className="w-full py-1.5 bg-[#c9943a] hover:bg-[#e0b85e] disabled:opacity-50 text-black font-bold rounded-xl text-[8px] font-mono flex items-center justify-center gap-1.5 cursor-pointer active:scale-98 transition-all"
+                      className="w-full py-1.5 bg-[#d2af5a] hover:bg-[#e0b85e] disabled:opacity-50 text-black font-bold rounded-xl text-[8px] font-mono flex items-center justify-center gap-1.5 cursor-pointer active:scale-98 transition-all"
                     >
                       <Play className="h-3 w-3 fill-black" />
                       <span>DEPLOY MODEL VERTEX SDK</span>
@@ -1671,14 +1671,14 @@ curl -X POST \\
               <div className="grid grid-cols-2 gap-1 bg-black/40 p-1 rounded-lg border border-white/5 mb-2">
                 <button
                   onClick={() => setMultimodalType('image')}
-                  className={`py-1 rounded text-[8px] font-mono font-bold transition flex items-center justify-center gap-1 cursor-pointer ${multimodalType === 'image' ? 'bg-[#c9943a]/15 text-[#c9943a] border border-[#c9943a]/20' : 'text-white/40'}`}
+                  className={`py-1 rounded text-[8px] font-mono font-bold transition flex items-center justify-center gap-1 cursor-pointer ${multimodalType === 'image' ? 'bg-[#d2af5a]/15 text-[#d2af5a] border border-[#d2af5a]/20' : 'text-white/40'}`}
                 >
                   <ImageIcon className="h-2.5 w-2.5" />
                   <span>Imagen 4</span>
                 </button>
                 <button
                   onClick={() => setMultimodalType('video')}
-                  className={`py-1 rounded text-[8px] font-mono font-bold transition flex items-center justify-center gap-1 cursor-pointer ${multimodalType === 'video' ? 'bg-[#c9943a]/15 text-[#c9943a] border border-[#c9943a]/20' : 'text-white/40'}`}
+                  className={`py-1 rounded text-[8px] font-mono font-bold transition flex items-center justify-center gap-1 cursor-pointer ${multimodalType === 'video' ? 'bg-[#d2af5a]/15 text-[#d2af5a] border border-[#d2af5a]/20' : 'text-white/40'}`}
                 >
                   <Video className="h-2.5 w-2.5" />
                   <span>Veo 3.0 (Vídeo)</span>
@@ -1695,7 +1695,7 @@ curl -X POST \\
                         <select 
                           value={imagenModel} 
                           onChange={(e: any) => setImagenModel(e.target.value)}
-                          className="bg-black border border-white/10 rounded p-1 text-[7.5px] font-mono text-[#c9943a] outline-none"
+                          className="bg-black border border-white/10 rounded p-1 text-[7.5px] font-mono text-[#d2af5a] outline-none"
                         >
                           <option value="imagen-4.0-ultra">Imagen 4 Ultra</option>
                           <option value="imagen-4.0-fast">Imagen 4 Fast</option>
@@ -1719,7 +1719,7 @@ curl -X POST \\
                       <span>Prompt Enhancement (LLM Rewriter)</span>
                       <button 
                         onClick={() => setEnhancePrompt(!enhancePrompt)}
-                        className={`px-1.5 py-0.5 rounded text-[7px] font-mono border transition ${enhancePrompt ? 'bg-[#c9943a]/10 text-[#c9943a] border-[#c9943a]/35' : 'text-white/20 border-white/10'}`}
+                        className={`px-1.5 py-0.5 rounded text-[7px] font-mono border transition ${enhancePrompt ? 'bg-[#d2af5a]/10 text-[#d2af5a] border-[#d2af5a]/35' : 'text-white/20 border-white/10'}`}
                       >
                         {enhancePrompt ? 'ATIVO' : 'INATIVO'}
                       </button>
@@ -1730,7 +1730,7 @@ curl -X POST \\
                       <textarea 
                         value={imagePrompt}
                         onChange={(e) => setImagePrompt(e.target.value)}
-                        className="bg-black border border-white/10 rounded p-1 text-[8px] text-white/90 h-[40px] resize-none outline-none focus:border-[#c9943a] scrollbar-none"
+                        className="bg-black border border-white/10 rounded p-1 text-[8px] text-white/90 h-[40px] resize-none outline-none focus:border-[#d2af5a] scrollbar-none"
                       />
                     </div>
                   </div>
@@ -1738,7 +1738,7 @@ curl -X POST \\
                   {/* Logs Imagen */}
                   {isGeneratingImage && (
                     <div className="border border-white/5 bg-[#050505] rounded-lg mt-1 overflow-hidden flex flex-col justify-between min-h-[50px]">
-                      <div className="p-1.5 font-mono text-[5.5px] text-[#c9943a]/90 h-[50px] overflow-y-auto space-y-0.5 leading-normal scrollbar-none">
+                      <div className="p-1.5 font-mono text-[5.5px] text-[#d2af5a]/90 h-[50px] overflow-y-auto space-y-0.5 leading-normal scrollbar-none">
                         {imagenLogs.map((log, index) => (
                           <div key={index} className="whitespace-pre-wrap">{log}</div>
                         ))}
@@ -1749,13 +1749,13 @@ curl -X POST \\
 
                   {/* Imagem Resultado */}
                   {generatedImages.length > 0 && !isGeneratingImage && (
-                    <div className="mt-1 relative rounded-lg border border-[#c9943a]/20 bg-black/40 overflow-hidden flex items-center justify-center p-1 group">
+                    <div className="mt-1 relative rounded-lg border border-[#d2af5a]/20 bg-black/40 overflow-hidden flex items-center justify-center p-1 group">
                       <img 
                         src={generatedImages[0]} 
                         alt="Generated Mockup" 
                         className="max-h-[60px] object-contain rounded-md filter drop-shadow-[0_0_8px_rgba(201, 148, 58,0.2)]" 
                       />
-                      <div className="absolute bottom-1 right-1 bg-black/80 px-1 py-0.5 rounded text-[5px] font-mono text-white/90 border border-[#c9943a]/30">
+                      <div className="absolute bottom-1 right-1 bg-black/80 px-1 py-0.5 rounded text-[5px] font-mono text-white/90 border border-[#d2af5a]/30">
                         SYNTHID PROTECTED
                       </div>
                     </div>
@@ -1764,7 +1764,7 @@ curl -X POST \\
                   <button 
                     onClick={generateImagen4Image}
                     disabled={isGeneratingImage || !imagePrompt.trim()}
-                    className="w-full mt-2 py-2 bg-[#c9943a] text-black font-bold rounded-xl text-[9px] font-mono flex items-center justify-center gap-1.5 cursor-pointer active:scale-98 transition"
+                    className="w-full mt-2 py-2 bg-[#d2af5a] text-black font-bold rounded-xl text-[9px] font-mono flex items-center justify-center gap-1.5 cursor-pointer active:scale-98 transition"
                   >
                     <ImageIcon className="h-3.5 w-3.5 fill-black" />
                     <span>{isGeneratingImage ? 'DIFUNDINDO PIXELS...' : 'GERAR IMAGEM COM IMAGEN 4'}</span>
@@ -1782,7 +1782,7 @@ curl -X POST \\
                         <select 
                           value={veoResolution} 
                           onChange={(e: any) => setVeoResolution(e.target.value)}
-                          className="bg-black border border-white/10 rounded p-1 text-[7.5px] font-mono text-[#c9943a] outline-none"
+                          className="bg-black border border-white/10 rounded p-1 text-[7.5px] font-mono text-[#d2af5a] outline-none"
                         >
                           <option value="1080p">1080p Full HD</option>
                           <option value="720p">720p HD</option>
@@ -1794,7 +1794,7 @@ curl -X POST \\
                         <label className="text-[7px] font-mono text-white/40 uppercase">Gerar Áudio</label>
                         <button
                           onClick={() => setVeoAudio(!veoAudio)}
-                          className={`w-full p-1 rounded text-[8px] font-mono border transition flex items-center justify-center gap-1 cursor-pointer ${veoAudio ? 'bg-[#c9943a]/10 text-[#c9943a] border-[#c9943a]/35' : 'text-white/20 border-white/10'}`}
+                          className={`w-full p-1 rounded text-[8px] font-mono border transition flex items-center justify-center gap-1 cursor-pointer ${veoAudio ? 'bg-[#d2af5a]/10 text-[#d2af5a] border-[#d2af5a]/35' : 'text-white/20 border-white/10'}`}
                         >
                           {veoAudio ? <Volume2 className="h-3 w-3" /> : <VolumeX className="h-3 w-3" />}
                           <span>{veoAudio ? 'ATIVADO' : 'INATIVO'}</span>
@@ -1816,7 +1816,7 @@ curl -X POST \\
                   {isGeneratingVideo && (
                     <div className="border border-white/5 bg-[#050505] rounded-lg mt-1 overflow-hidden flex flex-col justify-between min-h-[60px]">
                       <div className="bg-black/95 px-2 py-0.5 flex items-center justify-between border-b border-white/5">
-                        <div className="text-[#c9943a] font-mono text-[5.5px] font-bold">
+                        <div className="text-[#d2af5a] font-mono text-[5.5px] font-bold">
                           VEO-3 LONG-RUNNING OP ({operationId})
                         </div>
                       </div>
@@ -1831,7 +1831,7 @@ curl -X POST \\
 
                   {/* Vídeo Resultado */}
                   {generatedVideos.length > 0 && !isGeneratingVideo && (
-                    <div className="mt-1 relative rounded-lg border border-[#c9943a]/20 bg-black/40 overflow-hidden flex flex-col items-center justify-center p-1.5">
+                    <div className="mt-1 relative rounded-lg border border-[#d2af5a]/20 bg-black/40 overflow-hidden flex flex-col items-center justify-center p-1.5">
                       <div className="flex items-center gap-1 text-white/90 font-mono text-[7px] font-bold mb-1">
                         <Film className="h-3 w-3 animate-pulse" />
                         <span>projects/ipb/TIMESTAMP/video_0.mp4</span>
@@ -1841,7 +1841,7 @@ curl -X POST \\
                         alt="Video Frame Preview" 
                         className="max-h-[50px] object-contain rounded-md filter drop-shadow-[0_0_8px_rgba(245,158,11,0.2)]" 
                       />
-                      <div className="absolute bottom-2 right-2 bg-black/90 px-1 py-0.5 rounded text-[5px] font-mono text-[#c9943a] border border-[#c9943a]/30">
+                      <div className="absolute bottom-2 right-2 bg-black/90 px-1 py-0.5 rounded text-[5px] font-mono text-[#d2af5a] border border-[#d2af5a]/30">
                         VEO SynthID SECURE
                       </div>
                     </div>
@@ -1850,7 +1850,7 @@ curl -X POST \\
                   <button 
                     onClick={generateVeo3Video}
                     disabled={isGeneratingVideo || !videoPrompt.trim()}
-                    className="w-full mt-2 py-2 bg-[#c9943a] text-black font-bold rounded-xl text-[9px] font-mono flex items-center justify-center gap-1.5 cursor-pointer active:scale-98 transition"
+                    className="w-full mt-2 py-2 bg-[#d2af5a] text-black font-bold rounded-xl text-[9px] font-mono flex items-center justify-center gap-1.5 cursor-pointer active:scale-98 transition"
                   >
                     <Film className="h-3.5 w-3.5 fill-black" />
                     <span>{isGeneratingVideo ? 'PROCESSANDO OPERAÇÃO...' : 'GERAR VÍDEO COM VEO 3.0'}</span>
@@ -1885,7 +1885,7 @@ curl -X POST \\
                       <select 
                         value={targetLang} 
                         onChange={(e: any) => setTargetLang(e.target.value)}
-                        className="bg-black border border-white/10 rounded p-1 text-[7.5px] font-mono text-[#c9943a] outline-none"
+                        className="bg-black border border-white/10 rounded p-1 text-[7.5px] font-mono text-[#d2af5a] outline-none"
                       >
                         <option value="pt">Português (BR)</option>
                         <option value="es">Español (ES)</option>
@@ -1905,7 +1905,7 @@ curl -X POST \\
                       value={glossaryInput}
                       onChange={(e) => setGlossaryInput(e.target.value)}
                       placeholder="IPB = Plataforma de Inteligência..."
-                      className="bg-black border border-white/10 rounded p-1 text-[7.5px] font-mono text-[#c9943a] h-[45px] resize-none outline-none focus:border-[#c9943a] scrollbar-none"
+                      className="bg-black border border-white/10 rounded p-1 text-[7.5px] font-mono text-[#d2af5a] h-[45px] resize-none outline-none focus:border-[#d2af5a] scrollbar-none"
                     />
                   </div>
 
@@ -1915,7 +1915,7 @@ curl -X POST \\
                     <textarea 
                       value={translationInput}
                       onChange={(e) => setTranslationInput(e.target.value)}
-                      className="bg-black border border-white/10 rounded p-1 text-[8px] text-white/90 h-[40px] resize-none outline-none focus:border-[#c9943a] scrollbar-none"
+                      className="bg-black border border-white/10 rounded p-1 text-[8px] text-white/90 h-[40px] resize-none outline-none focus:border-[#d2af5a] scrollbar-none"
                     />
                   </div>
                 </div>
@@ -1934,7 +1934,7 @@ curl -X POST \\
 
                 {/* Resultado da Tradução */}
                 {translationOutput && !isTranslating && (
-                  <div className="mt-1 relative rounded-lg border border-[#c9943a]/20 bg-black/40 p-2 font-mono text-[8px] text-white/90 max-h-[60px] overflow-y-auto scrollbar-none">
+                  <div className="mt-1 relative rounded-lg border border-[#d2af5a]/20 bg-black/40 p-2 font-mono text-[8px] text-white/90 max-h-[60px] overflow-y-auto scrollbar-none">
                     <div className="text-[6px] text-white/30 uppercase tracking-widest border-b border-white/5 pb-0.5 mb-1 flex items-center justify-between">
                       <span>Saída Adaptativa</span>
                       <span className="text-white/90 font-bold">Glossário OK</span>
@@ -1946,7 +1946,7 @@ curl -X POST \\
                 <button 
                   onClick={handleAdaptiveTranslation}
                   disabled={isTranslating || !translationInput.trim()}
-                  className="w-full mt-2 py-1.5 bg-[#c9943a] text-black font-bold rounded-xl text-[8px] font-mono flex items-center justify-center gap-1.5 cursor-pointer active:scale-98 transition"
+                  className="w-full mt-2 py-1.5 bg-[#d2af5a] text-black font-bold rounded-xl text-[8px] font-mono flex items-center justify-center gap-1.5 cursor-pointer active:scale-98 transition"
                 >
                   <Languages className="h-3.5 w-3.5" />
                   <span>{isTranslating ? 'TRADUZINDO ADAPTATIVO...' : 'EXECUTAR ADAPTIVE TRANSLATE'}</span>
@@ -1970,7 +1970,7 @@ curl -X POST \\
                         <select 
                           value={voyage4InputType} 
                           onChange={(e: any) => setVoyage4InputType(e.target.value)}
-                          className="bg-black border border-white/10 rounded p-1 text-[7.5px] font-mono text-[#c9943a] outline-none"
+                          className="bg-black border border-white/10 rounded p-1 text-[7.5px] font-mono text-[#d2af5a] outline-none"
                         >
                           <option value="null">General / null</option>
                           <option value="query">Query (Retrieval)</option>
@@ -1993,7 +1993,7 @@ curl -X POST \\
                           <select 
                             value={voyage4DataType} 
                             onChange={(e: any) => setVoyage4DataType(e.target.value as any)}
-                            className="bg-black border border-white/10 rounded p-0.5 text-[7px] font-mono text-[#c9943a] outline-none"
+                            className="bg-black border border-white/10 rounded p-0.5 text-[7px] font-mono text-[#d2af5a] outline-none"
                           >
                             <option value="float">float32</option>
                             <option value="int8">int8</option>
@@ -2014,7 +2014,7 @@ curl -X POST \\
                       <textarea 
                         value={voyage4Texts}
                         onChange={(e) => setVoyage4Texts(e.target.value)}
-                        className="bg-black border border-white/10 rounded p-1 text-[7.5px] text-white/90 h-[50px] resize-none outline-none focus:border-[#c9943a] scrollbar-none"
+                        className="bg-black border border-white/10 rounded p-1 text-[7.5px] text-white/90 h-[50px] resize-none outline-none focus:border-[#d2af5a] scrollbar-none"
                       />
                     </div>
                   </div>
@@ -2036,7 +2036,7 @@ curl -X POST \\
                     <div className="mt-1 relative rounded-lg border border-white/10 bg-black/40 p-2 font-mono text-[6.5px] text-white/90 max-h-[85px] overflow-y-auto scrollbar-none">
                       <div className="text-[6px] text-white/30 uppercase tracking-widest border-b border-white/5 pb-0.5 mb-1 flex items-center justify-between">
                         <span>LOTE DE EMBEDDINGS ({voyage4Result.totalTexts} Vetores × {voyage4Result.dimensions}d)</span>
-                        <span className="text-[#c9943a] font-bold">{voyage4Result.dataType}</span>
+                        <span className="text-[#d2af5a] font-bold">{voyage4Result.dataType}</span>
                       </div>
                       <div className="space-y-1.5">
                         {voyage4Result.embeddings.map((item: any, idx: number) => (
@@ -2052,7 +2052,7 @@ curl -X POST \\
                   <button 
                     onClick={handleVoyage4Embedding}
                     disabled={isVoyage4Embedding || !voyage4Texts.trim()}
-                    className="w-full mt-2 py-1.5 bg-[#c9943a] text-black font-bold rounded-xl text-[8px] font-mono flex items-center justify-center gap-1.5 cursor-pointer active:scale-98 transition"
+                    className="w-full mt-2 py-1.5 bg-[#d2af5a] text-black font-bold rounded-xl text-[8px] font-mono flex items-center justify-center gap-1.5 cursor-pointer active:scale-98 transition"
                   >
                     <Compass className="h-3.5 w-3.5" />
                     <span>{isVoyage4Embedding ? 'VETORIZANDO LOTE H100...' : 'GERAR BATCH EMBEDDINGS'}</span>
@@ -2068,7 +2068,7 @@ curl -X POST \\
                         <select 
                           value={voyageInputType} 
                           onChange={(e: any) => setVoyageInputType(e.target.value)}
-                          className="bg-black border border-white/10 rounded p-1 text-[7.5px] font-mono text-[#c9943a] outline-none"
+                          className="bg-black border border-white/10 rounded p-1 text-[7.5px] font-mono text-[#d2af5a] outline-none"
                         >
                           <option value="null">General / null</option>
                           <option value="query">Query (Retrieval)</option>
@@ -2091,7 +2091,7 @@ curl -X POST \\
                           <select 
                             value={voyageDataType} 
                             onChange={(e: any) => setVoyageDataType(e.target.value as any)}
-                            className="bg-black border border-white/10 rounded p-0.5 text-[7px] font-mono text-[#c9943a] outline-none"
+                            className="bg-black border border-white/10 rounded p-0.5 text-[7px] font-mono text-[#d2af5a] outline-none"
                           >
                             <option value="float">float32</option>
                             <option value="int8">int8</option>
@@ -2111,7 +2111,7 @@ curl -X POST \\
                             type="checkbox" 
                             checked={voyageHasImage} 
                             onChange={() => setVoyageHasImage(!voyageHasImage)} 
-                            className="rounded accent-[#c9943a] cursor-pointer"
+                            className="rounded accent-[#d2af5a] cursor-pointer"
                           />
                           <span>+ Imagem</span>
                         </label>
@@ -2120,7 +2120,7 @@ curl -X POST \\
                             type="checkbox" 
                             checked={voyageHasVideo} 
                             onChange={() => setVoyageHasVideo(!voyageHasVideo)} 
-                            className="rounded accent-[#c9943a] cursor-pointer"
+                            className="rounded accent-[#d2af5a] cursor-pointer"
                           />
                           <span>+ Vídeo</span>
                         </label>
@@ -2132,7 +2132,7 @@ curl -X POST \\
                       <textarea 
                         value={voyageInputText}
                         onChange={(e) => setVoyageInputText(e.target.value)}
-                        className="bg-black border border-white/10 rounded p-1 text-[8px] text-white/90 h-[40px] resize-none outline-none focus:border-[#c9943a] scrollbar-none"
+                        className="bg-black border border-white/10 rounded p-1 text-[8px] text-white/90 h-[40px] resize-none outline-none focus:border-[#d2af5a] scrollbar-none"
                       />
                     </div>
                   </div>
@@ -2189,7 +2189,7 @@ curl -X POST \\
                   <button 
                     onClick={handleVoyageEmbedding}
                     disabled={isVoyageEmbedding || !voyageInputText.trim()}
-                    className="w-full mt-2 py-1.5 bg-[#c9943a] text-black font-bold rounded-xl text-[8px] font-mono flex items-center justify-center gap-1.5 cursor-pointer active:scale-98 transition"
+                    className="w-full mt-2 py-1.5 bg-[#d2af5a] text-black font-bold rounded-xl text-[8px] font-mono flex items-center justify-center gap-1.5 cursor-pointer active:scale-98 transition"
                   >
                     <Compass className="h-3.5 w-3.5" />
                     <span>{isVoyageEmbedding ? 'MIXANDO MULTIMODAL GPU...' : 'GERAR MULTIMODAL EMBEDDING'}</span>
@@ -2205,7 +2205,7 @@ curl -X POST \\
                         <select 
                           value={jinaTask} 
                           onChange={(e: any) => setJinaTask(e.target.value)}
-                          className="bg-black border border-white/10 rounded p-1 text-[7.5px] font-mono text-[#c9943a] outline-none"
+                          className="bg-black border border-white/10 rounded p-1 text-[7.5px] font-mono text-[#d2af5a] outline-none"
                         >
                           <option value="text-matching">Semantic / text-matching</option>
                           <option value="retrieval.query">Search / retrieval.query</option>
@@ -2236,7 +2236,7 @@ curl -X POST \\
                       <span className="flex items-center gap-1">Late Chunking (Context preservation)</span>
                       <button
                         onClick={() => setJinaLateChunking(!jinaLateChunking)}
-                        className={`px-2 py-0.5 rounded text-[6.5px] border transition ${jinaLateChunking ? 'bg-[#c9943a]/10 text-[#c9943a] border-[#c9943a]/35' : 'text-white/20 border-white/10'}`}
+                        className={`px-2 py-0.5 rounded text-[6.5px] border transition ${jinaLateChunking ? 'bg-[#d2af5a]/10 text-[#d2af5a] border-[#d2af5a]/35' : 'text-white/20 border-white/10'}`}
                       >
                         {jinaLateChunking ? 'ATIVADO' : 'DESATIVADO'}
                       </button>
@@ -2248,7 +2248,7 @@ curl -X POST \\
                       <textarea 
                         value={jinaInput}
                         onChange={(e) => setJinaInput(e.target.value)}
-                        className="bg-black border border-white/10 rounded p-1 text-[8px] text-white/90 h-[40px] resize-none outline-none focus:border-[#c9943a] scrollbar-none"
+                        className="bg-black border border-white/10 rounded p-1 text-[8px] text-white/90 h-[40px] resize-none outline-none focus:border-[#d2af5a] scrollbar-none"
                       />
                     </div>
                   </div>
@@ -2270,7 +2270,7 @@ curl -X POST \\
                     <div className="mt-1 relative rounded-lg border border-white/10 bg-black/40 p-2 font-mono text-[7px] text-white/90">
                       <div className="text-[6px] text-white/30 uppercase tracking-widest border-b border-white/5 pb-0.5 mb-1 flex items-center justify-between">
                         <span>JINA VECTOR ({embeddingResult.dimensions}d)</span>
-                        <span className="text-[#c9943a] font-bold">L2 NORMALIZED</span>
+                        <span className="text-[#d2af5a] font-bold">L2 NORMALIZED</span>
                       </div>
                       <div className="text-[#4ade80] font-bold truncate mb-1">
                         [{embeddingResult.vector.join(', ')}, ...]
@@ -2302,7 +2302,7 @@ curl -X POST \\
                   <button 
                     onClick={handleJinaEmbedding}
                     disabled={isEmbedding || !jinaInput.trim()}
-                    className="w-full mt-2 py-1.5 bg-[#c9943a] text-black font-bold rounded-xl text-[8px] font-mono flex items-center justify-center gap-1.5 cursor-pointer active:scale-98 transition"
+                    className="w-full mt-2 py-1.5 bg-[#d2af5a] text-black font-bold rounded-xl text-[8px] font-mono flex items-center justify-center gap-1.5 cursor-pointer active:scale-98 transition"
                   >
                     <Compass className="h-3.5 w-3.5" />
                     <span>{isEmbedding ? 'VETORIZANDO GPU...' : 'GERAR VECTOR EMBEDDING'}</span>
@@ -2325,7 +2325,7 @@ curl -X POST \\
           <p>Tire dúvidas sobre finanças com o Gemini 3.5 Flash e a suíte Grok 4, execute traduções de glossário com o Translation LLM ou gere embeddings com o Jina v3 e Voyage 4.</p>
         </div>
         <div className="action-group">
-          <button className="btn-enter-scene text-[#1a120a] flex items-center gap-1.5 bg-[#c9943a] hover:bg-[#e0b85e]">
+          <button className="btn-enter-scene text-[#1a120a] flex items-center gap-1.5 bg-[#d2af5a] hover:bg-[#e0b85e]">
             <Sparkles className="h-4 w-4" />
             <span>Consultar Gemini Pro</span>
           </button>

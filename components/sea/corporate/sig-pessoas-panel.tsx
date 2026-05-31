@@ -863,7 +863,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
             exit={{ opacity: 0, y: -20, x: '-50%' }}
             className={`fixed top-6 left-1/2 z-50 px-4 py-2 rounded-lg text-xs font-semibold shadow-2xl backdrop-blur-md border ${
               toastType === 'ok' 
-                ? 'bg-black/90 text-[#c9943a] border-[#c9943a]/20' 
+                ? 'bg-black/90 text-[#d2af5a] border-[#d2af5a]/20' 
                 : 'bg-red-950/90 text-red-400 border-red-900/30'
             }`}
           >
@@ -914,9 +914,9 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
           border-color: rgba(255, 255, 255, 0.04);
         }
         .tab-p-btn.active {
-          color: #c9943a !important;
+          color: #d2af5a !important;
           background: linear-gradient(180deg, rgba(30, 25, 18, 0.75) 0%, rgba(18, 15, 10, 0.85) 100%) !important;
-          border: 0.2px solid #c9943a !important;
+          border: 0.2px solid #d2af5a !important;
           box-shadow: 0 0 0 2px rgba(255,255,255,0.2), inset 0 1px 0 rgba(201, 148, 58, 0.12), 0 0 18px rgba(201, 148, 58, 0.25) !important;
           font-weight: 600;
         }
@@ -924,7 +924,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
           display: flex; align-items: center; gap: 6px;
           padding: 7px 12px; background: rgba(201, 148, 58,0.08);
           border: 0.2px solid rgba(201, 148, 58,0.25); border-radius: 8px;
-          color: #c9943a; font-family: inherit; font-size: 9.5px; font-weight: 600;
+          color: #d2af5a; font-family: inherit; font-size: 9.5px; font-weight: 600;
           cursor: pointer; transition: all 0.2s; letter-spacing: 0.04em;
           align-self: center;
         }
@@ -1039,13 +1039,13 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
           width: 8px; height: 8px; border-radius: 50%;
           background: rgba(255,255,255,0.25); transition: all 0.2s;
         }
-        .vc-dot.active { border-color: rgba(201, 148, 58,0.4); background: rgba(201, 148, 58,0.06); color: #c9943a; }
-        .vc-dot.active .dot-circle { background: #c9943a; box-shadow: 0 0 6px rgba(201, 148, 58,0.6); }
+        .vc-dot.active { border-color: rgba(201, 148, 58,0.4); background: rgba(201, 148, 58,0.06); color: #d2af5a; }
+        .vc-dot.active .dot-circle { background: #d2af5a; box-shadow: 0 0 6px rgba(201, 148, 58,0.6); }
         .vc-dot:hover { border-color: rgba(255,255,255,0.15); }
         .vc-saude-bar { margin-top: 12px; }
         .vc-saude-bar .lbl { font-size: 9px; color: #8a9098; margin-bottom: 4px; font-family: inherit; text-transform: uppercase; letter-spacing: 0.05em; }
         .vc-bar-track { height: 5px; background: rgba(255,255,255,0.05); border-radius: 3px; overflow: hidden; }
-        .vc-bar-fill { height: 100%; border-radius: 3px; background: linear-gradient(90deg, #b8975a, #c9943a, #e0c887); transition: width 0.8s ease-out; }
+        .vc-bar-fill { height: 100%; border-radius: 3px; background: linear-gradient(90deg, #b8975a, #d2af5a, #e0c887); transition: width 0.8s ease-out; }
         .btn-reset-sm {
           padding: 5px 10px; border: 0.2px solid rgba(255,255,255,0.1); border-radius: 6px;
           font-family: inherit; font-size: 9px; color: #8a9098;
@@ -1127,7 +1127,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
         }
         .manifesto-item:hover { border-color: rgba(201, 148, 58, 0.35) !important; background: rgba(15, 15, 18, 0.55) !important; }
         .manifesto-item .m-code {
-          font-family: inherit; font-size: 9px; color: #c9943a;
+          font-family: inherit; font-size: 9px; color: #d2af5a;
           background: rgba(201, 148, 58,0.1); border: 0.2px solid rgba(201, 148, 58,0.2);
           padding: 2px 6px; border-radius: 4px; flex-shrink: 0; font-weight: 700;
         }
@@ -1155,13 +1155,13 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
         .passo-item .p-num {
           width: 22px; height: 22px; border-radius: 50%; border: 0.2px solid rgba(201, 148, 58,0.3);
           display: flex; align-items: center; justify-content: center;
-          font-family: inherit; font-size: 10px; color: #c9943a; flex-shrink: 0; font-weight: 700;
+          font-family: inherit; font-size: 10px; color: #d2af5a; flex-shrink: 0; font-weight: 700;
         }
         .passo-item .p-body { flex: 1; }
         .passo-item .p-title { font-size: 11px; font-weight: 600; color: #f3f5f8; display: block; margin-bottom: 2px; }
         .passo-item .p-title.done { text-decoration: line-through; opacity: 0.45; }
         .passo-item .p-desc { font-size: 9.5px; color: #8a9098; line-height: 1.4; }
-        .passo-item .p-arrow { color: #c9943a; font-size: 14px; flex-shrink: 0; align-self: center; }
+        .passo-item .p-arrow { color: #d2af5a; font-size: 14px; flex-shrink: 0; align-self: center; }
 
         /* Telemetry blocks & okr nav */
         .blocos-nav-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 12px; }
@@ -1195,7 +1195,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
         /* Twinkle & Pulso Rating styles */
         .pulso-semana-badge {
           padding: 4px 8px; border-radius: 4px; background: rgba(201, 148, 58,0.15);
-          color: #c9943a; border: 0.2px solid rgba(201, 148, 58,0.25); font-family: inherit; font-size: 8.5px;
+          color: #d2af5a; border: 0.2px solid rgba(201, 148, 58,0.25); font-family: inherit; font-size: 8.5px;
         }
         .pulso-rating-row { display: flex; gap: 8px; margin-top: 6px; }
         .pulso-btn {
@@ -1206,7 +1206,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
         }
         .pulso-btn:hover { border-color: rgba(255,255,255,0.15); color: #fff; }
         .pulso-btn.active {
-          background: rgba(201, 148, 58,0.20) !important; border-color: #c9943a !important; color: #c9943a !important;
+          background: rgba(201, 148, 58,0.20) !important; border-color: #d2af5a !important; color: #d2af5a !important;
           box-shadow: 0 0 8px rgba(201, 148, 58,0.2);
         }
         .pulso-input-area {
@@ -1217,11 +1217,11 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
         .pulso-input-area:focus { border-color: rgba(201, 148, 58,0.4); }
         .btn-pulso-save {
           width: 100%; padding: 10px; border-radius: 8px; background: rgba(201, 148, 58,0.15);
-          border: 0.2px solid rgba(201, 148, 58,0.4); color: #c9943a; font-family: inherit; font-size: 10px;
+          border: 0.2px solid rgba(201, 148, 58,0.4); color: #d2af5a; font-family: inherit; font-size: 10px;
           font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; cursor: pointer;
           transition: all 0.2s; margin-top: 14px;
         }
-        .btn-pulso-save:hover { background: rgba(201, 148, 58,0.3); border-color: #c9943a; }
+        .btn-pulso-save:hover { background: rgba(201, 148, 58,0.3); border-color: #d2af5a; }
 
         /* Candidate cards & layouts */
         .cand-card-mockup {
@@ -1271,7 +1271,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
           font-family: inherit;
           font-size: 14px;
           font-weight: 700;
-          color: #c9943a;
+          color: #d2af5a;
           box-shadow: 0 0 10px rgba(255, 255, 255, 0.15), inset 0 0 4px rgba(255, 255, 255, 0.15);
           flex-shrink: 0;
         }
@@ -1282,7 +1282,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
         .cand-card-mockup .name {
           font-size: 13px;
           font-weight: 700;
-          color: #c9943a;
+          color: #d2af5a;
           display: block;
         }
         .cand-card-mockup .subtext {
@@ -1342,7 +1342,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
         .btn-onboard {
           margin-top: 14px;
           padding: 10px 14px;
-          background: linear-gradient(135deg, #c9943a 0%, #b8975a 100%) !important;
+          background: linear-gradient(135deg, #d2af5a 0%, #b8975a 100%) !important;
           border: none !important;
           color: #0f0d09 !important;
           font-family: inherit;
@@ -1427,7 +1427,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
           background: rgba(201, 148, 58, 0.08) !important;
           border-color: rgba(201, 148, 58, 0.5) !important;
           box-shadow: 0 0 0 1.5px rgba(255, 255, 255, 0.15), 0 2px 8px rgba(201, 148, 58, 0.1) !important;
-          color: #c9943a !important;
+          color: #d2af5a !important;
           font-weight: 600;
         }
 
@@ -1616,12 +1616,12 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                 
                 <div className="flex justify-between items-center mb-6 relative z-10">
                   <div className="text-left">
-                    <span className="font-mono text-[9px] text-[#c9943a] tracking-widest block mb-1 font-bold uppercase">DIAGNÓSTICO 6D</span>
+                    <span className="font-mono text-[9px] text-[#d2af5a] tracking-widest block mb-1 font-bold uppercase">DIAGNÓSTICO 6D</span>
                     <h3 className="text-[16px] font-bold text-white mb-0.5">Visão Cruzada · Saúde 6D</h3>
                     <div className="text-[10px] text-white/50 font-sans">Radar organizacional · n = {teamMembers.length} colaboradores</div>
                   </div>
                   <div className="flex gap-2 items-center">
-                    <button onClick={handleResetRadar} className="px-3.5 py-1.5 bg-black/60 hover:bg-[#c9943a]/15 border border-[#c9943a]/30 rounded-xl text-[9px] font-bold text-[#c9943a] font-mono transition-all uppercase tracking-wider">⟲ RESET</button>
+                    <button onClick={handleResetRadar} className="px-3.5 py-1.5 bg-black/60 hover:bg-[#d2af5a]/15 border border-[#d2af5a]/30 rounded-xl text-[9px] font-bold text-[#d2af5a] font-mono transition-all uppercase tracking-wider">⟲ RESET</button>
                   </div>
                 </div>
 
@@ -1633,12 +1633,12 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                       <svg className="w-full h-full overflow-visible" viewBox="-200 -200 400 400">
                         <defs>
                           <radialGradient id="crystalFillH" cx="50%" cy="50%" r="50%">
-                            <stop offset="0%" stopColor="#c9943a" stopOpacity="0.35"/>
-                            <stop offset="100%" stopColor="#c9943a" stopOpacity="0.05"/>
+                            <stop offset="0%" stopColor="#d2af5a" stopOpacity="0.35"/>
+                            <stop offset="100%" stopColor="#d2af5a" stopOpacity="0.05"/>
                           </radialGradient>
                           <linearGradient id="crystalStrokeH" x1="0" y1="-150" x2="0" y2="150" gradientUnits="userSpaceOnUse">
                             <stop offset="0%" stopColor="#ffffff" stopOpacity="0.6"/>
-                            <stop offset="50%" stopColor="#c9943a" stopOpacity="0.45"/>
+                            <stop offset="50%" stopColor="#d2af5a" stopOpacity="0.45"/>
                             <stop offset="100%" stopColor="#ffffff" stopOpacity="0.5"/>
                           </linearGradient>
                         </defs>
@@ -1671,22 +1671,22 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                             ${p6.x},${p6.y}
                           `} 
                           fill="url(#crystalFillH)" 
-                          stroke="#c9943a" 
+                          stroke="#d2af5a" 
                           strokeWidth="2" 
                           opacity="0.85"
                           style={{ transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)' }}
                         />
 
                         {/* Vertex Dots */}
-                        {selectedDims.includes('D1') && <circle cx={p1.x} cy={p1.y} r="4.5" fill="#151310" stroke="#c9943a" strokeWidth="2" className="drop-shadow-[0_0_8px_rgba(201, 148, 58,0.8)]"/>}
-                        {selectedDims.includes('D2') && <circle cx={p2.x} cy={p2.y} r="4.5" fill="#151310" stroke="#c9943a" strokeWidth="2" className="drop-shadow-[0_0_8px_rgba(201, 148, 58,0.8)]"/>}
-                        {selectedDims.includes('D3') && <circle cx={p3.x} cy={p3.y} r="4.5" fill="#151310" stroke="#c9943a" strokeWidth="2" className="drop-shadow-[0_0_8px_rgba(201, 148, 58,0.8)]"/>}
-                        {selectedDims.includes('D4') && <circle cx={p4.x} cy={p4.y} r="4.5" fill="#151310" stroke="#c9943a" strokeWidth="2" className="drop-shadow-[0_0_8px_rgba(201, 148, 58,0.8)]"/>}
-                        {selectedDims.includes('D5') && <circle cx={p5.x} cy={p5.y} r="4.5" fill="#151310" stroke="#c9943a" strokeWidth="2" className="drop-shadow-[0_0_8px_rgba(201, 148, 58,0.8)]"/>}
-                        {selectedDims.includes('D6') && <circle cx={p6.x} cy={p6.y} r="4.5" fill="#151310" stroke="#c9943a" strokeWidth="2" className="drop-shadow-[0_0_8px_rgba(201, 148, 58,0.8)]"/>}
+                        {selectedDims.includes('D1') && <circle cx={p1.x} cy={p1.y} r="4.5" fill="#151310" stroke="#d2af5a" strokeWidth="2" className="drop-shadow-[0_0_8px_rgba(201, 148, 58,0.8)]"/>}
+                        {selectedDims.includes('D2') && <circle cx={p2.x} cy={p2.y} r="4.5" fill="#151310" stroke="#d2af5a" strokeWidth="2" className="drop-shadow-[0_0_8px_rgba(201, 148, 58,0.8)]"/>}
+                        {selectedDims.includes('D3') && <circle cx={p3.x} cy={p3.y} r="4.5" fill="#151310" stroke="#d2af5a" strokeWidth="2" className="drop-shadow-[0_0_8px_rgba(201, 148, 58,0.8)]"/>}
+                        {selectedDims.includes('D4') && <circle cx={p4.x} cy={p4.y} r="4.5" fill="#151310" stroke="#d2af5a" strokeWidth="2" className="drop-shadow-[0_0_8px_rgba(201, 148, 58,0.8)]"/>}
+                        {selectedDims.includes('D5') && <circle cx={p5.x} cy={p5.y} r="4.5" fill="#151310" stroke="#d2af5a" strokeWidth="2" className="drop-shadow-[0_0_8px_rgba(201, 148, 58,0.8)]"/>}
+                        {selectedDims.includes('D6') && <circle cx={p6.x} cy={p6.y} r="4.5" fill="#151310" stroke="#d2af5a" strokeWidth="2" className="drop-shadow-[0_0_8px_rgba(201, 148, 58,0.8)]"/>}
 
                         {/* Axis Labels */}
-                        <g fontStyle="Poppins" fontSize="11" fontWeight="700" fill="#c9943a" className="tracking-widest drop-shadow-[0_0_4px_rgba(0,0,0,0.8)]">
+                        <g fontStyle="Poppins" fontSize="11" fontWeight="700" fill="#d2af5a" className="tracking-widest drop-shadow-[0_0_4px_rgba(0,0,0,0.8)]">
                           <text x="0" y="-155" textAnchor="middle">D1</text>
                           <text x="142" y="-76" textAnchor="middle">D2</text>
                           <text x="142" y="86" textAnchor="middle">D3</text>
@@ -1702,7 +1702,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                           <span className="text-xl font-bold text-white tracking-tighter leading-none">
                             {selectedDims.length * 12 + 4}
                           </span>
-                          <span className="text-[5.5px] uppercase tracking-widest text-[#c9943a] mt-1 font-mono">OBI GLOBAL</span>
+                          <span className="text-[5.5px] uppercase tracking-widest text-[#d2af5a] mt-1 font-mono">OBI GLOBAL</span>
                           <span className="text-[6.5px] text-[#5dcaa5] mt-0.5 font-bold">▲ +3.2</span>
                         </div>
                       </div>
@@ -1716,7 +1716,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                         <div 
                           key={dim.code}
                           onClick={() => handleSelectDimension(dim.code)}
-                          className={`vc-dot flex items-center gap-2 p-2 bg-black/40 border border-white/5 hover:border-white/10 rounded-xl cursor-pointer transition ${selectedDims.includes(dim.code) ? 'active border-[#c9943a]/20 bg-[#c9943a]/5' : ''}`}
+                          className={`vc-dot flex items-center gap-2 p-2 bg-black/40 border border-white/5 hover:border-white/10 rounded-xl cursor-pointer transition ${selectedDims.includes(dim.code) ? 'active border-[#d2af5a]/20 bg-[#d2af5a]/5' : ''}`}
                         >
                           <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: dim.color, boxShadow: `0 0 6px ${dim.color}` }}></span>
                           <span className="text-[10px] font-mono font-bold text-white/80">{dim.code}</span>
@@ -1727,9 +1727,9 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
 
                     {/* Progress Bar of Health */}
                     <div className="vc-saude-bar bg-black/30 border border-white/5 p-3.5 rounded-xl">
-                      <div className="lbl text-[10px] font-mono text-[#c9943a] font-bold uppercase tracking-widest mb-1.5">Saúde 6D · Score Geral</div>
+                      <div className="lbl text-[10px] font-mono text-[#d2af5a] font-bold uppercase tracking-widest mb-1.5">Saúde 6D · Score Geral</div>
                       <div className="vc-bar-track h-2 bg-black/60 rounded-full overflow-hidden border border-white/5">
-                        <div className="vc-bar-fill h-full bg-gradient-to-r from-[#c9943a] to-[#5dcaa5] rounded-full transition-all duration-500" style={{ width: `${(selectedDims.length / 6) * 100}%` }} />
+                        <div className="vc-bar-fill h-full bg-gradient-to-r from-[#d2af5a] to-[#5dcaa5] rounded-full transition-all duration-500" style={{ width: `${(selectedDims.length / 6) * 100}%` }} />
                       </div>
                       <div style={{ display: 'flex', justifyContent: 'space-between', fontFamily: 'inherit', fontSize: '9px', color: '#8a9098', marginTop: '5px' }}>
                         <span>S10</span><span className="text-[#5dcaa5] font-bold">S21 · AGORA</span>
@@ -1747,25 +1747,25 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                 <div className="dash-card bg-[#050505]/60 backdrop-blur-3xl border border-white/5 relative overflow-hidden p-5 rounded-2xl">
                   <div className="absolute top-0 right-0 w-32 h-32 bg-white/[0.01] blur-[60px] pointer-events-none mix-blend-screen" />
                   <div className="flex justify-between items-center mb-4">
-                    <span className="font-mono text-[9px] text-[#c9943a] tracking-widest block font-bold uppercase flex items-center gap-1.5"><Users className="w-3.5 h-3.5" /> RECRUTAMENTO · FLUXO LENCIONI</span>
-                    <button className="text-[9px] uppercase tracking-wider text-[#c9943a] font-bold hover:underline" onClick={() => setActiveTab('lideres')}>▶ Detalhes</button>
+                    <span className="font-mono text-[9px] text-[#d2af5a] tracking-widest block font-bold uppercase flex items-center gap-1.5"><Users className="w-3.5 h-3.5" /> RECRUTAMENTO · FLUXO LENCIONI</span>
+                    <button className="text-[9px] uppercase tracking-wider text-[#d2af5a] font-bold hover:underline" onClick={() => setActiveTab('lideres')}>▶ Detalhes</button>
                   </div>
                   
                   <div className="grid grid-cols-5 gap-2 bg-black/40 border border-white/5 rounded-xl p-3 text-center">
                     <div className="hover:bg-white/[0.02] p-1 rounded transition">
-                      <b className="text-[15px] text-[#c9943a] block leading-none">{candidates.filter(c => c.stage === 'triagem').length}</b>
+                      <b className="text-[15px] text-[#d2af5a] block leading-none">{candidates.filter(c => c.stage === 'triagem').length}</b>
                       <span className="text-[7px] text-white/40 font-mono block mt-1">TRIAGEM</span>
                     </div>
                     <div className="hover:bg-white/[0.02] p-1 rounded transition">
-                      <b className="text-[15px] text-[#c9943a] block leading-none">{candidates.filter(c => c.stage === 'entrevista').length}</b>
+                      <b className="text-[15px] text-[#d2af5a] block leading-none">{candidates.filter(c => c.stage === 'entrevista').length}</b>
                       <span className="text-[7px] text-white/40 font-mono block mt-1">ENTREVISTA</span>
                     </div>
                     <div className="hover:bg-white/[0.02] p-1 rounded transition">
-                      <b className="text-[15px] text-[#c9943a] block leading-none">{candidates.filter(c => c.stage === 'decisao').length}</b>
+                      <b className="text-[15px] text-[#d2af5a] block leading-none">{candidates.filter(c => c.stage === 'decisao').length}</b>
                       <span className="text-[7px] text-white/40 font-mono block mt-1">DECISÃO</span>
                     </div>
                     <div className="hover:bg-white/[0.02] p-1 rounded transition">
-                      <b className="text-[15px] text-[#c9943a] block leading-none">{candidates.filter(c => c.stage === 'onboarding').length}</b>
+                      <b className="text-[15px] text-[#d2af5a] block leading-none">{candidates.filter(c => c.stage === 'onboarding').length}</b>
                       <span className="text-[7px] text-white/40 font-mono block mt-1">ONBOARD</span>
                     </div>
                     <div className="bg-[#5dcaa5]/5 border border-[#5dcaa5]/25 p-1 rounded transition">
@@ -1784,10 +1784,10 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                   <div className="relative z-10">
                     <div className="flex justify-between items-center mb-4 border-b border-white/[0.04] pb-3">
                       <div>
-                        <span className="font-mono text-[9px] text-[#c9943a] tracking-widest block font-bold uppercase mb-1">CANDIDATOS ATIVOS</span>
+                        <span className="font-mono text-[9px] text-[#d2af5a] tracking-widest block font-bold uppercase mb-1">CANDIDATOS ATIVOS</span>
                         <h3 className="text-[13px] font-bold text-white m-0">Fit Lencioni &amp; HHS</h3>
                       </div>
-                      <button onClick={handleResetCandidates} className="px-3 py-1 bg-black/60 hover:bg-[#c9943a]/10 border border-white/10 hover:border-white/20 rounded-lg text-[9px] text-white/70 hover:text-[#c9943a] font-mono transition-colors">♻ Restaurar</button>
+                      <button onClick={handleResetCandidates} className="px-3 py-1 bg-black/60 hover:bg-[#d2af5a]/10 border border-white/10 hover:border-white/20 rounded-lg text-[9px] text-white/70 hover:text-[#d2af5a] font-mono transition-colors">♻ Restaurar</button>
                     </div>
 
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', maxHeight: '180px', overflowY: 'auto', paddingRight: '4px' }}>
@@ -1795,11 +1795,11 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                         <div className="text-center py-6 text-[10px] text-white/30">Nenhum candidato no funil.</div>
                       ) : (
                         candidates.map(cand => (
-                          <div key={cand.id} className="cand-card-mockup group hover:border-[#c9943a]/30 hover:bg-black/60 transition-all border border-white/5 rounded-xl bg-black/40" style={{ padding: '12px', marginBottom: '0px' }}>
+                          <div key={cand.id} className="cand-card-mockup group hover:border-[#d2af5a]/30 hover:bg-black/60 transition-all border border-white/5 rounded-xl bg-black/40" style={{ padding: '12px', marginBottom: '0px' }}>
                             <button onClick={() => handleDeleteCandidate(cand.id)} className="btn-del-cand text-white/40 hover:text-[#e24b4a] transition" style={{ width: '16px', height: '16px', fontSize: '9px', top: '8px', right: '8px' }}>✕</button>
                             
                             <div className="header-row" style={{ gap: '8px' }}>
-                              <div className="avatar bg-gradient-to-br from-[#c9943a] to-[#efddb1] text-black font-bold" style={{ width: '26px', height: '26px', fontSize: '10px' }}>
+                              <div className="avatar bg-gradient-to-br from-[#d2af5a] to-[#efddb1] text-black font-bold" style={{ width: '26px', height: '26px', fontSize: '10px' }}>
                                 {cand.name.split(' ').map(x => x[0]).join('')}
                               </div>
                               <div className="info-col text-left">
@@ -1810,7 +1810,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                             
                             {/* HHS Bar */}
                             <div className="hhs-bar-mockup" style={{ margin: '6px 0', height: '5px', borderRadius: '4px', overflow: 'hidden', backgroundColor: 'rgba(255,255,255,0.05)' }}>
-                              <i className="bg-gradient-to-r from-[#c9943a] to-[#efddb1]" style={{ width: `${cand.lencioniScore}%`, height: '100%', display: 'block', borderRadius: '4px' }} />
+                              <i className="bg-gradient-to-r from-[#d2af5a] to-[#efddb1]" style={{ width: `${cand.lencioniScore}%`, height: '100%', display: 'block', borderRadius: '4px' }} />
                             </div>
 
                             <div className="stats-row flex justify-between items-center text-white/60 text-left" style={{ fontSize: '8px', paddingTop: '4px' }}>
@@ -1820,7 +1820,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                             </div>
                             <button 
                               onClick={() => handleTriggerOnboard(cand)}
-                              className="btn-onboard w-full mt-2 py-1.5 rounded-lg border border-[#c9943a]/30 hover:border-[#c9943a] text-[#c9943a] bg-[#c9943a]/5 hover:bg-[#c9943a]/15 transition font-mono text-[9px] uppercase font-bold tracking-widest"
+                              className="btn-onboard w-full mt-2 py-1.5 rounded-lg border border-[#d2af5a]/30 hover:border-[#d2af5a] text-[#d2af5a] bg-[#d2af5a]/5 hover:bg-[#d2af5a]/15 transition font-mono text-[9px] uppercase font-bold tracking-widest"
                               style={{ padding: '5px' }}
                             >
                               {cand.stage === 'triagem' ? 'Avançar' : cand.stage === 'onboarding' ? 'CONTRATAR' : 'Evoluir'}
@@ -1837,7 +1837,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                                     triggerToast(`${cand.name} movido para ${nextStage.toUpperCase()}.`)
                                   }
                                 }}
-                                className="bg-black/90 border border-white/10 rounded-lg px-2 py-1 text-[9px] text-white/80 font-mono outline-none flex-1 focus:border-[#c9943a]/40"
+                                className="bg-black/90 border border-white/10 rounded-lg px-2 py-1 text-[9px] text-white/80 font-mono outline-none flex-1 focus:border-[#d2af5a]/40"
                               >
                                 <option value="triagem">TRIAGEM</option>
                                 <option value="entrevista">ENTREVISTA</option>
@@ -1864,11 +1864,11 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                 <div className="absolute top-0 right-0 w-64 h-64 bg-white/[0.01] blur-[85px] pointer-events-none mix-blend-screen" />
                 <div className="flex justify-between items-start mb-4 relative z-10">
                   <div>
-                    <span className="font-mono text-[9px] text-[#c9943a] tracking-widest block font-bold uppercase mb-1">D6 DIAGNÓSTICO · MAPA DO TIME</span>
+                    <span className="font-mono text-[9px] text-[#d2af5a] tracking-widest block font-bold uppercase mb-1">D6 DIAGNÓSTICO · MAPA DO TIME</span>
                     <h3 className="text-[14px] font-bold text-white mb-0.5">Influência × Impacto</h3>
                     <div className="text-[10px] text-white/50 font-sans">Vetorização 6D com base no capital social de cada colaborador</div>
                   </div>
-                  <button onClick={handleAddTeamMemberMap} className="px-3 py-1.5 bg-black/60 hover:bg-[#c9943a]/10 border border-white/10 hover:border-white/30 rounded-xl text-[9px] text-[#c9943a] font-mono transition-colors font-bold tracking-widest">+ ADD</button>
+                  <button onClick={handleAddTeamMemberMap} className="px-3 py-1.5 bg-black/60 hover:bg-[#d2af5a]/10 border border-white/10 hover:border-white/30 rounded-xl text-[9px] text-[#d2af5a] font-mono transition-colors font-bold tracking-widest">+ ADD</button>
                 </div>
 
                 <div className="mapa-container bg-black/40 border border-white/5 rounded-xl p-3">
@@ -1917,19 +1917,19 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                 <div className="absolute top-0 right-0 w-64 h-64 bg-white/[0.01] blur-[85px] pointer-events-none mix-blend-screen" />
                 <div className="relative z-10 mb-5 flex justify-between items-center">
                   <div>
-                    <span className="font-mono text-[9px] text-[#c9943a] tracking-widest block font-bold uppercase mb-1">Perfil · Liderança</span>
+                    <span className="font-mono text-[9px] text-[#d2af5a] tracking-widest block font-bold uppercase mb-1">Perfil · Liderança</span>
                     <h3 className="text-[14px] font-bold text-white">Você como Líder</h3>
                   </div>
                   {/* Calculates and displays actual 6D alignment score based on checked principles */}
-                  <span className="px-2 py-1 bg-[#c9943a]/10 border border-[#c9943a]/20 rounded text-[#c9943a] font-mono text-[9px] font-bold">
+                  <span className="px-2 py-1 bg-[#d2af5a]/10 border border-[#d2af5a]/20 rounded text-[#d2af5a] font-mono text-[9px] font-bold">
                     {Math.round((manifestoChecks.filter(Boolean).length / 5) * 100)}% ALINHAMENTO D2
                   </span>
                 </div>
 
                 {/* Role selector */}
                 <div className="grid grid-cols-2 gap-3 mb-6 relative z-10">
-                  <div className="p-3 bg-[#c9943a]/5 border border-[#c9943a]/20 rounded-xl cursor-pointer text-center">
-                    <span className="text-[8.5px] font-mono font-bold text-[#c9943a] block mb-1">Modo 1</span>
+                  <div className="p-3 bg-[#d2af5a]/5 border border-[#d2af5a]/20 rounded-xl cursor-pointer text-center">
+                    <span className="text-[8.5px] font-mono font-bold text-[#d2af5a] block mb-1">Modo 1</span>
                     <span className="text-[12px] font-bold text-white block">Gestor</span>
                     <span className="text-[9px] text-white/50 block font-sans">Complexidade &amp; Processos</span>
                   </div>
@@ -1949,13 +1949,13 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                     <div 
                       key={p.code}
                       onClick={() => handleToggleManifesto(idx)}
-                      className={`flex justify-between items-center p-3 rounded-xl border cursor-pointer transition-colors ${manifestoChecks[idx] ? 'bg-[#c9943a]/5 border-[#c9943a]/20' : 'bg-black/40 border-white/5 hover:border-white/10'}`}
+                      className={`flex justify-between items-center p-3 rounded-xl border cursor-pointer transition-colors ${manifestoChecks[idx] ? 'bg-[#d2af5a]/5 border-[#d2af5a]/20' : 'bg-black/40 border-white/5 hover:border-white/10'}`}
                     >
                       <div className="flex items-center gap-3">
-                        <div className={`text-[9px] font-mono font-bold ${manifestoChecks[idx] ? 'text-[#c9943a]' : 'text-white/40'}`}>{p.code}</div>
+                        <div className={`text-[9px] font-mono font-bold ${manifestoChecks[idx] ? 'text-[#d2af5a]' : 'text-white/40'}`}>{p.code}</div>
                         <div className={`text-[10px] font-sans leading-snug ${manifestoChecks[idx] ? 'text-white font-medium' : 'text-white/60'}`}>{p.text}</div>
                       </div>
-                      <div className={`text-[9px] font-mono font-bold whitespace-nowrap px-2 py-0.5 rounded ${manifestoChecks[idx] ? 'text-[#c9943a] bg-[#c9943a]/10 font-bold' : 'text-white/20'}`}>{manifestoChecks[idx] ? '✓ ATIVO' : '—'}</div>
+                      <div className={`text-[9px] font-mono font-bold whitespace-nowrap px-2 py-0.5 rounded ${manifestoChecks[idx] ? 'text-[#d2af5a] bg-[#d2af5a]/10 font-bold' : 'text-white/20'}`}>{manifestoChecks[idx] ? '✓ ATIVO' : '—'}</div>
                     </div>
                   ))}
                 </div>
@@ -1970,10 +1970,10 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                 <div className="absolute top-0 right-0 w-64 h-64 bg-white/[0.01] blur-[85px] pointer-events-none mix-blend-screen" />
                 <div className="flex justify-between items-center mb-5 relative z-10">
                   <div>
-                    <span className="font-mono text-[9px] text-[#c9943a] tracking-widest block font-bold uppercase mb-1">Onboarding · Sistema</span>
+                    <span className="font-mono text-[9px] text-[#d2af5a] tracking-widest block font-bold uppercase mb-1">Onboarding · Sistema</span>
                     <h3 className="text-[14px] font-bold text-white">Primeiros Passos</h3>
                   </div>
-                  <button onClick={handlePopularPassosExemplo} className="px-3 py-1.5 bg-black/60 hover:bg-[#c9943a]/15 border border-[#c9943a]/30 rounded-xl text-[9px] text-[#c9943a] font-mono transition-colors font-bold tracking-widest">EXEMPLO</button>
+                  <button onClick={handlePopularPassosExemplo} className="px-3 py-1.5 bg-black/60 hover:bg-[#d2af5a]/15 border border-[#d2af5a]/30 rounded-xl text-[9px] text-[#d2af5a] font-mono transition-colors font-bold tracking-widest">EXEMPLO</button>
                 </div>
                 <div className="primeiros-list space-y-2">
                   {/* Step list mapped with their corresponding 6D diagnostic dimensions */}
@@ -1987,9 +1987,9 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                     <div 
                       key={p.id}
                       onClick={() => handleTogglePassos(idx)}
-                      className={`flex items-center gap-3 p-3 bg-black/40 border border-white/5 hover:border-white/10 rounded-xl cursor-pointer transition ${passosChecks[idx] ? 'border-[#c9943a]/20 bg-[#c9943a]/5' : ''}`}
+                      className={`flex items-center gap-3 p-3 bg-black/40 border border-white/5 hover:border-white/10 rounded-xl cursor-pointer transition ${passosChecks[idx] ? 'border-[#d2af5a]/20 bg-[#d2af5a]/5' : ''}`}
                     >
-                      <div className={`w-6 h-6 rounded-full flex items-center justify-center font-mono font-bold text-[10px] flex-shrink-0 transition-all ${passosChecks[idx] ? 'bg-gradient-to-r from-[#c9943a] to-[#efddb1] text-black shadow-[0_0_8px_rgba(201, 148, 58,0.3)]' : 'bg-white/5 border border-white/10 text-white/50'}`}>
+                      <div className={`w-6 h-6 rounded-full flex items-center justify-center font-mono font-bold text-[10px] flex-shrink-0 transition-all ${passosChecks[idx] ? 'bg-gradient-to-r from-[#d2af5a] to-[#efddb1] text-black shadow-[0_0_8px_rgba(201, 148, 58,0.3)]' : 'bg-white/5 border border-white/10 text-white/50'}`}>
                         {p.id}
                       </div>
                       <div className="flex-1 text-left">
@@ -1999,7 +1999,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                         </div>
                         <span className="block text-[9.5px] text-white/40 font-sans leading-tight mt-0.5">{p.desc}</span>
                       </div>
-                      <div className={`text-[12px] font-bold transition-all ${passosChecks[idx] ? 'text-[#c9943a] translate-x-0' : 'text-white/20 -translate-x-1'}`}>→</div>
+                      <div className={`text-[12px] font-bold transition-all ${passosChecks[idx] ? 'text-[#d2af5a] translate-x-0' : 'text-white/20 -translate-x-1'}`}>→</div>
                     </div>
                   ))}
                 </div>
@@ -2010,10 +2010,10 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                 <div className="absolute top-0 right-0 w-64 h-64 bg-white/[0.01] blur-[85px] pointer-events-none mix-blend-screen" />
                 <div className="flex justify-between items-center mb-5 relative z-10">
                   <div>
-                    <span className="font-mono text-[9px] text-[#c9943a] tracking-widest block font-bold uppercase mb-1">📊 PULSO SEMANAL</span>
+                    <span className="font-mono text-[9px] text-[#d2af5a] tracking-widest block font-bold uppercase mb-1">📊 PULSO SEMANAL</span>
                     <h3 className="text-[14px] font-bold text-white">Como está sua energia?</h3>
                   </div>
-                  <span className="px-2.5 py-1 bg-[#c9943a]/10 border border-[#c9943a]/30 rounded text-[#c9943a] font-mono text-[8px] font-bold tracking-widest uppercase">Semana 21</span>
+                  <span className="px-2.5 py-1 bg-[#d2af5a]/10 border border-[#d2af5a]/30 rounded text-[#d2af5a] font-mono text-[8px] font-bold tracking-widest uppercase">Semana 21</span>
                 </div>
 
                 <div className="relative z-10 space-y-5">
@@ -2024,7 +2024,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                         <button
                           key={v}
                           onClick={() => setPulseEnergy(v)}
-                          className={`flex-1 py-2.5 rounded-xl border text-[11px] font-mono font-bold transition-all duration-300 ${pulseEnergy === v ? 'bg-gradient-to-r from-[#c9943a] to-[#efddb1] border-[#c9943a] text-black shadow-[0_0_15px_rgba(201, 148, 58,0.45)]' : 'bg-black/60 border-white/5 text-white/40 hover:border-white/20'}`}
+                          className={`flex-1 py-2.5 rounded-xl border text-[11px] font-mono font-bold transition-all duration-300 ${pulseEnergy === v ? 'bg-gradient-to-r from-[#d2af5a] to-[#efddb1] border-[#d2af5a] text-black shadow-[0_0_15px_rgba(201, 148, 58,0.45)]' : 'bg-black/60 border-white/5 text-white/40 hover:border-white/20'}`}
                         >
                           {v}
                         </button>
@@ -2053,11 +2053,11 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                       value={pulseBlocker}
                       onChange={(e) => setPulseBlocker(e.target.value)}
                       placeholder="Descreva seu bloqueio principal desta semana..."
-                      className="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-3 text-[11px] text-white font-sans leading-relaxed outline-none focus:border-[#c9943a]/40 focus:ring-1 focus:ring-[#c9943a]/20 min-h-[60px] resize-none"
+                      className="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-3 text-[11px] text-white font-sans leading-relaxed outline-none focus:border-[#d2af5a]/40 focus:ring-1 focus:ring-[#d2af5a]/20 min-h-[60px] resize-none"
                     />
                   </div>
                   
-                  <button onClick={handleSavePulso} className="w-full py-3.5 bg-gradient-to-r from-[#c9943a]/25 to-[#c9943a]/5 hover:from-[#c9943a]/35 hover:to-[#c9943a]/15 border border-[#c9943a]/50 rounded-xl text-[10px] font-bold text-[#c9943a] font-mono tracking-widest transition-all shadow-[0_0_20px_rgba(201, 148, 58,0.12)]">
+                  <button onClick={handleSavePulso} className="w-full py-3.5 bg-gradient-to-r from-[#d2af5a]/25 to-[#d2af5a]/5 hover:from-[#d2af5a]/35 hover:to-[#d2af5a]/15 border border-[#d2af5a]/50 rounded-xl text-[10px] font-bold text-[#d2af5a] font-mono tracking-widest transition-all shadow-[0_0_20px_rgba(201, 148, 58,0.12)]">
                     ✓ SALVAR PULSO DA SEMANA
                   </button>
                 </div>
@@ -2071,12 +2071,12 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                 
                 {/* Main Card: Recruiting Roles */}
                 <div className="dash-card bg-[#050505]/60 backdrop-blur-3xl border border-white/5 relative overflow-hidden p-6 text-left">
-                  <div className="absolute top-0 left-0 w-96 h-96 bg-[#c9943a]/5 blur-[120px] pointer-events-none mix-blend-screen" />
+                  <div className="absolute top-0 left-0 w-96 h-96 bg-[#d2af5a]/5 blur-[120px] pointer-events-none mix-blend-screen" />
                   
                   {recruitmentRole === null ? (
                     <>
                       <div className="mb-6 relative z-10">
-                        <span className="font-mono text-[9px] text-[#c9943a] tracking-widest block mb-2 font-bold uppercase">RECRUTAMENTO</span>
+                        <span className="font-mono text-[9px] text-[#d2af5a] tracking-widest block mb-2 font-bold uppercase">RECRUTAMENTO</span>
                         <h3 className="text-[16px] font-bold text-white mb-2">Novo Candidato: Para qual papel?</h3>
                         <p className="text-[11px] text-white/50 leading-relaxed font-sans max-w-3xl">
                           Cada papel tem critérios diferentes de avaliação. Líderes/Gestores precisam de mais perguntas porque o impacto cultural deles é maior.
@@ -2094,16 +2094,16 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                           <div 
                             key={idx}
                             onClick={() => handleStartRecruitment(role.title as any)}
-                            className="group p-5 bg-black/40 border border-white/[0.08] hover:border-[#c9943a]/60 hover:bg-[#c9943a]/10 rounded-2xl cursor-pointer transition-all text-left relative overflow-hidden flex flex-col justify-between"
+                            className="group p-5 bg-black/40 border border-white/[0.08] hover:border-[#d2af5a]/60 hover:bg-[#d2af5a]/10 rounded-2xl cursor-pointer transition-all text-left relative overflow-hidden flex flex-col justify-between"
                           >
                             <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                             <div className="relative z-10">
-                              <b className="text-[12px] font-mono tracking-widest text-[#c9943a] block leading-none mb-3">{role.title}</b>
+                              <b className="text-[12px] font-mono tracking-widest text-[#d2af5a] block leading-none mb-3">{role.title}</b>
                               <span className="text-[10px] text-white/60 block leading-snug font-sans mb-4 min-h-[50px]">{role.desc}</span>
                             </div>
                             <div className="mt-auto pt-3 border-t border-white/5 flex items-center justify-between relative z-10">
                               <span className="text-[8.5px] font-mono font-bold text-white/40 uppercase tracking-widest">{role.qCount}</span>
-                              <span className="text-[#c9943a] opacity-0 group-hover:opacity-100 transition-opacity text-xs">→</span>
+                              <span className="text-[#d2af5a] opacity-0 group-hover:opacity-100 transition-opacity text-xs">→</span>
                             </div>
                           </div>
                         ))}
@@ -2148,7 +2148,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                       {/* HEADER */}
                       <div className="flex justify-between items-center border-b border-white/10 pb-3">
                         <div>
-                          <span className="font-mono text-[9px] text-[#c9943a] tracking-widest block font-bold uppercase">AVALIAÇÃO DE FIT DE RECRUTAMENTO</span>
+                          <span className="font-mono text-[9px] text-[#d2af5a] tracking-widest block font-bold uppercase">AVALIAÇÃO DE FIT DE RECRUTAMENTO</span>
                           <h3 className="text-[15px] font-bold text-white">Processo de Avaliação: {recruitmentRole}</h3>
                         </div>
                         <button 
@@ -2173,7 +2173,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                                 placeholder="Ex: Lucas P. de Souza"
                                 value={newCandName}
                                 onChange={(e) => setNewCandName(e.target.value)}
-                                className="bg-black/60 border border-white/10 rounded-xl px-3 py-2 text-[11px] text-white outline-none focus:border-[#c9943a]/50"
+                                className="bg-black/60 border border-white/10 rounded-xl px-3 py-2 text-[11px] text-white outline-none focus:border-[#d2af5a]/50"
                               />
                             </div>
                             <div className="flex flex-col gap-1">
@@ -2183,14 +2183,14 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                                 placeholder={`Ex: ${recruitmentRole === 'Liderado' ? 'Fisioterapeuta Intensivo' : recruitmentRole === 'Gestor' ? 'Coordenador Técnico' : 'Diretor Clínico'}`}
                                 value={newCandRoleTitle}
                                 onChange={(e) => setNewCandRoleTitle(e.target.value)}
-                                className="bg-black/60 border border-white/10 rounded-xl px-3 py-2 text-[11px] text-white outline-none focus:border-[#c9943a]/50"
+                                className="bg-black/60 border border-white/10 rounded-xl px-3 py-2 text-[11px] text-white outline-none focus:border-[#d2af5a]/50"
                               />
                             </div>
                           </div>
                           <div className="pt-2">
                             <button
                               onClick={() => handleRecruitmentNext()}
-                              className="px-4 py-2 bg-[#c9943a] hover:bg-[#c9943a]/90 text-black rounded-xl text-[10px] font-mono font-bold tracking-wider uppercase transition-all shadow-[0_0_15px_rgba(201, 148, 58,0.3)]"
+                              className="px-4 py-2 bg-[#d2af5a] hover:bg-[#d2af5a]/90 text-black rounded-xl text-[10px] font-mono font-bold tracking-wider uppercase transition-all shadow-[0_0_15px_rgba(201, 148, 58,0.3)]"
                             >
                               Iniciar Questionário ({recruitmentQuestions[recruitmentRole].length} Questões) →
                             </button>
@@ -2208,7 +2208,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                             </span>
                             <div className="w-32 h-1 bg-white/5 rounded-full overflow-hidden">
                               <div 
-                                className="h-full bg-[#c9943a]"
+                                className="h-full bg-[#d2af5a]"
                                 style={{ width: `${(recruitmentStep / recruitmentQuestions[recruitmentRole].length) * 100}%` }}
                               />
                             </div>
@@ -2216,7 +2216,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
 
                           <div className="space-y-3">
                             <div className="p-4 bg-white/5 border border-white/10 rounded-2xl">
-                              <span className="text-[9px] font-mono text-[#c9943a] block mb-1 uppercase tracking-widest font-bold">PERGUNTA SITUACIONAL</span>
+                              <span className="text-[9px] font-mono text-[#d2af5a] block mb-1 uppercase tracking-widest font-bold">PERGUNTA SITUACIONAL</span>
                               <h4 className="text-[12px] font-bold text-white leading-relaxed font-sans">
                                 {recruitmentQuestions[recruitmentRole][recruitmentStep - 1]}
                               </h4>
@@ -2232,7 +2232,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                                   nextAnswers[recruitmentStep - 1] = e.target.value
                                   setRecruitmentAnswers(nextAnswers)
                                 }}
-                                className="bg-black/60 border border-white/10 rounded-xl px-3 py-2 text-[11px] text-white outline-none focus:border-[#c9943a]/50 h-24 resize-none"
+                                className="bg-black/60 border border-white/10 rounded-xl px-3 py-2 text-[11px] text-white outline-none focus:border-[#d2af5a]/50 h-24 resize-none"
                               />
                             </div>
                           </div>
@@ -2253,7 +2253,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                                 }
                                 handleRecruitmentNext(currentAnswer);
                               }}
-                              className="px-4 py-2 bg-[#c9943a] hover:bg-[#c9943a]/90 text-black rounded-xl text-[10px] font-mono font-bold tracking-wider uppercase transition-all shadow-[0_0_15px_rgba(201, 148, 58,0.3)]"
+                              className="px-4 py-2 bg-[#d2af5a] hover:bg-[#d2af5a]/90 text-black rounded-xl text-[10px] font-mono font-bold tracking-wider uppercase transition-all shadow-[0_0_15px_rgba(201, 148, 58,0.3)]"
                             >
                               {recruitmentStep === recruitmentQuestions[recruitmentRole].length ? 'Finalizar Avaliação ✓' : 'Próxima Pergunta →'}
                             </button>
@@ -2266,14 +2266,14 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                         <div className="flex flex-col items-center justify-center py-10 space-y-4">
                           <div className="relative w-20 h-20">
                             <div className="absolute inset-0 rounded-full border-2 border-white/5" />
-                            <div className="absolute inset-0 rounded-full border-2 border-t-[#c9943a] animate-spin" />
-                            <div className="absolute inset-2 rounded-full border border-white/5 bg-[#c9943a]/5 flex items-center justify-center">
-                              <Cpu className="w-6 h-6 text-[#c9943a]" />
+                            <div className="absolute inset-0 rounded-full border-2 border-t-[#d2af5a] animate-spin" />
+                            <div className="absolute inset-2 rounded-full border border-white/5 bg-[#d2af5a]/5 flex items-center justify-center">
+                              <Cpu className="w-6 h-6 text-[#d2af5a]" />
                             </div>
                           </div>
                           <div className="text-center space-y-1">
                             <h4 className="text-[12px] font-bold text-white">IA Engine Processando Respostas</h4>
-                            <p className="text-[9.5px] font-mono text-[#c9943a] animate-pulse">
+                            <p className="text-[9.5px] font-mono text-[#d2af5a] animate-pulse">
                               Cruzando dados situacionais com frameworks de Lencioni, HHS, Tuckman e Goleman...
                             </p>
                           </div>
@@ -2283,15 +2283,15 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                       {/* STEP 100: RESULTS */}
                       {recruitmentStep === 100 && recruitmentResult && (
                         <div className="space-y-4 py-2 text-left">
-                          <div className="p-4 bg-gradient-to-r from-black/60 to-black/30 border border-[#c9943a]/20 rounded-2xl relative overflow-hidden">
-                            <div className="absolute top-0 right-0 w-32 h-32 bg-[#c9943a]/10 blur-[50px] mix-blend-screen pointer-events-none" />
+                          <div className="p-4 bg-gradient-to-r from-black/60 to-black/30 border border-[#d2af5a]/20 rounded-2xl relative overflow-hidden">
+                            <div className="absolute top-0 right-0 w-32 h-32 bg-[#d2af5a]/10 blur-[50px] mix-blend-screen pointer-events-none" />
                             <div className="flex justify-between items-start mb-3">
                               <div>
-                                <span className="font-mono text-[9px] text-[#c9943a] tracking-widest block uppercase font-bold mb-1">SCORE DE FIT DE CONTRATAÇÃO</span>
+                                <span className="font-mono text-[9px] text-[#d2af5a] tracking-widest block uppercase font-bold mb-1">SCORE DE FIT DE CONTRATAÇÃO</span>
                                 <h4 className="text-[14px] font-bold text-white">{newCandName}</h4>
                                 <span className="text-[9px] text-white/50 font-mono block mt-1">{newCandRoleTitle || `${recruitmentRole} Sênior`}</span>
                               </div>
-                              <div className="bg-[#c9943a] text-black px-2.5 py-1 rounded-lg text-[10px] font-mono font-bold tracking-wider shadow-[0_0_15px_rgba(201, 148, 58,0.3)]">
+                              <div className="bg-[#d2af5a] text-black px-2.5 py-1 rounded-lg text-[10px] font-mono font-bold tracking-wider shadow-[0_0_15px_rgba(201, 148, 58,0.3)]">
                                 {recruitmentResult.grade}
                               </div>
                             </div>
@@ -2323,7 +2323,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                               <span className="text-[8px] font-mono text-white/40 block mb-1 uppercase tracking-widest">Smart (Inteligência Social)</span>
                               <div className="flex items-center gap-2">
                                 <div className="flex-1 h-1.5 bg-white/5 rounded-full overflow-hidden">
-                                  <div className="h-full bg-[#c9943a]" style={{ width: `${recruitmentResult.smart}%` }} />
+                                  <div className="h-full bg-[#d2af5a]" style={{ width: `${recruitmentResult.smart}%` }} />
                                 </div>
                                 <span className="text-[10px] font-mono text-white font-bold">{recruitmentResult.smart}%</span>
                               </div>
@@ -2351,13 +2351,13 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                 </div>
 
                 {/* Automations Row: Left (Recruiting), Right (General) */}
-                <div className="dash-card bg-[#050505]/60 backdrop-blur-3xl border border-[#c9943a]/20 p-6 relative overflow-hidden text-left">
-                  <div className="absolute top-0 right-0 w-96 h-96 bg-[#c9943a]/5 blur-[120px] pointer-events-none mix-blend-screen" />
+                <div className="dash-card bg-[#050505]/60 backdrop-blur-3xl border border-[#d2af5a]/20 p-6 relative overflow-hidden text-left">
+                  <div className="absolute top-0 right-0 w-96 h-96 bg-[#d2af5a]/5 blur-[120px] pointer-events-none mix-blend-screen" />
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8 relative z-10">
                     <div>
                       <div className="mb-4">
-                        <h3 className="text-[11px] font-mono text-[#c9943a] font-bold tracking-widest uppercase flex items-center gap-2">
+                        <h3 className="text-[11px] font-mono text-[#d2af5a] font-bold tracking-widest uppercase flex items-center gap-2">
                           <Zap className="w-3.5 h-3.5" /> AUTOMAÇÕES RECRUTAR
                         </h3>
                       </div>
@@ -2421,16 +2421,16 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className="dash-card bg-[#050505]/60 backdrop-blur-3xl border border-[#c9943a]/20 relative overflow-hidden"
+            className="dash-card bg-[#050505]/60 backdrop-blur-3xl border border-[#d2af5a]/20 relative overflow-hidden"
             style={{ padding: '24px' }}
           >
-            <div className="absolute top-0 right-0 w-64 h-64 bg-[#c9943a]/5 blur-[80px] pointer-events-none mix-blend-screen" />
+            <div className="absolute top-0 right-0 w-64 h-64 bg-[#d2af5a]/5 blur-[80px] pointer-events-none mix-blend-screen" />
             
             {/* Header info */}
             <div className="flex justify-between items-start mb-6 relative z-10">
               <div className="text-left max-w-2xl">
                 <div className="flex items-center gap-3 mb-2">
-                  <span className="px-2 py-0.5 bg-[#c9943a]/10 border border-[#c9943a]/30 rounded text-[9px] font-mono font-bold text-[#c9943a] tracking-widest uppercase">LÍDERES</span>
+                  <span className="px-2 py-0.5 bg-[#d2af5a]/10 border border-[#d2af5a]/30 rounded text-[9px] font-mono font-bold text-[#d2af5a] tracking-widest uppercase">LÍDERES</span>
                   <span className="text-[10px] font-mono text-white/50 tracking-widest uppercase">Ferramentas do Líder como Agente</span>
                 </div>
                 <h2 className="text-[18px] font-bold text-white mb-2 tracking-tight">Desenvolvimento de Liderança</h2>
@@ -2439,7 +2439,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
               <div>
                 <button 
                   onClick={() => triggerToast('Professor de IA iniciando mentoria de liderança...', 'ok')}
-                  className="px-4 py-2 bg-gradient-to-r from-[#c9943a]/20 to-[#c9943a]/5 hover:from-[#c9943a]/30 hover:to-[#c9943a]/10 border border-[#c9943a]/40 rounded-xl text-[10px] font-bold text-[#c9943a] font-mono tracking-widest transition-all shadow-[0_0_20px_rgba(201, 148, 58,0.1)] flex items-center gap-2"
+                  className="px-4 py-2 bg-gradient-to-r from-[#d2af5a]/20 to-[#d2af5a]/5 hover:from-[#d2af5a]/30 hover:to-[#d2af5a]/10 border border-[#d2af5a]/40 rounded-xl text-[10px] font-bold text-[#d2af5a] font-mono tracking-widest transition-all shadow-[0_0_20px_rgba(201, 148, 58,0.1)] flex items-center gap-2"
                 >
                   <span className="text-[12px]">▶</span> PROFESSOR IA
                 </button>
@@ -2456,7 +2456,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                 <button
                   key={sub.id}
                   onClick={() => setLideresTab(sub.id as LideresSubTab)}
-                  className={`px-4 py-2 rounded-xl text-[10px] font-mono tracking-widest uppercase font-bold transition-all ${lideresTab === sub.id ? 'bg-[#c9943a] text-black shadow-[0_0_15px_rgba(201, 148, 58,0.3)]' : 'bg-white/5 border border-white/10 text-white/50 hover:border-[#c9943a]/30 hover:text-[#c9943a]'}`}
+                  className={`px-4 py-2 rounded-xl text-[10px] font-mono tracking-widest uppercase font-bold transition-all ${lideresTab === sub.id ? 'bg-[#d2af5a] text-black shadow-[0_0_15px_rgba(201, 148, 58,0.3)]' : 'bg-white/5 border border-white/10 text-white/50 hover:border-[#d2af5a]/30 hover:text-[#d2af5a]'}`}
                 >
                   {sub.label}
                 </button>
@@ -2478,11 +2478,11 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                   className="space-y-6"
                 >
                   {/* Part 1: Jornada do Líder */}
-                  <div className="dash-card bg-[#050505]/60 backdrop-blur-3xl border border-[#c9943a]/20 relative overflow-hidden text-left">
-                    <div className="absolute top-0 right-0 w-64 h-64 bg-[#c9943a]/5 blur-[80px] mix-blend-screen pointer-events-none" />
+                  <div className="dash-card bg-[#050505]/60 backdrop-blur-3xl border border-[#d2af5a]/20 relative overflow-hidden text-left">
+                    <div className="absolute top-0 right-0 w-64 h-64 bg-[#d2af5a]/5 blur-[80px] mix-blend-screen pointer-events-none" />
                     
                     <div className="relative z-10 mb-6">
-                      <h4 className="text-[12px] font-mono text-[#c9943a] font-bold tracking-widest uppercase mb-1">JORNADA DO LÍDER — FAÇA NESTA ORDEM</h4>
+                      <h4 className="text-[12px] font-mono text-[#d2af5a] font-bold tracking-widest uppercase mb-1">JORNADA DO LÍDER — FAÇA NESTA ORDEM</h4>
                       <p className="text-[11px] text-white/50 font-sans leading-relaxed">
                         O desenvolvimento da liderança tem uma sequência: primeiro você se conhece, depois domina as ferramentas de gestão, depois aplica com o time, depois influencia a organização. Pular etapas cria líderes frágeis.
                       </p>
@@ -2491,25 +2491,25 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-5 relative z-10">
                       
                       {/* Step 1 */}
-                      <div className="p-5 border border-[#c9943a]/30 bg-[#c9943a]/10 rounded-2xl relative">
+                      <div className="p-5 border border-[#d2af5a]/30 bg-[#d2af5a]/10 rounded-2xl relative">
                         <div className="flex gap-4 items-start">
-                          <div className="w-8 h-8 rounded-full bg-[#c9943a] text-black flex items-center justify-center font-bold font-mono text-[14px] shadow-[0_0_15px_rgba(201, 148, 58,0.4)] flex-shrink-0">1</div>
+                          <div className="w-8 h-8 rounded-full bg-[#d2af5a] text-black flex items-center justify-center font-bold font-mono text-[14px] shadow-[0_0_15px_rgba(201, 148, 58,0.4)] flex-shrink-0">1</div>
                           <div className="flex-1 text-left">
                             <div className="flex justify-between items-start mb-1 gap-2 flex-wrap">
                               <h5 className="text-[13px] font-bold text-white leading-tight font-sans">Autoconhecimento (PDI + IE)</h5>
-                              <span className="px-2 py-0.5 bg-[#c9943a] text-black text-[8px] font-bold uppercase tracking-widest rounded flex-shrink-0 font-mono">COMECE AQUI</span>
+                              <span className="px-2 py-0.5 bg-[#d2af5a] text-black text-[8px] font-bold uppercase tracking-widest rounded flex-shrink-0 font-mono">COMECE AQUI</span>
                             </div>
                             <p className="text-[10px] text-white/60 mb-4 leading-relaxed font-sans">
                               Escreva sobre uma situação que gerou emoção intensa. Use o Diário IE (na aba Gerir) — a IA analisa o padrão e avança seu PDI automaticamente.
                             </p>
                             
                             <div className="space-y-2 font-sans">
-                              <button onClick={() => triggerToast('Abrindo Diário IE...', 'ok')} className="w-full text-left p-3 bg-black/40 border border-white/10 hover:border-[#c9943a]/40 rounded-xl transition-all group flex justify-between items-center cursor-pointer">
+                              <button onClick={() => triggerToast('Abrindo Diário IE...', 'ok')} className="w-full text-left p-3 bg-black/40 border border-white/10 hover:border-[#d2af5a]/40 rounded-xl transition-all group flex justify-between items-center cursor-pointer">
                                 <div>
-                                  <span className="block text-[11px] text-white font-bold group-hover:text-[#c9943a] transition-colors">▶ Escrever no Diário IE</span>
+                                  <span className="block text-[11px] text-white font-bold group-hover:text-[#d2af5a] transition-colors">▶ Escrever no Diário IE</span>
                                   <span className="block text-[9px] text-white/40 mt-1">A IA calcula seu padrão</span>
                                 </div>
-                                <span className="text-[#c9943a] opacity-0 group-hover:opacity-100 transition-opacity">→</span>
+                                <span className="text-[#d2af5a] opacity-0 group-hover:opacity-100 transition-opacity">→</span>
                               </button>
                             </div>
                           </div>
@@ -2575,13 +2575,13 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                   </div>
 
                   {/* Top Highlight: Progress */}
-                  <div className="p-5 bg-gradient-to-r from-black/60 to-black/30 border border-[#c9943a]/20 rounded-2xl relative overflow-hidden backdrop-blur-3xl shadow-[0_0_40px_rgba(201, 148, 58,0.05)]">
-                    <div className="absolute top-0 right-0 w-64 h-64 bg-[#c9943a]/10 blur-[80px] pointer-events-none mix-blend-screen" />
-                    <span className="font-mono text-[10px] text-[#c9943a] tracking-[0.1em] uppercase font-bold block mb-3">PDI - JORNADA DO LÍDER</span>
+                  <div className="p-5 bg-gradient-to-r from-black/60 to-black/30 border border-[#d2af5a]/20 rounded-2xl relative overflow-hidden backdrop-blur-3xl shadow-[0_0_40px_rgba(201, 148, 58,0.05)]">
+                    <div className="absolute top-0 right-0 w-64 h-64 bg-[#d2af5a]/10 blur-[80px] pointer-events-none mix-blend-screen" />
+                    <span className="font-mono text-[10px] text-[#d2af5a] tracking-[0.1em] uppercase font-bold block mb-3">PDI - JORNADA DO LÍDER</span>
                     <div className="flex items-center gap-4 mb-3">
                       <div className="flex-1 height-2 bg-white/5 rounded-full overflow-hidden shadow-inner">
                         <div 
-                          className="h-full bg-gradient-to-r from-[#c9943a] to-white relative"
+                          className="h-full bg-gradient-to-r from-[#d2af5a] to-white relative"
                           style={{ width: `${lessonsCompletedPercent}%`, boxShadow: '0 0 10px rgba(201, 148, 58,0.5)' }}
                         >
                           <div className="absolute inset-0 bg-white/30 mix-blend-overlay w-full h-full animate-pulse" />
@@ -2602,7 +2602,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                       <div className="dash-card bg-[#050505]/60 backdrop-blur-3xl border border-white/5">
                         <div className="flex justify-between items-center mb-3">
                           <h4 className="text-[13px] m-0 font-bold text-white tracking-wide">Diário de Inteligência Emocional + IA</h4>
-                          <button className="px-3 py-1.5 border border-[#c9943a]/30 rounded-lg text-[#c9943a] text-[9px] font-mono font-bold tracking-widest hover:bg-[#c9943a]/10 hover:border-[#c9943a]/60 transition-all shadow-[0_0_15px_rgba(201, 148, 58,0.1)]">▶ AULA</button>
+                          <button className="px-3 py-1.5 border border-[#d2af5a]/30 rounded-lg text-[#d2af5a] text-[9px] font-mono font-bold tracking-widest hover:bg-[#d2af5a]/10 hover:border-[#d2af5a]/60 transition-all shadow-[0_0_15px_rgba(201, 148, 58,0.1)]">▶ AULA</button>
                         </div>
                         <p className="text-[10px] text-white/50 m-0 mb-4 font-sans leading-relaxed">Escreva sobre uma situação que gerou emoção intensa. A IA analisa o padrão e sugere ações de autogestão.</p>
                         
@@ -2615,7 +2615,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                           />
                           <button 
                             onClick={handleAddDiary}
-                            className="px-3.5 py-1.5 bg-[#c9943a]/15 hover:bg-[#c9943a]/30 border border-[#c9943a]/45 rounded-lg text-[9px] font-bold text-[#c9943a] font-mono transition"
+                            className="px-3.5 py-1.5 bg-[#d2af5a]/15 hover:bg-[#d2af5a]/30 border border-[#d2af5a]/45 rounded-lg text-[9px] font-bold text-[#d2af5a] font-mono transition"
                             style={{ alignSelf: 'flex-end' }}
                           >
                             + ADICIONAR ENTRADA
@@ -2628,7 +2628,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                           ) : (
                             diaryLogs.map((log, idx) => (
                               <div key={idx} className="p-2 bg-white/[0.01] border border-white/[0.03] rounded-lg">
-                                <span className="text-[7.5px] font-mono text-[#c9943a] font-bold block">{log.time} · AUTO-REGISTRO</span>
+                                <span className="text-[7.5px] font-mono text-[#d2af5a] font-bold block">{log.time} · AUTO-REGISTRO</span>
                                 <p className="text-[9.5px] text-white/70 mt-1 leading-snug">{log.text}</p>
                               </div>
                             ))
@@ -2649,7 +2649,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                           value={cnvInput}
                           onChange={(e) => setCnvInput(e.target.value)}
                           placeholder="Ex: O colaborador é preguiçoso e sempre atrasa as entregas da sprint."
-                          className="w-full bg-black/40 border border-white/[0.08] rounded-xl px-4 py-3 text-[11px] text-white font-sans leading-relaxed outline-none focus:border-[#c9943a]/40 focus:ring-1 focus:ring-[#c9943a]/20 min-h-[80px] resize-none"
+                          className="w-full bg-black/40 border border-white/[0.08] rounded-xl px-4 py-3 text-[11px] text-white font-sans leading-relaxed outline-none focus:border-[#d2af5a]/40 focus:ring-1 focus:ring-[#d2af5a]/20 min-h-[80px] resize-none"
                         />
 
                         <div className="flex justify-between items-center mt-3">
@@ -2657,7 +2657,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                           <button 
                             onClick={handleCnvAnalyze}
                             disabled={cnvAnalyzing}
-                            className="px-4 py-2 bg-[#c9943a]/10 hover:bg-[#c9943a]/20 border border-[#c9943a]/30 rounded-xl text-[9px] font-bold text-[#c9943a] font-mono transition-all disabled:opacity-50"
+                            className="px-4 py-2 bg-[#d2af5a]/10 hover:bg-[#d2af5a]/20 border border-[#d2af5a]/30 rounded-xl text-[9px] font-bold text-[#d2af5a] font-mono transition-all disabled:opacity-50"
                           >
                             {cnvAnalyzing ? 'Analisando...' : 'CALCULAR ÍNDICE ALPHA'}
                           </button>
@@ -2670,14 +2670,14 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                         )}
 
                         <div className="mt-5 border-t border-white/[0.06] pt-5">
-                          <span className="font-mono text-[9px] text-[#c9943a] tracking-widest block mb-3 font-bold uppercase">📡 PDI DE COMUNICAÇÃO · 4 MÓDULOS</span>
+                          <span className="font-mono text-[9px] text-[#d2af5a] tracking-widest block mb-3 font-bold uppercase">📡 PDI DE COMUNICAÇÃO · 4 MÓDULOS</span>
                           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            <div className="bg-white/[0.02] border border-white/[0.04] rounded-xl p-4 hover:border-[#c9943a]/20 transition-colors">
+                            <div className="bg-white/[0.02] border border-white/[0.04] rounded-xl p-4 hover:border-[#d2af5a]/20 transition-colors">
                               <b className="text-[11px] text-white block mb-1 font-mono tracking-wide">MÓDULO 1: Fato vs Julgamento</b>
                               <span className="text-[10px] text-white/50 block mb-3 font-sans leading-relaxed">Eliminar adjetivos subjetivos da sua comunicação técnica.</span>
                               <span className="font-mono text-[9px] text-[#5dcaa5] block tracking-widest font-bold">KPI: Alpha-Linter &gt;70%</span>
                             </div>
-                            <div className="bg-white/[0.02] border border-white/[0.04] rounded-xl p-4 hover:border-[#c9943a]/20 transition-colors">
+                            <div className="bg-white/[0.02] border border-white/[0.04] rounded-xl p-4 hover:border-[#d2af5a]/20 transition-colors">
                               <b className="text-[11px] text-white block mb-1 font-mono tracking-wide">MÓDULO 2: Assertividade (CNV)</b>
                               <span className="text-[10px] text-white/50 block mb-3 font-sans leading-relaxed">Fato + Sentimento + Necessidade + Pedido em conversas difíceis.</span>
                               <span className="font-mono text-[9px] text-[#5dcaa5] block tracking-widest font-bold">KPI: 3 conversas/mês</span>
@@ -2702,17 +2702,17 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                             return (
                               <div 
                                 key={lesson.id} 
-                                className={`p-4 bg-white/[0.01] border rounded-xl cursor-pointer transition-all ${expanded ? 'border-[#c9943a]/40 bg-[#c9943a]/5' : 'border-white/[0.04] hover:border-white/[0.1]'}`} 
+                                className={`p-4 bg-white/[0.01] border rounded-xl cursor-pointer transition-all ${expanded ? 'border-[#d2af5a]/40 bg-[#d2af5a]/5' : 'border-white/[0.04] hover:border-white/[0.1]'}`} 
                                 onClick={() => setExpandedLesson(expanded ? null : lesson.id)}
                               >
                                 <div className="flex justify-between items-center">
-                                  <b className={`text-[11px] font-sans tracking-wide transition-colors ${expanded ? 'text-[#c9943a]' : 'text-white'}`}>▶ {lesson.title}</b>
+                                  <b className={`text-[11px] font-sans tracking-wide transition-colors ${expanded ? 'text-[#d2af5a]' : 'text-white'}`}>▶ {lesson.title}</b>
                                   <input 
                                     type="checkbox" 
                                     checked={microaulasProgress[idx] || false}
                                     onChange={() => handleToggleLessonCheck(idx)}
                                     onClick={(e) => e.stopPropagation()}
-                                    className="w-3.5 h-3.5 accent-[#c9943a] rounded cursor-pointer"
+                                    className="w-3.5 h-3.5 accent-[#d2af5a] rounded cursor-pointer"
                                   />
                                 </div>
                                 <div className={`mt-3 text-[10px] text-white/60 font-sans leading-relaxed overflow-hidden transition-all duration-300 ${expanded ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'}`}>
@@ -2751,7 +2751,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                                 </div>
                                 <div className="lesson-body" onClick={(e) => e.stopPropagation()}>
                                   <span style={{ fontSize: '9.5px', display: 'block', marginBottom: '6px' }}>{item.q}</span>
-                                  <input type="range" className="w-full h-1 bg-white/10 rounded-lg appearance-none cursor-pointer" min="1" max="5" defaultValue="3" style={{ accentColor: '#c9943a' }} />
+                                  <input type="range" className="w-full h-1 bg-white/10 rounded-lg appearance-none cursor-pointer" min="1" max="5" defaultValue="3" style={{ accentColor: '#d2af5a' }} />
                                 </div>
                               </div>
                             )
@@ -2777,7 +2777,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                           const expanded = expandedLesson === l.id
                           return (
                             <div key={l.id} className={`interactive-lesson ${expanded ? 'expanded' : ''}`} onClick={() => setExpandedLesson(expanded ? null : l.id)}>
-                              <div className="lesson-header"><b style={{ fontSize: '10.5px', color: '#fff' }}>{l.title}</b><span style={{ fontSize: '8px', color: '#c9943a', fontWeight: 'bold' }}>LER ▼</span></div>
+                              <div className="lesson-header"><b style={{ fontSize: '10.5px', color: '#fff' }}>{l.title}</b><span style={{ fontSize: '8px', color: '#d2af5a', fontWeight: 'bold' }}>LER ▼</span></div>
                               <div className="lesson-body">{l.desc}</div>
                             </div>
                           )
@@ -2836,10 +2836,10 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                       <span className="text-[9px] text-[#e24b4a]/70 block mt-2 font-mono">D6 ou ISR &lt; 50</span>
                     </div>
                     <div className="dash-card p-5 text-center bg-black/40 backdrop-blur-xl border border-white/5 relative overflow-hidden">
-                      <div className="absolute top-0 right-0 w-32 h-32 bg-[#c9943a]/10 blur-[50px] mix-blend-screen pointer-events-none" />
-                      <span className="font-mono text-[9px] uppercase tracking-widest text-[#c9943a] font-bold block mb-2">D6 Médio do Time</span>
+                      <div className="absolute top-0 right-0 w-32 h-32 bg-[#d2af5a]/10 blur-[50px] mix-blend-screen pointer-events-none" />
+                      <span className="font-mono text-[9px] uppercase tracking-widest text-[#d2af5a] font-bold block mb-2">D6 Médio do Time</span>
                       <b className="text-3xl font-light text-white block">{Math.round(teamMembers.reduce((s, m) => s + m.d6, 0) / (teamMembers.length || 1))}<small className="text-[14px] text-white/30 font-sans">/100</small></b>
-                      <span className="text-[9px] text-[#c9943a]/70 block mt-2 font-mono">Calculado em tempo real</span>
+                      <span className="text-[9px] text-[#d2af5a]/70 block mt-2 font-mono">Calculado em tempo real</span>
                     </div>
                     <div className="dash-card p-5 text-center bg-black/40 backdrop-blur-xl border border-white/5 relative overflow-hidden">
                       <div className="absolute top-0 right-0 w-32 h-32 bg-[#5dcaa5]/10 blur-[50px] mix-blend-screen pointer-events-none" />
@@ -2855,7 +2855,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                       <div className="absolute top-0 left-0 w-64 h-64 bg-blue-500/5 blur-[80px] pointer-events-none mix-blend-screen" />
                       <div className="flex justify-between items-center mb-4 relative z-10">
                         <div>
-                          <span className="font-mono text-[9px] text-[#c9943a] tracking-widest block mb-2 font-bold uppercase">COACH SBI</span>
+                          <span className="font-mono text-[9px] text-[#d2af5a] tracking-widest block mb-2 font-bold uppercase">COACH SBI</span>
                           <h4 className="text-[14px] font-bold text-white mb-1">Registrar Feedback SBI</h4>
                           <div className="text-[10px] text-white/50 font-sans">Foque em Situação → Comportamento objetivo → Impacto</div>
                         </div>
@@ -2868,25 +2868,25 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                           placeholder="Situação (Onde e quando ocorreu? Ex: Na reunião de OKRs de terça...)" 
                           value={sbiSit}
                           onChange={(e) => setSbiSit(e.target.value)}
-                          className="w-full bg-black/40 border border-white/[0.08] rounded-[0.4rem] px-3 py-1.5 text-[10px] text-white outline-none focus:border-[#c9943a]/40"
+                          className="w-full bg-black/40 border border-white/[0.08] rounded-[0.4rem] px-3 py-1.5 text-[10px] text-white outline-none focus:border-[#d2af5a]/40"
                         />
                         <input 
                           type="text" 
                           placeholder="Comportamento (Fato observável. Ex: Você me interrompeu 3 vezes...)" 
                           value={sbiComp}
                           onChange={(e) => setSbiComp(e.target.value)}
-                          className="w-full bg-black/40 border border-white/[0.08] rounded-[0.4rem] px-3 py-1.5 text-[10px] text-white outline-none focus:border-[#c9943a]/40"
+                          className="w-full bg-black/40 border border-white/[0.08] rounded-[0.4rem] px-3 py-1.5 text-[10px] text-white outline-none focus:border-[#d2af5a]/40"
                         />
                         <textarea 
                           placeholder="Impacto (Efeito no time. Ex: Isso gerou ruído na equipe...)" 
                           value={sbiImp}
                           onChange={(e) => setSbiImp(e.target.value)}
-                          className="w-full h-14 bg-black/40 border border-white/[0.08] rounded-[0.4rem] px-3 py-1.5 text-[10px] text-white outline-none focus:border-[#c9943a]/40 resize-none"
+                          className="w-full h-14 bg-black/40 border border-white/[0.08] rounded-[0.4rem] px-3 py-1.5 text-[10px] text-white outline-none focus:border-[#d2af5a]/40 resize-none"
                         />
                         
                         <button 
                           onClick={handleAddSbi}
-                          className="px-3.5 py-1.5 bg-[#c9943a]/15 hover:bg-[#c9943a]/30 border border-[#c9943a]/45 rounded-lg text-[9px] font-bold text-[#c9943a] font-mono transition"
+                          className="px-3.5 py-1.5 bg-[#d2af5a]/15 hover:bg-[#d2af5a]/30 border border-[#d2af5a]/45 rounded-lg text-[9px] font-bold text-[#d2af5a] font-mono transition"
                         >
                           + REGISTRAR FEEDBACK SBI
                         </button>
@@ -2898,8 +2898,8 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                           <span className="text-[10px] italic opacity-50 block font-sans">Nenhum feedback SBI registrado hoje. Use em 1:1 semanais.</span>
                         ) : (
                           sbiLogs.map((log, i) => (
-                            <div key={i} className="p-3 bg-white/[0.02] border border-white/[0.04] rounded-xl font-mono text-[9px] hover:border-[#c9943a]/20 transition-colors">
-                              <span className="text-[#c9943a] font-bold block mb-2 tracking-widest">{log.date} · REGISTRO SBI</span>
+                            <div key={i} className="p-3 bg-white/[0.02] border border-white/[0.04] rounded-xl font-mono text-[9px] hover:border-[#d2af5a]/20 transition-colors">
+                              <span className="text-[#d2af5a] font-bold block mb-2 tracking-widest">{log.date} · REGISTRO SBI</span>
                               <div className="space-y-1">
                                 <span className="text-white/40 block">Situação: <b className="text-white/80">{log.situation}</b></span>
                                 <span className="text-white/40 block">Comportamento: <b className="text-white/80">{log.behavior}</b></span>
@@ -2913,9 +2913,9 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
 
                     {/* Team Individual Health */}
                     <div className="lg:col-span-5 dash-card text-left space-y-4 bg-[#050505]/60 backdrop-blur-3xl border border-white/5 relative overflow-hidden">
-                      <div className="absolute top-0 right-0 w-64 h-64 bg-[#c9943a]/5 blur-[80px] pointer-events-none mix-blend-screen" />
+                      <div className="absolute top-0 right-0 w-64 h-64 bg-[#d2af5a]/5 blur-[80px] pointer-events-none mix-blend-screen" />
                       <div>
-                        <span className="font-mono text-[9px] text-[#c9943a] tracking-widest block mb-2 font-bold uppercase">SAÚDE INDIVIDUAL</span>
+                        <span className="font-mono text-[9px] text-[#d2af5a] tracking-widest block mb-2 font-bold uppercase">SAÚDE INDIVIDUAL</span>
                         <h4 className="text-[13px] font-bold text-white mb-1">Saúde Individual e Indicadores</h4>
                         <div className="text-[10px] text-white/50 font-sans">Filtro cruzado de calibração em tempo real</div>
                       </div>
@@ -2931,12 +2931,12 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                                 <span className="text-[8px] font-mono text-white/40">{m.role}</span>
                               </div>
                               <div className="text-right flex flex-col items-end">
-                                <span className="text-[9.5px] font-bold font-mono text-[#c9943a] block leading-none">{m.d6}% D6</span>
+                                <span className="text-[9.5px] font-bold font-mono text-[#d2af5a] block leading-none">{m.d6}% D6</span>
                                 <span className={`text-[7.5px] font-bold uppercase font-mono mt-0.5 block ${m.d6 >= 80 ? 'text-[#5dcaa5]' : m.d6 >= 60 ? 'text-[#fac775]' : 'text-[#e24b4a]'}`}>{m.status}</span>
                                 <div className="flex items-center gap-1.5 mt-1">
                                   <button 
                                     onClick={() => handleArchiveMember(m)}
-                                    className="p-1 hover:bg-white/10 rounded text-[9.5px] text-[#c9943a] transition-colors flex items-center justify-center"
+                                    className="p-1 hover:bg-white/10 rounded text-[9.5px] text-[#d2af5a] transition-colors flex items-center justify-center"
                                     title="Arquivar membro do time"
                                     style={{ lineHeight: 1 }}
                                   >
@@ -2977,7 +2977,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                   {/* Matriz M1-M4 situational matrix explanation */}
                   <div className="dash-card bg-[#050505]/60 backdrop-blur-3xl border border-white/5 relative overflow-hidden">
                     <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/5 blur-[80px] mix-blend-screen pointer-events-none" />
-                    <h4 className="text-[12px] font-mono text-[#c9943a] font-bold tracking-widest uppercase mb-1">Matriz M1-M4 — Liderança Situacional</h4>
+                    <h4 className="text-[12px] font-mono text-[#d2af5a] font-bold tracking-widest uppercase mb-1">Matriz M1-M4 — Liderança Situacional</h4>
                     <p className="text-[10px] text-white/50 mb-6 font-sans leading-relaxed">Adapte sua liderança à maturidade técnica (M1 a M4) do seu liderado para cada tarefa específica.</p>
                     
                     <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
@@ -2999,7 +2999,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                   {/* Calculator Split */}
                   <div className="flex flex-col gap-6">
                     {/* Calculator Form */}
-                    <div className="lg:col-span-7 dash-card space-y-5 bg-[#050505]/60 backdrop-blur-3xl border border-[#c9943a]/10">
+                    <div className="lg:col-span-7 dash-card space-y-5 bg-[#050505]/60 backdrop-blur-3xl border border-[#d2af5a]/10">
                       <div>
                         <h4 className="text-[11px] font-mono text-white/90 font-bold tracking-widest uppercase mb-1">Cálculo de Custo de Oportunidade (ROI da Delegação)</h4>
                         <p className="text-[10px] text-white/50 font-sans">Regra dos 80%: descubra quanto vale a recuperação do seu tempo operacional.</p>
@@ -3077,7 +3077,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                           placeholder="Meta / Tarefa a ser delegada..."
                           value={newTaskTitle}
                           onChange={(e) => setNewTaskTitle(e.target.value)}
-                          className="w-full bg-black/45 border border-white/[0.08] rounded-[0.4rem] px-3 py-1.5 text-[9.5px] text-white outline-none focus:border-[#c9943a]/40"
+                          className="w-full bg-black/45 border border-white/[0.08] rounded-[0.4rem] px-3 py-1.5 text-[9.5px] text-white outline-none focus:border-[#d2af5a]/40"
                         />
                         
                         <div className="flex gap-2">
@@ -3100,7 +3100,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                           </select>
                           <button 
                             onClick={handleAddDelegatedTask}
-                            className="px-3 bg-[#c9943a]/20 border border-[#c9943a]/30 hover:bg-[#c9943a]/30 rounded-[0.4rem] text-[9.5px] font-bold text-[#c9943a] transition"
+                            className="px-3 bg-[#d2af5a]/20 border border-[#d2af5a]/30 hover:bg-[#d2af5a]/30 rounded-[0.4rem] text-[9.5px] font-bold text-[#d2af5a] transition"
                           >
                             DELEGAR
                           </button>
@@ -3115,7 +3115,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                             <div 
                               key={t.id} 
                               onClick={() => handleToggleTaskStatus(t.id)}
-                              className="p-2 bg-white/[0.02] border border-white/[0.04] rounded-lg flex items-center justify-between cursor-pointer transition hover:border-[#c9943a]/30 text-left"
+                              className="p-2 bg-white/[0.02] border border-white/[0.04] rounded-lg flex items-center justify-between cursor-pointer transition hover:border-[#d2af5a]/30 text-left"
                             >
                               <div>
                                 <b className="text-[10px] text-white block leading-none">{t.title}</b>
@@ -3205,7 +3205,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
 
                       <div className="grid grid-cols-4 gap-2 text-center font-mono">
                         {[
-                          { id: 'forming', label: 'Forming', val: 'x0.6', color: tuckmanStage === 'forming' ? 'border-[#c9943a]/60 bg-[#c9943a]/10 text-[#c9943a] shadow-[0_0_12px_rgba(201, 148, 58,0.15)]' : 'border-white/[0.06] bg-black/30 text-white/40 hover:border-white/10 hover:text-white/60' },
+                          { id: 'forming', label: 'Forming', val: 'x0.6', color: tuckmanStage === 'forming' ? 'border-[#d2af5a]/60 bg-[#d2af5a]/10 text-[#d2af5a] shadow-[0_0_12px_rgba(201, 148, 58,0.15)]' : 'border-white/[0.06] bg-black/30 text-white/40 hover:border-white/10 hover:text-white/60' },
                           { id: 'storming', label: 'Storming', val: 'x0.4', color: tuckmanStage === 'storming' ? 'border-[#e24b4a]/60 bg-[#e24b4a]/10 text-[#e24b4a] shadow-[0_0_12px_rgba(226,75,74,0.15)]' : 'border-white/[0.06] bg-black/30 text-white/40 hover:border-white/10 hover:text-white/60' },
                           { id: 'norming', label: 'Norming', val: 'x0.95', color: tuckmanStage === 'norming' ? 'border-[#fac775]/60 bg-[#fac775]/10 text-[#fac775] shadow-[0_0_12px_rgba(250,199,117,0.15)]' : 'border-white/[0.06] bg-black/30 text-white/40 hover:border-white/10 hover:text-white/60' },
                           { id: 'performing', label: 'Performing', val: 'x1.45', color: tuckmanStage === 'performing' ? 'border-[#5dcaa5]/60 bg-[#5dcaa5]/10 text-[#5dcaa5] shadow-[0_0_12px_rgba(93,202,165,0.15)]' : 'border-white/[0.06] bg-black/30 text-white/40 hover:border-white/10 hover:text-white/60' }
@@ -3226,13 +3226,13 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
 
                       {/* Formula result */}
                       <div className="p-3 bg-black/40 border border-white/[0.05] rounded-lg font-mono text-[9.5px] leading-normal text-white/60">
-                        <span className="text-[#c9943a] text-[8px] font-bold block mb-1">PR = ΣPI × T − LG · POTENCIAL REAL</span>
+                        <span className="text-[#d2af5a] text-[8px] font-bold block mb-1">PR = ΣPI × T − LG · POTENCIAL REAL</span>
                         <b>POTENCIAL REAL:</b> Potencial calibrado em <b className="text-white">{calculatedPotential}%</b> baseado nos {teamMembers.length} liderados ativos e no multiplicador.
                       </div>
 
                       {/* HHH parameters */}
                       <div className="border-t border-white/[0.04] pt-3">
-                        <span className="text-[8px] font-mono text-[#c9943a] uppercase tracking-wider block mb-2 font-bold">HHH Framework (Médio do Time)</span>
+                        <span className="text-[8px] font-mono text-[#d2af5a] uppercase tracking-wider block mb-2 font-bold">HHH Framework (Médio do Time)</span>
                         <div className="grid grid-cols-3 gap-3 text-center">
                           <div className="p-3 bg-white/[0.02] border border-white/[0.06] rounded-lg shadow-inner">
                             <span className="text-[8px] text-white/45 block">Smart (Cabeça)</span>
@@ -3258,7 +3258,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                         <h4 className="text-[11px] font-bold text-white uppercase font-mono">Contrato de Aliança</h4>
                         <button 
                           onClick={handleGenerateAllianceContract}
-                          className="px-2 py-1 bg-[#c9943a]/15 hover:bg-[#c9943a]/30 border border-[#c9943a]/30 text-[#c9943a] rounded text-[8px] font-mono font-bold"
+                          className="px-2 py-1 bg-[#d2af5a]/15 hover:bg-[#d2af5a]/30 border border-[#d2af5a]/30 text-[#d2af5a] rounded text-[8px] font-mono font-bold"
                         >
                           ✨ GERAR VIA IA
                         </button>
@@ -3266,7 +3266,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                       
                       <div className="space-y-1.5 max-h-[140px] overflow-y-auto pr-1">
                         {allianceClauses.map((clause, idx) => (
-                          <div key={idx} className="p-2.5 bg-black/20 border border-white/[0.06] rounded-lg flex items-center justify-between gap-2 text-[10px] hover:border-[#c9943a]/20 transition">
+                          <div key={idx} className="p-2.5 bg-black/20 border border-white/[0.06] rounded-lg flex items-center justify-between gap-2 text-[10px] hover:border-[#d2af5a]/20 transition">
                             <span className="text-white/80">{idx + 1} · {clause}</span>
                             <button onClick={() => handleRemoveAllianceClause(idx)} className="text-red-400 hover:text-red-500 font-bold px-1 text-[11px]">✕</button>
                           </div>
@@ -3279,12 +3279,12 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                           placeholder="Adicionar nova cláusula..." 
                           value={newClauseInput}
                           onChange={(e) => setNewClauseInput(e.target.value)}
-                          className="flex-1 bg-black/40 border border-white/[0.08] rounded-[0.4rem] px-2.5 py-1.5 text-[9.5px] outline-none focus:border-[#c9943a]/40"
+                          className="flex-1 bg-black/40 border border-white/[0.08] rounded-[0.4rem] px-2.5 py-1.5 text-[9.5px] outline-none focus:border-[#d2af5a]/40"
                           onKeyDown={(e) => e.key === 'Enter' && handleAddAllianceClause()}
                         />
                         <button 
                           onClick={handleAddAllianceClause}
-                          className="px-3 bg-[#c9943a]/15 hover:bg-[#c9943a]/30 border border-[#c9943a]/45 rounded-[0.4rem] text-[9.5px] font-bold text-[#c9943a] transition"
+                          className="px-3 bg-[#d2af5a]/15 hover:bg-[#d2af5a]/30 border border-[#d2af5a]/45 rounded-[0.4rem] text-[9.5px] font-bold text-[#d2af5a] transition"
                         >
                           + ADD
                         </button>
@@ -3318,7 +3318,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                         {rankedSuccessors.map((member, i) => (
                           <div key={member.id} className="premium-glass-card flex items-center justify-between transition-all duration-300">
                             <div className="flex items-center gap-3">
-                              <span className="w-8 h-8 rounded-full bg-gradient-to-br from-[#c9943a]/20 to-[#c9943a]/5 border border-[#c9943a]/40 text-[#c9943a] flex items-center justify-center font-bold font-mono text-[10px] flex-shrink-0 shadow-[0_0_10px_rgba(201, 148, 58,0.15)]">
+                              <span className="w-8 h-8 rounded-full bg-gradient-to-br from-[#d2af5a]/20 to-[#d2af5a]/5 border border-[#d2af5a]/40 text-[#d2af5a] flex items-center justify-center font-bold font-mono text-[10px] flex-shrink-0 shadow-[0_0_10px_rgba(201, 148, 58,0.15)]">
                                 0{i + 1}
                               </span>
                               <div>
@@ -3349,7 +3349,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                         <select
                           value={selectedProfileId}
                           onChange={(e) => setSelectedProfileId(e.target.value)}
-                          className="bg-black/50 border border-white/10 rounded-xl px-3 py-1.5 text-[9.5px] text-white outline-none focus:border-[#c9943a]/40"
+                          className="bg-black/50 border border-white/10 rounded-xl px-3 py-1.5 text-[9.5px] text-white outline-none focus:border-[#d2af5a]/40"
                         >
                           {teamMembers.map(m => <option key={m.id} value={m.id}>{m.name}</option>)}
                         </select>
@@ -3362,7 +3362,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                         return (
                           <div className="space-y-4 font-sans text-[10px] text-white/70">
                             <div className="flex items-center gap-3">
-                              <div className="h-11 w-11 rounded-full bg-[#c9943a]/15 text-[#c9943a] border border-[#c9943a]/30 text-xs font-bold flex items-center justify-center">
+                              <div className="h-11 w-11 rounded-full bg-[#d2af5a]/15 text-[#d2af5a] border border-[#d2af5a]/30 text-xs font-bold flex items-center justify-center">
                                 {m.name.split(' ').map(x => x[0]).join('').slice(0, 2)}
                               </div>
                               <div>
@@ -3388,14 +3388,14 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                                 <span className="text-[8px] text-white/40 uppercase tracking-widest font-mono">Hungry (Mãos)</span>
                                 <b className="text-[11px] font-mono font-bold text-white">{m.hhh.hungry}%</b>
                               </div>
-                              <div className="col-span-2 p-4 bg-gradient-to-r from-[#c9943a]/10 to-transparent border border-[#c9943a]/20 rounded-2xl flex flex-col gap-1.5 text-left">
-                                <span className="text-[8px] text-[#c9943a] uppercase tracking-widest font-mono font-bold">Desejo de Carreira</span>
+                              <div className="col-span-2 p-4 bg-gradient-to-r from-[#d2af5a]/10 to-transparent border border-[#d2af5a]/20 rounded-2xl flex flex-col gap-1.5 text-left">
+                                <span className="text-[8px] text-[#d2af5a] uppercase tracking-widest font-mono font-bold">Desejo de Carreira</span>
                                 <b className="text-[10px] text-[#fac775] font-medium leading-relaxed">{m.wishes}</b>
                               </div>
                               <div className="col-span-2 flex gap-3 mt-3">
                                 <button
                                   onClick={() => handleArchiveMember(m)}
-                                  className="flex-1 py-2.5 bg-[#c9943a]/10 hover:bg-[#c9943a]/20 border border-[#c9943a]/40 rounded-xl text-[10px] font-mono font-bold text-[#c9943a] transition-all hover:scale-[1.02] flex items-center justify-center gap-1.5"
+                                  className="flex-1 py-2.5 bg-[#d2af5a]/10 hover:bg-[#d2af5a]/20 border border-[#d2af5a]/40 rounded-xl text-[10px] font-mono font-bold text-[#d2af5a] transition-all hover:scale-[1.02] flex items-center justify-center gap-1.5"
                                 >
                                   <span>📥</span> ARQUIVAR
                                 </button>
@@ -3449,7 +3449,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                       <button 
                         onClick={handleMediationAnalysis}
                         disabled={mediationAnalyzing}
-                        className="px-3.5 py-1.5 bg-[#c9943a]/15 hover:bg-[#c9943a]/30 border border-[#c9943a]/45 rounded-lg text-[9px] font-bold text-[#c9943a] font-mono transition disabled:opacity-50"
+                        className="px-3.5 py-1.5 bg-[#d2af5a]/15 hover:bg-[#d2af5a]/30 border border-[#d2af5a]/45 rounded-lg text-[9px] font-bold text-[#d2af5a] font-mono transition disabled:opacity-50"
                       >
                         {mediationAnalyzing ? 'Processando Estruturas...' : '🪄 ANALISAR COM IA'}
                       </button>
@@ -3465,14 +3465,14 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                   {/* Small Matrix Info */}
                   <div className="lg:col-span-5">
                     <div className="dash-card">
-                      <h4 className="text-[11px] font-bold text-[#c9943a] uppercase font-mono mb-2">Thomas-Kilmann Styles</h4>
+                      <h4 className="text-[11px] font-bold text-[#d2af5a] uppercase font-mono mb-2">Thomas-Kilmann Styles</h4>
                       <p className="text-[9px] text-white/45 mb-3 font-sans">5 estilos de resolução para calibração</p>
                       
                       <div className="space-y-1.5 font-sans text-[9px] text-white/60">
-                        <div className="p-2 bg-black/20 border border-white/[0.06] rounded hover:border-[#c9943a]/15 transition"><b>Competição:</b> Alta assertividade, baixa cooperação.</div>
-                        <div className="p-2 bg-black/20 border border-white/[0.06] rounded hover:border-[#c9943a]/15 transition"><b>Colaboração:</b> Alta assertividade, alta cooperação. Win-win.</div>
-                        <div className="p-2 bg-black/20 border border-white/[0.06] rounded hover:border-[#c9943a]/15 transition"><b>Compromisso:</b> Equilíbrio sutil de concessões.</div>
-                        <div className="p-2 bg-black/20 border border-white/[0.06] rounded hover:border-[#c9943a]/15 transition"><b>Acomodação:</b> Baixa assertividade, alta cooperação.</div>
+                        <div className="p-2 bg-black/20 border border-white/[0.06] rounded hover:border-[#d2af5a]/15 transition"><b>Competição:</b> Alta assertividade, baixa cooperação.</div>
+                        <div className="p-2 bg-black/20 border border-white/[0.06] rounded hover:border-[#d2af5a]/15 transition"><b>Colaboração:</b> Alta assertividade, alta cooperação. Win-win.</div>
+                        <div className="p-2 bg-black/20 border border-white/[0.06] rounded hover:border-[#d2af5a]/15 transition"><b>Compromisso:</b> Equilíbrio sutil de concessões.</div>
+                        <div className="p-2 bg-black/20 border border-white/[0.06] rounded hover:border-[#d2af5a]/15 transition"><b>Acomodação:</b> Baixa assertividade, alta cooperação.</div>
                       </div>
                     </div>
                   </div>
@@ -3703,7 +3703,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                               </div>
                               <div className="grid grid-cols-2 gap-4 flex-1">
                                 <div className={`bg-black/50 border ${isAnalyzingData ? 'border-[#5dcaa5]/50 shadow-[0_0_15px_rgba(93,202,165,0.1)]' : 'border-white/5'} rounded-xl p-4 flex flex-col transition-all duration-500`}>
-                                  <span className="text-[9px] font-bold text-[#c9943a] font-mono tracking-widest mb-3 uppercase">Forças Mapeadas</span>
+                                  <span className="text-[9px] font-bold text-[#d2af5a] font-mono tracking-widest mb-3 uppercase">Forças Mapeadas</span>
                                   <div className="flex-1 flex items-center justify-center border border-dashed border-white/10 rounded-lg bg-white/[0.02] relative overflow-hidden">
                                     {isAnalyzingData ? (
                                       <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-20 mix-blend-overlay animate-pulse"></div>
@@ -3777,17 +3777,17 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                                       {[
                                         {
                                           title: 'Político',
-                                          color: 'text-[#c9943a] border-[#c9943a]/20 bg-[#c9943a]/5',
+                                          color: 'text-[#d2af5a] border-[#d2af5a]/20 bg-[#d2af5a]/5',
                                           desc: 'Incentivos e políticas governamentais de fomento à inovação de dados e inteligência artificial atuam como catalisador direto, motivando empresas a investirem em BI.'
                                         },
                                         {
                                           title: 'Econômico',
-                                          color: 'text-white/90 border-white/10 bg-[#c9943a]/5',
+                                          color: 'text-white/90 border-white/10 bg-[#d2af5a]/5',
                                           desc: 'Em crises, empresas nos buscam para corte de gastos e mapeamento de ineficiências. Em expansão, buscam inteligência competitiva e otimização de mercado.'
                                         },
                                         {
                                           title: 'Sociedade & Cultura',
-                                          color: 'text-[#c9943a] border-white/10 bg-blue-500/5',
+                                          color: 'text-[#d2af5a] border-white/10 bg-blue-500/5',
                                           desc: 'A forte pressão social por decisões justas, transparentes e orientadas a dados (Data-Driven) impulsiona o uso de telemetria científica no desenvolvimento humano.'
                                         },
                                         {
@@ -3824,7 +3824,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                                         {
                                           title: 'Fornecedores Críticos',
                                           badge: 'Baixa Dependência',
-                                          badgeColor: 'bg-blue-500/20 text-[#c9943a] border-blue-500/30',
+                                          badgeColor: 'bg-blue-500/20 text-[#d2af5a] border-blue-500/30',
                                           desc: 'Provedores globais de nuvem e visualizadores (Microsoft Power BI, AWS, Snowflake). O poder de barganha de preços deles é alto pelas licenças, mas a portabilidade e interoperabilidade de dados moderna reduz o risco de lock-in absoluto.'
                                         },
                                         {
@@ -3836,7 +3836,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                                         {
                                           title: 'Produtos Substitutos',
                                           badge: 'Risco Operacional',
-                                          badgeColor: 'bg-[#c9943a]/20 text-[#c9943a] border-[#c9943a]/30',
+                                          badgeColor: 'bg-[#d2af5a]/20 text-[#d2af5a] border-[#d2af5a]/30',
                                           desc: 'Profissionais internos de BI (departamentos internos) ou planilhas tradicionais (Excel) administradas informalmente. A barreira para migrar é o alto salário de engenheiros internos e a ineficiência de planilhas.'
                                         }
                                       ].map((m, idx) => (
@@ -3880,7 +3880,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                                         <div className="absolute top-2 left-2 text-[8px] font-mono text-white/10 uppercase font-bold">MANTER SATISFEITO (Poder+/Interesse-)</div>
                                         <div className="absolute top-2 right-2 text-[8px] font-mono text-[#5dcaa5]/20 uppercase font-bold">GERENCIAR DE PERTO (Poder+/Interesse+)</div>
                                         <div className="absolute bottom-2 left-2 text-[8px] font-mono text-white/10 uppercase font-bold">MONITORAR (Poder-/Interesse-)</div>
-                                        <div className="absolute bottom-2 right-2 text-[8px] font-mono text-[#c9943a]/20 uppercase font-bold">MANTER INFORMADO (Poder-/Interesse+)</div>
+                                        <div className="absolute bottom-2 right-2 text-[8px] font-mono text-[#d2af5a]/20 uppercase font-bold">MANTER INFORMADO (Poder-/Interesse+)</div>
 
                                         {/* Axes */}
                                         <div className="absolute left-1/2 top-0 bottom-0 w-0.5 bg-white/5 -translate-x-1/2 pointer-events-none" />
@@ -3970,7 +3970,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                                     </div>
                                     <div className="space-y-3">
                                       <div className="p-3 bg-black/40 border border-white/5 rounded-xl">
-                                        <span className="text-[9px] font-mono text-[#c9943a] uppercase font-bold tracking-widest block mb-1">Desafio do Gestor Moderno</span>
+                                        <span className="text-[9px] font-mono text-[#d2af5a] uppercase font-bold tracking-widest block mb-1">Desafio do Gestor Moderno</span>
                                         <p className="text-[10px] text-white/80 leading-relaxed font-sans">
                                           Equilibrar forças macro instáveis (inflação, LGPD) com microcompetidores velozes exige dos gestores uma <strong>capacidade assíncrona de alta frequência</strong>. O erro clássico é reagir emocionalmente pelo Sistema 1 (reativo) sob estresse, em vez de recorrer ao Sistema 2 (analítico) suportado por dados objetivos.
                                         </p>
@@ -4163,7 +4163,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                                       {/* Interactive Slider */}
                                       <div className="space-y-2">
                                         <div className="flex justify-between items-center text-[10px] font-mono font-bold">
-                                          <span className="text-[#c9943a] uppercase">Mecanicista ({100 - organicRatio}%)</span>
+                                          <span className="text-[#d2af5a] uppercase">Mecanicista ({100 - organicRatio}%)</span>
                                           <span className="text-[#5dcaa5] uppercase">Orgânica ({organicRatio}%)</span>
                                         </div>
                                         <input 
@@ -4221,10 +4221,10 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                                         <div className="space-y-1">
                                           <div className="flex justify-between text-[9px] font-mono">
                                             <span className="text-white/60">Segurança & Conformidade (LGPD/Regulamentação)</span>
-                                            <span className="text-[#c9943a] font-bold">{Math.round((100 - organicRatio) * 0.9 + 10)}%</span>
+                                            <span className="text-[#d2af5a] font-bold">{Math.round((100 - organicRatio) * 0.9 + 10)}%</span>
                                           </div>
                                           <div className="h-1.5 bg-white/5 border border-white/10 rounded-full overflow-hidden">
-                                            <div className="h-full bg-gradient-to-r from-blue-500 to-[#c9943a] transition-all duration-300" style={{ width: `${Math.round((100 - organicRatio) * 0.9 + 10)}%` }} />
+                                            <div className="h-full bg-gradient-to-r from-blue-500 to-[#d2af5a] transition-all duration-300" style={{ width: `${Math.round((100 - organicRatio) * 0.9 + 10)}%` }} />
                                           </div>
                                         </div>
 
@@ -4255,7 +4255,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
                                       {/* Racionais */}
                                       <div className="p-4 bg-black/40 border border-white/5 hover:border-white/10 rounded-xl space-y-3 transition-all duration-300">
-                                        <span className="text-[9.5px] font-mono text-[#c9943a] font-bold uppercase tracking-widest border-b border-white/5 pb-1.5 block">1. Controles Racionais & Formais (35%)</span>
+                                        <span className="text-[9.5px] font-mono text-[#d2af5a] font-bold uppercase tracking-widest border-b border-white/5 pb-1.5 block">1. Controles Racionais & Formais (35%)</span>
                                         
                                         <div className="space-y-2 text-[9.5px]">
                                           <div className="bg-white/[0.02] border border-white/5 p-2 rounded-lg">
@@ -4307,7 +4307,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
 
                                     <div className="space-y-3">
                                       <div className="p-3 bg-black/40 border border-white/5 rounded-xl">
-                                        <span className="text-[9px] font-mono text-[#c9943a] uppercase font-bold tracking-widest block mb-1">Racionalidade vs Improviso Empírico</span>
+                                        <span className="text-[9px] font-mono text-[#d2af5a] uppercase font-bold tracking-widest block mb-1">Racionalidade vs Improviso Empírico</span>
                                         <p className="text-[10px] text-white/80 leading-relaxed font-sans">
                                           A estrutura da <strong>Nossa Consultoria BI</strong> não nasceu pronta de um papel; ela amadureceu organicamente por meio do acúmulo de conhecimento prático de gestão. Os gestores iniciaram com uma estrutura totalmente informal e a adaptaram rationamente à medida que exigências como a LGPD e o crescimento da carteira de clientes demandaram rituais formais.
                                         </p>
@@ -4491,7 +4491,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                                           }
                                         ].map((r, idx) => (
                                           <div key={idx} className="p-3 bg-white/[0.02] border border-white/5 hover:border-[#5dcaa5]/30 rounded-xl transition-all">
-                                            <span className="text-[9.5px] font-mono text-[#c9943a] font-bold block mb-1">{r.title}</span>
+                                            <span className="text-[9.5px] font-mono text-[#d2af5a] font-bold block mb-1">{r.title}</span>
                                             <p className="text-[9.5px] text-white/70 leading-relaxed font-sans text-justify">{r.text}</p>
                                           </div>
                                         ))}
@@ -4542,11 +4542,11 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                             </button>
                             <div className="flex justify-between text-[11px] font-bold">
                               <span className="text-white/95 font-bold">{okr.title}</span>
-                              <span className="font-mono text-[#c9943a]">{okr.progress}%</span>
+                              <span className="font-mono text-[#d2af5a]">{okr.progress}%</span>
                             </div>
                             <span className="text-[8.5px] font-mono text-white/45 block leading-tight">{okr.keyResults}</span>
                             <div className="h-1.5 bg-white/[0.04] rounded-full overflow-hidden border border-white/5">
-                              <div className="h-full bg-gradient-to-r from-[#c9943a] to-[#5dcaa5] rounded-full transition-all duration-300" style={{ width: `${okr.progress}%` }} />
+                              <div className="h-full bg-gradient-to-r from-[#d2af5a] to-[#5dcaa5] rounded-full transition-all duration-300" style={{ width: `${okr.progress}%` }} />
                             </div>
                           </div>
                         ))
@@ -4555,13 +4555,13 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
 
                     {/* OKR add form */}
                     <div className="border-t border-white/[0.04] pt-4 space-y-3">
-                      <span className="text-[8px] font-mono text-[#c9943a] uppercase tracking-wider block font-bold">Criar Novo OKR Estratégico</span>
+                      <span className="text-[8px] font-mono text-[#d2af5a] uppercase tracking-wider block font-bold">Criar Novo OKR Estratégico</span>
                       <input 
                         type="text" 
                         placeholder="Objetivo principal (ex: Reduzir churn em 10%)..." 
                         value={newOkrTitle}
                         onChange={(e) => setNewOkrTitle(e.target.value)}
-                        className="w-full bg-black/40 border border-white/10 rounded-xl px-3 py-2 text-[10.5px] text-white outline-none focus:border-[#c9943a]/40"
+                        className="w-full bg-black/40 border border-white/10 rounded-xl px-3 py-2 text-[10.5px] text-white outline-none focus:border-[#d2af5a]/40"
                       />
                       <div className="flex gap-2">
                         <input 
@@ -4569,11 +4569,11 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                           placeholder="Key Results (ex: KR1: LTV > 12 meses, KR2: zero bugs)..." 
                           value={newOkrKr}
                           onChange={(e) => setNewOkrKr(e.target.value)}
-                          className="flex-1 bg-black/40 border border-white/10 rounded-xl px-3 py-2 text-[10.5px] text-white outline-none focus:border-[#c9943a]/40"
+                          className="flex-1 bg-black/40 border border-white/10 rounded-xl px-3 py-2 text-[10.5px] text-white outline-none focus:border-[#d2af5a]/40"
                         />
                         <button 
                           onClick={handleAddOkr}
-                          className="px-4 bg-[#c9943a]/15 hover:bg-[#c9943a]/30 border border-[#c9943a]/45 rounded-xl text-[10px] font-bold text-[#c9943a] font-mono transition"
+                          className="px-4 bg-[#d2af5a]/15 hover:bg-[#d2af5a]/30 border border-[#d2af5a]/45 rounded-xl text-[10px] font-bold text-[#d2af5a] font-mono transition"
                         >
                           DEFINIR
                         </button>
@@ -4584,7 +4584,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                   {/* Right: strategic info bank */}
                   <div className="lg:col-span-5 space-y-4">
                     <div className="dash-card space-y-4">
-                      <h4 className="text-[12px] font-bold text-[#c9943a] uppercase font-mono tracking-widest">Banco de Estratégias</h4>
+                      <h4 className="text-[12px] font-bold text-[#d2af5a] uppercase font-mono tracking-widest">Banco de Estratégias</h4>
                       <div className="space-y-2.5 font-sans text-[9.5px] text-white/50">
                         <div className="premium-glass-card space-y-1 transition duration-300">
                           <b className="text-white block mb-1">D6 Diagnóstico:</b> 
@@ -4630,7 +4630,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                           type="number" 
                           value={climateSalary}
                           onChange={(e) => setClimateSalary(parseInt(e.target.value) || 0)}
-                          className="w-full bg-black/40 border border-white/[0.08] rounded-[0.4rem] px-3 py-1.5 text-[10px] text-white outline-none focus:border-[#c9943a]/40"
+                          className="w-full bg-black/40 border border-white/[0.08] rounded-[0.4rem] px-3 py-1.5 text-[10px] text-white outline-none focus:border-[#d2af5a]/40"
                         />
                       </div>
                       <div className="space-y-1">
@@ -4639,7 +4639,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                           type="number" 
                           value={climateLatency}
                           onChange={(e) => setClimateLatency(parseInt(e.target.value) || 0)}
-                          className="w-full bg-black/40 border border-white/[0.08] rounded-[0.4rem] px-3 py-1.5 text-[10px] text-white outline-none focus:border-[#c9943a]/40"
+                          className="w-full bg-black/40 border border-white/[0.08] rounded-[0.4rem] px-3 py-1.5 text-[10px] text-white outline-none focus:border-[#d2af5a]/40"
                         />
                       </div>
                       <div className="space-y-1">
@@ -4648,7 +4648,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                           type="number" 
                           value={climateRework}
                           onChange={(e) => setClimateRework(parseInt(e.target.value) || 0)}
-                          className="w-full bg-black/40 border border-white/[0.08] rounded-[0.4rem] px-3 py-1.5 text-[10px] text-white outline-none focus:border-[#c9943a]/40"
+                          className="w-full bg-black/40 border border-white/[0.08] rounded-[0.4rem] px-3 py-1.5 text-[10px] text-white outline-none focus:border-[#d2af5a]/40"
                         />
                       </div>
                       <div className="space-y-1">
@@ -4657,7 +4657,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                           type="number" 
                           value={climateTurnover}
                           onChange={(e) => setClimateTurnover(parseInt(e.target.value) || 0)}
-                          className="w-full bg-black/40 border border-white/[0.08] rounded-[0.4rem] px-3 py-1.5 text-[10px] text-white outline-none focus:border-[#c9943a]/40"
+                          className="w-full bg-black/40 border border-white/[0.08] rounded-[0.4rem] px-3 py-1.5 text-[10px] text-white outline-none focus:border-[#d2af5a]/40"
                         />
                       </div>
                     </div>
@@ -4701,14 +4701,14 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                     </div>
                     <button 
                       onClick={() => window.print()}
-                      className="px-3.5 py-1.5 bg-[#c9943a]/15 hover:bg-[#c9943a]/30 border border-[#c9943a]/45 text-[#c9943a] rounded-[0.4rem] text-[8.5px] font-mono font-bold transition"
+                      className="px-3.5 py-1.5 bg-[#d2af5a]/15 hover:bg-[#d2af5a]/30 border border-[#d2af5a]/45 text-[#d2af5a] rounded-[0.4rem] text-[8.5px] font-mono font-bold transition"
                     >
                       IMPRIMIR RELATÓRIO
                     </button>
                   </div>
 
                   <div className="p-3 bg-black/30 rounded-lg text-[9.5px] font-mono leading-relaxed text-white/75 space-y-2">
-                    <span className="text-[#c9943a] font-bold block">✓ CONSOLIDAÇÃO COCKPIT · MAIO DE 2026</span>
+                    <span className="text-[#d2af5a] font-bold block">✓ CONSOLIDAÇÃO COCKPIT · MAIO DE 2026</span>
                     <p>Total de Liderados Habilitados: {teamMembers.length} (Rodrigo Silva, Juliana Mendes, Lucas Alencar...)</p>
                     <p>D6 Coletivo Médio: {Math.round(teamMembers.reduce((s, m) => s + m.d6, 0) / teamMembers.length)}% | Saúde e Conflitos Controlados</p>
                     <p>OKRs Consolidados Ativos: {okrs.length} objetivos estratégicos em calibração trimestral.</p>
@@ -4741,7 +4741,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                         <select 
                           value={msgComplexity}
                           onChange={(e) => setMsgComplexity(parseInt(e.target.value) as any)}
-                          className="w-full bg-black/50 border border-white/10 rounded-xl px-3 py-2 text-[10.5px] text-white outline-none focus:border-[#c9943a]/40"
+                          className="w-full bg-black/50 border border-white/10 rounded-xl px-3 py-2 text-[10.5px] text-white outline-none focus:border-[#d2af5a]/40"
                         >
                           <option value="1">1: Baixa (Transacional / Aviso simples)</option>
                           <option value="2">2: Média (Definição / Alinhamento tático)</option>
@@ -4754,7 +4754,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                         <select 
                           value={channelUsed}
                           onChange={(e) => setChannelUsed(e.target.value)}
-                          className="w-full bg-black/50 border border-white/10 rounded-xl px-3 py-2 text-[10.5px] text-white outline-none focus:border-[#c9943a]/40"
+                          className="w-full bg-black/50 border border-white/10 rounded-xl px-3 py-2 text-[10.5px] text-white outline-none focus:border-[#d2af5a]/40"
                         >
                           <option value="slack">Slack / Chat escrito (Assíncrono)</option>
                           <option value="email">E-mail escrito (Assíncrono)</option>
@@ -4777,7 +4777,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
 
                   {/* C2 Communication Styles */}
                   <div className="lg:col-span-4 dash-card space-y-4">
-                    <h4 className="text-[12px] font-bold text-[#c9943a] uppercase font-mono tracking-widest">C² Communication Matrix</h4>
+                    <h4 className="text-[12px] font-bold text-[#d2af5a] uppercase font-mono tracking-widest">C² Communication Matrix</h4>
                     
                     <div className="space-y-2.5 font-sans text-[9.5px] text-white/60">
                       <div className="premium-glass-card space-y-1 transition duration-300">

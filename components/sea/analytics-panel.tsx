@@ -46,7 +46,7 @@ export function AnalyticsPanel() {
         <div className="grid grid-cols-3 gap-3 mb-4">
           <div className="bg-white/5 p-3 rounded border border-white/10">
             <div className="flex items-center gap-2 mb-1">
-              <Users className="w-3 h-3 text-[#c9943a]" />
+              <Users className="w-3 h-3 text-[#d2af5a]" />
               <span className="text-[10px] text-white/60">Usuários Ativos</span>
             </div>
             <p className="text-lg font-bold text-white">{stats.activeUsers}</p>

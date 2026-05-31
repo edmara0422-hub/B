@@ -342,7 +342,7 @@ export function HudCardio() {
         <div className="ch-label flex items-center gap-3">
           <button
             onClick={() => setSoundEnabled(!soundEnabled)}
-            className="text-[#c9943a] bg-white/5 hover:bg-white/10 p-1.5 rounded-lg border border-[#c9943a]/20 transition-all"
+            className="text-[#d2af5a] bg-white/5 hover:bg-white/10 p-1.5 rounded-lg border border-[#d2af5a]/20 transition-all"
             title={soundEnabled ? 'Mutar Telemetria' : 'Desmutar Telemetria'}
           >
             {soundEnabled ? <Volume2 size={13} /> : <VolumeX size={13} />}

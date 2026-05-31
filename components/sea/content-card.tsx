@@ -35,7 +35,7 @@ const areaLabels = {
 const areaColors = {
   fisioterapia: 'bg-blue-500/20 text-blue-300',
   marketing: 'bg-purple-500/20 text-purple-300',
-  neurologia: 'bg-[#c9943a]/20 text-emerald-300',
+  neurologia: 'bg-[#d2af5a]/20 text-emerald-300',
 }
 
 export function ContentCard({ id, title, type, area, duration }: ContentCardProps) {

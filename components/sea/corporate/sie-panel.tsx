@@ -97,7 +97,7 @@ export function SiePanel({ initialTab }: { initialTab?: SieSubTab }) {
           inset: 0;
           border-radius: 14px;
           padding: 1px;
-          background: linear-gradient(90deg, #cbd5e1 0%, #c9943a 100%) !important;
+          background: linear-gradient(90deg, #cbd5e1 0%, #d2af5a 100%) !important;
           -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
           -webkit-mask-composite: xor;
           mask-composite: exclude;
@@ -143,23 +143,23 @@ export function SiePanel({ initialTab }: { initialTab?: SieSubTab }) {
             <div className="dash-card-systems">
               <div className="flex justify-between items-start mb-6">
                 <div>
-                  <div className="text-[7.5px] font-mono text-[#c9943a] tracking-[0.2em] font-bold uppercase mb-1">SEC · 01 ◆ Cenários & Forecast</div>
+                  <div className="text-[7.5px] font-mono text-[#d2af5a] tracking-[0.2em] font-bold uppercase mb-1">SEC · 01 ◆ Cenários & Forecast</div>
                   <h3 className="text-[15px] lg:text-xl font-light text-white tracking-wide">
-                    Cockpit <span className="text-[#c9943a] font-medium">Estratégico</span>
+                    Cockpit <span className="text-[#d2af5a] font-medium">Estratégico</span>
                   </h3>
                   <p className="text-[10px] lg:text-[11.5px] text-white/50 mt-1 max-w-lg">
                     Onde estamos hoje? Para onde vamos? Projeções de caixa e forecast de crescimento.
                   </p>
                 </div>
-                <div className="flex items-center gap-1.5 px-2 py-1 rounded bg-[#c9943a]/5 border border-[#c9943a]/15 text-[8.5px] font-mono text-[#c9943a]">
+                <div className="flex items-center gap-1.5 px-2 py-1 rounded bg-[#d2af5a]/5 border border-[#d2af5a]/15 text-[8.5px] font-mono text-[#d2af5a]">
                   <TrendingUp className="h-3 w-3" />
                   <span>PREVISÃO INTERATIVA</span>
                 </div>
               </div>
 
               {/* Pergunta do Dia */}
-              <div className="bg-[#c9943a]/[0.02] border-l-2 border-[#c9943a] p-4 rounded-r-md mb-6">
-                <span className="block text-[8px] font-mono font-bold tracking-wider text-[#c9943a] mb-1">PERGUNTA DO DIA</span>
+              <div className="bg-[#d2af5a]/[0.02] border-l-2 border-[#d2af5a] p-4 rounded-r-md mb-6">
+                <span className="block text-[8px] font-mono font-bold tracking-wider text-[#d2af5a] mb-1">PERGUNTA DO DIA</span>
                 <p className="text-[11.5px] lg:text-xs italic text-white/90">
                   "Em qual fase estamos hoje? E em qual fase o mercado ao redor já chegou? A diferença entre as duas respostas é o gap que precisa ser fechado."
                 </p>
@@ -169,7 +169,7 @@ export function SiePanel({ initialTab }: { initialTab?: SieSubTab }) {
               <div className="bg-black/25 border border-white/[0.04] p-4 rounded-xl mb-6 space-y-2">
                 <div className="flex justify-between text-[9px] font-mono text-white/55">
                   <span>AJUSTE MULTIPLICADOR DE TRAÇÃO</span>
-                  <span className="text-[#c9943a] font-bold">{runwayMultiplier.toFixed(1)}x</span>
+                  <span className="text-[#d2af5a] font-bold">{runwayMultiplier.toFixed(1)}x</span>
                 </div>
                 <input
                   type="range"
@@ -178,7 +178,7 @@ export function SiePanel({ initialTab }: { initialTab?: SieSubTab }) {
                   step="0.1"
                   value={runwayMultiplier}
                   onChange={(e) => setRunwayMultiplier(parseFloat(e.target.value))}
-                  className="w-full h-1 bg-white/10 rounded-lg appearance-none cursor-pointer accent-[#c9943a]"
+                  className="w-full h-1 bg-white/10 rounded-lg appearance-none cursor-pointer accent-[#d2af5a]"
                 />
               </div>
 
@@ -242,12 +242,12 @@ export function SiePanel({ initialTab }: { initialTab?: SieSubTab }) {
             <div className="dash-card-systems">
               <div className="flex justify-between items-start mb-6">
                 <div>
-                  <div className="text-[7.5px] font-mono text-[#c9943a] tracking-[0.2em] font-bold uppercase mb-1">SEC · 02 ◆ Inovação</div>
+                  <div className="text-[7.5px] font-mono text-[#d2af5a] tracking-[0.2em] font-bold uppercase mb-1">SEC · 02 ◆ Inovação</div>
                   <h3 className="text-[15px] lg:text-xl font-light text-white tracking-wide">
-                    Matriz de <span className="text-[#c9943a] font-medium">Inovação</span>
+                    Matriz de <span className="text-[#d2af5a] font-medium">Inovação</span>
                   </h3>
                 </div>
-                <div className="flex items-center gap-1.5 px-2 py-1 rounded bg-[#c9943a]/5 border border-[#c9943a]/15 text-[8.5px] font-mono text-[#c9943a]">
+                <div className="flex items-center gap-1.5 px-2 py-1 rounded bg-[#d2af5a]/5 border border-[#d2af5a]/15 text-[8.5px] font-mono text-[#d2af5a]">
                   <Lightbulb className="h-3 w-3" />
                   <span>AMBIENTE P&D</span>
                 </div>
@@ -262,19 +262,19 @@ export function SiePanel({ initialTab }: { initialTab?: SieSubTab }) {
                   </h4>
                   <div className="space-y-3">
                     <label className="flex items-center gap-3 text-xs text-white/80 cursor-pointer select-none">
-                      <input type="checkbox" defaultChecked className="h-4 w-4 rounded border-white/20 bg-black/40 text-[#c9943a] focus:ring-0 focus:ring-offset-0 accent-[#c9943a]" />
+                      <input type="checkbox" defaultChecked className="h-4 w-4 rounded border-white/20 bg-black/40 text-[#d2af5a] focus:ring-0 focus:ring-offset-0 accent-[#d2af5a]" />
                       <span>📦 Produto / Serviço</span>
                     </label>
                     <label className="flex items-center gap-3 text-xs text-white/80 cursor-pointer select-none">
-                      <input type="checkbox" defaultChecked className="h-4 w-4 rounded border-white/20 bg-black/40 text-[#c9943a] focus:ring-0 focus:ring-offset-0 accent-[#c9943a]" />
+                      <input type="checkbox" defaultChecked className="h-4 w-4 rounded border-white/20 bg-black/40 text-[#d2af5a] focus:ring-0 focus:ring-offset-0 accent-[#d2af5a]" />
                       <span>⚙️ Processo</span>
                     </label>
                     <label className="flex items-center gap-3 text-xs text-white/80 cursor-pointer select-none">
-                      <input type="checkbox" className="h-4 w-4 rounded border-white/20 bg-black/40 text-[#c9943a] focus:ring-0 focus:ring-offset-0 accent-[#c9943a]" />
+                      <input type="checkbox" className="h-4 w-4 rounded border-white/20 bg-black/40 text-[#d2af5a] focus:ring-0 focus:ring-offset-0 accent-[#d2af5a]" />
                       <span>🏛️ Organizacional</span>
                     </label>
                     <label className="flex items-center gap-3 text-xs text-white/80 cursor-pointer select-none">
-                      <input type="checkbox" defaultChecked className="h-4 w-4 rounded border-white/20 bg-black/40 text-[#c9943a] focus:ring-0 focus:ring-offset-0 accent-[#c9943a]" />
+                      <input type="checkbox" defaultChecked className="h-4 w-4 rounded border-white/20 bg-black/40 text-[#d2af5a] focus:ring-0 focus:ring-offset-0 accent-[#d2af5a]" />
                       <span>♟️ Modelo de Negócio</span>
                     </label>
                   </div>
@@ -294,10 +294,10 @@ export function SiePanel({ initialTab }: { initialTab?: SieSubTab }) {
                       <span className="block text-[11px] font-bold text-[#fac775]">Radical</span>
                       <span className="block text-[10px] text-white/50 mt-0.5">Novas competências tecnológicas — alto investimento.</span>
                     </div>
-                    <div className="p-3 bg-[#c9943a]/5 border-l-2 border-[#c9943a] rounded-r-lg">
+                    <div className="p-3 bg-[#d2af5a]/5 border-l-2 border-[#d2af5a] rounded-r-lg">
                       <div className="flex justify-between items-center">
-                        <span className="block text-[11px] font-bold text-[#c9943a]">Disruptiva</span>
-                        <span className="text-[7.5px] font-mono bg-[#c9943a]/15 text-[#e0c887] px-1 rounded">ATUAL</span>
+                        <span className="block text-[11px] font-bold text-[#d2af5a]">Disruptiva</span>
+                        <span className="text-[7.5px] font-mono bg-[#d2af5a]/15 text-[#e0c887] px-1 rounded">ATUAL</span>
                       </div>
                       <span className="block text-[10px] text-white/70 mt-0.5">Mudança no modelo de negócio — escolhas estratégicas.</span>
                     </div>
@@ -325,9 +325,9 @@ export function SiePanel({ initialTab }: { initialTab?: SieSubTab }) {
                     <span className="block text-xs font-bold text-[#fac775] mb-1">Pico de Expectativas</span>
                     <span className="block text-[10.5px] text-white/45 leading-relaxed">Entusiasmo excessivo. Expectativas irrealistas.</span>
                   </div>
-                  <div className="bg-[#c9943a]/5 border border-[#c9943a]/30 p-4 rounded-xl relative overflow-hidden">
-                    <span className="absolute top-2 right-3 text-[11px] font-mono font-bold bg-[#c9943a] text-black px-1.5 py-0.5 rounded">3 - NÓS</span>
-                    <span className="block text-xs font-bold text-[#c9943a] mb-1">Vale da Desilusão</span>
+                  <div className="bg-[#d2af5a]/5 border border-[#d2af5a]/30 p-4 rounded-xl relative overflow-hidden">
+                    <span className="absolute top-2 right-3 text-[11px] font-mono font-bold bg-[#d2af5a] text-black px-1.5 py-0.5 rounded">3 - NÓS</span>
+                    <span className="block text-xs font-bold text-[#d2af5a] mb-1">Vale da Desilusão</span>
                     <span className="block text-[10.5px] text-white/80 leading-relaxed">Implementações falham. Interesse diminui. Onde os fortes constroem.</span>
                   </div>
                   <div className="bg-black/25 border border-white/[0.04] p-4 rounded-xl relative overflow-hidden">
@@ -383,7 +383,7 @@ export function SiePanel({ initialTab }: { initialTab?: SieSubTab }) {
               .canvas-block h4 {
                 font-family: var(--f-mono);
                 font-size: 9px;
-                color: #c9943a;
+                color: #d2af5a;
                 letter-spacing: 0.08em;
                 text-transform: uppercase;
                 margin: 0;
@@ -413,9 +413,9 @@ export function SiePanel({ initialTab }: { initialTab?: SieSubTab }) {
             <div className="dash-card-systems">
               <div className="flex justify-between items-start mb-6">
                 <div>
-                  <div className="text-[7.5px] font-mono text-[#c9943a] tracking-[0.2em] font-bold uppercase mb-1">SEC · 03 ◆ Canvas & Pitch</div>
+                  <div className="text-[7.5px] font-mono text-[#d2af5a] tracking-[0.2em] font-bold uppercase mb-1">SEC · 03 ◆ Canvas & Pitch</div>
                   <h3 className="text-[15px] lg:text-xl font-light text-white tracking-wide">
-                    Modelagem <span className="text-[#c9943a] font-medium">Lean Canvas</span> & Pitch Simulator
+                    Modelagem <span className="text-[#d2af5a] font-medium">Lean Canvas</span> & Pitch Simulator
                   </h3>
                   <p className="text-[10px] lg:text-[11.5px] text-white/50 mt-1 max-w-lg">
                     Esboce a tese do negócio e simule um elevator pitch de alto impacto com IA.
@@ -427,7 +427,7 @@ export function SiePanel({ initialTab }: { initialTab?: SieSubTab }) {
                 </div>
               </div>
 
-              <div className="bg-[#c9943a]/[0.02] border-l-2 border-[#c9943a] p-3 rounded-r-md text-[11px] text-white/80 leading-relaxed mb-6">
+              <div className="bg-[#d2af5a]/[0.02] border-l-2 border-[#d2af5a] p-3 rounded-r-md text-[11px] text-white/80 leading-relaxed mb-6">
                 💡 <b>Edição Dinâmica:</b> Clique diretamente em qualquer bloco do Lean Canvas para editar seu conteúdo em tempo real. As alterações alimentam as variáveis do simulador de pitch abaixo.
               </div>
 
@@ -536,7 +536,7 @@ export function SiePanel({ initialTab }: { initialTab?: SieSubTab }) {
               {/* ELEVATOR PITCH SIMULATOR SECTION */}
               <div className="mt-8 border-t border-white/[0.06] pt-8 space-y-6">
                 <div>
-                  <h3 className="text-sm font-bold text-[#c9943a] tracking-wider uppercase mb-1">SIMULADOR DE ELEVATOR PITCH</h3>
+                  <h3 className="text-sm font-bold text-[#d2af5a] tracking-wider uppercase mb-1">SIMULADOR DE ELEVATOR PITCH</h3>
                   <p className="text-[10px] text-white/40">Calibre as variáveis do Pitch para gerar sua tese resumida de vendas</p>
                 </div>
 
@@ -549,7 +549,7 @@ export function SiePanel({ initialTab }: { initialTab?: SieSubTab }) {
                         type="text"
                         value={pitchName}
                         onChange={(e) => setPitchName(e.target.value)}
-                        className="w-full bg-black/30 border border-white/10 rounded-md px-3 py-2 text-xs text-white outline-none focus:border-[#c9943a]/50 transition"
+                        className="w-full bg-black/30 border border-white/10 rounded-md px-3 py-2 text-xs text-white outline-none focus:border-[#d2af5a]/50 transition"
                       />
                     </div>
                     <div className="space-y-1">
@@ -558,7 +558,7 @@ export function SiePanel({ initialTab }: { initialTab?: SieSubTab }) {
                         type="text"
                         value={pitchTarget}
                         onChange={(e) => setPitchTarget(e.target.value)}
-                        className="w-full bg-black/30 border border-white/10 rounded-md px-3 py-2 text-xs text-white outline-none focus:border-[#c9943a]/50 transition"
+                        className="w-full bg-black/30 border border-white/10 rounded-md px-3 py-2 text-xs text-white outline-none focus:border-[#d2af5a]/50 transition"
                       />
                     </div>
                     <div className="space-y-1">
@@ -567,7 +567,7 @@ export function SiePanel({ initialTab }: { initialTab?: SieSubTab }) {
                         type="text"
                         value={pitchPain}
                         onChange={(e) => setPitchPain(e.target.value)}
-                        className="w-full bg-black/30 border border-white/10 rounded-md px-3 py-2 text-xs text-white outline-none focus:border-[#c9943a]/50 transition"
+                        className="w-full bg-black/30 border border-white/10 rounded-md px-3 py-2 text-xs text-white outline-none focus:border-[#d2af5a]/50 transition"
                       />
                     </div>
                     <div className="space-y-1">
@@ -576,7 +576,7 @@ export function SiePanel({ initialTab }: { initialTab?: SieSubTab }) {
                         type="text"
                         value={pitchMarket}
                         onChange={(e) => setPitchMarket(e.target.value)}
-                        className="w-full bg-black/30 border border-white/10 rounded-md px-3 py-2 text-xs text-white outline-none focus:border-[#c9943a]/50 transition"
+                        className="w-full bg-black/30 border border-white/10 rounded-md px-3 py-2 text-xs text-white outline-none focus:border-[#d2af5a]/50 transition"
                       />
                     </div>
                     <div className="space-y-1">
@@ -585,12 +585,12 @@ export function SiePanel({ initialTab }: { initialTab?: SieSubTab }) {
                         type="text"
                         value={pitchDifference}
                         onChange={(e) => setPitchDifference(e.target.value)}
-                        className="w-full bg-black/30 border border-white/10 rounded-md px-3 py-2 text-xs text-white outline-none focus:border-[#c9943a]/50 transition"
+                        className="w-full bg-black/30 border border-white/10 rounded-md px-3 py-2 text-xs text-white outline-none focus:border-[#d2af5a]/50 transition"
                       />
                     </div>
                     <button
                       onClick={handleSimulatePitch}
-                      className="w-full py-2.5 rounded-md bg-[#c9943a] hover:bg-[#c5a55a] text-black font-semibold text-xs tracking-wide transition flex items-center justify-center gap-1.5"
+                      className="w-full py-2.5 rounded-md bg-[#d2af5a] hover:bg-[#c5a55a] text-black font-semibold text-xs tracking-wide transition flex items-center justify-center gap-1.5"
                     >
                       <Sparkles className="h-3.5 w-3.5" />
                       <span>⚡ Simular Pitch de Elevador</span>
@@ -598,11 +598,11 @@ export function SiePanel({ initialTab }: { initialTab?: SieSubTab }) {
                   </div>
 
                   {/* RHS Result Display */}
-                  <div className="relative border border-[#c9943a]/20 bg-gradient-to-br from-[#1c150c]/60 to-[#0c0b0e]/85 rounded-xl p-6 flex flex-col justify-between overflow-hidden">
+                  <div className="relative border border-[#d2af5a]/20 bg-gradient-to-br from-[#1c150c]/60 to-[#0c0b0e]/85 rounded-xl p-6 flex flex-col justify-between overflow-hidden">
                     <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_top_right,rgba(201, 148, 58,0.06),transparent_70%)]" />
                     
                     <div className="space-y-4 relative z-10">
-                      <div className="flex justify-between items-center text-[8.5px] font-mono text-[#c9943a] tracking-wider">
+                      <div className="flex justify-between items-center text-[8.5px] font-mono text-[#d2af5a] tracking-wider">
                         <span>PITCH DE PONTO DE VISTA</span>
                         {pitchResult ? (
                           <span className="text-[#5dcaa5]">✓ PRONTO PARA EXECUTAR</span>
@@ -613,7 +613,7 @@ export function SiePanel({ initialTab }: { initialTab?: SieSubTab }) {
                       
                       <p className="text-white/80 text-[12.5px] leading-relaxed italic min-h-[120px] flex items-center">
                         {optimizing ? (
-                          <span className="animate-pulse text-[#c9943a]">Advisor analisando e aprimorando...</span>
+                          <span className="animate-pulse text-[#d2af5a]">Advisor analisando e aprimorando...</span>
                         ) : pitchResult ? (
                           `"${pitchResult}"`
                         ) : (
@@ -634,7 +634,7 @@ export function SiePanel({ initialTab }: { initialTab?: SieSubTab }) {
                       <button
                         onClick={handleOptimizePitch}
                         disabled={!pitchResult || optimizing}
-                        className="flex-1 py-2 rounded bg-[#c9943a] text-black font-semibold text-xs transition flex items-center justify-center gap-1 disabled:opacity-40 disabled:pointer-events-none"
+                        className="flex-1 py-2 rounded bg-[#d2af5a] text-black font-semibold text-xs transition flex items-center justify-center gap-1 disabled:opacity-40 disabled:pointer-events-none"
                       >
                         <Sparkles className="h-3.5 w-3.5" />
                         <span>🧠 Otimizar com AI Advisor</span>

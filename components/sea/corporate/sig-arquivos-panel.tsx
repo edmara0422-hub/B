@@ -81,7 +81,7 @@ export function SigArquivosPanel() {
           inset: 0;
           border-radius: 14px;
           padding: 1px;
-          background: linear-gradient(90deg, #cbd5e1 0%, #c9943a 100%) !important;
+          background: linear-gradient(90deg, #cbd5e1 0%, #d2af5a 100%) !important;
           -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
           -webkit-mask-composite: xor;
           mask-composite: exclude;
@@ -92,7 +92,7 @@ export function SigArquivosPanel() {
         .sec-head .lhs { display: flex; flex-direction: column; gap: 5px }
         .sec-id { display: flex; align-items: center; gap: 12px }
         .sec-id .num {
-          font-family: monospace; font-size: 9.5px; letter-spacing: .1em; color: #c9943a; font-weight: 500;
+          font-family: monospace; font-size: 9.5px; letter-spacing: .1em; color: #d2af5a; font-weight: 500;
           border: 0.2px solid rgba(255, 255, 255, 0.08); padding: 3px 9px; border-radius: 4px; background: rgba(218,165,32,.04);
         }
         .sec-id .tag { font-family: monospace; font-size: 10px; letter-spacing: .1em; color: #8a9098; text-transform: uppercase }
@@ -102,7 +102,7 @@ export function SigArquivosPanel() {
           margin-top: 4px; margin-bottom: 0;
         }
         .sec-h .em {
-          background: linear-gradient(135deg, #b8975a 0%, #c9943a 28%, #e8cc88 50%, #c9943a 72%, #b8975a 100%);
+          background: linear-gradient(135deg, #b8975a 0%, #d2af5a 28%, #e8cc88 50%, #d2af5a 72%, #b8975a 100%);
           background-clip: text; -webkit-background-clip: text;
           color: transparent; -webkit-text-fill-color: transparent;
           font-weight: 600;
@@ -123,7 +123,7 @@ export function SigArquivosPanel() {
         .vault-pill.active {
           background: rgba(201, 148, 58, 0.12) !important;
           border: 0.2px solid rgba(201, 148, 58, 0.3) !important;
-          color: #c9943a;
+          color: #d2af5a;
           font-weight: bold;
         }
         .vault-pill.inactive {
@@ -178,7 +178,7 @@ export function SigArquivosPanel() {
                 <span className="text-white/60 font-medium block">Capacidade: {usedSpace} MB / 100 MB</span>
                 <div className="h-1 bg-white/[0.08] rounded-full overflow-hidden mt-1.5 w-24">
                   <div
-                    className="h-full bg-[#c9943a] rounded-full"
+                    className="h-full bg-[#d2af5a] rounded-full"
                     style={{ width: `${Math.min((parseFloat(usedSpace) / 100) * 100, 100)}%` }}
                   />
                 </div>
@@ -272,7 +272,7 @@ export function SigArquivosPanel() {
           <div className="lg:col-span-4 flex flex-col gap-4">
             {/* Custom Dropzone */}
             <div
-              className="border border-dashed border-[#c9943a]/20 bg-black/10 hover:bg-[#c9943a]/5 p-5 rounded-xl text-center cursor-pointer transition flex flex-col items-center justify-center gap-2"
+              className="border border-dashed border-[#d2af5a]/20 bg-black/10 hover:bg-[#d2af5a]/5 p-5 rounded-xl text-center cursor-pointer transition flex flex-col items-center justify-center gap-2"
               onClick={() => alert('Carregando seletor local...')}
             >
               <span className="text-2xl">☁️</span>
@@ -284,7 +284,7 @@ export function SigArquivosPanel() {
 
             {/* Archiving Form */}
             <div className="bg-black/25 border border-white/[0.06] rounded-xl p-5 flex flex-col gap-3">
-              <span className="font-mono text-[8.5px] text-[#c9943a] tracking-wider uppercase border-b border-white/[0.08] pb-2">
+              <span className="font-mono text-[8.5px] text-[#d2af5a] tracking-wider uppercase border-b border-white/[0.08] pb-2">
                 Arquivamento Manual
               </span>
 

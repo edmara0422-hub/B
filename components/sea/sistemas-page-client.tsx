@@ -227,7 +227,7 @@ export default function SistemasPageClient() {
           --g-line: rgba(224,200,135,.15);
           --g-line-on: rgba(224,200,135,.38);
           --g-glow: rgba(224,200,135,.10);
-          --c-gold: #c9943a;
+          --c-gold: #d2af5a;
           --c-gold-dim: rgba(201, 148, 58, 0.35);
           --s-1: #c8cdd3;
           --s-2: #8a9098;
@@ -244,9 +244,9 @@ export default function SistemasPageClient() {
           --ink-mute: #8a9098;
           --green: #7fa37a;
           --grad-silver: linear-gradient(135deg, #8a9098 0%, #e2e8f0 25%, #ffffff 50%, #cbd5e1 75%, #64748b 100%);
-          --grad-gold: linear-gradient(135deg, #b8975a 0%, #c9943a 28%, #e8cc88 50%, #c9943a 72%, #b8975a 100%);
+          --grad-gold: linear-gradient(135deg, #b8975a 0%, #d2af5a 28%, #e8cc88 50%, #d2af5a 72%, #b8975a 100%);
           --grad-gold-soft: linear-gradient(135deg, #b8975a 0%, #e0c887 50%, #b8975a 100%);
-          --grad-gold-warm: linear-gradient(135deg, #b8975a 0%, #c9943a 28%, #e8cc88 50%, #c9943a 72%, #b8975a 100%);
+          --grad-gold-warm: linear-gradient(135deg, #b8975a 0%, #d2af5a 28%, #e8cc88 50%, #d2af5a 72%, #b8975a 100%);
           --f-display: 'Poppins', sans-serif;
           --f-mono: 'Poppins', sans-serif;
           --f-body: 'Poppins', sans-serif;
@@ -995,7 +995,7 @@ export default function SistemasPageClient() {
           inset: 0;
           border-radius: 100px;
           padding: 1px;
-          background: linear-gradient(90deg, #e2e8f0 0%, #cbd5e1 45%, #c9943a 55%, #b8975a 100%);
+          background: linear-gradient(90deg, #e2e8f0 0%, #cbd5e1 45%, #d2af5a 55%, #b8975a 100%);
           -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
           -webkit-mask-composite: xor;
           mask-composite: exclude;
@@ -1235,7 +1235,7 @@ export default function SistemasPageClient() {
                 onClick={() => setSidebarOpen(true)}
                 className="mr-3 flex items-center gap-2 rounded-[0.85rem] border border-white/[0.08] bg-white/[0.04] px-2.5 py-1.5 text-[9px] uppercase tracking-[0.2em] text-white/60 transition hover:text-white"
               >
-                <PanelLeftOpen className="h-3.5 w-3.5 text-[#c9943a]" />
+                <PanelLeftOpen className="h-3.5 w-3.5 text-[#d2af5a]" />
                 <span>Abrir Menu</span>
               </button>
             )}

@@ -5533,7 +5533,7 @@ export function ProntuarioSystemPanel() {
                   const minsLeft = Math.floor((timeLeftMs % (1000 * 60 * 60)) / 60000)
                   const timeStr = hoursLeft > 0 ? `${hoursLeft}h ${minsLeft}m` : `${minsLeft}m`
                   return (
-                    <button onClick={() => { pendingAddRecordRef.current = false; setShowShiftModal(true) }} className="flex items-center gap-1 rounded-full border border-[#c9943a]/30 bg-[#c9943a]/10 px-2 py-0.5 text-[8px] font-bold text-[#c9943a] hover:bg-[#c9943a]/20 transition-colors">
+                    <button onClick={() => { pendingAddRecordRef.current = false; setShowShiftModal(true) }} className="flex items-center gap-1 rounded-full border border-[#d2af5a]/30 bg-[#d2af5a]/10 px-2 py-0.5 text-[8px] font-bold text-[#d2af5a] hover:bg-[#d2af5a]/20 transition-colors">
                       <RotateCcw className="h-2.5 w-2.5" />
                       Expira em: {timeStr}
                     </button>
@@ -5619,7 +5619,7 @@ export function ProntuarioSystemPanel() {
                 </button>
                 <button 
                   onClick={handleUnifiedRescue}
-                  className="p-1.5 bg-white/5 hover:bg-blue-500/20 rounded-lg transition-colors text-[#c9943a]"
+                  className="p-1.5 bg-white/5 hover:bg-blue-500/20 rounded-lg transition-colors text-[#d2af5a]"
                   title="Resgatar Dados"
                 >
                   <Search className="h-4 w-4" />
@@ -5732,11 +5732,11 @@ export function ProntuarioSystemPanel() {
                 </button>
               </div>
 
-              <div className="rounded-[1rem] bg-[#c9943a]/5 border border-[#c9943a]/20 p-3">
+              <div className="rounded-[1rem] bg-[#d2af5a]/5 border border-[#d2af5a]/20 p-3">
                 <div className="flex gap-2">
-                  <Activity className="h-3.5 w-3.5 text-[#c9943a] shrink-0" />
+                  <Activity className="h-3.5 w-3.5 text-[#d2af5a] shrink-0" />
                   <p className="text-[9px] leading-relaxed text-amber-200/70">
-                    <span className="font-bold text-[#c9943a]">Política de Segurança:</span> Os dados locais serão removidos 2 horas após o término do turno selecionado.
+                    <span className="font-bold text-[#d2af5a]">Política de Segurança:</span> Os dados locais serão removidos 2 horas após o término do turno selecionado.
                   </p>
                 </div>
               </div>
@@ -6338,7 +6338,7 @@ export function ProntuarioSystemPanel() {
                                         ? 'border-green-500/30 bg-green-500/10 text-green-400'
                                         : isCritico
                                         ? 'border-red-500/50 bg-red-500/15 text-red-400'
-                                        : 'border-[#c9943a]/30 bg-[#c9943a]/10 text-[#c9943a]'
+                                        : 'border-[#d2af5a]/30 bg-[#d2af5a]/10 text-[#d2af5a]'
                                       const label = isOk
                                         ? `${m.tot_to_carina_cm}cm ✓ adequado`
                                         : isSubido

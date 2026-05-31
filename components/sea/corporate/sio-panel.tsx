@@ -51,7 +51,7 @@ export function SioPanel({ initialTab }: { initialTab?: SioSubTab }) {
   const getMaturityLevel = (score: number) => {
     if (score >= 80) return { text: 'Excelente', color: '#5dcaa5' }
     if (score >= 50) return { text: 'Integrado', color: '#fac775' }
-    return { text: 'Mapeado', color: '#c9943a' }
+    return { text: 'Mapeado', color: '#d2af5a' }
   }
   const matLevel = getMaturityLevel(totalMaturity)
 
@@ -96,7 +96,7 @@ export function SioPanel({ initialTab }: { initialTab?: SioSubTab }) {
           top: 0;
           bottom: 0;
           width: 3px;
-          background: #c9943a;
+          background: #d2af5a;
           opacity: 0.3;
         }
         .pyr-row[data-active="true"]::before {
@@ -107,7 +107,7 @@ export function SioPanel({ initialTab }: { initialTab?: SioSubTab }) {
           font-family: var(--f-mono);
           font-size: 10px;
           font-weight: 700;
-          color: #c9943a;
+          color: #d2af5a;
           width: 24px;
           height: 24px;
           border-radius: 4px;
@@ -139,7 +139,7 @@ export function SioPanel({ initialTab }: { initialTab?: SioSubTab }) {
           left: 0;
           top: 0;
           bottom: 0;
-          background: linear-gradient(90deg, #b8975a, #c9943a);
+          background: linear-gradient(90deg, #b8975a, #d2af5a);
           border-radius: 2px;
         }
         .pyr-val {
@@ -185,8 +185,8 @@ export function SioPanel({ initialTab }: { initialTab?: SioSubTab }) {
           width: 32px;
           height: 32px;
           border-radius: 50%;
-          background: linear-gradient(135deg, #b8975a, #c9943a);
-          box-shadow: 0 0 15px #c9943a;
+          background: linear-gradient(135deg, #b8975a, #d2af5a);
+          box-shadow: 0 0 15px #d2af5a;
           animation: pulse 2s infinite ease-in-out;
         }
         @keyframes pulse {
@@ -245,7 +245,7 @@ export function SioPanel({ initialTab }: { initialTab?: SioSubTab }) {
           inset: 0;
           border-radius: 14px;
           padding: 1px;
-          background: linear-gradient(90deg, #cbd5e1 0%, #c9943a 100%) !important;
+          background: linear-gradient(90deg, #cbd5e1 0%, #d2af5a 100%) !important;
           -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
           -webkit-mask-composite: xor;
           mask-composite: exclude;
@@ -292,36 +292,36 @@ export function SioPanel({ initialTab }: { initialTab?: SioSubTab }) {
             <div className="dash-card-systems">
               <div className="flex justify-between items-start mb-6">
                 <div>
-                  <div className="text-[7.5px] font-mono text-[#c9943a] tracking-[0.2em] font-bold uppercase mb-1">SEC · 01 ◆ Finanças</div>
+                  <div className="text-[7.5px] font-mono text-[#d2af5a] tracking-[0.2em] font-bold uppercase mb-1">SEC · 01 ◆ Finanças</div>
                   <h3 className="text-[15px] lg:text-xl font-light text-white tracking-wide">
-                    Cockpit <span className="text-[#c9943a] font-medium">Financeiro</span>
+                    Cockpit <span className="text-[#d2af5a] font-medium">Financeiro</span>
                   </h3>
                   <p className="text-[10px] lg:text-[11.5px] text-white/50 mt-1 max-w-lg">
                     Calibragem de contexto · Diagnóstico de Caixa, Runway e CAC.
                   </p>
                 </div>
-                <div className="flex items-center gap-1.5 px-2 py-1 rounded bg-[#c9943a]/5 border border-[#c9943a]/15 text-[8.5px] font-mono text-[#c9943a]">
+                <div className="flex items-center gap-1.5 px-2 py-1 rounded bg-[#d2af5a]/5 border border-[#d2af5a]/15 text-[8.5px] font-mono text-[#d2af5a]">
                   <Landmark className="h-3 w-3" />
                   <span>CÁLCULO ATIVO</span>
                 </div>
               </div>
 
               {/* Por que serve o cockpit */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 bg-[#c9943a]/[0.02] border border-[#c9943a]/10 rounded-xl p-5 mb-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 bg-[#d2af5a]/[0.02] border border-[#d2af5a]/10 rounded-xl p-5 mb-6">
                 <div>
-                  <span className="block text-[11px] font-bold text-[#c9943a] mb-1">Parar de Chutar</span>
+                  <span className="block text-[11px] font-bold text-[#d2af5a] mb-1">Parar de Chutar</span>
                   <p className="text-[10px] text-white/60 leading-relaxed">Diz se o seu preço (ticket) realmente paga o seu custo real (burn).</p>
                 </div>
                 <div>
-                  <span className="block text-[11px] font-bold text-[#c9943a] mb-1">Alerta de Colisão</span>
+                  <span className="block text-[11px] font-bold text-[#d2af5a] mb-1">Alerta de Colisão</span>
                   <p className="text-[10px] text-white/60 leading-relaxed">O Runway mostra quantos meses de fôlego você tem hoje.</p>
                 </div>
                 <div>
-                  <span className="block text-[11px] font-bold text-[#c9943a] mb-1">Filtro de Ruído</span>
+                  <span className="block text-[11px] font-bold text-[#d2af5a] mb-1">Filtro de Ruído</span>
                   <p className="text-[10px] text-white/60 leading-relaxed">Foco no gargalo real, não no que aparece mais.</p>
                 </div>
                 <div>
-                  <span className="block text-[11px] font-bold text-[#c9943a] mb-1">Prova de Valor</span>
+                  <span className="block text-[11px] font-bold text-[#d2af5a] mb-1">Prova de Valor</span>
                   <p className="text-[10px] text-white/60 leading-relaxed">O que você mostra para provar viabilidade em números.</p>
                 </div>
               </div>
@@ -330,7 +330,7 @@ export function SioPanel({ initialTab }: { initialTab?: SioSubTab }) {
               <div className="space-y-4">
                 <div className="flex justify-between items-center border-b border-white/10 pb-2">
                   <span className="text-[11.5px] font-mono text-white/80 flex items-center gap-1.5">
-                    <Settings className="h-3.5 w-3.5 text-[#c9943a]" />
+                    <Settings className="h-3.5 w-3.5 text-[#d2af5a]" />
                     <span>⚙ Calibragem de Contexto</span>
                   </span>
                   <button
@@ -357,7 +357,7 @@ export function SioPanel({ initialTab }: { initialTab?: SioSubTab }) {
                         value={receita || ''}
                         onChange={(e) => setReceita(parseFloat(e.target.value) || 0)}
                         placeholder="Ex: 50000"
-                        className="w-full bg-black/30 border border-white/10 rounded-md px-3 py-2 text-xs text-white outline-none focus:border-[#c9943a]/50 transition"
+                        className="w-full bg-black/30 border border-white/10 rounded-md px-3 py-2 text-xs text-white outline-none focus:border-[#d2af5a]/50 transition"
                       />
                       <span className="block text-[9.5px] text-white/40">Tudo que entrou de vendas (sem empréstimos/aportes).</span>
                     </div>
@@ -369,7 +369,7 @@ export function SioPanel({ initialTab }: { initialTab?: SioSubTab }) {
                         value={despesa || ''}
                         onChange={(e) => setDespesa(parseFloat(e.target.value) || 0)}
                         placeholder="Ex: 35000"
-                        className="w-full bg-black/30 border border-white/10 rounded-md px-3 py-2 text-xs text-white outline-none focus:border-[#c9943a]/50 transition"
+                        className="w-full bg-black/30 border border-white/10 rounded-md px-3 py-2 text-xs text-white outline-none focus:border-[#d2af5a]/50 transition"
                       />
                       <span className="block text-[9.5px] text-white/40">Folha, aluguel, fornecedores, ferramentas, impostos.</span>
                     </div>
@@ -381,7 +381,7 @@ export function SioPanel({ initialTab }: { initialTab?: SioSubTab }) {
                         value={caixa || ''}
                         onChange={(e) => setCaixa(parseFloat(e.target.value) || 0)}
                         placeholder="Ex: 150000"
-                        className="w-full bg-black/30 border border-white/10 rounded-md px-3 py-2 text-xs text-white outline-none focus:border-[#c9943a]/50 transition"
+                        className="w-full bg-black/30 border border-white/10 rounded-md px-3 py-2 text-xs text-white outline-none focus:border-[#d2af5a]/50 transition"
                       />
                       <span className="block text-[9.5px] text-white/40">Saldo atual nas contas bancárias.</span>
                     </div>
@@ -397,7 +397,7 @@ export function SioPanel({ initialTab }: { initialTab?: SioSubTab }) {
                           value={mkt || ''}
                           onChange={(e) => setMkt(parseFloat(e.target.value) || 0)}
                           placeholder="Ex: 5000"
-                          className="w-full bg-black/30 border border-white/10 rounded-md px-3 py-2 text-xs text-white outline-none focus:border-[#c9943a]/50 transition"
+                          className="w-full bg-black/30 border border-white/10 rounded-md px-3 py-2 text-xs text-white outline-none focus:border-[#d2af5a]/50 transition"
                         />
                         <span className="block text-[9.5px] text-white/40">Anúncios, tráfego pago, comissões.</span>
                       </div>
@@ -409,7 +409,7 @@ export function SioPanel({ initialTab }: { initialTab?: SioSubTab }) {
                           value={novosClientes || ''}
                           onChange={(e) => setNovosClientes(parseInt(e.target.value) || 0)}
                           placeholder="Ex: 10"
-                          className="w-full bg-black/30 border border-white/10 rounded-md px-3 py-2 text-xs text-white outline-none focus:border-[#c9943a]/50 transition"
+                          className="w-full bg-black/30 border border-white/10 rounded-md px-3 py-2 text-xs text-white outline-none focus:border-[#d2af5a]/50 transition"
                         />
                         <span className="block text-[9.5px] text-white/40">Total de vendas concluídas no período.</span>
                       </div>
@@ -427,7 +427,7 @@ export function SioPanel({ initialTab }: { initialTab?: SioSubTab }) {
                       </div>
                       <div className="flex justify-between items-center text-xs">
                         <span className="text-white/50">CAC Médio</span>
-                        <b className="text-[#c9943a] font-mono">R$ {parseFloat(cac).toLocaleString('pt-BR')}</b>
+                        <b className="text-[#d2af5a] font-mono">R$ {parseFloat(cac).toLocaleString('pt-BR')}</b>
                       </div>
                       <div className="flex justify-between items-center text-xs">
                         <span className="text-white/50">Ticket Médio</span>
@@ -452,9 +452,9 @@ export function SioPanel({ initialTab }: { initialTab?: SioSubTab }) {
             <div className="dash-card-systems">
               <div className="flex justify-between items-start mb-6">
                 <div>
-                  <div className="text-[7.5px] font-mono text-[#c9943a] tracking-[0.2em] font-bold uppercase mb-1">SEC · 02 ◆ Smart Pricing</div>
+                  <div className="text-[7.5px] font-mono text-[#d2af5a] tracking-[0.2em] font-bold uppercase mb-1">SEC · 02 ◆ Smart Pricing</div>
                   <h3 className="text-[15px] lg:text-xl font-light text-white tracking-wide">
-                    Regras <span className="text-[#c9943a] font-medium">Ativas</span>
+                    Regras <span className="text-[#d2af5a] font-medium">Ativas</span>
                   </h3>
                 </div>
               </div>
@@ -498,18 +498,18 @@ export function SioPanel({ initialTab }: { initialTab?: SioSubTab }) {
 
                 {/* Notes box */}
                 <div className="p-5 bg-white/[0.01] border border-white/[0.05] rounded-xl space-y-4">
-                  <div className="text-xs font-mono font-bold text-[#c9943a] tracking-wider uppercase border-b border-white/[0.06] pb-2">
+                  <div className="text-xs font-mono font-bold text-[#d2af5a] tracking-wider uppercase border-b border-white/[0.06] pb-2">
                     Otimização Recomendada
                   </div>
                   <div className="space-y-3">
                     <div className="flex gap-2 items-start text-xs">
-                      <span className="text-[#c9943a] font-bold font-mono">α</span>
+                      <span className="text-[#d2af5a] font-bold font-mono">α</span>
                       <p className="text-white/80">
                         R1 (Trial 14d) com <b>88% de retenção</b>. Migrar trial padrão de 7d→14d para todos segmentos.
                       </p>
                     </div>
                     <div className="flex gap-2 items-start text-xs">
-                      <span className="text-[#c9943a] font-bold font-mono">β</span>
+                      <span className="text-[#d2af5a] font-bold font-mono">β</span>
                       <p className="text-white/80">
                         Impacto previsto: <b>+0.8pp em conversão</b>, ROI em ~5 semanas.
                       </p>
@@ -532,9 +532,9 @@ export function SioPanel({ initialTab }: { initialTab?: SioSubTab }) {
             <div className="dash-card-systems">
               <div className="flex justify-between items-start mb-6">
                 <div>
-                  <div className="text-[7.5px] font-mono text-[#c9943a] tracking-[0.2em] font-bold uppercase mb-1">SEC · 03 ◆ IPBA AI</div>
+                  <div className="text-[7.5px] font-mono text-[#d2af5a] tracking-[0.2em] font-bold uppercase mb-1">SEC · 03 ◆ IPBA AI</div>
                   <h3 className="text-[15px] lg:text-xl font-light text-white tracking-wide">
-                    Insight <span className="text-[#c9943a] font-medium">Operacional</span>
+                    Insight <span className="text-[#d2af5a] font-medium">Operacional</span>
                   </h3>
                 </div>
               </div>
@@ -550,7 +550,7 @@ export function SioPanel({ initialTab }: { initialTab?: SioSubTab }) {
 
                 <div className="cortex-msg">
                   <div className="ttl">
-                    <span className="text-[#c9943a] font-mono">INSIGHT · #4473</span>
+                    <span className="text-[#d2af5a] font-mono">INSIGHT · #4473</span>
                     <span>14:31:55 · OPERACIONAL</span>
                   </div>
                   <p className="body">
@@ -568,7 +568,7 @@ export function SioPanel({ initialTab }: { initialTab?: SioSubTab }) {
                     <button
                       onClick={handleApplyAdvisor}
                       disabled={advisorApplied}
-                      className="px-3.5 py-1.5 rounded bg-[#c9943a] hover:bg-[#c5a55a] text-black font-semibold text-xs tracking-wider transition disabled:opacity-40 disabled:pointer-events-none"
+                      className="px-3.5 py-1.5 rounded bg-[#d2af5a] hover:bg-[#c5a55a] text-black font-semibold text-xs tracking-wider transition disabled:opacity-40 disabled:pointer-events-none"
                     >
                       Aplicar Regra
                     </button>
@@ -596,9 +596,9 @@ export function SioPanel({ initialTab }: { initialTab?: SioSubTab }) {
             <div className="dash-card-systems">
               <div className="flex justify-between items-start mb-6">
                 <div>
-                  <div className="text-[7.5px] font-mono text-[#c9943a] tracking-[0.2em] font-bold uppercase mb-1">SEC · 04 ◆ Processos</div>
+                  <div className="text-[7.5px] font-mono text-[#d2af5a] tracking-[0.2em] font-bold uppercase mb-1">SEC · 04 ◆ Processos</div>
                   <h3 className="text-[15px] lg:text-xl font-light text-white tracking-wide">
-                    Mapeamento & <span className="text-[#c9943a] font-medium">Automação de Processos</span>
+                    Mapeamento & <span className="text-[#d2af5a] font-medium">Automação de Processos</span>
                   </h3>
                   <p className="text-[10px] lg:text-[11.5px] text-white/50 mt-1 max-w-lg">
                     Mapeie fluxos operacionais, ative conexões e audite a governança operacional.
@@ -611,7 +611,7 @@ export function SioPanel({ initialTab }: { initialTab?: SioSubTab }) {
                 <div className="space-y-4">
                   {/* Section 1 */}
                   <div className="bg-black/15 p-5 rounded-xl border border-white/[0.04] space-y-4">
-                    <h4 className="text-[10.5px] font-mono font-bold text-[#c9943a] tracking-wider uppercase border-b border-white/[0.06] pb-2">
+                    <h4 className="text-[10.5px] font-mono font-bold text-[#d2af5a] tracking-wider uppercase border-b border-white/[0.06] pb-2">
                       1. Fase de Mapeamento
                     </h4>
                     <div className="space-y-3">
@@ -621,7 +621,7 @@ export function SioPanel({ initialTab }: { initialTab?: SioSubTab }) {
                             type="checkbox"
                             checked={procChecks[key].checked}
                             onChange={() => toggleProcCheck(key)}
-                            className="h-4 w-4 rounded border-white/20 bg-black/40 text-[#c9943a] focus:ring-0 focus:ring-offset-0 accent-[#c9943a] mt-0.5"
+                            className="h-4 w-4 rounded border-white/20 bg-black/40 text-[#d2af5a] focus:ring-0 focus:ring-offset-0 accent-[#d2af5a] mt-0.5"
                           />
                           <div>
                             <b className="block text-white/95">{procChecks[key].label}</b>
@@ -638,7 +638,7 @@ export function SioPanel({ initialTab }: { initialTab?: SioSubTab }) {
 
                   {/* Section 2 */}
                   <div className="bg-black/15 p-5 rounded-xl border border-white/[0.04] space-y-4">
-                    <h4 className="text-[10.5px] font-mono font-bold text-[#c9943a] tracking-wider uppercase border-b border-white/[0.06] pb-2">
+                    <h4 className="text-[10.5px] font-mono font-bold text-[#d2af5a] tracking-wider uppercase border-b border-white/[0.06] pb-2">
                       2. Fase de Automação
                     </h4>
                     <div className="space-y-3">
@@ -648,7 +648,7 @@ export function SioPanel({ initialTab }: { initialTab?: SioSubTab }) {
                             type="checkbox"
                             checked={procChecks[key].checked}
                             onChange={() => toggleProcCheck(key)}
-                            className="h-4 w-4 rounded border-white/20 bg-black/40 text-[#c9943a] focus:ring-0 focus:ring-offset-0 accent-[#c9943a] mt-0.5"
+                            className="h-4 w-4 rounded border-white/20 bg-black/40 text-[#d2af5a] focus:ring-0 focus:ring-offset-0 accent-[#d2af5a] mt-0.5"
                           />
                           <div>
                             <b className="block text-white/95">{procChecks[key].label}</b>
@@ -664,7 +664,7 @@ export function SioPanel({ initialTab }: { initialTab?: SioSubTab }) {
 
                   {/* Section 3 */}
                   <div className="bg-black/15 p-5 rounded-xl border border-white/[0.04] space-y-4">
-                    <h4 className="text-[10.5px] font-mono font-bold text-[#c9943a] tracking-wider uppercase border-b border-white/[0.06] pb-2">
+                    <h4 className="text-[10.5px] font-mono font-bold text-[#d2af5a] tracking-wider uppercase border-b border-white/[0.06] pb-2">
                       3. Governança Operacional
                     </h4>
                     <div className="space-y-3">
@@ -674,7 +674,7 @@ export function SioPanel({ initialTab }: { initialTab?: SioSubTab }) {
                             type="checkbox"
                             checked={procChecks[key].checked}
                             onChange={() => toggleProcCheck(key)}
-                            className="h-4 w-4 rounded border-white/20 bg-black/40 text-[#c9943a] focus:ring-0 focus:ring-offset-0 accent-[#c9943a] mt-0.5"
+                            className="h-4 w-4 rounded border-white/20 bg-black/40 text-[#d2af5a] focus:ring-0 focus:ring-offset-0 accent-[#d2af5a] mt-0.5"
                           />
                           <div>
                             <b className="block text-white/95">{procChecks[key].label}</b>
@@ -692,7 +692,7 @@ export function SioPanel({ initialTab }: { initialTab?: SioSubTab }) {
                 {/* Column 2: Gauge and active flows */}
                 <div className="space-y-6">
                   {/* Gauge Card */}
-                  <div className="bg-[#c9943a]/[0.02] border border-[#c9943a]/15 rounded-xl p-6 flex flex-col items-center justify-center text-center relative overflow-hidden bg-[radial-gradient(circle_at_top_right,rgba(201, 148, 58,0.05),transparent_60%)]">
+                  <div className="bg-[#d2af5a]/[0.02] border border-[#d2af5a]/15 rounded-xl p-6 flex flex-col items-center justify-center text-center relative overflow-hidden bg-[radial-gradient(circle_at_top_right,rgba(201, 148, 58,0.05),transparent_60%)]">
                     <div className="text-[9px] font-mono tracking-wider text-white/50 uppercase mb-4">
                       Maturidade Operacional
                     </div>
@@ -716,7 +716,7 @@ export function SioPanel({ initialTab }: { initialTab?: SioSubTab }) {
                         <defs>
                           <linearGradient id="sioGoldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
                             <stop offset="0%" stopColor="#f5d08b" />
-                            <stop offset="100%" stopColor="#c9943a" />
+                            <stop offset="100%" stopColor="#d2af5a" />
                           </linearGradient>
                         </defs>
                       </svg>
@@ -736,7 +736,7 @@ export function SioPanel({ initialTab }: { initialTab?: SioSubTab }) {
 
                   {/* Fluxos Criticos Pipeline */}
                   <div className="bg-black/15 border border-white/[0.04] p-5 rounded-xl space-y-4">
-                    <h4 className="text-[10.5px] font-mono font-bold text-[#c9943a] tracking-wider uppercase border-b border-white/[0.06] pb-2">
+                    <h4 className="text-[10.5px] font-mono font-bold text-[#d2af5a] tracking-wider uppercase border-b border-white/[0.06] pb-2">
                       Fluxos Críticos & Status
                     </h4>
                     <div className="space-y-3">

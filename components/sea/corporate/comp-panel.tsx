@@ -111,7 +111,7 @@ export function CompPanel({ initialTab }: { initialTab?: CompSubTab }) {
           inset: 0;
           border-radius: 14px;
           padding: 1px;
-          background: linear-gradient(90deg, #cbd5e1 0%, #c9943a 100%) !important;
+          background: linear-gradient(90deg, #cbd5e1 0%, #d2af5a 100%) !important;
           -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
           -webkit-mask-composite: xor;
           mask-composite: exclude;
@@ -156,15 +156,15 @@ export function CompPanel({ initialTab }: { initialTab?: CompSubTab }) {
             <div className="dash-card-systems">
               <div className="flex justify-between items-start mb-6">
                 <div>
-                  <div className="text-[7.5px] font-mono text-[#c9943a] tracking-[0.2em] font-bold uppercase mb-1">SEC · 01 ◆ Compliance</div>
+                  <div className="text-[7.5px] font-mono text-[#d2af5a] tracking-[0.2em] font-bold uppercase mb-1">SEC · 01 ◆ Compliance</div>
                   <h3 className="text-[15px] lg:text-xl font-light text-white tracking-wide">
-                    Canal de <span className="text-[#c9943a] font-medium">Denúncias</span>
+                    Canal de <span className="text-[#d2af5a] font-medium">Denúncias</span>
                   </h3>
                   <p className="text-[10px] lg:text-[11.5px] text-white/50 mt-1 max-w-lg">
                     Este canal é 100% anônimo. Protegido pela LGPD e sob rigoroso protocolo de integridade.
                   </p>
                 </div>
-                <div className="flex items-center gap-1.5 px-2 py-1 rounded bg-[#c9943a]/5 border border-[#c9943a]/15 text-[8.5px] font-mono text-[#c9943a]">
+                <div className="flex items-center gap-1.5 px-2 py-1 rounded bg-[#d2af5a]/5 border border-[#d2af5a]/15 text-[8.5px] font-mono text-[#d2af5a]">
                   <Scale className="h-3 w-3" />
                   <span>PROTOCOLO CRÍTICO</span>
                 </div>
@@ -178,7 +178,7 @@ export function CompPanel({ initialTab }: { initialTab?: CompSubTab }) {
                     <select
                       value={tipoDenuncia}
                       onChange={(e) => setTipoDenuncia(e.target.value)}
-                      className="w-full bg-black/40 border border-white/10 rounded-md px-3 py-2.5 text-xs text-white outline-none focus:border-[#c9943a]/50 transition"
+                      className="w-full bg-black/40 border border-white/10 rounded-md px-3 py-2.5 text-xs text-white outline-none focus:border-[#d2af5a]/50 transition"
                     >
                       <option value="" className="bg-[#0b0b0c]">Selecione o tipo...</option>
                       <option value="Assédio moral ou sexual" className="bg-[#0b0b0c]">Assédio moral ou sexual</option>
@@ -197,7 +197,7 @@ export function CompPanel({ initialTab }: { initialTab?: CompSubTab }) {
                       value={descricao}
                       onChange={(e) => setDescricao(e.target.value)}
                       placeholder="Ninguém saberá quem enviou..."
-                      className="w-full h-32 bg-black/40 border border-white/10 rounded-md px-3 py-2.5 text-xs text-white outline-none focus:border-[#c9943a]/50 resize-none transition"
+                      className="w-full h-32 bg-black/40 border border-white/10 rounded-md px-3 py-2.5 text-xs text-white outline-none focus:border-[#d2af5a]/50 resize-none transition"
                     />
                   </div>
 
@@ -210,7 +210,7 @@ export function CompPanel({ initialTab }: { initialTab?: CompSubTab }) {
 
                   <button
                     onClick={handleSubmitDenuncia}
-                    className="w-full py-2.5 rounded-md bg-[#c9943a] hover:bg-[#c5a55a] text-black font-semibold text-xs tracking-wider transition flex items-center justify-center gap-1.5"
+                    className="w-full py-2.5 rounded-md bg-[#d2af5a] hover:bg-[#c5a55a] text-black font-semibold text-xs tracking-wider transition flex items-center justify-center gap-1.5"
                   >
                     <Send className="h-3.5 w-3.5" />
                     <span>Enviar Denúncia Anônima</span>
@@ -219,7 +219,7 @@ export function CompPanel({ initialTab }: { initialTab?: CompSubTab }) {
 
                 {/* Complaints Feed */}
                 <div className="bg-black/25 p-5 rounded-xl border border-white/[0.04] flex flex-col">
-                  <span className="block text-[10px] font-mono font-bold text-[#c9943a] tracking-wider uppercase border-b border-white/[0.06] pb-3 mb-4">
+                  <span className="block text-[10px] font-mono font-bold text-[#d2af5a] tracking-wider uppercase border-b border-white/[0.06] pb-3 mb-4">
                     FEED DE DENÚNCIAS (ADMIN)
                   </span>
                   
@@ -261,12 +261,12 @@ export function CompPanel({ initialTab }: { initialTab?: CompSubTab }) {
             <div className="dash-card-systems">
               <div className="flex justify-between items-start mb-6">
                 <div>
-                  <div className="text-[7.5px] font-mono text-[#c9943a] tracking-[0.2em] font-bold uppercase mb-1">SEC · 02 ◆ Governança IPB</div>
+                  <div className="text-[7.5px] font-mono text-[#d2af5a] tracking-[0.2em] font-bold uppercase mb-1">SEC · 02 ◆ Governança IPB</div>
                   <h3 className="text-[15px] lg:text-xl font-light text-white tracking-wide">
-                    Políticas, Práticas e <span className="text-[#c9943a] font-medium">Códigos</span>
+                    Políticas, Práticas e <span className="text-[#d2af5a] font-medium">Códigos</span>
                   </h3>
                 </div>
-                <div className="flex items-center gap-1.5 px-2 py-1 rounded bg-[#c9943a]/5 border border-[#c9943a]/15 text-[8.5px] font-mono text-[#c9943a]">
+                <div className="flex items-center gap-1.5 px-2 py-1 rounded bg-[#d2af5a]/5 border border-[#d2af5a]/15 text-[8.5px] font-mono text-[#d2af5a]">
                   <ShieldCheck className="h-3.5 w-3.5" />
                   <span>CONFORMIDADE</span>
                 </div>
@@ -281,24 +281,24 @@ export function CompPanel({ initialTab }: { initialTab?: CompSubTab }) {
                     className="w-full px-5 py-4 flex justify-between items-center text-xs font-semibold text-white/90"
                   >
                     <span>Políticas <span className="text-[9px] text-white/40 ml-1.5 font-normal">(4 documentos)</span></span>
-                    <ChevronDown className={`h-4 w-4 text-[#c9943a] transition-transform duration-300 ${activeAcc === 'politicas' ? 'rotate-180' : ''}`} />
+                    <ChevronDown className={`h-4 w-4 text-[#d2af5a] transition-transform duration-300 ${activeAcc === 'politicas' ? 'rotate-180' : ''}`} />
                   </button>
                   {activeAcc === 'politicas' && (
                     <div className="px-5 pb-4 space-y-2 pt-1.5 border-t border-white/[0.03] bg-black/25">
                       <div className="p-2.5 bg-black/35 rounded border border-white/5 text-[11px] text-white/80 flex items-center gap-2">
-                        <FileText className="h-3.5 w-3.5 text-[#c9943a] shrink-0" />
+                        <FileText className="h-3.5 w-3.5 text-[#d2af5a] shrink-0" />
                         <span>📄 Política de Privacidade e Dados (LGPD)</span>
                       </div>
                       <div className="p-2.5 bg-black/35 rounded border border-white/5 text-[11px] text-white/80 flex items-center gap-2">
-                        <FileText className="h-3.5 w-3.5 text-[#c9943a] shrink-0" />
+                        <FileText className="h-3.5 w-3.5 text-[#d2af5a] shrink-0" />
                         <span>📄 Política de Diversidade e Inclusão</span>
                       </div>
                       <div className="p-2.5 bg-black/35 rounded border border-white/5 text-[11px] text-white/80 flex items-center gap-2">
-                        <FileText className="h-3.5 w-3.5 text-[#c9943a] shrink-0" />
+                        <FileText className="h-3.5 w-3.5 text-[#d2af5a] shrink-0" />
                         <span>📄 Política de Segurança da Informação</span>
                       </div>
                       <div className="p-2.5 bg-black/35 rounded border border-white/5 text-[11px] text-white/80 flex items-center gap-2">
-                        <FileText className="h-3.5 w-3.5 text-[#c9943a] shrink-0" />
+                        <FileText className="h-3.5 w-3.5 text-[#d2af5a] shrink-0" />
                         <span>📄 Política de Uso Aceitável</span>
                       </div>
                     </div>
@@ -312,7 +312,7 @@ export function CompPanel({ initialTab }: { initialTab?: CompSubTab }) {
                     className="w-full px-5 py-4 flex justify-between items-center text-xs font-semibold text-white/90"
                   >
                     <span>Práticas <span className="text-[9px] text-white/40 ml-1.5 font-normal">(4 documentos)</span></span>
-                    <ChevronDown className={`h-4 w-4 text-[#c9943a] transition-transform duration-300 ${activeAcc === 'praticas' ? 'rotate-180' : ''}`} />
+                    <ChevronDown className={`h-4 w-4 text-[#d2af5a] transition-transform duration-300 ${activeAcc === 'praticas' ? 'rotate-180' : ''}`} />
                   </button>
                   {activeAcc === 'praticas' && (
                     <div className="px-5 pb-4 pt-2 text-xs text-white/50 border-t border-white/[0.03] bg-black/25">
@@ -328,7 +328,7 @@ export function CompPanel({ initialTab }: { initialTab?: CompSubTab }) {
                     className="w-full px-5 py-4 flex justify-between items-center text-xs font-semibold text-white/90"
                   >
                     <span>Compliance <span className="text-[9px] text-white/40 ml-1.5 font-normal">(4 documentos)</span></span>
-                    <ChevronDown className={`h-4 w-4 text-[#c9943a] transition-transform duration-300 ${activeAcc === 'compliance' ? 'rotate-180' : ''}`} />
+                    <ChevronDown className={`h-4 w-4 text-[#d2af5a] transition-transform duration-300 ${activeAcc === 'compliance' ? 'rotate-180' : ''}`} />
                   </button>
                   {activeAcc === 'compliance' && (
                     <div className="px-5 pb-4 pt-2 text-xs text-white/50 border-t border-white/[0.03] bg-black/25">
@@ -344,7 +344,7 @@ export function CompPanel({ initialTab }: { initialTab?: CompSubTab }) {
                     className="w-full px-5 py-4 flex justify-between items-center text-xs font-semibold text-white/90"
                   >
                     <span>Códigos <span className="text-[9px] text-white/40 ml-1.5 font-normal">(3 documentos)</span></span>
-                    <ChevronDown className={`h-4 w-4 text-[#c9943a] transition-transform duration-300 ${activeAcc === 'codigos' ? 'rotate-180' : ''}`} />
+                    <ChevronDown className={`h-4 w-4 text-[#d2af5a] transition-transform duration-300 ${activeAcc === 'codigos' ? 'rotate-180' : ''}`} />
                   </button>
                   {activeAcc === 'codigos' && (
                     <div className="px-5 pb-4 pt-2 text-xs text-white/50 border-t border-white/[0.03] bg-black/25">
@@ -355,9 +355,9 @@ export function CompPanel({ initialTab }: { initialTab?: CompSubTab }) {
               </div>
 
               {/* IA Document Generator */}
-              <div className="bg-gradient-to-br from-[#c9943a]/10 to-transparent border border-[#c9943a]/20 p-5 rounded-xl flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+              <div className="bg-gradient-to-br from-[#d2af5a]/10 to-transparent border border-[#d2af5a]/20 p-5 rounded-xl flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                 <div className="space-y-1">
-                  <b className="block text-xs font-bold text-[#c9943a]">Gerador de Documentos para Empresas</b>
+                  <b className="block text-xs font-bold text-[#d2af5a]">Gerador de Documentos para Empresas</b>
                   <p className="block text-[11px] text-white/70 max-w-lg">
                     A IA gera políticas, códigos e relatórios de compliance personalizados para o CNPJ e setor da sua empresa.
                   </p>
@@ -365,7 +365,7 @@ export function CompPanel({ initialTab }: { initialTab?: CompSubTab }) {
                 <button
                   onClick={handleGenerateDoc}
                   disabled={generating}
-                  className="px-4 py-2.5 rounded bg-[#c9943a] hover:bg-[#c5a55a] text-black font-semibold text-xs tracking-wide transition disabled:opacity-40 shrink-0"
+                  className="px-4 py-2.5 rounded bg-[#d2af5a] hover:bg-[#c5a55a] text-black font-semibold text-xs tracking-wide transition disabled:opacity-40 shrink-0"
                 >
                   {generating ? 'Gerando com IA...' : 'Gerar com IA'}
                 </button>
