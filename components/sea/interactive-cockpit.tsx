@@ -7,7 +7,13 @@ import { MiniEstrategia } from './mini-estrategia'
 import { MiniCapitalHumano } from './mini-capital-humano'
 import { MiniEsg } from './mini-esg'
 import { MiniAi } from './mini-ai'
+import { MiniFinancas } from './mini-financas'
+
 import { HudFinancas } from './hud-financas'
+import { HudCapitalHumano } from './hud-capital-humano'
+import { HudEstrategia } from './hud-estrategia'
+import { HudEsg } from './hud-esg'
+import { HudAi } from './hud-ai'
 
 interface MetricDetail {
   id: string
@@ -29,6 +35,8 @@ export function InteractiveCockpit() {
   const [activeTab, setActiveTab] = useState<'info' | 'formula' | 'cruzamento' | 'swot'>('info')
   const [apiLiveStatus, setApiLiveStatus] = useState('SYNCED')
   const [usdRate, setUsdRate] = useState(4.98)
+  const [activePillar, setActivePillar] = useState<'financas' | 'capital_humano' | 'estrategia' | 'esg' | 'ai'>('financas')
+  const [countdown, setCountdown] = useState(10)
 
   useEffect(() => {
     const handleTelemetry = () => {
@@ -49,19 +57,37 @@ export function InteractiveCockpit() {
     }
     window.addEventListener('ipb-metric-click', handleMetricClick)
 
-    // Simulação 6D de Ingestão de APIs e Oscilação em tempo real
-    const interval = setInterval(() => {
-      setUsdRate(prev => Number((prev + (Math.random() - 0.5) * 0.01).toFixed(4)))
-      setApiLiveStatus(prev => prev === 'SYNCED' ? 'FETCHING' : 'SYNCED')
-      setTimeout(() => setApiLiveStatus('SYNCED'), 800)
-    }, 4000)
+    // Cronômetro decrescente para a API global viva
+    const timer = setInterval(() => {
+      setCountdown(prev => {
+        if (prev <= 1) {
+          setUsdRate(usd => Number((usd + (Math.random() - 0.5) * 0.01).toFixed(4)))
+          setApiLiveStatus('FETCHING')
+          setTimeout(() => setApiLiveStatus('SYNCED'), 800)
+          return 10
+        }
+        return prev - 1
+      })
+    }, 1000)
 
     return () => {
       window.removeEventListener('ipb-telemetry', handleTelemetry)
       window.removeEventListener('ipb-metric-click', handleMetricClick)
-      clearInterval(interval)
+      clearInterval(timer)
     }
   }, [])
+
+  // Efeito adicional para expor as variáveis globais a outros HUDs/minicards em tempo real
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const win = window as any
+      if (!win.IPBTelemetry) win.IPBTelemetry = {}
+      win.IPBTelemetry.usdRate = usdRate
+      win.IPBTelemetry.countdown = countdown
+      win.IPBTelemetry.apiLiveStatus = apiLiveStatus
+      window.dispatchEvent(new CustomEvent('ipb-telemetry'))
+    }
+  }, [usdRate, countdown, apiLiveStatus])
 
   // As 5 cascatas reais da Matriz correspondendo aos ícones do seu mockup
   const matrizRules = useMemo(() => {
@@ -220,11 +246,11 @@ export function InteractiveCockpit() {
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2 px-2.5 py-1 bg-black/55 border border-[#d2af5a]/15 rounded-xl text-[8.5px] font-mono tracking-wider text-white/50">
             <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-ping shrink-0" />
-            <span className="text-white/30">API:</span>
-            <span className="text-emerald-400 font-bold">{apiLiveStatus}</span>
+            <span className="text-white/30">APIs GLOBAL SYNC:</span>
+            <span className={`font-bold ${apiLiveStatus === 'FETCHING' ? 'text-amber-400' : 'text-emerald-400'}`}>{apiLiveStatus}</span>
             <span className="text-white/20">|</span>
-            <span className="text-white/30">USD:</span>
-            <span className="text-[#d2af5a] font-bold">R$ {usdRate.toFixed(4)}</span>
+            <span className="text-white/30">REFRESH EM:</span>
+            <span className="text-[#d2af5a] font-bold">{countdown}s</span>
           </div>
           <div className="hidden md:flex items-center gap-1.5 px-3 py-1 bg-black/40 border border-white/5 rounded-xl text-[9px] text-white/50 tracking-wider font-mono">
             <span>(D) MAIO 2026 · LIVE DATA SYSTEM</span>
@@ -266,33 +292,50 @@ export function InteractiveCockpit() {
         
         {/* COLUNA ESQUERDA: Os 4 Mini-Cards em vidro e dourado (Altura travada exata em 195px por card + gaps de 20px = 840px) */}
         <div className="flex flex-col gap-[20px] h-full justify-between">
-          {/* Card 1: Pessoas */}
-          <div className="hud-card-interactive group relative overflow-hidden flex flex-col justify-between p-0.5 bg-[#0a0a0c]/85 border border-[#d2af5a]/25 rounded-3xl backdrop-blur-xl h-[195px]">
-            <MiniCapitalHumano />
+          
+          {/* Card 1: Pessoas (Pilar 1 ou Pilar 2 se ativo) */}
+          <div 
+            onClick={() => setActivePillar(activePillar === 'capital_humano' ? 'financas' : 'capital_humano')}
+            className={`hud-card-interactive group relative overflow-hidden flex flex-col justify-between p-0.5 bg-[#0a0a0c]/85 border rounded-3xl backdrop-blur-xl h-[195px] transition-all ${activePillar === 'capital_humano' ? 'border-[#d2af5a] shadow-[0_0_15px_rgba(210,175,90,0.25)]' : 'border-[#d2af5a]/25'}`}
+          >
+            {activePillar === 'capital_humano' ? <MiniFinancas /> : <MiniCapitalHumano />}
           </div>
 
-          {/* Card 2: Estratégia */}
-          <div className="hud-card-interactive group relative overflow-hidden flex flex-col justify-between p-0.5 bg-[#0a0a0c]/85 border border-[#d2af5a]/25 rounded-3xl backdrop-blur-xl h-[195px]">
-            <MiniEstrategia />
+          {/* Card 2: Estratégia (Pilar 3 ou Pilar 2 se ativo) */}
+          <div 
+            onClick={() => setActivePillar(activePillar === 'estrategia' ? 'financas' : 'estrategia')}
+            className={`hud-card-interactive group relative overflow-hidden flex flex-col justify-between p-0.5 bg-[#0a0a0c]/85 border rounded-3xl backdrop-blur-xl h-[195px] transition-all ${activePillar === 'estrategia' ? 'border-[#d2af5a] shadow-[0_0_15px_rgba(210,175,90,0.25)]' : 'border-[#d2af5a]/25'}`}
+          >
+            {activePillar === 'estrategia' ? <MiniFinancas /> : <MiniEstrategia />}
           </div>
 
-          {/* Card 3: ESG */}
-          <div className="hud-card-interactive group relative overflow-hidden flex flex-col justify-between p-0.5 bg-[#0a0a0c]/85 border border-[#d2af5a]/25 rounded-3xl backdrop-blur-xl h-[195px]">
-            <MiniEsg />
+          {/* Card 3: ESG (ESG ou Pilar 2 se ativo) */}
+          <div 
+            onClick={() => setActivePillar(activePillar === 'esg' ? 'financas' : 'esg')}
+            className={`hud-card-interactive group relative overflow-hidden flex flex-col justify-between p-0.5 bg-[#0a0a0c]/85 border rounded-3xl backdrop-blur-xl h-[195px] transition-all ${activePillar === 'esg' ? 'border-[#d2af5a] shadow-[0_0_15px_rgba(210,175,90,0.25)]' : 'border-[#d2af5a]/25'}`}
+          >
+            {activePillar === 'esg' ? <MiniFinancas /> : <MiniEsg />}
           </div>
 
-          {/* Card 4: AI Assistant */}
-          <div className="hud-card-interactive group relative overflow-hidden flex flex-col justify-between p-0.5 bg-[#0a0a0c]/85 border border-[#d2af5a]/25 rounded-3xl backdrop-blur-xl h-[195px]">
-            <MiniAi />
+          {/* Card 4: AI Assistant (Persistente no final da coluna esquerda, agora interativo!) */}
+          <div 
+            onClick={() => setActivePillar(activePillar === 'ai' ? 'financas' : 'ai')}
+            className={`hud-card-interactive group relative overflow-hidden flex flex-col justify-between p-0.5 bg-[#0a0a0c]/85 border rounded-3xl backdrop-blur-xl h-[195px] transition-all ${activePillar === 'ai' ? 'border-[#d2af5a] shadow-[0_0_15px_rgba(210,175,90,0.25)]' : 'border-[#d2af5a]/25'}`}
+          >
+            {activePillar === 'ai' ? <MiniFinancas /> : <MiniAi />}
           </div>
         </div>
 
-        {/* COLUNA DIREITA: Finanças & Controladoria (HUD) + Matriz 6D no Rodapé */}
+        {/* COLUNA DIREITA: HUD Ativo + Matriz 6D no Rodapé */}
         <div className="flex flex-col gap-[20px] h-full justify-between">
           
-          {/* HUD de Finanças (Travado em 510px de altura) */}
+          {/* Container do HUD Ativo (Travado em 510px de altura para alinhamento milimétrico) */}
           <div className="w-full h-[510px]">
-            <HudFinancas />
+            {activePillar === 'financas' && <HudFinancas />}
+            {activePillar === 'capital_humano' && <HudCapitalHumano />}
+            {activePillar === 'estrategia' && <HudEstrategia />}
+            {activePillar === 'esg' && <HudEsg />}
+            {activePillar === 'ai' && <HudAi />}
           </div>
 
           {/* MATRIZ DE INTERDEPENDÊNCIA 6D (Travado em 310px de altura - Espaçamentos finos anti-corte) */}

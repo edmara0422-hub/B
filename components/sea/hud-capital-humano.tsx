@@ -392,8 +392,19 @@ export function HudCapitalHumano() {
           </div>
         </div>
 
+        {/* Simulador Comportamental de RH */}
+        <div className="mt-3 p-2.5 bg-[#d2af5a]/5 border border-[#d2af5a]/20 rounded-xl text-left select-none">
+          <div className="text-[7.5px] uppercase font-mono tracking-widest text-[#d2af5a] font-bold mb-1 flex justify-between">
+            <span>Simulação Comportamental Ativa</span>
+            <span className="animate-pulse">● LIVE INTERACTIVE</span>
+          </div>
+          <p className="text-[8.5px] text-white/70 leading-relaxed font-mono">
+            Sob pressão de metas no nível <b className="text-white">{pressaoMetas}/10</b>, a exaustão Maslach projetada atinge <b className="text-[#d2af5a]">{burnoutEEB}%</b>, gerando <b className="text-white">{demissoesMes}</b> desligamentos voluntários mensais. Com custos de rescisão e recrutamento em R$ <b className="text-white">{custoUnitarioTurnover}k</b> por colaborador, a perda de caixa invisível é de <b className="text-[#d2af5a]">R$ -{custoRealTurnover}k/mês</b>. Isso reduz a eficiência saudável do time para <b className="text-[#d2af5a]">{eficienciaSaudavel.toFixed(1)}</b>.
+          </p>
+        </div>
+
         {/* Micro-Terminal de NLP em Tempo Real */}
-        <div className="mt-4 border border-[#d2af5a]/15 bg-[#070707] rounded-xl overflow-hidden shadow-2xl">
+        <div className="mt-3 border border-[#d2af5a]/15 bg-[#070707] rounded-xl overflow-hidden shadow-2xl">
           <div className="bg-black/80 px-3 py-1.5 flex items-center justify-between border-b border-white/5">
             <div className="flex items-center gap-1.5 text-[#d2af5a] font-mono text-[8px] font-bold">
               <TerminalIcon className="h-3.5 w-3.5" />

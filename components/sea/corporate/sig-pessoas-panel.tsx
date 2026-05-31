@@ -3491,16 +3491,16 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className="dash-card bg-[#050505]/60 backdrop-blur-3xl border border-[#5dcaa5]/20 relative overflow-hidden"
+            className="dash-card bg-[#050505]/60 backdrop-blur-3xl border border-[#d2af5a]/20 relative overflow-hidden"
             style={{ padding: '24px' }}
           >
-            <div className="absolute top-0 right-0 w-64 h-64 bg-[#5dcaa5]/5 blur-[80px] pointer-events-none mix-blend-screen" />
+            <div className="absolute top-0 right-0 w-64 h-64 bg-[#d2af5a]/5 blur-[80px] pointer-events-none mix-blend-screen" />
             
             {/* Header info */}
             <div className="flex justify-between items-start mb-6 relative z-10">
               <div className="text-left max-w-2xl">
                 <div className="flex items-center gap-3 mb-2">
-                  <span className="px-2 py-0.5 bg-[#5dcaa5]/10 border border-[#5dcaa5]/30 rounded text-[9px] font-mono font-bold text-[#5dcaa5] tracking-widest uppercase">EMPRESA</span>
+                  <span className="px-2 py-0.5 bg-[#d2af5a]/10 border border-[#d2af5a]/30 rounded text-[9px] font-mono font-bold text-[#d2af5a] tracking-widest uppercase">EMPRESA</span>
                   <span className="text-[10px] font-mono text-white/50 tracking-widest uppercase">Direção &amp; Estratégia Corporativa</span>
                 </div>
                 <h2 className="text-[18px] font-bold text-white mb-2 tracking-tight">Estratégia · BI · Organização</h2>
@@ -3509,7 +3509,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
               <div>
                 <button 
                   onClick={() => triggerToast('Professor de IA iniciando análise corporativa...', 'ok')}
-                  className="px-4 py-2 bg-gradient-to-r from-[#5dcaa5]/20 to-[#5dcaa5]/5 hover:from-[#5dcaa5]/30 hover:to-[#5dcaa5]/10 border border-[#5dcaa5]/40 rounded-xl text-[10px] font-bold text-[#5dcaa5] font-mono tracking-widest transition-all shadow-[0_0_20px_rgba(93,202,165,0.1)] flex items-center gap-2"
+                  className="px-4 py-2 bg-gradient-to-r from-[#cbd5e1]/20 to-[#cbd5e1]/5 hover:from-[#cbd5e1]/30 hover:to-[#cbd5e1]/10 border border-[#d2af5a]/40 rounded-xl text-[10px] font-bold text-[#d2af5a] font-mono tracking-widest transition-all shadow-[0_0_20px_rgba(210,175,90,0.1)] flex items-center gap-2"
                 >
                   <span className="text-[12px]">▶</span> PROFESSOR IA
                 </button>
@@ -3551,12 +3551,12 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                   exit={{ opacity: 0 }}
                   className="space-y-6 text-left"
                 >
-                  <div className="dash-card bg-[#050505]/60 backdrop-blur-3xl border border-[#5dcaa5]/20 relative overflow-hidden">
+                  <div className="dash-card bg-[#050505]/60 backdrop-blur-3xl border border-[#d2af5a]/20 relative overflow-hidden">
                     <div className="absolute top-0 right-0 w-64 h-64 bg-purple-500/5 blur-[80px] pointer-events-none mix-blend-screen" />
                     
                     <div className="flex justify-between items-center border-b border-white/[0.04] pb-4 mb-6 relative z-10">
                       <div>
-                        <h4 className="text-[12px] font-bold text-[#5dcaa5] uppercase font-mono tracking-widest mb-1">Modelo de Avaliação Organizacional</h4>
+                        <h4 className="text-[12px] font-bold text-[#d2af5a] uppercase font-mono tracking-widest mb-1">Modelo de Avaliação Organizacional</h4>
                         <p className="text-[10px] text-white/50 font-sans">Consultoria estratégica em gestão corporativa e alinhamento de liderança.</p>
                       </div>
                       {auditoriaStep !== null ? (
@@ -3568,7 +3568,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                         </button>
                       ) : (
                         <button 
-                          className="px-4 py-2 bg-gradient-to-r from-[#5dcaa5]/20 to-[#5dcaa5]/5 hover:from-[#5dcaa5]/30 hover:to-[#5dcaa5]/10 border border-[#5dcaa5]/40 rounded-xl text-[10px] font-bold text-[#5dcaa5] font-mono tracking-widest transition-all shadow-[0_0_20px_rgba(93,202,165,0.1)] flex items-center gap-2"
+                          className="px-4 py-2 bg-gradient-to-r from-[#cbd5e1]/20 to-[#cbd5e1]/5 hover:from-[#cbd5e1]/30 hover:to-[#cbd5e1]/10 border border-[#d2af5a]/40 rounded-xl text-[10px] font-bold text-[#d2af5a] font-mono tracking-widest transition-all shadow-[0_0_20px_rgba(210,175,90,0.1)] flex items-center gap-2"
                           onClick={() => triggerToast("Iniciando auditoria de gestão com a IA...", "ok")}
                         >
                           <span className="text-[12px]">▶</span> IA ANALYZER
@@ -3579,43 +3579,43 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                     {auditoriaStep === null && (
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-5 relative z-10">
                         {/* Etapa 1 */}
-                        <div className="p-5 bg-black/40 border border-white/10 hover:border-[#5dcaa5]/40 rounded-2xl transition-all group relative">
+                        <div className="p-5 bg-black/40 border border-white/10 hover:border-[#d2af5a]/40 rounded-2xl transition-all group relative">
                           <div className="flex items-center gap-3 mb-3">
-                            <div className="w-8 h-8 rounded-full bg-[#5dcaa5]/20 border border-[#5dcaa5]/50 text-[#5dcaa5] flex items-center justify-center font-bold font-mono text-[14px] flex-shrink-0">1</div>
+                            <div className="w-8 h-8 rounded-full bg-[#d2af5a]/20 border border-[#d2af5a]/50 text-[#d2af5a] flex items-center justify-center font-bold font-mono text-[14px] flex-shrink-0">1</div>
                             <h5 className="text-[12px] font-bold text-white leading-tight">Prospecção & Setup</h5>
                           </div>
                           <p className="text-[10px] text-white/50 mb-4 leading-relaxed font-sans min-h-[45px]">Etapa 1 do Modelo: História, forças/fraquezas e mapeamento das funções de gestão (Planejar, Organizar, Liderar, Controlar).</p>
-                          <button onClick={() => setAuditoriaStep(1)} className="w-full py-2 bg-white/5 hover:bg-[#5dcaa5]/10 border border-white/10 hover:border-[#5dcaa5]/30 rounded-lg text-[9px] font-mono text-white/70 hover:text-[#5dcaa5] transition-all font-bold tracking-widest">INICIAR ETAPA 1</button>
+                          <button onClick={() => setAuditoriaStep(1)} className="w-full py-2 bg-white/5 hover:bg-[#d2af5a]/10 border border-white/10 hover:border-[#d2af5a]/30 rounded-lg text-[9px] font-mono text-white/70 hover:text-[#d2af5a] transition-all font-bold tracking-widest">INICIAR ETAPA 1</button>
                         </div>
 
                         {/* Etapa 2 */}
-                        <div className="p-5 bg-black/40 border border-white/10 hover:border-[#5dcaa5]/40 rounded-2xl transition-all group relative">
+                        <div className="p-5 bg-black/40 border border-white/10 hover:border-[#d2af5a]/40 rounded-2xl transition-all group relative">
                           <div className="flex items-center gap-3 mb-3">
-                            <div className="w-8 h-8 rounded-full bg-white/5 border border-white/10 text-white/30 flex items-center justify-center font-bold font-mono text-[14px] flex-shrink-0 group-hover:bg-[#5dcaa5]/10 group-hover:text-[#5dcaa5] transition-colors">2</div>
+                            <div className="w-8 h-8 rounded-full bg-white/5 border border-white/10 text-white/30 flex items-center justify-center font-bold font-mono text-[14px] flex-shrink-0 group-hover:bg-[#d2af5a]/10 group-hover:text-[#d2af5a] transition-colors">2</div>
                             <h5 className="text-[12px] font-bold text-white leading-tight">Macro, Micro & Stakeholders</h5>
                           </div>
                           <p className="text-[10px] text-white/50 mb-4 leading-relaxed font-sans min-h-[45px]">Etapa 2 do Modelo: Análise PESTEL (política/economia), Porter (clientes/fornecedores) e matriz de influência de stakeholders.</p>
-                          <button onClick={() => setAuditoriaStep(2)} className="w-full py-2 bg-white/5 hover:bg-[#5dcaa5]/10 border border-white/10 hover:border-[#5dcaa5]/30 rounded-lg text-[9px] font-mono text-white/70 hover:text-[#5dcaa5] transition-all font-bold tracking-widest">INICIAR ETAPA 2</button>
+                          <button onClick={() => setAuditoriaStep(2)} className="w-full py-2 bg-white/5 hover:bg-[#d2af5a]/10 border border-white/10 hover:border-[#d2af5a]/30 rounded-lg text-[9px] font-mono text-white/70 hover:text-[#d2af5a] transition-all font-bold tracking-widest">INICIAR ETAPA 2</button>
                         </div>
 
                         {/* Etapa 3 */}
-                        <div className="p-5 bg-black/40 border border-white/10 hover:border-[#5dcaa5]/40 rounded-2xl transition-all group relative">
+                        <div className="p-5 bg-black/40 border border-white/10 hover:border-[#d2af5a]/40 rounded-2xl transition-all group relative">
                           <div className="flex items-center gap-3 mb-3">
-                            <div className="w-8 h-8 rounded-full bg-white/5 border border-white/10 text-white/30 flex items-center justify-center font-bold font-mono text-[14px] flex-shrink-0 group-hover:bg-[#5dcaa5]/10 group-hover:text-[#5dcaa5] transition-colors">3</div>
+                            <div className="w-8 h-8 rounded-full bg-white/5 border border-white/10 text-white/30 flex items-center justify-center font-bold font-mono text-[14px] flex-shrink-0 group-hover:bg-[#d2af5a]/10 group-hover:text-[#d2af5a] transition-colors">3</div>
                             <h5 className="text-[12px] font-bold text-white leading-tight">Estrutura & Controle</h5>
                           </div>
                           <p className="text-[10px] text-white/50 mb-4 leading-relaxed font-sans min-h-[45px]">Etapa 3 do Modelo: Desenho de organograma, definição de cultura orgânica/mecanicista e mapeamento de controle de objetivos.</p>
-                          <button onClick={() => setAuditoriaStep(3)} className="w-full py-2 bg-white/5 hover:bg-[#5dcaa5]/10 border border-white/10 hover:border-[#5dcaa5]/30 rounded-lg text-[9px] font-mono text-white/70 hover:text-[#5dcaa5] transition-all font-bold tracking-widest">INICIAR ETAPA 3</button>
+                          <button onClick={() => setAuditoriaStep(3)} className="w-full py-2 bg-white/5 hover:bg-[#d2af5a]/10 border border-white/10 hover:border-[#d2af5a]/30 rounded-lg text-[9px] font-mono text-white/70 hover:text-[#d2af5a] transition-all font-bold tracking-widest">INICIAR ETAPA 3</button>
                         </div>
 
                         {/* Etapa 4 */}
-                        <div className="p-5 bg-[#5dcaa5]/5 border border-[#5dcaa5]/30 rounded-2xl transition-all group relative">
+                        <div className="p-5 bg-[#d2af5a]/5 border border-[#d2af5a]/30 rounded-2xl transition-all group relative">
                           <div className="flex items-center gap-3 mb-3">
-                            <div className="w-8 h-8 rounded-full bg-[#5dcaa5]/20 border border-[#5dcaa5]/50 text-[#5dcaa5] flex items-center justify-center font-bold font-mono text-[14px] flex-shrink-0">4</div>
+                            <div className="w-8 h-8 rounded-full bg-[#d2af5a]/20 border border-[#d2af5a]/50 text-[#d2af5a] flex items-center justify-center font-bold font-mono text-[14px] flex-shrink-0">4</div>
                             <h5 className="text-[12px] font-bold text-white leading-tight">Relatório Executivo de Consultoria</h5>
                           </div>
                           <p className="text-[10px] text-white/50 mb-4 leading-relaxed font-sans min-h-[45px]">Etapa 4 do Modelo: Fechamento com os 8 tópicos requeridos, cruzamento de teoria/prática e propostas de intervenção.</p>
-                          <button onClick={() => setAuditoriaStep(4)} className="w-full py-2 bg-gradient-to-r from-[#5dcaa5]/20 to-[#5dcaa5]/10 hover:from-[#5dcaa5]/30 hover:to-[#5dcaa5]/20 border border-[#5dcaa5]/40 rounded-lg text-[9px] font-mono text-[#5dcaa5] transition-all font-bold tracking-widest shadow-[0_0_15px_rgba(93,202,165,0.15)] flex items-center justify-center gap-2">
+                          <button onClick={() => setAuditoriaStep(4)} className="w-full py-2 bg-gradient-to-r from-[#cbd5e1]/20 to-[#cbd5e1]/10 hover:from-[#cbd5e1]/30 hover:to-[#cbd5e1]/20 border border-[#d2af5a]/40 rounded-lg text-[9px] font-mono text-[#d2af5a] transition-all font-bold tracking-widest shadow-[0_0_15px_rgba(210,175,90,0.15)] flex items-center justify-center gap-2">
                             ACESSAR ETAPA 4
                           </button>
                         </div>
@@ -3626,13 +3626,13 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                       <div className="animate-fade-in grid grid-cols-1 lg:grid-cols-12 gap-5 min-h-[550px] relative z-10">
                         {/* Lado Esquerdo: Terminal Conversacional IA */}
                         <div className="col-span-1 lg:col-span-5 bg-[#050505]/80 backdrop-blur-md border border-white/10 rounded-2xl flex flex-col overflow-hidden shadow-[0_0_30px_rgba(0,0,0,0.5)]">
-                          <div className="p-4 border-b border-white/5 bg-gradient-to-r from-[#5dcaa5]/10 to-transparent flex items-center justify-between">
+                          <div className="p-4 border-b border-white/5 bg-gradient-to-r from-[#cbd5e1]/10 to-transparent flex items-center justify-between">
                             <div className="flex items-center gap-3">
                               <div className="relative flex items-center justify-center w-6 h-6">
-                                <div className="absolute w-full h-full bg-[#5dcaa5] rounded-full opacity-20 animate-ping" />
-                                <div className="w-2 h-2 rounded-full bg-[#5dcaa5]" />
+                                <div className="absolute w-full h-full bg-[#d2af5a] rounded-full opacity-20 animate-ping" />
+                                <div className="w-2 h-2 rounded-full bg-[#d2af5a]" />
                               </div>
-                              <span className="text-[11px] font-bold font-mono text-[#5dcaa5] uppercase tracking-widest">Mentor IA · Ativo</span>
+                              <span className="text-[11px] font-bold font-mono text-[#d2af5a] uppercase tracking-widest">Mentor IA · Ativo</span>
                             </div>
                             <span className="text-[9px] text-white/30 font-mono border border-white/10 px-2 py-1 rounded bg-black/50">ETAPA {auditoriaStep}/4</span>
                           </div>
@@ -3640,8 +3640,8 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                           <div className="flex-1 p-5 overflow-y-auto space-y-5 custom-scrollbar">
                             {consultingChat.map((msg, i) => (
                               <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                                <div className={`max-w-[90%] p-3.5 rounded-2xl text-[11px] font-sans leading-relaxed shadow-lg ${msg.role === 'user' ? 'bg-[#5dcaa5]/15 border border-[#5dcaa5]/30 text-white rounded-tr-sm' : 'bg-white/5 border border-white/10 text-white/90 rounded-tl-sm backdrop-blur-sm'}`}>
-                                  {msg.role === 'ai' && <div className="flex items-center gap-1.5 mb-2"><Bot size={12} className="text-[#5dcaa5]" /><span className="text-[9px] font-mono text-[#5dcaa5] font-bold">SYS_CONSULTOR</span></div>}
+                                <div className={`max-w-[90%] p-3.5 rounded-2xl text-[11px] font-sans leading-relaxed shadow-lg ${msg.role === 'user' ? 'bg-[#d2af5a]/15 border border-[#d2af5a]/30 text-white rounded-tr-sm' : 'bg-white/5 border border-white/10 text-white/90 rounded-tl-sm backdrop-blur-sm'}`}>
+                                  {msg.role === 'ai' && <div className="flex items-center gap-1.5 mb-2"><Bot size={12} className="text-[#d2af5a]" /><span className="text-[9px] font-mono text-[#d2af5a] font-bold">SYS_CONSULTOR</span></div>}
                                   {msg.text}
                                 </div>
                               </div>
@@ -3651,15 +3651,15 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                           <div className="p-3 border-t border-white/5 bg-black/60 backdrop-blur-md">
                             <div className="relative">
                               {isRecordingAudio ? (
-                                <div className="w-full bg-[#5dcaa5]/10 border border-[#5dcaa5]/30 rounded-xl py-3 pl-4 pr-12 flex items-center justify-between">
+                                <div className="w-full bg-[#d2af5a]/10 border border-[#d2af5a]/30 rounded-xl py-3 pl-4 pr-12 flex items-center justify-between">
                                   <div className="flex gap-1 items-end h-4">
                                     {[1, 2, 3, 4, 5, 6].map(bar => (
-                                      <div key={bar} className="w-1.5 bg-[#5dcaa5] rounded-t-sm animate-pulse" style={{ height: `${Math.max(20, Math.random() * 100)}%`, animationDuration: `${0.3 + Math.random() * 0.5}s` }} />
+                                      <div key={bar} className="w-1.5 bg-[#d2af5a] rounded-t-sm animate-pulse" style={{ height: `${Math.max(20, Math.random() * 100)}%`, animationDuration: `${0.3 + Math.random() * 0.5}s` }} />
                                     ))}
-                                    <span className="text-[10px] text-[#5dcaa5] font-mono ml-2 animate-pulse">Gravando...</span>
+                                    <span className="text-[10px] text-[#d2af5a] font-mono ml-2 animate-pulse">Gravando...</span>
                                   </div>
-                                  <button onClick={() => handleConsultingChatSubmit(undefined, "Áudio transcrito automaticamente: A empresa foca em inovação mas peca na estruturação financeira.")} className="text-[#5dcaa5] bg-[#5dcaa5]/20 hover:bg-[#5dcaa5] hover:text-black w-8 h-8 rounded-lg flex items-center justify-center transition-all shadow-[0_0_15px_rgba(93,202,165,0.4)]">
-                                    <SquareSquare size={12} className="text-[#5dcaa5]" />
+                                  <button onClick={() => handleConsultingChatSubmit(undefined, "Áudio transcrito automaticamente: A empresa foca em inovação mas peca na estruturação financeira.")} className="text-[#d2af5a] bg-[#d2af5a]/20 hover:bg-[#d2af5a] hover:text-black w-8 h-8 rounded-lg flex items-center justify-center transition-all shadow-[0_0_15px_rgba(210,175,90,0.4)]">
+                                    <SquareSquare size={12} className="text-[#d2af5a]" />
                                   </button>
                                 </div>
                               ) : (
@@ -3670,11 +3670,11 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                                     onChange={e => setConsultingInput(e.target.value)}
                                     onKeyDown={handleConsultingChatSubmit}
                                     placeholder="Digite sua resposta ou grave um áudio..."
-                                    className="w-full bg-white/5 border border-white/10 rounded-xl py-3 pl-4 pr-12 text-[11px] text-white outline-none focus:border-[#5dcaa5]/50 transition-all font-sans"
+                                    className="w-full bg-white/5 border border-white/10 rounded-xl py-3 pl-4 pr-12 text-[11px] text-white outline-none focus:border-[#d2af5a]/50 transition-all font-sans"
                                   />
                                   <button 
                                     onClick={() => consultingInput.trim() ? handleConsultingChatSubmit() : setIsRecordingAudio(true)} 
-                                    className={`absolute right-2 top-1/2 -translate-y-1/2 ${consultingInput.trim() ? 'text-black bg-[#5dcaa5] hover:bg-white shadow-[0_0_10px_rgba(93,202,165,0.3)]' : 'text-[#5dcaa5] bg-transparent hover:bg-white/10'} w-8 h-8 rounded-lg flex items-center justify-center transition-all`}
+                                    className={`absolute right-2 top-1/2 -translate-y-1/2 ${consultingInput.trim() ? 'text-black bg-[#d2af5a] hover:bg-white shadow-[0_0_10px_rgba(210,175,90,0.3)]' : 'text-[#d2af5a] bg-transparent hover:bg-white/10'} w-8 h-8 rounded-lg flex items-center justify-center transition-all`}
                                   >
                                     {consultingInput.trim() ? <SendHorizontal size={14} /> : <Mic size={14} />}
                                   </button>
@@ -3686,7 +3686,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
 
                         {/* Lado Direito: Painel de Extração de Dados em Tempo Real */}
                         <div className="col-span-1 lg:col-span-7 bg-[#080808] border border-white/5 rounded-2xl p-6 relative overflow-hidden flex flex-col gap-4 shadow-inner">
-                          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#5dcaa5]/30 to-transparent opacity-50" />
+                          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#cbd5e1]/30 to-transparent opacity-50" />
                           
                           {auditoriaStep === 1 && (
                             <div className="animate-fade-in space-y-6 h-full flex flex-col">
@@ -3696,13 +3696,13 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                                   <p className="text-[10px] text-white/40 mt-1">Dados estruturados extraídos automaticamente da conversa.</p>
                                 </div>
                                 {isAnalyzingData && (
-                                  <div className="text-[10px] font-mono text-[#5dcaa5] animate-pulse">
+                                  <div className="text-[10px] font-mono text-[#d2af5a] animate-pulse">
                                     [|||||||||] Mapeando entidades...
                                   </div>
                                 )}
                               </div>
                               <div className="grid grid-cols-2 gap-4 flex-1">
-                                <div className={`bg-black/50 border ${isAnalyzingData ? 'border-[#5dcaa5]/50 shadow-[0_0_15px_rgba(93,202,165,0.1)]' : 'border-white/5'} rounded-xl p-4 flex flex-col transition-all duration-500`}>
+                                <div className={`bg-black/50 border ${isAnalyzingData ? 'border-[#d2af5a]/50 shadow-[0_0_15px_rgba(210,175,90,0.1)]' : 'border-white/5'} rounded-xl p-4 flex flex-col transition-all duration-500`}>
                                   <span className="text-[9px] font-bold text-[#d2af5a] font-mono tracking-widest mb-3 uppercase">Forças Mapeadas</span>
                                   <div className="flex-1 flex items-center justify-center border border-dashed border-white/10 rounded-lg bg-white/[0.02] relative overflow-hidden">
                                     {isAnalyzingData ? (
@@ -3718,7 +3718,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                                     )}
                                   </div>
                                 </div>
-                                <div className={`bg-black/50 border ${isAnalyzingData ? 'border-[#5dcaa5]/50 shadow-[0_0_15px_rgba(93,202,165,0.1)]' : 'border-white/5'} rounded-xl p-4 flex flex-col transition-all duration-500`}>
+                                <div className={`bg-black/50 border ${isAnalyzingData ? 'border-[#d2af5a]/50 shadow-[0_0_15px_rgba(210,175,90,0.1)]' : 'border-white/5'} rounded-xl p-4 flex flex-col transition-all duration-500`}>
                                   <span className="text-[9px] font-bold text-red-400 font-mono tracking-widest mb-3 uppercase">Fraquezas (Gaps)</span>
                                   <div className="flex-1 flex items-center justify-center border border-dashed border-white/10 rounded-lg bg-white/[0.02] relative overflow-hidden">
                                     {isAnalyzingData ? (
@@ -3755,7 +3755,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                                     <button
                                       key={tab.id}
                                       onClick={() => setEtapa2Tab(tab.id as any)}
-                                      className={`px-2.5 py-1 text-[9px] font-mono font-bold tracking-wider rounded-md uppercase transition-all ${etapa2Tab === tab.id ? 'bg-[#5dcaa5]/20 text-[#5dcaa5] border border-[#5dcaa5]/30' : 'text-white/40 hover:text-white/80 border border-transparent'}`}
+                                      className={`px-2.5 py-1 text-[9px] font-mono font-bold tracking-wider rounded-md uppercase transition-all ${etapa2Tab === tab.id ? 'bg-[#d2af5a]/20 text-[#d2af5a] border border-[#d2af5a]/30' : 'text-white/40 hover:text-white/80 border border-transparent'}`}
                                     >
                                       {tab.label}
                                     </button>
@@ -3767,8 +3767,8 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                               <div className="flex-1 min-h-[380px] overflow-y-auto custom-scrollbar relative z-10 pr-1">
                                 {etapa2Tab === 'macro' && (
                                   <div className="animate-fade-in space-y-3">
-                                    <div className="bg-[#5dcaa5]/5 border border-[#5dcaa5]/20 rounded-xl p-3 mb-2">
-                                      <h4 className="text-[10px] font-bold text-[#5dcaa5] uppercase font-mono tracking-widest mb-1">Análise do Macroambiente (PESTEL)</h4>
+                                    <div className="bg-[#d2af5a]/5 border border-[#d2af5a]/20 rounded-xl p-3 mb-2">
+                                      <h4 className="text-[10px] font-bold text-[#d2af5a] uppercase font-mono tracking-widest mb-1">Análise do Macroambiente (PESTEL)</h4>
                                       <p className="text-[9px] text-white/60 leading-relaxed">
                                         Como os fatores externos de grande alcance influenciam a operação e a demanda pelos serviços da <strong>Nossa Consultoria BI / Auditoria 6D</strong>.
                                       </p>
@@ -3807,8 +3807,8 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
 
                                 {etapa2Tab === 'micro' && (
                                   <div className="animate-fade-in space-y-3">
-                                    <div className="bg-[#5dcaa5]/5 border border-[#5dcaa5]/20 rounded-xl p-3 mb-2">
-                                      <h4 className="text-[10px] font-bold text-[#5dcaa5] uppercase font-mono tracking-widest mb-1">Análise do Microambiente (5 Forças de Porter)</h4>
+                                    <div className="bg-[#d2af5a]/5 border border-[#d2af5a]/20 rounded-xl p-3 mb-2">
+                                      <h4 className="text-[10px] font-bold text-[#d2af5a] uppercase font-mono tracking-widest mb-1">Análise do Microambiente (5 Forças de Porter)</h4>
                                       <p className="text-[9px] text-white/60 leading-relaxed">
                                         Mapeamento das forças competitivas e relações de mercado que moldam a atratividade da <strong>Nossa Consultoria BI / Auditoria 6D</strong>.
                                       </p>
@@ -3818,7 +3818,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                                         {
                                           title: 'Concorrentes Diretos',
                                           badge: 'Diferencial Único',
-                                          badgeColor: 'bg-[#5dcaa5]/20 text-[#5dcaa5] border-[#5dcaa5]/30',
+                                          badgeColor: 'bg-[#d2af5a]/20 text-[#d2af5a] border-[#d2af5a]/30',
                                           desc: 'Empresas de consultoria tradicionais e desenvolvedores freelancers. Nosso diferencial estratégico inimitável é a união da engenharia técnica de BI com telemetria socioemocional e o Índice 6D Imersivo (SIG Pessoas), superando dashboards estáticos comuns.'
                                         },
                                         {
@@ -3854,9 +3854,9 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
 
                                 {etapa2Tab === 'stakeholders' && (
                                   <div className="animate-fade-in space-y-3">
-                                    <div className="bg-[#5dcaa5]/5 border border-[#5dcaa5]/20 rounded-xl p-3 mb-2 flex justify-between items-center gap-4">
+                                    <div className="bg-[#d2af5a]/5 border border-[#d2af5a]/20 rounded-xl p-3 mb-2 flex justify-between items-center gap-4">
                                       <div>
-                                        <h4 className="text-[10px] font-bold text-[#5dcaa5] uppercase font-mono tracking-widest mb-1">Matriz Poder vs Interesse</h4>
+                                        <h4 className="text-[10px] font-bold text-[#d2af5a] uppercase font-mono tracking-widest mb-1">Matriz Poder vs Interesse</h4>
                                         <p className="text-[9px] text-white/60 leading-relaxed">
                                           Mapeamento dos stakeholders chaves da organização. Clique nos pontos para abrir o dossiê de gestão.
                                         </p>
@@ -3864,7 +3864,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                                       {selectedStakeholder && (
                                         <button 
                                           onClick={() => setSelectedStakeholder(null)}
-                                          className="text-[9px] font-mono text-[#5dcaa5] underline hover:text-white"
+                                          className="text-[9px] font-mono text-[#d2af5a] underline hover:text-white"
                                         >
                                           [Limpar Filtro]
                                         </button>
@@ -3878,7 +3878,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                                         
                                         {/* Quadrants background labels */}
                                         <div className="absolute top-2 left-2 text-[8px] font-mono text-white/10 uppercase font-bold">MANTER SATISFEITO (Poder+/Interesse-)</div>
-                                        <div className="absolute top-2 right-2 text-[8px] font-mono text-[#5dcaa5]/20 uppercase font-bold">GERENCIAR DE PERTO (Poder+/Interesse+)</div>
+                                        <div className="absolute top-2 right-2 text-[8px] font-mono text-[#d2af5a]/20 uppercase font-bold">GERENCIAR DE PERTO (Poder+/Interesse+)</div>
                                         <div className="absolute bottom-2 left-2 text-[8px] font-mono text-white/10 uppercase font-bold">MONITORAR (Poder-/Interesse-)</div>
                                         <div className="absolute bottom-2 right-2 text-[8px] font-mono text-[#d2af5a]/20 uppercase font-bold">MANTER INFORMADO (Poder-/Interesse+)</div>
 
@@ -3903,7 +3903,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                                             style={{ left: s.x, top: s.y }}
                                             className={`absolute -translate-x-1/2 -translate-y-1/2 group/node transition-all z-20`}
                                           >
-                                            <div className={`w-3.5 h-3.5 rounded-full flex items-center justify-center border transition-all duration-300 ${selectedStakeholder === s.id ? 'bg-[#5dcaa5] scale-150 border-white shadow-[0_0_12px_#5dcaa5]' : 'bg-black border-white/40 group-hover/node:bg-white group-hover/node:scale-125'}`} />
+                                            <div className={`w-3.5 h-3.5 rounded-full flex items-center justify-center border transition-all duration-300 ${selectedStakeholder === s.id ? 'bg-[#d2af5a] scale-150 border-white shadow-[0_0_12px_#cbd5e1]' : 'bg-black border-white/40 group-hover/node:bg-white group-hover/node:scale-125'}`} />
                                             <span className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/80 border border-white/10 rounded px-1.5 py-0.5 text-[7px] font-mono text-white/95 opacity-0 group-hover/node:opacity-100 transition whitespace-nowrap pointer-events-none z-30">{s.name}</span>
                                           </button>
                                         ))}
@@ -3935,7 +3935,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                                                 <div>
                                                   <div className="flex justify-between items-center">
                                                     <span className="text-[11px] font-bold text-white font-mono uppercase tracking-wider">{item.name}</span>
-                                                    <span className="text-[7.5px] font-mono bg-[#5dcaa5]/10 border border-[#5dcaa5]/20 text-[#5dcaa5] px-2 py-0.5 rounded-full font-bold uppercase">{item.q}</span>
+                                                    <span className="text-[7.5px] font-mono bg-[#d2af5a]/10 border border-[#d2af5a]/20 text-[#d2af5a] px-2 py-0.5 rounded-full font-bold uppercase">{item.q}</span>
                                                   </div>
                                                   <div className="space-y-1.5 mt-2.5">
                                                     <div className="text-[9px] text-white/50"><span className="font-mono text-white/80 font-bold">Nível de Poder:</span> {item.power}</div>
@@ -3943,7 +3943,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                                                     <div className="text-[9.5px] text-white/70 leading-relaxed font-sans border-t border-white/5 pt-2 mt-2">{item.desc}</div>
                                                   </div>
                                                 </div>
-                                                <div className="text-[8.5px] font-mono text-[#5dcaa5] bg-[#5dcaa5]/5 p-2 rounded-lg border border-[#5dcaa5]/20 mt-3">
+                                                <div className="text-[8.5px] font-mono text-[#d2af5a] bg-[#d2af5a]/5 p-2 rounded-lg border border-[#d2af5a]/20 mt-3">
                                                   💡 <strong>Diretriz de Gestão:</strong> {item.q === 'Gerenciar de Perto' ? 'Envolver ativamente nos rituais estratégicos e relatórios.' : item.q === 'Manter Satisfeito' ? 'Garantir conformidade técnica e operacional estrita.' : item.q === 'Manter Informado' ? 'Disponibilizar relatórios assíncronos e updates frequentes.' : 'Monitorar métricas de entrega sem reuniões físicas excessivas.'}
                                                 </div>
                                               </div>
@@ -3962,8 +3962,8 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
 
                                 {etapa2Tab === 'reflexao' && (
                                   <div className="animate-fade-in space-y-3">
-                                    <div className="bg-[#5dcaa5]/5 border border-[#5dcaa5]/20 rounded-xl p-3 mb-2">
-                                      <h4 className="text-[10px] font-bold text-[#5dcaa5] uppercase font-mono tracking-widest mb-1">Reflexão sobre Governança e Tomada de Decisão</h4>
+                                    <div className="bg-[#d2af5a]/5 border border-[#d2af5a]/20 rounded-xl p-3 mb-2">
+                                      <h4 className="text-[10px] font-bold text-[#d2af5a] uppercase font-mono tracking-widest mb-1">Reflexão sobre Governança e Tomada de Decisão</h4>
                                       <p className="text-[9px] text-white/60 leading-relaxed">
                                         Como equilibrar os fatores do macro/microambiente e as demandas dos stakeholders na rotina de liderança.
                                       </p>
@@ -3975,8 +3975,8 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                                           Equilibrar forças macro instáveis (inflação, LGPD) com microcompetidores velozes exige dos gestores uma <strong>capacidade assíncrona de alta frequência</strong>. O erro clássico é reagir emocionalmente pelo Sistema 1 (reativo) sob estresse, em vez de recorrer ao Sistema 2 (analítico) suportado por dados objetivos.
                                         </p>
                                       </div>
-                                      <div className="p-3 bg-[#5dcaa5]/5 border border-[#5dcaa5]/20 rounded-xl">
-                                        <span className="text-[9px] font-mono text-[#5dcaa5] uppercase font-bold tracking-widest block mb-1">O Papel de Telemetria Comportamental</span>
+                                      <div className="p-3 bg-[#d2af5a]/5 border border-[#d2af5a]/20 rounded-xl">
+                                        <span className="text-[9px] font-mono text-[#d2af5a] uppercase font-bold tracking-widest block mb-1">O Papel de Telemetria Comportamental</span>
                                         <p className="text-[10px] text-white/80 leading-relaxed font-sans">
                                           Nesta organização, os líderes gerenciam esses ambientes utilizando painéis unificados como o <strong>SIG Pessoas e o Índice 6D</strong>. Ao traduzir atitudes subjetivas em telemetria limpa de cultura, o gestor atende o board (provando ROI) ao mesmo tempo que assegura segurança psicológica e clareza para os liderados.
                                         </p>
@@ -4006,7 +4006,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                                     <button
                                       key={tab.id}
                                       onClick={() => setEtapa3Tab(tab.id as any)}
-                                      className={`px-2.5 py-1 text-[9px] font-mono font-bold tracking-wider rounded-md uppercase transition-all ${etapa3Tab === tab.id ? 'bg-[#5dcaa5]/20 text-[#5dcaa5] border border-[#5dcaa5]/30' : 'text-white/40 hover:text-white/80 border border-transparent'}`}
+                                      className={`px-2.5 py-1 text-[9px] font-mono font-bold tracking-wider rounded-md uppercase transition-all ${etapa3Tab === tab.id ? 'bg-[#d2af5a]/20 text-[#d2af5a] border border-[#d2af5a]/30' : 'text-white/40 hover:text-white/80 border border-transparent'}`}
                                     >
                                       {tab.label}
                                     </button>
@@ -4018,9 +4018,9 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                               <div className="flex-1 min-h-[380px] overflow-y-auto custom-scrollbar relative z-10 pr-1">
                                 {etapa3Tab === 'organograma' && (
                                   <div className="animate-fade-in space-y-3">
-                                    <div className="bg-[#5dcaa5]/5 border border-[#5dcaa5]/20 rounded-xl p-3 mb-2 flex justify-between items-center gap-4">
+                                    <div className="bg-[#d2af5a]/5 border border-[#d2af5a]/20 rounded-xl p-3 mb-2 flex justify-between items-center gap-4">
                                       <div>
-                                        <h4 className="text-[10px] font-bold text-[#5dcaa5] uppercase font-mono tracking-widest mb-1">Estrutura e Organograma da Consultoria</h4>
+                                        <h4 className="text-[10px] font-bold text-[#d2af5a] uppercase font-mono tracking-widest mb-1">Estrutura e Organograma da Consultoria</h4>
                                         <p className="text-[9px] text-white/60 leading-relaxed">
                                           Organização formal da <strong>Nossa Consultoria BI / Auditoria 6D</strong>. Clique nos nós do organograma abaixo para ver o dossiê detalhado do cargo.
                                         </p>
@@ -4028,7 +4028,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                                       {selectedOrgNode && (
                                         <button 
                                           onClick={() => setSelectedOrgNode(null)}
-                                          className="text-[9px] font-mono text-[#5dcaa5] underline hover:text-white"
+                                          className="text-[9px] font-mono text-[#d2af5a] underline hover:text-white"
                                         >
                                           [Limpar Seleção]
                                         </button>
@@ -4041,65 +4041,65 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                                         <svg className="w-full h-full" viewBox="0 0 360 250">
                                           {/* Connector Lines */}
                                           {/* CEO to Directors */}
-                                          <line x1="180" y1="40" x2="180" y2="60" stroke="#5dcaa5" strokeWidth="1" strokeDasharray="2 2" opacity="0.4" />
-                                          <line x1="100" y1="60" x2="260" y2="60" stroke="#5dcaa5" strokeWidth="1" opacity="0.4" />
-                                          <line x1="100" y1="60" x2="100" y2="85" stroke="#5dcaa5" strokeWidth="1" opacity="0.4" />
-                                          <line x1="260" y1="60" x2="260" y2="85" stroke="#5dcaa5" strokeWidth="1" opacity="0.4" />
+                                          <line x1="180" y1="40" x2="180" y2="60" stroke="#d2af5a" strokeWidth="1" strokeDasharray="2 2" opacity="0.4" />
+                                          <line x1="100" y1="60" x2="260" y2="60" stroke="#d2af5a" strokeWidth="1" opacity="0.4" />
+                                          <line x1="100" y1="60" x2="100" y2="85" stroke="#d2af5a" strokeWidth="1" opacity="0.4" />
+                                          <line x1="260" y1="60" x2="260" y2="85" stroke="#d2af5a" strokeWidth="1" opacity="0.4" />
 
                                           {/* Technical director to PM */}
-                                          <line x1="100" y1="115" x2="100" y2="155" stroke="#5dcaa5" strokeWidth="1" strokeDasharray="2 2" opacity="0.4" />
+                                          <line x1="100" y1="115" x2="100" y2="155" stroke="#d2af5a" strokeWidth="1" strokeDasharray="2 2" opacity="0.4" />
                                           {/* Ops director to HR */}
-                                          <line x1="260" y1="115" x2="260" y2="155" stroke="#5dcaa5" strokeWidth="1" strokeDasharray="2 2" opacity="0.4" />
+                                          <line x1="260" y1="115" x2="260" y2="155" stroke="#d2af5a" strokeWidth="1" strokeDasharray="2 2" opacity="0.4" />
 
                                           {/* PM to Devs */}
-                                          <line x1="100" y1="185" x2="100" y2="215" stroke="#5dcaa5" strokeWidth="1" opacity="0.4" />
+                                          <line x1="100" y1="185" x2="100" y2="215" stroke="#d2af5a" strokeWidth="1" opacity="0.4" />
                                           {/* HR to Analysts */}
-                                          <line x1="260" y1="185" x2="260" y2="215" stroke="#5dcaa5" strokeWidth="1" opacity="0.4" />
+                                          <line x1="260" y1="185" x2="260" y2="215" stroke="#d2af5a" strokeWidth="1" opacity="0.4" />
 
                                           {/* Interactive Node Buttons as SVG elements */}
                                           {/* CEO */}
                                           <g className="cursor-pointer group/node" onClick={() => setSelectedOrgNode('ceo')}>
-                                            <rect x="130" y="15" width="100" height="25" rx="6" fill={selectedOrgNode === 'ceo' ? '#5dcaa5' : '#050505'} stroke={selectedOrgNode === 'ceo' ? '#fff' : '#5dcaa5'} strokeWidth="1" className="transition-all duration-300" />
+                                            <rect x="130" y="15" width="100" height="25" rx="6" fill={selectedOrgNode === 'ceo' ? '#cbd5e1' : '#050505'} stroke={selectedOrgNode === 'ceo' ? '#fff' : '#cbd5e1'} strokeWidth="1" className="transition-all duration-300" />
                                             <text x="180" y="31" fill={selectedOrgNode === 'ceo' ? '#000' : '#fff'} fontSize="8" fontWeight="bold" fontFamily="monospace" textAnchor="middle">Sócio-Presidente</text>
                                           </g>
 
                                           {/* CTO */}
                                           <g className="cursor-pointer group/node" onClick={() => setSelectedOrgNode('cto')}>
-                                            <rect x="50" y="85" width="100" height="30" rx="6" fill={selectedOrgNode === 'cto' ? '#5dcaa5' : '#050505'} stroke={selectedOrgNode === 'cto' ? '#fff' : 'rgba(255,255,255,0.15)'} strokeWidth="1" className="transition-all duration-300" />
+                                            <rect x="50" y="85" width="100" height="30" rx="6" fill={selectedOrgNode === 'cto' ? '#cbd5e1' : '#050505'} stroke={selectedOrgNode === 'cto' ? '#fff' : 'rgba(255,255,255,0.15)'} strokeWidth="1" className="transition-all duration-300" />
                                             <text x="100" y="99" fill={selectedOrgNode === 'cto' ? '#000' : '#fff'} fontSize="8" fontWeight="bold" fontFamily="monospace" textAnchor="middle">Dir. Técnico</text>
                                             <text x="100" y="109" fill={selectedOrgNode === 'cto' ? '#000' : 'rgba(255,255,255,0.4)'} fontSize="6" fontFamily="sans-serif" textAnchor="middle">Engenharia / BI</text>
                                           </g>
 
                                           {/* COO */}
                                           <g className="cursor-pointer group/node" onClick={() => setSelectedOrgNode('coo')}>
-                                            <rect x="210" y="85" width="100" height="30" rx="6" fill={selectedOrgNode === 'coo' ? '#5dcaa5' : '#050505'} stroke={selectedOrgNode === 'coo' ? '#fff' : 'rgba(255,255,255,0.15)'} strokeWidth="1" className="transition-all duration-300" />
+                                            <rect x="210" y="85" width="100" height="30" rx="6" fill={selectedOrgNode === 'coo' ? '#cbd5e1' : '#050505'} stroke={selectedOrgNode === 'coo' ? '#fff' : 'rgba(255,255,255,0.15)'} strokeWidth="1" className="transition-all duration-300" />
                                             <text x="260" y="99" fill={selectedOrgNode === 'coo' ? '#000' : '#fff'} fontSize="8" fontWeight="bold" fontFamily="monospace" textAnchor="middle">Dir. Operações</text>
                                             <text x="260" y="109" fill={selectedOrgNode === 'coo' ? '#000' : 'rgba(255,255,255,0.4)'} fontSize="6" fontFamily="sans-serif" textAnchor="middle">Adm. / Financeiro</text>
                                           </g>
 
                                           {/* PM */}
                                           <g className="cursor-pointer group/node" onClick={() => setSelectedOrgNode('pm')}>
-                                            <rect x="50" y="155" width="100" height="30" rx="6" fill={selectedOrgNode === 'pm' ? '#5dcaa5' : '#050505'} stroke={selectedOrgNode === 'pm' ? '#fff' : 'rgba(255,255,255,0.15)'} strokeWidth="1" className="transition-all duration-300" />
+                                            <rect x="50" y="155" width="100" height="30" rx="6" fill={selectedOrgNode === 'pm' ? '#cbd5e1' : '#050505'} stroke={selectedOrgNode === 'pm' ? '#fff' : 'rgba(255,255,255,0.15)'} strokeWidth="1" className="transition-all duration-300" />
                                             <text x="100" y="169" fill={selectedOrgNode === 'pm' ? '#000' : '#fff'} fontSize="8" fontWeight="bold" fontFamily="monospace" textAnchor="middle">Coord. Projetos</text>
                                             <text x="100" y="179" fill={selectedOrgNode === 'pm' ? '#000' : 'rgba(255,255,255,0.4)'} fontSize="6" fontFamily="sans-serif" textAnchor="middle">Sprints / Entregas</text>
                                           </g>
 
                                           {/* HR */}
                                           <g className="cursor-pointer group/node" onClick={() => setSelectedOrgNode('hr')}>
-                                            <rect x="210" y="155" width="100" height="30" rx="6" fill={selectedOrgNode === 'hr' ? '#5dcaa5' : '#050505'} stroke={selectedOrgNode === 'hr' ? '#fff' : 'rgba(255,255,255,0.15)'} strokeWidth="1" className="transition-all duration-300" />
+                                            <rect x="210" y="155" width="100" height="30" rx="6" fill={selectedOrgNode === 'hr' ? '#cbd5e1' : '#050505'} stroke={selectedOrgNode === 'hr' ? '#fff' : 'rgba(255,255,255,0.15)'} strokeWidth="1" className="transition-all duration-300" />
                                             <text x="260" y="169" fill={selectedOrgNode === 'hr' ? '#000' : '#fff'} fontSize="8" fontWeight="bold" fontFamily="monospace" textAnchor="middle">Coord. Pessoas</text>
                                             <text x="260" y="179" fill={selectedOrgNode === 'hr' ? '#000' : 'rgba(255,255,255,0.4)'} fontSize="6" fontFamily="sans-serif" textAnchor="middle">Cultura / Rituais</text>
                                           </g>
 
                                           {/* Devs */}
                                           <g className="cursor-pointer group/node" onClick={() => setSelectedOrgNode('devs')}>
-                                            <rect x="50" y="215" width="100" height="20" rx="4" fill={selectedOrgNode === 'devs' ? '#5dcaa5' : '#050505'} stroke={selectedOrgNode === 'devs' ? '#fff' : 'rgba(255,255,255,0.08)'} strokeWidth="1" className="transition-all duration-300" />
+                                            <rect x="50" y="215" width="100" height="20" rx="4" fill={selectedOrgNode === 'devs' ? '#cbd5e1' : '#050505'} stroke={selectedOrgNode === 'devs' ? '#fff' : 'rgba(255,255,255,0.08)'} strokeWidth="1" className="transition-all duration-300" />
                                             <text x="100" y="227" fill={selectedOrgNode === 'devs' ? '#000' : 'rgba(255,255,255,0.7)'} fontSize="7" fontWeight="bold" fontFamily="monospace" textAnchor="middle">Desenvolvedores BI</text>
                                           </g>
 
                                           {/* Analysts */}
                                           <g className="cursor-pointer group/node" onClick={() => setSelectedOrgNode('analysts')}>
-                                            <rect x="210" y="215" width="100" height="20" rx="4" fill={selectedOrgNode === 'analysts' ? '#5dcaa5' : '#050505'} stroke={selectedOrgNode === 'analysts' ? '#fff' : 'rgba(255,255,255,0.08)'} strokeWidth="1" className="transition-all duration-300" />
+                                            <rect x="210" y="215" width="100" height="20" rx="4" fill={selectedOrgNode === 'analysts' ? '#cbd5e1' : '#050505'} stroke={selectedOrgNode === 'analysts' ? '#fff' : 'rgba(255,255,255,0.08)'} strokeWidth="1" className="transition-all duration-300" />
                                             <text x="260" y="227" fill={selectedOrgNode === 'analysts' ? '#000' : 'rgba(255,255,255,0.7)'} fontSize="7" fontWeight="bold" fontFamily="monospace" textAnchor="middle">Analistas de Dados</text>
                                           </g>
                                         </svg>
@@ -4124,7 +4124,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                                                 <div>
                                                   <div className="border-b border-white/5 pb-2">
                                                     <span className="text-[11px] font-bold text-white font-mono uppercase tracking-wider block leading-tight">{item.role}</span>
-                                                    <span className="text-[7px] text-[#5dcaa5] font-mono uppercase font-bold tracking-widest mt-1 block">Reporta a: {item.parent}</span>
+                                                    <span className="text-[7px] text-[#d2af5a] font-mono uppercase font-bold tracking-widest mt-1 block">Reporta a: {item.parent}</span>
                                                   </div>
                                                   <div className="space-y-1.5 mt-2 text-[9px] text-white/50">
                                                     <div><span className="font-mono text-white/80 font-bold">Autonomia:</span> {item.autonomy}</div>
@@ -4133,7 +4133,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                                                     <div className="text-[9px] text-white/60 leading-relaxed font-sans mt-1"><strong>Responsabilidade:</strong> {item.duties}</div>
                                                   </div>
                                                 </div>
-                                                <div className="text-[8px] font-mono text-[#5dcaa5] bg-[#5dcaa5]/5 p-2 rounded-lg border border-[#5dcaa5]/20 mt-2">
+                                                <div className="text-[8px] font-mono text-[#d2af5a] bg-[#d2af5a]/5 p-2 rounded-lg border border-[#d2af5a]/20 mt-2">
                                                   ⚡ <strong>Nível de Centralização:</strong> {selectedOrgNode === 'ceo' || selectedOrgNode === 'cto' || selectedOrgNode === 'coo' ? 'Alta (Concentra a decisão estrutural e verbas).' : 'Baixa (Grande autonomia técnica no dia a dia).'}
                                                 </div>
                                               </div>
@@ -4152,8 +4152,8 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
 
                                 {etapa3Tab === 'estilo' && (
                                   <div className="animate-fade-in space-y-4">
-                                    <div className="bg-[#5dcaa5]/5 border border-[#5dcaa5]/20 rounded-xl p-3">
-                                      <h4 className="text-[10px] font-bold text-[#5dcaa5] uppercase font-mono tracking-widest mb-1">Simulador de Estrutura Organizacional</h4>
+                                    <div className="bg-[#d2af5a]/5 border border-[#d2af5a]/20 rounded-xl p-3">
+                                      <h4 className="text-[10px] font-bold text-[#d2af5a] uppercase font-mono tracking-widest mb-1">Simulador de Estrutura Organizacional</h4>
                                       <p className="text-[9px] text-white/60 leading-relaxed">
                                         Calibre o equilíbrio entre <strong>Estrutura Orgânica (Flexibilidade/Velocidade)</strong> e <strong>Mecanicista (Controle/Rigidez)</strong> e observe os impactos nos scores corporativos.
                                       </p>
@@ -4164,7 +4164,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                                       <div className="space-y-2">
                                         <div className="flex justify-between items-center text-[10px] font-mono font-bold">
                                           <span className="text-[#d2af5a] uppercase">Mecanicista ({100 - organicRatio}%)</span>
-                                          <span className="text-[#5dcaa5] uppercase">Orgânica ({organicRatio}%)</span>
+                                          <span className="text-[#d2af5a] uppercase">Orgânica ({organicRatio}%)</span>
                                         </div>
                                         <input 
                                           type="range" 
@@ -4172,7 +4172,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                                           max="90" 
                                           value={organicRatio} 
                                           onChange={e => setOrganicRatio(parseInt(e.target.value, 10))}
-                                          className="w-full h-1 bg-white/10 rounded-lg appearance-none cursor-pointer accent-[#5dcaa5]"
+                                          className="w-full h-1 bg-white/10 rounded-lg appearance-none cursor-pointer accent-[#cbd5e1]"
                                         />
                                         <div className="flex justify-between text-[7.5px] font-mono text-white/30">
                                           <span>PADRÃO RÍGIDO (TAYLOR/WEBER)</span>
@@ -4194,7 +4194,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                                               setOrganicRatio(p.ratio);
                                               triggerToast(`Estrutura calibrada para: ${p.label}`);
                                             }}
-                                            className={`p-2 border rounded-lg text-left transition-all relative ${organicRatio === p.ratio ? 'bg-[#5dcaa5]/10 border-[#5dcaa5]/40 text-[#5dcaa5]' : 'bg-black/30 border-white/5 text-white/50 hover:text-white/80'}`}
+                                            className={`p-2 border rounded-lg text-left transition-all relative ${organicRatio === p.ratio ? 'bg-[#d2af5a]/10 border-[#d2af5a]/40 text-[#d2af5a]' : 'bg-black/30 border-white/5 text-white/50 hover:text-white/80'}`}
                                           >
                                             <span className="text-[9px] font-mono font-bold block">{p.label}</span>
                                             <span className="text-[7.5px] text-white/40 block mt-0.5 leading-tight">{p.desc}</span>
@@ -4210,10 +4210,10 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                                         <div className="space-y-1">
                                           <div className="flex justify-between text-[9px] font-mono">
                                             <span className="text-white/60">Velocidade de Inovação & Criatividade</span>
-                                            <span className="text-[#5dcaa5] font-bold">{Math.round(organicRatio * 0.95 + 5)}%</span>
+                                            <span className="text-[#d2af5a] font-bold">{Math.round(organicRatio * 0.95 + 5)}%</span>
                                           </div>
                                           <div className="h-1.5 bg-white/5 border border-white/10 rounded-full overflow-hidden">
-                                            <div className="h-full bg-gradient-to-r from-blue-500 to-[#5dcaa5] transition-all duration-300" style={{ width: `${Math.round(organicRatio * 0.95 + 5)}%` }} />
+                                            <div className="h-full bg-gradient-to-r from-blue-500 to-[#cbd5e1] transition-all duration-300" style={{ width: `${Math.round(organicRatio * 0.95 + 5)}%` }} />
                                           </div>
                                         </div>
 
@@ -4245,8 +4245,8 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
 
                                 {etapa3Tab === 'controles' && (
                                   <div className="animate-fade-in space-y-3">
-                                    <div className="bg-[#5dcaa5]/5 border border-[#5dcaa5]/20 rounded-xl p-3 mb-2">
-                                      <h4 className="text-[10px] font-bold text-[#5dcaa5] uppercase font-mono tracking-widest mb-1">Mapeamento de Sistemas de Controle</h4>
+                                    <div className="bg-[#d2af5a]/5 border border-[#d2af5a]/20 rounded-xl p-3 mb-2">
+                                      <h4 className="text-[10px] font-bold text-[#d2af5a] uppercase font-mono tracking-widest mb-1">Mapeamento de Sistemas de Controle</h4>
                                       <p className="text-[9px] text-white/60 leading-relaxed">
                                         Como a consultoria assegura que os objetivos sejam alcançados através de rituais e controles formais e socioemocionais.
                                       </p>
@@ -4274,8 +4274,8 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                                       </div>
 
                                       {/* Naturais */}
-                                      <div className="p-4 bg-black/40 border border-white/5 hover:border-[#5dcaa5]/20 rounded-xl space-y-3 transition-all duration-300">
-                                        <span className="text-[9.5px] font-mono text-[#5dcaa5] font-bold uppercase tracking-widest border-b border-white/5 pb-1.5 block">2. Controles Socioemocionais & Naturais (65%)</span>
+                                      <div className="p-4 bg-black/40 border border-white/5 hover:border-[#d2af5a]/20 rounded-xl space-y-3 transition-all duration-300">
+                                        <span className="text-[9.5px] font-mono text-[#d2af5a] font-bold uppercase tracking-widest border-b border-white/5 pb-1.5 block">2. Controles Socioemocionais & Naturais (65%)</span>
                                         
                                         <div className="space-y-2 text-[9.5px]">
                                           <div className="bg-white/[0.02] border border-white/5 p-2 rounded-lg">
@@ -4298,8 +4298,8 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
 
                                 {etapa3Tab === 'reflexao' && (
                                   <div className="animate-fade-in space-y-3">
-                                    <div className="bg-[#5dcaa5]/5 border border-[#5dcaa5]/20 rounded-xl p-3 mb-2">
-                                      <h4 className="text-[10px] font-bold text-[#5dcaa5] uppercase font-mono tracking-widest mb-1">Diretrizes Práticas de Liderança</h4>
+                                    <div className="bg-[#d2af5a]/5 border border-[#d2af5a]/20 rounded-xl p-3 mb-2">
+                                      <h4 className="text-[10px] font-bold text-[#d2af5a] uppercase font-mono tracking-widest mb-1">Diretrizes Práticas de Liderança</h4>
                                       <p className="text-[9px] text-white/60 leading-relaxed">
                                         Validação teórica e prática sobre os sistemas de estrutura e controle para subsidiar o relatório final da ATP.
                                       </p>
@@ -4372,7 +4372,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                                     element.click();
                                     document.body.removeChild(element);
                                   }}
-                                  className="px-4 py-2 bg-gradient-to-r from-[#5dcaa5]/20 to-[#5dcaa5]/5 hover:from-[#5dcaa5]/30 hover:to-[#5dcaa5]/10 border border-[#5dcaa5]/40 rounded-xl text-[10px] font-bold text-[#5dcaa5] font-mono tracking-widest transition-all shadow-[0_0_15px_rgba(93,202,165,0.1)] flex items-center gap-2"
+                                  className="px-4 py-2 bg-gradient-to-r from-[#cbd5e1]/20 to-[#cbd5e1]/5 hover:from-[#cbd5e1]/30 hover:to-[#cbd5e1]/10 border border-[#d2af5a]/40 rounded-xl text-[10px] font-bold text-[#d2af5a] font-mono tracking-widest transition-all shadow-[0_0_15px_rgba(210,175,90,0.1)] flex items-center gap-2"
                                 >
                                   <FileDown size={13} /> EXPORTAR ATP COMPLETA (.TXT)
                                 </button>
@@ -4393,12 +4393,12 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                                   <button
                                     key={s.id}
                                     onClick={() => setActiveReportSection(s.id)}
-                                    className={`p-2 rounded-xl text-left transition-all border ${activeReportSection === s.id ? 'bg-[#5dcaa5]/15 border-[#5dcaa5]/45 text-white shadow-inner animate-pulse' : 'bg-black/30 border-white/5 text-white/50 hover:text-white/80 hover:bg-white/[0.01]'}`}
+                                    className={`p-2 rounded-xl text-left transition-all border ${activeReportSection === s.id ? 'bg-[#d2af5a]/15 border-[#d2af5a]/45 text-white shadow-inner animate-pulse' : 'bg-black/30 border-white/5 text-white/50 hover:text-white/80 hover:bg-white/[0.01]'}`}
                                   >
                                     <span className="text-[9px] font-bold block">{s.label}</span>
                                     <div className="flex justify-between items-center mt-1 text-[7px] font-mono text-white/30">
                                       <span>Calibrado: {s.words}</span>
-                                      <span className="text-[#5dcaa5] font-bold">{s.req} [✓]</span>
+                                      <span className="text-[#d2af5a] font-bold">{s.req} [✓]</span>
                                     </div>
                                   </button>
                                 ))}
@@ -4406,11 +4406,11 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
 
                               {/* Full-width Content viewer */}
                               <div className="flex-1 bg-[#050505] border border-white/5 rounded-2xl p-5 overflow-y-auto custom-scrollbar min-h-[300px] flex flex-col justify-between relative z-10">
-                                <div className="absolute top-0 right-0 w-24 h-24 bg-[#5dcaa5]/3 blur-3xl pointer-events-none" />
+                                <div className="absolute top-0 right-0 w-24 h-24 bg-[#d2af5a]/3 blur-3xl pointer-events-none" />
                                 <div className="space-y-4">
                                   {activeReportSection === 1 && (
                                     <div className="animate-fade-in space-y-3">
-                                      <h4 className="text-[12px] font-mono font-bold text-[#5dcaa5] uppercase tracking-wider pb-1.5 border-b border-white/5">1. Introdução da Atividade Prática</h4>
+                                      <h4 className="text-[12px] font-mono font-bold text-[#d2af5a] uppercase tracking-wider pb-1.5 border-b border-white/5">1. Introdução da Atividade Prática</h4>
                                       <p className="text-[10.5px] text-white/80 leading-relaxed font-sans text-justify">
                                         Este relatório de consultoria consolida o diagnóstico organizacional realizado ao longo das últimas semanas na empresa fictícia <strong>Nossa Consultoria BI (Auditoria 6D)</strong>, integrando conceitos teóricos da gestão à prática observada. O estudo abrangeu o setup core das funções administrativas, a análise detalhada do macroambiente (político, econômico, sociocultural e legal) e microambiente competitivo (cinco forças de Porter). Além disso, mapeou-se a matriz de poder e interesse dos stakeholders internos e externos, a estrutura do organograma híbrido adotado e os sistemas de controle operacionais de metas e comportamento. A ATP nos permitiu compreender como o acúmulo de conhecimento prático de gestão compensa a falta de planejamento racional e estruturado inicial. O resultado final é uma proposta de governança corporativa transparente que descentraliza decisões técnicas sem abrir mão de segurança e conformidade de dados, gerando recomendações aplicáveis de intervenção estratégica no negócio.
                                       </p>
@@ -4419,7 +4419,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
 
                                   {activeReportSection === 2 && (
                                     <div className="animate-fade-in space-y-3">
-                                      <h4 className="text-[12px] font-mono font-bold text-[#5dcaa5] uppercase tracking-wider pb-1.5 border-b border-white/5">2. Análise da Gestão da Organização (FOPL)</h4>
+                                      <h4 className="text-[12px] font-mono font-bold text-[#d2af5a] uppercase tracking-wider pb-1.5 border-b border-white/5">2. Análise da Gestão da Organização (FOPL)</h4>
                                       <p className="text-[10.5px] text-white/80 leading-relaxed font-sans text-justify">
                                         A gestão na Nossa Consultoria BI foi analisada à luz das quatro funções administrativas clássicas: planejar, organizar, liderar e controlar. No planejamento, observou-se que a empresa carece de um planejamento estratégico de longo prazo formalizado e sistemático. A teoria ensina que o planejamento define a direção e reduz a incerteza; na prática, as decisões iniciais ocorreram empiricamente, baseadas na demanda de projetos de curto prazo. Na organização de recursos, a consultoria adota uma estrutura ágil para alocar analistas aos projetos. Embora essa descentralização promova dinamismo, a literatura de Taylor e Fayol enfatiza a necessidade de clareza de atribuições para evitar desperdício de esforço. No SIG Pessoas, notamos que a indefinição de escopo em picos de demanda gera gargalos. A liderança é exercida de forma colaborativa e aberta pelos diretores fundadores, promovendo um ambiente de alta segurança psicológica e confiança mútua. Esse estilo de liderança participativa é alinhado com as teorias contemporâneas, motivando a equipe técnica de tecnologia a propor inovações frequentes. Por fim, o controle é exercido de maneira informal no comportamento cotidiano e formalizado através de entregas técnicas pontuais e SLAs de satisfação do cliente. A lacuna identificada reside na ausência de indicadores operacionais globais de performance unificados. Conclui-se que o acúmulo de experiência dos gestores foi vital para suprir as fragilidades do planejamento formal original. A transição gradual para rituais mais estruturados, mantendo a flexibilidade ágil, surge como a recomendação principal para consolidar o crescimento sustentável da organização no mercado altamente competitivo de inteligência corporativa.
                                       </p>
@@ -4428,7 +4428,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
 
                                   {activeReportSection === 3 && (
                                     <div className="animate-fade-in space-y-3">
-                                      <h4 className="text-[12px] font-mono font-bold text-[#5dcaa5] uppercase tracking-wider pb-1.5 border-b border-white/5">3. Análise do Macroambiente (PESTEL)</h4>
+                                      <h4 className="text-[12px] font-mono font-bold text-[#d2af5a] uppercase tracking-wider pb-1.5 border-b border-white/5">3. Análise do Macroambiente (PESTEL)</h4>
                                       <p className="text-[10.5px] text-white/80 leading-relaxed font-sans text-justify">
                                         O macroambiente exerce uma influência profunda e contínua sobre o desempenho estratégico e financeiro da Nossa Consultoria BI. Por meio da análise PESTEL, articulamos os impactos políticos, econômicos, socioculturais e legais na operação. No âmbito político, diretrizes estatais e incentivos governamentais para a inovação digital impulsionam a modernização corporativa, gerando novos negócios para projetos de business intelligence. Sob a ótica econômica, a instabilidade inflacionária e oscilações de juros alteram diretamente a capacidade de investimento dos clientes. Em momentos de contração econômica, as empresas nos contratam focadas no corte rigoroso de custos e aumento de eficiência interna. Em períodos expansivos, a demanda migra para inteligência competitiva e captação de mercados. Socioculturalmente, a ascensão da cultura orientada a dados (Data-Driven) reflete um anseio social por transparência ética nas tomadas de decisão. Isso se reflete no SIG Pessoas, onde colaboradores demandam avaliações baseadas em fatos objetivos e não julgamentos subjetivos. No pilar tecnológico, o surgimento contínuo de novas APIs e inteligência artificial generativa atua simultaneamente como catalisador e ameaça. A consultoria precisa se atualizar freneticamente para não se tornar obsoleta perante ferramentas self-service integradas. Finalmente, as regulações legais, especialmente a Lei Geral de Proteção de Dados (LGPD), afetam diretamente a governança da consultoria. A manipulação de bases de dados exige criptografia e trilhas de auditoria complexas. A conformidade regulatória rigorosa encarece a operação técnica, mas se consolidou como um forte argumento de credibilidade comercial perante corporações exigentes. Compreender esse ecossistema externo complexo permite que a consultoria antecipe ameaças de mercado e as converta em oportunidades de valor para os clientes.
                                       </p>
@@ -4437,7 +4437,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
 
                                   {activeReportSection === 4 && (
                                     <div className="animate-fade-in space-y-3">
-                                      <h4 className="text-[12px] font-mono font-bold text-[#5dcaa5] uppercase tracking-wider pb-1.5 border-b border-white/5">4. Análise do Microambiente (Porter)</h4>
+                                      <h4 className="text-[12px] font-mono font-bold text-[#d2af5a] uppercase tracking-wider pb-1.5 border-b border-white/5">4. Análise do Microambiente (Porter)</h4>
                                       <p className="text-[10.5px] text-white/80 leading-relaxed font-sans text-justify">
                                         A dinâmica competitiva da Nossa Consultoria BI foi mapeada por meio do modelo das cinco forças de Porter, cruzando a realidade prática com a teoria clássica de microeconomia. A rivalidade entre os concorrentes diretos é intensa, impulsionada por grandes firmas globais e desenvolvedores freelancers. Contudo, nossa estratégia de competição é focada estritamente na qualidade metodológica e não no preço baixo. Oferecemos o Índice 6D Imersivo e telemetria socioemocional no desenvolvimento humano (SIG Pessoas), um diferencial único e de difícil imitação, afastando-nos da commodity do mercado técnico. O poder de barganha dos fornecedores, constituído por provedores globais de computação em nuvem e ferramentas de visualização (como Microsoft, AWS e Snowflake), é elevado devido ao monopólio técnico das licenças. Para mitigar esse risco de lock-in, a consultoria adota soluções com alta portabilidade de dados in código aberto. Por outro lado, o poder de negociação dos clientes de médio e grande porte é expressivo. Eles exigem entregas de alto valor, integridade ética nos relatórios de conformidade e retorno sobre investimento (ROI) mensurável em curto prazo. Quanto à ameaça de produtos substitutos, o principal risco reside em planilhas informais descentralizadas em Excel ou na contratação de engenheiros internos dedicados. Embora a informalidade seja barata, ela gera custos invisíveis por falhas humanas. A contratação de equipes próprias é onerosa perante o modelo sob demanda da consultoria. Articular essas forças do microambiente ajuda a direcionar nosso posicionamento estratégico rumo a um segmento premium resiliente às pressões de margem.
                                       </p>
@@ -4446,7 +4446,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
 
                                   {activeReportSection === 5 && (
                                     <div className="animate-fade-in space-y-3">
-                                      <h4 className="text-[12px] font-mono font-bold text-[#5dcaa5] uppercase tracking-wider pb-1.5 border-b border-white/5">5. Análise dos Stakeholders</h4>
+                                      <h4 className="text-[12px] font-mono font-bold text-[#d2af5a] uppercase tracking-wider pb-1.5 border-b border-white/5">5. Análise dos Stakeholders</h4>
                                       <p className="text-[10.5px] text-white/80 leading-relaxed font-sans text-justify">
                                         A governança ética da Nossa Consultoria BI depende da administração balanceada de suas partes interessadas. Articulando a teoria de Mitchell com a prática, mapeamos os stakeholders com base em poder, legitimidade e urgência. No quadrante de alta influência e alto interesse (Gerenciar de Perto), localizam-se os sócios diretores e os clientes corporativos críticos. O conselho executivo exerce seu poder por decisões orçamentárias estratégicas e definição da cultura organizativa. Os clientes críticos exercem poder direto condicionando a renovação de contratos à qualidade técnica e ROI tangível. Estes grupos devem participar ativamente de rituais consultivos recorrentes. Os fornecedores globais de cloud e órgãos de regulação da LGPD (como a ANPD) possuem alto poder, mas baixo interesse em nossa operação interna, devendo ser mantidos satisfeitos através de conformidade estrita e relatórios técnicos. Em contrapartida, os gestores operacionais e a equipe interna de analistas e desenvolvedores de BI apresentam baixo poder decisório, mas alto interesse no sucesso financeiro e na estabilidade de carreira da empresa. De acordo com as diretrizes teóricas de desenvolvimento de pessoas, estes stakeholders internos são mantidos informados por meio de transparência assíncrona, OKRs claras e rituais horizontais de feedback, o que estimula o engajamento e a segurança psicológica organizacional. Por fim, as famílias dos colaboradores e prestadores de serviços secundários encontram-se em níveis inferiores de influência, exigindo monitoramento básico de clima e pontualidade. Gerenciar de perto os stakeholders certos e manter a comunicação transparente reduz os ruídos e assegura o alinhamento estratégico indispensável para a eficiência corporativa.
                                       </p>
@@ -4455,7 +4455,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
 
                                   {activeReportSection === 6 && (
                                     <div className="animate-fade-in space-y-3">
-                                      <h4 className="text-[12px] font-mono font-bold text-[#5dcaa5] uppercase tracking-wider pb-1.5 border-b border-white/5">6. Estrutura e Organograma</h4>
+                                      <h4 className="text-[12px] font-mono font-bold text-[#d2af5a] uppercase tracking-wider pb-1.5 border-b border-white/5">6. Estrutura e Organograma</h4>
                                       <p className="text-[10.5px] text-white/80 leading-relaxed font-sans text-justify">
                                         A Nossa Consultoria BI adota uma estrutura organizacional híbrida que equilibra o modelo orgânico (65%) e mecanicista (35%). O organograma é desenhado em formato tático enxuto, onde o sócio-presidente centraliza decisões estratégicas globais, mas reporta-se de forma direta a dois diretores técnicos e operacionais, que por sua vez lideram coordenadores de projetos e pessoas. Essa estrutura descentraliza as tomadas de decisão sobre a execução técnica dos analistas e desenvolvedores. A grande vantagem desse arranjo híbrido, conforme a literatura de Burns e Stalker, é a flexibilidade operacional extrema e a alta velocidade de inovação técnica para responder a demandas complexas de projetos. No entanto, a desvantagem reside na ambiguidade de papéis em momentos de pico de atividade e na dispersão dos fluxos de autoridade. Para mitigar isso, a empresa utiliza metas e OKRs. Alternativamente, a literatura propõe estruturas puramente mecanicistas com hierarquias rígidas e regras burocráticas estritas. Em nosso campo de tecnologia da informação, a adoção de um estilo puramente mecanicista sufocaria a autonomia dos programadores, destruindo o engajamento. Uma estrutura puramente orgânica, por sua vez, criaria caos e vulnerabilidade regulatória frente à LGPD. Portanto, o estilo híbrido ágil adotado é a escolha mais lógica e racional para as contingências do negócio. Recomendamos apenas institucionalizar squads temporários focados em projetos específicos com o papel de Product Owner explicitamente definido para refinar o escopo de reporte tático e as atribuições funcionais da equipe técnica no dia a dia operante.
                                       </p>
@@ -4464,7 +4464,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
 
                                   {activeReportSection === 7 && (
                                     <div className="animate-fade-in space-y-3">
-                                      <h4 className="text-[12px] font-mono font-bold text-[#5dcaa5] uppercase tracking-wider pb-1.5 border-b border-white/5">7. Sistemas de Controle Organizacional</h4>
+                                      <h4 className="text-[12px] font-mono font-bold text-[#d2af5a] uppercase tracking-wider pb-1.5 border-b border-white/5">7. Sistemas de Controle Organizacional</h4>
                                       <p className="text-[10.5px] text-white/80 leading-relaxed font-sans text-justify">
                                         Os sistemas de controle organizacional da Nossa Consultoria BI misturam ferramentas formais racionais com mecanismos informais comportamentais. No pilar racional (mecanicista), a empresa baseia-se em OKRs trimestrais formais e no controle rígido de SLAs de projetos técnicos e faturamento mensal. Esse tipo de controle sobre os outputs é vital para garantir previsibilidade e mensurar o retorno. No entanto, no controle de processos internos e comportamento do time, a consultoria apoia-se em controles naturais e informais (orgânicos). Estes rituais compreendem reuniões de feedback recorrentes baseadas na metodologia SBI (Situação-Comportamento-Impacto) e no contrato de aliança estabelecido cooperativamente. A teoria de Ouchi aponta que controles de clã (informais) geram alta confiança mútua e reduzem o microgerenciamento restritivo. A nossa proposta para melhorar a eficácia reside na integração tecnológica de dashboards de performance transparentes, como no SIG Pessoas, onde o colaborador visualiza suas próprias métricas de engajamento de forma assíncrona. A adoção de controles comportamentais sistematizados, sem caráter punitivo, ajuda os profissionais de BI a calibrar suas tarefas e prioridades em tempo real, gerando eficácia de entregas e alta segurança psicológica. O alinhamento automatizado de metas reduz em até 40% a necessidade de reuniões de alinhamento desnecessárias, diminuindo os custos invisíveis operacionais e otimizando a energia da liderança de pessoas. Portanto, robustecer as ferramentas de telemetria sem engessar a rotina ágil é a melhor avenida estratégica para alcançar os objetivos organizacionais com a máxima eficácia e harmonia corporativa.
                                       </p>
@@ -4473,7 +4473,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
 
                                   {activeReportSection === 8 && (
                                     <div className="animate-fade-in space-y-3.5">
-                                      <h4 className="text-[12px] font-mono font-bold text-[#5dcaa5] uppercase tracking-wider pb-1.5 border-b border-white/5">8. Conclusões e Recomendações de Consultoria</h4>
+                                      <h4 className="text-[12px] font-mono font-bold text-[#d2af5a] uppercase tracking-wider pb-1.5 border-b border-white/5">8. Conclusões e Recomendações de Consultoria</h4>
                                       
                                       <div className="space-y-3">
                                         {[
@@ -4490,7 +4490,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                                             text: 'Propomos integrar as metas estratégicas e OKRs corporativos em um dashboard executivo automatizado com trilhas de auditoria contínua de acessos aos bancos de dados de saúde e pessoas. A fundamentação teórica de controle cibernético de Wiener estabelece que sistemas complexos necessitam de loops de feedback de dados constantes para correções de desvios. O uso de criptografia e logs de auditoria automatizados assegura conformidade estrita com a LGPD e mitiga passivos regulatórios catastróficos, ao mesmo tempo em que a visibilidade pública interna das metas reduz o microgerenciamento e orienta a equipe de BI rumo ao alto desempenho data-driven.'
                                           }
                                         ].map((r, idx) => (
-                                          <div key={idx} className="p-3 bg-white/[0.02] border border-white/5 hover:border-[#5dcaa5]/30 rounded-xl transition-all">
+                                          <div key={idx} className="p-3 bg-white/[0.02] border border-white/5 hover:border-[#d2af5a]/30 rounded-xl transition-all">
                                             <span className="text-[9.5px] font-mono text-[#d2af5a] font-bold block mb-1">{r.title}</span>
                                             <p className="text-[9.5px] text-white/70 leading-relaxed font-sans text-justify">{r.text}</p>
                                           </div>
@@ -4546,7 +4546,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                             </div>
                             <span className="text-[8.5px] font-mono text-white/45 block leading-tight">{okr.keyResults}</span>
                             <div className="h-1.5 bg-white/[0.04] rounded-full overflow-hidden border border-white/5">
-                              <div className="h-full bg-gradient-to-r from-[#d2af5a] to-[#5dcaa5] rounded-full transition-all duration-300" style={{ width: `${okr.progress}%` }} />
+                              <div className="h-full bg-gradient-to-r from-[#d2af5a] to-[#cbd5e1] rounded-full transition-all duration-300" style={{ width: `${okr.progress}%` }} />
                             </div>
                           </div>
                         ))
@@ -4676,8 +4676,8 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                     <h4 className="text-[11px] font-bold text-white uppercase font-mono">Consolidado eNPS</h4>
                     
                     <div className="p-5 bg-black/35 rounded-lg border border-white/[0.06] text-center space-y-1">
-                      <span className="text-[8px] font-mono text-[#5dcaa5] uppercase block font-bold">Zona de Calibração</span>
-                      <b className="text-3xl font-mono text-[#5dcaa5] font-bold">+74</b>
+                      <span className="text-[8px] font-mono text-[#d2af5a] uppercase block font-bold">Zona de Calibração</span>
+                      <b className="text-3xl font-mono text-[#d2af5a] font-bold">+74</b>
                       <span className="text-[8px] text-white/45 block mt-1 font-mono">{teamMembers.length} respostas válidas</span>
                     </div>
                   </div>
@@ -4769,7 +4769,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                     <div className="premium-glass-card flex justify-between items-center transition duration-300">
                       <div>
                         <span className="text-[8.5px] font-mono text-white/45 block mb-1">Índice de Ruído Calculado</span>
-                        <b className={`text-lg font-mono font-bold ${noiseScore > 70 ? 'text-[#e24b4a]' : 'text-[#5dcaa5]'}`} style={{ textShadow: noiseScore > 70 ? '0 0 10px rgba(226, 75, 74, 0.4)' : '0 0 10px rgba(93, 202, 165, 0.4)' }}>{noiseScore}%</b>
+                        <b className={`text-lg font-mono font-bold ${noiseScore > 70 ? 'text-[#e24b4a]' : 'text-[#d2af5a]'}`} style={{ textShadow: noiseScore > 70 ? '0 0 10px rgba(226, 75, 74, 0.4)' : '0 0 10px rgba(203, 213, 225, 0.4)' }}>{noiseScore}%</b>
                       </div>
                       <span className="text-[9.5px] font-mono text-white/50">{channelFeedback}</span>
                     </div>

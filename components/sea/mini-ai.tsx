@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
-import { MoreHorizontal, Send, ArrowLeft, Bot, Sparkles, User, Terminal } from 'lucide-react'
+import { MoreHorizontal, Send, ArrowLeft, Bot, Sparkles, User, Terminal, Mic, Square } from 'lucide-react'
 
 interface Message {
   sender: 'user' | 'ai'
@@ -20,6 +20,11 @@ export function MiniAi() {
     }
   ])
   const [isTyping, setIsTyping] = useState(false)
+  
+  // Interactive Voice Recording Simulation States
+  const [isRecording, setIsRecording] = useState(false)
+  const [recordingSeconds, setRecordingSeconds] = useState(0)
+
   const chatEndRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -27,6 +32,37 @@ export function MiniAi() {
       chatEndRef.current.scrollIntoView({ behavior: 'smooth' })
     }
   }, [messages, isTyping])
+
+  // Recording timer effect
+  useEffect(() => {
+    let interval: NodeJS.Timeout
+    if (isRecording) {
+      interval = setInterval(() => {
+        setRecordingSeconds(prev => prev + 1)
+      }, 1000)
+    } else {
+      setRecordingSeconds(0)
+    }
+    return () => clearInterval(interval)
+  }, [isRecording])
+
+  const formatTime = (secs: number) => {
+    const m = Math.floor(secs / 60).toString().padStart(2, '0')
+    const s = (secs % 60).toString().padStart(2, '0')
+    return `${m}:${s}`
+  }
+
+  const handleStopRecording = () => {
+    setIsRecording(false)
+    const audioPrompts = [
+      "Plano de ação estratégico 6D para mitigar Burnout vs EBITDA e estruturar rituais SBI.",
+      "Análise macroeconômica: como a SELIC a 14,40% afeta meu custo médio de capital WACC?",
+      "Planejamento de tração: calibrar marketing Meta vs TikTok para resgatar o LTV/CAC.",
+      "Proposta de reestruturação de squads matriciais com POs para otimizar prazos de BI."
+    ]
+    const randomPrompt = audioPrompts[Math.floor(Math.random() * audioPrompts.length)]
+    handleSend(`[🎙️ Áudio Transcrito] ${randomPrompt}`)
+  }
 
   const handleSend = (textToSend?: string) => {
     const text = textToSend || inputText
@@ -48,14 +84,16 @@ export function MiniAi() {
       let aiResponseText = ''
       const lowerText = text.toLowerCase()
 
-      if (lowerText.includes('burnout') || lowerText.includes('ebitda') || lowerText.includes('pesquisa')) {
-        aiResponseText = '🚨 [Cruzamento Interdisciplinar Pilar 1 & 2]\n\nSe o seu Índice de Burnout ultrapassa 31%, a projeção indica que a Margem EBITDA será comprimida em até 14% nos próximos 3 meses devido ao atrito de liderança e custos subsequentes de rotatividade (Turnover de 38% custa de 1.5x a 2x o salário de cada colaborador desligado).\n\n💡 Recomendo travar metas em 15% esta semana e simular escala 4x3.'
+      if (lowerText.includes('burnout') || lowerText.includes('ebitda') || lowerText.includes('pessoas')) {
+        aiResponseText = '🚨 [Preditivo Multivariado: Pilar 1 & 2]\n\nSe o seu Índice de Burnout (EEB) passa de 31%, a projeção linear aponta compressão de 14% na margem EBITDA. A rotatividade de 38% custa cerca de 1.5x a 2x o salário anual de cada colaborador técnico.\n\n💡 Recomendações Estruturantes:\n1. Trave metas operacionais temporariamente em escala 15% esta semana.\n2. Inicie escala alternativa de folgas e reduza reuniões de alinhamento em 40%.\n3. Calibre rituais SBI quinzenais no SIG Pessoas.'
       } else if (lowerText.includes('selic') || lowerText.includes('wacc') || lowerText.includes('juro')) {
-        aiResponseText = '📉 [Simulação Macro-Financeira Pilar 2 & 3]\n\nCom a SELIC a 14,40% e IPCA a 4,39%, a Taxa Real de Juros está travada em pesados 10,01%. Isso eleva o WACC corporativo do Brasil para 17,2%.\n\n💡 Regra de Decisão Preditiva: Trave o CAPEX físico e direcione 40% do caixa livre para CDI/Renda Fixa para blindar a tesouraria enquanto otimiza custos operacionais via IA.'
-      } else if (lowerText.includes('ltv') || lowerText.includes('cac') || lowerText.includes('ads') || lowerText.includes('cpm')) {
-        aiResponseText = '🚀 [Otimização de Tração Digital Pilar 2]\n\nO LTV/CAC está estável em 3.2x, mas o CPM do Meta Ads subiu para R$ 14,20.\n\n💡 Sugestão Automática: Ativei a Vertex AI para migrar 20% do orçamento para o TikTok Ads (CPM estável a US$ 6,80), recuperando margem operacional imediata no caixa.'
+        aiResponseText = '📉 [Simulação Macro-Financeira: Pilar 2 & 3]\n\nCom a SELIC a 14,40% e o IPCA a 4,39%, a Taxa Real de Juros está travada em pesados 10,01%. Isso eleva o WACC corporativo do Brasil para 17,2%.\n\n💡 Regra de Decisão do Caixa:\n1. Suspenda CAPEX físico expansivo de longo prazo.\n2. Aloque 40% do faturamento excedente em investimentos em CDI/Renda Fixa com liquidez diária.\n3. Otimize custos operacionais indiretos usando automações inteligentes.'
+      } else if (lowerText.includes('ltv') || lowerText.includes('cac') || lowerText.includes('churn') || lowerText.includes('marketing') || lowerText.includes('ads') || lowerText.includes('cpm')) {
+        aiResponseText = '🚀 [Otimização de Tração Digital: Pilar 2]\n\nSeu LTV/CAC está estável em 3.2x (seguro, LTV > 3x CAC), mas o CPM do Meta Ads subiu para R$ 14,20.\n\n💡 Estratégia de Mídia:\n1. Rebalanceie seu budget de canais: transfira 20% do orçamento para TikTok Ads (CPM estável a US$ 6,80).\n2. Crie landing pages focadas em fisioterapia intensivista para aumentar a conversão local de 2.1% para 3.5%.'
+      } else if (lowerText.includes('squad') || lowerText.includes('liderança') || lowerText.includes('plano') || lowerText.includes('estrategia') || lowerText.includes('tuckman')) {
+        aiResponseText = '👥 [Maturidade & Escopo Organizacional: Pilar 1 & 3]\n\nSeu time apresenta ambiguidade de reporte em momentos de pico de atividade.\n\n💡 Plano de Ação de Governança:\n1. Adote squads matriciais autônomos com um Product Owner (PO) dedicado por projeto.\n2. Conceda autonomia de decisão (Maturidade M4) com monitoramento assíncrono.\n3. Calibre o multiplicador Tuckman (Performing a x1.45) alinhando o contrato de aliança.'
       } else {
-        aiResponseText = '🔍 [Análise Preditiva 6D Ativa]\n\nDetectei conexões ativas com a API SGS do Banco Central e Vertex AI. Todos os seus dados de saúde mental (MBI/PSS-10) e controladoria estão cruzados. Experimente perguntar sobre "Burnout vs EBITDA" ou "Alta da SELIC no WACC" para ver as regras de decisão automáticas em ação!'
+        aiResponseText = '🔍 [IPB Advisor 6D: Análise Integrada Habilitada]\n\nEstou conectado às APIs macro e humanas. Diga o que deseja simular:\n\n💬 \'Como Burnout afeta meu EBITDA?\'\n💬 \'Qual o plano estratégico para a alta da SELIC?\'\n💬 \'Como otimizar LTV/CAC e Churn?\'\n💬 \'Criar plano de ação de squads matriciais\'\n\nEstou pronto para formular qualquer estratégia interdisciplinar premium.'
       }
 
       const aiMsg: Message = {
@@ -104,6 +142,10 @@ export function MiniAi() {
           50% { opacity: 0.8; }
           100% { transform: translateY(6px); opacity: 0; }
         }
+        @keyframes soundwave {
+          0%, 100% { height: 4px; }
+          50% { height: 16px; }
+        }
 
         .glow-orb-glass {
           animation: pulseOrbGlass 4s infinite ease-in-out;
@@ -135,6 +177,15 @@ export function MiniAi() {
         .chat-scroll::-webkit-scrollbar-thumb {
           background: rgba(210, 175, 90, 0.25);
           border-radius: 9px;
+        }
+        
+        .soundwave-bar {
+          display: inline-block;
+          width: 2px;
+          background: #d2af5a;
+          margin: 0 1px;
+          border-radius: 2px;
+          animation: soundwave 1.2s infinite ease-in-out;
         }
       `}} />
 
@@ -305,7 +356,7 @@ export function MiniAi() {
 
       {/* MODO 2: CHAT INTERATIVO DE ALTA TECNOLOGIA */}
       {activeMode === 'chat' && (
-        <div className="flex-1 flex flex-col justify-between py-1 h-[170px] relative">
+        <div className="flex-1 flex flex-col justify-between py-1 h-[170px] relative" onClick={(e) => e.stopPropagation()}>
           
           {/* Scroll Area de Mensagens */}
           <div className="flex-1 overflow-y-auto chat-scroll space-y-2 pr-1 my-1 max-h-[110px]">
@@ -319,7 +370,7 @@ export function MiniAi() {
                 <div 
                   className={`p-2 rounded-xl text-[8.5px] max-w-[82%] leading-relaxed font-mono ${
                     msg.sender === 'user' 
-                      ? 'bg-[#d2af5a] text-[#0c0a07] rounded-tr-none font-bold' 
+                      ? 'bg-[#d2af5a] text-[#0c0a07] rounded-tr-none font-bold shadow-[0_0_8px_rgba(210,175,90,0.25)]' 
                       : 'bg-white/[0.03] border border-white/5 text-white/90 rounded-tl-none whitespace-pre-line'
                   }`}
                 >
@@ -334,7 +385,7 @@ export function MiniAi() {
                   <Sparkles className="h-2.5 w-2.5 text-[#d2af5a] animate-spin" />
                 </div>
                 <div className="p-2 rounded-xl bg-white/[0.03] border border-white/5 text-white/50 text-[8px] font-mono rounded-tl-none animate-pulse">
-                  Advisor digitando decisão 6D...
+                  Advisor cogitando estratégias 6D...
                 </div>
               </div>
             )}
@@ -365,22 +416,58 @@ export function MiniAi() {
             </div>
           )}
 
-          {/* Input Bar com Glow Dourado Real */}
+          {/* Input Bar com Gravador de Voz Interativo e Glow Dourado */}
           <div className="flex items-center gap-1.5 border border-white/10 bg-black/40 p-1 rounded-xl focus-within:border-[#d2af5a]/45 transition-colors">
-            <input 
-              type="text" 
-              value={inputText}
-              onChange={(e) => setInputText(e.target.value)}
-              onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-              placeholder="Perguntar ao Advisor..." 
-              className="flex-1 bg-transparent border-none text-[8.5px] font-mono text-white placeholder-white/25 focus:outline-none pl-1"
-            />
-            <button 
-              onClick={() => handleSend()}
-              className="h-5 w-5 rounded-lg bg-[#d2af5a] hover:bg-[#d2af5a]/80 flex items-center justify-center text-[#0c0a07] transition-all cursor-pointer active:scale-95"
-            >
-              <Send className="h-2.5 w-2.5" />
-            </button>
+            
+            {/* Interactive Audio Simulator Input */}
+            {isRecording ? (
+              <div className="flex-1 flex items-center justify-between pl-1">
+                <div className="flex items-center gap-1.5">
+                  <span className="soundwave-bar" style={{ animationDelay: '0.1s' }} />
+                  <span className="soundwave-bar" style={{ animationDelay: '0.3s', animationDuration: '0.8s' }} />
+                  <span className="soundwave-bar" style={{ animationDelay: '0.5s' }} />
+                  <span className="soundwave-bar" style={{ animationDelay: '0.2s', animationDuration: '1.4s' }} />
+                  <span className="soundwave-bar" style={{ animationDelay: '0.4s' }} />
+                  <span className="text-[7.5px] font-mono text-red-400 animate-pulse ml-1">Gravando... {formatTime(recordingSeconds)}</span>
+                </div>
+                <button 
+                  onClick={handleStopRecording}
+                  className="h-5 px-2 bg-red-950/45 border border-red-500/40 rounded-lg flex items-center justify-center gap-1 text-red-400 hover:bg-red-900 transition-all cursor-pointer"
+                >
+                  <Square className="h-2 w-2 text-red-400" />
+                  <span className="text-[6.5px] font-bold font-mono">PARAR</span>
+                </button>
+              </div>
+            ) : (
+              <>
+                <input 
+                  type="text" 
+                  value={inputText}
+                  onChange={(e) => setInputText(e.target.value)}
+                  onKeyDown={(e) => e.key === 'Enter' && handleSend()}
+                  placeholder="Perguntar ao Advisor..." 
+                  className="flex-1 bg-transparent border-none text-[8.5px] font-mono text-white placeholder-white/25 focus:outline-none pl-1"
+                />
+                
+                {/* Microphone Record Button */}
+                <button 
+                  onClick={() => setIsRecording(true)}
+                  className="h-5 w-5 rounded-lg bg-[#d2af5a]/10 hover:bg-[#d2af5a]/20 border border-[#d2af5a]/30 flex items-center justify-center text-[#d2af5a] transition-all cursor-pointer"
+                  title="Gravar áudio com IA"
+                >
+                  <Mic className="h-2.5 w-2.5" />
+                </button>
+
+                {/* Send Message Button */}
+                <button 
+                  onClick={() => handleSend()}
+                  className="h-5 w-5 rounded-lg bg-[#d2af5a] hover:bg-[#d2af5a]/80 flex items-center justify-center text-[#0c0a07] transition-all cursor-pointer active:scale-95"
+                >
+                  <Send className="h-2.5 w-2.5" />
+                </button>
+              </>
+            )}
+
           </div>
 
         </div>
