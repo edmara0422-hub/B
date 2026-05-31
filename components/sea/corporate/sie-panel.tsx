@@ -282,7 +282,30 @@ export function SiePanel({ initialTab }: { initialTab?: SieSubTab }) {
               setSprintResult({
                 challenge: challengeTitle,
                 customText: sprintChallenge === 'custom' ? customText : '',
-                days: presetDays
+                days: presetDays,
+                team: {
+                  decisor: sprintChallenge === 'denuncias' ? 'DPO / Diretor de Compliance' : sprintChallenge === 'telemetria' ? 'CHRO / VP de Gente e Gestão' : sprintChallenge === 'pricing' ? 'CFO / Diretor de Receita (CRO)' : 'Diretor Executivo (CEO)',
+                  facilitador: 'Agile Coach / Facilitador Certificado',
+                  design: 'Product Designer (UX/UI)',
+                  tech: 'Engenheiro de Software Sênior',
+                  experts: sprintChallenge === 'denuncias' ? 'Analista do RH e Advogado de LGPD' : sprintChallenge === 'telemetria' ? 'Líder de Squad e Especialista de D&I' : sprintChallenge === 'pricing' ? 'Gerente de Vendas e CS' : 'Especialista de Operações'
+                },
+                risks: {
+                  title: sprintChallenge === 'denuncias' 
+                    ? 'Medo de identificação pessoal por parte do colaborador.'
+                    : sprintChallenge === 'telemetria'
+                    ? 'Lideranças não agindo frente aos alertas por sobrecarga de rotina.'
+                    : sprintChallenge === 'pricing'
+                    ? 'Rejeição de clientes por variação dinâmica percebida de preços.'
+                    : 'Falta de engajamento do público-alvo nos testes de sexta-feira.',
+                  mitigation: sprintChallenge === 'denuncias'
+                    ? 'Garantir que a arquitetura não grave IPs ou cookies e usar tokens descartáveis.'
+                    : sprintChallenge === 'telemetria'
+                    ? 'Implementar regras claras que barram reuniões de squads com burnout detectado.'
+                    : sprintChallenge === 'pricing'
+                    ? 'Limpar as regras oferecendo descontos exclusivos ao invés de penalizar o usuário comum.'
+                    : 'Agendar com antecedência de 3 dias oferecendo incentivos de valor real.'
+                }
               })
               setGeneratingSprint(false)
               setActiveSprintDay(0)
@@ -505,7 +528,7 @@ export function SiePanel({ initialTab }: { initialTab?: SieSubTab }) {
                         <div className="space-y-1 border-t border-white/[0.05] pt-2">
                           <span className="block text-[8px] font-mono text-[#d2af5a] font-bold uppercase tracking-wider">PLANO DE AÇÃO ESTRATÉGICO IA</span>
                           <ul className="space-y-1">
-                            {gapAnalysisResult.actions.map((act, idx) => (
+                            {gapAnalysisResult.actions.map((act: string, idx: number) => (
                               <li key={idx} className="text-[9px] text-white/70 flex items-start gap-1">
                                 <span className="text-[#d2af5a] mt-0.5">•</span>
                                 <span className="leading-snug">{act}</span>
@@ -722,7 +745,7 @@ export function SiePanel({ initialTab }: { initialTab?: SieSubTab }) {
                   </div>
 
                   {/* Day Content Card */}
-                  <div className="bg-black/20 border border-white/[0.04] rounded-xl p-5 space-y-4">
+                  <div className="bg-black/20 border border-white/[0.04] rounded-xl p-5 space-y-5">
                     <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 border-b border-white/[0.05] pb-3">
                       <div>
                         <span className="block text-[8.5px] font-mono text-[#d2af5a] tracking-wider uppercase font-semibold">
@@ -745,12 +768,59 @@ export function SiePanel({ initialTab }: { initialTab?: SieSubTab }) {
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                      {/* Left 2 Cols: Main Instructions & Goal */}
+                    <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+                      {/* Col 1: Cronograma Hora a Hora */}
+                      <div className="bg-black/35 p-3.5 border border-white/[0.04] rounded-xl space-y-3">
+                        <span className="block text-[8px] font-mono text-[#d2af5a] font-bold uppercase tracking-wider">⏱️ CRONOGRAMA</span>
+                        <div className="space-y-2.5 text-[9px] font-mono text-white/75">
+                          {activeSprintDay === 0 && (
+                            <>
+                              <div><strong className="text-[#d2af5a]">09h00:</strong> Meta de Longo Prazo</div>
+                              <div><strong className="text-[#d2af5a]">10h30:</strong> Mapear Jornada</div>
+                              <div><strong className="text-[#d2af5a]">14h00:</strong> Ouvir Especialistas</div>
+                              <div><strong className="text-[#d2af5a]">16h30:</strong> Escolha do Alvo</div>
+                            </>
+                          )}
+                          {activeSprintDay === 1 && (
+                            <>
+                              <div><strong className="text-[#d2af5a]">09h00:</strong> Lightning Demos</div>
+                              <div><strong className="text-[#d2af5a]">11h00:</strong> Buscar Benchmarks</div>
+                              <div><strong className="text-[#d2af5a]">14h00:</strong> Crazy Eights</div>
+                              <div><strong className="text-[#d2af5a]">16h00:</strong> Desenho 3 Etapas</div>
+                            </>
+                          )}
+                          {activeSprintDay === 2 && (
+                            <>
+                              <div><strong className="text-[#d2af5a]">09h00:</strong> Museu de Arte</div>
+                              <div><strong className="text-[#d2af5a]">10h00:</strong> Crítica Silenciosa</div>
+                              <div><strong className="text-[#d2af5a]">11h30:</strong> Supervoto Decisor</div>
+                              <div><strong className="text-[#d2af5a]">14h00:</strong> Storyboard Final</div>
+                            </>
+                          )}
+                          {activeSprintDay === 3 && (
+                            <>
+                              <div><strong className="text-[#d2af5a]">09h00:</strong> Escolha de Mocks</div>
+                              <div><strong className="text-[#d2af5a]">10h30:</strong> Divisão de Papéis</div>
+                              <div><strong className="text-[#d2af5a]">13h30:</strong> Construção Rápida</div>
+                              <div><strong className="text-[#d2af5a]">16h30:</strong> Teste Seco Interno</div>
+                            </>
+                          )}
+                          {activeSprintDay === 4 && (
+                            <>
+                              <div><strong className="text-[#d2af5a]">09h00:</strong> Setup Sala de Testes</div>
+                              <div><strong className="text-[#d2af5a]">10h00:</strong> Entrevistas 1 e 2</div>
+                              <div><strong className="text-[#d2af5a]">13h00:</strong> Quadro de Padrões</div>
+                              <div><strong className="text-[#d2af5a]">14h30:</strong> Entrevistas 3, 4 e 5</div>
+                            </>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Col 2-3: Foco e Instruções Principais */}
                       <div className="lg:col-span-2 space-y-4">
                         <div className="space-y-1">
                           <span className="block text-[9px] font-mono text-white/40 uppercase">Foco Estratégico do Dia</span>
-                          <p className="text-xs text-white/90 leading-relaxed font-medium">
+                          <p className="text-xs text-white/90 leading-relaxed font-semibold">
                             {sprintResult.days[activeSprintDay].focus}
                           </p>
                         </div>
@@ -763,7 +833,7 @@ export function SiePanel({ initialTab }: { initialTab?: SieSubTab }) {
                         </div>
                       </div>
 
-                      {/* Right 1 Col: Deliverable & Action Strategy */}
+                      {/* Col 4: Entregável & Governança */}
                       <div className="bg-[#d2af5a]/[0.02] border-l border-white/10 p-4 rounded-r-xl space-y-4">
                         <div className="space-y-1">
                           <span className="block text-[8px] font-mono text-[#5dcaa5] uppercase font-bold tracking-wider">ENTREGÁVEL DO DIA</span>
@@ -773,12 +843,43 @@ export function SiePanel({ initialTab }: { initialTab?: SieSubTab }) {
                         </div>
 
                         <div className="space-y-1 border-t border-white/[0.05] pt-3">
+                          <span className="block text-[8px] font-mono text-[#fac775] uppercase font-bold tracking-wider">RISCO & MITIGAÇÃO</span>
+                          <p className="text-[10px] text-white/60 leading-relaxed">
+                            ⚠️ <strong>{sprintResult.risks.title}</strong><br />
+                            {sprintResult.risks.mitigation}
+                          </p>
+                        </div>
+
+                        <div className="space-y-1 border-t border-white/[0.05] pt-3">
                           <span className="block text-[8px] font-mono text-[#d2af5a] uppercase font-bold tracking-wider">DICA ESTRATÉGICA</span>
-                          <p className="text-[10.5px] italic text-white/60 leading-relaxed">
+                          <p className="text-[10.5px] italic text-white/50 leading-relaxed">
                             💡 "{sprintResult.days[activeSprintDay].tip}"
                           </p>
                         </div>
                       </div>
+                    </div>
+                  </div>
+
+                  {/* Suggested Team Section */}
+                  <div className="grid grid-cols-1 md:grid-cols-5 gap-3 border-t border-white/[0.06] pt-4 font-sans select-none">
+                    <div className="text-[9px] font-mono text-white/40 uppercase flex items-center">
+                      👥 Time Sugerido do Sprint:
+                    </div>
+                    <div className="p-2 bg-white/[0.01] border border-white/[0.03] rounded-lg">
+                      <span className="block text-[7.5px] font-mono text-[#d2af5a] uppercase font-bold">👑 Decisor</span>
+                      <span className="block text-[9.5px] text-white/80 mt-0.5 truncate">{sprintResult.team.decisor}</span>
+                    </div>
+                    <div className="p-2 bg-white/[0.01] border border-white/[0.03] rounded-lg">
+                      <span className="block text-[7.5px] font-mono text-[#5dcaa5] uppercase font-bold">🗣️ Facilitador</span>
+                      <span className="block text-[9.5px] text-white/80 mt-0.5 truncate">{sprintResult.team.facilitador}</span>
+                    </div>
+                    <div className="p-2 bg-white/[0.01] border border-white/[0.03] rounded-lg">
+                      <span className="block text-[7.5px] font-mono text-[#fac775] uppercase font-bold">🎨 Designer</span>
+                      <span className="block text-[9.5px] text-white/80 mt-0.5 truncate">{sprintResult.team.design}</span>
+                    </div>
+                    <div className="p-2 bg-white/[0.01] border border-white/[0.03] rounded-lg">
+                      <span className="block text-[7.5px] font-mono text-[#c8cdd3] uppercase font-bold">💻 Dev / Tech</span>
+                      <span className="block text-[9.5px] text-white/80 mt-0.5 truncate">{sprintResult.team.tech}</span>
                     </div>
                   </div>
                 </div>
