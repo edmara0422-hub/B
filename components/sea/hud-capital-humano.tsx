@@ -50,7 +50,7 @@ export function HudCapitalHumano() {
   const eficienciaSaudavel = estruturaOrg === 'squads' ? baseEficiencia * 1.45 : baseEficiencia
 
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  const terminalEndRef = useRef<HTMLDivElement>(null)
+  const terminalRef = useRef<HTMLDivElement>(null)
 
   // --- TELEMETRIA GLOBAL: Sincronização em Tempo Real ---
   useEffect(() => {
@@ -150,7 +150,9 @@ export function HudCapitalHumano() {
   }, [burnoutEEB])
 
   useEffect(() => {
-    terminalEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+    if (terminalRef.current) {
+      terminalRef.current.scrollTop = terminalRef.current.scrollHeight
+    }
   }, [logs])
 
   // --- CANVAS: EEG Stress Waveform ---
@@ -283,7 +285,7 @@ export function HudCapitalHumano() {
 
   return (
     <div 
-      className="w-full h-full flex flex-col justify-between p-4 bg-[#08080a]/85 border border-[#d2af5a]/25 rounded-3xl backdrop-blur-xl select-none relative overflow-hidden"
+      className="w-full h-full flex flex-col justify-between p-4 bg-[#08080a]/85 border border-[#d2af5a]/25 rounded-3xl backdrop-blur-xl select-none relative overflow-y-auto ipb-thinscroll"
       style={{ fontFamily: "'Poppins', -apple-system, system-ui, sans-serif" }}
     >
       <div className="scanlines z-10" />
@@ -306,7 +308,7 @@ export function HudCapitalHumano() {
       </div>
 
       {/* Main Container - dense space management to fit 560px exactly */}
-      <div className="flex-1 flex flex-col justify-between mt-3 space-y-3 relative z-20 overflow-hidden">
+      <div className="flex-1 flex flex-col justify-between mt-3 space-y-3 relative z-20 overflow-visible">
         
         {/* TOP: IPB GEMINI NLP SENTIMENT ANALYZER (Larger terminal at the top) */}
         <div className="border border-[#d2af5a]/15 bg-[#070707] rounded-xl overflow-hidden shadow-2xl shrink-0">
@@ -317,11 +319,10 @@ export function HudCapitalHumano() {
             </div>
             <div className="text-[7.5px] font-mono text-white/40">🛰️ LIVE WHATSAPP & SLACK NLP CORRELATION ENGINE</div>
           </div>
-          <div className="p-2.5 font-mono text-[7.5px] text-[#d2af5a]/90 h-[105px] overflow-y-auto space-y-0.5 leading-normal ipb-thinscroll text-left">
+          <div ref={terminalRef} className="p-2.5 font-mono text-[9px] text-[#d2af5a]/90 h-[195px] overflow-y-auto space-y-0.5 leading-normal ipb-thinscroll text-left">
             {logs.map((log, index) => (
               <div key={index} className="whitespace-pre-wrap">{log}</div>
             ))}
-            <div ref={terminalEndRef} />
           </div>
         </div>
 
@@ -330,7 +331,7 @@ export function HudCapitalHumano() {
           
           {/* Left Column: EEG + Math */}
           <div className="flex flex-col justify-between space-y-2 overflow-hidden">
-            <div className="canvas-graph-container w-full h-[95px] relative rounded-xl border border-white/5 bg-[#000]/70 overflow-hidden shrink-0">
+            <div className="canvas-graph-container w-full h-[95px] relative rounded-xl border border-white/5 bg-[#000]/70 overflow-hidden shrink-0 flex items-center justify-center">
               <canvas ref={canvasRef} width={420} height={95} className="w-full h-full block" />
               <div className="graph-overlay-vals absolute right-3 top-1.5 text-[7.2px] font-mono text-white/40 flex flex-col gap-0.5 text-right pointer-events-none">
                 <span>Eficiência Saudável: <b className="text-white">{Number(eficienciaSaudavel ?? 0).toFixed(1)}</b></span>
@@ -341,17 +342,30 @@ export function HudCapitalHumano() {
             </div>
 
             {/* Formula box */}
-            <div className="p-2 bg-black/60 border border-[#d2af5a]/15 rounded-xl text-white font-mono text-[8px] flex-1 flex flex-col justify-between overflow-y-auto ipb-thinscroll">
+            <div className="p-2.5 bg-black/60 border border-[#d2af5a]/15 rounded-xl text-white font-mono text-[8px] flex-1 flex flex-col justify-between overflow-y-auto ipb-thinscroll text-left space-y-2">
               <div>
-                <span className="block text-[7px] uppercase tracking-wider text-[#d2af5a] mb-1 font-bold">Custo Real do Turnover (RH vs Finanças)</span>
-                <div className="py-1 bg-black/35 rounded border border-white/5 text-center text-[7.5px] text-[#d2af5a] font-semibold leading-relaxed">
-                  Turnover = Demissões × (Rescisão + Recrutamento + Perda Produtividade)<br/>
-                  Custo Preditivo Mensal: <strong className="text-white">R$ {custoRealTurnover}k/mês</strong>
+                <span className="block text-[7px] uppercase tracking-wider text-[#d2af5a] mb-1 font-black">1. Equação do Atrito Humano & EBITDA</span>
+                <div className="py-1.5 px-2 bg-black/35 rounded border border-white/5 text-[7.5px] text-[#d2af5a] leading-relaxed font-mono">
+                  <b>Turnover Real =</b> Demissões × (Rescisão R$ 12.0k + Recrutamento R$ 8.5k + Produtividade R$ 9.5k)<br/>
+                  Custo Unitário: <b className="text-white">R$ 30.0k</b> por saída • Perda Mensal: <strong className="text-white">R$ {custoRealTurnover}k/mês</strong>
                 </div>
               </div>
-              {burnoutEEB >= 31 && (
-                <div className="mt-1 text-[7px] text-[#fac775] leading-normal font-sans text-left">
-                  ⚠️ <strong>ALERTA CRÍTICO (Burnout &gt; 31%):</strong> Risco grave de exaustão Maslach. Sugere-se travar contratações ou mitigar metas para reverter o custo invisível do turnover que sangra o caixa.
+              
+              <div className="border-t border-white/5 pt-2">
+                <span className="block text-[7px] uppercase tracking-wider text-[#d2af5a] mb-1 font-black">2. Correlação Macro: Juros Reais Fisher & CAPEX</span>
+                <div className="py-1.5 px-2 bg-black/35 rounded border border-white/5 text-[7.5px] text-[#d2af5a] leading-relaxed font-mono">
+                  <b>Fórmula Fisher:</b> (1 + J<sub>Real</sub>) = (1 + SELIC 14.40%) / (1 + IPCA 4.39%) - 1 = <strong className="text-white">10.01%</strong><br/>
+                  <b>Impacto OPEX:</b> Com Juro Real a 10%, a empresa trava CAPEX físico e foca 100% de automação de IA no <b>Capital Humano</b> para evitar o sangramento do EBITDA pelo turnover!
+                </div>
+              </div>
+
+              {burnoutEEB >= 20 ? (
+                <div className="p-1.5 bg-[#d2af5a]/5 rounded border border-[#d2af5a]/20 text-[7.2px] text-[#fac775] leading-normal font-sans">
+                  ⚠️ <strong>ALERTA DE RISCO COLETIVO (Burnout {burnoutEEB}%):</strong> Exaustão Maslach elevada eleva Churn interno e atrito. Sob squads ágeis, o atrito cai 35%, poupando caixa operacional.
+                </div>
+              ) : (
+                <div className="p-1.5 bg-emerald-500/5 rounded border border-emerald-500/20 text-[7.2px] text-emerald-400 leading-normal font-sans">
+                  ✅ <strong>CLIMA ESTÁVEL (Burnout {burnoutEEB}%):</strong> A organização opera em alta eficiência saudável de {eficienciaSaudavel.toFixed(1)} com atrito de turnover controlado.
                 </div>
               )}
             </div>
@@ -359,26 +373,38 @@ export function HudCapitalHumano() {
 
           {/* Right Column: Metrics Glossary */}
           <div className="p-3 bg-black/40 border border-white/5 rounded-xl flex flex-col justify-between overflow-hidden">
-            <span className="block text-[8px] font-mono text-[#d2af5a] font-bold uppercase tracking-wider mb-2 text-left">GLOSSÁRIO DE RISCOS & COMPLIANCE HUMANO</span>
+            <span className="block text-[8.5px] font-mono text-[#d2af5a] font-bold uppercase tracking-wider mb-2 text-left">🧠 INTELIGÊNCIA DE RISCOS & CROSS-CORRELAÇÕES</span>
             
-            <div className="flex-1 overflow-y-auto ipb-thinscroll pr-1 max-h-[145px] space-y-2.5 text-[8.8px] text-white/70 leading-normal text-left">
+            <div className="flex-1 overflow-y-auto ipb-thinscroll pr-1 max-h-[220px] space-y-2.5 text-[8.8px] text-white/70 leading-normal text-left">
               <div>
-                <b className="text-white block">🧠 Índice de Burnout Coletivo (EEB):</b>
-                <span>Mede o nível de exaustão emocional. Serve para prever quedas abruptas de produtividade e erros operacionais. Calculado via Inventário Maslach (MBI) por Pulse Surveys semanais. <em>Cruzamento:</em> se o Burnout sobe, a eficiência de vendas desaba e o CAC de marketing tende a subir.</span>
+                <b className="text-white block">🧠 Escala Maslach (EEB) & Burnout Coletivo:</b>
+                <span>Mede a exaustão emocional sob pressão de metas. <em>Cruzamento Macro:</em> Se o Burnout sobe de 30%, a eficiência operacional despenca. Com juros reais altos a 10.01%, a empresa não pode se dar ao luxo de perder produtividade. Manter o EEB controlado via squads ágeis (Spotify/Magalu) reduz a fadiga coletiva e poupa caixa operacional.</span>
               </div>
               <div className="border-t border-white/5 pt-2">
-                <b className="text-white block">📊 Taxa de Rotatividade (Turnover):</b>
-                <span>Mede o fluxo de entrada e saída (média nacional de 38%). Indica atrito na liderança ou cultura tóxica. <em>Cruzamento:</em> Conecta ao WACC corporativo e Análise Financeira. Perder um talento custa de 1,5 a 2 vezes o salário dele, sangrando o caixa da empresa.</span>
+                <b className="text-white block">💸 Custo Real do Turnover (Rotatividade):</b>
+                <span>Soma rescisão (R$ 12.0k), recrutamento (R$ 8.5k) e perda de produtividade (R$ 9.5k), totalizando R$ 30.0k por desligamento. <em>Cruzamento Financeiro:</em> Perder talentos em tecnologia drena diretamente o EBITDA e comprime a margem líquida. Com juros PJ elevados em 17%, financiar capital de giro (CGL) para repor pessoal é inviável, tornando a retenção um imperativo de sobrevivência.</span>
               </div>
               <div className="border-t border-white/5 pt-2">
-                <b className="text-white block">📈 Índice de Ansiedade e Estresse Clínico (IAE):</b>
-                <span>Avalia a pressão externa (Brasil lidera com 9,3%). Serve para balizar limites e justificar escalas 4x3. <em>Cruzamento:</em> Correlaciona com as despesas de atestados médicos, absenteísmo e sinistralidade de plano de saúde nas demonstrações contábeis.</span>
+                <b className="text-white block">🏛️ Cruzamento PESTEL: Juros Reais & CAPEX:</b>
+                <span>O juro real brasileiro a 10.01% (SELIC 14.40% - IPCA 4.39%) encarece o capital e faz com que investidores prefiram renda fixa. <em>Decisão:</em> As empresas travam investimentos em infraestrutura física (CAPEX) e redirecionam recursos para eficiência em ativos intangíveis (IA, automação e treinamento de capital humano).</span>
               </div>
               <div className="border-t border-white/5 pt-2">
-                <b className="text-white block">🌱 Marcadores ESG & Sustentabilidade:</b>
+                <b className="text-white block">📊 Bolsa Barata & P/E Ratio:</b>
+                <span>O P/E da bolsa nacional (8.2x) está extremamente pessimista devido à SELIC, enquanto no mundo está a 17.2x. <em>Ameaça Humana:</em> Com empresas locais subvalorizadas, há grande escassez de talentos técnicos de alta performance (afetando 42% do setor tech) que buscam contratação remota internacional, elevando o CAC de recrutamento corporativo local.</span>
+              </div>
+              <div className="border-t border-white/5 pt-2">
+                <b className="text-white block">🧬 Indicadores de Saúde Digital & Mídia:</b>
                 <span>
-                  <strong>Materialidade & Renovabilidade:</strong> Eficiência de carbono e energia limpa em servidores cloud sustentáveis.<br/>
-                  <strong>Diversidade (Mulheres C-Level):</strong> Governança medida em tempo real no organograma (média nacional de 17%).
+                  <strong>LTV/CAC & Payback:</strong> CAC é o custo de aquisição e LTV o valor gerado pelo cliente. Relação LTV/CAC &lt; 3x gera sinal vermelho crítico no fluxo. O payback do marketing deve ser acelerado.<br/>
+                  <strong>SWOT Otimizada:</strong> O sistema cruza a queda de 4.2% no orgânico com CPM estável no TikTok (US$ 6.80) e sugere realocar 20% do budget de Meta Ads para blindar a tração.
+                </span>
+              </div>
+              <div className="border-t border-white/5 pt-2">
+                <b className="text-white block">🔌 Fontes de Telemetria e APIs Vivas:</b>
+                <span>
+                  <strong>Banco Central SGS:</strong> Taxas SELIC e IPCA em tempo real.<br/>
+                  <strong>AwesomeAPI:</strong> Câmbio e cotações USD/BRL ao vivo.<br/>
+                  <strong>Workspaces de Ads:</strong> Meta, Google e TikTok Ads API injetando custos de mídia diários diretamente na governança de dados.
                 </span>
               </div>
             </div>
@@ -462,11 +488,11 @@ export function HudCapitalHumano() {
             </div>
             {estruturaOrg === 'squads' ? (
               <span>
-                Sob **Squads Ágeis**, a exaustão Maslach é mitigada em 35% para <b className="text-[#d2af5a]">{burnoutEEB}%</b>. Com metas em <b className="text-white">{pressaoMetas}/10</b>, ocorrem <b className="text-white">{demissoesMes}</b> desligamentos/mês, gerando perda invisível de <b className="text-[#d2af5a]">R$ -{custoRealTurnover}k/mês</b>. A eficiência sobe para <b className="text-[#d2af5a]">{eficienciaSaudavel.toFixed(1)}</b>!
+                Sob **Squads Ágeis**, a exaustão Maslach cai 35% para <b className="text-[#d2af5a]">{burnoutEEB}%</b>. Com juros reais a <b className="text-white">10.01%</b> travando expansão física (CAPEX), foca-se em produtividade interna. Metas a <b className="text-white">{pressaoMetas}/10</b> geram <b className="text-[#d2af5a]">{demissoesMes}</b> saídas/mês. Perda por turnover: <b className="text-[#d2af5a]">R$ -{custoRealTurnover}k/mês</b>. Eficiência sobe para <b className="text-white">{eficienciaSaudavel.toFixed(1)}</b>!
               </span>
             ) : (
               <span>
-                Sob estrutura **Tradicional**, a centralização eleva o estresse. Sob metas no nível <b className="text-white">{pressaoMetas}/10</b>, a exaustão Maslach atinge <b className="text-[#d2af5a]">{burnoutEEB}%</b>, gerando <b className="text-white">{demissoesMes}</b> demissões/mês e perda de caixa de <b className="text-[#d2af5a]">R$ -{custoRealTurnover}k/mês</b>. A eficiência cai para <b className="text-white">{eficienciaSaudavel.toFixed(1)}</b>.
+                Sob estrutura **Tradicional**, a rigidez eleva o estresse. Sob metas de <b className="text-white">{pressaoMetas}/10</b>, o Burnout bate em <b className="text-[#d2af5a]">{burnoutEEB}%</b>. Com juros altos travando novos investimentos PJ, perder talentos custa <b className="text-[#d2af5a]">R$ -{custoRealTurnover}k/mês</b> de caixa puro. Eficiência despenca para <b className="text-white">{eficienciaSaudavel.toFixed(1)}</b>.
               </span>
             )}
           </div>
