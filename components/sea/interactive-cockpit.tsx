@@ -46,17 +46,23 @@ export function InteractiveCockpit() {
   const [simFinished, setSimFinished] = useState<boolean>(false)
   const simLogRef = useRef<HTMLDivElement>(null)
 
+  // Novo: Controle de abas da Home (Orbe vs Console) e Preset de Cenários
+  const [rightPanelTab, setRightPanelTab] = useState<'orb' | 'terminal'>('orb')
+  const [simScenario, setSimScenario] = useState<'app_vendas' | 'gurus' | 'saas_bi' | 'custom'>('app_vendas')
+  const [copilotAnswer, setCopilotAnswer] = useState<string | null>(null)
+  const [copilotLoading, setCopilotLoading] = useState<boolean>(false)
+
   // Estados do Novo Simulador Xeque-Mate Avançado 6D (Modal Popup)
   const [isXequeMateModalOpen, setIsXequeMateModalOpen] = useState<boolean>(false)
   const [magicPromise, setMagicPromise] = useState<string>('Fature R$ 10.000 em 7 dias com Robô de Vendas Automático')
   const [customPromise, setCustomPromise] = useState<string>('')
   // As 6 Dimensões Reais de Esforço e Vantagem Competitiva (D1 a D6)
-  const [d1SalesHours, setD1SalesHours] = useState<number>(4) // D1: Execução de Vendas (horas/dia)
-  const [d2IntelHours, setD2IntelHours] = useState<number>(2) // D2: Inteligência Concorrencial (horas/dia)
-  const [d3ContentDensity, setD3ContentDensity] = useState<number>(75) // D3: Densidade de Monitoria (%)
-  const [d4HumanSla, setD4HumanSla] = useState<number>(15) // D4: Tempo de Resposta Humana (minutos)
-  const [d5Traceability, setD5Traceability] = useState<number>(85) // D5: Rastreabilidade de Funil (%)
-  const [d6HypeImmunity, setD6HypeImmunity] = useState<number>(90) // D6: Imunidade a Hype/Filtro de Ruído (%)
+  const [d1SalesHours, setD1SalesHours] = useState<number>(8) // D1: Execução de Vendas (horas/dia)
+  const [d2IntelHours, setD2IntelHours] = useState<number>(6) // D2: Inteligência Concorrencial (horas/dia)
+  const [d3ContentDensity, setD3ContentDensity] = useState<number>(95) // D3: Densidade de Monitoria (%)
+  const [d4HumanSla, setD4HumanSla] = useState<number>(10) // D4: Tempo de Resposta Humana (minutos)
+  const [d5Traceability, setD5Traceability] = useState<number>(95) // D5: Rastreabilidade de Funil (%)
+  const [d6HypeImmunity, setD6HypeImmunity] = useState<number>(95) // D6: Imunidade a Hype/Filtro de Ruído (%)
 
   const [auditLogs, setAuditLogs] = useState<string[]>([])
   const [isAuditing, setIsAuditing] = useState<boolean>(false)
@@ -64,101 +70,71 @@ export function InteractiveCockpit() {
   const [showDirectContactAlert, setShowDirectContactAlert] = useState<boolean>(false)
   const auditLogRef = useRef<HTMLDivElement>(null)
 
-  const currentPromise = customPromise || magicPromise
+  // Função para mudar cenário (Preset Concorrencial)
+  const handleScenarioChange = (scenario: 'app_vendas' | 'gurus' | 'saas_bi' | 'custom') => {
+    setSimScenario(scenario)
+    setCopilotAnswer(null)
+    if (scenario === 'app_vendas') {
+      setD1SalesHours(8)
+      setD2IntelHours(6)
+      setD3ContentDensity(95)
+      setD4HumanSla(10)
+      setD5Traceability(95)
+      setD6HypeImmunity(95)
+    } else if (scenario === 'gurus') {
+      setD1SalesHours(12)
+      setD2IntelHours(0.5) // Praticamente nada
+      setD3ContentDensity(15) // Raso
+      setD4HumanSla(180) // 3 horas por robô
+      setD5Traceability(10) // Sem CRM
+      setD6HypeImmunity(15) // Muito vulnerável
+    } else if (scenario === 'saas_bi') {
+      setD1SalesHours(5)
+      setD2IntelHours(4)
+      setD3ContentDensity(70)
+      setD4HumanSla(90)
+      setD5Traceability(85)
+      setD6HypeImmunity(80)
+    }
+  }
 
-  const glitterIndex = useMemo(() => {
-    let score = 20
-    const text = currentPromise.toLowerCase()
-    
-    if (text.includes('fature') || text.includes('ganhe') || text.includes('enriquecer') || text.includes('10k') || text.includes('10.000') || text.includes('100.000') || text.includes('milhões')) score += 25
-    if (text.includes('7 dias') || text.includes('rápido') || text.includes('imediato') || text.includes('fácil') || text.includes('sem esforço') || text.includes('dormindo') || text.includes('fórmula')) score += 30
-    if (text.includes('robô') || text.includes('bot') || text.includes('automático') || text.includes('piloto automático')) score += 15
-    
-    // Imunidade a hype reduz o impacto do glitter concorrente
-    const hypeFactor = (100 - d6HypeImmunity) * 0.15
-    score += hypeFactor
+  // Função para mudar dimensão e cair no customizado
+  const handleDimensionChange = (dimension: 'd1' | 'd2' | 'd3' | 'd4' | 'd5' | 'd6', value: number) => {
+    setSimScenario('custom')
+    if (dimension === 'd1') setD1SalesHours(value)
+    else if (dimension === 'd2') setD2IntelHours(value)
+    else if (dimension === 'd3') setD3ContentDensity(value)
+    else if (dimension === 'd4') setD4HumanSla(value)
+    else if (dimension === 'd5') setD5Traceability(value)
+    else if (dimension === 'd6') setD6HypeImmunity(value)
+  }
 
-    return Math.min(Math.round(score), 100)
-  }, [currentPromise, d6HypeImmunity])
-
-  const ivc6DScore = useMemo(() => {
-    // Normalização das 6 Dimensões para escala 0-100:
-    const valD1 = (d1SalesHours / 12) * 100
-    const valD2 = (d2IntelHours / 8) * 100
-    const valD3 = d3ContentDensity
-    // SLA Humano: menor é melhor. 5min = 100, 180min = 10.
-    const valD4 = Math.max(10, Math.round(100 - ((d4HumanSla - 5) / 175) * 90))
-    const valD5 = d5Traceability
-    const valD6 = d6HypeImmunity
-
-    // Cálculo da Média Geométrica das 6 dimensões
-    const product = Math.max(1, valD1 * valD2 * valD3 * valD4 * valD5 * valD6)
-    const geometricMean = Math.pow(product, 1/6)
-
-    // Penalidade concorrencial de Glitter
-    const penalty = Math.max(0, (glitterIndex - 30) * 0.12)
-
-    return Math.max(10, Math.min(100, Math.round(geometricMean - penalty)))
-  }, [d1SalesHours, d2IntelHours, d3ContentDensity, d4HumanSla, d5Traceability, d6HypeImmunity, glitterIndex])
-
-  const radarPoints = useMemo(() => {
-    const r1 = (d1SalesHours / 12) * 80
-    const r2 = (d2IntelHours / 8) * 80
-    const r3 = (d3ContentDensity / 100) * 80
-    const r4 = (Math.max(10, Math.round(100 - ((d4HumanSla - 5) / 175) * 90)) / 100) * 80
-    const r5 = (d5Traceability / 100) * 80
-    const r6 = (d6HypeImmunity / 100) * 80
-
-    const p1x = 100 + r1 * Math.cos(0)
-    const p1y = 100 + r1 * Math.sin(0)
-
-    const p2x = 100 + r2 * Math.cos(Math.PI / 3)
-    const p2y = 100 + r2 * Math.sin(Math.PI / 3)
-
-    const p3x = 100 + r3 * Math.cos((2 * Math.PI) / 3)
-    const p3y = 100 + r3 * Math.sin((2 * Math.PI) / 3)
-
-    const p4x = 100 + r4 * Math.cos(Math.PI)
-    const p4y = 100 + r4 * Math.sin(Math.PI)
-
-    const p5x = 100 + r5 * Math.cos((4 * Math.PI) / 3)
-    const p5y = 100 + r5 * Math.sin((4 * Math.PI) / 3)
-
-    const p6x = 100 + r6 * Math.cos((5 * Math.PI) / 3)
-    const p6y = 100 + r6 * Math.sin((5 * Math.PI) / 3)
-
-    return `${p1x},${p1y} ${p2x},${p2y} ${p3x},${p3y} ${p4x},${p4y} ${p5x},${p5y} ${p6x},${p6y}`
-  }, [d1SalesHours, d2IntelHours, d3ContentDensity, d4HumanSla, d5Traceability, d6HypeImmunity])
-
-  const competitorRadarPoints = useMemo(() => {
-    const r1 = 0.8 * 80
-    const r2 = 0.05 * 80
-    const r3 = 0.15 * 80
-    const r4 = 0.1 * 80
-    const r5 = 0.1 * 80
-    const r6 = 0.2 * 80
-
-    const p1x = 100 + r1 * Math.cos(0)
-    const p1y = 100 + r1 * Math.sin(0)
-
-    const p2x = 100 + r2 * Math.cos(Math.PI / 3)
-    const p2y = 100 + r2 * Math.sin(Math.PI / 3)
-
-    const p3x = 100 + r3 * Math.cos((2 * Math.PI) / 3)
-    const p3y = 100 + r3 * Math.sin((2 * Math.PI) / 3)
-
-    const p4x = 100 + r4 * Math.cos(Math.PI)
-    const p4y = 100 + r4 * Math.sin(Math.PI)
-
-    const p5x = 100 + r5 * Math.cos((4 * Math.PI) / 3)
-    const p5y = 100 + r5 * Math.sin((4 * Math.PI) / 3)
-
-    const p6x = 100 + r6 * Math.cos((5 * Math.PI) / 3)
-    const p6y = 100 + r6 * Math.sin((5 * Math.PI) / 3)
-
-    return `${p1x},${p1y} ${p2x},${p2y} ${p3x},${p3y} ${p4x},${p4y} ${p5x},${p5y} ${p6x},${p6y}`
-  }, [])
-
+  // AI Strategic Copilot Q&A handler
+  const askCopilot = (questionKey: 'famosos' | 'sla' | 'math') => {
+    setCopilotLoading(true)
+    setCopilotAnswer(null)
+    setTimeout(() => {
+      let answer = ''
+      if (questionKey === 'famosos') {
+        answer = `🤖 [Xeque-Mate AI Advisor]: Como bater concorrentes famosos com zero entrega?
+        
+👉 Use o contraste radical de Densidade de Monitoria (D3): A concorrência famosa gasta 95% do tempo com marketing e apenas 15% em entrega prática de conteúdo real. Sua operação entrega ${d3ContentDensity}% de densidade de conteúdo monitorado por especialistas reais.
+👉 Prove isso exibindo sua grade de rituais, logs do sistema IPB e apresente o IVC-6D Score do seu negócio (${ivc6DScore}%) vs. o do Guru (${18}%). Isso elimina qualquer dúvida ("pessoa para pessoa").`
+      } else if (questionKey === 'sla') {
+        answer = `🤖 [Xeque-Mate AI Advisor]: Como provar meu diferencial de SLA rápido?
+        
+👉 Enquanto a concorrência famosa esconde-se atrás de robôs genéricos de WhatsApp com SLA de resposta de mais de 3 horas (180 min), você garante um tempo de resposta humana especializada de apenas ${d4HumanSla} minutos (D4).
+👉 Adicione um compromisso contratual de SLA de resposta no seu pitch comercial. Isso transforma promessa em fato 100% auditável pelo CRM integrado do IPB.`
+      } else if (questionKey === 'math') {
+        answer = `🤖 [Xeque-Mate AI Advisor]: Qual a lógica matemática do IVC-6D Score?
+        
+👉 O Índice de Vantagem Competitiva (IVC) utiliza uma média geométrica rigorosa: IVC = (D1 * D2 * D3 * D4_Norm * D5 * D6)^(1/6).
+👉 A média geométrica prova matematicamente que, se qualquer dimensão for zero (por exemplo, zero suporte humano ou zero monitoria de conteúdo), o score geral desaba para zero. Isso é o Contra-Xeque-Mate sobre as caixas pretas de mercado.`
+      }
+      setCopilotAnswer(answer)
+      setCopilotLoading(false)
+    }, 600)
+  }
 
   const runAudit = () => {
     if (isAuditing) return
@@ -168,8 +144,8 @@ export function InteractiveCockpit() {
 
     const logs = [
       `[INICIALIZANDO] Ativando Auditoria 6D de Verdade Radical e Tecnologia Concorrencial...`,
-      `[NLP PARSING] Analisando promessa: "${currentPromise}"`,
-      `[DETECTOR DE BRILHO] Glitter Index mapeado em: ${glitterIndex}% (Apelo Ilusório).`,
+      `[NLP PARSING] Analisando promessa concorrente: "${currentPromise}"`,
+      `[DETECTOR DE BRILHO] Glitter Index mapeado em: ${glitterIndex}% (Risco de Engodo Hype).`,
       `[MODEL_D1] Auditando Execução de Vendas (D1): ${d1SalesHours} horas/dia de prospecção ativa.`,
       `[MODEL_D2] Auditando Inteligência Concorrencial (D2): ${d2IntelHours} horas/dia de mapeamento real.`,
       `[MODEL_D3] Auditando Densidade de Monitoria (D3): ${d3ContentDensity}% de material e suporte estruturado.`,
@@ -190,7 +166,7 @@ export function InteractiveCockpit() {
         setIsAuditing(false)
         setAuditDone(true)
       }
-    }, 400)
+    }, 300)
   }
 
   useEffect(() => {
@@ -226,8 +202,7 @@ export function InteractiveCockpit() {
         clearInterval(interval)
         setSimRunning(false)
         setSimFinished(true)
-      }
-    }, 350)
+    }, 250)
   }
 
   useEffect(() => {
@@ -558,13 +533,37 @@ export function InteractiveCockpit() {
             
             {/* Header do Simulador */}
             <div className="flex items-center justify-between border-b border-white/5 pb-1.5 shrink-0">
-              <div className="flex items-center gap-1.5">
+              <div className="flex items-center gap-2">
                 <Award className="h-3.5 w-3.5 text-[#d2af5a] animate-pulse" />
                 <span className="text-[8.5px] font-bold uppercase tracking-[0.15em] text-[#d2af5a]">
                   🛰️ SIMULADOR DE VANTAGEM COMPETITIVA & CONTRA-XEQUE-MATE 6D
                 </span>
               </div>
-              <span className="text-[6.5px] font-mono text-white/35 uppercase tracking-widest">Pessoa para Pessoa • 100% Auditável</span>
+              
+              {/* Seletor de Cenários / Presets */}
+              <div className="flex items-center gap-1.5 select-none">
+                <span className="text-[6.5px] font-mono text-white/35 uppercase tracking-wider">CENÁRIO:</span>
+                <div className="flex gap-1">
+                  <button 
+                    onClick={() => handleScenarioChange('app_vendas')} 
+                    className={`px-1.5 py-0.5 rounded text-[6.5px] font-mono border transition-all ${simScenario === 'app_vendas' ? 'bg-[#d2af5a]/10 text-[#d2af5a] border-[#d2af5a]/40 font-bold' : 'bg-black/35 text-white/30 border-white/5 hover:border-white/10'}`}
+                  >
+                    Meu App
+                  </button>
+                  <button 
+                    onClick={() => handleScenarioChange('gurus')} 
+                    className={`px-1.5 py-0.5 rounded text-[6.5px] font-mono border transition-all ${simScenario === 'gurus' ? 'bg-red-500/10 text-red-400 border-red-500/40 font-bold' : 'bg-black/35 text-white/30 border-white/5 hover:border-white/10'}`}
+                  >
+                    Gurus
+                  </button>
+                  <button 
+                    onClick={() => handleScenarioChange('saas_bi')} 
+                    className={`px-1.5 py-0.5 rounded text-[6.5px] font-mono border transition-all ${simScenario === 'saas_bi' ? 'bg-blue-500/10 text-blue-400 border-blue-500/40 font-bold' : 'bg-black/35 text-white/30 border-white/5 hover:border-white/10'}`}
+                  >
+                    SaaS BI
+                  </button>
+                </div>
+              </div>
             </div>
 
             {/* Layout Interno em Duas Colunas */}
@@ -618,7 +617,7 @@ export function InteractiveCockpit() {
                     max="12"
                     step="1"
                     value={d1SalesHours}
-                    onChange={(e) => setD1SalesHours(Number(e.target.value))}
+                    onChange={(e) => handleDimensionChange('d1', Number(e.target.value))}
                     className="w-full h-0.5 bg-white/5 rounded appearance-none cursor-pointer accent-[#d2af5a]"
                   />
                   <div className="flex justify-between items-center text-[7px] font-mono text-white/55 leading-none">
@@ -631,20 +630,20 @@ export function InteractiveCockpit() {
                     max="180"
                     step="5"
                     value={d4HumanSla}
-                    onChange={(e) => setD4HumanSla(Number(e.target.value))}
+                    onChange={(e) => handleDimensionChange('d4', Number(e.target.value))}
                     className="w-full h-0.5 bg-white/5 rounded appearance-none cursor-pointer accent-[#d2af5a]"
                   />
                 </div>
 
                 {/* Botões de Ativação do Simulador */}
-                <div className="flex items-center gap-2 pt-0.5 select-none">
+                <div className="flex items-center gap-2 pt-0.5 select-none font-mono">
                   <button
                     onClick={handleRunMarketSim}
                     disabled={simRunning}
                     className="px-2 py-1.5 bg-black/40 hover:bg-[#d2af5a]/10 disabled:bg-white/5 disabled:text-white/20 border border-[#d2af5a]/20 hover:border-[#d2af5a]/60 text-white/80 hover:text-[#d2af5a] font-mono text-[8px] font-bold rounded-lg transition-all duration-200 flex items-center gap-1 cursor-pointer shrink-0"
                   >
                     <Play className={`h-2.5 w-2.5 ${simRunning ? 'animate-spin text-[#d2af5a]' : 'text-[#d2af5a]'}`} />
-                    {simRunning ? 'RODANDO...' : 'SIMULAÇÃO RÁPIDA'}
+                    {simRunning ? 'RODANDO...' : 'SIMULAR 6D'}
                   </button>
 
                   <button
@@ -657,36 +656,104 @@ export function InteractiveCockpit() {
                     <Sparkles className="h-2.5 w-2.5 text-[#d2af5a]" />
                     🔍 REJEITAR ILUSÃO: SIMULADOR 6D
                   </button>
-                  
-                  <span className="text-[6.2px] text-white/35 leading-tight overflow-hidden text-ellipsis whitespace-nowrap hidden xl:inline max-w-[80px]">
-                    {compFactor === 'transparencia' && "Transparência"}
-                    {compFactor === 'evidencia' && "Evidências"}
-                    {compFactor === 'auditoria' && "Auditoria"}
-                  </span>
                 </div>
               </div>
 
-              {/* Coluna Direita: Terminal IA de Monitoria Concorrencial (42% largura) */}
+              {/* Coluna Direita: Orbe Holográfico / Terminal Concorrencial (42% largura) */}
               <div className="flex-1 flex flex-col justify-between space-y-1.5 overflow-hidden">
-                {/* Terminal de Logs */}
-                <div 
-                  ref={simLogRef}
-                  className="flex-1 bg-[#050507] border border-white/5 rounded-xl p-2 font-mono text-[7.5px] text-[#d2af5a]/95 space-y-0.5 overflow-y-auto ipb-thinscroll text-left leading-relaxed"
-                >
-                  {marketLogs.length === 0 ? (
-                    <div className="text-white/20 italic pt-6 text-center leading-normal">
-                      Aguardando ativação...<br/>
-                      Inicie a simulação para escanear a vantagem concorrencial real 6D.
-                    </div>
-                  ) : (
-                    marketLogs.map((log, idx) => (
-                      <div key={idx}>
-                        <span className="text-white/20 font-sans mr-1">[{new Date().toLocaleTimeString()}]</span>
-                        {log}
-                      </div>
-                    ))
-                  )}
+                
+                {/* Abas do Painel Direito */}
+                <div className="flex items-center justify-between border-b border-white/5 pb-1 select-none">
+                  <span className="text-[6.5px] font-mono text-white/45 uppercase tracking-widest leading-none">Auditória Concorrencial</span>
+                  <div className="flex gap-1">
+                    <button 
+                      onClick={() => setRightPanelTab('orb')} 
+                      className={`px-1.5 py-0.5 rounded-[4px] text-[6px] font-mono border uppercase tracking-wider transition-all ${rightPanelTab === 'orb' ? 'bg-[#d2af5a]/15 text-[#d2af5a] border-[#d2af5a]/30 font-bold' : 'bg-black/45 text-white/30 border-white/5 hover:border-white/10'}`}
+                    >
+                      Orbe 6D
+                    </button>
+                    <button 
+                      onClick={() => setRightPanelTab('terminal')} 
+                      className={`px-1.5 py-0.5 rounded-[4px] text-[6px] font-mono border uppercase tracking-wider transition-all ${rightPanelTab === 'terminal' ? 'bg-[#d2af5a]/15 text-[#d2af5a] border-[#d2af5a]/30 font-bold' : 'bg-black/45 text-white/30 border-white/5 hover:border-white/10'}`}
+                    >
+                      Terminal
+                    </button>
+                  </div>
                 </div>
+
+                {/* Conteúdo da Aba Direita */}
+                {rightPanelTab === 'orb' ? (
+                  /* ORBE HOLOGRÁFICO 6D ATIVO E REATIVO */
+                  <div className="flex-1 flex flex-col justify-center items-center relative overflow-hidden bg-black/30 border border-white/5 rounded-xl py-1 select-none">
+                    <svg className="w-[105px] h-[105px] glow-orb-glass relative mt-0.5" viewBox="0 0 100 100">
+                      <defs>
+                        <radialGradient id="holoCore6DHome" cx="35%" cy="35%" r="65%">
+                          <stop offset="0%" stopColor="#ffffff" stopOpacity="0.9" />
+                          <stop offset="40%" stopColor="#fffbf2" stopOpacity="0.65" />
+                          <stop offset="85%" stopColor="#d2af5a" stopOpacity="0.5" />
+                          <stop offset="100%" stopColor="#0c0a07" stopOpacity="0" />
+                        </radialGradient>
+                        <radialGradient id="goldHomeOrbBorder" cx="50%" cy="50%" r="50%">
+                          <stop offset="90%" stopColor="#d2af5a" stopOpacity="0.1" />
+                          <stop offset="98%" stopColor="#d2af5a" stopOpacity="0.75" />
+                          <stop offset="100%" stopColor="#ffffff" stopOpacity="0.9" />
+                        </radialGradient>
+                      </defs>
+
+                      {/* Anéis e Órbitas Externas do Holo-Orb */}
+                      <circle cx="50" cy="50" r="44" fill="none" stroke="#d2af5a" strokeWidth="0.4" strokeDasharray="3,6" className="orbit-rotate-fast" opacity="0.2" />
+                      <circle cx="50" cy="50" r="28" fill="#d2af5a" fillOpacity="0.04" stroke="url(#goldHomeOrbBorder)" strokeWidth="0.6" />
+
+                      {/* Eixos Grid e Órbitas Rotativas */}
+                      <g className="orbit-rotate-fast" opacity="0.5">
+                        <ellipse cx="50" cy="50" rx="28" ry="8" fill="none" stroke={simScenario === 'gurus' ? '#ef4444' : '#d2af5a'} strokeWidth="0.5" />
+                        <ellipse cx="50" cy="50" rx="8" ry="28" fill="none" stroke={simScenario === 'gurus' ? '#ef4444' : '#d2af5a'} strokeWidth="0.5" />
+                      </g>
+                      <g className="orbit-rotate-slow" opacity="0.4">
+                        <ellipse cx="50" cy="50" rx="28" ry="16" fill="none" stroke={simScenario === 'gurus' ? '#ef4444' : '#d2af5a'} strokeWidth="0.5" />
+                        <ellipse cx="50" cy="50" rx="16" ry="28" fill="none" stroke={simScenario === 'gurus' ? '#ef4444' : '#d2af5a'} strokeWidth="0.5" />
+                      </g>
+
+                      {/* Núcleo do Orbe reativo ao IVC-6D Score */}
+                      <circle 
+                        cx="50" 
+                        cy="50" 
+                        r={Math.min(26, Math.max(9, (ivc6DScore / 100) * 26))} 
+                        fill={simScenario === 'gurus' ? 'rgba(239, 68, 68, 0.45)' : 'url(#holoCore6DHome)'} 
+                        className="transition-all duration-500" 
+                      />
+                      
+                      {/* Texto com o Score no Orbe */}
+                      <text x="50" y="53" fill="#ffffff" fontSize="9" fontWeight="900" textAnchor="middle" className="ai-text-pulse font-mono tracking-wider">
+                        {ivc6DScore}%
+                      </text>
+
+                      {/* Scanline de Telemetria */}
+                      <line x1="20" y1="50" x2="80" y2="50" stroke="#ffffff" strokeWidth="0.6" className="base-scan" opacity="0.4" />
+                    </svg>
+                    <span className="text-[6.5px] font-mono text-white/35 uppercase tracking-widest leading-none mt-1.5 animate-pulse">HOLO-MATRIX 6D ACTIVE</span>
+                  </div>
+                ) : (
+                  /* TERMINAL DE LOGS AUDITÁVEIS */
+                  <div 
+                    ref={simLogRef}
+                    className="flex-1 bg-[#050507] border border-white/5 rounded-xl p-2 font-mono text-[7.5px] text-[#d2af5a]/95 space-y-0.5 overflow-y-auto ipb-thinscroll text-left leading-relaxed"
+                  >
+                    {marketLogs.length === 0 ? (
+                      <div className="text-white/20 italic pt-6 text-center leading-normal">
+                        Aguardando ativação...<br/>
+                        Inicie a simulação para escanear a vantagem concorrencial real 6D.
+                      </div>
+                    ) : (
+                      marketLogs.map((log, idx) => (
+                        <div key={idx}>
+                          <span className="text-white/20 font-sans mr-1">[{new Date().toLocaleTimeString()}]</span>
+                          {log}
+                        </div>
+                      ))
+                    )}
+                  </div>
+                )}
 
                 {/* Painel de Resultados do Contra-Xeque-Mate */}
                 <div className="grid grid-cols-3 gap-1 bg-[#d2af5a]/5 p-1 rounded-lg border border-[#d2af5a]/15 text-center shrink-0">
@@ -904,7 +971,38 @@ export function InteractiveCockpit() {
                 {/* COLUNA ESQUERDA: Configuração de Cenários (Inputs) */}
                 <div className="flex flex-col gap-5 bg-white/[0.01] border border-white/5 p-5 rounded-2xl">
                   
-                  {/* Seção 1: A Promessa Concorrente (Hype) */}
+                  {/* Seção 1: Seletor de Preset Estratégico */}
+                  <div className="flex flex-col gap-2 select-none">
+                    <span className="text-[#d2af5a] text-[9.5px] font-mono font-bold uppercase tracking-wider flex items-center gap-1.5">
+                      <Layers className="h-3.5 w-3.5 text-[#d2af5a]" />
+                      1. Selecionar Modelo Competitivo de Negócio
+                    </span>
+                    <div className="grid grid-cols-3 gap-2">
+                      <button 
+                        onClick={() => handleScenarioChange('app_vendas')}
+                        className={`p-2.5 rounded-xl border text-center transition-all flex flex-col items-center justify-between ${simScenario === 'app_vendas' ? 'bg-[#d2af5a]/15 text-[#d2af5a] border-[#d2af5a]/40' : 'bg-black/45 text-white/55 border-white/5 hover:border-white/10'}`}
+                      >
+                        <span className="text-[8px] font-bold font-mono tracking-wider uppercase">Meu App</span>
+                        <span className="text-[6.5px] text-white/40 font-mono mt-1">Alta Monitoria & Humano</span>
+                      </button>
+                      <button 
+                        onClick={() => handleScenarioChange('gurus')}
+                        className={`p-2.5 rounded-xl border text-center transition-all flex flex-col items-center justify-between ${simScenario === 'gurus' ? 'bg-red-500/15 text-red-400 border-red-500/40' : 'bg-black/45 text-white/55 border-white/5 hover:border-white/10'}`}
+                      >
+                        <span className="text-[8px] font-bold font-mono tracking-wider uppercase">Gurus</span>
+                        <span className="text-[6.5px] text-white/40 font-mono mt-1">Suporte Robô & Hype</span>
+                      </button>
+                      <button 
+                        onClick={() => handleScenarioChange('saas_bi')}
+                        className={`p-2.5 rounded-xl border text-center transition-all flex flex-col items-center justify-between ${simScenario === 'saas_bi' ? 'bg-blue-500/15 text-blue-400 border-blue-500/40' : 'bg-black/45 text-white/55 border-white/5 hover:border-white/10'}`}
+                      >
+                        <span className="text-[8px] font-bold font-mono tracking-wider uppercase">SaaS BI</span>
+                        <span className="text-[6.5px] text-white/40 font-mono mt-1">Estático & Sem SLA</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Seção 2: A Promessa Concorrente (Hype) */}
                   <div className="flex flex-col gap-2">
                     <span className="text-[#d2af5a] text-[9.5px] font-mono font-bold uppercase tracking-wider flex items-center gap-1.5 select-none">
                       <Sparkles className="h-3.5 w-3.5 text-[#d2af5a] animate-pulse" />
@@ -964,7 +1062,7 @@ export function InteractiveCockpit() {
                         max="12"
                         step="1"
                         value={d1SalesHours}
-                        onChange={(e) => setD1SalesHours(Number(e.target.value))}
+                        onChange={(e) => handleDimensionChange('d1', Number(e.target.value))}
                         className="w-full h-1 bg-white/5 rounded appearance-none cursor-pointer accent-[#d2af5a] select-none"
                       />
                       <span className="text-[7.5px] text-white/35 font-sans leading-none mt-1 select-none">
@@ -984,7 +1082,7 @@ export function InteractiveCockpit() {
                         max="8"
                         step="1"
                         value={d2IntelHours}
-                        onChange={(e) => setD2IntelHours(Number(e.target.value))}
+                        onChange={(e) => handleDimensionChange('d2', Number(e.target.value))}
                         className="w-full h-1 bg-white/5 rounded appearance-none cursor-pointer accent-[#d2af5a] select-none"
                       />
                       <span className="text-[7.5px] text-white/35 font-sans leading-none mt-1 select-none">
@@ -1004,7 +1102,7 @@ export function InteractiveCockpit() {
                         max="100"
                         step="5"
                         value={d3ContentDensity}
-                        onChange={(e) => setD3ContentDensity(Number(e.target.value))}
+                        onChange={(e) => handleDimensionChange('d3', Number(e.target.value))}
                         className="w-full h-1 bg-white/5 rounded appearance-none cursor-pointer accent-[#d2af5a] select-none"
                       />
                       <span className="text-[7.5px] text-white/35 font-sans leading-none mt-1 select-none">
@@ -1024,7 +1122,7 @@ export function InteractiveCockpit() {
                         max="180"
                         step="5"
                         value={d4HumanSla}
-                        onChange={(e) => setD4HumanSla(Number(e.target.value))}
+                        onChange={(e) => handleDimensionChange('d4', Number(e.target.value))}
                         className="w-full h-1 bg-white/5 rounded appearance-none cursor-pointer accent-[#d2af5a] select-none"
                       />
                       <span className="text-[7.5px] text-white/35 font-sans leading-none mt-1 select-none">
@@ -1044,7 +1142,7 @@ export function InteractiveCockpit() {
                         max="100"
                         step="5"
                         value={d5Traceability}
-                        onChange={(e) => setD5Traceability(Number(e.target.value))}
+                        onChange={(e) => handleDimensionChange('d5', Number(e.target.value))}
                         className="w-full h-1 bg-white/5 rounded appearance-none cursor-pointer accent-[#d2af5a] select-none"
                       />
                       <span className="text-[7.5px] text-white/35 font-sans leading-none mt-1 select-none">
@@ -1064,7 +1162,7 @@ export function InteractiveCockpit() {
                         max="100"
                         step="5"
                         value={d6HypeImmunity}
-                        onChange={(e) => setD6HypeImmunity(Number(e.target.value))}
+                        onChange={(e) => handleDimensionChange('d6', Number(e.target.value))}
                         className="w-full h-1 bg-white/5 rounded appearance-none cursor-pointer accent-[#d2af5a] select-none"
                       />
                       <span className="text-[7.5px] text-white/35 font-sans leading-none mt-1 select-none">
@@ -1175,10 +1273,42 @@ export function InteractiveCockpit() {
                     </button>
                   </div>
 
-                  {/* Terminal de Auditoria NLP */}
-                  <div className="flex flex-col gap-1 overflow-hidden h-[95px]">
+                  {/* AI STRATEGIC COPILOT (XEQUE-MATE ADVISOR) */}
+                  <div className="flex flex-col gap-1.5 border border-[#d2af5a]/25 bg-[#d2af5a]/5 p-2.5 rounded-xl h-[175px] overflow-hidden relative">
+                    <div className="flex justify-between items-center text-[7.5px] font-mono uppercase select-none border-b border-white/5 pb-1 shrink-0">
+                      <span className="text-[#d2af5a] font-bold flex items-center gap-1">
+                        <Bot className="h-3 w-3 text-[#d2af5a]" />
+                        🤖 ADVISOR ESTRATÉGICO (COPIOT AI)
+                      </span>
+                      <div className="flex gap-1.5">
+                        <button onClick={() => askCopilot('famosos')} className="text-white/40 hover:text-[#d2af5a] transition font-mono text-[6.5px] font-bold uppercase">[Vencer Famosos]</button>
+                        <button onClick={() => askCopilot('sla')} className="text-white/40 hover:text-[#d2af5a] transition font-mono text-[6.5px] font-bold uppercase">[Provar SLA]</button>
+                        <button onClick={() => askCopilot('math')} className="text-white/40 hover:text-[#d2af5a] transition font-mono text-[6.5px] font-bold uppercase">[Lógica 6D]</button>
+                      </div>
+                    </div>
+                    <div className="flex-1 overflow-y-auto ipb-thinscroll font-mono text-[8px] text-white/90 leading-relaxed text-left">
+                      {copilotLoading ? (
+                        <div className="text-white/40 italic flex items-center justify-center h-full gap-2">
+                          <Sparkles className="h-3.5 w-3.5 text-[#d2af5a] animate-spin" />
+                          Consultando matriz preditiva 6D do IPB...
+                        </div>
+                      ) : copilotAnswer ? (
+                        <div className="whitespace-pre-line text-[#d2af5a]/95 bg-black/45 p-2 rounded border border-[#d2af5a]/15">
+                          {copilotAnswer}
+                        </div>
+                      ) : (
+                        <div className="text-white/30 italic pt-6 text-center leading-normal">
+                          Clique em um dos botões acima para acionar o Advisor AI.<br/>
+                          Ele formulará a resposta exata de Contra-Xeque-Mate com base nas 6 dimensões de esforço calibradas no painel esquerdo.
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Terminal de Auditoria NLP Concorrencial */}
+                  <div className="flex flex-col gap-1 overflow-hidden h-[95px] border-t border-white/5 pt-2">
                     <div className="flex justify-between items-center text-[7.5px] font-mono uppercase select-none">
-                      <span className="text-white/40">Console de Desconstrução Concorrencial:</span>
+                      <span className="text-white/40">Scanner NLP de Desconstrução Concorrencial:</span>
                       <button
                         onClick={runAudit}
                         disabled={isAuditing}
@@ -1195,7 +1325,7 @@ export function InteractiveCockpit() {
                     >
                       {auditLogs.length === 0 ? (
                         <div className="text-white/20 italic pt-3 text-center leading-normal">
-                          Inicie a calibragem das 6 dimensões acima para rodar a auditoria de narrativa.
+                          Inicie a calibragem das 6 dimensões acima para rodar a auditoria de narrativa concorrencial.
                         </div>
                       ) : (
                         auditLogs.map((log, idx) => (
