@@ -373,34 +373,41 @@ export function HudCapitalHumano() {
 
           {/* Right Column: Metrics Glossary */}
           <div className="p-3 bg-black/40 border border-white/5 rounded-xl flex flex-col justify-between overflow-hidden">
-            <span className="block text-[8.5px] font-mono text-[#d2af5a] font-bold uppercase tracking-wider mb-2 text-left">🧠 INTELIGÊNCIA DE RISCOS & CROSS-CORRELAÇÕES</span>
+            <span className="block text-[8.5px] font-mono text-[#d2af5a] font-bold uppercase tracking-wider mb-2 text-left">🧠 INTELIGÊNCIA DE RISCOS, TELEMETRIA IA & DDDM</span>
             
             <div className="flex-1 overflow-y-auto ipb-thinscroll pr-1 max-h-[220px] space-y-2.5 text-[8.8px] text-white/70 leading-normal text-left">
               <div>
-                <b className="text-white block">🧠 Escala Maslach (EEB) & Burnout Coletivo:</b>
-                <span>Mede a exaustão emocional sob pressão de metas. <em>Cruzamento Macro:</em> Se o Burnout sobe de 30%, a eficiência operacional despenca. Com juros reais altos a 10.01%, a empresa não pode se dar ao luxo de perder produtividade. Manter o EEB controlado via squads ágeis (Spotify/Magalu) reduz a fadiga coletiva e poupa caixa operacional.</span>
-              </div>
-              <div className="border-t border-white/5 pt-2">
-                <b className="text-white block">💸 Custo Real do Turnover (Rotatividade):</b>
-                <span>Soma rescisão (R$ 12.0k), recrutamento (R$ 8.5k) e perda de produtividade (R$ 9.5k), totalizando R$ 30.0k por desligamento. <em>Cruzamento Financeiro:</em> Perder talentos em tecnologia drena diretamente o EBITDA e comprime a margem líquida. Com juros PJ elevados em 17%, financiar capital de giro (CGL) para repor pessoal é inviável, tornando a retenção um imperativo de sobrevivência.</span>
-              </div>
-              <div className="border-t border-white/5 pt-2">
-                <b className="text-white block">🏛️ Cruzamento PESTEL: Juros Reais & CAPEX:</b>
-                <span>O juro real brasileiro a 10.01% (SELIC 14.40% - IPCA 4.39%) encarece o capital e faz com que investidores prefiram renda fixa. <em>Decisão:</em> As empresas travam investimentos em infraestrutura física (CAPEX) e redirecionam recursos para eficiência em ativos intangíveis (IA, automação e treinamento de capital humano).</span>
-              </div>
-              <div className="border-t border-white/5 pt-2">
-                <b className="text-white block">📊 Bolsa Barata & P/E Ratio:</b>
-                <span>O P/E da bolsa nacional (8.2x) está extremamente pessimista devido à SELIC, enquanto no mundo está a 17.2x. <em>Ameaça Humana:</em> Com empresas locais subvalorizadas, há grande escassez de talentos técnicos de alta performance (afetando 42% do setor tech) que buscam contratação remota internacional, elevando o CAC de recrutamento corporativo local.</span>
-              </div>
-              <div className="border-t border-white/5 pt-2">
-                <b className="text-white block">🧬 Indicadores de Saúde Digital & Mídia:</b>
-                <span>
-                  <strong>LTV/CAC & Payback:</strong> CAC é o custo de aquisição e LTV o valor gerado pelo cliente. Relação LTV/CAC &lt; 3x gera sinal vermelho crítico no fluxo. O payback do marketing deve ser acelerado.<br/>
-                  <strong>SWOT Otimizada:</strong> O sistema cruza a queda de 4.2% no orgânico com CPM estável no TikTok (US$ 6.80) e sugere realocar 20% do budget de Meta Ads para blindar a tração.
+                <b className="text-red-400 block font-mono">⚠️ ANOMALIA DE TELEMETRIA: ESTRESSE 9.3% vs. REALIDADE (67%)</b>
+                <span className="text-white/90">
+                  Os valores internos de <strong className="text-white">31% para Burnout EEB</strong> e <strong className="text-white">38% para Turnover</strong> são altamente realistas e condizem com o mercado tech sob alta pressão. No entanto, a telemetria do <strong>Estresse IAE (9.3%) está subestimada e distorcida (Alerta)</strong>. 
+                  No mercado brasileiro, o estresse real percebido atinge <strong>67% das equipes</strong> (superando os 65% globais). A taxa de 9.3% reflete apenas os casos clínicos graves convertidos em afastamento formal via INSS (absenteísmo), ocultando o estresse crônico real e mascarando o grave perigo do **Presenteísmo** (funcionário batendo ponto com produtividade zerada).
                 </span>
               </div>
               <div className="border-t border-white/5 pt-2">
-                <b className="text-white block">🔌 Fontes de Telemetria e APIs Vivas:</b>
+                <b className="text-[#d2af5a] block font-mono">📊 TOMADA DE DECISÃO BASEADA EM DADOS (DDDM)</b>
+                <span>
+                  O desvio na medição do estresse evidencia a urgência da **Tomada de Decisão Baseada em Dados (DDDM)**: a prática de utilizar métricas, fatos e evidências estruturadas para guiar escolhas comerciais estratégicas. A tecnologia por si só não é suficiente; exige a construção de uma cultura analítica e curiosidade intelectual em todos os níveis.
+                </span>
+              </div>
+              <div className="border-t border-white/5 pt-2">
+                <b className="text-[#d2af5a] block font-mono">🧱 OS 4 PILARES DA CULTURA ANALÍTICA DDDM</b>
+                <span className="space-y-1 block mt-1 pl-1.5 border-l border-[#d2af5a]/30">
+                  <span><b>1. Coleta e Armazenamento:</b> Capturar dados e feedbacks de forma ultraeficiente através de APIs integradas, IoT e pesquisas de pulso bissemanais.</span><br/>
+                  <span><b>2. Análise e Processamento:</b> Modelagem estatística e Machine Learning para extrair sentimentos latentes e calibrar ativamente a escala Maslach.</span><br/>
+                  <span><b>3. Visualização e Comunicação:</b> Painéis executivos limpos e inteligíveis para que a liderança tome decisões rápidas e assertivas.</span><br/>
+                  <span><b>4. Integração Estratégica:</b> Injetar os insights analíticos diretamente na pauta diária do conselho, evitando relatórios estáticos esquecidos.</span>
+                </span>
+              </div>
+              <div className="border-t border-white/5 pt-2">
+                <b className="text-white block font-mono">🧠 Escala Maslach (EEB) & Burnout Coletivo (31%):</b>
+                <span>O Burnout a 31% está em perfeita sintonia com a exaustão média nacional (30% a 32% dos profissionais). O sistema monitora as conversações públicas via NLP (WhatsApp/Slack) para recalcular preventivamente as metas operacionais de forma automática sob a estrutura de squads ágeis.</span>
+              </div>
+              <div className="border-t border-white/5 pt-2">
+                <b className="text-white block font-mono">💸 Custo Real do Turnover (38%):</b>
+                <span>Uma taxa anual de rotatividade de 38% é altamente prejudicial ao caixa. Como o custo de reposição de cada cargo tech varia entre 0.5 e 2 vezes o salário anual (totalizando R$ 30k por demissão), a retenção focada em ergonomia cognitiva e suporte emocional protege diretamente o OPEX corporativo.</span>
+              </div>
+              <div className="border-t border-white/5 pt-2">
+                <b className="text-white block font-mono">🔌 Fontes de Telemetria e APIs Vivas:</b>
                 <span>
                   <strong>Banco Central SGS:</strong> Taxas SELIC e IPCA em tempo real.<br/>
                   <strong>AwesomeAPI:</strong> Câmbio e cotações USD/BRL ao vivo.<br/>
