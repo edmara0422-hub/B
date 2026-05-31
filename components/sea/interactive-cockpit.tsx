@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useMemo, useRef } from 'react'
-import { Sparkles, TrendingUp, Globe, Users, Leaf, ShieldAlert, AlertTriangle, Settings, Database, Activity, X, Info, HelpCircle, Layers, CheckCircle, Play, SendHorizontal, Flame, Award, Bot, RefreshCw } from 'lucide-react'
+import { Sparkles, TrendingUp, Globe, Users, Leaf, ShieldAlert, AlertTriangle, Settings, Database, Activity, X, Info, HelpCircle, Layers, CheckCircle, Play, SendHorizontal, Flame, Award, Bot, RefreshCw, Copy } from 'lucide-react'
 
 import { MiniEstrategia } from './mini-estrategia'
 import { MiniCapitalHumano } from './mini-capital-humano'
@@ -727,337 +727,160 @@ export function InteractiveCockpit() {
             {activePillar === 'ai' && <HudAi />}
           </div>
 
-          {/* SIMULADOR DE VANTAGEM REAL (Travado em 260px de altura - Agora convertida no Simulador Concorrencial Contra-Xeque-Mate) */}
-          <div className="p-3 rounded-3xl backdrop-blur-xl border flex flex-col justify-between h-[260px] select-text" style={{ background: 'rgba(8, 8, 10, 0.85)', borderColor: 'rgba(210, 175, 90, 0.25)' }}>
-            
-            {/* Header do Simulador */}
-            <div className="flex items-center justify-between border-b border-white/5 pb-1.5 shrink-0">
-              <div className="flex items-center gap-2">
-                <Award className="h-3.5 w-3.5 text-[#d2af5a] animate-pulse" />
-                <span className="text-[8.5px] font-bold uppercase tracking-[0.15em] text-[#d2af5a]">
-                  🛰️ SIMULADOR DE VANTAGEM COMPETITIVA & CONTRA-XEQUE-MATE (IVRS)
+          {/* SIMULADOR DE VANTAGEM REAL (Travado em 260px de altura) */}
+          {aiVerdictStatus !== 'approved' ? (
+            /* CASO 1: AGUARDANDO PROTOCOLO DESCOBERTA REAL */
+            <div className="p-4 rounded-3xl backdrop-blur-xl border flex flex-col justify-between h-[260px] relative overflow-hidden select-text" style={{ background: 'rgba(8, 8, 10, 0.85)', borderColor: 'rgba(210, 175, 90, 0.25)' }}>
+              
+              {/* Ambient gold glow */}
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(210,175,90,0.04),transparent_65%)] pointer-events-none" />
+
+              {/* Header do Portal */}
+              <div className="flex items-center justify-between border-b border-white/5 pb-2 shrink-0 relative z-10 select-none">
+                <div className="flex items-center gap-2">
+                  <Award className="h-4 w-4 text-[#d2af5a] animate-pulse" />
+                  <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#d2af5a] font-mono">
+                    ✨ PROTOCOLO DE VANTAGEM REAL & CONTRA-XEQUE-MATE (IVRS v3.0)
+                  </span>
+                </div>
+                <span className="px-2 py-0.5 bg-[#d2af5a]/10 border border-[#d2af5a]/30 text-[#d2af5a] font-mono text-[7px] rounded-md font-bold select-none animate-pulse">
+                  IA ATIVA
                 </span>
               </div>
-              
-              {/* Seletor de Cenários / Presets */}
-              <div className="flex items-center gap-1.5 select-none">
-                <span className="text-[6.5px] font-mono text-white/35 uppercase tracking-wider">ANÁLISE COMPARATIVA:</span>
-                <div className="flex gap-1">
-                  <button 
-                    onClick={() => handleScenarioChange('app_vendas')} 
-                    className={`px-1.5 py-0.5 rounded text-[6.5px] font-mono border transition-all ${simScenario === 'app_vendas' ? 'bg-[#d2af5a]/10 text-[#d2af5a] border-[#d2af5a]/40 font-bold' : 'bg-black/35 text-white/30 border-white/5 hover:border-white/10'}`}
-                  >
-                    Minha Operação
-                  </button>
-                  <button 
-                    onClick={() => handleScenarioChange('gurus')} 
-                    className={`px-1.5 py-0.5 rounded text-[6.5px] font-mono border transition-all ${simScenario === 'gurus' ? 'bg-red-500/10 text-red-400 border-red-500/40 font-bold' : 'bg-black/35 text-white/30 border-white/5 hover:border-white/10'}`}
-                  >
-                    Guru Concorrente
-                  </button>
-                  <button 
-                    onClick={() => handleScenarioChange('saas_bi')} 
-                    className={`px-1.5 py-0.5 rounded text-[6.5px] font-mono border transition-all ${simScenario === 'saas_bi' ? 'bg-blue-500/10 text-blue-400 border-blue-500/40 font-bold' : 'bg-black/35 text-white/30 border-white/5 hover:border-white/10'}`}
-                  >
-                    SaaS BI Genérico
-                  </button>
+
+              {/* Corpo: Chamada Visual de Alto Impacto para Tomada de Decisão */}
+              <div className="flex-1 flex flex-col justify-center py-2 relative z-10 text-left">
+                <h3 className="text-white text-xs font-bold leading-normal tracking-wide">
+                  Você sabe qual é o seu diferencial real ou ainda está preso no Hype Concorrencial?
+                </h3>
+                <p className="text-white/50 text-[10px] leading-relaxed mt-1.5 font-sans">
+                  O mercado está saturado de gurus clones vendendo promessas ocas e gerando exaustão límbica. 
+                  Ative o <b>Modo Descoberta Neuropsicológica</b> para fundir seus ativos de vida, rodar a auditoria do ponto cego e blindar sua barreira anticópia definitiva.
+                </p>
+                
+                {/* Indicador visual das 4 etapas */}
+                <div className="flex items-center gap-2.5 mt-3 select-none text-[7.5px] font-mono text-white/30">
+                  <span className="flex items-center gap-1"><span className="h-1.5 w-1.5 rounded-full bg-[#d2af5a]"></span> 1. Eu Integral</span>
+                  <span className="text-white/10">➔</span>
+                  <span className="flex items-center gap-1"><span className="h-1.5 w-1.5 rounded-full bg-[#d2af5a]"></span> 2. Voz Socrática</span>
+                  <span className="text-white/10">➔</span>
+                  <span className="flex items-center gap-1"><span className="h-1.5 w-1.5 rounded-full bg-[#d2af5a]"></span> 3. Mapeamento Ponto Cego</span>
+                  <span className="text-white/10">➔</span>
+                  <span className="flex items-center gap-1"><span className="h-1.5 w-1.5 rounded-full bg-[#d2af5a]"></span> 4. Xeque-Mate Final</span>
                 </div>
               </div>
-            </div>
 
-            {/* Layout Interno em Duas Colunas */}
-            <div className="flex-1 flex gap-3 pt-2 overflow-hidden items-stretch">
+              {/* Rodapé: Botão de Ação de Grande Destaque */}
+              <div className="pt-2 border-t border-white/5 flex items-center justify-between shrink-0 relative z-10">
+                <span className="text-[7.5px] font-mono text-white/25">
+                  *Tomada de Decisão Baseada em Dados (TDBD) & Neurociência aplicada.
+                </span>
+                <button
+                  onClick={() => {
+                    setIsXequeMateModalOpen(true)
+                    setTimeout(() => runAudit(), 100)
+                  }}
+                  className="px-4 py-2.5 bg-gradient-to-r from-[#d2af5a] to-amber-500 hover:brightness-110 text-black font-bold uppercase tracking-wider text-[9px] rounded-xl transition-all duration-300 flex items-center gap-2 cursor-pointer shadow-[0_0_15px_rgba(210,175,90,0.25)] animate-pulse"
+                >
+                  <Sparkles className="h-3 w-3 text-black animate-spin" style={{ animationDuration: '4s' }} />
+                  Iniciar Protocolo Descoberta Real
+                </button>
+              </div>
               
-              {/* Coluna Esquerda: Painel de Esforço & Sliders Avançados (58% largura) */}
-              <div className="w-[58%] flex flex-col justify-between text-left space-y-1.5 overflow-visible shrink-0 pr-1 border-r border-white/5">
+            </div>
+          ) : (
+            /* CASO 2: MODO BLINDADO ATIVO - POSICIONAMENTO CRISTALIZADO */
+            <div className="p-4 rounded-3xl backdrop-blur-xl border flex flex-col justify-between h-[260px] relative overflow-hidden select-text animate-in fade-in zoom-in-95 duration-300" style={{ background: 'rgba(8, 8, 10, 0.85)', borderColor: 'rgba(16, 185, 129, 0.4)' }}>
+              
+              {/* Ambient green/emerald glow */}
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(16,185,129,0.05),transparent_65%)] pointer-events-none" />
+
+              {/* Header da Blindagem */}
+              <div className="flex items-center justify-between border-b border-white/5 pb-2 shrink-0 relative z-10 select-none">
+                <div className="flex items-center gap-2">
+                  <Award className="h-4 w-4 text-emerald-400 animate-pulse" />
+                  <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-emerald-400 font-mono">
+                    🏆 BLINDAGEM DE POSICIONAMENTO ESTRATÉGICO ATIVA
+                  </span>
+                </div>
+                <span className="px-2 py-0.5 bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 font-mono text-[7px] rounded-md font-bold select-none">
+                  IVRS v3.0 HOMOLOGADO
+                </span>
+              </div>
+
+              {/* Corpo: Dados da sua Operação Forgada */}
+              <div className="flex-1 flex gap-4 py-2 relative z-10 items-stretch overflow-hidden">
                 
-                {/* Metrics Mini-Grid */}
-                <div className="space-y-1 select-none">
-                  <div className="flex justify-between items-center block text-[6.8px] font-mono leading-none mb-1">
-                    <span className="text-white/45 uppercase tracking-widest">
-                      Esforço Real & Blindagem Neuro-Operacional (IVRS)
-                    </span>
-                    <span className={`px-1 rounded text-[5.5px] font-mono font-bold border ${
-                      calibrationSource === 'ia' 
-                        ? 'bg-[#d2af5a]/10 text-[#d2af5a] border-[#d2af5a]/30 animate-pulse' 
-                        : 'bg-amber-500/10 text-amber-400 border-amber-500/20'
-                    }`}>
-                      {calibrationSource === 'ia' ? '✨ IA' : '✍️ MANUAL'}
-                    </span>
+                {/* Lado Esquerdo: Pitch e Posicionamento */}
+                <div className="flex-1 flex flex-col justify-center text-left">
+                  <span className="text-[7.5px] font-mono text-white/35 uppercase tracking-wider block mb-1">
+                    POSICIONAMENTO DE OCEANO AZUL (PRESET AUTÊNTICO):
+                  </span>
+                  <p className="text-white text-[11px] font-serif leading-relaxed italic pr-2">
+                    {ebitda === 85 
+                      ? '"Eu trago a calma e resiliência extrema de 8 anos salvando vidas em UTI para desintegrar a ilusão dos gurus de palco, aplicando TDBD para blindar seu negócio e sua sanidade contra o caos competitivo."'
+                      : `"${aiVerdict.replace('✅ OPERAÇÃO DE EXCELÊNCIA INTEGRAL APROVADA: ', '').replace('✅ OPERAÇÃO DE VANTAGEM REAL APROVADA: ', '').split('.')[0]}."`
+                    }
+                  </p>
+                  <span className="text-[8px] font-mono text-[#d2af5a] mt-2 block">
+                    {aiVerdict.length > 80 ? aiVerdict.substring(0, 100) + '...' : aiVerdict}
+                  </span>
+                </div>
+
+                {/* Lado Direito: Grid de Métrica Otimizada */}
+                <div className="w-[38%] border-l border-white/5 pl-4 flex flex-col justify-center gap-2 shrink-0">
+                  <div className="p-1.5 rounded-lg bg-black/40 border border-white/5 flex flex-col">
+                    <span className="text-[5.5px] font-mono text-white/40 uppercase">Eficiência (IVRS)</span>
+                    <span className="text-[10px] font-extrabold font-mono text-[#d2af5a]">{ebitda}%</span>
                   </div>
-                  <div className="grid grid-cols-3 gap-1">
-                    <div className="p-1 rounded bg-black/40 border border-white/5 flex flex-col justify-between animate-fade-in">
-                      <span className="text-[5px] font-mono text-white/40 uppercase">EBITDA (%)</span>
-                      <span className="text-[7.5px] font-bold font-mono text-[#d2af5a]">{ebitda}%</span>
-                    </div>
-                    <div className="p-1 rounded bg-black/40 border border-white/5 flex flex-col justify-between animate-fade-in">
-                      <span className="text-[5px] font-mono text-white/40 uppercase">LTV/CAC Ratio</span>
-                      <span className="text-[7.5px] font-bold font-mono text-[#d2af5a]">{ltvCac.toFixed(1)}x</span>
-                    </div>
-                    <div className="p-1 rounded bg-black/40 border border-white/5 flex flex-col justify-between animate-fade-in">
-                      <span className="text-[5px] font-mono text-white/40 uppercase">TDBD (%)</span>
-                      <span className="text-[7.5px] font-bold font-mono text-[#d2af5a]">{tdbd}%</span>
-                    </div>
-                    <div className="p-1 rounded bg-black/40 border border-white/5 flex flex-col justify-between animate-fade-in">
-                      <span className="text-[5px] font-mono text-red-400/80 uppercase">Amígdala (%)</span>
-                      <span className="text-[7.5px] font-bold font-mono text-red-400">{sequestroAmigdala}%</span>
-                    </div>
-                    <div className="p-1 rounded bg-black/40 border border-white/5 flex flex-col justify-between animate-fade-in">
-                      <span className="text-[5px] font-mono text-red-400/80 uppercase">Fricção (%)</span>
-                      <span className="text-[7.5px] font-bold font-mono text-red-400">{friccaoPersonagem}%</span>
-                    </div>
-                    <div className="p-1 rounded bg-black/40 border border-white/5 flex flex-col justify-between animate-fade-in">
-                      <span className="text-[5px] font-mono text-red-400/80 uppercase">Dopamina (%)</span>
-                      <span className="text-[7.5px] font-bold font-mono text-red-400">{custoDopaminergico}%</span>
-                    </div>
+                  <div className="p-1.5 rounded-lg bg-black/40 border border-white/5 flex flex-col">
+                    <span className="text-[5.5px] font-mono text-white/40 uppercase">Tomada Decisão (TDBD)</span>
+                    <span className="text-[10px] font-extrabold font-mono text-emerald-400">{tdbd}%</span>
+                  </div>
+                  <div className="p-1.5 rounded-lg bg-black/40 border border-white/5 flex flex-col">
+                    <span className="text-[5.5px] font-mono text-white/40 uppercase">Risco Liderança</span>
+                    <span className="text-[10px] font-extrabold font-mono text-red-400">{sequestroAmigdala}%</span>
                   </div>
                 </div>
 
-                {/* Sliders rápidos da Home */}
-                <div className="grid grid-cols-2 gap-x-2.5 gap-y-1 select-none">
-                  {/* EBITDA */}
-                  <div className="space-y-0.5">
-                    <div className="flex justify-between items-center text-[6.5px] font-mono text-white/55 leading-none">
-                      <span>EBITDA:</span>
-                      <b className="text-white font-mono font-bold text-[6.5px]">{ebitda}%</b>
-                    </div>
-                    <input
-                      type="range"
-                      min="10"
-                      max="100"
-                      step="5"
-                      value={ebitda}
-                      onChange={(e) => handleDimensionChange('ebitda', Number(e.target.value))}
-                      className="w-full h-0.5 bg-white/5 rounded appearance-none cursor-pointer accent-[#d2af5a]"
-                    />
-                  </div>
+              </div>
 
-                  {/* Fricção */}
-                  <div className="space-y-0.5">
-                    <div className="flex justify-between items-center text-[6.5px] font-mono text-white/55 leading-none">
-                      <span>Fricção Personagem:</span>
-                      <b className="text-white font-mono font-bold text-[6.5px]">{friccaoPersonagem}%</b>
-                    </div>
-                    <input
-                      type="range"
-                      min="10"
-                      max="100"
-                      step="5"
-                      value={friccaoPersonagem}
-                      onChange={(e) => handleDimensionChange('friccaoPersonagem', Number(e.target.value))}
-                      className="w-full h-0.5 bg-white/5 rounded appearance-none cursor-pointer accent-[#d2af5a]"
-                    />
-                  </div>
-
-                  {/* LTV/CAC */}
-                  <div className="space-y-0.5">
-                    <div className="flex justify-between items-center text-[6.5px] font-mono text-white/55 leading-none">
-                      <span>LTV/CAC:</span>
-                      <b className="text-white font-mono font-bold text-[6.5px]">{ltvCac.toFixed(1)}x</b>
-                    </div>
-                    <input
-                      type="range"
-                      min="1"
-                      max="10"
-                      step="0.5"
-                      value={ltvCac}
-                      onChange={(e) => handleDimensionChange('ltvCac', Number(e.target.value))}
-                      className="w-full h-0.5 bg-white/5 rounded appearance-none cursor-pointer accent-[#d2af5a]"
-                    />
-                  </div>
-
-                  {/* Dopamina */}
-                  <div className="space-y-0.5">
-                    <div className="flex justify-between items-center text-[6.5px] font-mono text-white/55 leading-none">
-                      <span>Custo Dopaminérgico:</span>
-                      <b className="text-white font-mono font-bold text-[6.5px]">{custoDopaminergico}%</b>
-                    </div>
-                    <input
-                      type="range"
-                      min="10"
-                      max="100"
-                      step="5"
-                      value={custoDopaminergico}
-                      onChange={(e) => handleDimensionChange('custoDopaminergico', Number(e.target.value))}
-                      className="w-full h-0.5 bg-white/5 rounded appearance-none cursor-pointer accent-[#d2af5a]"
-                    />
-                  </div>
-
-                  {/* TDBD */}
-                  <div className="space-y-0.5">
-                    <div className="flex justify-between items-center text-[6.5px] font-mono text-white/55 leading-none">
-                      <span>TDBD (Dados %):</span>
-                      <b className="text-white font-mono font-bold text-[6.5px]">{tdbd}%</b>
-                    </div>
-                    <input
-                      type="range"
-                      min="10"
-                      max="100"
-                      step="5"
-                      value={tdbd}
-                      onChange={(e) => handleDimensionChange('tdbd', Number(e.target.value))}
-                      className="w-full h-0.5 bg-white/5 rounded appearance-none cursor-pointer accent-[#d2af5a]"
-                    />
-                  </div>
-
-                  {/* Amígdala */}
-                  <div className="space-y-0.5">
-                    <div className="flex justify-between items-center text-[6.5px] font-mono text-white/55 leading-none">
-                      <span>Sequestro Amígdala:</span>
-                      <b className="text-white font-mono font-bold text-[6.5px]">{sequestroAmigdala}%</b>
-                    </div>
-                    <input
-                      type="range"
-                      min="10"
-                      max="100"
-                      step="5"
-                      value={sequestroAmigdala}
-                      onChange={(e) => handleDimensionChange('sequestroAmigdala', Number(e.target.value))}
-                      className="w-full h-0.5 bg-white/5 rounded appearance-none cursor-pointer accent-[#d2af5a]"
-                    />
-                  </div>
-                </div>
-
-                {/* Botões de Ativação do Simulador */}
-                <div className="flex items-center gap-2 pt-0.5 select-none font-mono">
+              {/* Rodapé: Botões de Ação */}
+              <div className="pt-2 border-t border-white/5 flex items-center justify-between shrink-0 relative z-10 select-none">
+                <span className="text-[7.5px] font-mono text-emerald-400/60 font-semibold flex items-center gap-1">
+                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-ping"></span>
+                  Sincronizado com os Sliders do Painel
+                </span>
+                
+                <div className="flex gap-2">
                   <button
-                    id="run-sim-btn"
-                    onClick={handleRunMarketSim}
-                    disabled={simRunning}
-                    className="px-2 py-1.5 bg-black/40 hover:bg-[#d2af5a]/10 disabled:bg-white/5 disabled:text-white/20 border border-[#d2af5a]/20 hover:border-[#d2af5a]/60 text-white/80 hover:text-[#d2af5a] font-mono text-[8px] font-bold rounded-lg transition-all duration-200 flex items-center gap-1 cursor-pointer shrink-0"
+                    onClick={() => {
+                      const pitchCopy = ebitda === 85
+                        ? "Eu trago a calma e resiliência extrema de 8 anos salvando vidas em UTI para desintegrar a ilusão dos gurus de palco, aplicando tomada de decisão baseada em dados reais (TDBD) para blindar seu negócio e sua sanidade contra o caos competitivo."
+                        : `Mesclando minha base com negócios e tecnologia, eu crio uma fortaleza de tomada de decisão baseada em dados reais, quebrando a barreira da cópia genérica com processos auditáveis e integridade absoluta de pessoa para pessoa.`;
+                      navigator.clipboard.writeText(pitchCopy);
+                      alert("Argumento de Venda de Ouro copiado com sucesso!");
+                    }}
+                    className="px-2.5 py-1.5 bg-white/5 hover:bg-white/10 border border-white/10 text-white/80 hover:text-white font-mono text-[8px] font-bold rounded-lg transition-all cursor-pointer flex items-center gap-1"
                   >
-                    <Play className={`h-2.5 w-2.5 ${simRunning ? 'animate-spin text-[#d2af5a]' : 'text-[#d2af5a]'}`} />
-                    {simRunning ? 'RODANDO...' : 'CALCULAR IVRS'}
+                    <Copy className="h-2.5 w-2.5" />
+                    Copiar Pitch
                   </button>
 
                   <button
                     onClick={() => {
                       setIsXequeMateModalOpen(true)
-                      setTimeout(() => runAudit(), 100)
                     }}
-                    className="px-2 py-1.5 bg-[#d2af5a]/15 hover:bg-[#d2af5a]/25 border border-[#d2af5a]/40 hover:border-[#d2af5a] text-[#d2af5a] hover:text-white font-mono text-[8px] font-bold rounded-lg transition-all duration-200 flex items-center gap-1 cursor-pointer shrink-0 animate-pulse"
+                    className="px-2.5 py-1.5 bg-[#d2af5a]/10 hover:bg-[#d2af5a]/25 border border-[#d2af5a]/30 hover:border-[#d2af5a]/60 text-[#d2af5a] font-mono text-[8px] font-bold rounded-lg transition-all cursor-pointer flex items-center gap-1"
                   >
                     <Sparkles className="h-2.5 w-2.5 text-[#d2af5a]" />
-                    🔍 XEQUE-MATE CONCORRENCIAL
+                    Recalibrar Posicionamento
                   </button>
                 </div>
               </div>
-
-              {/* Coluna Direita: Orbe Holográfico / Terminal Concorrencial (42% largura) */}
-              <div className="flex-1 flex flex-col justify-between space-y-1.5 overflow-hidden">
-                
-                {/* Abas do Painel Direito */}
-                <div className="flex items-center justify-between border-b border-white/5 pb-1 select-none">
-                  <span className="text-[6.5px] font-mono text-white/45 uppercase tracking-widest leading-none">Auditória Concorrencial</span>
-                  <div className="flex gap-1">
-                    <button 
-                      onClick={() => setRightPanelTab('orb')} 
-                      className={`px-1.5 py-0.5 rounded-[4px] text-[6px] font-mono border uppercase tracking-wider transition-all ${rightPanelTab === 'orb' ? 'bg-[#d2af5a]/15 text-[#d2af5a] border-[#d2af5a]/30 font-bold' : 'bg-black/45 text-white/30 border-white/5 hover:border-white/10'}`}
-                    >
-                      Orbe IVRS
-                    </button>
-                    <button 
-                      onClick={() => setRightPanelTab('terminal')} 
-                      className={`px-1.5 py-0.5 rounded-[4px] text-[6px] font-mono border uppercase tracking-wider transition-all ${rightPanelTab === 'terminal' ? 'bg-[#d2af5a]/15 text-[#d2af5a] border-[#d2af5a]/30 font-bold' : 'bg-black/45 text-white/30 border-white/5 hover:border-white/10'}`}
-                    >
-                      Terminal
-                    </button>
-                  </div>
-                </div>
-
-                {/* Conteúdo da Aba Direita */}
-                {rightPanelTab === 'orb' ? (
-                  /* ORBE HOLOGRÁFICO IVRS ATIVO E REATIVO */
-                  <div className="flex-1 flex flex-col justify-center items-center relative overflow-hidden bg-black/30 border border-white/5 rounded-xl py-1 select-none">
-                    <svg className="w-[105px] h-[105px] glow-orb-glass relative mt-0.5" viewBox="0 0 100 100">
-                      <defs>
-                        <radialGradient id="holoCoreIVRSHome" cx="35%" cy="35%" r="65%">
-                          <stop offset="0%" stopColor="#ffffff" stopOpacity="0.9" />
-                          <stop offset="40%" stopColor="#fffbf2" stopOpacity="0.65" />
-                          <stop offset="85%" stopColor="#d2af5a" stopOpacity="0.5" />
-                          <stop offset="100%" stopColor="#0c0a07" stopOpacity="0" />
-                        </radialGradient>
-                        <radialGradient id="goldHomeOrbBorder" cx="50%" cy="50%" r="50%">
-                          <stop offset="90%" stopColor="#d2af5a" stopOpacity="0.1" />
-                          <stop offset="98%" stopColor="#d2af5a" stopOpacity="0.75" />
-                          <stop offset="100%" stopColor="#ffffff" stopOpacity="0.9" />
-                        </radialGradient>
-                      </defs>
-
-                      {/* Anéis e Órbitas Externas do Holo-Orb */}
-                      <circle cx="50" cy="50" r="44" fill="none" stroke="#d2af5a" strokeWidth="0.4" strokeDasharray="3,6" className="orbit-rotate-fast" opacity="0.2" />
-                      <circle cx="50" cy="50" r="28" fill="#d2af5a" fillOpacity="0.04" stroke="url(#goldHomeOrbBorder)" strokeWidth="0.6" />
-
-                      {/* Eixos Grid e Órbitas Rotativas */}
-                      <g className="orbit-rotate-fast" opacity="0.5">
-                        <ellipse cx="50" cy="50" rx="28" ry="8" fill="none" stroke={simScenario === 'gurus' ? '#ef4444' : '#d2af5a'} strokeWidth="0.5" />
-                        <ellipse cx="50" cy="50" rx="8" ry="28" fill="none" stroke={simScenario === 'gurus' ? '#ef4444' : '#d2af5a'} strokeWidth="0.5" />
-                      </g>
-                      <g className="orbit-rotate-slow" opacity="0.4">
-                        <ellipse cx="50" cy="50" rx="28" ry="16" fill="none" stroke={simScenario === 'gurus' ? '#ef4444' : '#d2af5a'} strokeWidth="0.5" />
-                        <ellipse cx="50" cy="50" rx="16" ry="28" fill="none" stroke={simScenario === 'gurus' ? '#ef4444' : '#d2af5a'} strokeWidth="0.5" />
-                      </g>
-
-                      {/* Núcleo do Orbe reativo ao IVRS Score */}
-                      <circle 
-                        cx="50" 
-                        cy="50" 
-                        r={Math.min(26, Math.max(9, (ivrsScoreVal / 100) * 26))} 
-                        fill={simScenario === 'gurus' ? 'rgba(239, 68, 68, 0.45)' : 'url(#holoCoreIVRSHome)'} 
-                        className="transition-all duration-500" 
-                      />
-                      
-                      {/* Texto com o Score no Orbe */}
-                      <text x="50" y="53" fill="#ffffff" fontSize="9" fontWeight="900" textAnchor="middle" className="ai-text-pulse font-mono tracking-wider">
-                        {ivrsScoreVal}%
-                      </text>
-
-                      {/* Scanline de Telemetria */}
-                      <line x1="20" y1="50" x2="80" y2="50" stroke="#ffffff" strokeWidth="0.6" className="base-scan" opacity="0.4" />
-                    </svg>
-                    <span className="text-[6.5px] font-mono text-white/35 uppercase tracking-widest leading-none mt-1.5 animate-pulse">HOLO-MATRIX IVRS ACTIVE</span>
-                  </div>
-                ) : (
-                  /* TERMINAL DE LOGS AUDITÁVEIS */
-                  <div 
-                    ref={simLogRef}
-                    className="flex-1 bg-[#050507] border border-white/5 rounded-xl p-2 font-mono text-[7.5px] text-[#d2af5a]/95 space-y-0.5 overflow-y-auto ipb-thinscroll text-left leading-relaxed"
-                  >
-                    {marketLogs.length === 0 ? (
-                      <div className="text-white/20 italic pt-6 text-center leading-normal">
-                        Aguardando ativação...<br/>
-                        Inicie a simulação para escanear a vantagem concorrencial real.
-                      </div>
-                    ) : (
-                      marketLogs.map((log, idx) => (
-                        <div key={idx}>
-                          <span className="text-white/20 font-sans mr-1">[{new Date().toLocaleTimeString()}]</span>
-                          {log}
-                        </div>
-                      ))
-                    )}
-                  </div>
-                )}
-
-                {/* Painel de Resultados do Contra-Xeque-Mate */}
-                <div className="grid grid-cols-3 gap-1 bg-[#d2af5a]/5 p-1 rounded-lg border border-[#d2af5a]/15 text-center shrink-0">
-                  <div>
-                    <span className="text-[6px] text-white/45 uppercase font-mono block">Engodo Mágico</span>
-                    <span className="text-[8.5px] font-bold text-red-400 font-mono">0% (Filtro)</span>
-                  </div>
-                  <div>
-                    <span className="text-[6px] text-white/45 uppercase font-mono block">Rastreabilidade</span>
-                    <span className="text-[8.5px] font-bold text-emerald-400 font-mono">100% Auditável</span>
-                  </div>
-                  <div>
-                    <span className="text-[6px] text-white/45 uppercase font-mono block">Confiança Real</span>
-                    <span className="text-[8.5px] font-bold text-[#d2af5a] font-mono">{simFinished ? '98%' : '74%'}</span>
-                  </div>
-                </div>
-              </div>
-
+              
             </div>
-          </div>
+          )}
 
         </div>
 
