@@ -493,48 +493,69 @@ export function InteractiveCockpit() {
             {/* Layout Interno em Duas Colunas */}
             <div className="flex-1 flex gap-3 pt-2 overflow-hidden items-stretch">
               
-              {/* Coluna Esquerda: Seleções de Pilares, Sliders e Botão de Ativação (58% largura) */}
-              <div className="w-[58%] flex flex-col justify-between text-left space-y-2 overflow-visible shrink-0 pr-1 border-r border-white/5">
+              {/* Coluna Esquerda: Painel 6D de Esforço & Sliders Avançados (58% largura) */}
+              <div className="w-[58%] flex flex-col justify-between text-left space-y-1.5 overflow-visible shrink-0 pr-1 border-r border-white/5">
                 
-                {/* Seletores do Diferencial Humano */}
-                <div className="space-y-1">
-                  <span className="block text-[7px] font-mono text-white/45 uppercase tracking-widest">Escolha a Vantagem Competitiva Real (Fator Humano)</span>
+                {/* 6D Metrics Mini-Grid */}
+                <div className="space-y-1 select-none">
+                  <span className="block text-[6.8px] font-mono text-white/45 uppercase tracking-widest leading-none">
+                    Métricas de Esforço Real & Blindagem 6D
+                  </span>
                   <div className="grid grid-cols-3 gap-1">
-                    <button
-                      onClick={() => setCompFactor('transparencia')}
-                      className={`py-1 rounded text-[7px] font-mono font-bold uppercase border transition cursor-pointer leading-tight text-center ${compFactor === 'transparencia' ? 'bg-[#d2af5a] text-black border-[#d2af5a] shadow-[0_0_8px_rgba(210,175,90,0.4)]' : 'bg-black/40 text-white/55 border-white/10 hover:border-[#d2af5a]/40'}`}
-                    >
-                      Realidade (Sem Filtro)
-                    </button>
-                    <button
-                      onClick={() => setCompFactor('evidencia')}
-                      className={`py-1 rounded text-[7px] font-mono font-bold uppercase border transition cursor-pointer leading-tight text-center ${compFactor === 'evidencia' ? 'bg-[#d2af5a] text-black border-[#d2af5a] shadow-[0_0_8px_rgba(210,175,90,0.4)]' : 'bg-black/40 text-white/55 border-white/10 hover:border-[#d2af5a]/40'}`}
-                    >
-                      Processo (Evidências)
-                    </button>
-                    <button
-                      onClick={() => setCompFactor('auditoria')}
-                      className={`py-1 rounded text-[7px] font-mono font-bold uppercase border transition cursor-pointer leading-tight text-center ${compFactor === 'auditoria' ? 'bg-[#d2af5a] text-black border-[#d2af5a] shadow-[0_0_8px_rgba(210,175,90,0.4)]' : 'bg-black/40 text-white/55 border-white/10 hover:border-[#d2af5a]/40'}`}
-                    >
-                      Técnico (Fato vs Hype)
-                    </button>
+                    <div className="p-1 rounded bg-black/40 border border-white/5 flex flex-col justify-between">
+                      <span className="text-[5.5px] font-mono text-white/45 uppercase">D1: Execução</span>
+                      <span className="text-[7.8px] font-bold font-mono text-[#d2af5a]">{d1SalesHours}h/dia</span>
+                    </div>
+                    <div className="p-1 rounded bg-black/40 border border-white/5 flex flex-col justify-between">
+                      <span className="text-[5.5px] font-mono text-white/45 uppercase">D2: Intel</span>
+                      <span className="text-[7.8px] font-bold font-mono text-[#d2af5a]">{d2IntelHours}h/dia</span>
+                    </div>
+                    <div className="p-1 rounded bg-black/40 border border-white/5 flex flex-col justify-between">
+                      <span className="text-[5.5px] font-mono text-white/45 uppercase">D3: Monitoria</span>
+                      <span className="text-[7.8px] font-bold font-mono text-[#d2af5a]">{d3ContentDensity}%</span>
+                    </div>
+                    <div className="p-1 rounded bg-black/40 border border-white/5 flex flex-col justify-between">
+                      <span className="text-[5.5px] font-mono text-white/45 uppercase">D4: SLA</span>
+                      <span className="text-[7.8px] font-bold font-mono text-[#d2af5a]">{d4HumanSla}m</span>
+                    </div>
+                    <div className="p-1 rounded bg-black/40 border border-white/5 flex flex-col justify-between">
+                      <span className="text-[5.5px] font-mono text-white/45 uppercase">D5: Rastreio</span>
+                      <span className="text-[7.8px] font-bold font-mono text-[#d2af5a]">{d5Traceability}%</span>
+                    </div>
+                    <div className="p-1 rounded bg-black/40 border border-white/5 flex flex-col justify-between">
+                      <span className="text-[5.5px] font-mono text-white/45 uppercase">D6: Imunidade</span>
+                      <span className="text-[7.8px] font-bold font-mono text-[#d2af5a]">{d6HypeImmunity}%</span>
+                    </div>
                   </div>
                 </div>
 
-                {/* Slider de Esforço Real (Suor Aplicado) */}
-                <div className="space-y-0.5 select-none">
-                  <div className="flex justify-between items-center text-[7.5px] font-mono text-white/50">
-                    <span>Métrica de Esforço Real (Suor Aplicado):</span>
-                    <b className="text-white font-mono">{effortValue}%</b>
+                {/* Sliders rápidos da Home */}
+                <div className="space-y-1 select-none">
+                  <div className="flex justify-between items-center text-[7px] font-mono text-white/55 leading-none">
+                    <span>Ajustar D1 (Prospecção Diária):</span>
+                    <b className="text-white font-mono font-bold">{d1SalesHours}h/dia</b>
                   </div>
                   <input
                     type="range"
-                    min="10"
-                    max="100"
+                    min="1"
+                    max="12"
+                    step="1"
+                    value={d1SalesHours}
+                    onChange={(e) => setD1SalesHours(Number(e.target.value))}
+                    className="w-full h-0.5 bg-white/5 rounded appearance-none cursor-pointer accent-[#d2af5a]"
+                  />
+                  <div className="flex justify-between items-center text-[7px] font-mono text-white/55 leading-none">
+                    <span>Ajustar D4 (SLA Resposta):</span>
+                    <b className="text-white font-mono font-bold">{d4HumanSla} min</b>
+                  </div>
+                  <input
+                    type="range"
+                    min="5"
+                    max="180"
                     step="5"
-                    value={effortValue}
-                    onChange={(e) => setEffortValue(Number(e.target.value))}
-                    className="w-full h-1 bg-white/5 rounded-lg appearance-none cursor-pointer accent-[#d2af5a]"
+                    value={d4HumanSla}
+                    onChange={(e) => setD4HumanSla(Number(e.target.value))}
+                    className="w-full h-0.5 bg-white/5 rounded appearance-none cursor-pointer accent-[#d2af5a]"
                   />
                 </div>
 
@@ -847,92 +868,133 @@ export function InteractiveCockpit() {
                     </div>
                   </div>
 
-                  {/* Seção 2: Seus Fatores Reais de Operação */}
-                  <div className="flex flex-col gap-4 border-t border-white/5 pt-4">
+                  {/* Seção 2: As 6 Dimensões Operacionais do Esforço Real */}
+                  <div className="flex flex-col gap-3.5 border-t border-white/5 pt-4">
                     <span className="text-[#d2af5a] text-[9.5px] font-mono font-bold uppercase tracking-wider flex items-center gap-1.5 select-none">
                       <Flame className="h-3.5 w-3.5 text-amber-500" />
-                      2. Seus Fatores Reais (Verdade Nua e Crua)
+                      2. Configurar as 6 Dimensões de Esforço Real (Fatos)
                     </span>
 
-                    {/* Slider Horas */}
-                    <div className="flex flex-col gap-1">
-                      <div className="flex justify-between items-center text-[10px] font-mono select-none">
-                        <span className="text-white/60">Esforço Real (Horas de estudo/trabalho por dia):</span>
-                        <b className="text-white font-bold">{hoursPerDay} horas/dia</b>
+                    {/* D1 */}
+                    <div className="flex flex-col gap-0.5 bg-black/25 p-2.5 border border-white/5 rounded-xl">
+                      <div className="flex justify-between items-center text-[9px] font-mono select-none">
+                        <span className="text-white/80 font-bold">D1: Execução de Vendas (Sales outreach)</span>
+                        <b className="text-[#d2af5a] font-mono font-bold">{d1SalesHours} horas/dia</b>
                       </div>
                       <input
                         type="range"
                         min="1"
                         max="12"
                         step="1"
-                        value={hoursPerDay}
-                        onChange={(e) => setHoursPerDay(Number(e.target.value))}
-                        className="w-full h-1 bg-white/5 rounded-lg appearance-none cursor-pointer accent-[#d2af5a] select-none"
+                        value={d1SalesHours}
+                        onChange={(e) => setD1SalesHours(Number(e.target.value))}
+                        className="w-full h-1 bg-white/5 rounded appearance-none cursor-pointer accent-[#d2af5a] select-none"
                       />
-                    </div>
-
-                    {/* Slider Conversão */}
-                    <div className="flex flex-col gap-1">
-                      <div className="flex justify-between items-center text-[10px] font-mono select-none">
-                        <span className="text-white/60">Taxa de Conversão Realista Esperada:</span>
-                        <b className="text-white font-bold">{conversionRate}%</b>
-                      </div>
-                      <input
-                        type="range"
-                        min="0.1"
-                        max="15.0"
-                        step="0.1"
-                        value={conversionRate}
-                        onChange={(e) => setConversionRate(Number(e.target.value))}
-                        className="w-full h-1 bg-white/5 rounded-lg appearance-none cursor-pointer accent-[#d2af5a] select-none"
-                      />
-                      <span className="text-[7.5px] font-mono text-white/30 leading-tight uppercase select-none">
-                        *Benchmarks de vendas reais de mercado saudável orbitam entre 1% e 3%. Valores muito altos diminuem o score de maturidade matemática.
+                      <span className="text-[7.5px] text-white/35 font-sans leading-none mt-1 select-none">
+                        *Como medir: Quantidade de horas de prospecção ativa de leads e reuniões comerciais por dia.
                       </span>
                     </div>
 
-                    {/* Toggles de Rastreabilidade e Suporte */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 select-none">
-                      
-                      {/* Rastreabilidade */}
-                      <div className="flex flex-col gap-1.5">
-                        <span className="text-[8px] font-mono text-white/40 uppercase">Rastreabilidade do Processo</span>
-                        <div className="flex bg-black/40 border border-white/5 p-0.5 rounded-lg">
-                          <button
-                            onClick={() => setTraceability('caixa_preta')}
-                            className={`flex-1 py-1 rounded text-[8px] font-mono font-bold uppercase transition ${traceability === 'caixa_preta' ? 'bg-red-950/40 text-red-400 border border-red-900/30' : 'text-white/40'}`}
-                          >
-                            Caixa Preta
-                          </button>
-                          <button
-                            onClick={() => setTraceability('aberto')}
-                            className={`flex-1 py-1 rounded text-[8px] font-mono font-bold uppercase transition ${traceability === 'aberto' ? 'bg-emerald-950/40 text-emerald-400 border border-emerald-900/30 font-bold' : 'text-white/40'}`}
-                          >
-                            100% Aberto
-                          </button>
-                        </div>
+                    {/* D2 */}
+                    <div className="flex flex-col gap-0.5 bg-black/25 p-2.5 border border-white/5 rounded-xl">
+                      <div className="flex justify-between items-center text-[9px] font-mono select-none">
+                        <span className="text-white/80 font-bold">D2: Inteligência Concorrencial (Market Intel)</span>
+                        <b className="text-[#d2af5a] font-mono font-bold">{d2IntelHours} horas/dia</b>
                       </div>
-
-                      {/* Suporte */}
-                      <div className="flex flex-col gap-1.5">
-                        <span className="text-[8px] font-mono text-white/40 uppercase">Canal de Atendimento</span>
-                        <div className="flex bg-black/40 border border-white/5 p-0.5 rounded-lg">
-                          <button
-                            onClick={() => setSupportType('robot')}
-                            className={`flex-1 py-1 rounded text-[8px] font-mono font-bold uppercase transition ${supportType === 'robot' ? 'bg-red-950/40 text-red-400 border border-red-900/30' : 'text-white/40'}`}
-                          >
-                            Bot de IA Básico
-                          </button>
-                          <button
-                            onClick={() => setSupportType('human')}
-                            className={`flex-1 py-1 rounded text-[8px] font-mono font-bold uppercase transition ${supportType === 'human' ? 'bg-emerald-950/40 text-emerald-400 border border-emerald-900/30 font-bold' : 'text-white/40'}`}
-                          >
-                            Humano Real
-                          </button>
-                        </div>
-                      </div>
-
+                      <input
+                        type="range"
+                        min="0"
+                        max="8"
+                        step="1"
+                        value={d2IntelHours}
+                        onChange={(e) => setD2IntelHours(Number(e.target.value))}
+                        className="w-full h-1 bg-white/5 rounded appearance-none cursor-pointer accent-[#d2af5a] select-none"
+                      />
+                      <span className="text-[7.5px] text-white/35 font-sans leading-none mt-1 select-none">
+                        *Como medir: Horas gastas por dia auditando preços, features e funis de marketing dos concorrentes.
+                      </span>
                     </div>
+
+                    {/* D3 */}
+                    <div className="flex flex-col gap-0.5 bg-black/25 p-2.5 border border-white/5 rounded-xl">
+                      <div className="flex justify-between items-center text-[9px] font-mono select-none">
+                        <span className="text-white/80 font-bold">D3: Densidade de Monitoria (Mentorship Ratio)</span>
+                        <b className="text-[#d2af5a] font-mono font-bold">{d3ContentDensity}%</b>
+                      </div>
+                      <input
+                        type="range"
+                        min="10"
+                        max="100"
+                        step="5"
+                        value={d3ContentDensity}
+                        onChange={(e) => setD3ContentDensity(Number(e.target.value))}
+                        className="w-full h-1 bg-white/5 rounded appearance-none cursor-pointer accent-[#d2af5a] select-none"
+                      />
+                      <span className="text-[7.5px] text-white/35 font-sans leading-none mt-1 select-none">
+                        *Como medir: Proporção de materiais, aulas gravadas e reuniões de mentoria entregues vs. promessas rasas.
+                      </span>
+                    </div>
+
+                    {/* D4 */}
+                    <div className="flex flex-col gap-0.5 bg-black/25 p-2.5 border border-white/5 rounded-xl">
+                      <div className="flex justify-between items-center text-[9px] font-mono select-none">
+                        <span className="text-white/80 font-bold">D4: SLA de Resposta Humana (Human Response)</span>
+                        <b className="text-[#d2af5a] font-mono font-bold">{d4HumanSla} minutos</b>
+                      </div>
+                      <input
+                        type="range"
+                        min="5"
+                        max="180"
+                        step="5"
+                        value={d4HumanSla}
+                        onChange={(e) => setD4HumanSla(Number(e.target.value))}
+                        className="w-full h-1 bg-white/5 rounded appearance-none cursor-pointer accent-[#d2af5a] select-none"
+                      />
+                      <span className="text-[7.5px] text-white/35 font-sans leading-none mt-1 select-none">
+                        *Como medir: SLA médio em minutos que um especialista real leva para responder dúvidas críticas de leads/clientes.
+                      </span>
+                    </div>
+
+                    {/* D5 */}
+                    <div className="flex flex-col gap-0.5 bg-black/25 p-2.5 border border-white/5 rounded-xl">
+                      <div className="flex justify-between items-center text-[9px] font-mono select-none">
+                        <span className="text-white/80 font-bold">D5: Rastreabilidade de Funil (CRM Integrity)</span>
+                        <b className="text-[#d2af5a] font-mono font-bold">{d5Traceability}%</b>
+                      </div>
+                      <input
+                        type="range"
+                        min="10"
+                        max="100"
+                        step="5"
+                        value={d5Traceability}
+                        onChange={(e) => setD5Traceability(Number(e.target.value))}
+                        className="w-full h-1 bg-white/5 rounded appearance-none cursor-pointer accent-[#d2af5a] select-none"
+                      />
+                      <span className="text-[7.5px] text-white/35 font-sans leading-none mt-1 select-none">
+                        *Como medir: Percentual de interações de vendas e acompanhamento registradas ativamente no CRM sem "achismos".
+                      </span>
+                    </div>
+
+                    {/* D6 */}
+                    <div className="flex flex-col gap-0.5 bg-black/25 p-2.5 border border-white/5 rounded-xl">
+                      <div className="flex justify-between items-center text-[9px] font-mono select-none">
+                        <span className="text-white/80 font-bold">D6: Imunidade a Hype & Filtro de Ruído</span>
+                        <b className="text-[#d2af5a] font-mono font-bold">{d6HypeImmunity}%</b>
+                      </div>
+                      <input
+                        type="range"
+                        min="10"
+                        max="100"
+                        step="5"
+                        value={d6HypeImmunity}
+                        onChange={(e) => setD6HypeImmunity(Number(e.target.value))}
+                        className="w-full h-1 bg-white/5 rounded appearance-none cursor-pointer accent-[#d2af5a] select-none"
+                      />
+                      <span className="text-[7.5px] text-white/35 font-sans leading-none mt-1 select-none">
+                        *Como medir: Resistência interna de processos corporativos contra modas do mercado e táticas insustentáveis.
+                      </span>
+                    </div>
+
                   </div>
 
                 </div>
