@@ -57,27 +57,17 @@ export function InteractiveCockpit() {
   const [calibrationSource, setCalibrationSource] = useState<'ia' | 'manual'>('ia')
   const [aiVerdict, setAiVerdict] = useState<string>('Aguardando simulação inteligente...')
   const [aiVerdictStatus, setAiVerdictStatus] = useState<'pending' | 'approved' | 'rejected'>('pending')
-  
-  // Novos Estados IA-Agentica (Modo Descoberta)
-  const [modalSubTab, setModalSubTab] = useState<'simulator' | 'discovery'>('simulator')
-  const [discoveryProfile, setDiscoveryProfile] = useState<'zero' | 'pivot' | 'saas' | null>(null)
-  const [discoveryStep, setDiscoveryStep] = useState<number>(1)
-  const [q1Answer, setQ1Answer] = useState<string>('')
-  const [q2Answer, setQ2Answer] = useState<string>('')
-  const [q3Answer, setQ3Answer] = useState<string>('')
-  const [isGeneratingDiscovery, setIsGeneratingDiscovery] = useState<boolean>(false)
-  const [discoveryResult, setDiscoveryResult] = useState<any | null>(null)
 
   // Estados do Novo Simulador Xeque-Mate Avançado 6D (Modal Popup)
   const [isXequeMateModalOpen, setIsXequeMateModalOpen] = useState<boolean>(false)
   const [magicPromise, setMagicPromise] = useState<string>('Fature R$ 10.000 em 7 dias com Robô de Vendas Automático')
   const [customPromise, setCustomPromise] = useState<string>('')
   // As 6 Dimensões Reais de Esforço e Vantagem Competitiva (D1 a D6)
-  const [d1SalesHours, setD1SalesHours] = useState<number>(8) // D1: Execução de Vendas (horas/dia)
-  const [d2IntelHours, setD2IntelHours] = useState<number>(6) // D2: Inteligência Concorrencial (horas/dia)
-  const [d3ContentDensity, setD3ContentDensity] = useState<number>(95) // D3: Densidade de Monitoria (%)
+  const [d1SalesHours, setD1SalesHours] = useState<number>(80) // D1: Margem EBITDA (%)
+  const [d2IntelHours, setD2IntelHours] = useState<number>(6) // D2: LTV/CAC Ratio
+  const [d3ContentDensity, setD3ContentDensity] = useState<number>(95) // D3: Transparência de Dados (TDBD %)
   const [d4HumanSla, setD4HumanSla] = useState<number>(10) // D4: Tempo de Resposta Humana (minutos)
-  const [d5Traceability, setD5Traceability] = useState<number>(95) // D5: Rastreabilidade de Funil (%)
+  const [d5Traceability, setD5Traceability] = useState<number>(30) // D5: Carga Cognitiva / Fadiga de Decisão (%)
   const [d6HypeImmunity, setD6HypeImmunity] = useState<number>(95) // D6: Imunidade a Hype/Filtro de Ruído (%)
 
   const [auditLogs, setAuditLogs] = useState<string[]>([])
@@ -103,84 +93,33 @@ export function InteractiveCockpit() {
     return Math.min(Math.round(score), 100)
   }, [currentPromise, d6HypeImmunity])
 
-  // --- MODELAGEM NEUROPSICOLÓGICA DE NEGÓCIOS (FÓRMULA IVRS) ---
-  
-  // 1. Desgaste por Dissociação Cognitiva (Friction of Character): 100 - D6
-  const friccaoPersonagem = useMemo(() => {
-    return Math.round(100 - d6HypeImmunity)
-  }, [d6HypeImmunity])
-
-  // 2. Custo Dopaminérgico do Produto: baseada no glitter concorrente
-  const custoDopaminergico = useMemo(() => {
-    return Math.round(glitterIndex * 0.95)
-  }, [glitterIndex])
-
-  // 3. Índice de Sequestro da Amígdala (Risco de Liderança): Reatividade baseada no tempo de SLA humano e no CRM
-  const sequestroAmigdala = useMemo(() => {
-    const slaDreno = d4HumanSla > 60 ? 65 : 20
-    const traceBonus = Math.round((100 - d5Traceability) * 0.45)
-    return Math.min(100, Math.round(slaDreno + traceBonus))
-  }, [d4HumanSla, d5Traceability])
-
-  // 4. Indicadores de Mercado e TDBD
-  const ebitdaMargin = useMemo(() => {
-    if (simScenario === 'app_vendas') return 0.45 // 45%
-    if (simScenario === 'gurus') return 0.15 // 15% (taxa de reembolso massiva)
-    if (simScenario === 'saas_bi') return 0.35 // 35%
-    return 0.30 // custom
-  }, [simScenario])
-
-  const ltvCac = useMemo(() => {
-    if (simScenario === 'app_vendas') return 4.5
-    if (simScenario === 'gurus') return 1.2 // baixo LTV devido ao arrependimento de compra
-    if (simScenario === 'saas_bi') return 3.2
-    return 3.0
-  }, [simScenario])
-
-  const TDBDIndex = useMemo(() => {
-    const crmVal = d5Traceability * 0.6
-    const intelVal = (d2IntelHours / 8) * 100 * 0.4
-    return Math.min(100, Math.round(crmVal + intelVal))
-  }, [d5Traceability, d2IntelHours])
-
-  const cargaCognitiva = useMemo(() => {
-    return Math.round((friccaoPersonagem * 0.4) + (sequestroAmigdala * 0.6))
-  }, [friccaoPersonagem, sequestroAmigdala])
-
-  // 5. Scientific IVRS Score (Índice de Vantagem Real Sustentável)
-  const ivrsScore = useMemo(() => {
-    const numerator = (ebitdaMargin * ltvCac) * TDBDIndex
-    const denominator = cargaCognitiva + glitterIndex + 1
-    const raw = (numerator / denominator) * 8.5
-    return Math.max(10, Math.min(100, Math.round(raw)))
-  }, [ebitdaMargin, ltvCac, TDBDIndex, cargaCognitiva, glitterIndex])
-
   const ivc6DScore = useMemo(() => {
-    // Normalização das 6 Dimensões para escala 0-100:
-    const valD1 = (d1SalesHours / 12) * 100
-    const valD2 = (d2IntelHours / 8) * 100
-    const valD3 = d3ContentDensity
-    // SLA Humano: menor é melhor. 5min = 100, 180min = 10.
-    const valD4 = Math.max(10, Math.round(100 - ((d4HumanSla - 5) / 175) * 90))
-    const valD5 = d5Traceability
-    const valD6 = d6HypeImmunity
+    const ebitda = d1SalesHours / 100
+    const ltvCac = d2IntelHours
+    const tdbd = d3ContentDensity / 100
+    const cargaCognitiva = d5Traceability / 100
+    const d6Immunity = d6HypeImmunity // Hype immunity
+    const indiceIlusao = (100 - d6Immunity) / 100 // Ilusao is inverse of immunity
 
-    // Cálculo da Média Geométrica das 6 dimensões
-    const product = Math.max(1, valD1 * valD2 * valD3 * valD4 * valD5 * valD6)
-    const geometricMean = Math.pow(product, 1/6)
+    const num = (ebitda * ltvCac) * tdbd
+    const den = Math.max(0.1, cargaCognitiva + indiceIlusao)
+    const ivrs = num / den
+
+    // Normalize IVRS to a beautiful score out of 100%
+    const normalizedScore = Math.min(100, Math.max(10, Math.round((ivrs / 8.0) * 100)))
 
     // Penalidade concorrencial de Glitter
     const penalty = Math.max(0, (glitterIndex - 30) * 0.12)
 
-    return Math.max(10, Math.min(100, Math.round(geometricMean - penalty)))
-  }, [d1SalesHours, d2IntelHours, d3ContentDensity, d4HumanSla, d5Traceability, d6HypeImmunity, glitterIndex])
+    return Math.max(10, Math.min(100, Math.round(normalizedScore - penalty)))
+  }, [d1SalesHours, d2IntelHours, d3ContentDensity, d5Traceability, d6HypeImmunity, glitterIndex])
 
   const radarPoints = useMemo(() => {
-    const r1 = (d1SalesHours / 12) * 80
-    const r2 = (d2IntelHours / 8) * 80
+    const r1 = (d1SalesHours / 100) * 80
+    const r2 = (d2IntelHours / 10) * 80
     const r3 = (d3ContentDensity / 100) * 80
     const r4 = (Math.max(10, Math.round(100 - ((d4HumanSla - 5) / 175) * 90)) / 100) * 80
-    const r5 = (d5Traceability / 100) * 80
+    const r5 = ((100 - d5Traceability) / 100) * 80
     const r6 = (d6HypeImmunity / 100) * 80
 
     const p1x = 100 + r1 * Math.cos(0)
@@ -376,7 +315,7 @@ export function InteractiveCockpit() {
   }
 
   // AI Strategic Copilot Q&A handler
-  const askCopilot = (questionKey: 'famosos' | 'sla' | 'math') => {
+  const askCopilot = (questionKey: 'famosos' | 'sla' | 'math' | 'zero' | 'pivot' | 'saas') => {
     setCopilotLoading(true)
     setCopilotAnswer(null)
     setTimeout(() => {
@@ -392,72 +331,33 @@ export function InteractiveCockpit() {
 👉 Enquanto a concorrência famosa esconde-se atrás de robôs genéricos de WhatsApp com SLA de resposta de mais de 3 horas (180 min), você garante um tempo de resposta humana especializada de apenas ${d4HumanSla} minutos (D4).
 👉 Adicione um compromisso contratual de SLA de resposta no seu pitch comercial. Isso transforma promessa em fato 100% auditável pelo CRM integrado do IPB.`
       } else if (questionKey === 'math') {
-        answer = `🤖 [Xeque-Mate AI Advisor]: Qual a lógica matemática do IVC-6D Score?
+        answer = `🤖 [Xeque-Mate AI Advisor]: Qual a lógica matemática do IVC-6D / IVRS Score?
         
-👉 O Índice de Vantagem Competitiva (IVC) utiliza uma média geométrica rigorosa: IVC = (D1 * D2 * D3 * D4_Norm * D5 * D6)^(1/6).
-👉 A média geométrica prova matematicamente que, se qualquer dimensão for zero (por exemplo, zero suporte humano ou zero monitoria de conteúdo), o score geral desaba para zero. Isso é o Contra-Xeque-Mate sobre as caixas pretas de mercado.`
+👉 O Índice de Vantagem Real Sustentável (IVRS) utiliza uma fórmula de sustentabilidade: 
+   IVRS = ((Margem EBITDA * LTV/CAC) * TDBD) / (Carga Cognitiva + Índice de Ilusão).
+👉 A matemática prova que a margem financeira e retenção (LTV/CAC) multiplicadas pela Transparência de Dados (TDBD) desmoronam se a Carga Cognitiva do Fundador (Fadiga) e o Índice de Ilusão de Personagem forem muito altos. É a união da matemática de negócios com a sanidade mental.`
+      } else if (questionKey === 'zero') {
+        answer = `🤖 [Advisor de Vantagem AI - Perfil: Começar do Zero]:
+        
+👉 ALERTA ANTICÓPIA: Não copie o palco alheio! O algoritmo mapeou o seu "Eu Integral" (sua história de vida + vivências práticas).
+👉 INTERSEÇÃO IMEDIATA: A IA cruzou seu histórico e identificou sua intersecção única. Por exemplo, unir Fisioterapia Intensivista (8 anos de UTI) com Business e Tecnologia cria um oceano azul exclusivo onde ninguém consegue competir.
+👉 DIAGNÓSTICO TDBD: O nicho ideal gerado tem 80% menos concorrência no mercado brasileiro hoje. Invista em Auditoria Aberta, Rastreabilidade e SLA humano.`
+      } else if (questionKey === 'pivot') {
+        answer = `🤖 [Advisor de Vantagem AI - Perfil: Repensar & Pivotar]:
+        
+👉 DESCONSTRUÇÃO DE ATIVOS: Cansado do modelo antigo de atuação profissional? Não jogue seus anos de dedicação no lixo!
+👉 TRANSIÇÃO ESTRATÉGICA: Sua capacidade extrema de liderança sob pressão (UTI), gestão de rituais e auditoria clínica são ativos extremamente escassos no mercado de Business e Tecnologia de Automação Digital.
+👉 BLINDAGEM OPERACIONAL: A IA redesenhou sua rota: aplique Inteligência Concorrencial (D2) e CRM em startups de saúde mental de alta complexidade. Vantagem Competitiva Real imediata.`
+      } else if (questionKey === 'saas') {
+        answer = `🤖 [Advisor de Vantagem AI - Perfil: Criador de Micro-SaaS]:
+        
+👉 FRICTION SCRAPING (Mineração de Ódio): A IA vasculhou reclamações sobre softwares concorrentes. A maior dor é a Fadiga de Decisão do Líder devido a sistemas complexos de alta Carga Cognitiva (${d5Traceability}%).
+👉 TERRITÓRIO ÚNICO: Crie um micro-SaaS focado exclusivamente em simplificar e automatizar o indicador de Transparência de Dados (TDBD) para pequenas empresas.
+👉 RETENÇÃO E LTV: Usabilidade extremamente leve, baixa carga cognitiva, com um toque de suporte especializado humano. Seu IVRS decolará.`
       }
       setCopilotAnswer(answer)
       setCopilotLoading(false)
     }, 600)
-  }
-
-  // AI Socratic Discovery Generator
-  const handleGenerateDiscovery = () => {
-    setIsGeneratingDiscovery(true)
-    setTimeout(() => {
-      let result = {
-        nicho: '',
-        intersecao: '',
-        pontoCego: '',
-        posicionamento: '',
-        d1: 8,
-        d2: 6,
-        d3: 95,
-        d4: 10,
-        d5: 95,
-        d6: 95
-      }
-
-      if (discoveryProfile === 'zero') {
-        result.nicho = 'Território Eu Integral (Absoluto Zero)'
-        result.intersecao = `Fusão anticópia baseada no seu principal superpoder ("${q2Answer || 'Habilidade Natural'}"), combinada com a indignação contra a superficialidade do mercado ("${q3Answer || 'Mentiras de mercado'}"). Isso cria um Oceano Azul onde seu bastidor é sua maior força comercial.`
-        result.pontoCego = 'O mercado está saturado de automações frias e robôs genéricos. Seu ponto cego de mercado TDBD mapeou que 90% dos concorrentes falham no SLA humano e na entrega real.'
-        result.posicionamento = `Uma operação focada em ${q2Answer || 'sua facilidade natural'}, operando com 100% de transparência e suporte personalizado. Nós eliminamos o hype e garantimos dados reais de pessoa para pessoa.`
-        result.d1 = 7
-        result.d2 = 5
-        result.d3 = 90
-        result.d4 = 15
-        result.d5 = 90
-        result.d6 = 95
-      } else if (discoveryProfile === 'pivot') {
-        result.nicho = 'Posicionamento Transição de Ativos Puros'
-        result.intersecao = `Extração de ativos puros de liderança e disciplina sob pressão de sua carreira anterior em "${q1Answer || 'Sua bagagem'}". Em vez de jogar o passado fora, recombinamos sua resiliência com a indignação por "${q3Answer || 'falta de ética'}".`
-        result.pontoCego = 'Concorrentes gastam 95% do tempo no criativo bonito do Meta Ads. Seu diferencial TDBD auditado será a robustez de processos estruturados e SLA humano real.'
-        result.posicionamento = `Transposição de processos cirúrgicos e liderança sob pressão aplicados a ${q2Answer || 'soluções corporativas'}. Segurança, rastreabilidade e verdade absoluta contra o hype raso da internet.`
-        result.d1 = 9
-        result.d2 = 6
-        result.d3 = 95
-        result.d4 = 10
-        result.d5 = 95
-        result.d6 = 95
-      } else if (discoveryProfile === 'saas') {
-        result.nicho = 'Micro-SaaS com Blindagem Mental'
-        result.intersecao = `Mineração de fricção executiva ("${q1Answer || 'Fadiga de decisão'}"). Seu software combate o excesso de burocracia focando em usabilidade leve e suporte humano de alta empatia.`
-        result.pontoCego = 'Player gigantes possuem ERPs complexos que geram burnout no usuário e suporte frio por robôs. Seu ponto cego é usabilidade focada em DDDM com SLA rápido.'
-        result.posicionamento = `Uma plataforma micro-SaaS que resolve a dor crônica de ${q3Answer || 'micro-gestão'}, oferecendo usabilidade limpa e suporte por especialistas humanos em até 10 minutos.`
-        result.d1 = 8
-        result.d2 = 7
-        result.d3 = 95
-        result.d4 = 5
-        result.d5 = 95
-        result.d6 = 90
-      }
-
-      setDiscoveryResult(result)
-      setIsGeneratingDiscovery(false)
-      setDiscoveryStep(3)
-    }, 1800)
   }
 
   const runAudit = () => {
@@ -1266,30 +1166,6 @@ export function InteractiveCockpit() {
                 <p className="text-white/45 text-[10px] font-mono leading-relaxed mt-1">
                   Escanear, auditar e vencer o "efeito brilho" e as falsas promessas de mercado com dados, processo e suor.
                 </p>
-
-                {/* Abas de Modo (Simulador vs Descoberta IA) */}
-                <div className="flex gap-2 mt-3 select-none">
-                  <button
-                    onClick={() => setModalSubTab('simulator')}
-                    className={`px-3 py-1 rounded-lg text-[9px] font-mono border uppercase tracking-wider transition-all cursor-pointer ${
-                      modalSubTab === 'simulator'
-                        ? 'bg-[#d2af5a]/20 text-[#d2af5a] border-[#d2af5a]/45 font-bold shadow-[0_0_10px_rgba(210,175,90,0.15)]'
-                        : 'bg-black/40 text-white/45 border-white/5 hover:border-white/10 hover:text-white'
-                    }`}
-                  >
-                    🛰️ Simulador Concorrencial & IVRS
-                  </button>
-                  <button
-                    onClick={() => setModalSubTab('discovery')}
-                    className={`px-3 py-1 rounded-lg text-[9px] font-mono border uppercase tracking-wider transition-all cursor-pointer ${
-                      modalSubTab === 'discovery'
-                        ? 'bg-[#d2af5a]/20 text-[#d2af5a] border-[#d2af5a]/45 font-bold shadow-[0_0_10px_rgba(210,175,90,0.15)]'
-                        : 'bg-black/40 text-white/45 border-white/5 hover:border-white/10 hover:text-white'
-                    }`}
-                  >
-                    🧠 Modo Descoberta de Diferencial (IA)
-                  </button>
-                </div>
               </div>
               <button 
                 onClick={() => setIsXequeMateModalOpen(false)}
@@ -1302,753 +1178,436 @@ export function InteractiveCockpit() {
             {/* Modal Content */}
             <div className="p-6 overflow-y-auto max-h-[500px] bg-black/25 flex flex-col gap-6">
               
-              {modalSubTab === 'simulator' ? (
-                <>
-                  {/* Grid de Entrada e Análise */}
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch">
-                    
-                    {/* COLUNA ESQUERDA: Configuração de Cenários (Inputs) */}
-                    <div className="flex flex-col gap-5 bg-white/[0.01] border border-white/5 p-5 rounded-2xl">
-                      
-                      {/* Seção 1: Descreva o Seu Modelo de Negócio (Entrada da IA) */}
-                      <div className="flex flex-col gap-2">
-                        <span className="text-[#d2af5a] text-[9.5px] font-mono font-bold uppercase tracking-wider flex items-center gap-1.5 select-none">
-                          <Layers className="h-3.5 w-3.5 text-[#d2af5a]" />
-                          1. Descreva o Seu Modelo de Negócio / Diferencial Humano (IA)
-                        </span>
-                        <textarea
-                          value={businessModelInput}
-                          onChange={(e) => {
-                            setBusinessModelInput(e.target.value);
-                            setSimScenario('custom');
-                            setCalibrationSource('manual');
-                          }}
-                          rows={3}
-                          placeholder="Ex: Um aplicativo de monitoria de concorrência com suporte por especialistas humanos..."
-                          className="bg-black/50 border border-white/10 rounded-xl px-3 py-2 text-xs text-white placeholder-white/20 focus:outline-none focus:border-[#d2af5a]/50 font-sans leading-relaxed resize-none w-full"
-                        />
-                        
-                        {/* Templates/Tags Rápidas de IA */}
-                        <div className="flex flex-wrap gap-1.5 select-none mt-1">
-                          <button 
-                            onClick={() => handleScenarioChange('app_vendas')}
-                            className={`px-2 py-0.5 rounded text-[7px] font-mono border transition-all ${simScenario === 'app_vendas' ? 'bg-[#d2af5a]/15 text-[#d2af5a] border-[#d2af5a]/40 font-bold' : 'bg-black/35 text-white/40 border-white/5 hover:border-white/10'}`}
-                          >
-                            [🔍 Minha Operação (Vinha/IPB)]
-                          </button>
-                          <button 
-                            onClick={() => handleScenarioChange('gurus')}
-                            className={`px-2 py-0.5 rounded text-[7px] font-mono border transition-all ${simScenario === 'gurus' ? 'bg-red-500/15 text-red-400 border-red-500/40 font-bold' : 'bg-black/35 text-white/40 border-white/5 hover:border-white/10'}`}
-                          >
-                            [👥 Concorrente Guru (Hype)]
-                          </button>
-                          <button 
-                            onClick={() => handleScenarioChange('saas_bi')}
-                            className={`px-2 py-0.5 rounded text-[7px] font-mono border transition-all ${simScenario === 'saas_bi' ? 'bg-blue-500/15 text-blue-400 border-blue-500/40 font-bold' : 'bg-black/35 text-white/40 border-white/5 hover:border-white/10'}`}
-                          >
-                            [💻 Concorrente SaaS]
-                          </button>
-                        </div>
-                        {calibrationSource === 'manual' && (
-                          <span className="text-[7.5px] font-mono text-amber-400 animate-pulse mt-1 select-none block">
-                            ⚠️ Descrição alterada. Clique em [SIMULAR 6D] na Home para re-calibrar a IA.
-                          </span>
-                        )}
-                      </div>
-
-                      {/* Seção 2: A Promessa Concorrente (Hype) */}
-                      <div className="flex flex-col gap-2">
-                        <span className="text-[#d2af5a] text-[9.5px] font-mono font-bold uppercase tracking-wider flex items-center gap-1.5 select-none">
-                          <Sparkles className="h-3.5 w-3.5 text-[#d2af5a] animate-pulse" />
-                          1. A Promessa Mágica Concorrente (Efeito Brilho)
-                        </span>
-                        
-                        {/* Templates rápidos */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-1.5 select-none">
-                          {[
-                            'Fature R$ 10.000 em 7 dias com Robô do WhatsApp',
-                            'Aprenda Persuasão Avançada em 4 Horas sem Esforço',
-                            'Garantia de 100% de Aprovação em Concursos sem Estudo',
-                            'Estudos de Competição Inteligente 100% no Piloto Automático'
-                          ].map((promise, idx) => (
-                            <button
-                              key={idx}
-                              onClick={() => {
-                                setMagicPromise(promise);
-                                setCustomPromise('');
-                              }}
-                              className={`px-2 py-1.5 rounded-lg text-[9px] font-mono text-left transition border leading-tight ${magicPromise === promise && !customPromise ? 'bg-[#d2af5a]/15 text-[#d2af5a] border-[#d2af5a]/40' : 'bg-black/35 text-white/50 border-white/5 hover:border-white/15'}`}
-                            >
-                              {promise}
-                            </button>
-                          ))}
-                        </div>
-
-                        {/* Custom Input */}
-                        <div className="flex flex-col gap-1 mt-1">
-                          <span className="text-[8px] font-mono text-white/30 uppercase select-none">Ou digite uma promessa específica:</span>
-                          <input
-                            type="text"
-                            value={customPromise}
-                            placeholder="Ex: Fique rico investindo 5 minutos por dia..."
-                            onChange={(e) => setCustomPromise(e.target.value)}
-                            className="bg-black/50 border border-white/10 rounded-lg px-3 py-2 text-xs text-white placeholder-white/20 focus:outline-none focus:border-[#d2af5a]/50"
-                          />
-                        </div>
-                      </div>
-
-                      {/* Seção 2: As 6 Dimensões Operacionais do Esforço Real */}
-                      <div className="flex flex-col gap-3.5 border-t border-white/5 pt-4">
-                        <div className="flex justify-between items-center bg-black/40 px-2 py-1.5 rounded-xl border border-white/5 select-none">
-                          <span className="text-[7.5px] font-mono text-white/50">FONTE DE CALIBRAGEM:</span>
-                          <span className={`px-2 py-0.5 rounded text-[7px] font-mono font-bold border ${
-                            calibrationSource === 'ia' 
-                              ? 'bg-[#d2af5a]/15 text-[#d2af5a] border-[#d2af5a]/30 animate-pulse' 
-                              : 'bg-amber-500/10 text-amber-400 border-amber-500/20'
-                          }`}>
-                            {calibrationSource === 'ia' ? '✨ AUTO-CALIBRADO POR IA' : '✍️ AJUSTADO MANUALMENTE'}
-                          </span>
-                        </div>
-
-                        <span className="text-[#d2af5a] text-[9.5px] font-mono font-bold uppercase tracking-wider flex items-center gap-1.5 select-none">
-                          <Flame className="h-3.5 w-3.5 text-amber-500" />
-                          2. Configurar as 6 Dimensões de Esforço Real (Fatos)
-                        </span>
-
-                        {/* D1 */}
-                        <div className="flex flex-col gap-0.5 bg-black/25 p-2.5 border border-white/5 rounded-xl">
-                          <div className="flex justify-between items-center text-[9px] font-mono select-none">
-                            <span className="text-white/80 font-bold">D1: Execução de Vendas (Sales outreach)</span>
-                            <b className="text-[#d2af5a] font-mono font-bold">{d1SalesHours} horas/dia</b>
-                          </div>
-                          <input
-                            type="range"
-                            min="1"
-                            max="12"
-                            step="1"
-                            value={d1SalesHours}
-                            onChange={(e) => handleDimensionChange('d1', Number(e.target.value))}
-                            className="w-full h-1 bg-white/5 rounded appearance-none cursor-pointer accent-[#d2af5a] select-none"
-                          />
-                          <span className="text-[7.5px] text-white/35 font-sans leading-none mt-1 select-none">
-                            *Como medir: Quantidade de horas de prospecção ativa de leads e reuniões comerciais por dia.
-                          </span>
-                        </div>
-
-                        {/* D2 */}
-                        <div className="flex flex-col gap-0.5 bg-black/25 p-2.5 border border-white/5 rounded-xl">
-                          <div className="flex justify-between items-center text-[9px] font-mono select-none">
-                            <span className="text-white/80 font-bold">D2: Inteligência Concorrencial (Market Intel)</span>
-                            <b className="text-[#d2af5a] font-mono font-bold">{d2IntelHours} horas/dia</b>
-                          </div>
-                          <input
-                            type="range"
-                            min="0"
-                            max="8"
-                            step="1"
-                            value={d2IntelHours}
-                            onChange={(e) => handleDimensionChange('d2', Number(e.target.value))}
-                            className="w-full h-1 bg-white/5 rounded appearance-none cursor-pointer accent-[#d2af5a] select-none"
-                          />
-                          <span className="text-[7.5px] text-white/35 font-sans leading-none mt-1 select-none">
-                            *Como medir: Horas gastas por dia auditando preços, features e funis de marketing dos concorrentes.
-                          </span>
-                        </div>
-
-                        {/* D3 */}
-                        <div className="flex flex-col gap-0.5 bg-black/25 p-2.5 border border-white/5 rounded-xl">
-                          <div className="flex justify-between items-center text-[9px] font-mono select-none">
-                            <span className="text-white/80 font-bold">D3: Densidade de Monitoria (Mentorship Ratio)</span>
-                            <b className="text-[#d2af5a] font-mono font-bold">{d3ContentDensity}%</b>
-                          </div>
-                          <input
-                            type="range"
-                            min="10"
-                            max="100"
-                            step="5"
-                            value={d3ContentDensity}
-                            onChange={(e) => handleDimensionChange('d3', Number(e.target.value))}
-                            className="w-full h-1 bg-white/5 rounded appearance-none cursor-pointer accent-[#d2af5a] select-none"
-                          />
-                          <span className="text-[7.5px] text-white/35 font-sans leading-none mt-1 select-none">
-                            *Como medir: Proporção de materiais, aulas gravadas e reuniões de mentoria entregues vs. promessas rasas.
-                          </span>
-                        </div>
-
-                        {/* D4 */}
-                        <div className="flex flex-col gap-0.5 bg-black/25 p-2.5 border border-white/5 rounded-xl">
-                          <div className="flex justify-between items-center text-[9px] font-mono select-none">
-                            <span className="text-white/80 font-bold">D4: SLA de Resposta Humana (Human Response)</span>
-                            <b className="text-[#d2af5a] font-mono font-bold">{d4HumanSla} minutos</b>
-                          </div>
-                          <input
-                            type="range"
-                            min="5"
-                            max="180"
-                            step="5"
-                            value={d4HumanSla}
-                            onChange={(e) => handleDimensionChange('d4', Number(e.target.value))}
-                            className="w-full h-1 bg-white/5 rounded appearance-none cursor-pointer accent-[#d2af5a] select-none"
-                          />
-                          <span className="text-[7.5px] text-white/35 font-sans leading-none mt-1 select-none">
-                            *Como medir: SLA médio em minutos que um especialista real leva para responder dúvidas críticas de leads/clientes.
-                          </span>
-                        </div>
-
-                        {/* D5 */}
-                        <div className="flex flex-col gap-0.5 bg-black/25 p-2.5 border border-white/5 rounded-xl">
-                          <div className="flex justify-between items-center text-[9px] font-mono select-none">
-                            <span className="text-white/80 font-bold">D5: Rastreabilidade de Funil (CRM Integrity)</span>
-                            <b className="text-[#d2af5a] font-mono font-bold">{d5Traceability}%</b>
-                          </div>
-                          <input
-                            type="range"
-                            min="10"
-                            max="100"
-                            step="5"
-                            value={d5Traceability}
-                            onChange={(e) => handleDimensionChange('d5', Number(e.target.value))}
-                            className="w-full h-1 bg-white/5 rounded appearance-none cursor-pointer accent-[#d2af5a] select-none"
-                          />
-                          <span className="text-[7.5px] text-white/35 font-sans leading-none mt-1 select-none">
-                            *Como medir: Percentual de interações de vendas e acompanhamento registradas ativamente no CRM sem "achismos".
-                          </span>
-                        </div>
-
-                        {/* D6 */}
-                        <div className="flex flex-col gap-0.5 bg-black/25 p-2.5 border border-white/5 rounded-xl">
-                          <div className="flex justify-between items-center text-[9px] font-mono select-none">
-                            <span className="text-white/80 font-bold">D6: Imunidade a Hype & Filtro de Ruído</span>
-                            <b className="text-[#d2af5a] font-mono font-bold">{d6HypeImmunity}%</b>
-                          </div>
-                          <input
-                            type="range"
-                            min="10"
-                            max="100"
-                            step="5"
-                            value={d6HypeImmunity}
-                            onChange={(e) => handleDimensionChange('d6', Number(e.target.value))}
-                            className="w-full h-1 bg-white/5 rounded appearance-none cursor-pointer accent-[#d2af5a] select-none"
-                          />
-                          <span className="text-[7.5px] text-white/35 font-sans leading-none mt-1 select-none">
-                            *Como medir: Resistência interna de processos corporativos contra modas do mercado e táticas insustentáveis.
-                          </span>
-                        </div>
-
-                      </div>
-
-                    </div>
-
-                    {/* COLUNA DIREITA: Visualização 6D Radar, Pitch de Vendas & Terminal */}
-                    <div className="flex flex-col gap-4 justify-between bg-white/[0.01] border border-white/5 p-4 rounded-2xl overflow-hidden">
-                      
-                      {/* AI Strategic Verdict Banner */}
-                      <div className={`p-3 rounded-xl border flex flex-col gap-1 transition-all select-none ${
-                        aiVerdictStatus === 'approved' 
-                          ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400' 
-                          : aiVerdictStatus === 'rejected'
-                          ? 'bg-red-500/10 border-red-500/30 text-red-400'
-                          : 'bg-[#d2af5a]/5 border-[#d2af5a]/20 text-[#d2af5a]/90'
-                      }`}>
-                        <div className="flex items-center gap-1.5">
-                          <Bot className="h-3.5 w-3.5" />
-                          <span className="text-[8px] font-bold font-mono uppercase tracking-widest">VERDITO ESTRATÉGICO DA IA</span>
-                        </div>
-                        <p className="text-[9px] font-mono leading-normal mt-0.5">
-                          {aiVerdict}
-                        </p>
-                      </div>
-
-                      {/* Título da Telemetria Visual */}
-                      <div className="flex justify-between items-center select-none">
-                        <span className="text-[#d2af5a] text-[9px] font-mono font-bold uppercase tracking-wider flex items-center gap-1.5">
-                          <Activity className="h-3.5 w-3.5 text-[#d2af5a]" />
-                          3. Arena de Cristalização 6D (Radar de Fatos vs. Hype)
-                        </span>
-                        <div className="flex gap-2 text-[6.5px] font-mono">
-                          <span className="flex items-center gap-1"><span className="h-1.5 w-1.5 rounded-full bg-[#d2af5a]" /> Seu Negócio</span>
-                          <span className="flex items-center gap-1"><span className="h-1.5 w-1.5 rounded-full bg-red-500" /> Concorrente</span>
-                        </div>
-                      </div>
-
-                      {/* ARENA DE CRISTALIZAÇÃO: O Radar SVG Reativo */}
-                      <div className="flex items-center justify-center bg-black/60 p-2.5 border border-white/5 rounded-2xl relative select-none">
-                        
-                        <svg viewBox="0 0 200 200" className="w-[185px] h-[185px] drop-shadow-[0_0_10px_rgba(210,175,90,0.15)]">
-                          {/* Concentric rings representam intervalos de 25%, 50%, 75%, 100% */}
-                          <circle cx="100" cy="100" r="20" className="stroke-white/5 fill-none" strokeWidth="0.5" strokeDasharray="1,2" />
-                          <circle cx="100" cy="100" r="40" className="stroke-white/5 fill-none" strokeWidth="0.5" strokeDasharray="1,2" />
-                          <circle cx="100" cy="100" r="60" className="stroke-white/10 fill-none" strokeWidth="0.5" />
-                          <circle cx="100" cy="100" r="80" className="stroke-[#d2af5a]/10 fill-none" strokeWidth="0.8" />
-
-                          {/* Eixos Grid e Linhas Radiais de Conexão */}
-                          {Array.from({ length: 6 }).map((_, idx) => {
-                            const angle = (idx * Math.PI) / 3;
-                            const targetX = 100 + 80 * Math.cos(angle);
-                            const targetY = 100 + 80 * Math.sin(angle);
-                            return (
-                              <line
-                                key={idx}
-                                x1="100"
-                                y1="100"
-                                x2={targetX}
-                                y2={targetY}
-                                className="stroke-white/5"
-                                strokeWidth="0.5"
-                              />
-                            );
-                          })}
-
-                          {/* Polígono Vermelho: O Concorrente Hype (Opaco, distorcido e fraco fora da D1) */}
-                          <polygon
-                            points={competitorRadarPoints}
-                            className="stroke-red-500/70 fill-red-500/15 transition-all duration-300"
-                            strokeWidth="1"
-                          />
-
-                          {/* Polígono Dourado: Sua Operação Real baseada nas 6 dimensões */}
-                          <polygon
-                            points={radarPoints}
-                            className="stroke-[#d2af5a] fill-[#d2af5a]/25 transition-all duration-500 shadow-[0_0_15px_#d2af5a]"
-                            strokeWidth="1.5"
-                          />
-
-                          {/* Lápis de Vértices e Tags de Dimensão */}
-                          <text x="180" y="103" className="fill-white/60 font-mono text-[5.5px] font-bold text-center leading-none">D1</text>
-                          <text x="135" y="180" className="fill-white/60 font-mono text-[5.5px] font-bold text-center leading-none">D2</text>
-                          <text x="50" y="180" className="fill-white/60 font-mono text-[5.5px] font-bold text-center leading-none">D3</text>
-                          <text x="10" y="103" className="fill-white/60 font-mono text-[5.5px] font-bold text-center leading-none">D4</text>
-                          <text x="50" y="23" className="fill-white/60 font-mono text-[5.5px] font-bold text-center leading-none">D5</text>
-                          <text x="135" y="23" className="fill-white/60 font-mono text-[5.5px] font-bold text-center leading-none">D6</text>
-                        </svg>
-
-                        {/* Badge do Score Geométrico */}
-                        <div className="absolute top-2 left-2 flex flex-col items-center bg-black/80 border border-[#d2af5a]/20 px-2 py-1 rounded-xl shadow-lg">
-                          <span className="text-[5.5px] font-mono text-white/40 uppercase leading-none">IVC-6D SCORE</span>
-                          <b className="text-[12px] font-mono font-bold text-[#d2af5a] mt-0.5">{ivc6DScore}%</b>
-                        </div>
-
-                        <div className="absolute top-2 right-2 flex flex-col items-center bg-black/80 border border-red-500/20 px-2 py-1 rounded-xl shadow-lg">
-                          <span className="text-[5.5px] font-mono text-white/40 uppercase leading-none">GLITTER INDEX</span>
-                          <b className="text-[12px] font-mono font-bold text-red-400 mt-0.5">{glitterIndex}%</b>
-                        </div>
-                      </div>
-
-                      {/* IVRS Formula and Indicators Breakdown */}
-                      <div className="grid grid-cols-2 gap-3 border border-[#d2af5a]/20 bg-black/55 p-3 rounded-xl select-none">
-                        {/* Coluna Esquerda: Dados de Negócios */}
-                        <div className="space-y-1.5 border-r border-white/5 pr-2.5 text-left">
-                          <span className="block text-[7.5px] font-bold font-mono text-[#d2af5a] uppercase tracking-wider">📊 Indicadores de Negócios</span>
-                          <div className="flex justify-between items-center text-[7.5px] font-mono text-white/70">
-                            <span>Margem EBITDA:</span>
-                            <span className="text-[#d2af5a] font-bold">{Math.round(ebitdaMargin * 100)}%</span>
-                          </div>
-                          <div className="flex justify-between items-center text-[7.5px] font-mono text-white/70">
-                            <span>Relação LTV/CAC:</span>
-                            <span className="text-[#d2af5a] font-bold">{ltvCac}x</span>
-                          </div>
-                          <div className="flex justify-between items-center text-[7.5px] font-mono text-white/70">
-                            <span>Tomada de Decisão (TDBD):</span>
-                            <span className="text-[#d2af5a] font-bold">{TDBDIndex}%</span>
-                          </div>
-                        </div>
-
-                        {/* Coluna Direita: Dados Neuropsicológicos */}
-                        <div className="space-y-1.5 pl-1.5 text-left">
-                          <span className="block text-[7.5px] font-bold font-mono text-red-400 uppercase tracking-wider">🧠 Indicadores Cognitivos</span>
-                          <div className="flex justify-between items-center text-[7.5px] font-mono text-white/70">
-                            <span>Fricção do Personagem:</span>
-                            <span className="text-red-400 font-bold">{friccaoPersonagem}%</span>
-                          </div>
-                          <div className="flex justify-between items-center text-[7.5px] font-mono text-white/70">
-                            <span>Custo Dopaminérgico (FOMO):</span>
-                            <span className="text-red-400 font-bold">{custoDopaminergico}%</span>
-                          </div>
-                          <div className="flex justify-between items-center text-[7.5px] font-mono text-white/70">
-                            <span>Sequestro de Amígdala:</span>
-                            <span className="text-red-400 font-bold">{sequestroAmigdala}%</span>
-                          </div>
-                        </div>
-
-                        {/* Rodapé: Vantagem Real Sustentável IVRS */}
-                        <div className="col-span-2 border-t border-white/5 pt-2 flex justify-between items-center">
-                          <div className="flex flex-col text-left">
-                            <span className="text-[8px] font-bold font-mono text-[#d2af5a] uppercase">IVRS: Vantagem Real Sustentável</span>
-                            <span className="text-[5.5px] text-white/35 font-sans leading-none mt-0.5">
-                              Fórmula: ((EBITDA * LTV/CAC) * TDBD) / (Carga Cognitiva + Ilusão)
-                            </span>
-                          </div>
-                          <div className="bg-[#d2af5a]/10 px-3 py-1 rounded-lg border border-[#d2af5a]/30 flex items-center gap-1">
-                            <span className="text-[12px] font-bold font-mono text-[#d2af5a]">{ivrsScore}%</span>
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* GERADOR DE ARGUMENTO DE VENDAS E PITCH (CONTRA-XEQUE-MATE) */}
-                      <div className="p-3 bg-[#d2af5a]/5 border border-[#d2af5a]/20 rounded-xl relative select-text">
-                        <span className="block text-[7.5px] font-mono text-[#d2af5a] font-bold uppercase tracking-widest mb-1 select-none">
-                          📢 GERADOR DE PITCH COMERCIAL CONTRA-XEQUE-MATE (DADOS REAIS):
-                        </span>
-                        <p className="text-white/85 text-[8.5px] leading-relaxed italic font-sans">
-                          "Ao apresentar para seu cliente ou parceiro, use o brilho do processo real: <b className="text-[#d2af5a] font-sans">Enquanto o mercado atua em caixa preta, com promessas de ganhos fáceis e suporte por robôs limitados, nós eliminamos toda dúvida abrindo o jogo: garantimos {d1SalesHours} horas diárias de execução direta (D1), tempo de resposta humano de {d4HumanSla} minutos (D4) e {d5Traceability}% de rastreabilidade completa no CRM (D5).</b> Escolha o processo real de pessoa para pessoa."
-                        </p>
-                        {/* Botão de Cópia Rápida */}
-                        <button
-                          onClick={() => {
-                            const text = `Enquanto o mercado atua em caixa preta com promessas de ganhos fáceis e suporte por robôs limitados, nós eliminamos toda dúvida abrindo o jogo: garantimos ${d1SalesHours} horas diárias de execução direta, tempo de resposta humano de ${d4HumanSla} minutos e ${d5Traceability}% de rastreabilidade completa no CRM. Escolha o processo real de pessoa para pessoa.`;
-                            navigator.clipboard.writeText(text);
-                            alert("Argumento de Vendas copiado para o clipboard com sucesso!");
-                          }}
-                          className="absolute top-1 right-2 text-[#d2af5a] hover:text-white transition font-mono text-[6.5px] font-bold uppercase cursor-pointer select-none"
-                        >
-                          [Copiar Argumento]
-                        </button>
-                      </div>
-
-                      {/* AI STRATEGIC COPILOT (XEQUE-MATE ADVISOR) */}
-                      <div className="flex flex-col gap-1.5 border border-[#d2af5a]/25 bg-[#d2af5a]/5 p-2.5 rounded-xl h-[175px] overflow-hidden relative">
-                        <div className="flex justify-between items-center text-[7.5px] font-mono uppercase select-none border-b border-white/5 pb-1 shrink-0">
-                          <span className="text-[#d2af5a] font-bold flex items-center gap-1">
-                            <Bot className="h-3 w-3 text-[#d2af5a]" />
-                            🤖 ADVISOR ESTRATÉGICO (COPIOT AI)
-                          </span>
-                          <div className="flex gap-1.5">
-                            <button onClick={() => askCopilot('famosos')} className="text-white/40 hover:text-[#d2af5a] transition font-mono text-[6.5px] font-bold uppercase">[Vencer Famosos]</button>
-                            <button onClick={() => askCopilot('sla')} className="text-white/40 hover:text-[#d2af5a] transition font-mono text-[6.5px] font-bold uppercase">[Provar SLA]</button>
-                            <button onClick={() => askCopilot('math')} className="text-white/40 hover:text-[#d2af5a] transition font-mono text-[6.5px] font-bold uppercase">[Lógica 6D]</button>
-                          </div>
-                        </div>
-                        <div className="flex-1 overflow-y-auto ipb-thinscroll font-mono text-[8px] text-white/90 leading-relaxed text-left">
-                          {copilotLoading ? (
-                            <div className="text-white/40 italic flex items-center justify-center h-full gap-2">
-                              <Sparkles className="h-3.5 w-3.5 text-[#d2af5a] animate-spin" />
-                              Consultando matriz preditiva 6D do IPB...
-                            </div>
-                          ) : copilotAnswer ? (
-                            <div className="whitespace-pre-line text-[#d2af5a]/95 bg-black/45 p-2 rounded border border-[#d2af5a]/15">
-                              {copilotAnswer}
-                            </div>
-                          ) : (
-                            <div className="text-white/30 italic pt-6 text-center leading-normal">
-                              Clique em um dos botões acima para acionar o Advisor AI.<br/>
-                              Ele formulará a resposta exata de Contra-Xeque-Mate com base nas 6 dimensões de esforço calibradas no painel esquerdo.
-                            </div>
-                          )}
-                        </div>
-                      </div>
-
-                      {/* Terminal de Auditoria NLP Concorrencial */}
-                      <div className="flex flex-col gap-1 overflow-hidden h-[95px] border-t border-white/5 pt-2">
-                        <div className="flex justify-between items-center text-[7.5px] font-mono uppercase select-none">
-                          <span className="text-white/40">Scanner NLP de Desconstrução Concorrencial:</span>
-                          <button
-                            onClick={runAudit}
-                            disabled={isAuditing}
-                            className="text-[#d2af5a] hover:underline font-bold transition flex items-center gap-1 cursor-pointer disabled:text-white/20"
-                          >
-                            <RefreshCw className={`h-2.5 w-2.5 ${isAuditing ? 'animate-spin text-[#d2af5a]' : 'text-[#d2af5a]'}`} />
-                            {isAuditing ? 'Auditando...' : 'Re-auditar Concorrente'}
-                          </button>
-                        </div>
-
-                        <div 
-                          ref={auditLogRef}
-                          className="flex-1 bg-[#050507] border border-white/5 rounded-xl p-2 font-mono text-[7.5px] text-[#d2af5a]/95 space-y-0.5 overflow-y-auto ipb-thinscroll leading-relaxed"
-                        >
-                          {auditLogs.length === 0 ? (
-                            <div className="text-white/20 italic pt-3 text-center leading-normal">
-                              Inicie a calibragem das 6 dimensões acima para rodar a auditoria de narrativa concorrencial.
-                            </div>
-                          ) : (
-                            auditLogs.map((log, idx) => (
-                              <div key={idx}>
-                                <span className="text-white/20 font-sans mr-1">[{new Date().toLocaleTimeString()}]</span>
-                                {log}
-                              </div>
-                            ))
-                          )}
-                        </div>
-                      </div>
-
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 border-t border-white/5 pt-4">
-                    <div className="p-3 bg-black/45 border border-white/5 rounded-xl space-y-1.5">
-                      <span className="text-red-400 text-[9px] font-mono font-bold uppercase block select-none">O "Efeito Brilho" Concorrente (Caixa Preta)</span>
-                      <ul className="text-white/60 text-[9.5px] space-y-1 list-disc pl-3">
-                        <li><b>Ganhos Rápidos:</b> Promessas de sucesso sem esforço e enriquecimento automatizado.</li>
-                        <li><b>Operação Oculta:</b> Algoritmos secretos e "caixas pretas" que impedem o usuário de auditar dados.</li>
-                        <li><b>Suporte Virtual:</b> Bots e robôs de chat genéricos que frustram na hora da dor.</li>
-                      </ul>
-                    </div>
-
-                    <div className="p-3 bg-[#d2af5a]/10 border border-[#d2af5a]/30 rounded-xl space-y-1.5">
-                      <span className="text-[#d2af5a] text-[9px] font-mono font-bold uppercase block select-none">Sua Vantagem Humana Prática (Com IPB)</span>
-                      <ul className="text-white/85 text-[9.5px] space-y-1 list-disc pl-3">
-                        <li><b>Verdade Radical:</b> Design de realidade que exibe os dias difíceis e diagnósticos técnicos.</li>
-                        <li><b>Rastreabilidade Total:</b> Metodologias abertas e consolidadas em fatos públicos.</li>
-                        <li><b>Empatia Prática:</b> Acesso a especialistas reais para suporte consultivo no momento de crise.</li>
-                      </ul>
-                    </div>
-                  </div>
-                </>
-              ) : (
-                /* MODO DESCOBERTA DE DIFERENCIAL INTERATIVO (IA-AGENTICA) */
-                <div className="flex flex-col gap-6 animate-in fade-in slide-in-from-bottom-5 duration-300">
+              {/* Grid de Entrada e Análise */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch">
+                
+                {/* COLUNA ESQUERDA: Configuração de Cenários (Inputs) */}
+                <div className="flex flex-col gap-5 bg-white/[0.01] border border-white/5 p-5 rounded-2xl">
                   
-                  {discoveryStep === 1 && (
-                    <div className="flex flex-col gap-4 text-center select-none">
-                      <div className="max-w-xl mx-auto space-y-1">
-                        <span className="text-[10px] font-bold font-mono text-[#d2af5a] tracking-widest uppercase">Modo Descoberta IA</span>
-                        <h3 className="text-white text-base font-bold">Quem é você no ecossistema de negócios hoje?</h3>
-                        <p className="text-white/40 text-[9.5px] font-sans">
-                          Nosso motor cognitivo cruzará seus dados e emoções com a realidade do Google Trends para construir seu Oceano Azul anticópia.
-                        </p>
-                      </div>
-
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-2">
-                        {/* Card 1 */}
-                        <div 
-                          onClick={() => {
-                            setDiscoveryProfile('zero');
-                            setDiscoveryStep(2);
-                            setQ1Answer(''); setQ2Answer(''); setQ3Answer('');
-                          }}
-                          className="p-5 rounded-2xl bg-black/55 border border-white/5 hover:border-[#d2af5a]/50 hover:bg-[#d2af5a]/5 transition-all duration-300 flex flex-col justify-between items-center text-center cursor-pointer group"
-                        >
-                          <Flame className="h-6 w-6 text-[#d2af5a] group-hover:scale-110 transition-transform animate-pulse" />
-                          <div className="space-y-1 mt-3">
-                            <span className="block text-[11px] font-bold text-white group-hover:text-[#d2af5a] transition">🚀 Absoluto Zero</span>
-                            <span className="block text-[8.5px] text-white/35 font-sans leading-relaxed">
-                              Não tenho ideias de negócios estruturadas. Quero mapear minha história de vida e habilidades naturais para achar meu território.
-                            </span>
-                          </div>
-                          <span className="text-[7.5px] font-mono text-[#d2af5a]/75 mt-4 group-hover:underline">Iniciar Jornada →</span>
-                        </div>
-
-                        {/* Card 2 */}
-                        <div 
-                          onClick={() => {
-                            setDiscoveryProfile('pivot');
-                            setDiscoveryStep(2);
-                            setQ1Answer(''); setQ2Answer(''); setQ3Answer('');
-                          }}
-                          className="p-5 rounded-2xl bg-black/55 border border-white/5 hover:border-[#d2af5a]/50 hover:bg-[#d2af5a]/5 transition-all duration-300 flex flex-col justify-between items-center text-center cursor-pointer group"
-                        >
-                          <RefreshCw className="h-6 w-6 text-[#d2af5a] group-hover:scale-110 transition-transform" />
-                          <div className="space-y-1 mt-3">
-                            <span className="block text-[11px] font-bold text-white group-hover:text-[#d2af5a] transition">🔄 Pivotar & Repensar</span>
-                            <span className="block text-[8.5px] text-white/35 font-sans leading-relaxed">
-                              Tenho bagagem profissional, mas estou exausto(a). Quero desestruturar meus ativos e aplicá-los em novas rotas digitais sem perdas.
-                            </span>
-                          </div>
-                          <span className="text-[7.5px] font-mono text-[#d2af5a]/75 mt-4 group-hover:underline">Iniciar Jornada →</span>
-                        </div>
-
-                        {/* Card 3 */}
-                        <div 
-                          onClick={() => {
-                            setDiscoveryProfile('saas');
-                            setDiscoveryStep(2);
-                            setQ1Answer(''); setQ2Answer(''); setQ3Answer('');
-                          }}
-                          className="p-5 rounded-2xl bg-black/55 border border-white/5 hover:border-[#d2af5a]/50 hover:bg-[#d2af5a]/5 transition-all duration-300 flex flex-col justify-between items-center text-center cursor-pointer group"
-                        >
-                          <Bot className="h-6 w-6 text-[#d2af5a] group-hover:scale-110 transition-transform" />
-                          <div className="space-y-1 mt-3">
-                            <span className="block text-[11px] font-bold text-white group-hover:text-[#d2af5a] transition">💻 Micro-SaaS / Recorrência</span>
-                            <span className="block text-[8.5px] text-white/35 font-sans leading-relaxed">
-                              Quero construir um software recorrente. Busco minar fricções e problemas insustentáveis de grandes concorrentes tradicionais.
-                            </span>
-                          </div>
-                          <span className="text-[7.5px] font-mono text-[#d2af5a]/75 mt-4 group-hover:underline">Iniciar Jornada →</span>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-
-                  {discoveryStep === 2 && (
-                    <div className="flex flex-col gap-4 max-w-2xl mx-auto w-full bg-black/45 border border-white/5 p-6 rounded-2xl">
-                      <div className="flex justify-between items-center border-b border-white/5 pb-2.5 select-none">
-                        <span className="text-[9px] font-bold font-mono text-[#d2af5a] uppercase">
-                          🧠 ENTREVISTA SOCRÁTICA IA: PERFIL - {discoveryProfile === 'zero' ? 'ABSOLUTO ZERO' : discoveryProfile === 'pivot' ? 'PIVOTAR ROTA' : 'CRIAR SAAS'}
-                        </span>
-                        <button 
-                          onClick={() => setDiscoveryStep(1)}
-                          className="text-white/40 hover:text-white font-mono text-[8px] uppercase cursor-pointer"
-                        >
-                          ← Voltar
-                        </button>
-                      </div>
-
-                      {/* Questão 1 */}
-                      <div className="flex flex-col gap-1.5 text-left">
-                        <label className="text-[9.5px] font-bold text-white select-none">
-                          {discoveryProfile === 'zero' && "1. Quais problemas difíceis ou desafios você já resolveu na marra em sua vida?"}
-                          {discoveryProfile === 'pivot' && "1. Qual a sua profissão/área atual e quantos anos você dedicou a ela?"}
-                          {discoveryProfile === 'saas' && "1. Qual o maior dreno de paciência ou fadiga mental que você sente ao usar softwares de mercado?"}
-                        </label>
-                        <textarea
-                          value={q1Answer}
-                          onChange={(e) => setQ1Answer(e.target.value)}
-                          rows={2}
-                          className="bg-black/60 border border-white/10 rounded-xl px-3 py-2 text-xs text-white placeholder-white/20 focus:outline-none focus:border-[#d2af5a]/50 font-sans resize-none"
-                          placeholder={
-                            discoveryProfile === 'zero' ? "Ex: Cuidei de familiares doentes, gerenciei orçamentos difíceis de casa..." :
-                            discoveryProfile === 'pivot' ? "Ex: 8 anos como Fisioterapeuta Intensivista em UTI de alta complexidade..." :
-                            "Ex: CRMs complexos que me exigem 20 cliques para cadastrar um lead e geram fadiga de decisão..."
-                          }
-                        />
-                      </div>
-
-                      {/* Questão 2 */}
-                      <div className="flex flex-col gap-1.5 text-left">
-                        <label className="text-[9.5px] font-bold text-white select-none">
-                          {discoveryProfile === 'zero' && "2. O que as pessoas costumam te elogiar e você acha super fácil/natural de fazer?"}
-                          {discoveryProfile === 'pivot' && "2. Quais as suas habilidades puras e invisíveis (ex: liderança sob estresse, calmaria em crises, etc.)?"}
-                          {discoveryProfile === 'saas' && "2. Onde você sente que os concorrentes do seu mercado falham neuropsicológicamente com os clientes?"}
-                        </label>
-                        <textarea
-                          value={q2Answer}
-                          onChange={(e) => setQ2Answer(e.target.value)}
-                          rows={2}
-                          className="bg-black/60 border border-white/10 rounded-xl px-3 py-2 text-xs text-white placeholder-white/20 focus:outline-none focus:border-[#d2af5a]/50 font-sans resize-none"
-                          placeholder={
-                            discoveryProfile === 'zero' ? "Ex: Sou ótimo em ouvir pessoas, organizar tarefas bagunçadas, planejar rotas..." :
-                            discoveryProfile === 'pivot' ? "Ex: Liderança sob pressão de vida ou morte, gestão rápida de recursos escassos..." :
-                            "Ex: Falta total de suporte humano, escondem-se atrás de robôs automáticos chatos..."
-                          }
-                        />
-                      </div>
-
-                      {/* Questão 3 */}
-                      <div className="flex flex-col gap-1.5 text-left">
-                        <label className="text-[9.5px] font-bold text-white select-none">
-                          {discoveryProfile === 'zero' && "3. Que tipo de atitude ou assunto te desperta indignação saudável no mercado hoje?"}
-                          {discoveryProfile === 'pivot' && "3. Por que você quer pivotar e o que mais te esgota no modelo atual?"}
-                          {discoveryProfile === 'saas' && "3. Se você pudesse simplificar um único processo para as pequenas empresas, qual seria?"}
-                        </label>
-                        <textarea
-                          value={q3Answer}
-                          onChange={(e) => setQ3Answer(e.target.value)}
-                          rows={2}
-                          className="bg-black/60 border border-white/10 rounded-xl px-3 py-2 text-xs text-white placeholder-white/20 focus:outline-none focus:border-[#d2af5a]/50 font-sans resize-none"
-                          placeholder={
-                            discoveryProfile === 'zero' ? "Ex: Mentiras na internet de enriquecimento fácil por gurus de marketing..." :
-                            discoveryProfile === 'pivot' ? "Ex: Falta de perspectiva de crescimento e esgotamento da mente do fundador..." :
-                            "Ex: O processo de acompanhar o andamento da monitoria das vendas do funil comercial..."
-                          }
-                        />
-                      </div>
-
-                      <button
-                        onClick={handleGenerateDiscovery}
-                        disabled={isGeneratingDiscovery || !q1Answer || !q2Answer || !q3Answer}
-                        className="w-full py-2.5 rounded-xl bg-[#d2af5a] hover:bg-[#c5a55a] text-black font-bold uppercase text-[9px] tracking-wider transition flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed select-none"
+                  {/* Seção 1: Descreva o Seu Modelo de Negócio (Entrada da IA) */}
+                  <div className="flex flex-col gap-2">
+                    <span className="text-[#d2af5a] text-[9.5px] font-mono font-bold uppercase tracking-wider flex items-center gap-1.5 select-none">
+                      <Layers className="h-3.5 w-3.5 text-[#d2af5a]" />
+                      1. Descreva o Seu Modelo de Negócio / Diferencial Humano (IA)
+                    </span>
+                    <textarea
+                      value={businessModelInput}
+                      onChange={(e) => {
+                        setBusinessModelInput(e.target.value);
+                        setSimScenario('custom');
+                        setCalibrationSource('manual');
+                      }}
+                      rows={3}
+                      placeholder="Ex: Um aplicativo de monitoria de concorrência com suporte por especialistas humanos..."
+                      className="bg-black/50 border border-white/10 rounded-xl px-3 py-2 text-xs text-white placeholder-white/20 focus:outline-none focus:border-[#d2af5a]/50 font-sans leading-relaxed resize-none w-full"
+                    />
+                    
+                    {/* Templates/Tags Rápidas de IA */}
+                    <div className="flex flex-wrap gap-1.5 select-none mt-1">
+                      <button 
+                        onClick={() => handleScenarioChange('app_vendas')}
+                        className={`px-2 py-0.5 rounded text-[7px] font-mono border transition-all ${simScenario === 'app_vendas' ? 'bg-[#d2af5a]/15 text-[#d2af5a] border-[#d2af5a]/40 font-bold' : 'bg-black/35 text-white/40 border-white/5 hover:border-white/10'}`}
                       >
-                        {isGeneratingDiscovery ? (
-                          <>
-                            <RefreshCw className="h-3.5 w-3.5 animate-spin text-black" />
-                            CRISTALIZANDO VANTAGEM ANTICÓPIA...
-                          </>
-                        ) : (
-                          <>
-                            <Sparkles className="h-3.5 w-3.5 text-black" />
-                            CRISTALIZAR MEU TERRITÓRIO ÚNICO (IA)
-                          </>
-                        )}
+                        [🔍 Minha Operação (Vinha/IPB)]
+                      </button>
+                      <button 
+                        onClick={() => handleScenarioChange('gurus')}
+                        className={`px-2 py-0.5 rounded text-[7px] font-mono border transition-all ${simScenario === 'gurus' ? 'bg-red-500/15 text-red-400 border-red-500/40 font-bold' : 'bg-black/35 text-white/40 border-white/5 hover:border-white/10'}`}
+                      >
+                        [👥 Concorrente Guru (Hype)]
+                      </button>
+                      <button 
+                        onClick={() => handleScenarioChange('saas_bi')}
+                        className={`px-2 py-0.5 rounded text-[7px] font-mono border transition-all ${simScenario === 'saas_bi' ? 'bg-blue-500/15 text-blue-400 border-blue-500/40 font-bold' : 'bg-black/35 text-white/40 border-white/5 hover:border-white/10'}`}
+                      >
+                        [💻 Concorrente SaaS]
                       </button>
                     </div>
-                  )}
+                    {calibrationSource === 'manual' && (
+                      <span className="text-[7.5px] font-mono text-amber-400 animate-pulse mt-1 select-none block">
+                        ⚠️ Descrição alterada. Clique em [SIMULAR 6D] na Home para re-calibrar a IA.
+                      </span>
+                    )}
+                  </div>
 
-                  {discoveryStep === 3 && discoveryResult && (
-                    <div className="flex flex-col gap-5 text-left animate-in zoom-in-95 duration-300 max-w-3xl mx-auto w-full">
-                      
-                      <div className="bg-emerald-500/10 border border-emerald-500/35 text-emerald-400 p-3 rounded-xl flex items-center gap-2 select-none">
-                        <CheckCircle className="h-4.5 w-4.5 text-emerald-400" />
-                        <span className="text-[10px] font-bold font-mono uppercase">Posicionamento Autêntico Anticópia Gerado com Sucesso!</span>
-                      </div>
-
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        
-                        {/* Coluna Esquerda: O Território Mapeado */}
-                        <div className="p-4 rounded-xl bg-black/45 border border-white/5 space-y-4">
-                          <div className="space-y-1">
-                            <span className="block text-[8px] font-bold font-mono text-[#d2af5a] uppercase">1. Matriz de Interseção Imediata (Eu Integral)</span>
-                            <p className="text-white/80 text-[9.5px] leading-relaxed font-sans">
-                              {discoveryResult.intersecao}
-                            </p>
-                          </div>
-
-                          <div className="space-y-1 border-t border-white/5 pt-3">
-                            <span className="block text-[8px] font-bold font-mono text-[#d2af5a] uppercase">2. Mapeamento do Ponto Cego do Mercado (TDBD)</span>
-                            <p className="text-white/80 text-[9.5px] leading-relaxed font-sans">
-                              {discoveryResult.pontoCego}
-                            </p>
-                          </div>
-                        </div>
-
-                        {/* Coluna Direita: Posicionamento Final e Botões */}
-                        <div className="p-4 rounded-xl border border-[#d2af5a]/30 bg-[#d2af5a]/0.03 flex flex-col justify-between">
-                          <div className="space-y-2">
-                            <div className="flex justify-between items-center">
-                              <span className="text-[9px] font-bold font-mono text-[#d2af5a] uppercase">🎯 Posicionamento Único e Autêntico</span>
-                              <span className="px-1.5 py-0.5 rounded text-[6.5px] font-mono font-bold bg-[#d2af5a]/10 border border-[#d2af5a]/30 text-[#d2af5a]">ANTICÓPIA</span>
-                            </div>
-                            <p className="text-white text-[10px] leading-relaxed italic font-sans font-medium">
-                              "{discoveryResult.posicionamento}"
-                            </p>
-                            <span className="block text-[8px] text-white/35 font-sans leading-relaxed">
-                              *Criptografia do Business: Este posicionamento está intrinsicamente ancorado à sua identidade humana, tornando cópias impossíveis.
-                            </span>
-                          </div>
-
-                          <div className="flex flex-col gap-2 mt-4">
-                            <button
-                              onClick={() => {
-                                setBusinessModelInput(discoveryResult.posicionamento);
-                                setD1SalesHours(discoveryResult.d1);
-                                setD2IntelHours(discoveryResult.d2);
-                                setD3ContentDensity(discoveryResult.d3);
-                                setD4HumanSla(discoveryResult.d4);
-                                setD5Traceability(discoveryResult.d5);
-                                setD6HypeImmunity(discoveryResult.d6);
-                                setCalibrationSource('ia');
-                                setSimScenario('custom');
-                                setModalSubTab('simulator');
-                                setTimeout(() => {
-                                  const btn = document.getElementById('run-sim-btn');
-                                  if (btn) btn.click();
-                                }, 100);
-                              }}
-                              className="w-full py-2 bg-[#d2af5a] hover:bg-[#c5a55a] text-black font-bold uppercase text-[9px] tracking-wider transition rounded-lg flex items-center justify-center gap-1.5 cursor-pointer"
-                            >
-                              <Play className="h-3 w-3 text-black" />
-                              Aplicar Posicionamento & Simular 6D
-                            </button>
-                            
-                            <button
-                              onClick={() => {
-                                setDiscoveryStep(1);
-                                setDiscoveryProfile(null);
-                                setDiscoveryResult(null);
-                              }}
-                              className="w-full py-2 bg-white/5 hover:bg-white/10 border border-white/10 text-white/70 font-bold uppercase text-[8px] tracking-wider transition rounded-lg cursor-pointer"
-                            >
-                              Refazer Descoberta
-                            </button>
-                          </div>
-                        </div>
-
-                      </div>
-
+                  {/* Seção 2: A Promessa Concorrente (Hype) */}
+                  <div className="flex flex-col gap-2">
+                    <span className="text-[#d2af5a] text-[9.5px] font-mono font-bold uppercase tracking-wider flex items-center gap-1.5 select-none">
+                      <Sparkles className="h-3.5 w-3.5 text-[#d2af5a] animate-pulse" />
+                      1. A Promessa Mágica Concorrente (Efeito Brilho)
+                    </span>
+                    
+                    {/* Templates rápidos */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-1.5 select-none">
+                      {[
+                        'Fature R$ 10.000 em 7 dias com Robô do WhatsApp',
+                        'Aprenda Persuasão Avançada em 4 Horas sem Esforço',
+                        'Garantia de 100% de Aprovação em Concursos sem Estudo',
+                        'Estudos de Competição Inteligente 100% no Piloto Automático'
+                      ].map((promise, idx) => (
+                        <button
+                          key={idx}
+                          onClick={() => {
+                            setMagicPromise(promise);
+                            setCustomPromise('');
+                          }}
+                          className={`px-2 py-1.5 rounded-lg text-[9px] font-mono text-left transition border leading-tight ${magicPromise === promise && !customPromise ? 'bg-[#d2af5a]/15 text-[#d2af5a] border-[#d2af5a]/40' : 'bg-black/35 text-white/50 border-white/5 hover:border-white/15'}`}
+                        >
+                          {promise}
+                        </button>
+                      ))}
                     </div>
-                  )}
+
+                    {/* Custom Input */}
+                    <div className="flex flex-col gap-1 mt-1">
+                      <span className="text-[8px] font-mono text-white/30 uppercase select-none">Ou digite uma promessa específica:</span>
+                      <input
+                        type="text"
+                        value={customPromise}
+                        placeholder="Ex: Fique rico investindo 5 minutos por dia..."
+                        onChange={(e) => setCustomPromise(e.target.value)}
+                        className="bg-black/50 border border-white/10 rounded-lg px-3 py-2 text-xs text-white placeholder-white/20 focus:outline-none focus:border-[#d2af5a]/50"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Seção 2: As 6 Dimensões Operacionais do Esforço Real */}
+                  <div className="flex flex-col gap-3.5 border-t border-white/5 pt-4">
+                    <div className="flex justify-between items-center bg-black/40 px-2 py-1.5 rounded-xl border border-white/5 select-none">
+                      <span className="text-[7.5px] font-mono text-white/50">FONTE DE CALIBRAGEM:</span>
+                      <span className={`px-2 py-0.5 rounded text-[7px] font-mono font-bold border ${
+                        calibrationSource === 'ia' 
+                          ? 'bg-[#d2af5a]/15 text-[#d2af5a] border-[#d2af5a]/30 animate-pulse' 
+                          : 'bg-amber-500/10 text-amber-400 border-amber-500/20'
+                      }`}>
+                        {calibrationSource === 'ia' ? '✨ AUTO-CALIBRADO POR IA' : '✍️ AJUSTADO MANUALMENTE'}
+                      </span>
+                    </div>
+
+                    <span className="text-[#d2af5a] text-[9.5px] font-mono font-bold uppercase tracking-wider flex items-center gap-1.5 select-none">
+                      <Flame className="h-3.5 w-3.5 text-amber-500" />
+                      2. Configurar as 6 Dimensões de Esforço Real (Fatos)
+                    </span>
+
+                    {/* D1 */}
+                    <div className="flex flex-col gap-0.5 bg-black/25 p-2.5 border border-white/5 rounded-xl">
+                      <div className="flex justify-between items-center text-[9px] font-mono select-none">
+                        <span className="text-white/80 font-bold">D1: Margem EBITDA (%)</span>
+                        <b className="text-[#d2af5a] font-mono font-bold">{d1SalesHours}%</b>
+                      </div>
+                      <input
+                        type="range"
+                        min="10"
+                        max="100"
+                        step="5"
+                        value={d1SalesHours}
+                        onChange={(e) => handleDimensionChange('d1', Number(e.target.value))}
+                        className="w-full h-1 bg-white/5 rounded appearance-none cursor-pointer accent-[#d2af5a] select-none"
+                      />
+                      <span className="text-[7.5px] text-white/35 font-sans leading-none mt-1 select-none">
+                        *Como medir: Eficiência de rentabilidade líquida da operação (EBITDA real).
+                      </span>
+                    </div>
+
+                    {/* D2 */}
+                    <div className="flex flex-col gap-0.5 bg-black/25 p-2.5 border border-white/5 rounded-xl">
+                      <div className="flex justify-between items-center text-[9px] font-mono select-none">
+                        <span className="text-white/80 font-bold">D2: LTV/CAC Ratio (Eficiência de Aquisição)</span>
+                        <b className="text-[#d2af5a] font-mono font-bold">{d2IntelHours.toFixed(1)}x</b>
+                      </div>
+                      <input
+                        type="range"
+                        min="1"
+                        max="10"
+                        step="0.5"
+                        value={d2IntelHours}
+                        onChange={(e) => handleDimensionChange('d2', Number(e.target.value))}
+                        className="w-full h-1 bg-white/5 rounded appearance-none cursor-pointer accent-[#d2af5a] select-none"
+                      />
+                      <span className="text-[7.5px] text-white/35 font-sans leading-none mt-1 select-none">
+                        *Como medir: Retorno financeiro acumulado por cliente (LTV) / Custo de Aquisição (CAC).
+                      </span>
+                    </div>
+
+                    {/* D3 */}
+                    <div className="flex flex-col gap-0.5 bg-black/25 p-2.5 border border-white/5 rounded-xl">
+                      <div className="flex justify-between items-center text-[9px] font-mono select-none">
+                        <span className="text-white/80 font-bold">D3: Transparência de Dados (TDBD %)</span>
+                        <b className="text-[#d2af5a] font-mono font-bold">{d3ContentDensity}%</b>
+                      </div>
+                      <input
+                        type="range"
+                        min="10"
+                        max="100"
+                        step="5"
+                        value={d3ContentDensity}
+                        onChange={(e) => handleDimensionChange('d3', Number(e.target.value))}
+                        className="w-full h-1 bg-white/5 rounded appearance-none cursor-pointer accent-[#d2af5a] select-none"
+                      />
+                      <span className="text-[7.5px] text-white/35 font-sans leading-none mt-1 select-none">
+                        *Como medir: Percentual de dados abertos, rituais transparentes e tomadas de decisão sem "achismos".
+                      </span>
+                    </div>
+
+                    {/* D4 */}
+                    <div className="flex flex-col gap-0.5 bg-black/25 p-2.5 border border-white/5 rounded-xl">
+                      <div className="flex justify-between items-center text-[9px] font-mono select-none">
+                        <span className="text-white/80 font-bold">D4: SLA de Resposta Humana (minutos)</span>
+                        <b className="text-[#d2af5a] font-mono font-bold">{d4HumanSla} minutos</b>
+                      </div>
+                      <input
+                        type="range"
+                        min="5"
+                        max="180"
+                        step="5"
+                        value={d4HumanSla}
+                        onChange={(e) => handleDimensionChange('d4', Number(e.target.value))}
+                        className="w-full h-1 bg-white/5 rounded appearance-none cursor-pointer accent-[#d2af5a] select-none"
+                      />
+                      <span className="text-[7.5px] text-white/35 font-sans leading-none mt-1 select-none">
+                        *Como medir: SLA médio em minutos que um especialista humano real leva para responder dúvidas críticas de clientes.
+                      </span>
+                    </div>
+
+                    {/* D5 */}
+                    <div className="flex flex-col gap-0.5 bg-black/25 p-2.5 border border-white/5 rounded-xl">
+                      <div className="flex justify-between items-center text-[9px] font-mono select-none">
+                        <span className="text-white/80 font-bold">D5: Carga Cognitiva / Fadiga de Decisão (%)</span>
+                        <b className="text-[#d2af5a] font-mono font-bold">{d5Traceability}%</b>
+                      </div>
+                      <input
+                        type="range"
+                        min="10"
+                        max="100"
+                        step="5"
+                        value={d5Traceability}
+                        onChange={(e) => handleDimensionChange('d5', Number(e.target.value))}
+                        className="w-full h-1 bg-white/5 rounded appearance-none cursor-pointer accent-[#d2af5a] select-none"
+                      />
+                      <span className="text-[7.5px] text-white/35 font-sans leading-none mt-1 select-none">
+                        *Como medir: Dreno dopaminérgico e esgotamento pré-frontal do líder para gerenciar e sustentar o negócio.
+                      </span>
+                    </div>
+
+                    {/* D6 */}
+                    <div className="flex flex-col gap-0.5 bg-black/25 p-2.5 border border-white/5 rounded-xl">
+                      <div className="flex justify-between items-center text-[9px] font-mono select-none">
+                        <span className="text-white/80 font-bold">D6: Índice de Ilusão / Personagem Hype (%)</span>
+                        <b className="text-[#d2af5a] font-mono font-bold">{100 - d6HypeImmunity}%</b>
+                      </div>
+                      <input
+                        type="range"
+                        min="10"
+                        max="100"
+                        step="5"
+                        value={100 - d6HypeImmunity}
+                        onChange={(e) => handleDimensionChange('d6', 100 - Number(e.target.value))}
+                        className="w-full h-1 bg-white/5 rounded appearance-none cursor-pointer accent-[#d2af5a] select-none"
+                      />
+                      <span className="text-[7.5px] text-white/35 font-sans leading-none mt-1 select-none">
+                        *Como medir: Energia e fricção gasta sustentando mentiras de marketing ("efeito brilho") e promessas vazias.
+                      </span>
+                    </div>
+
+                  </div>
 
                 </div>
-              )}
-                
+
+                {/* COLUNA DIREITA: Visualização 6D Radar, Pitch de Vendas & Terminal */}
+                <div className="flex flex-col gap-4 justify-between bg-white/[0.01] border border-white/5 p-4 rounded-2xl overflow-hidden">
+                  
+                  {/* AI Strategic Verdict Banner */}
+                  <div className={`p-3 rounded-xl border flex flex-col gap-1 transition-all select-none ${
+                    aiVerdictStatus === 'approved' 
+                      ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400' 
+                      : aiVerdictStatus === 'rejected'
+                      ? 'bg-red-500/10 border-red-500/30 text-red-400'
+                      : 'bg-[#d2af5a]/5 border-[#d2af5a]/20 text-[#d2af5a]/90'
+                  }`}>
+                    <div className="flex items-center gap-1.5">
+                      <Bot className="h-3.5 w-3.5" />
+                      <span className="text-[8px] font-bold font-mono uppercase tracking-widest">VERDITO ESTRATÉGICO DA IA</span>
+                    </div>
+                    <p className="text-[9px] font-mono leading-normal mt-0.5">
+                      {aiVerdict}
+                    </p>
+                  </div>
+
+                  {/* Título da Telemetria Visual */}
+                  <div className="flex justify-between items-center select-none">
+                    <span className="text-[#d2af5a] text-[9px] font-mono font-bold uppercase tracking-wider flex items-center gap-1.5">
+                      <Activity className="h-3.5 w-3.5 text-[#d2af5a]" />
+                      3. Arena de Cristalização 6D (Radar de Fatos vs. Hype)
+                    </span>
+                    <div className="flex gap-2 text-[6.5px] font-mono">
+                      <span className="flex items-center gap-1"><span className="h-1.5 w-1.5 rounded-full bg-[#d2af5a]" /> Seu Negócio</span>
+                      <span className="flex items-center gap-1"><span className="h-1.5 w-1.5 rounded-full bg-red-500" /> Concorrente</span>
+                    </div>
+                  </div>
+
+                  {/* ARENA DE CRISTALIZAÇÃO: O Radar SVG Reativo */}
+                  <div className="flex items-center justify-center bg-black/60 p-2.5 border border-white/5 rounded-2xl relative select-none">
+                    
+                    <svg viewBox="0 0 200 200" className="w-[185px] h-[185px] drop-shadow-[0_0_10px_rgba(210,175,90,0.15)]">
+                      {/* Concentric rings representam intervalos de 25%, 50%, 75%, 100% */}
+                      <circle cx="100" cy="100" r="20" className="stroke-white/5 fill-none" strokeWidth="0.5" strokeDasharray="1,2" />
+                      <circle cx="100" cy="100" r="40" className="stroke-white/5 fill-none" strokeWidth="0.5" strokeDasharray="1,2" />
+                      <circle cx="100" cy="100" r="60" className="stroke-white/10 fill-none" strokeWidth="0.5" />
+                      <circle cx="100" cy="100" r="80" className="stroke-[#d2af5a]/10 fill-none" strokeWidth="0.8" />
+
+                      {/* Eixos Grid e Linhas Radiais de Conexão */}
+                      {Array.from({ length: 6 }).map((_, idx) => {
+                        const angle = (idx * Math.PI) / 3;
+                        const targetX = 100 + 80 * Math.cos(angle);
+                        const targetY = 100 + 80 * Math.sin(angle);
+                        return (
+                          <line
+                            key={idx}
+                            x1="100"
+                            y1="100"
+                            x2={targetX}
+                            y2={targetY}
+                            className="stroke-white/5"
+                            strokeWidth="0.5"
+                          />
+                        );
+                      })}
+
+                      {/* Polígono Vermelho: O Concorrente Hype (Opaco, distorcido e fraco fora da D1) */}
+                      <polygon
+                        points={competitorRadarPoints}
+                        className="stroke-red-500/70 fill-red-500/15 transition-all duration-300"
+                        strokeWidth="1"
+                      />
+
+                      {/* Polígono Dourado: Sua Operação Real baseada nas 6 dimensões */}
+                      <polygon
+                        points={radarPoints}
+                        className="stroke-[#d2af5a] fill-[#d2af5a]/25 transition-all duration-500 shadow-[0_0_15px_#d2af5a]"
+                        strokeWidth="1.5"
+                      />
+
+                      {/* Lápis de Vértices e Tags de Dimensão */}
+                      <text x="180" y="103" className="fill-white/60 font-mono text-[5.5px] font-bold text-center leading-none">D1</text>
+                      <text x="135" y="180" className="fill-white/60 font-mono text-[5.5px] font-bold text-center leading-none">D2</text>
+                      <text x="50" y="180" className="fill-white/60 font-mono text-[5.5px] font-bold text-center leading-none">D3</text>
+                      <text x="10" y="103" className="fill-white/60 font-mono text-[5.5px] font-bold text-center leading-none">D4</text>
+                      <text x="50" y="23" className="fill-white/60 font-mono text-[5.5px] font-bold text-center leading-none">D5</text>
+                      <text x="135" y="23" className="fill-white/60 font-mono text-[5.5px] font-bold text-center leading-none">D6</text>
+                    </svg>
+
+                    {/* Badge do Score Geométrico */}
+                    <div className="absolute top-2 left-2 flex flex-col items-center bg-black/80 border border-[#d2af5a]/20 px-2 py-1 rounded-xl shadow-lg">
+                      <span className="text-[5.5px] font-mono text-white/40 uppercase leading-none">IVRS SCORE</span>
+                      <b className="text-[12px] font-mono font-bold text-[#d2af5a] mt-0.5">{ivc6DScore}%</b>
+                    </div>
+
+                    <div className="absolute top-2 right-2 flex flex-col items-center bg-black/80 border border-red-500/20 px-2 py-1 rounded-xl shadow-lg">
+                      <span className="text-[5.5px] font-mono text-white/40 uppercase leading-none">GLITTER INDEX</span>
+                      <b className="text-[12px] font-mono font-bold text-red-400 mt-0.5">{glitterIndex}%</b>
+                    </div>
+                  </div>
+
+                  {/* GERADOR DE ARGUMENTO DE VENDAS E PITCH (CONTRA-XEQUE-MATE) */}
+                  <div className="p-3 bg-[#d2af5a]/5 border border-[#d2af5a]/20 rounded-xl relative select-text">
+                    <span className="block text-[7.5px] font-mono text-[#d2af5a] font-bold uppercase tracking-widest mb-1 select-none">
+                      📢 GERADOR DE PITCH COMERCIAL CONTRA-XEQUE-MATE (DADOS REAIS):
+                    </span>
+                    <p className="text-white/85 text-[8.5px] leading-relaxed italic font-sans">
+                      "Ao apresentar para seu cliente ou parceiro, use o brilho do processo real: <b className="text-[#d2af5a] font-sans">Enquanto o mercado atua em caixa preta, com promessas de ganhos fáceis e suporte por robôs limitados, nós eliminamos toda dúvida abrindo o jogo: garantimos {d1SalesHours} horas diárias de execução direta (D1), tempo de resposta humano de {d4HumanSla} minutos (D4) e {d5Traceability}% de rastreabilidade completa no CRM (D5).</b> Escolha o processo real de pessoa para pessoa."
+                    </p>
+                    {/* Botão de Cópia Rápida */}
+                    <button
+                      onClick={() => {
+                        const text = `Enquanto o mercado atua em caixa preta com promessas de ganhos fáceis e suporte por robôs limitados, nós eliminamos toda dúvida abrindo o jogo: garantimos ${d1SalesHours} horas diárias de execução direta, tempo de resposta humano de ${d4HumanSla} minutos e ${d5Traceability}% de rastreabilidade completa no CRM. Escolha o processo real de pessoa para pessoa.`;
+                        navigator.clipboard.writeText(text);
+                        alert("Argumento de Vendas copiado para o clipboard com sucesso!");
+                      }}
+                      className="absolute top-1 right-2 text-[#d2af5a] hover:text-white transition font-mono text-[6.5px] font-bold uppercase cursor-pointer select-none"
+                    >
+                      [Copiar Argumento]
+                    </button>
+                  </div>
+
+                  {/* AI STRATEGIC COPILOT (XEQUE-MATE ADVISOR) */}
+                  <div className="flex flex-col gap-1.5 border border-[#d2af5a]/25 bg-[#d2af5a]/5 p-2.5 rounded-xl h-[175px] overflow-hidden relative">
+                    <div className="flex flex-col gap-1 border-b border-white/5 pb-1.5 shrink-0">
+                      <div className="flex justify-between items-center text-[7.5px] font-mono uppercase select-none">
+                        <span className="text-[#d2af5a] font-bold flex items-center gap-1">
+                          <Bot className="h-3 w-3 text-[#d2af5a]" />
+                          🤖 ADVISOR ESTRATÉGICO (COPIOT AI)
+                        </span>
+                        <div className="flex gap-1.5">
+                          <button onClick={() => askCopilot('famosos')} className="text-white/40 hover:text-[#d2af5a] transition font-mono text-[6.5px] font-bold uppercase hover:underline">[Vencer Famosos]</button>
+                          <button onClick={() => askCopilot('sla')} className="text-white/40 hover:text-[#d2af5a] transition font-mono text-[6.5px] font-bold uppercase hover:underline">[Provar SLA]</button>
+                          <button onClick={() => askCopilot('math')} className="text-white/40 hover:text-[#d2af5a] transition font-mono text-[6.5px] font-bold uppercase hover:underline">[Fórmula IVRS]</button>
+                        </div>
+                      </div>
+                      <div className="flex justify-between items-center text-[7.5px] font-mono uppercase select-none mt-0.5">
+                        <span className="text-white/30">MODO DESCOBERTA DE DIFERENCIAL (IA):</span>
+                        <div className="flex gap-1.5">
+                          <button onClick={() => askCopilot('zero')} className="text-[#d2af5a]/60 hover:text-white transition font-mono text-[6.5px] font-bold uppercase hover:underline">[🚀 Começar do Zero]</button>
+                          <button onClick={() => askCopilot('pivot')} className="text-[#d2af5a]/60 hover:text-white transition font-mono text-[6.5px] font-bold uppercase hover:underline">[🔄 Pivotar Carreira]</button>
+                          <button onClick={() => askCopilot('saas')} className="text-[#d2af5a]/60 hover:text-white transition font-mono text-[6.5px] font-bold uppercase hover:underline">[💻 Criar SaaS]</button>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex-1 overflow-y-auto ipb-thinscroll font-mono text-[8px] text-white/90 leading-relaxed text-left">
+                      {copilotLoading ? (
+                        <div className="text-white/40 italic flex items-center justify-center h-full gap-2">
+                          <Sparkles className="h-3.5 w-3.5 text-[#d2af5a] animate-spin" />
+                          Consultando matriz preditiva 6D do IPB...
+                        </div>
+                      ) : copilotAnswer ? (
+                        <div className="whitespace-pre-line text-[#d2af5a]/95 bg-black/45 p-2 rounded border border-[#d2af5a]/15">
+                          {copilotAnswer}
+                        </div>
+                      ) : (
+                        <div className="text-white/30 italic pt-6 text-center leading-normal">
+                          Clique em um dos botões acima para acionar o Advisor AI.<br/>
+                          Ele formulará a resposta exata de Contra-Xeque-Mate com base nas 6 dimensões de esforço calibradas no painel esquerdo.
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Terminal de Auditoria NLP Concorrencial */}
+                  <div className="flex flex-col gap-1 overflow-hidden h-[95px] border-t border-white/5 pt-2">
+                    <div className="flex justify-between items-center text-[7.5px] font-mono uppercase select-none">
+                      <span className="text-white/40">Scanner NLP de Desconstrução Concorrencial:</span>
+                      <button
+                        onClick={runAudit}
+                        disabled={isAuditing}
+                        className="text-[#d2af5a] hover:underline font-bold transition flex items-center gap-1 cursor-pointer disabled:text-white/20"
+                      >
+                        <RefreshCw className={`h-2.5 w-2.5 ${isAuditing ? 'animate-spin text-[#d2af5a]' : 'text-[#d2af5a]'}`} />
+                        {isAuditing ? 'Auditando...' : 'Re-auditar Concorrente'}
+                      </button>
+                    </div>
+
+                    <div 
+                      ref={auditLogRef}
+                      className="flex-1 bg-[#050507] border border-white/5 rounded-xl p-2 font-mono text-[7.5px] text-[#d2af5a]/95 space-y-0.5 overflow-y-auto ipb-thinscroll leading-relaxed"
+                    >
+                      {auditLogs.length === 0 ? (
+                        <div className="text-white/20 italic pt-3 text-center leading-normal">
+                          Inicie a calibragem das 6 dimensões acima para rodar a auditoria de narrativa concorrencial.
+                        </div>
+                      ) : (
+                        auditLogs.map((log, idx) => (
+                          <div key={idx}>
+                            <span className="text-white/20 font-sans mr-1">[{new Date().toLocaleTimeString()}]</span>
+                            {log}
+                          </div>
+                        ))
+                      )}
+                    </div>
+                  </div>
+
+                </div>
+
+              </div>
+
               {/* Tabela de Comparação Direta: Pessoa para Pessoa */}
               <div className="bg-[#d2af5a]/5 border border-[#d2af5a]/15 rounded-2xl p-5 flex flex-col gap-3">
                 <span className="text-[#d2af5a] text-[10px] font-mono font-bold uppercase tracking-wider select-none">
