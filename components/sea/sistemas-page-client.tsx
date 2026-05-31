@@ -6,6 +6,7 @@ import { ArrowLeft, BookOpen, Calculator, Cpu, FileText, Search, PanelLeftClose,
 import Link from 'next/link'
 import { useAuthStore } from '@/lib/stores/authStore'
 import { useSearchParams } from 'next/navigation'
+import { useAccessibility } from '@/hooks/use-accessibility'
 
 // Importações dos Painéis Clínicos Homologados (Intactos)
 import { ProntuarioSystemPanel } from '@/components/sea/prontuario-system-panel'
@@ -82,6 +83,11 @@ const SIDEBAR_GROUPS = [
 ]
 
 export default function SistemasPageClient() {
+  const fontScale = useAccessibility((s) => s.fontScale)
+  const increaseFontScale = useAccessibility((s) => s.increaseFontScale)
+  const decreaseFontScale = useAccessibility((s) => s.decreaseFontScale)
+  const scalePct = Math.round(fontScale * 100)
+
   const searchParams = useSearchParams()
   const clinicalParam = searchParams ? searchParams.get('clinical') === 'true' : false
   const activeParam = searchParams ? searchParams.get('active') : null
@@ -217,7 +223,10 @@ export default function SistemasPageClient() {
   }
 
   return (
-    <div className={`app-workspace-layout ${sidebarOpen ? '' : 'sidebar-closed'} ${accMode === 'foco' ? 'acc-foco' : ''} ${accMode === 'calmo' ? 'acc-calmo' : ''} ${accMode === 'contraste' ? 'acc-contraste' : ''}`}>
+    <div 
+      className={`app-workspace-layout ${sidebarOpen ? '' : 'sidebar-closed'} ${accMode === 'foco' ? 'acc-foco' : ''} ${accMode === 'calmo' ? 'acc-calmo' : ''} ${accMode === 'contraste' ? 'acc-contraste' : ''}`}
+      style={{ zoom: fontScale } as React.CSSProperties}
+    >
       
       {/* Estilos CSS Scoped para isolamento total da página */}
       <style>{`
@@ -1249,6 +1258,37 @@ export default function SistemasPageClient() {
           </div>
           
           <div className="thd-right">
+            {/* Zoom A−/A+ — integrado no layout de Sistemas */}
+            <div
+              className="thd-chip flex items-center gap-1.5"
+              style={{ padding: '4px 10px' }}
+            >
+              <button
+                onClick={decreaseFontScale}
+                disabled={scalePct <= 20}
+                aria-label="Diminuir texto"
+                title="Diminuir texto"
+                className="flex h-5 w-5 items-center justify-center text-white/40 transition hover:text-white/75 disabled:opacity-20 disabled:cursor-not-allowed cursor-pointer"
+              >
+                <span className="text-[9px] font-bold" style={{ fontFamily: 'monospace' }}>A−</span>
+              </button>
+              <span
+                className="select-none px-0.5 text-[8px] tabular-nums text-white/25 w-[28px] text-center"
+                style={{ fontFamily: 'monospace' }}
+              >
+                {scalePct}%
+              </span>
+              <button
+                onClick={increaseFontScale}
+                disabled={scalePct >= 200}
+                aria-label="Aumentar texto"
+                title="Aumentar texto"
+                className="flex h-5 w-5 items-center justify-center text-white/40 transition hover:text-white/75 disabled:opacity-20 disabled:cursor-not-allowed cursor-pointer"
+              >
+                <span className="text-[11px] font-bold" style={{ fontFamily: 'monospace' }}>A+</span>
+              </button>
+            </div>
+
             <div className="thd-clock">
               <span>LCL</span>
               <b>{timeStr || '00:00:00'}</b>

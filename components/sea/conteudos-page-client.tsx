@@ -35,6 +35,7 @@ import {
 import Link from 'next/link'
 import type { LucideIcon } from 'lucide-react'
 import { useAuthStore } from '@/lib/stores/authStore'
+import { useAccessibility } from '@/hooks/use-accessibility'
 import { CadernoModulePanel } from '@/components/caderno/caderno-module'
 import { loadModuleContent } from '@/data/caderno-content-loader'
 import { IpbBackground } from '@/components/sea/ipb-background'
@@ -2411,6 +2412,11 @@ function ModuleRail({
 
 export default function ConteudosPageClient({ mode = 'normal' }: { mode?: 'normal' | 'archived' }) {
   const isAdmin = useAuthStore((s) => s.isAdmin)
+  const fontScale = useAccessibility((s) => s.fontScale)
+  const increaseFontScale = useAccessibility((s) => s.increaseFontScale)
+  const decreaseFontScale = useAccessibility((s) => s.decreaseFontScale)
+  const scalePct = Math.round(fontScale * 100)
+
   const visibleModules = MODULES.filter((m) => mode === 'archived' ? (m.id === 'M2' || m.id === 'M3') : (m.id === 'M1' || m.id === 'M4'))
 
   const [activeIndex, setActiveIndex] = useState<number | null>(null)
@@ -2536,6 +2542,7 @@ export default function ConteudosPageClient({ mode = 'normal' }: { mode?: 'norma
       style={{
         '--theme-primary': activeTheme.primary,
         '--theme-primary-rgb': !isGlobalGold ? '203, 213, 225' : '212, 184, 122',
+        zoom: fontScale,
       } as React.CSSProperties}
     >
       {/* Space environment starry background */}
@@ -2627,6 +2634,37 @@ export default function ConteudosPageClient({ mode = 'normal' }: { mode?: 'norma
                 </motion.div>
               </Link>
               <div className="h-px w-24 bg-[linear-gradient(90deg,rgba(255,255,255,0.08),transparent)]" />
+              
+              {/* Zoom A−/A+ — visível em mobile e desktop */}
+              <div
+                className="flex items-center gap-0.5 overflow-hidden rounded-[0.6rem] bg-black/45"
+                style={{ border: '0.2px solid rgba(255, 255, 255, 0.1)' }}
+              >
+                <button
+                  onClick={decreaseFontScale}
+                  disabled={scalePct <= 20}
+                  aria-label="Diminuir texto"
+                  title="Diminuir texto"
+                  className="flex h-7 w-7 items-center justify-center text-white/40 transition hover:text-white/75 disabled:opacity-20 disabled:cursor-not-allowed cursor-pointer"
+                >
+                  <span className="text-[9px] font-bold" style={{ fontFamily: 'monospace' }}>A−</span>
+                </button>
+                <span
+                  className="hidden select-none px-1 text-[8px] tabular-nums text-white/25 w-[28px] text-center md:inline-block"
+                  style={{ fontFamily: 'monospace' }}
+                >
+                  {scalePct}%
+                </span>
+                <button
+                  onClick={increaseFontScale}
+                  disabled={scalePct >= 200}
+                  aria-label="Aumentar texto"
+                  title="Aumentar texto"
+                  className="flex h-7 w-7 items-center justify-center text-white/40 transition hover:text-white/75 disabled:opacity-20 disabled:cursor-not-allowed cursor-pointer"
+                >
+                  <span className="text-[11px] font-bold" style={{ fontFamily: 'monospace' }}>A+</span>
+                </button>
+              </div>
 
             </div>
             <div className="flex items-center gap-2">
