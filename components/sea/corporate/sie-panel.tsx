@@ -49,6 +49,116 @@ export function SiePanel({ initialTab }: { initialTab?: SieSubTab }) {
   const [generationStep, setGenerationStep] = useState<string>('')
   const [sprintResult, setSprintResult] = useState<any | null>(null)
 
+  // Estados para Diagnóstico de Maturidade Digital (Fases 1, 2, 3)
+  const [empresaFase, setEmpresaFase] = useState<number>(2) // Padrão: Fase 2
+  const [mercadoFase, setMercadoFase] = useState<number>(3) // Padrão: Fase 3
+  const [analyzingGap, setAnalyzingGap] = useState<boolean>(false)
+  const [gapAnalysisResult, setGapAnalysisResult] = useState<any | null>(null)
+
+  const handleUpdateMaturity = (empresa: number, mercado: number) => {
+    setEmpresaFase(empresa)
+    setMercadoFase(mercado)
+    setAnalyzingGap(true)
+    
+    setTimeout(() => {
+      let diagnosis = ''
+      let actions: string[] = []
+      let metric = ''
+
+      if (empresa === mercado) {
+        if (empresa === 1) {
+          diagnosis = 'Sua empresa e o mercado estão ambos na Fase 1 (Infraestrutura básica). Embora alinhado, há uma oportunidade competitiva brutal de saltar etapas direto para a Fase 3 e digitalizar de ponta a ponta.'
+          actions = [
+            'Migrar servidores locais legados para nuvem eficiente e paperless.',
+            'Adotar o Cockpit Financeiro IPB para gerenciar liquidez em tempo real.',
+            'Capacitar lideranças com ferramentas de IA para agilizar rotinas operacionais.'
+          ]
+          metric = '+40% de Agilidade e Redução de Papelada'
+        } else if (empresa === 2) {
+          diagnosis = 'Ambos operam na Fase 2 (Eficiência de Processos). Seus fluxos gerenciais são automatizados, mas o mercado está prestes a avançar rumo à Fase 3 orientada a dados comportamentais e IA.'
+          actions = [
+            'Cruzar dados de turnover com custos financeiros para monitorar queima de caixa.',
+            'Substituir relatórios mensais manuais por telemetrias dinâmicas integradas.',
+            'Capacitar times com sprints de inovação (Google Ventures) para validar ideias em 5 dias.'
+          ]
+          metric = '-15% de Tempo de Consolidação Estratégica'
+        } else {
+          diagnosis = 'Excelente! Sua empresa e o mercado operam na Fase 3 (Estratégia & IA). Para manter a liderança absoluta, é vital aprimorar modelos dinâmicos proprietários e ética de compliance.'
+          actions = [
+            'Calibrar algoritmos de Smart Pricing no checkout para otimização de margens.',
+            'Escalar a cultura de squads de alto rendimento baseada no modelo dinâmico IPB.',
+            'Fortalecer a governança ética com canais de denúncia anônimos com segurança técnica.'
+          ]
+          metric = '+2.5x em Margem LTV/CAC e Retenção'
+        }
+      } else if (empresa < mercado) {
+        if (empresa === 1 && mercado === 2) {
+          diagnosis = 'Sua empresa opera em Infraestrutura (Fase 1), enquanto o mercado já se consolidou em processos digitais eficientes (Fase 2). O gap de 1 fase limita seriamente a velocidade de escala de suas squads.'
+          actions = [
+            'Centralizar a comunicação operacional em nuvem, eliminando conversas informais soltas.',
+            'Integrar um sistema de ERP unificado e paperless para gestão contábil transparente.',
+            'Implementar check-ins rápidos digitais para medir atrito de líderes em squads.'
+          ]
+          metric = '+35% de Produtividade em Silos'
+        } else if (empresa === 1 && mercado === 3) {
+          diagnosis = 'Alerta Crítico: Sua empresa ainda lida com Infraestrutura básica (Fase 1) enquanto o mercado opera na Fase 3 (IA e dados preditivos). Há um sério risco de obsolescência competitiva acelerada.'
+          actions = [
+            'Ignorar a burocracia clássica de TI e saltar direto para soluções integradas em nuvem e IA.',
+            'Adotar o AI Advisor IPB para analisar a correlação entre caixa (Runway) e produtividade.',
+            'Rodar uma Design Sprint de 5 dias para estruturar o primeiro MVP de tecnologia interna.'
+          ]
+          metric = 'Previsão de Caixa Preditiva Ativa Imediatamente'
+        } else { // empresa === 2, mercado === 3
+          diagnosis = 'Transição Estratégica: Sua empresa tem processos digitais sólidos (Fase 2), mas o mercado competitivo de vanguarda exige IA e tomadas de decisão preditivas em tempo real (Fase 3).'
+          actions = [
+            'Substituir relatórios retrospectivos baseados em planilhas por telemetrias comportamentais.',
+            'Calibrar precificação dinâmica inteligente para responder à intenção de saída do cliente.',
+            'Instaurar cultura de NPS e feedbacks automatizados após ações críticas de usuários.'
+          ]
+          metric = '+20% em Margem Operacional sobre Concorrência'
+        }
+      } else { // empresa > mercado
+        if (empresa === 2 && mercado === 1) {
+          diagnosis = 'Liderança de Processos: Sua empresa já automatizou fluxos (Fase 2) enquanto concorrentes operam com infraestrutura defasada (Fase 1). Use isso para acelerar sua captação de clientes.'
+          actions = [
+            'Refinar o funil de vendas digital integrando automações de CRM robustas.',
+            'Otimizar o Runway financeiro com controle restrito de despesas no cockpit.',
+            'Estabelecer rituais de governança corporativa no pilar gerencial do IPB.'
+          ]
+          metric = '-30% de Custos Operacionais contra Mercado'
+        } else if (empresa === 3 && mercado === 1) {
+          diagnosis = 'Liderança Disruptiva Absoluta: Sua empresa está na Fase 3 (IA & Dados Preditivos) em um mercado legado operando na Fase 1. A sua velocidade de inovação permite capturar market share de forma agressiva.'
+          actions = [
+            'Lançar ofertas financeiras dinâmicas e inteligentes antes que os concorrentes se atualizem.',
+            'Utilizar algoritmos proprietários de IA para prever tendências do nicho.',
+            'Atrair os melhores talentos de tecnologia promovendo squads ágeis autônomas.'
+          ]
+          metric = 'Crescimento de Escala 3x Mais Rápido que Concorrência'
+        } else { // empresa === 3, mercado === 2
+          diagnosis = 'Liderança Estratégica: Sua empresa opera orientada a dados em tempo real e IA (Fase 3), um passo à frente dos concorrentes focados apenas em ERPs tradicionais de processos (Fase 2).'
+          actions = [
+            'Aproveitar o AI Advisor para calibrar custos fixos com precisão preditiva diária.',
+            'Instaurar o framework de Design Sprint para validar novas ideias em apenas 5 dias sem custo.',
+            'Refinar canais de compliance para reter a confiança e segurança ética absoluta.'
+          ]
+          metric = '+18% em Retenção de Talentos e Clientes (NDR)'
+        }
+      }
+
+      setGapAnalysisResult({
+        diagnosis,
+        actions,
+        metric
+      })
+      setAnalyzingGap(false)
+    }, 400)
+  }
+
+  // Inicializa o gap estratégico com Fase 2 vs Fase 3
+  useEffect(() => {
+    handleUpdateMaturity(2, 3)
+  }, [])
+
   const handleGenerateSprint = () => {
     if (sprintChallenge === 'custom' && !sprintCustomText.trim()) {
       alert('Por favor, descreva o seu desafio customizado!')
@@ -299,12 +409,120 @@ export function SiePanel({ initialTab }: { initialTab?: SieSubTab }) {
                 </div>
               </div>
 
-              {/* Pergunta do Dia */}
-              <div className="bg-[#d2af5a]/[0.02] border-l-2 border-[#d2af5a] p-4 rounded-r-md mb-6">
-                <span className="block text-[8px] font-mono font-bold tracking-wider text-[#d2af5a] mb-1">PERGUNTA DO DIA</span>
-                <p className="text-[11.5px] lg:text-xs italic text-white/90">
-                  "Em qual fase estamos hoje? E em qual fase o mercado ao redor já chegou? A diferença entre as duas respostas é o gap que precisa ser fechado."
-                </p>
+              {/* Diagnóstico de Transformação Digital & Gap Analyzer */}
+              <div className="bg-black/25 border border-white/[0.04] p-5 rounded-xl mb-6 space-y-5">
+                <div className="flex justify-between items-center border-b border-white/[0.05] pb-3">
+                  <div>
+                    <span className="block text-[8px] font-mono font-bold tracking-wider text-[#d2af5a] uppercase">DIAGNÓSTICO ESTRATÉGICO</span>
+                    <h4 className="text-[12px] font-semibold text-white mt-0.5">Fases de Transformação Digital & Análise de Gap</h4>
+                  </div>
+                  <span className="text-[8px] font-mono bg-[#d2af5a]/15 text-[#e0c887] px-2 py-0.5 rounded uppercase">AUTO-AVALIAÇÃO</span>
+                </div>
+
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  {/* Seleção de Fases */}
+                  <div className="space-y-4">
+                    {/* Fase da Empresa */}
+                    <div className="space-y-1.5">
+                      <label className="block text-[9px] font-mono uppercase text-white/50 tracking-wider">
+                        1. Em qual fase sua empresa está hoje?
+                      </label>
+                      <div className="grid grid-cols-3 gap-2">
+                        {[
+                          { val: 1, label: 'Fase 1', desc: 'Infraestrutura (Anos 2000)' },
+                          { val: 2, label: 'Fase 2', desc: 'Processo (Anos 2010)' },
+                          { val: 3, label: 'Fase 3', desc: 'Estratégia (Anos 2020 →)' }
+                        ].map(f => (
+                          <button
+                            key={f.val}
+                            onClick={() => handleUpdateMaturity(f.val, mercadoFase)}
+                            className={`p-2 rounded-lg border text-left transition cursor-pointer select-none flex flex-col justify-between min-h-[64px] ${
+                              empresaFase === f.val 
+                                ? 'bg-[#d2af5a]/10 border-[#d2af5a]/50 text-white shadow-[0_0_10px_rgba(210,175,90,0.1)]'
+                                : 'bg-black/25 border-white/[0.04] text-white/40 hover:border-white/10 hover:text-white/60'
+                            }`}
+                          >
+                            <span className="block text-[8.5px] font-mono tracking-wider font-bold uppercase">{f.label}</span>
+                            <span className="block text-[7.5px] leading-tight mt-1">{f.desc}</span>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Fase do Mercado */}
+                    <div className="space-y-1.5">
+                      <label className="block text-[9px] font-mono uppercase text-white/50 tracking-wider">
+                        2. Em qual fase o mercado ao redor já chegou?
+                      </label>
+                      <div className="grid grid-cols-3 gap-2">
+                        {[
+                          { val: 1, label: 'Fase 1', desc: 'Infraestrutura (Anos 2000)' },
+                          { val: 2, label: 'Fase 2', desc: 'Processo (Anos 2010)' },
+                          { val: 3, label: 'Fase 3', desc: 'Estratégia (Anos 2020 →)' }
+                        ].map(f => (
+                          <button
+                            key={f.val}
+                            onClick={() => handleUpdateMaturity(empresaFase, f.val)}
+                            className={`p-2 rounded-lg border text-left transition cursor-pointer select-none flex flex-col justify-between min-h-[64px] ${
+                              mercadoFase === f.val 
+                                ? 'bg-[#d2af5a]/10 border-[#d2af5a]/50 text-white shadow-[0_0_10px_rgba(210,175,90,0.1)]'
+                                : 'bg-black/25 border-white/[0.04] text-white/40 hover:border-white/10 hover:text-white/60'
+                            }`}
+                          >
+                            <span className="block text-[8.5px] font-mono tracking-wider font-bold uppercase">{f.label}</span>
+                            <span className="block text-[7.5px] leading-tight mt-1">{f.desc}</span>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* AI Gap Analysis Result Display */}
+                  <div className="relative border border-[#d2af5a]/15 bg-gradient-to-br from-[#1c150c]/30 to-[#0a0a0c]/80 rounded-xl p-4 flex flex-col justify-between overflow-hidden">
+                    <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_top_right,rgba(201,148,58,0.04),transparent_60%)]" />
+                    
+                    {analyzingGap ? (
+                      <div className="flex flex-col justify-center items-center h-full min-h-[140px] text-center gap-2">
+                        <Loader2 className="h-5 w-5 text-[#d2af5a] animate-spin" />
+                        <span className="text-[9px] font-mono text-[#d2af5a] animate-pulse">AI Advisor analisando gap digital...</span>
+                      </div>
+                    ) : gapAnalysisResult ? (
+                      <div className="space-y-3 relative z-10 animate-fadeIn">
+                        {/* Status / Title */}
+                        <div className="flex justify-between items-center text-[8px] font-mono">
+                          <span className="text-[#d2af5a] uppercase font-bold tracking-wider">ANÁLISE DE GAP DIGITAL</span>
+                          {empresaFase > mercadoFase && <span className="text-[#5dcaa5] font-bold">✓ VANGUARDA / LIDERANÇA</span>}
+                          {empresaFase === mercadoFase && <span className="text-[#fac775] font-bold">● ALINHADO COM MERCADO</span>}
+                          {empresaFase < mercadoFase && <span className="text-[#e24b4a] font-bold">⚠️ GAP ESTRATÉGICO DETECTADO</span>}
+                        </div>
+
+                        {/* Diagnostic */}
+                        <p className="text-[10px] leading-relaxed text-white/95">
+                          {gapAnalysisResult.diagnosis}
+                        </p>
+
+                        {/* Action Plan */}
+                        <div className="space-y-1 border-t border-white/[0.05] pt-2">
+                          <span className="block text-[8px] font-mono text-[#d2af5a] font-bold uppercase tracking-wider">PLANO DE AÇÃO ESTRATÉGICO IA</span>
+                          <ul className="space-y-1">
+                            {gapAnalysisResult.actions.map((act, idx) => (
+                              <li key={idx} className="text-[9px] text-white/70 flex items-start gap-1">
+                                <span className="text-[#d2af5a] mt-0.5">•</span>
+                                <span className="leading-snug">{act}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+
+                        {/* Metric */}
+                        <div className="flex justify-between items-center border-t border-white/[0.05] pt-2 text-[8px] font-mono">
+                          <span className="text-white/40">RETORNO ESTIMADO (KPI)</span>
+                          <span className="text-[#5dcaa5] font-bold">{gapAnalysisResult.metric}</span>
+                        </div>
+                      </div>
+                    ) : null}
+                  </div>
+                </div>
               </div>
 
               {/* Forecast adjustment slider */}
