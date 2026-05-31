@@ -50,10 +50,14 @@ export function InteractiveCockpit() {
   const [isXequeMateModalOpen, setIsXequeMateModalOpen] = useState<boolean>(false)
   const [magicPromise, setMagicPromise] = useState<string>('Fature R$ 10.000 em 7 dias com Robô de Vendas Automático')
   const [customPromise, setCustomPromise] = useState<string>('')
-  const [hoursPerDay, setHoursPerDay] = useState<number>(4)
-  const [conversionRate, setConversionRate] = useState<number>(1.8)
-  const [traceability, setTraceability] = useState<'caixa_preta' | 'aberto'>('aberto')
-  const [supportType, setSupportType] = useState<'robot' | 'human'>('human')
+  // As 6 Dimensões Reais de Esforço e Vantagem Competitiva (D1 a D6)
+  const [d1SalesHours, setD1SalesHours] = useState<number>(4) // D1: Execução de Vendas (horas/dia)
+  const [d2IntelHours, setD2IntelHours] = useState<number>(2) // D2: Inteligência Concorrencial (horas/dia)
+  const [d3ContentDensity, setD3ContentDensity] = useState<number>(75) // D3: Densidade de Monitoria (%)
+  const [d4HumanSla, setD4HumanSla] = useState<number>(15) // D4: Tempo de Resposta Humana (minutos)
+  const [d5Traceability, setD5Traceability] = useState<number>(85) // D5: Rastreabilidade de Funil (%)
+  const [d6HypeImmunity, setD6HypeImmunity] = useState<number>(90) // D6: Imunidade a Hype/Filtro de Ruído (%)
+
   const [auditLogs, setAuditLogs] = useState<string[]>([])
   const [isAuditing, setIsAuditing] = useState<boolean>(false)
   const [auditDone, setAuditDone] = useState<boolean>(false)
@@ -70,21 +74,32 @@ export function InteractiveCockpit() {
     if (text.includes('7 dias') || text.includes('rápido') || text.includes('imediato') || text.includes('fácil') || text.includes('sem esforço') || text.includes('dormindo') || text.includes('fórmula')) score += 30
     if (text.includes('robô') || text.includes('bot') || text.includes('automático') || text.includes('piloto automático')) score += 15
     
-    if (traceability === 'caixa_preta') score += 15
-    if (supportType === 'robot') score += 10
-    
-    return Math.min(score, 100)
-  }, [currentPromise, traceability, supportType])
+    // Imunidade a hype reduz o impacto do glitter concorrente
+    const hypeFactor = (100 - d6HypeImmunity) * 0.15
+    score += hypeFactor
+
+    return Math.min(Math.round(score), 100)
+  }, [currentPromise, d6HypeImmunity])
 
   const ivc6DScore = useMemo(() => {
-    const effortFactor = (hoursPerDay / 12) * 40 // max 40
-    const traceFactor = traceability === 'aberto' ? 30 : 5 // max 30
-    const supportFactor = supportType === 'human' ? 20 : 5 // max 20
-    const convFactor = conversionRate >= 0.5 && conversionRate <= 5.0 ? 10 : 3 // max 10
-    const glitterPenalty = Math.max(0, (glitterIndex - 30) * 0.15)
-    
-    return Math.max(10, Math.min(100, Math.round(effortFactor + traceFactor + supportFactor + convFactor - glitterPenalty)))
-  }, [hoursPerDay, traceability, supportType, conversionRate, glitterIndex])
+    // Normalização das 6 Dimensões para escala 0-100:
+    const valD1 = (d1SalesHours / 12) * 100
+    const valD2 = (d2IntelHours / 8) * 100
+    const valD3 = d3ContentDensity
+    // SLA Humano: menor é melhor. 5min = 100, 180min = 10.
+    const valD4 = Math.max(10, Math.round(100 - ((d4HumanSla - 5) / 175) * 90))
+    const valD5 = d5Traceability
+    const valD6 = d6HypeImmunity
+
+    // Cálculo da Média Geométrica das 6 dimensões
+    const product = Math.max(1, valD1 * valD2 * valD3 * valD4 * valD5 * valD6)
+    const geometricMean = Math.pow(product, 1/6)
+
+    // Penalidade concorrencial de Glitter
+    const penalty = Math.max(0, (glitterIndex - 30) * 0.12)
+
+    return Math.max(10, Math.min(100, Math.round(geometricMean - penalty)))
+  }, [d1SalesHours, d2IntelHours, d3ContentDensity, d4HumanSla, d5Traceability, d6HypeImmunity, glitterIndex])
 
   const runAudit = () => {
     if (isAuditing) return
@@ -93,14 +108,17 @@ export function InteractiveCockpit() {
     setAuditLogs([])
 
     const logs = [
-      `[INICIALIZANDO] Iniciando Auditoria de Verdade Radical Contra-Xeque-Mate 6D...`,
-      `[NLP PARSING] Analisando promessa de vendas/estudos concorrente: "${currentPromise}"`,
-      `[DETECTOR DE BRILHO] Verificando apelo emocional vs. entrega real...`,
-      `[CONVERSATION] Detectando Fator Humano. Conectando de pessoa para pessoa...`,
-      `[TELEMETRY] Testando viabilidade contra Esforço Real de ${hoursPerDay}h/dia...`,
-      `[DADOS vs NARRATIVAS] Aplicando desconto estatístico em taxa de conversão...`,
-      `[PROCESS_VERIFY] Nível de Rastreabilidade do Método avaliado...`,
-      `[VERDICT] Xeque-mate na ilusão! Vantagem Humana real estabelecida com sucesso.`
+      `[INICIALIZANDO] Ativando Auditoria 6D de Verdade Radical e Tecnologia Concorrencial...`,
+      `[NLP PARSING] Analisando promessa: "${currentPromise}"`,
+      `[DETECTOR DE BRILHO] Glitter Index mapeado em: ${glitterIndex}% (Apelo Ilusório).`,
+      `[MODEL_D1] Auditando Execução de Vendas (D1): ${d1SalesHours} horas/dia de prospecção ativa.`,
+      `[MODEL_D2] Auditando Inteligência Concorrencial (D2): ${d2IntelHours} horas/dia de mapeamento real.`,
+      `[MODEL_D3] Auditando Densidade de Monitoria (D3): ${d3ContentDensity}% de material e suporte estruturado.`,
+      `[MODEL_D4] Auditando SLA de Resposta Humana (D4): Média de ${d4HumanSla} minutos de resposta com empatia.`,
+      `[MODEL_D5] Auditando Rastreabilidade do Funil (D5): ${d5Traceability}% de dados íntegros sem achismos.`,
+      `[MODEL_D6] Auditando Filtro de Hype Concorrente (D6): Imunidade avaliada em ${d6HypeImmunity}%.`,
+      `[6D_COMPUTATION] Processando Média Geométrica das 6 Dimensões Operacionais...`,
+      `[VERDICT] Xeque-mate na ilusão! Vantagem Humana real estabelecida com sucesso. IVC-6D: ${ivc6DScore}%.`
     ]
 
     let current = 0
@@ -113,7 +131,7 @@ export function InteractiveCockpit() {
         setIsAuditing(false)
         setAuditDone(true)
       }
-    }, 450)
+    }, 400)
   }
 
   useEffect(() => {
