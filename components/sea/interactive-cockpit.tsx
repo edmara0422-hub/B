@@ -1060,7 +1060,7 @@ export function InteractiveCockpit() {
                         />
                       </div>
                       <span className="text-[7.5px] text-white/30 leading-normal block">
-                        O seu diferencial humano baseia-se em esforço real auditável ({hoursPerDay}h/dia), transparência total e conversão estatisticamente realista ({conversionRate}%).
+                        O seu diferencial humano baseia-se em esforço real de prospecção ({d1SalesHours}h/dia), tempo de resposta humana ({d4HumanSla} min) e alta imunidade a hype ({d6HypeImmunity}%).
                       </span>
                     </div>
                   </div>
