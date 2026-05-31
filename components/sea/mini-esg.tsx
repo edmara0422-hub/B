@@ -77,8 +77,8 @@ export function MiniEsg() {
             <div className="flex items-center gap-1.5">
               <RefreshCw className="h-3.5 w-3.5 text-[#d2af5a] shrink-0" />
               <div className="flex flex-col">
-                <span className="font-semibold text-white/85">Renewabilide</span>
-                <span className="text-white/40 text-[6.5px]">ecomómica</span>
+                <span className="font-semibold text-white/85">Taxa de Digitalização</span>
+                <span className="text-white/40 text-[6.5px]">processos e fluxos</span>
               </div>
             </div>
             <span className="font-bold text-[#d2af5a] text-[10px] font-mono pl-1">94%</span>
@@ -89,11 +89,11 @@ export function MiniEsg() {
             <div className="flex items-center gap-1.5">
               <Footprints className="h-3.5 w-3.5 text-[#d2af5a] shrink-0" />
               <div className="flex flex-col">
-                <span className="font-semibold text-white/85">Footprint carbont</span>
-                <span className="text-white/40 text-[6.5px]">data rha OC</span>
+                <span className="font-semibold text-white/85">Pegada de Carbono</span>
+                <span className="text-white/40 text-[6.5px]">cloud computing verde</span>
               </div>
             </div>
-            <span className="font-bold text-[#d2af5a] text-[8.5px] font-mono pl-1 leading-none text-right">1023/t/h</span>
+            <span className="font-bold text-[#d2af5a] text-[8.5px] font-mono pl-1 leading-none text-right">0.012kg/req</span>
           </div>
 
           {/* Item 3 */}
@@ -101,12 +101,13 @@ export function MiniEsg() {
             <div className="flex items-center gap-1.5">
               <Users className="h-3.5 w-3.5 text-[#d2af5a] shrink-0" />
               <div className="flex flex-col">
-                <span className="font-semibold text-white/85">Mulher C-Level</span>
-                <span className="text-white/40 text-[6.5px]">representação</span>
+                <span className="font-semibold text-white/85">Mulheres C-Level</span>
+                <span className="text-white/40 text-[6.5px]">liderança em tech</span>
               </div>
             </div>
-            <span className="font-bold text-[#d2af5a] text-[10px] font-mono pl-1">17%</span>
+            <span className="font-bold text-[#d2af5a] text-[10px] font-mono pl-1">35%</span>
           </div>
+
         </div>
       </div>
     </div>

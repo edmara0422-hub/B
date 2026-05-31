@@ -1,13 +1,13 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuthStore } from '@/lib/stores/authStore'
 import { supabase } from '@/lib/supabase'
 import {
   ArrowLeft, Bell, Camera, ChevronRight, HelpCircle, Info,
   Key, LogOut, Mail, Moon, PencilLine, Save, Shield, Trash2, User, X, Phone,
-  BookOpen
+  BookOpen, Star
 } from 'lucide-react'
 
 export default function ProfilePage() {
@@ -27,6 +27,42 @@ export default function ProfilePage() {
   const [saving, setSaving] = useState(false)
   const [uploading, setUploading] = useState(false)
   const [showAjuda, setShowAjuda] = useState(false)
+
+  // ID do Auth obtido da sessão
+  const activeAdminId = user?.id || null
+  const profileName = profile?.name || ""
+  const profileEmail = profile?.email || user?.email || ""
+
+  // Estados do NPS
+  const [npsScore, setNpsScore] = useState<number | null>(null)
+  const [npsFeedback, setNpsFeedback] = useState<string>("")
+  const [feedbacksList, setFeedbacksList] = useState<any[]>([])
+
+  // Estados do Suporte
+  const [supportOpen, setSupportOpen] = useState(false)
+  const [supportEmail, setSupportEmail] = useState(profileEmail)
+  const [supportMessage, setSupportMessage] = useState("")
+  const [supportSending, setSupportSending] = useState(false)
+  const [supportSuccess, setSupportSuccess] = useState(false)
+
+  // Carrega feedbacks cacheados locais ao iniciar
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const cached = localStorage.getItem("ipb_feedbacks")
+      if (cached) {
+        try {
+          setFeedbacksList(JSON.parse(cached))
+        } catch {}
+      }
+    }
+  }, [])
+
+  // Sincroniza e-mail padrão do suporte quando o e-mail do perfil carregar
+  useEffect(() => {
+    if (profileEmail) {
+      setSupportEmail(profileEmail)
+    }
+  }, [profileEmail])
 
   const flash = (msg: string) => { setMessage(msg); setError(''); setTimeout(() => setMessage(''), 3000) }
   const flashErr = (msg: string) => { setError(msg); setMessage(''); setTimeout(() => setError(''), 5000) }
@@ -100,7 +136,6 @@ export default function ProfilePage() {
   }
 
   const handleLogout = () => {
-    // Limpa estado e redireciona IMEDIATO — signOut roda em background (fire-and-forget)
     signOut()
     window.location.href = '/auth'
   }
@@ -120,16 +155,79 @@ export default function ProfilePage() {
     window.location.href = '/auth'
   }
 
+  // Submissão do NPS
+  const handleNpsSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (npsScore === null) return
+
+    const newFb = {
+      score: npsScore,
+      text: npsFeedback,
+      date: new Date().toLocaleDateString("pt-BR"),
+    }
+    
+    // Atualiza cache local e localStorage
+    const updated = [newFb, ...feedbacksList]
+    setFeedbacksList(updated)
+    localStorage.setItem("ipb_feedbacks", JSON.stringify(updated))
+
+    try {
+      await fetch("/api/feedback", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          user_id: activeAdminId || null,
+          score: npsScore,
+          text: npsFeedback
+        })
+      })
+    } catch (err) {
+      console.warn("[NPS Submit] erro ao salvar:", err)
+    }
+    
+    setNpsFeedback("")
+    setNpsScore(null)
+    flash("Agradecemos muito pelo seu feedback!")
+  }
+
+  // Submissão do Chamado de Suporte
+  const handleSendSupport = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!supportMessage.trim()) return
+    setSupportSending(true)
+    
+    try {
+      const r = await fetch("/api/support", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          user_id: activeAdminId || null,
+          name: profileName || "Usuária",
+          email: supportEmail || profileEmail || "sem-email@ipb.app",
+          message: supportMessage
+        })
+      })
+
+      if (!r.ok) {
+        const errJson = await r.json().catch(() => ({}))
+        throw new Error(errJson.error || "Falha ao enviar ticket")
+      }
+
+      flash("Mensagem enviada com sucesso ao suporte!")
+      setSupportMessage("")
+      setSupportSuccess(true)
+    } catch (err: any) {
+      flashErr("Erro ao enviar: " + err.message)
+    } finally {
+      setSupportSending(false)
+    }
+  }
 
   const inputClass = 'w-full h-9 rounded-[0.5rem] border border-white/15 bg-white/[0.08] px-3 text-[12px] text-white placeholder:text-white/40 outline-none focus:border-white/30'
-  // Cards do perfil usam .ipb-soft: prata forte + preto base + toque dourado
   const menuBtn = 'ipb-soft flex w-full items-center gap-2.5 rounded-[0.8rem] px-3 py-2.5 text-left transition-all'
 
   return (
     <div className="relative min-h-screen text-white px-2 pb-32 pt-16 md:px-4">
-      {/* Wrapper relativo pra ficar acima do backdrop.
-          Mobile: max-w-2xl mantém leitura confortável.
-          Desktop: w-full ocupa toda a largura disponível (acompanha TopBar/BottomNav). */}
       <div className="relative z-10 mx-auto w-full max-w-2xl md:max-w-none">
       {/* Back */}
       <button onClick={() => router.push('/sea')} className="mb-5 flex items-center gap-1.5 text-[11px] text-white/65 hover:text-white/90 transition-colors">
@@ -249,7 +347,7 @@ export default function ProfilePage() {
         {/* Notificações */}
         <button onClick={handleToggleNotifications} className={menuBtn}>
           <Bell className="h-4 w-4 text-white/75" />
-          <span className="flex-1 text-[12px] font-medium text-white/90">Notificações</span>
+          <span className="flex-1 text-left text-[12px] font-medium text-white/90">Notificações</span>
           <span className={`rounded-full px-1.5 py-0.5 text-[6px] font-semibold ${profile?.notifications_enabled ? 'border border-[#4ade8030] bg-[#4ade8010] text-[#4ade80]' : 'border border-white/10 bg-white/5 text-white/30'}`}>
             {profile?.notifications_enabled ? 'ON' : 'OFF'}
           </span>
@@ -304,7 +402,119 @@ export default function ProfilePage() {
         </button>
       </div>
 
-      {showAjuda && <AjudaModal onClose={() => setShowAjuda(false)} />}
+      {/* NPS UI Form */}
+      <div className="mb-5">
+        <form onSubmit={handleNpsSubmit} className="ipb-soft font-sans" style={{ display: "flex", flexDirection: "column", gap: 14, padding: 20, borderRadius: "1rem" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            <Star size={14} style={{ color: "#e0b85e" }} />
+            <h4 style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.16em", textTransform: "uppercase", color: "#e0b85e", margin: 0 }}>
+              Avaliação de Satisfação · NPS Interativo
+            </h4>
+          </div>
+          <p style={{ fontSize: 11, color: "rgba(255,255,255,0.7)", fontWeight: 300, margin: 0, lineHeight: 1.5 }}>
+            O quanto você recomendaria o aplicativo IPB para um sócio ou parceiro de negócios de 0 a 10?
+          </p>
+
+          {/* Grid de Pontuação Interativa (0 a 10) */}
+          <div style={{ display: "flex", gap: "6px", flexWrap: "wrap", justifyContent: "center", margin: "6px 0" }}>
+            {Array.from({ length: 11 }).map((_, score) => (
+              <button
+                key={score}
+                type="button"
+                className={`nps-btn ${npsScore === score ? "active" : ""}`}
+                onClick={() => setNpsScore(score)}
+                style={{
+                  width: 32, height: 32, borderRadius: "8px", border: "1px solid rgba(255,255,255,0.1)",
+                  background: npsScore === score ? "#e0b85e" : "rgba(255,255,255,0.02)",
+                  color: npsScore === score ? "#000" : "#fff", fontWeight: 600, fontSize: 11, cursor: "pointer",
+                  transition: "all 0.2s"
+                }}
+              >
+                {score}
+              </button>
+            ))}
+          </div>
+
+          <div>
+            <label style={{ fontSize: 9, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", color: "#e0b85e", display: "block", marginBottom: 6 }}>
+              Comentários e Sugestões
+            </label>
+            <textarea
+              placeholder="Conte-nos o que podemos melhorar na sua jornada..."
+              rows={3}
+              value={npsFeedback}
+              onChange={(e) => setNpsFeedback(e.target.value)}
+              style={{
+                width: "100%", padding: 10, borderRadius: "8px", background: "rgba(0,0,0,0.3)",
+                border: "1px solid rgba(255,255,255,0.1)", color: "#fff", fontSize: 11, resize: "none", outline: "none"
+              }}
+            />
+          </div>
+
+          <button
+            type="submit"
+            disabled={npsScore === null}
+            style={{
+              width: "100%", padding: 12, borderRadius: 8, background: npsScore === null ? "rgba(255,255,255,0.05)" : "#e0b85e",
+              color: npsScore === null ? "rgba(255,255,255,0.2)" : "#000", fontWeight: 600, cursor: npsScore === null ? "not-allowed" : "pointer",
+              border: "none", transition: "all 0.2s"
+            }}
+          >
+            Enviar Avaliação
+          </button>
+        </form>
+      </div>
+
+      {showAjuda && (
+        <AjudaModal
+          onClose={() => setShowAjuda(false)}
+          onOpenSupport={() => setSupportOpen(true)}
+        />
+      )}
+
+      {/* Modal de Suporte Helpdesk (Suporte UI) */}
+      {supportOpen && (
+        <div style={{
+          position: "fixed", top: 0, left: 0, right: 0, bottom: 0,
+          background: "rgba(0,0,0,0.85)", display: "flex", alignItems: "center", justifyContent: "center",
+          padding: 24, zIndex: 1000, backdropFilter: "blur(8px)"
+        }}>
+          {supportSuccess ? (
+            <div className="ipb-soft font-sans" style={{ width: "100%", maxWidth: 460, background: "#0a0a0a", border: "1.5px solid #e0b85e", display: "flex", flexDirection: "column", gap: 16, textAlign: "center", padding: 24, borderRadius: "1.2rem" }}>
+              <h4 style={{ fontSize: 16, fontWeight: 600, color: "#fff", margin: 0 }}>Chamado Enviado com Sucesso!</h4>
+              <p style={{ fontSize: 12, color: "rgba(255,255,255,0.7)", margin: 0, lineHeight: 1.6 }}>
+                Sua mensagem foi entregue com sucesso ao suporte. Responderemos diretamente em <strong>{supportEmail}</strong>.
+              </p>
+              <button onClick={() => { setSupportOpen(false); setSupportSuccess(false); }} style={{ width: "100%", padding: 12, borderRadius: 10, background: "#e0b85e", border: "none", color: "#000", fontWeight: 600, cursor: "pointer" }}>
+                Entendido
+              </button>
+            </div>
+          ) : (
+            <form onSubmit={handleSendSupport} className="ipb-soft font-sans" style={{ width: "100%", maxWidth: 460, background: "rgba(10,10,10,0.9)", border: "1.5px solid #e0b85e", display: "flex", flexDirection: "column", gap: 16, boxShadow: "0 24px 64px rgba(0,0,0,0.8)", padding: 24, borderRadius: "1.2rem" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid rgba(255,255,255,0.1)", paddingBottom: 12 }}>
+                <h4 style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.14em", textTransform: "uppercase", color: "#e0b85e", margin: 0 }}>Suporte Helpdesk</h4>
+                <button type="button" onClick={() => { setSupportOpen(false); setSupportMessage(""); }} style={{ background: "none", border: "none", color: "rgba(255,255,255,0.4)", cursor: "pointer" }}>Fechar</button>
+              </div>
+
+              <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+                <div>
+                  <label style={{ fontSize: 9, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", color: "#e0b85e", display: "block", marginBottom: 6 }}>E-mail para resposta</label>
+                  <input type="email" value={supportEmail} onChange={e => setSupportEmail(e.target.value)} required style={{ width: "100%", padding: 10, borderRadius: 8, background: "rgba(0,0,0,0.3)", border: "1px solid rgba(255,255,255,0.1)", color: "#fff", fontSize: 12, outline: "none" }} />
+                </div>
+
+                <div>
+                  <label style={{ fontSize: 9, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", color: "#e0b85e", display: "block", marginBottom: 6 }}>Mensagem / Descrição do Problema</label>
+                  <textarea value={supportMessage} onChange={e => setSupportMessage(e.target.value)} placeholder="Descreva o problema aqui..." rows={5} required style={{ width: "100%", padding: 10, borderRadius: 8, background: "rgba(0,0,0,0.3)", border: "1px solid rgba(255,255,255,0.1)", color: "#fff", resize: "none", fontSize: 12, outline: "none" }} />
+                </div>
+              </div>
+
+              <button type="submit" disabled={supportSending} style={{ width: "100%", padding: 12, borderRadius: 10, background: "#e0b85e", border: "none", color: "#000", fontWeight: 600, cursor: "pointer" }}>
+                {supportSending ? "Enviando chamado..." : "Enviar Chamado ao Suporte"}
+              </button>
+            </form>
+          )}
+        </div>
+      )}
 
       {/* ═══ Sobre ═══ */}
       <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/70">Sobre</p>
@@ -336,36 +546,36 @@ export default function ProfilePage() {
 
 const FAQ_ITEMS = [
   {
-    q: 'O IPB substitui o prontuário eletrônico do paciente?',
-    a: 'Não. O SEA é uma ferramenta de apoio ao raciocínio clínico pessoal. Não é um PEP (Prontuário Eletrônico do Paciente) e não substitui documentação oficial exigida pela instituição.',
+    q: 'O IPB substitui auditorias ou análises fiscais formais?',
+    a: 'Não. O IPB (Intelligence Platform Business) é uma ferramenta de apoio à decisão gerencial e raciocínio estratégico. Ele não substitui pareceres contábeis, auditorias financeiras oficiais ou sistemas formais de ERP exigidos legalmente.',
   },
   {
-    q: 'Meus dados clínicos ficam salvos onde?',
-    a: 'Os dados inseridos no prontuário ficam armazenados localmente no seu dispositivo (localStorage). Nenhum dado pessoal de paciente é enviado a servidores externos.',
+    q: 'Meus dados de negócio ficam salvos onde?',
+    a: 'Os dados simulados e de telemetria ficam armazenados localmente no seu dispositivo (localStorage) e processados no navegador. Dados sigilosos de sua empresa não são enviados a servidores externos de inteligência artificial de forma não criptografada.',
   },
   {
     q: 'Como altero minha senha?',
-    a: 'Role até o final desta página e toque em "Alterar senha". Você precisará digitar a nova senha duas vezes para confirmação.',
+    a: 'Role até o final desta página na seção "Alterar senha". Digite sua nova senha de acesso duas vezes e clique em confirmar para salvar de forma segura.',
   },
   {
-    q: 'Posso usar o IPB sem internet?',
-    a: 'Sim. O IPB foi desenvolvido com arquitetura offline-first. As funcionalidades principais funcionam sem conexão. A sincronização e o tutor IA requerem internet.',
+    q: 'Posso usar o IPB sem conexão com a internet?',
+    a: 'Sim. O IPB foi desenvolvido com arquitetura offline-first. As simulações matemáticas locais e matrizes funcionam de forma independente. Apenas a sincronização de nuvem e o Assistente IA de negócios necessitam de internet.',
   },
   {
-    q: 'O tutor IA pode errar?',
-    a: 'Sim. O tutor IA é uma ferramenta educacional e pode apresentar imprecisões. Sempre valide as informações com guidelines atualizados e julgamento clínico profissional.',
+    q: 'O Tutor/Assistente de IA de Negócios pode falhar?',
+    a: 'Sim. O tutor IA é um acelerador estratégico educacional e consultivo que pode apresentar imprecisões analíticas. Sempre valide os números gerados com seu planejamento financeiro e práticas de governança oficiais.',
   },
   {
     q: 'Como excluo minha conta permanentemente?',
-    a: 'Role até o final desta página e toque em "Excluir minha conta". O processo exige dupla confirmação. Todos os dados são removidos permanentemente em até 30 dias.',
+    a: 'No final desta página, clique em "Excluir minha conta". O processo possui dupla confirmação de segurança e remove todos os seus dados de progresso de forma definitiva e irrecuperável.',
   },
   {
-    q: 'Encontrei um erro ou tenho uma sugestão. Como reporto?',
-    a: 'Use o Canal de Denúncias e Feedback em Home → Governança, ou envie um e-mail para erbusiness0422@gmail.com com o assunto "Suporte IPB".',
+    q: 'Como envio sugestões ou reporto um erro técnico?',
+    a: 'Você pode enviar diretamente sua avaliação no NPS Interativo localizado nesta página ou abrir um chamado rápido no botão "Abrir Chamado Helpdesk". Alternativamente, envie para erbusiness0422@gmail.com.',
   },
 ]
 
-function AjudaModal({ onClose }: { onClose: () => void }) {
+function AjudaModal({ onClose, onOpenSupport }: { onClose: () => void; onOpenSupport: () => void }) {
   const [openIndex, setOpenIndex] = useState<number | null>(null)
 
   return (
@@ -389,7 +599,7 @@ function AjudaModal({ onClose }: { onClose: () => void }) {
           {/* Status do sistema */}
           <div className="flex items-center gap-2 rounded-[0.8rem] ipb-soft px-3 py-2">
             <span className="h-1.5 w-1.5 rounded-full bg-white/50" />
-            <p className="text-[8px] text-white/50">Sistema operacional</p>
+            <p className="text-[8px] text-white/50">Sistema operacional ativo</p>
           </div>
 
           {/* FAQ — accordion */}
@@ -417,16 +627,19 @@ function AjudaModal({ onClose }: { onClose: () => void }) {
           <div>
             <p className="mb-2 text-[8px] font-semibold uppercase tracking-wider text-white/40">Falar com o Suporte</p>
             <div className="space-y-1.5">
-              <a
-                href="mailto:erbusiness0422@gmail.com?subject=Suporte IPB"
-                className="flex items-center gap-2 rounded-[0.8rem] ipb-soft px-3 py-2.5 hover:bg-white/[0.04]"
+              <button
+                onClick={() => {
+                  onClose()
+                  onOpenSupport()
+                }}
+                className="flex w-full items-center gap-2 rounded-[0.8rem] ipb-soft px-3 py-2.5 hover:bg-white/[0.04] text-left"
               >
                 <Mail className="h-3.5 w-3.5 shrink-0 text-white/40" />
                 <div>
-                  <p className="text-[9px] font-medium text-white/60">E-mail</p>
-                  <p className="text-[8px] text-white/35">erbusiness0422@gmail.com · resposta em até 2 dias úteis</p>
+                  <p className="text-[9px] font-medium text-white/60">Abrir Chamado Helpdesk</p>
+                  <p className="text-[8px] text-white/35">Abra um chamado de suporte técnico rápido direto pelo app.</p>
                 </div>
-              </a>
+              </button>
             </div>
           </div>
 
