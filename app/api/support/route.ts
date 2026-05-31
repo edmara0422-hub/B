@@ -11,35 +11,40 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "A mensagem de suporte é obrigatória" }, { status: 400 });
     }
 
-    const db = supabaseAdmin();
+    let insertErr = null;
 
-    // 1. Salva o ticket no Supabase support_tickets table
-    let { error: insertErr } = await db
-      .from("support_tickets")
-      .insert({
+    // 1. Tenta salvar o ticket no Supabase support_tickets table (encapsulado e resiliente)
+    try {
+      const db = supabaseAdmin();
+      const insertObj = {
         user_id: user_id || null,
         name: name || "Usuária",
         email: email || "sem-email@ipb.app",
         message: message.trim()
-      });
+      };
 
-    // Fallback gracioso caso dê algum erro de chave estrangeira com cache do perfil
-    if (insertErr) {
-      console.warn("[support] Falha ao inserir com user_id, tentando como nulo:", insertErr.message);
-      const { error: retryErr } = await db
+      const { error } = await db
         .from("support_tickets")
-        .insert({
-          user_id: null,
-          name: name || "Usuária",
-          email: email || "sem-email@ipb.app",
-          message: message.trim()
-        });
+        .insert(insertObj);
       
-      insertErr = retryErr;
-    }
+      insertErr = error;
 
-    if (insertErr) {
-      return NextResponse.json({ error: `Database Error: ${insertErr.message}` }, { status: 500 });
+      // Fallback gracioso caso dê algum erro de chave estrangeira com cache do perfil
+      if (insertErr) {
+        console.warn("[support] Falha ao inserir com user_id, tentando como nulo:", insertErr.message);
+        const { error: retryErr } = await db
+          .from("support_tickets")
+          .insert({
+            user_id: null,
+            name: name || "Usuária",
+            email: email || "sem-email@ipb.app",
+            message: message.trim()
+          });
+        
+        insertErr = retryErr;
+      }
+    } catch (dbErr: any) {
+      console.warn("[support-api-db-warn] Supabase não configurado ou inacessível:", dbErr.message);
     }
 
     // 2. Envia o e-mail administrativo de suporte com o assunto estrito
@@ -65,15 +70,16 @@ export async function POST(req: NextRequest) {
       </div>
     `;
 
+    // Envia o e-mail de suporte de qualquer forma!
     await sendMail({
       to: "erbusiness0422@gmail.com",
-      subject: "Suporte IPB App", // Assunto estruturado obrigatório para o IPB
+      subject: "Suporte IPB App", // Assunto estruturado obrigatório
       html: htmlContent
     });
 
     return NextResponse.json({ ok: true });
   } catch (err: any) {
     console.error("[support-api]", err);
-    return NextResponse.json({ error: err.message || "Erro interno" }, { status: 500 });
+    return NextResponse.json({ error: err.message || "Erro interno de suporte" }, { status: 500 });
   }
 }

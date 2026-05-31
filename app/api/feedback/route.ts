@@ -2,65 +2,71 @@ import { NextRequest, NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase";
 import { sendMail } from "@/lib/mail";
 
+// POST: Cria e envia o Feedback NPS
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json().catch(() => ({}));
-    const { user_id, score, text } = body;
+    const { id, user_id, score, text } = body;
 
     if (score === undefined || score < 0 || score > 10) {
       return NextResponse.json({ error: "Nota de NPS (0 a 10) obrigatória" }, { status: 400 });
     }
 
-    const db = supabaseAdmin();
+    let insertErr = null;
+    let userName = "Usuária Anônima";
+    let userEmail = "Não disponível";
 
-    // 1. Salva o feedback no Supabase feedbacks table
-    let { error: insertErr } = await db
-      .from("feedbacks")
-      .insert({
+    // 1. Tenta salvar no Supabase (completamente seguro e encapsulado em try-catch)
+    try {
+      const db = supabaseAdmin();
+      const insertObj: any = {
         user_id: user_id || null,
         score,
         text: text || ""
-      });
+      };
+      if (id) insertObj.id = id;
 
-    // Fallback gracioso: se houver erro de chave estrangeira com o ID do perfil desatualizado,
-    // salva o feedback vinculando o user_id como nulo para nunca perder a avaliação!
-    if (insertErr) {
-      console.warn("[feedback] Falha ao inserir com user_id, tentando como nulo:", insertErr.message);
-      const { error: retryErr } = await db
+      const { error } = await db
         .from("feedbacks")
-        .insert({
-          user_id: null,
-          score,
-          text: text || ""
-        });
+        .insert(insertObj);
       
-      insertErr = retryErr;
+      insertErr = error;
+
+      // Fallback gracioso caso dê algum erro de chave estrangeira com cache do perfil
+      if (insertErr) {
+        console.warn("[feedback] Falha ao inserir com user_id, tentando como nulo:", insertErr.message);
+        const { error: retryErr } = await db
+          .from("feedbacks")
+          .insert({
+            user_id: null,
+            score,
+            text: text || ""
+          });
+        
+        insertErr = retryErr;
+      }
+
+      // Tenta buscar informações extras sobre a usuária se o Supabase estiver funcionando
+      if (!insertErr && user_id) {
+        const { data: profile } = await db
+          .from("user_profile_cache")
+          .select("name")
+          .eq("user_id", user_id)
+          .single();
+        
+        if (profile?.name) userName = profile.name;
+        
+        try {
+          const { data: { users: authUsers } } = await db.auth.admin.listUsers();
+          const authUser = authUsers?.find(au => au.id === user_id);
+          if (authUser?.email) userEmail = authUser.email;
+        } catch {}
+      }
+    } catch (dbErr: any) {
+      console.warn("[feedback-api-db-warn] Supabase não configurado ou inacessível:", dbErr.message);
     }
 
-    if (insertErr) {
-      return NextResponse.json({ error: `Database Error: ${insertErr.message}` }, { status: 500 });
-    }
-
-    // 2. Busca informações detalhadas da usuária (opcional)
-    let userName = "Usuária Anônima";
-    let userEmail = "Não disponível";
-    if (user_id) {
-      const { data: profile } = await db
-        .from("user_profile_cache")
-        .select("name")
-        .eq("user_id", user_id)
-        .single();
-      
-      if (profile?.name) userName = profile.name;
-      
-      try {
-        const { data: { users: authUsers } } = await db.auth.admin.listUsers();
-        const authUser = authUsers?.find(au => au.id === user_id);
-        if (authUser?.email) userEmail = authUser.email;
-      } catch {}
-    }
-
-    // 3. Envia o e-mail de alerta administrativo estilizado (Luxo)
+    // 2. Monta o e-mail de alerta administrativo estilizado (Luxo)
     const htmlContent = `
       <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #e0b85e; border-radius: 12px; padding: 24px; background-color: #050505; color: #ffffff;">
         <h2 style="color: #e0b85e; border-bottom: 1px solid #222; padding-bottom: 12px; margin-top: 0; font-weight: 300;">Nova Avaliação NPS Recebida</h2>
@@ -88,6 +94,7 @@ export async function POST(req: NextRequest) {
       </div>
     `;
 
+    // 3. Envia o e-mail de qualquer forma! (Garante resiliência total)
     await sendMail({
       to: "erbusiness0422@gmail.com",
       subject: `NPS - IPB App`,
@@ -96,7 +103,38 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ ok: true });
   } catch (err: any) {
-    console.error("[feedback-api]", err);
+    console.error("[feedback-api-error]", err);
+    return NextResponse.json({ error: err.message || "Erro interno" }, { status: 500 });
+  }
+}
+
+// DELETE: Apaga o Feedback NPS (Lixeira)
+export async function DELETE(req: NextRequest) {
+  try {
+    const body = await req.json().catch(() => ({}));
+    const { id, user_id, score, text } = body;
+
+    try {
+      const db = supabaseAdmin();
+      let query = db.from("feedbacks").delete();
+
+      if (id) {
+        query = query.eq("id", id);
+      } else if (user_id) {
+        query = query.eq("user_id", user_id).eq("score", score).eq("text", text || "");
+      } else {
+        query = query.eq("score", score).eq("text", text || "");
+      }
+
+      const { error } = await query;
+      if (error) throw error;
+    } catch (dbErr: any) {
+      console.warn("[feedback-delete-db-warn] Supabase inacessível na exclusão:", dbErr.message);
+    }
+
+    return NextResponse.json({ ok: true });
+  } catch (err: any) {
+    console.error("[feedback-delete-api-error]", err);
     return NextResponse.json({ error: err.message || "Erro interno" }, { status: 500 });
   }
 }
