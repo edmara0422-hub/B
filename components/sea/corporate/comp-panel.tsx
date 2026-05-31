@@ -389,18 +389,70 @@ export function CompPanel({ initialTab }: { initialTab?: CompSubTab }) {
                   
                   {/* Documents accordions integrated */}
                   <div className="mt-4 pt-4 border-t border-white/[0.05] space-y-2 text-left">
+                    {/* POLÍTICAS DE DADOS (4 DOCUMENTOS) */}
                     <button
                       onClick={() => toggleAccordion('politicas')}
                       className="w-full p-3 bg-black/40 border border-white/5 hover:border-white/10 rounded-xl flex justify-between items-center text-[10.5px] font-semibold text-white/90"
                     >
-                      <span>Políticas e Documentos de Compliance</span>
+                      <span>POLÍTICAS DE DADOS <span className="text-[8.5px] text-white/40 ml-1.5 font-normal">(4 documentos)</span></span>
                       <ChevronDown className={`h-3.5 w-3.5 text-[#d2af5a] transition-transform duration-300 ${activeAcc === 'politicas' ? 'rotate-180' : ''}`} />
                     </button>
                     {activeAcc === 'politicas' && (
                       <div className="p-3 bg-black/50 border border-white/5 rounded-xl space-y-2 animate-fadeIn text-[10px] text-white/70">
-                        <div className="flex items-center gap-2"><FileText className="h-3.5 w-3.5 text-[#d2af5a]" /> <span>📄 Política de Privacidade e Proteção de Dados (LGPD)</span></div>
-                        <div className="flex items-center gap-2"><FileText className="h-3.5 w-3.5 text-[#d2af5a]" /> <span>📄 Política de Segurança da Informação (ISO 27001)</span></div>
-                        <div className="flex items-center gap-2"><FileText className="h-3.5 w-3.5 text-[#d2af5a]" /> <span>📄 Manual de Conduta Ética e Integridade Corporativa</span></div>
+                        <div className="flex items-center gap-2"><FileText className="h-3.5 w-3.5 text-[#d2af5a]" /> <span>📄 Política de Privacidade e Proteção de Dados (LGPD/GDPR)</span></div>
+                        <div className="flex items-center gap-2"><FileText className="h-3.5 w-3.5 text-[#d2af5a]" /> <span>📄 Política de Retenção e Descarte Seguro de Informações</span></div>
+                        <div className="flex items-center gap-2"><FileText className="h-3.5 w-3.5 text-[#d2af5a]" /> <span>📄 Política de Segurança da Informação e Controle de Acessos</span></div>
+                        <div className="flex items-center gap-2"><FileText className="h-3.5 w-3.5 text-[#d2af5a]" /> <span>📄 Política de Gestão de Chaves de Criptografia</span></div>
+                      </div>
+                    )}
+
+                    {/* PRÁTICAS OPERACIONAIS (4 DOCUMENTOS) */}
+                    <button
+                      onClick={() => toggleAccordion('praticas')}
+                      className="w-full p-3 bg-black/40 border border-white/5 hover:border-white/10 rounded-xl flex justify-between items-center text-[10.5px] font-semibold text-white/90"
+                    >
+                      <span>PRÁTICAS OPERACIONAIS <span className="text-[8.5px] text-white/40 ml-1.5 font-normal">(4 documentos)</span></span>
+                      <ChevronDown className={`h-3.5 w-3.5 text-[#d2af5a] transition-transform duration-300 ${activeAcc === 'praticas' ? 'rotate-180' : ''}`} />
+                    </button>
+                    {activeAcc === 'praticas' && (
+                      <div className="p-3 bg-black/50 border border-white/5 rounded-xl space-y-2 animate-fadeIn text-[10px] text-white/70">
+                        <div className="flex items-center gap-2"><FileText className="h-3.5 w-3.5 text-[#d2af5a]" /> <span>📄 Manual de Engenharia de Software Verde (Green IT)</span></div>
+                        <div className="flex items-center gap-2"><FileText className="h-3.5 w-3.5 text-[#d2af5a]" /> <span>📄 Protocolo de Resposta a Incidentes e Incident Responders</span></div>
+                        <div className="flex items-center gap-2"><FileText className="h-3.5 w-3.5 text-[#d2af5a]" /> <span>📄 Norma de Ciclo de Vida de Software e QA Seguro</span></div>
+                        <div className="flex items-center gap-2"><FileText className="h-3.5 w-3.5 text-[#d2af5a]" /> <span>📄 Manual de Procedimentos de Suporte e SLA Operacional</span></div>
+                      </div>
+                    )}
+
+                    {/* COMPLIANCE FINANCEIRO (4 DOCUMENTOS) */}
+                    <button
+                      onClick={() => toggleAccordion('compliance')}
+                      className="w-full p-3 bg-black/40 border border-white/5 hover:border-white/10 rounded-xl flex justify-between items-center text-[10.5px] font-semibold text-white/90"
+                    >
+                      <span>COMPLIANCE FINANCEIRO <span className="text-[8.5px] text-white/40 ml-1.5 font-normal">(4 documentos)</span></span>
+                      <ChevronDown className={`h-3.5 w-3.5 text-[#d2af5a] transition-transform duration-300 ${activeAcc === 'compliance' ? 'rotate-180' : ''}`} />
+                    </button>
+                    {activeAcc === 'compliance' && (
+                      <div className="p-3 bg-black/50 border border-white/5 rounded-xl space-y-2 animate-fadeIn text-[10px] text-white/70">
+                        <div className="flex items-center gap-2"><FileText className="h-3.5 w-3.5 text-[#d2af5a]" /> <span>📄 Política de Simulação Estratégica e Auditoria de EBITDA/WACC</span></div>
+                        <div className="flex items-center gap-2"><FileText className="h-3.5 w-3.5 text-[#d2af5a]" /> <span>📄 Diretriz de Controle e Planejamento Tributário</span></div>
+                        <div className="flex items-center gap-2"><FileText className="h-3.5 w-3.5 text-[#d2af5a]" /> <span>📄 Manual de Compliance Fiscal e Integridade de Receitas</span></div>
+                        <div className="flex items-center gap-2"><FileText className="h-3.5 w-3.5 text-[#d2af5a]" /> <span>📄 Norma de Auditoria de LTV/CAC e Projeções Financeiras</span></div>
+                      </div>
+                    )}
+
+                    {/* CÓDIGOS E DIRETRIZES (3 DOCUMENTOS) */}
+                    <button
+                      onClick={() => toggleAccordion('codigos')}
+                      className="w-full p-3 bg-black/40 border border-white/5 hover:border-white/10 rounded-xl flex justify-between items-center text-[10.5px] font-semibold text-white/90"
+                    >
+                      <span>CÓDIGOS E DIRETRIZES <span className="text-[8.5px] text-white/40 ml-1.5 font-normal">(3 documentos)</span></span>
+                      <ChevronDown className={`h-3.5 w-3.5 text-[#d2af5a] transition-transform duration-300 ${activeAcc === 'codigos' ? 'rotate-180' : ''}`} />
+                    </button>
+                    {activeAcc === 'codigos' && (
+                      <div className="p-3 bg-black/50 border border-white/5 rounded-xl space-y-2 animate-fadeIn text-[10px] text-white/70">
+                        <div className="flex items-center gap-2"><FileText className="h-3.5 w-3.5 text-[#d2af5a]" /> <span>📄 Código de Conduta Ética e Integridade Corporativa</span></div>
+                        <div className="flex items-center gap-2"><FileText className="h-3.5 w-3.5 text-[#d2af5a]" /> <span>📄 Diretriz de Segurança Psicológica e Autonomia de Squads</span></div>
+                        <div className="flex items-center gap-2"><FileText className="h-3.5 w-3.5 text-[#d2af5a]" /> <span>📄 Protocolo Anticorrupção e Homologação de Fornecedores</span></div>
                       </div>
                     )}
                   </div>
