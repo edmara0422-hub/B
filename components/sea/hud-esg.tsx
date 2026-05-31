@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Leaf, Star, Mail, MessageSquare, Send } from 'lucide-react'
+import { Leaf, Star, Mail, MessageSquare, Send, CheckCircle2, Trash2 } from 'lucide-react'
 
 // Domínios de Transformação Digital baseados no IPB (David Rogers, Columbia Business School, 2016)
 const ODS_DATA: Record<string, string> = {
@@ -48,6 +48,7 @@ export function HudEsg() {
   const [npsSelected, setNpsSelected] = useState<number | null>(null)
   const [npsComment, setNpsComment] = useState('')
   const [feedbacksList, setFeedbacksList] = useState<{ score: number; text: string }[]>([])
+  const [npsSubmitted, setNpsSubmitted] = useState(false)
   const [activeOdsKey, setActiveOdsKey] = useState<string>('3')
   const [activeGovTab, setActiveGovTab] = useState<string | null>(null)
 
@@ -56,6 +57,7 @@ export function HudEsg() {
   const [supportMessage, setSupportMessage] = useState('')
   const [supportSending, setSupportSending] = useState(false)
   const [supportSuccess, setSupportSuccess] = useState(false)
+  const [lastSubmittedEmail, setLastSubmittedEmail] = useState('')
 
   const [docType, setDocType] = useState('ata')
   const [generating, setGenerating] = useState(false)
@@ -122,9 +124,10 @@ Diretoria de Governança Corporativa IPB`
     setFeedbacksList((prev) => [newFb, ...prev])
     setNpsComment('')
     setNpsSelected(null)
+    setNpsSubmitted(true)
 
     try {
-      const res = await fetch('/api/feedback', {
+      await fetch('/api/feedback', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -132,12 +135,6 @@ Diretoria de Governança Corporativa IPB`
           text: newFb.text
         })
       })
-
-      if (res.ok) {
-        alert('Feedback enviado com sucesso! Agradecemos por colaborar com a governança IPB.')
-      } else {
-        console.warn('Erro ao salvar avaliação no servidor.')
-      }
     } catch (err) {
       console.error('Erro de rede ao enviar NPS:', err)
     }
@@ -147,6 +144,8 @@ Diretoria de Governança Corporativa IPB`
     e.preventDefault()
     if (!supportMessage.trim()) return
     setSupportSending(true)
+    const targetEmail = supportEmail || 'sem-email@ipb.app'
+    setLastSubmittedEmail(targetEmail)
 
     try {
       const res = await fetch('/api/support', {
@@ -154,7 +153,7 @@ Diretoria de Governança Corporativa IPB`
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           name: 'Usuária IPB',
-          email: supportEmail || 'sem-email@ipb.app',
+          email: targetEmail,
           message: supportMessage.trim()
         })
       })
@@ -162,7 +161,6 @@ Diretoria de Governança Corporativa IPB`
       if (res.ok) {
         setSupportSuccess(true)
         setSupportMessage('')
-        setTimeout(() => setSupportSuccess(false), 5000)
       } else {
         alert('Erro ao enviar chamado de suporte.')
       }
@@ -208,34 +206,52 @@ Diretoria de Governança Corporativa IPB`
                   <h3>Avaliação de Satisfação · NPS Interativo</h3>
                 </div>
                 
-                <p className="text-[10px] text-white/70 leading-relaxed mb-3">
-                  O quanto você recomendaria o aplicativo IPB para um sócio ou parceiro de negócios, de 0 a 10?
-                </p>
-
-                <div className="esg-nps-widget">
-                  {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((n) => (
+                {npsSubmitted ? (
+                  <div className="flex flex-col items-center justify-center py-5 text-center gap-2 bg-[#d2af5a]/5 border border-[#d2af5a]/25 rounded-xl p-4 animate-fadeIn">
+                    <CheckCircle2 className="h-7 w-7 text-[#5dcaa5]" />
+                    <span className="text-[11.5px] font-bold text-white uppercase tracking-wider">Agradecemos muito pelo seu feedback!</span>
+                    <p className="text-[9.5px] text-white/60 leading-normal max-w-xs">
+                      Sua avaliação de satisfação foi processada com sucesso e integrada aos painéis analíticos do IPB.
+                    </p>
                     <button
-                      key={n}
-                      className={`esg-nps-btn ${npsSelected === n ? 'active' : ''}`}
-                      onClick={() => setNpsSelected(n)}
+                      onClick={() => setNpsSubmitted(false)}
+                      className="mt-1 px-3 py-1.5 bg-black/60 hover:bg-[#d2af5a]/10 border border-white/10 rounded-lg text-[8.5px] text-[#d2af5a] font-mono tracking-widest uppercase transition-all cursor-pointer"
                     >
-                      {n}
+                      Avaliar Novamente
                     </button>
-                  ))}
-                </div>
-                
-                <div className="esg-nps-feedback-box mt-3">
-                  <input
-                    type="text"
-                    placeholder="Escreva um comentário ou feedback sobre o sistema..."
-                    value={npsComment}
-                    onChange={(e) => setNpsComment(e.target.value)}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter') handleNpsSubmit()
-                    }}
-                  />
-                  <button onClick={handleNpsSubmit} disabled={npsSelected === null}>Enviar</button>
-                </div>
+                  </div>
+                ) : (
+                  <>
+                    <p className="text-[10px] text-white/70 leading-relaxed mb-3">
+                      O quanto você recomendaria o aplicativo IPB para um sócio ou parceiro de negócios, de 0 a 10?
+                    </p>
+
+                    <div className="esg-nps-widget">
+                      {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((n) => (
+                        <button
+                          key={n}
+                          className={`esg-nps-btn ${npsSelected === n ? 'active' : ''}`}
+                          onClick={() => setNpsSelected(n)}
+                        >
+                          {n}
+                        </button>
+                      ))}
+                    </div>
+                    
+                    <div className="esg-nps-feedback-box mt-3">
+                      <input
+                        type="text"
+                        placeholder="Escreva um comentário ou feedback sobre o sistema..."
+                        value={npsComment}
+                        onChange={(e) => setNpsComment(e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter') handleNpsSubmit()
+                        }}
+                      />
+                      <button onClick={handleNpsSubmit} disabled={npsSelected === null}>Enviar</button>
+                    </div>
+                  </>
+                )}
               </div>
 
               {/* Canal de Suporte Helpdesk Integrado */}
@@ -245,47 +261,61 @@ Diretoria de Governança Corporativa IPB`
                   <h3>Suporte Helpdesk · Abertura de Chamados</h3>
                 </div>
                 
-                <form onSubmit={handleSendSupport} className="flex flex-col gap-2 mt-2">
-                  <div className="flex flex-col gap-1">
-                    <label className="text-[8px] font-bold text-[#d2af5a] uppercase">E-mail para resposta</label>
-                    <input
-                      type="email"
-                      placeholder="seu-email@empresa.com"
-                      value={supportEmail}
-                      onChange={(e) => setSupportEmail(e.target.value)}
-                      required
-                      className="bg-[#000]/50 border border-white/10 rounded-lg text-[9px] text-white p-2 outline-none focus:border-[#d2af5a]/40"
-                    />
-                  </div>
-                  <div className="flex flex-col gap-1">
-                    <label className="text-[8px] font-bold text-[#d2af5a] uppercase">Mensagem / Relatório de Problema</label>
-                    <textarea
-                      placeholder="Descreva sua solicitação de ajuda ou suporte técnico do IPB..."
-                      rows={3}
-                      value={supportMessage}
-                      onChange={(e) => setSupportMessage(e.target.value)}
-                      required
-                      className="bg-[#000]/50 border border-white/10 rounded-lg text-[9px] text-white p-2 outline-none focus:border-[#d2af5a]/40 resize-none"
-                    />
-                  </div>
-                  <button
-                    type="submit"
-                    disabled={supportSending || !supportMessage.trim()}
-                    className="w-full bg-[#d2af5a] hover:bg-[#d2af5a]/90 text-black font-bold uppercase tracking-wider text-[9px] py-2 rounded-lg transition-colors cursor-pointer select-none disabled:opacity-40 disabled:cursor-not-allowed"
-                  >
-                    {supportSending ? 'Enviando chamado...' : 'Enviar Chamado ao Suporte'}
-                  </button>
-                  {supportSuccess && (
-                    <p className="text-[8px] text-green-400 mt-1 font-semibold text-center">
-                      Chamado aberto com sucesso! Responderemos em breve.
+                {supportSuccess ? (
+                  <div className="flex flex-col items-center justify-center py-5 text-center gap-2 bg-[#d2af5a]/5 border border-[#d2af5a]/25 rounded-xl p-4 animate-fadeIn">
+                    <CheckCircle2 className="h-7 w-7 text-[#5dcaa5]" />
+                    <span className="text-[11.5px] font-bold text-white uppercase tracking-wider">Chamado Enviado com Sucesso!</span>
+                    <p className="text-[9.5px] text-white/70 max-w-xs leading-relaxed">
+                      Sua mensagem foi entregue com sucesso para o nosso time de suporte. Entraremos em contato o mais rápido possível no e-mail <strong className="text-[#e0c887] font-semibold">{lastSubmittedEmail}</strong>.
                     </p>
-                  )}
-                </form>
+                    <button
+                      onClick={() => {
+                        setSupportSuccess(false)
+                        setSupportEmail('')
+                      }}
+                      className="mt-2 w-full py-2 bg-gradient-to-r from-[#d2af5a] to-[#efddb1] hover:brightness-110 text-black font-mono text-[9px] font-black tracking-widest uppercase rounded-xl transition-all cursor-pointer text-center"
+                    >
+                      Entendido
+                    </button>
+                  </div>
+                ) : (
+                  <form onSubmit={handleSendSupport} className="flex flex-col gap-2 mt-2">
+                    <div className="flex flex-col gap-1">
+                      <label className="text-[8px] font-bold text-[#d2af5a] uppercase">E-mail para resposta</label>
+                      <input
+                        type="email"
+                        placeholder="seu-email@empresa.com"
+                        value={supportEmail}
+                        onChange={(e) => setSupportEmail(e.target.value)}
+                        required
+                        className="bg-[#000]/50 border border-white/10 rounded-lg text-[9px] text-white p-2 outline-none focus:border-[#d2af5a]/40"
+                      />
+                    </div>
+                    <div className="flex flex-col gap-1">
+                      <label className="text-[8px] font-bold text-[#d2af5a] uppercase">Mensagem / Relatório de Problema</label>
+                      <textarea
+                        placeholder="Descreva sua solicitação de ajuda ou suporte técnico do IPB..."
+                        rows={3}
+                        value={supportMessage}
+                        onChange={(e) => setSupportMessage(e.target.value)}
+                        required
+                        className="bg-[#000]/50 border border-white/10 rounded-lg text-[9px] text-white p-2 outline-none focus:border-[#d2af5a]/40 resize-none"
+                      />
+                    </div>
+                    <button
+                      type="submit"
+                      disabled={supportSending || !supportMessage.trim()}
+                      className="w-full bg-[#d2af5a] hover:bg-[#d2af5a]/90 text-black font-bold uppercase tracking-wider text-[9px] py-2 rounded-lg transition-colors cursor-pointer select-none disabled:opacity-40 disabled:cursor-not-allowed"
+                    >
+                      {supportSending ? 'Enviando chamado...' : 'Enviar Chamado ao Suporte'}
+                    </button>
+                  </form>
+                )}
               </div>
 
               <div className="esg-section-card">
                 <h3>Feedbacks Recentes da Comunidade</h3>
-                <div className="feedbacks-scroller">
+                <div className="feedbacks-scroller space-y-2">
                   {feedbacksList.length === 0 ? (
                     <div style={{ padding: '16px', textAlign: 'center', fontSize: '11px', color: 'rgba(255,255,255,0.45)', lineHeight: '1.6' }}>
                       Nenhum feedback recebido nesta sessão.<br />
@@ -293,9 +323,20 @@ Diretoria de Governança Corporativa IPB`
                     </div>
                   ) : (
                     feedbacksList.map((f, i) => (
-                      <div className="feedback-item" key={i}>
-                        <span className="badge bg-[#d2af5a]/20 border border-[#d2af5a]/30 text-[#d2af5a]">NPS {f.score}</span>
-                        <span className="text">{f.text}</span>
+                      <div className="feedback-item flex justify-between items-center group p-2 border border-white/5 bg-black/25 rounded-lg gap-2" key={i}>
+                        <div className="flex items-center gap-2 flex-1 min-w-0">
+                          <span className="badge bg-[#d2af5a]/20 border border-[#d2af5a]/30 text-[#d2af5a] text-[8px] font-mono font-bold px-1.5 py-0.5 rounded flex-shrink-0">NPS {f.score}</span>
+                          <span className="text text-[9.5px] text-white/70 truncate">{f.text}</span>
+                        </div>
+                        <button
+                          onClick={() => {
+                            setFeedbacksList(prev => prev.filter((_, idx) => idx !== i))
+                          }}
+                          className="text-white/30 hover:text-red-400 p-1 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0 cursor-pointer"
+                          title="Apagar este feedback"
+                        >
+                          <Trash2 className="h-3.5 w-3.5" />
+                        </button>
                       </div>
                     ))
                   )}
