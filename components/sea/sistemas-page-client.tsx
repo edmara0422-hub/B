@@ -263,6 +263,8 @@ export default function SistemasPageClient() {
           font-weight: 200;
           overflow: hidden;
           -webkit-font-smoothing: antialiased;
+          user-select: text !important;
+          -webkit-user-select: text !important;
         }
 
         .app-workspace-layout.sidebar-closed {
@@ -1080,6 +1082,8 @@ export default function SistemasPageClient() {
           overflow-x: hidden;
           scroll-behavior: smooth;
           padding: 20px 40px 100px 40px;
+          user-select: text !important;
+          -webkit-user-select: text !important;
         }
         .app-workspace-layout .content-area::-webkit-scrollbar { width: 5px }
         .app-workspace-layout .content-area::-webkit-scrollbar-track { background: transparent }
