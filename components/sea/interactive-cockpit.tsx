@@ -150,16 +150,16 @@ export function InteractiveCockpit() {
     },
     ltv_cac: {
       id: 'ltv_cac',
-      title: 'LTV / CAC (Índice de Eficiência de Tração)',
-      disciplines: ['Cálculo Aplicado a Negócios', 'Growth Analytics', 'Análise Financeira'],
-      whatIs: 'Métrica chave de sobrevivência de produtos digitais. Mostra a relação entre o lucro gerado pelo cliente e o custo para atraí-lo.',
-      whyImportant: 'Determina a sustentabilidade do modelo de aquisição. O ideal de mercado é acima de 3.0x (o painel está otimizado em 3.2x).',
-      formula: '\\text{LTV/CAC} = \\frac{\\text{Margem de Contribuição} \\times \\text{Vida Média do Cliente}}{\\text{Custo de Aquisição}}',
-      howToCalculate: 'Dividindo o Lifetime Value total acumulado pelo Custo de Aquisição de Clientes do respectivo período.',
-      cruzamento: 'Cruza-se com o leilão de mídia em tempo real. Se o CPM do Meta Ads sobe para R$ 14,20 inviabilizando a margem, o sistema inteligente aciona a Vertex AI para migrar dinamicamente o budget de canais para o TikTok Ads, preservando o equilíbrio LTV/CAC.',
-      swot: 'Força digital competitiva. Um LTV/CAC saudável indica grande tração e capacidade de gerar caixa rápido.',
-      pestel: 'Fator Tecnológico: Uso de algoritmos de atribuição multicanal e inteligência preditiva para compras de mídia eficientes.',
-      stakeholders: 'Garante a rentabilidade da operação para os sócios e aumenta o valor de mercado para os investidores.'
+      title: 'LTV / CAC & Churn (Tripé de Crescimento)',
+      disciplines: ['Cálculo Aplicado a Negócios', 'Growth Analytics', 'Análise Financeira', 'Matemática Financeira'],
+      whatIs: 'LTV (valor gerado ao longo da vida do cliente), CAC (custo para trazer o cliente) e Churn (taxa de cancelamento que esvazia a base) são as 3 métricas vitais que definem se o crescimento da sua empresa é real ou suicida.',
+      whyImportant: 'A Regra de Ouro: LTV deve ser maior que 3x o CAC (LTV > 3x CAC). Crescer com um LTV/CAC < 1 significa pagar para trabalhar; quanto mais a empresa cresce sob essa condição, mais rápido ela queima caixa e caminha para a falência total.',
+      formula: '\\text{LTV} = \\frac{\\text{Receita Média por Cliente} \\times \\text{Margem}}{\\text{Churn}} \\quad \\text{vs} \\quad \\text{CAC} = \\frac{\\text{Investimento Total de Mídia}}{\\text{Novos Clientes}}',
+      howToCalculate: 'Dividindo o Lifetime Value consolidado (LTV) pelo Custo de Aquisição de Clientes (CAC) e cruzando ativamente com o Churn mensal da base de usuários.',
+      cruzamento: 'Regra de Decisão do Tripé: Se o Churn aumenta, a vida média do cliente (LTV) encolhe drasticamente, empurrando o índice LTV/CAC para níveis perigosos. A IA do sistema monitora essa relação e, caso atinja níveis de risco, sugere otimizações no pós-venda, ajuste de metas e realocação de mídia.',
+      swot: 'Força principal de sustentabilidade. Manter o LTV > 3x CAC com Churn sob controle protege a geração de caixa livre contra oscilações de mercado.',
+      pestel: 'Fator Econômico e Tecnológico: A automação inteligente de CRM/NLP atua diretamente para reter o cliente, reduzindo o Churn e otimizando a eficiência de mídia.',
+      stakeholders: 'Fornece garantia de longevidade e segurança financeira para fundadores, sócios e investidores.'
     },
     ebitda: {
       id: 'ebitda',
@@ -395,7 +395,6 @@ export function InteractiveCockpit() {
                 Interdependência (Cruzamentos)
               </button>
               <button 
-                onClick={() => setSelectedMetric(null)} // Fechar temporariamente ou outro tab
                 onClick={() => setActiveTab('swot')}
                 className={`flex-1 py-3 text-center text-[10px] font-bold uppercase tracking-wider transition-all cursor-pointer ${activeTab === 'swot' ? 'text-[#d2af5a] border-b-2 border-[#d2af5a] bg-[#d2af5a]/5' : 'text-white/40 hover:text-white/80'}`}
               >
