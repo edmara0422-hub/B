@@ -91,7 +91,7 @@ export function HudFinancas() {
 
   return (
     <div 
-      className="w-full h-full flex flex-col justify-between p-4 bg-[#08080a]/85 border border-[#d2af5a]/25 rounded-3xl backdrop-blur-xl select-none overflow-y-auto ipb-thinscroll pr-1"
+      className="w-full h-full flex flex-col justify-between p-4 bg-[#08080a]/85 border border-[#d2af5a]/25 rounded-3xl backdrop-blur-xl select-text overflow-y-auto ipb-thinscroll pr-1"
       style={{ fontFamily: "'Poppins', -apple-system, system-ui, sans-serif" }}
     >
       <style dangerouslySetInnerHTML={{ __html: `

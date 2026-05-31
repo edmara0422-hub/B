@@ -231,7 +231,7 @@ export function SigCapitalHumanoPanel() {
 
   return (
     <div 
-      className="w-full h-full flex flex-col p-4 bg-[#050507]/90 border border-[#d2af5a]/25 rounded-3xl backdrop-blur-2xl select-none overflow-y-auto ipb-thinscroll pr-1 text-white"
+      className="w-full h-full flex flex-col p-4 bg-[#050507]/90 border border-[#d2af5a]/25 rounded-3xl backdrop-blur-2xl select-text overflow-y-auto ipb-thinscroll pr-1 text-white"
       style={{ fontFamily: "'Poppins', -apple-system, system-ui, sans-serif" }}
     >
       {/* Toast Global */}
