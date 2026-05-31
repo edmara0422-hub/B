@@ -787,7 +787,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
   // AI OKR generator handlers
   function handleGenerateAiOkr() {
     setGeneratingOkr(true)
-    triggerToast("IA mapeando dados e formulando OKRs estratégicos...", "info")
+    triggerToast("IA mapeando dados e formulando OKRs estratégicos...", "ok")
     setTimeout(() => {
       setGeneratingOkr(false)
       let obj = ''
@@ -2571,9 +2571,8 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
               </div>
             </div>
 
-          </div>
-        </motion.div>
-      )}
+          </motion.div>
+        )}
 
         {/* ================= LIDERES TAB ================= */}
         {activeTab === 'lideres' && (
@@ -4866,6 +4865,9 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
 
                     </div>
                   </div>
+
+                </motion.div>
+              )}
 
               {/* SUBVIEW: BI & CLIMA */}
               {empresaTab === 'bi' && (
