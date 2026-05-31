@@ -57,18 +57,35 @@ export function InteractiveCockpit() {
     }
     window.addEventListener('ipb-metric-click', handleMetricClick)
 
+    // Função para buscar cotação real de USD do backend IPB
+    const fetchUsdRate = async () => {
+      setApiLiveStatus('FETCHING')
+      try {
+        const res = await fetch('/api/usd-rate')
+        if (res.ok) {
+          const data = await res.json()
+          setUsdRate(data.rate)
+        }
+      } catch (err) {
+        console.warn('Erro ao buscar cotação do dólar na API real:', err)
+      } finally {
+        setTimeout(() => setApiLiveStatus('SYNCED'), 600)
+      }
+    }
+
     // Cronômetro decrescente para a API global viva
     const timer = setInterval(() => {
       setCountdown(prev => {
         if (prev <= 1) {
-          setUsdRate(usd => Number((usd + (Math.random() - 0.5) * 0.01).toFixed(4)))
-          setApiLiveStatus('FETCHING')
-          setTimeout(() => setApiLiveStatus('SYNCED'), 800)
+          fetchUsdRate()
           return 10
         }
         return prev - 1
       })
     }, 1000)
+
+    // Busca inicial de cotação real ao montar a tela
+    fetchUsdRate()
 
     return () => {
       window.removeEventListener('ipb-telemetry', handleTelemetry)

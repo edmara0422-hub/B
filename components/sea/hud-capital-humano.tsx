@@ -12,6 +12,10 @@ export function HudCapitalHumano() {
   const [faturamento, setFaturamento] = useState(150)
   const [cac, setCac] = useState(350)
 
+  // Real-time API global values received via Telemetry
+  const [countdown, setCountdown] = useState(10)
+  const [apiLiveStatus, setApiLiveStatus] = useState('SYNCED')
+
   // Logs do Terminal NLP de Riscos Psicossociais
   const [logs, setLogs] = useState<string[]>([
     '[INIT] Inicializando IPB Comportamento & NLP Engine...',
@@ -84,12 +88,32 @@ export function HudCapitalHumano() {
         setClimaFrequencia(telemetry.climaFrequencia ?? 14)
         setFaturamento(telemetry.faturamento ?? 150)
         setCac(telemetry.cac ?? 350)
+        if (telemetry.countdown !== undefined) setCountdown(telemetry.countdown)
+        if (telemetry.apiLiveStatus !== undefined) setApiLiveStatus(telemetry.apiLiveStatus)
       }
     }
 
     window.addEventListener('ipb-telemetry', handleTelemetry)
     return () => window.removeEventListener('ipb-telemetry', handleTelemetry)
   }, [])
+
+  // Efeito para buscar logs de comportamento reais via API
+  useEffect(() => {
+    if (apiLiveStatus === 'FETCHING') {
+      const fetchLog = async () => {
+        try {
+          const res = await fetch('/api/nlp-logs')
+          if (res.ok) {
+            const data = await res.json()
+            setLogs(prev => [...prev.slice(-30), data.log])
+          }
+        } catch (err) {
+          console.warn('Erro ao buscar NLP logs da API real:', err)
+        }
+      }
+      fetchLog()
+    }
+  }, [apiLiveStatus])
 
   const updateTelemetry = (updates: Record<string, any>) => {
     if (typeof window !== 'undefined') {
@@ -266,12 +290,18 @@ export function HudCapitalHumano() {
       <div className="scanlines z-10" />
 
       {/* Header do Painel */}
-      <div className="hero-header relative z-20">
-        <div className="live-head text-[#d2af5a] flex items-center gap-2">
-          <div className="pulse-dot" />
-          <span>HR-03 • CAPITAL HUMANO & RISCOS PSICOSSOCIAIS</span>
+      <div className="hero-header relative z-20 flex justify-between items-center pr-2">
+        <div>
+          <div className="live-head text-[#d2af5a] flex items-center gap-2">
+            <div className="pulse-dot" />
+            <span>Pilar 1 • CAPITAL HUMANO & RISCOS PSICOSSOCIAIS</span>
+          </div>
+          <div className="ch-label">EEB MASLACH: {Number(burnoutEEB ?? 0).toFixed(0)}% • TURNOVER ANUAL: {Number(turnoverAnual ?? 0).toFixed(0)}%</div>
         </div>
-        <div className="ch-label">EEB MASLACH: {Number(burnoutEEB ?? 0).toFixed(0)}% • TURNOVER ANUAL: {Number(turnoverAnual ?? 0).toFixed(0)}%</div>
+        <div className="flex items-center gap-1.5 text-[8.5px] font-mono text-white/40">
+          <span className={`h-1.5 w-1.5 rounded-full ${apiLiveStatus === 'FETCHING' ? 'bg-amber-400 animate-ping' : 'bg-emerald-500 animate-pulse'}`} />
+          <span>API: {apiLiveStatus} ({countdown}s)</span>
+        </div>
       </div>
 
       {/* Conteúdo Principal */}
