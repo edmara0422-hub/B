@@ -182,7 +182,7 @@ export function InteractiveCockpit() {
       whyImportant: 'Com SELIC a 14,40% e IPCA a 4,39%, o juro real brasileiro está em alarmantes ~10,01%, travando investimentos industriais e de infraestrutura física.',
       formula: '\\text{Taxa Real} = \\frac{1 + \\text{SELIC}}{1 + \\text{IPCA}} - 1',
       howToCalculate: 'Calculado dividindo 1 + taxa Selic acumulada por 1 + inflação oficial (IPCA), subtraindo-se 1.',
-      cruzamento: 'Cruza-se com as decisões de CAPEX. Com juro real a 10%, a tomada de decisão inteligente da IA recomenda travar investimentos físicos pesados e focar em eficiência digital, SaaS e automação inteligente.',
+      cruzamento: 'Cruza-se com as decisões de CAPEX. Com juro real a 10%, a tentativa de decisão inteligente da IA recomenda travar investimentos físicos pesados e focar em eficiência digital, SaaS e automação inteligente.',
       swot: 'Ameaça externa persistente do ambiente macroeconômico.',
       pestel: 'Fator Econômico: Direcionador essencial que esmaga o poder de consumo geral do varejo tradicional.',
       stakeholders: 'Direciona as decisões de alocação de caixa de tesouraria de sócios e diretores de investimento.'
@@ -287,48 +287,49 @@ export function InteractiveCockpit() {
           </div>
         </div>
 
-        {/* COLUNA DIREITA: Finanças & Controladoria (HUD) + Matriz 6D no Rodapé (510px + 310px + 20px gap = 840px exatos!) */}
+        {/* COLUNA DIREITA: Finanças & Controladoria (HUD) + Matriz 6D no Rodapé */}
         <div className="flex flex-col gap-[20px] h-full justify-between">
+          
           {/* HUD de Finanças (Travado em 510px de altura) */}
           <div className="w-full h-[510px]">
             <HudFinancas />
           </div>
 
-          {/* MATRIZ DE INTERDEPENDÊNCIA 6D (Travado em 310px de altura) */}
-          <div className="p-5 rounded-3xl backdrop-blur-xl border flex flex-col justify-between h-[310px]" style={{ background: 'rgba(8, 8, 10, 0.85)', borderColor: 'rgba(210, 175, 90, 0.25)' }}>
-            <div className="flex items-center justify-between border-b border-white/5 pb-2">
-              <div className="flex items-center gap-2">
-                <ShieldAlert className="h-4 w-4 text-[#d2af5a]" />
-                <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#d2af5a]">
+          {/* MATRIZ DE INTERDEPENDÊNCIA 6D (Travado em 310px de altura - Espaçamentos finos anti-corte) */}
+          <div className="p-3.5 rounded-3xl backdrop-blur-xl border flex flex-col justify-between h-[310px]" style={{ background: 'rgba(8, 8, 10, 0.85)', borderColor: 'rgba(210, 175, 90, 0.25)' }}>
+            <div className="flex items-center justify-between border-b border-white/5 pb-1.5">
+              <div className="flex items-center gap-1.5">
+                <ShieldAlert className="h-3.5 w-3.5 text-[#d2af5a]" />
+                <span className="text-[9.5px] font-bold uppercase tracking-[0.15em] text-[#d2af5a]">
                   MATRIZ DE INTERDEPENDÊNCIA 6D
                 </span>
               </div>
-              <span className="text-[7.5px] font-mono text-white/30 uppercase tracking-widest">Cross-correlations active</span>
+              <span className="text-[7px] font-mono text-white/30 uppercase tracking-widest">Cross-correlations active</span>
             </div>
             
-            {/* Lista Vertical de Alertas de Alta Fidelidade */}
-            <div className="flex-1 flex flex-col justify-between py-2 gap-1.5 overflow-hidden">
+            {/* Lista Vertical de Alertas de Alta Fidelidade e Muito Finos */}
+            <div className="flex-1 flex flex-col justify-between py-1 gap-1 overflow-hidden">
               {matrizRules.map((rule, idx) => {
                 const IconComp = rule.icon
                 return (
                   <div 
                     key={idx} 
-                    className="flex items-center gap-3 p-2 rounded-xl border transition-all duration-200 hover:bg-[#d2af5a]/5 cursor-pointer"
+                    className="flex items-center gap-2.5 py-1 px-2.5 rounded-xl border transition-all duration-200 hover:bg-[#d2af5a]/5 cursor-pointer"
                     style={{
-                      borderColor: 'rgba(210, 175, 90, 0.12)',
+                      borderColor: 'rgba(210, 175, 90, 0.1)',
                       background: 'rgba(255, 255, 255, 0.01)',
                     }}
                   >
-                    {/* Círculo do Ícone */}
-                    <div className="h-7 w-7 rounded-full border flex items-center justify-center shrink-0" style={{ borderColor: 'rgba(210, 175, 90, 0.35)', background: 'rgba(210, 175, 90, 0.05)' }}>
-                      <IconComp className="h-3.5 w-3.5 text-[#d2af5a]" />
+                    {/* Círculo do Ícone Super Fino */}
+                    <div className="h-5.5 w-5.5 rounded-full border flex items-center justify-center shrink-0" style={{ borderColor: 'rgba(210, 175, 90, 0.3)', background: 'rgba(210, 175, 90, 0.05)' }}>
+                      <IconComp className="h-2.5 w-2.5 text-[#d2af5a]" />
                     </div>
                     {/* Textos */}
-                    <div className="flex flex-col leading-tight">
-                      <span className="text-[#d2af5a] text-[9.5px] font-bold tracking-wider font-mono uppercase">
+                    <div className="flex flex-col leading-none">
+                      <span className="text-[#d2af5a] text-[8.5px] font-bold tracking-wider font-mono uppercase">
                         {rule.title}
                       </span>
-                      <span className="text-white/45 text-[8.5px] font-medium font-mono mt-0.5 truncate max-w-[450px]">
+                      <span className="text-white/45 text-[7.5px] font-medium font-mono mt-0.5 truncate max-w-[450px]">
                         {rule.desc}
                       </span>
                     </div>
@@ -394,6 +395,7 @@ export function InteractiveCockpit() {
                 Interdependência (Cruzamentos)
               </button>
               <button 
+                onClick={() => setSelectedMetric(null)} // Fechar temporariamente ou outro tab
                 onClick={() => setActiveTab('swot')}
                 className={`flex-1 py-3 text-center text-[10px] font-bold uppercase tracking-wider transition-all cursor-pointer ${activeTab === 'swot' ? 'text-[#d2af5a] border-b-2 border-[#d2af5a] bg-[#d2af5a]/5' : 'text-white/40 hover:text-white/80'}`}
               >
