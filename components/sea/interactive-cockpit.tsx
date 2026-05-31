@@ -1,7 +1,7 @@
 'use client'
 
-import { useState, useEffect, useMemo } from 'react'
-import { Sparkles, TrendingUp, Globe, Users, Leaf, ShieldAlert, AlertTriangle, Settings, Database, Activity, X, Info, HelpCircle, Layers, CheckCircle } from 'lucide-react'
+import { useState, useEffect, useMemo, useRef } from 'react'
+import { Sparkles, TrendingUp, Globe, Users, Leaf, ShieldAlert, AlertTriangle, Settings, Database, Activity, X, Info, HelpCircle, Layers, CheckCircle, Play, SendHorizontal, Flame, Award, Bot, RefreshCw } from 'lucide-react'
 
 import { MiniEstrategia } from './mini-estrategia'
 import { MiniCapitalHumano } from './mini-capital-humano'
@@ -37,6 +37,50 @@ export function InteractiveCockpit() {
   const [usdRate, setUsdRate] = useState(4.98)
   const [activePillar, setActivePillar] = useState<'financas' | 'capital_humano' | 'estrategia' | 'esg' | 'ai'>('financas')
   const [countdown, setCountdown] = useState(10)
+
+  // Estados do Novo Simulador de Vantagem Competitiva 6D
+  const [compFactor, setCompFactor] = useState<'transparencia' | 'evidencia' | 'auditoria'>('transparencia')
+  const [effortValue, setEffortValue] = useState<number>(75)
+  const [marketLogs, setMarketLogs] = useState<string[]>([])
+  const [simRunning, setSimRunning] = useState<boolean>(false)
+  const [simFinished, setSimFinished] = useState<boolean>(false)
+  const simLogRef = useRef<HTMLDivElement>(null)
+
+  const handleRunMarketSim = () => {
+    if (simRunning) return
+    setSimRunning(true)
+    setSimFinished(false)
+    setMarketLogs([])
+
+    const logs = [
+      "[INIT] Inicializando Simulador Real de Vantagem Competitiva 6D...",
+      "[AUDIT] Filtrando 'efeito brilho' e promessas de ganho mágico...",
+      "[ANALYSIS] Contra-Xeque-Mate ativo. Desmistificando concorrência...",
+      `[MODEL] Aplicando esforço de suor real calibrado a: ${effortValue}%...`,
+      `[FACTS] Analisando diferenciais do pilar selecionado: [${compFactor === 'transparencia' ? 'Transparência Radical e Design de Realidade' : compFactor === 'evidencia' ? 'Garantia de Processo e Metodologia Rastreável' : 'Engenharia do Diferencial Técnico'}]...`,
+      "[CONVERSATION] Conectando de pessoa para pessoa (Empatia Prática ativa)...",
+      "[DADOS CONTRA NARRATIVAS] Mapeamento de concorrência limpa consolidado...",
+      "[STRATEGY] Xeque-Mate desfeito! Vantagem competitiva humana homologada na nuvem."
+    ]
+
+    let current = 0
+    const interval = setInterval(() => {
+      if (current < logs.length) {
+        setMarketLogs(prev => [...prev, logs[current]])
+        current++
+      } else {
+        clearInterval(interval)
+        setSimRunning(false)
+        setSimFinished(true)
+      }
+    }, 350)
+  }
+
+  useEffect(() => {
+    if (simLogRef.current) {
+      simLogRef.current.scrollTop = simLogRef.current.scrollHeight
+    }
+  }, [marketLogs])
 
   useEffect(() => {
     const handleTelemetry = () => {
@@ -355,47 +399,125 @@ export function InteractiveCockpit() {
             {activePillar === 'ai' && <HudAi />}
           </div>
 
-          {/* MATRIZ DE INTERDEPENDÊNCIA 6D (Travado em 260px de altura - Espaçamentos super finos de alta fidelidade) */}
-          <div className="p-2.5 rounded-3xl backdrop-blur-xl border flex flex-col justify-between h-[260px]" style={{ background: 'rgba(8, 8, 10, 0.85)', borderColor: 'rgba(210, 175, 90, 0.25)' }}>
-            <div className="flex items-center justify-between border-b border-white/5 pb-1">
-              <div className="flex items-center gap-1">
-                <ShieldAlert className="h-3 w-3 text-[#d2af5a]" />
+          {/* MATRIZ DE INTERDEPENDÊNCIA 6D (Travado em 260px de altura - Agora convertida no Simulador Concorrencial Contra-Xeque-Mate 6D) */}
+          <div className="p-3 rounded-3xl backdrop-blur-xl border flex flex-col justify-between h-[260px] select-text" style={{ background: 'rgba(8, 8, 10, 0.85)', borderColor: 'rgba(210, 175, 90, 0.25)' }}>
+            
+            {/* Header do Simulador */}
+            <div className="flex items-center justify-between border-b border-white/5 pb-1.5 shrink-0">
+              <div className="flex items-center gap-1.5">
+                <Award className="h-3.5 w-3.5 text-[#d2af5a] animate-pulse" />
                 <span className="text-[8.5px] font-bold uppercase tracking-[0.15em] text-[#d2af5a]">
-                  MATRIZ DE INTERDEPENDÊNCIA 6D
+                  🛰️ SIMULADOR DE VANTAGEM COMPETITIVA & CONTRA-XEQUE-MATE 6D
                 </span>
               </div>
-              <span className="text-[6.5px] font-mono text-white/30 uppercase tracking-widest">Cross-correlations active</span>
+              <span className="text-[6.5px] font-mono text-white/35 uppercase tracking-widest">Pessoa para Pessoa • 100% Auditável</span>
             </div>
-            
-            {/* Lista Vertical de Alertas de Alta Fidelidade e Muito Finos */}
-            <div className="flex-1 flex flex-col justify-between py-0.5 gap-0.5 overflow-hidden">
-              {matrizRules.map((rule, idx) => {
-                const IconComp = rule.icon
-                return (
-                  <div 
-                    key={idx} 
-                    className="flex items-center gap-2 py-0.5 px-2 rounded-xl border transition-all duration-200 hover:bg-[#d2af5a]/5 cursor-pointer"
-                    style={{
-                      borderColor: 'rgba(210, 175, 90, 0.1)',
-                      background: 'rgba(255, 255, 255, 0.01)',
-                    }}
-                  >
-                    {/* Círculo do Ícone Super Fino */}
-                    <div className="h-4.5 w-4.5 rounded-full border flex items-center justify-center shrink-0" style={{ borderColor: 'rgba(210, 175, 90, 0.3)', background: 'rgba(210, 175, 90, 0.05)' }}>
-                      <IconComp className="h-2 w-2 text-[#d2af5a]" />
-                    </div>
-                    {/* Textos */}
-                    <div className="flex flex-col leading-none">
-                      <span className="text-[#d2af5a] text-[7.5px] font-bold tracking-wider font-mono uppercase">
-                        {rule.title}
-                      </span>
-                      <span className="text-white/45 text-[6.8px] font-medium font-mono mt-0.5 truncate max-w-[480px]">
-                        {rule.desc}
-                      </span>
-                    </div>
+
+            {/* Layout Interno em Duas Colunas */}
+            <div className="flex-1 flex gap-3 pt-2 overflow-hidden items-stretch">
+              
+              {/* Coluna Esquerda: Seleções de Pilares, Sliders e Botão de Ativação (58% largura) */}
+              <div className="w-[58%] flex flex-col justify-between text-left space-y-2 overflow-visible shrink-0 pr-1 border-r border-white/5">
+                
+                {/* Seletores do Diferencial Humano */}
+                <div className="space-y-1">
+                  <span className="block text-[7px] font-mono text-white/45 uppercase tracking-widest">Escolha a Vantagem Competitiva Real (Fator Humano)</span>
+                  <div className="grid grid-cols-3 gap-1">
+                    <button
+                      onClick={() => setCompFactor('transparencia')}
+                      className={`py-1 rounded text-[7px] font-mono font-bold uppercase border transition cursor-pointer leading-tight text-center ${compFactor === 'transparencia' ? 'bg-[#d2af5a] text-black border-[#d2af5a] shadow-[0_0_8px_rgba(210,175,90,0.4)]' : 'bg-black/40 text-white/55 border-white/10 hover:border-[#d2af5a]/40'}`}
+                    >
+                      Realidade (Sem Filtro)
+                    </button>
+                    <button
+                      onClick={() => setCompFactor('evidencia')}
+                      className={`py-1 rounded text-[7px] font-mono font-bold uppercase border transition cursor-pointer leading-tight text-center ${compFactor === 'evidencia' ? 'bg-[#d2af5a] text-black border-[#d2af5a] shadow-[0_0_8px_rgba(210,175,90,0.4)]' : 'bg-black/40 text-white/55 border-white/10 hover:border-[#d2af5a]/40'}`}
+                    >
+                      Processo (Evidências)
+                    </button>
+                    <button
+                      onClick={() => setCompFactor('auditoria')}
+                      className={`py-1 rounded text-[7px] font-mono font-bold uppercase border transition cursor-pointer leading-tight text-center ${compFactor === 'auditoria' ? 'bg-[#d2af5a] text-black border-[#d2af5a] shadow-[0_0_8px_rgba(210,175,90,0.4)]' : 'bg-black/40 text-white/55 border-white/10 hover:border-[#d2af5a]/40'}`}
+                    >
+                      Técnico (Fato vs Hype)
+                    </button>
                   </div>
-                )
-              })}
+                </div>
+
+                {/* Slider de Esforço Real (Suor Aplicado) */}
+                <div className="space-y-0.5 select-none">
+                  <div className="flex justify-between items-center text-[7.5px] font-mono text-white/50">
+                    <span>Métrica de Esforço Real (Suor Aplicado):</span>
+                    <b className="text-white font-mono">{effortValue}%</b>
+                  </div>
+                  <input
+                    type="range"
+                    min="10"
+                    max="100"
+                    step="5"
+                    value={effortValue}
+                    onChange={(e) => setEffortValue(Number(e.target.value))}
+                    className="w-full h-1 bg-white/5 rounded-lg appearance-none cursor-pointer accent-[#d2af5a]"
+                  />
+                </div>
+
+                {/* Botão de Ativação do Simulador */}
+                <div className="flex items-center gap-2 pt-0.5">
+                  <button
+                    onClick={handleRunMarketSim}
+                    disabled={simRunning}
+                    className="px-3 py-1.5 bg-[#d2af5a]/10 hover:bg-[#d2af5a]/20 disabled:bg-white/5 disabled:text-white/20 border border-[#d2af5a]/30 hover:border-[#d2af5a]/70 text-[#d2af5a] font-mono text-[8px] font-bold rounded-lg transition-all duration-200 flex items-center gap-1.5 cursor-pointer shrink-0"
+                  >
+                    <Play className={`h-2.5 w-2.5 ${simRunning ? 'animate-spin' : ''}`} />
+                    {simRunning ? 'SIMULANDO MERCADO...' : 'ATIVAR SIMULAÇÃO REAL 6D'}
+                  </button>
+                  <span className="text-[6.8px] text-white/40 leading-tight">
+                    {compFactor === 'transparencia' && "A IA remove o 'efeito brilho' concorrente por meio da transparência extrema de dados."}
+                    {compFactor === 'evidencia' && "A IA desconstrói caixas pretas exibindo a metodologia e rastreabilidade total do processo."}
+                    {compFactor === 'auditoria' && "A IA audita fatos concorrenciais públicos eliminando falsas promessas de ganho fácil."}
+                  </span>
+                </div>
+              </div>
+
+              {/* Coluna Direita: Terminal IA de Monitoria Concorrencial (42% largura) */}
+              <div className="flex-1 flex flex-col justify-between space-y-1.5 overflow-hidden">
+                {/* Terminal de Logs */}
+                <div 
+                  ref={simLogRef}
+                  className="flex-1 bg-[#050507] border border-white/5 rounded-xl p-2 font-mono text-[7.5px] text-[#d2af5a]/95 space-y-0.5 overflow-y-auto ipb-thinscroll text-left leading-relaxed"
+                >
+                  {marketLogs.length === 0 ? (
+                    <div className="text-white/20 italic pt-6 text-center leading-normal">
+                      Aguardando ativação...<br/>
+                      Inicie a simulação para escanear a vantagem concorrencial real 6D.
+                    </div>
+                  ) : (
+                    marketLogs.map((log, idx) => (
+                      <div key={idx}>
+                        <span className="text-white/20 font-sans mr-1">[{new Date().toLocaleTimeString()}]</span>
+                        {log}
+                      </div>
+                    ))
+                  )}
+                </div>
+
+                {/* Painel de Resultados do Contra-Xeque-Mate */}
+                <div className="grid grid-cols-3 gap-1 bg-[#d2af5a]/5 p-1 rounded-lg border border-[#d2af5a]/15 text-center shrink-0">
+                  <div>
+                    <span className="text-[6px] text-white/45 uppercase font-mono block">Engodo Mágico</span>
+                    <span className="text-[8.5px] font-bold text-red-400 font-mono">0% (Filtro)</span>
+                  </div>
+                  <div>
+                    <span className="text-[6px] text-white/45 uppercase font-mono block">Rastreabilidade</span>
+                    <span className="text-[8.5px] font-bold text-emerald-400 font-mono">100% Auditável</span>
+                  </div>
+                  <div>
+                    <span className="text-[6px] text-white/45 uppercase font-mono block">Confiança Real</span>
+                    <span className="text-[8.5px] font-bold text-[#d2af5a] font-mono">{simFinished ? '98%' : '74%'}</span>
+                  </div>
+                </div>
+              </div>
+
             </div>
           </div>
 
