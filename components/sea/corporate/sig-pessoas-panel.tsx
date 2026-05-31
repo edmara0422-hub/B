@@ -313,9 +313,28 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
   const [mediationAnalyzing, setMediationAnalyzing] = useState(false)
 
   // --- STATE FOR OKRS ---
-  const [okrs, setOkrs] = useState<OkrItem[]>([])
+  const [okrs, setOkrs] = useState<OkrItem[]>([
+    {
+      id: 'okr-1',
+      title: 'Acelerar a Transformação Digital de Consultoria BI',
+      keyResults: 'KR1: Migrar 90% dos fluxos operacionais para cloud; KR2: Reduzir tempo médio de setup de telemetria de 15 para 3 dias.',
+      progress: 70
+    },
+    {
+      id: 'okr-2',
+      title: 'Implementar Governança Baseada em Feedback SBI e eNPS',
+      keyResults: 'KR1: Obter eNPS > 75; KR2: Garantir que 100% dos colaboradores recebam feedback SBI quinzenalmente.',
+      progress: 45
+    }
+  ])
   const [newOkrTitle, setNewOkrTitle] = useState('')
   const [newOkrKr, setNewOkrKr] = useState('')
+
+  // --- STATE FOR AI OKR GENERATOR ---
+  const [generatingOkr, setGeneratingOkr] = useState(false)
+  const [selectedOkrType, setSelectedOkrType] = useState('crescimento')
+  const [generatedOkrResult, setGeneratedOkrResult] = useState<any | null>(null)
+  const [customOkrChallenge, setCustomOkrChallenge] = useState('')
 
   // --- STATE FOR CLIMATE ROI ---
   const [climateSalary, setClimateSalary] = useState(8000)
@@ -763,6 +782,58 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
     setNewOkrTitle('')
     setNewOkrKr('')
     triggerToast('OKR estratégico cadastrado com sucesso.')
+  }
+
+  // AI OKR generator handlers
+  function handleGenerateAiOkr() {
+    setGeneratingOkr(true)
+    triggerToast("IA mapeando dados e formulando OKRs estratégicos...", "info")
+    setTimeout(() => {
+      setGeneratingOkr(false)
+      let obj = ''
+      let krs = ''
+      let rat = ''
+      
+      if (selectedOkrType === 'crescimento') {
+        obj = 'Acelerar Margem Operacional e Tracionar LTV/CAC'
+        krs = 'KR1: Atingir relação LTV/CAC de 3.5x no trimestre; KR2: Reduzir Churn voluntário de contratos corporativos para < 1.5%; KR3: Aumentar NDR (Net Dollar Retention) para 118%.'
+        rat = 'Playbook Google & iFood: Alinha crescimento exponencial com alta retenção de receita corporativa, blindando o fluxo de caixa.'
+      } else if (selectedOkrType === 'inovacao') {
+        obj = 'Estruturar Modelo de Squads de Alta Autonomia'
+        krs = 'KR1: Estabelecer 3 novos squads autônomos de 6-8 membros (Spotify Model); KR2: Reduzir tempo médio de validação de hipóteses de inovação para 5 dias; KR3: Lançar 2 novos recursos orientados por IA no cockpit.'
+        rat = 'Cultura LuizaLabs: Garante velocidade operacional máxima, descentralizando a autoridade técnica para resolver gargalos.'
+      } else if (selectedOkrType === 'pessoas') {
+        obj = 'Consolidar Cultura de Feedback e Segurança Psicológica'
+        krs = 'KR1: Alcançar eNPS corporativo de 80 pontos; KR2: Garantir 100% de cobertura nos rituais de feedback SBI quinzenais; KR3: Reduzir burnout subjetivo no pulso do time em 40%.'
+        rat = 'Playbook Nubank: Utiliza inteligência socioemocional e alianças de clã para estabilizar equipes sob demandas intensas.'
+      } else {
+        const customTitle = customOkrChallenge.trim() || 'Desafio Estratégico IPB'
+        obj = `Otimizar Performance de: ${customTitle}`
+        krs = 'KR1: Validar 100% do escopo do desafio em sprints ágeis de 2 semanas; KR2: Coletar feedback do cliente final a cada ciclo de entrega; KR3: Alcançar 70% de sucesso nas metas ambiciosas traçadas.'
+        rat = 'Estratégia Customizada IA: Alinha o seu principal gargalo operacional à disciplina de OKRs com feedback em ciclos rápidos.'
+      }
+
+      setGeneratedOkrResult({
+        objetivo: obj,
+        keyResults: krs,
+        rationale: rat
+      })
+      triggerToast("OKRs gerados com sucesso pela IA!", "ok")
+    }, 1500)
+  }
+
+  function handleAdoptAiOkr() {
+    if (!generatedOkrResult) return
+    const log: OkrItem = {
+      id: `okr-ai-${Date.now()}`,
+      title: generatedOkrResult.objetivo,
+      keyResults: generatedOkrResult.keyResults,
+      progress: 0
+    }
+    setOkrs([...okrs, log])
+    setGeneratedOkrResult(null)
+    setCustomOkrChallenge('')
+    triggerToast('OKR gerado por IA adotado no seu ciclo com sucesso!', 'ok')
   }
 
   function handleConsultingChatSubmit(e?: React.KeyboardEvent, textOverride?: string) {
@@ -1570,7 +1641,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
           ))
         ) : (
           <div className="flex items-center gap-2 mr-auto pl-2">
-            <span className="px-3 py-1 bg-[#5dcaa5]/10 border border-[#5dcaa5]/30 rounded-xl text-[10px] font-mono font-bold text-[#5dcaa5] tracking-widest uppercase">
+            <span className="px-3 py-1 bg-[#d2af5a]/10 border border-[#d2af5a]/30 rounded-xl text-[10px] font-mono font-bold text-[#d2af5a] tracking-widest uppercase">
               EMPRESA
             </span>
             <span className="text-[9px] font-mono text-white/40 tracking-widest uppercase hidden sm:inline-block">
@@ -2409,10 +2480,98 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                   </div>
                 </div>
 
+            {/* ROW 4: AGILE & SQUADS WORKSPACE */}
+            <div className="home-row full mt-6">
+              <div className="dash-card bg-[#050505]/60 backdrop-blur-3xl border border-white/5 relative overflow-hidden p-6 rounded-2xl text-left">
+                <div className="absolute top-0 right-0 w-96 h-96 bg-[#d2af5a]/5 blur-[120px] pointer-events-none mix-blend-screen" />
+                
+                <div className="flex justify-between items-start mb-6 relative z-10">
+                  <div>
+                    <span className="font-mono text-[9px] text-[#d2af5a] tracking-widest block mb-1 font-bold uppercase">CULTURA ORGANIZACIONAL & ESCALABILIDADE</span>
+                    <h3 className="text-[16px] font-bold text-white mb-1">Framework de Squads & Cultura Ágil</h3>
+                    <div className="text-[10px] text-white/50 font-sans">Descentralização tática e ciclos de feedback estruturados</div>
+                  </div>
+                  <span className="px-2.5 py-1 bg-[#5dcaa5]/10 border border-[#5dcaa5]/30 rounded text-[#5dcaa5] font-mono text-[8px] font-bold tracking-widest uppercase">Cultura Ativa</span>
+                </div>
+
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 relative z-10">
+                  
+                  {/* Mentalidade Ágil Col */}
+                  <div className="bg-black/40 border border-white/5 p-4 rounded-xl space-y-3">
+                    <span className="block text-[8px] font-mono text-[#d2af5a] font-bold uppercase tracking-wider">⚡ MENTALIDADE ÁGIL (NOT IT ONLY)</span>
+                    <p className="text-[11.5px] leading-relaxed text-white/90">
+                      <strong>Agile/Scrum</strong> não é uma mera metodologia de TI — é uma verdadeira <strong>cultura organizacional</strong>. 
+                      Foca em ciclos extremamente curtos (<span className="text-[#d2af5a] font-semibold">sprints de 2 semanas</span>), entrega de valor contínua e feedback imediato do cliente a cada ciclo concluído.
+                    </p>
+                    <div className="border-t border-white/[0.05] pt-2 mt-2">
+                      <div className="flex justify-between text-[9.5px] font-mono text-white/40">
+                        <span>Ritmo dos Sprints:</span>
+                        <span className="text-[#5dcaa5] font-bold">2 semanas</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Modelo de Squads Col */}
+                  <div className="bg-black/40 border border-white/5 p-4 rounded-xl space-y-3">
+                    <span className="block text-[8px] font-mono text-[#d2af5a] font-bold uppercase tracking-wider">👥 MODELO DE SQUADS (SPOTIFY PLAYBOOK)</span>
+                    <p className="text-[11.5px] leading-relaxed text-white/90">
+                      Equipes organizadas em <strong>squads</strong>: times autônomos, multidisciplinares e coesos de <strong>6 a 8 pessoas</strong> com total propriedade de ponta a ponta sobre seu domínio de produto ou operação.
+                    </p>
+                    <div className="border-t border-white/[0.05] pt-2 mt-2">
+                      <div className="flex justify-between text-[9.5px] font-mono text-white/40">
+                        <span>Tamanho Recomendado:</span>
+                        <span className="text-[#5dcaa5] font-bold">6-8 membros</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Benchmarks Nacionais Col */}
+                  <div className="bg-[#d2af5a]/[0.02] border border-[#d2af5a]/10 p-4 rounded-xl space-y-3">
+                    <span className="block text-[8px] font-mono text-[#5dcaa5] font-bold uppercase tracking-wider">🇧🇷 METODOLOGIA EM PRÁTICA (BRASIL)</span>
+                    <p className="text-[11.5px] leading-relaxed text-white/90 italic">
+                      "No Brasil, o caso de maior impacto foi o da <strong>Magazine Luiza</strong>, que adotou squads multidisciplinares e de alta autonomia para transformar lojas físicas tradicionais em uma plataforma digital de ecossistema robusto."
+                    </p>
+                    <div className="border-t border-white/[0.05] pt-2 mt-2">
+                      <div className="flex justify-between text-[9.5px] font-mono text-white/40">
+                        <span>Benchmark Nacional:</span>
+                        <span className="text-[#5dcaa5] font-bold">LuizaLabs / Magalu</span>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+
+                {/* Interactive Simulator / Squad Planner inside SIG Home */}
+                <div className="mt-4 border-t border-white/[0.05] pt-4 grid grid-cols-1 md:grid-cols-4 gap-3 items-center">
+                  <div className="text-[9px] font-mono text-white/40 uppercase">
+                    🛠️ IA PLANNER DE SQUADS:
+                  </div>
+                  <div className="col-span-3 flex gap-2">
+                    <button 
+                      onClick={() => {
+                        triggerToast("Planejando Squads de Inovação Magalu-style...")
+                      }}
+                      className="flex-1 py-2 bg-[#d2af5a]/10 hover:bg-[#d2af5a]/20 border border-[#d2af5a]/30 rounded-lg text-[9px] font-mono font-bold text-[#d2af5a] tracking-widest uppercase cursor-pointer text-center"
+                    >
+                      Estruturar Squad de Dados IPB
+                    </button>
+                    <button 
+                      onClick={() => {
+                        triggerToast("Configurando Sprint de 2 Semanas com feedback integrado...")
+                      }}
+                      className="flex-1 py-2 bg-black/60 hover:bg-white/5 border border-white/10 rounded-lg text-[9px] font-mono font-bold text-white/70 tracking-widest uppercase cursor-pointer text-center"
+                    >
+                      Iniciar Sprint de Cultura
+                    </button>
+                  </div>
+                </div>
+
               </div>
             </div>
-          </motion.div>
-        )}
+
+          </div>
+        </motion.div>
+      )}
 
         {/* ================= LIDERES TAB ================= */}
         {activeTab === 'lideres' && (
@@ -4515,7 +4674,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  className="flex flex-col gap-6 text-left w-full"
+                  className="grid grid-cols-1 lg:grid-cols-12 gap-6 text-left w-full"
                   style={{ width: '100%' }}
                 >
                   {/* Left: OKR list and add */}
@@ -4581,29 +4740,130 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                     </div>
                   </div>
 
-                  {/* Right: strategic info bank */}
+                  {/* Right: AI Strategic OKR Generator */}
                   <div className="lg:col-span-5 space-y-4">
-                    <div className="dash-card space-y-4">
-                      <h4 className="text-[12px] font-bold text-[#d2af5a] uppercase font-mono tracking-widest">Banco de Estratégias</h4>
-                      <div className="space-y-2.5 font-sans text-[9.5px] text-white/50">
-                        <div className="premium-glass-card space-y-1 transition duration-300">
-                          <b className="text-white block mb-1">D6 Diagnóstico:</b> 
-                          <span>Visão cruzada 360 do time em 6 dimensões de saúde organizacional.</span>
+                    <div className="dash-card bg-[#050505]/60 backdrop-blur-3xl border border-white/5 relative overflow-hidden p-5 rounded-2xl flex flex-col justify-between min-h-[460px]">
+                      <div className="absolute top-0 right-0 w-64 h-64 bg-white/[0.01] blur-[80px] pointer-events-none mix-blend-screen" />
+                      
+                      <div className="space-y-4 relative z-10">
+                        <div className="flex justify-between items-center">
+                          <div>
+                            <span className="font-mono text-[9px] text-[#d2af5a] tracking-widest block mb-1 font-bold uppercase flex items-center gap-1.5"><Sparkles className="w-3.5 h-3.5 animate-pulse" /> IA OKR COPILOT</span>
+                            <h4 className="text-[14px] font-bold text-white mb-0.5">Gerador de OKRs Estratégicos</h4>
+                            <div className="text-[9.5px] text-white/50 font-sans">Alinhe inovação com resultados (Google, Nubank & iFood style)</div>
+                          </div>
                         </div>
-                        <div className="premium-glass-card space-y-1 transition duration-300">
-                          <b className="text-white block mb-1">eNPS Clima:</b> 
-                          <span>Frequência mensal de contentamento e disposição de indicar a equipe.</span>
+
+                        {/* Objective Type Selection */}
+                        <div className="space-y-1.5">
+                          <label className="block text-[8.5px] font-mono uppercase text-white/40 tracking-wider">Selecione o Pilar da Sugestão:</label>
+                          <div className="grid grid-cols-2 gap-2">
+                            {[
+                              { id: 'crescimento', label: 'Crescimento', sub: 'LTV/CAC & MRR' },
+                              { id: 'inovacao', label: 'Inovação', sub: 'Squads & TI' },
+                              { id: 'pessoas', label: 'Pessoas', sub: 'SBI & eNPS' },
+                              { id: 'custom', label: 'Customizado', sub: 'Seu Desafio' }
+                            ].map(t => (
+                              <button
+                                key={t.id}
+                                onClick={() => setSelectedOkrType(t.id)}
+                                className={`p-2 rounded-lg border text-left transition cursor-pointer select-none flex flex-col justify-between min-h-[50px] ${
+                                  selectedOkrType === t.id 
+                                    ? 'bg-[#d2af5a]/10 border-[#d2af5a]/50 text-white shadow-[0_0_10px_rgba(210,175,90,0.1)]'
+                                    : 'bg-black/25 border-white/[0.04] text-white/40 hover:border-white/10 hover:text-white/60'
+                                }`}
+                              >
+                                <span className="block text-[8.5px] font-mono tracking-wider font-bold uppercase">{t.label}</span>
+                                <span className="block text-[7.5px] leading-tight text-white/40">{t.sub}</span>
+                              </button>
+                            ))}
+                          </div>
                         </div>
-                        <div className="premium-glass-card space-y-1 transition duration-300">
-                          <b className="text-white block mb-1">ISR Score:</b> 
-                          <span>Relação de impacto e reconhecimento individual do colaborador.</span>
-                        </div>
+
+                        {/* Custom Challenge input if custom is selected */}
+                        {selectedOkrType === 'custom' && (
+                          <div className="space-y-1.5 animate-fadeIn">
+                            <label className="block text-[8.5px] font-mono uppercase text-white/40 tracking-wider">Descreva o desafio estratégico:</label>
+                            <input 
+                              type="text"
+                              value={customOkrChallenge}
+                              onChange={(e) => setCustomOkrChallenge(e.target.value)}
+                              placeholder="Ex: Escalar canais de inbound marketing..."
+                              className="w-full bg-black/60 border border-white/10 rounded-xl px-3 py-2 text-[10px] text-white outline-none focus:border-[#d2af5a]/40"
+                            />
+                          </div>
+                        )}
+
+                        {/* Action trigger button */}
+                        <button
+                          onClick={handleGenerateAiOkr}
+                          disabled={generatingOkr}
+                          className="w-full py-2.5 bg-gradient-to-r from-[#d2af5a] to-[#efddb1] hover:brightness-110 active:scale-[0.98] transition text-black font-mono text-[9px] font-black tracking-widest uppercase rounded-xl flex items-center justify-center gap-1.5 cursor-pointer shadow-[0_0_15px_rgba(210,175,90,0.15)]"
+                        >
+                          {generatingOkr ? (
+                            <>
+                              <Cpu className="w-3.5 h-3.5 animate-spin" />
+                              Calculando Diretrizes...
+                            </>
+                          ) : (
+                            <>
+                              <Sparkles className="w-3.5 h-3.5" />
+                              Gerar Proposta OKR com IA
+                            </>
+                          )}
+                        </button>
                       </div>
+
+                      {/* AI Generated Result Display */}
+                      <div className="mt-4 border-t border-white/[0.05] pt-4 relative z-10">
+                        {generatingOkr ? (
+                          <div className="flex flex-col justify-center items-center py-6 text-center gap-2">
+                            <span className="text-[9px] font-mono text-[#d2af5a] animate-pulse">
+                              Consultando IA Advisor estrategista...
+                            </span>
+                          </div>
+                        ) : generatedOkrResult ? (
+                          <div className="space-y-3 animate-fadeIn">
+                            <div className="p-3 bg-[#d2af5a]/5 border border-[#d2af5a]/15 rounded-xl space-y-2 text-[10.5px]">
+                              <div>
+                                <span className="block text-[7.5px] font-mono text-[#d2af5a] font-bold uppercase">🎯 OBJETIVO RECOMENDADO (IA)</span>
+                                <span className="block text-white/95 font-semibold mt-0.5">{generatedOkrResult.objetivo}</span>
+                              </div>
+                              <div>
+                                <span className="block text-[7.5px] font-mono text-[#5dcaa5] font-bold uppercase">📊 KEY RESULTS (KR MENSURÁVEIS)</span>
+                                <span className="block text-white/75 mt-0.5 leading-snug font-mono text-[9.5px]">{generatedOkrResult.keyResults}</span>
+                              </div>
+                              <div className="border-t border-white/[0.05] pt-1.5 mt-1">
+                                <span className="block text-[7.5px] font-mono text-[#fac775] font-bold uppercase">💡 INTELIGÊNCIA / RATIONALE</span>
+                                <span className="block text-white/50 mt-0.5 leading-normal italic text-[9.5px]">{generatedOkrResult.rationale}</span>
+                              </div>
+                            </div>
+
+                            {/* 70% Atingimento Alert Callout */}
+                            <div className="p-2.5 bg-white/[0.02] border border-white/[0.04] rounded-lg text-[9px] text-white/60 leading-normal flex items-start gap-2">
+                              <span className="text-[#fac775] font-bold">⚠️ NOTA:</span>
+                              <span>
+                                Em OKRs, os objetivos são extremamente <strong>ambiciosos por definição</strong>. Atingir <strong>70%</strong> da meta já é considerado sucesso!
+                              </span>
+                            </div>
+
+                            {/* Adopt Button */}
+                            <button
+                              onClick={handleAdoptAiOkr}
+                              className="w-full py-2 bg-[#d2af5a]/15 hover:bg-[#d2af5a]/25 border border-[#d2af5a]/30 text-[#d2af5a] font-mono text-[9px] font-bold tracking-widest uppercase rounded-lg transition-colors cursor-pointer text-center"
+                            >
+                              ✓ Adotar Proposta no meu Ciclo
+                            </button>
+                          </div>
+                        ) : (
+                          <div className="text-center py-8 text-[9px] text-white/30 font-mono">
+                            Nenhuma proposta ativa. Escolha um pilar acima e clique em "Gerar Proposta OKR com IA" para formular objetivos do nível do Google, Nubank ou iFood.
+                          </div>
+                        )}
+                      </div>
+
                     </div>
                   </div>
-
-                </motion.div>
-              )}
 
               {/* SUBVIEW: BI & CLIMA */}
               {empresaTab === 'bi' && (
