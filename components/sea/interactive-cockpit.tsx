@@ -70,6 +70,101 @@ export function InteractiveCockpit() {
   const [showDirectContactAlert, setShowDirectContactAlert] = useState<boolean>(false)
   const auditLogRef = useRef<HTMLDivElement>(null)
 
+  const currentPromise = customPromise || magicPromise
+
+  const glitterIndex = useMemo(() => {
+    let score = 20
+    const text = currentPromise.toLowerCase()
+    
+    if (text.includes('fature') || text.includes('ganhe') || text.includes('enriquecer') || text.includes('10k') || text.includes('10.000') || text.includes('100.000') || text.includes('milhões')) score += 25
+    if (text.includes('7 dias') || text.includes('rápido') || text.includes('imediato') || text.includes('fácil') || text.includes('sem esforço') || text.includes('dormindo') || text.includes('fórmula')) score += 30
+    if (text.includes('robô') || text.includes('bot') || text.includes('automático') || text.includes('piloto automático')) score += 15
+    
+    // Imunidade a hype reduz o impacto do glitter concorrente
+    const hypeFactor = (100 - d6HypeImmunity) * 0.15
+    score += hypeFactor
+
+    return Math.min(Math.round(score), 100)
+  }, [currentPromise, d6HypeImmunity])
+
+  const ivc6DScore = useMemo(() => {
+    // Normalização das 6 Dimensões para escala 0-100:
+    const valD1 = (d1SalesHours / 12) * 100
+    const valD2 = (d2IntelHours / 8) * 100
+    const valD3 = d3ContentDensity
+    // SLA Humano: menor é melhor. 5min = 100, 180min = 10.
+    const valD4 = Math.max(10, Math.round(100 - ((d4HumanSla - 5) / 175) * 90))
+    const valD5 = d5Traceability
+    const valD6 = d6HypeImmunity
+
+    // Cálculo da Média Geométrica das 6 dimensões
+    const product = Math.max(1, valD1 * valD2 * valD3 * valD4 * valD5 * valD6)
+    const geometricMean = Math.pow(product, 1/6)
+
+    // Penalidade concorrencial de Glitter
+    const penalty = Math.max(0, (glitterIndex - 30) * 0.12)
+
+    return Math.max(10, Math.min(100, Math.round(geometricMean - penalty)))
+  }, [d1SalesHours, d2IntelHours, d3ContentDensity, d4HumanSla, d5Traceability, d6HypeImmunity, glitterIndex])
+
+  const radarPoints = useMemo(() => {
+    const r1 = (d1SalesHours / 12) * 80
+    const r2 = (d2IntelHours / 8) * 80
+    const r3 = (d3ContentDensity / 100) * 80
+    const r4 = (Math.max(10, Math.round(100 - ((d4HumanSla - 5) / 175) * 90)) / 100) * 80
+    const r5 = (d5Traceability / 100) * 80
+    const r6 = (d6HypeImmunity / 100) * 80
+
+    const p1x = 100 + r1 * Math.cos(0)
+    const p1y = 100 + r1 * Math.sin(0)
+
+    const p2x = 100 + r2 * Math.cos(Math.PI / 3)
+    const p2y = 100 + r2 * Math.sin(Math.PI / 3)
+
+    const p3x = 100 + r3 * Math.cos((2 * Math.PI) / 3)
+    const p3y = 100 + r3 * Math.sin((2 * Math.PI) / 3)
+
+    const p4x = 100 + r4 * Math.cos(Math.PI)
+    const p4y = 100 + r4 * Math.sin(Math.PI)
+
+    const p5x = 100 + r5 * Math.cos((4 * Math.PI) / 3)
+    const p5y = 100 + r5 * Math.sin((4 * Math.PI) / 3)
+
+    const p6x = 100 + r6 * Math.cos((5 * Math.PI) / 3)
+    const p6y = 100 + r6 * Math.sin((5 * Math.PI) / 3)
+
+    return `${p1x},${p1y} ${p2x},${p2y} ${p3x},${p3y} ${p4x},${p4y} ${p5x},${p5y} ${p6x},${p6y}`
+  }, [d1SalesHours, d2IntelHours, d3ContentDensity, d4HumanSla, d5Traceability, d6HypeImmunity])
+
+  const competitorRadarPoints = useMemo(() => {
+    const r1 = 0.8 * 80
+    const r2 = 0.05 * 80
+    const r3 = 0.15 * 80
+    const r4 = 0.1 * 80
+    const r5 = 0.1 * 80
+    const r6 = 0.2 * 80
+
+    const p1x = 100 + r1 * Math.cos(0)
+    const p1y = 100 + r1 * Math.sin(0)
+
+    const p2x = 100 + r2 * Math.cos(Math.PI / 3)
+    const p2y = 100 + r2 * Math.sin(Math.PI / 3)
+
+    const p3x = 100 + r3 * Math.cos((2 * Math.PI) / 3)
+    const p3y = 100 + r3 * Math.sin((2 * Math.PI) / 3)
+
+    const p4x = 100 + r4 * Math.cos(Math.PI)
+    const p4y = 100 + r4 * Math.sin(Math.PI)
+
+    const p5x = 100 + r5 * Math.cos((4 * Math.PI) / 3)
+    const p5y = 100 + r5 * Math.sin((4 * Math.PI) / 3)
+
+    const p6x = 100 + r6 * Math.cos((5 * Math.PI) / 3)
+    const p6y = 100 + r6 * Math.sin((5 * Math.PI) / 3)
+
+    return `${p1x},${p1y} ${p2x},${p2y} ${p3x},${p3y} ${p4x},${p4y} ${p5x},${p5y} ${p6x},${p6y}`
+  }, [])
+
   // Função para mudar cenário (Preset Concorrencial)
   const handleScenarioChange = (scenario: 'app_vendas' | 'gurus' | 'saas_bi' | 'custom') => {
     setSimScenario(scenario)
