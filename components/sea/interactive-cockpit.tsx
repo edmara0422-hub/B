@@ -46,6 +46,83 @@ export function InteractiveCockpit() {
   const [simFinished, setSimFinished] = useState<boolean>(false)
   const simLogRef = useRef<HTMLDivElement>(null)
 
+  // Estados do Novo Simulador Xeque-Mate Avançado 6D (Modal Popup)
+  const [isXequeMateModalOpen, setIsXequeMateModalOpen] = useState<boolean>(false)
+  const [magicPromise, setMagicPromise] = useState<string>('Fature R$ 10.000 em 7 dias com Robô de Vendas Automático')
+  const [customPromise, setCustomPromise] = useState<string>('')
+  const [hoursPerDay, setHoursPerDay] = useState<number>(4)
+  const [conversionRate, setConversionRate] = useState<number>(1.8)
+  const [traceability, setTraceability] = useState<'caixa_preta' | 'aberto'>('aberto')
+  const [supportType, setSupportType] = useState<'robot' | 'human'>('human')
+  const [auditLogs, setAuditLogs] = useState<string[]>([])
+  const [isAuditing, setIsAuditing] = useState<boolean>(false)
+  const [auditDone, setAuditDone] = useState<boolean>(false)
+  const [showDirectContactAlert, setShowDirectContactAlert] = useState<boolean>(false)
+  const auditLogRef = useRef<HTMLDivElement>(null)
+
+  const currentPromise = customPromise || magicPromise
+
+  const glitterIndex = useMemo(() => {
+    let score = 20
+    const text = currentPromise.toLowerCase()
+    
+    if (text.includes('fature') || text.includes('ganhe') || text.includes('enriquecer') || text.includes('10k') || text.includes('10.000') || text.includes('100.000') || text.includes('milhões')) score += 25
+    if (text.includes('7 dias') || text.includes('rápido') || text.includes('imediato') || text.includes('fácil') || text.includes('sem esforço') || text.includes('dormindo') || text.includes('fórmula')) score += 30
+    if (text.includes('robô') || text.includes('bot') || text.includes('automático') || text.includes('piloto automático')) score += 15
+    
+    if (traceability === 'caixa_preta') score += 15
+    if (supportType === 'robot') score += 10
+    
+    return Math.min(score, 100)
+  }, [currentPromise, traceability, supportType])
+
+  const ivc6DScore = useMemo(() => {
+    const effortFactor = (hoursPerDay / 12) * 40 // max 40
+    const traceFactor = traceability === 'aberto' ? 30 : 5 // max 30
+    const supportFactor = supportType === 'human' ? 20 : 5 // max 20
+    const convFactor = conversionRate >= 0.5 && conversionRate <= 5.0 ? 10 : 3 // max 10
+    const glitterPenalty = Math.max(0, (glitterIndex - 30) * 0.15)
+    
+    return Math.max(10, Math.min(100, Math.round(effortFactor + traceFactor + supportFactor + convFactor - glitterPenalty)))
+  }, [hoursPerDay, traceability, supportType, conversionRate, glitterIndex])
+
+  const runAudit = () => {
+    if (isAuditing) return
+    setIsAuditing(true)
+    setAuditDone(false)
+    setAuditLogs([])
+
+    const logs = [
+      `[INICIALIZANDO] Iniciando Auditoria de Verdade Radical Contra-Xeque-Mate 6D...`,
+      `[NLP PARSING] Analisando promessa de vendas/estudos concorrente: "${currentPromise}"`,
+      `[DETECTOR DE BRILHO] Verificando apelo emocional vs. entrega real...`,
+      `[CONVERSATION] Detectando Fator Humano. Conectando de pessoa para pessoa...`,
+      `[TELEMETRY] Testando viabilidade contra Esforço Real de ${hoursPerDay}h/dia...`,
+      `[DADOS vs NARRATIVAS] Aplicando desconto estatístico em taxa de conversão...`,
+      `[PROCESS_VERIFY] Nível de Rastreabilidade do Método avaliado...`,
+      `[VERDICT] Xeque-mate na ilusão! Vantagem Humana real estabelecida com sucesso.`
+    ]
+
+    let current = 0
+    const interval = setInterval(() => {
+      if (current < logs.length) {
+        setAuditLogs(prev => [...prev, logs[current]])
+        current++
+      } else {
+        clearInterval(interval)
+        setIsAuditing(false)
+        setAuditDone(true)
+      }
+    }, 450)
+  }
+
+  useEffect(() => {
+    if (auditLogRef.current) {
+      auditLogRef.current.scrollTop = auditLogRef.current.scrollHeight
+    }
+  }, [auditLogs])
+
+
   const handleRunMarketSim = () => {
     if (simRunning) return
     setSimRunning(true)
@@ -461,20 +538,32 @@ export function InteractiveCockpit() {
                   />
                 </div>
 
-                {/* Botão de Ativação do Simulador */}
-                <div className="flex items-center gap-2 pt-0.5">
+                {/* Botões de Ativação do Simulador */}
+                <div className="flex items-center gap-2 pt-0.5 select-none">
                   <button
                     onClick={handleRunMarketSim}
                     disabled={simRunning}
-                    className="px-3 py-1.5 bg-[#d2af5a]/10 hover:bg-[#d2af5a]/20 disabled:bg-white/5 disabled:text-white/20 border border-[#d2af5a]/30 hover:border-[#d2af5a]/70 text-[#d2af5a] font-mono text-[8px] font-bold rounded-lg transition-all duration-200 flex items-center gap-1.5 cursor-pointer shrink-0"
+                    className="px-2 py-1.5 bg-black/40 hover:bg-[#d2af5a]/10 disabled:bg-white/5 disabled:text-white/20 border border-[#d2af5a]/20 hover:border-[#d2af5a]/60 text-white/80 hover:text-[#d2af5a] font-mono text-[8px] font-bold rounded-lg transition-all duration-200 flex items-center gap-1 cursor-pointer shrink-0"
                   >
-                    <Play className={`h-2.5 w-2.5 ${simRunning ? 'animate-spin' : ''}`} />
-                    {simRunning ? 'SIMULANDO MERCADO...' : 'ATIVAR SIMULAÇÃO REAL 6D'}
+                    <Play className={`h-2.5 w-2.5 ${simRunning ? 'animate-spin text-[#d2af5a]' : 'text-[#d2af5a]'}`} />
+                    {simRunning ? 'RODANDO...' : 'SIMULAÇÃO RÁPIDA'}
                   </button>
-                  <span className="text-[6.8px] text-white/40 leading-tight">
-                    {compFactor === 'transparencia' && "A IA remove o 'efeito brilho' concorrente por meio da transparência extrema de dados."}
-                    {compFactor === 'evidencia' && "A IA desconstrói caixas pretas exibindo a metodologia e rastreabilidade total do processo."}
-                    {compFactor === 'auditoria' && "A IA audita fatos concorrenciais públicos eliminando falsas promessas de ganho fácil."}
+
+                  <button
+                    onClick={() => {
+                      setIsXequeMateModalOpen(true)
+                      setTimeout(() => runAudit(), 100)
+                    }}
+                    className="px-2 py-1.5 bg-[#d2af5a]/15 hover:bg-[#d2af5a]/25 border border-[#d2af5a]/40 hover:border-[#d2af5a] text-[#d2af5a] hover:text-white font-mono text-[8px] font-bold rounded-lg transition-all duration-200 flex items-center gap-1 cursor-pointer shrink-0 animate-pulse"
+                  >
+                    <Sparkles className="h-2.5 w-2.5 text-[#d2af5a]" />
+                    🔍 REJEITAR ILUSÃO: SIMULADOR 6D
+                  </button>
+                  
+                  <span className="text-[6.2px] text-white/35 leading-tight overflow-hidden text-ellipsis whitespace-nowrap hidden xl:inline max-w-[80px]">
+                    {compFactor === 'transparencia' && "Transparência"}
+                    {compFactor === 'evidencia' && "Evidências"}
+                    {compFactor === 'auditoria' && "Auditoria"}
                   </span>
                 </div>
               </div>
@@ -674,6 +763,343 @@ export function InteractiveCockpit() {
                 className="px-4 py-1.5 rounded-lg bg-[#d2af5a] hover:bg-[#d2af5a]/80 text-[#0c0a07] font-bold uppercase tracking-wider text-[8px] transition-all cursor-pointer"
               >
                 Fechar Painel
+              </button>
+            </div>
+
+          </div>
+        </div>
+      )}
+
+      {/* POPUP MODAL SIMULADOR AVANÇADO CONTRA-XEQUE-MATE 6D */}
+      {isXequeMateModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md transition-all duration-300">
+          <div className="modal-glass w-full max-w-4xl rounded-3xl overflow-hidden flex flex-col relative animate-in fade-in zoom-in-95 duration-200 text-left select-text" style={{ borderColor: 'rgba(210, 175, 90, 0.4)' }}>
+            
+            {/* Modal Header */}
+            <div className="p-5 border-b border-[#d2af5a]/20 flex justify-between items-start bg-black/40 select-none">
+              <div className="flex flex-col gap-1">
+                <div className="flex items-center gap-2">
+                  <Award className="h-5 w-5 text-[#d2af5a] animate-pulse" />
+                  <span className="text-[10px] font-bold font-mono tracking-[0.2em] text-[#d2af5a] uppercase">SIMULADOR CONCORRENCIAL 6D</span>
+                </div>
+                <h2 className="text-white text-lg font-bold tracking-wide mt-1">
+                  Contra-Xeque-Mate: O Diferencial Humano Sem Filtro
+                </h2>
+                <p className="text-white/45 text-[10px] font-mono leading-relaxed mt-1">
+                  Escanear, auditar e vencer o "efeito brilho" e as falsas promessas de mercado com dados, processo e suor.
+                </p>
+              </div>
+              <button 
+                onClick={() => setIsXequeMateModalOpen(false)}
+                className="h-8 w-8 rounded-full border border-white/10 bg-white/5 flex items-center justify-center hover:bg-[#d2af5a]/10 hover:border-[#d2af5a]/40 text-white/60 hover:text-white transition-all cursor-pointer"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+
+            {/* Modal Content */}
+            <div className="p-6 overflow-y-auto max-h-[500px] bg-black/25 flex flex-col gap-6">
+              
+              {/* Grid de Entrada e Análise */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch">
+                
+                {/* COLUNA ESQUERDA: Configuração de Cenários (Inputs) */}
+                <div className="flex flex-col gap-5 bg-white/[0.01] border border-white/5 p-5 rounded-2xl">
+                  
+                  {/* Seção 1: A Promessa Concorrente (Hype) */}
+                  <div className="flex flex-col gap-2">
+                    <span className="text-[#d2af5a] text-[9.5px] font-mono font-bold uppercase tracking-wider flex items-center gap-1.5 select-none">
+                      <Sparkles className="h-3.5 w-3.5 text-[#d2af5a] animate-pulse" />
+                      1. A Promessa Mágica Concorrente (Efeito Brilho)
+                    </span>
+                    
+                    {/* Templates rápidos */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-1.5 select-none">
+                      {[
+                        'Fature R$ 10.000 em 7 dias com Robô do WhatsApp',
+                        'Aprenda Persuasão Avançada em 4 Horas sem Esforço',
+                        'Garantia de 100% de Aprovação em Concursos sem Estudo',
+                        'Estudos de Competição Inteligente 100% no Piloto Automático'
+                      ].map((promise, idx) => (
+                        <button
+                          key={idx}
+                          onClick={() => {
+                            setMagicPromise(promise);
+                            setCustomPromise('');
+                          }}
+                          className={`px-2 py-1.5 rounded-lg text-[9px] font-mono text-left transition border leading-tight ${magicPromise === promise && !customPromise ? 'bg-[#d2af5a]/15 text-[#d2af5a] border-[#d2af5a]/40' : 'bg-black/35 text-white/50 border-white/5 hover:border-white/15'}`}
+                        >
+                          {promise}
+                        </button>
+                      ))}
+                    </div>
+
+                    {/* Custom Input */}
+                    <div className="flex flex-col gap-1 mt-1">
+                      <span className="text-[8px] font-mono text-white/30 uppercase select-none">Ou digite uma promessa específica:</span>
+                      <input
+                        type="text"
+                        value={customPromise}
+                        placeholder="Ex: Fique rico investindo 5 minutos por dia..."
+                        onChange={(e) => setCustomPromise(e.target.value)}
+                        className="bg-black/50 border border-white/10 rounded-lg px-3 py-2 text-xs text-white placeholder-white/20 focus:outline-none focus:border-[#d2af5a]/50"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Seção 2: Seus Fatores Reais de Operação */}
+                  <div className="flex flex-col gap-4 border-t border-white/5 pt-4">
+                    <span className="text-[#d2af5a] text-[9.5px] font-mono font-bold uppercase tracking-wider flex items-center gap-1.5 select-none">
+                      <Flame className="h-3.5 w-3.5 text-amber-500" />
+                      2. Seus Fatores Reais (Verdade Nua e Crua)
+                    </span>
+
+                    {/* Slider Horas */}
+                    <div className="flex flex-col gap-1">
+                      <div className="flex justify-between items-center text-[10px] font-mono select-none">
+                        <span className="text-white/60">Esforço Real (Horas de estudo/trabalho por dia):</span>
+                        <b className="text-white font-bold">{hoursPerDay} horas/dia</b>
+                      </div>
+                      <input
+                        type="range"
+                        min="1"
+                        max="12"
+                        step="1"
+                        value={hoursPerDay}
+                        onChange={(e) => setHoursPerDay(Number(e.target.value))}
+                        className="w-full h-1 bg-white/5 rounded-lg appearance-none cursor-pointer accent-[#d2af5a] select-none"
+                      />
+                    </div>
+
+                    {/* Slider Conversão */}
+                    <div className="flex flex-col gap-1">
+                      <div className="flex justify-between items-center text-[10px] font-mono select-none">
+                        <span className="text-white/60">Taxa de Conversão Realista Esperada:</span>
+                        <b className="text-white font-bold">{conversionRate}%</b>
+                      </div>
+                      <input
+                        type="range"
+                        min="0.1"
+                        max="15.0"
+                        step="0.1"
+                        value={conversionRate}
+                        onChange={(e) => setConversionRate(Number(e.target.value))}
+                        className="w-full h-1 bg-white/5 rounded-lg appearance-none cursor-pointer accent-[#d2af5a] select-none"
+                      />
+                      <span className="text-[7.5px] font-mono text-white/30 leading-tight uppercase select-none">
+                        *Benchmarks de vendas reais de mercado saudável orbitam entre 1% e 3%. Valores muito altos diminuem o score de maturidade matemática.
+                      </span>
+                    </div>
+
+                    {/* Toggles de Rastreabilidade e Suporte */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 select-none">
+                      
+                      {/* Rastreabilidade */}
+                      <div className="flex flex-col gap-1.5">
+                        <span className="text-[8px] font-mono text-white/40 uppercase">Rastreabilidade do Processo</span>
+                        <div className="flex bg-black/40 border border-white/5 p-0.5 rounded-lg">
+                          <button
+                            onClick={() => setTraceability('caixa_preta')}
+                            className={`flex-1 py-1 rounded text-[8px] font-mono font-bold uppercase transition ${traceability === 'caixa_preta' ? 'bg-red-950/40 text-red-400 border border-red-900/30' : 'text-white/40'}`}
+                          >
+                            Caixa Preta
+                          </button>
+                          <button
+                            onClick={() => setTraceability('aberto')}
+                            className={`flex-1 py-1 rounded text-[8px] font-mono font-bold uppercase transition ${traceability === 'aberto' ? 'bg-emerald-950/40 text-emerald-400 border border-emerald-900/30 font-bold' : 'text-white/40'}`}
+                          >
+                            100% Aberto
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* Suporte */}
+                      <div className="flex flex-col gap-1.5">
+                        <span className="text-[8px] font-mono text-white/40 uppercase">Canal de Atendimento</span>
+                        <div className="flex bg-black/40 border border-white/5 p-0.5 rounded-lg">
+                          <button
+                            onClick={() => setSupportType('robot')}
+                            className={`flex-1 py-1 rounded text-[8px] font-mono font-bold uppercase transition ${supportType === 'robot' ? 'bg-red-950/40 text-red-400 border border-red-900/30' : 'text-white/40'}`}
+                          >
+                            Bot de IA Básico
+                          </button>
+                          <button
+                            onClick={() => setSupportType('human')}
+                            className={`flex-1 py-1 rounded text-[8px] font-mono font-bold uppercase transition ${supportType === 'human' ? 'bg-emerald-950/40 text-emerald-400 border border-emerald-900/30 font-bold' : 'text-white/40'}`}
+                          >
+                            Humano Real
+                          </button>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+
+                </div>
+
+                {/* COLUNA DIREITA: Análise, Indicadores & Terminal */}
+                <div className="flex flex-col gap-4 justify-between bg-white/[0.01] border border-white/5 p-5 rounded-2xl">
+                  
+                  {/* Indicadores do Contra-Xeque-Mate */}
+                  <div className="space-y-3.5 select-none">
+                    <span className="text-[#d2af5a] text-[9.5px] font-mono font-bold uppercase tracking-wider flex items-center gap-1.5">
+                      <Activity className="h-3.5 w-3.5 text-[#d2af5a]" />
+                      3. Indicadores de Telemetria Competitiva 6D
+                    </span>
+
+                    {/* Barra 1: Glitter Index */}
+                    <div className="space-y-1">
+                      <div className="flex justify-between items-center text-[9px] font-mono">
+                        <span className="text-white/50 uppercase">Índice de Engodo e Ilusão (Glitter Index):</span>
+                        <b className={`font-bold ${glitterIndex > 50 ? 'text-red-400' : 'text-emerald-400'}`}>{glitterIndex}%</b>
+                      </div>
+                      <div className="w-full h-2 bg-white/5 border border-white/10 rounded-full overflow-hidden">
+                        <div 
+                          className="h-full bg-gradient-to-r from-amber-500 to-red-500 transition-all duration-500"
+                          style={{ width: `${glitterIndex}%` }}
+                        />
+                      </div>
+                      <span className="text-[7.5px] text-white/30 leading-normal block">
+                        {glitterIndex > 70 
+                          ? "⚠️ ALTO RISCO: O concorrente faz promessas mágicas absurdas e impossíveis de sustentar. Caixa preta operacional." 
+                          : "✅ RISCO BAIXO: Promessas de marketing alinhadas com capacidade real."
+                        }
+                      </span>
+                    </div>
+
+                    {/* Barra 2: Vantagem Competitiva Real */}
+                    <div className="space-y-1">
+                      <div className="flex justify-between items-center text-[9px] font-mono">
+                        <span className="text-[#d2af5a] uppercase">Nossa Vantagem Competitiva Real (IVC-6D):</span>
+                        <b className="text-[#d2af5a] font-bold">{ivc6DScore}%</b>
+                      </div>
+                      <div className="w-full h-2 bg-white/5 border border-white/10 rounded-full overflow-hidden">
+                        <div 
+                          className="h-full bg-gradient-to-r from-[#d2af5a]/50 to-[#d2af5a] transition-all duration-500 shadow-[0_0_8px_rgba(210,175,90,0.5)]"
+                          style={{ width: `${ivc6DScore}%` }}
+                        />
+                      </div>
+                      <span className="text-[7.5px] text-white/30 leading-normal block">
+                        O seu diferencial humano baseia-se em esforço real auditável ({hoursPerDay}h/dia), transparência total e conversão estatisticamente realista ({conversionRate}%).
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Equação Matemática da Verdade */}
+                  <div className="p-3 bg-black/60 border border-[#d2af5a]/20 rounded-xl flex flex-col items-center justify-center text-center select-none">
+                    <span className="text-[7.5px] font-mono text-white/30 uppercase tracking-widest mb-1.5">A Equação do Diferencial Técnico</span>
+                    <div className="text-white text-xs font-mono font-medium select-all hover:text-[#d2af5a] transition-colors flex items-center gap-1">
+                      <span>IVC</span> 
+                      <span className="text-[8px] text-[#d2af5a] font-mono">6D</span>
+                      <span>=</span>
+                      <div className="flex flex-col items-center justify-center inline-flex px-1 leading-none text-center">
+                        <span className="border-b border-white/30 pb-0.5 text-[9.5px]">Esforço × Rastreabilidade × Conversão</span>
+                        <span className="pt-0.5 text-[9.5px]">Glitter Concorrente</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Terminal de Auditoria NLP */}
+                  <div className="flex-1 flex flex-col gap-1 overflow-hidden min-h-[140px]">
+                    <div className="flex justify-between items-center text-[8px] font-mono uppercase select-none">
+                      <span className="text-white/40">Console de Desconstrução de Narrativa:</span>
+                      <button
+                        onClick={runAudit}
+                        disabled={isAuditing}
+                        className="text-[#d2af5a] hover:underline font-bold transition flex items-center gap-1 cursor-pointer disabled:text-white/20"
+                      >
+                        <RefreshCw className={`h-2 w-2 ${isAuditing ? 'animate-spin' : ''}`} />
+                        {isAuditing ? 'Auditando...' : 'Recalibrar Auditoria'}
+                      </button>
+                    </div>
+
+                    <div 
+                      ref={auditLogRef}
+                      className="flex-1 bg-[#050507] border border-white/5 rounded-xl p-2.5 font-mono text-[8px] text-[#d2af5a]/95 space-y-1 overflow-y-auto ipb-thinscroll leading-relaxed"
+                    >
+                      {auditLogs.length === 0 ? (
+                        <div className="text-white/20 italic pt-6 text-center leading-normal">
+                          Iniciando auditoria automática...
+                        </div>
+                      ) : (
+                        auditLogs.map((log, idx) => (
+                          <div key={idx}>
+                            <span className="text-white/20 font-sans mr-1">[{new Date().toLocaleTimeString()}]</span>
+                            {log}
+                          </div>
+                        ))
+                      )}
+                    </div>
+                  </div>
+
+                </div>
+
+              </div>
+
+              {/* Tabela de Comparação Direta: Pessoa para Pessoa */}
+              <div className="bg-[#d2af5a]/5 border border-[#d2af5a]/15 rounded-2xl p-5 flex flex-col gap-3">
+                <span className="text-[#d2af5a] text-[10px] font-mono font-bold uppercase tracking-wider select-none">
+                  ⚖️ Matriz de Verdade: Narrativas do Mercado vs. Sua Vantagem Humana Sem Filtro
+                </span>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="p-3 bg-red-950/10 border border-red-950/30 rounded-xl space-y-1.5">
+                    <span className="text-red-400 text-[9px] font-mono font-bold uppercase block select-none">O "Efeito Brilho" Concorrente (Caixa Preta)</span>
+                    <ul className="text-white/60 text-[9.5px] space-y-1 list-disc pl-3">
+                      <li><b>Ganhos Rápidos:</b> Promessas de sucesso sem esforço e enriquecimento automatizado.</li>
+                      <li><b>Operação Oculta:</b> Algoritmos secretos e "caixas pretas" que impedem o usuário de auditar dados.</li>
+                      <li><b>Suporte Virtual:</b> Bots e robôs de chat genéricos que frustram na hora da dor.</li>
+                    </ul>
+                  </div>
+
+                  <div className="p-3 bg-[#d2af5a]/10 border border-[#d2af5a]/30 rounded-xl space-y-1.5">
+                    <span className="text-[#d2af5a] text-[9px] font-mono font-bold uppercase block select-none">Sua Vantagem Humana Prática (Com IPB)</span>
+                    <ul className="text-white/85 text-[9.5px] space-y-1 list-disc pl-3">
+                      <li><b>Verdade Radical:</b> Design de realidade que exibe os dias difíceis e diagnósticos técnicos.</li>
+                      <li><b>Rastreabilidade Total:</b> Metodologias abertas e consolidadas em fatos públicos.</li>
+                      <li><b>Empatia Prática:</b> Acesso a especialistas reais para suporte consultivo no momento de crise.</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              {/* Botão de Suporte Humano */}
+              <div className="flex items-center justify-between border-t border-white/5 pt-4">
+                <div className="flex items-center gap-3">
+                  <span className="text-[9px] text-white/40 leading-relaxed font-sans max-w-lg">
+                    🛡️ <b>Compromisso Humano:</b> Este app rejeita ilusões e treina você para lidar com dados reais e pessoas reais no mercado corporativo de alta competição.
+                  </span>
+                </div>
+                
+                <div className="flex gap-2">
+                  <button 
+                    onClick={() => {
+                      setShowDirectContactAlert(true)
+                      setTimeout(() => setShowDirectContactAlert(false), 3000)
+                    }}
+                    className="px-4 py-2 rounded-lg bg-[#d2af5a] hover:bg-[#d2af5a]/90 text-black font-bold uppercase tracking-wider text-[9px] transition-all cursor-pointer select-none flex items-center gap-1.5"
+                  >
+                    <Users className="h-3 w-3 text-black" />
+                    Falar com Especialista Humano
+                  </button>
+                </div>
+              </div>
+
+              {showDirectContactAlert && (
+                <div className="bg-emerald-950/40 border border-emerald-500/35 text-emerald-400 px-4 py-2.5 rounded-xl text-[9.5px] text-center font-mono animate-in fade-in select-none">
+                  ✅ <b>Chamado de Atendimento Prático Iniciado!</b> Um consultor sênior da equipe IPB foi acionado e está revisando seu modelo competitivo.
+                </div>
+              )}
+
+            </div>
+
+            {/* Modal Footer */}
+            <div className="p-4 border-t border-[#d2af5a]/15 bg-black/40 flex justify-between items-center text-[8.5px] font-mono text-white/35 select-none">
+              <span>Google Vertex AI Real-Time Concurrence Auditor v2.6</span>
+              <button 
+                onClick={() => setIsXequeMateModalOpen(false)}
+                className="px-4 py-1.5 rounded-lg bg-white/5 border border-white/10 hover:bg-[#d2af5a]/10 hover:border-[#d2af5a]/40 text-white font-bold uppercase tracking-wider text-[8px] transition-all cursor-pointer"
+              >
+                Fechar Simulador
               </button>
             </div>
 
