@@ -1,7 +1,7 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
-import { Activity, AlertTriangle, Heart, Sparkles, Terminal as TerminalIcon } from 'lucide-react'
+import React, { useEffect, useRef, useState } from 'react'
+import { Activity, AlertTriangle, Heart, Sparkles, Terminal as TerminalIcon, ShieldAlert, Lock, Database, Key, RefreshCw } from 'lucide-react'
 
 export function HudCapitalHumano() {
   // Inputs (Sliders sincronizados via Telemetria Global)
@@ -153,7 +153,7 @@ export function HudCapitalHumano() {
     terminalEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [logs])
 
-  // --- CANVAS: EEG Stress Waveform + Heartbeat (NASA Style) ---
+  // --- CANVAS: EEG Stress Waveform ---
   useEffect(() => {
     const canvas = canvasRef.current
     if (!canvas) return
@@ -170,8 +170,7 @@ export function HudCapitalHumano() {
       const h = canvas.height
       const cy = h / 2
 
-      // Desenha grade quadriculada de fundo (Telemetry Monitor style)
-      ctx.strokeStyle = 'rgba(52, 211, 153, 0.04)'
+      ctx.strokeStyle = 'rgba(210, 175, 90, 0.04)'
       ctx.lineWidth = 0.5
       for (let x = 0; x < w; x += 15) {
         ctx.beginPath()
@@ -186,8 +185,7 @@ export function HudCapitalHumano() {
         ctx.stroke()
       }
 
-      // 1. CANAL BETA (Alertness / Ansiedade - Âmbar Quente)
-      ctx.strokeStyle = 'rgba(229, 175, 101, 0.65)'
+      ctx.strokeStyle = 'rgba(229, 175, 101, 0.55)'
       ctx.lineWidth = 1.2
       ctx.beginPath()
       for (let x = 0; x <= w; x++) {
@@ -203,13 +201,11 @@ export function HudCapitalHumano() {
         }
 
         if (burnoutEEB > 30) {
-          // Ondas rápidas, erráticas de estresse ativo
           y += Math.sin(t * 30 + frame * 0.28) * 9.5 * (pressaoMetas / 4)
              + Math.cos(t * 55 + frame * 0.45) * 5 * (pressaoMetas / 3.5)
              + heartbeatOffset
              + (Math.random() - 0.5) * 3.5
         } else {
-          // Ondas suaves de alerta concentrado
           y += Math.sin(t * 18 + frame * 0.09) * 3.5
              + Math.cos(t * 32 - frame * 0.05) * 1.5
              + heartbeatOffset
@@ -219,10 +215,9 @@ export function HudCapitalHumano() {
       }
       ctx.stroke()
 
-      // 2. CANAL ALPHA (Foco Saudável - Dourado Premium)
       ctx.strokeStyle = '#d2af5a'
       ctx.lineWidth = 1.8
-      ctx.shadowBlur = 8
+      ctx.shadowBlur = 6
       ctx.shadowColor = 'rgba(201, 148, 58, 0.35)'
       ctx.beginPath()
       for (let x = 0; x <= w; x++) {
@@ -238,12 +233,10 @@ export function HudCapitalHumano() {
         }
 
         if (burnoutEEB > 30) {
-          // Alpha recua e fica irregular sob estresse alto
           y += Math.sin(t * 12 + frame * 0.12) * 4 * (2 / pressaoMetas)
              + Math.cos(t * 24 - frame * 0.18) * 2
              + heartbeatOffset
         } else {
-          // Alpha regular, amplo e estável em alto desempenho
           y += Math.sin(t * 7.5 + frame * 0.045) * 7
              + Math.cos(t * 15 - frame * 0.02) * 3
              + heartbeatOffset
@@ -252,10 +245,9 @@ export function HudCapitalHumano() {
         else ctx.lineTo(x, y)
       }
       ctx.stroke()
-      ctx.shadowBlur = 0 // Reseta sombra
+      ctx.shadowBlur = 0
 
-      // 3. CANAL DELTA (Estresse Profundo subconsciente - Bronze Bronze)
-      ctx.strokeStyle = 'rgba(184, 157, 92, 0.45)'
+      ctx.strokeStyle = 'rgba(184, 157, 92, 0.35)'
       ctx.lineWidth = 1.0
       ctx.beginPath()
       for (let x = 0; x <= w; x++) {
@@ -263,7 +255,6 @@ export function HudCapitalHumano() {
         let y = cy
         
         if (burnoutEEB > 30) {
-          // Ondas lentas, porém pesadas de exaustão profunda
           y += Math.sin(t * 4.5 + frame * 0.04) * 12 * (pressaoMetas / 5)
              + Math.cos(t * 9 + frame * 0.08) * 4.5
         } else {
@@ -274,9 +265,8 @@ export function HudCapitalHumano() {
       }
       ctx.stroke()
 
-      // Desenha varredor de pulso vertical (efeito scanner de osciloscópio)
       const scanX = (frame * 1.5) % w
-      ctx.strokeStyle = burnoutEEB > 35 ? 'rgba(229, 175, 101, 0.25)' : 'rgba(201, 148, 58, 0.25)'
+      ctx.strokeStyle = 'rgba(210, 175, 90, 0.2)'
       ctx.lineWidth = 1
       ctx.beginPath()
       ctx.moveTo(scanX, 0)
@@ -292,214 +282,199 @@ export function HudCapitalHumano() {
   }, [pressaoMetas, burnoutEEB])
 
   return (
-    <div className="hud-card-container relative w-full h-full flex flex-col justify-between">
+    <div 
+      className="w-full h-full flex flex-col justify-between p-4 bg-[#08080a]/85 border border-[#d2af5a]/25 rounded-3xl backdrop-blur-xl select-none relative overflow-hidden"
+      style={{ fontFamily: "'Poppins', -apple-system, system-ui, sans-serif" }}
+    >
       <div className="scanlines z-10" />
 
       {/* Header do Painel */}
-      <div className="hero-header relative z-20 flex justify-between items-center pr-2">
+      <div className="flex justify-between items-center border-b border-white/5 pb-2 relative z-20">
         <div>
-          <div className="live-head text-[#d2af5a] flex items-center gap-2">
-            <div className="pulse-dot" />
+          <div className="flex items-center gap-2 text-[10px] font-mono font-bold text-[#d2af5a] uppercase tracking-wider">
+            <div className="h-1.5 w-1.5 bg-[#d2af5a] rounded-full animate-pulse" />
             <span>Pilar 1 • CAPITAL HUMANO & RISCOS PSICOSSOCIAIS</span>
           </div>
-          <div className="ch-label">EEB MASLACH: {Number(burnoutEEB ?? 0).toFixed(0)}% • TURNOVER ANUAL: {Number(turnoverAnual ?? 0).toFixed(0)}%</div>
+          <div className="text-[8px] font-mono text-white/45 tracking-widest uppercase mt-0.5">
+            EEB MASLACH: {Number(burnoutEEB ?? 0).toFixed(0)}% • TURNOVER ANUAL: {Number(turnoverAnual ?? 0).toFixed(0)}%
+          </div>
         </div>
-        <div className="flex items-center gap-1.5 text-[8.5px] font-mono text-white/40">
+        <div className="flex items-center gap-1.5 text-[8px] font-mono text-white/40">
           <span className={`h-1.5 w-1.5 rounded-full ${apiLiveStatus === 'FETCHING' ? 'bg-amber-400 animate-ping' : 'bg-emerald-500 animate-pulse'}`} />
           <span>API: {apiLiveStatus} ({countdown}s)</span>
         </div>
       </div>
 
-      {/* Conteúdo Principal */}
-      <div className="hero-content">
-        {/* Gráfico da Onda de Estresse Coletivo */}
-        <div className="hero-visual-pane relative overflow-hidden">
-          <div className="pneumo-sim-screen w-full h-full relative z-10 grid grid-rows-[1fr_115px] gap-2">
-            
-            {/* Display do Clima */}
-            <div className="pneumo-lung-box flex flex-col items-center justify-center text-center select-none min-h-[130px] pt-2 relative">
-              <div className="absolute top-2 left-2 text-[7.5px] font-mono text-white/30 uppercase tracking-widest">
-                EEG Coletivo Scan
-              </div>
-              <div className="select-none">
-                <h4 className="margin-0 text-[10px] text-white/45 uppercase font-medium tracking-widest">Estresse Coletivo Preditivo</h4>
-                <b className={`font-mono text-5xl mt-1.5 block filter drop-shadow-[0_0_15px_rgba(201, 148, 58,0.3)] ${(burnoutEEB ?? 0) > 35 ? 'text-[#d2af5a]/80' : 'text-[#d2af5a]'}`}>
-                  {Number(burnoutEEB ?? 0).toFixed(0)}%
-                </b>
-                <p className={`margin-0 mt-2 text-[10px] font-bold uppercase tracking-wider ${(burnoutEEB ?? 0) > 35 ? 'text-[#d2af5a]/80' : 'text-[#d2af5a]'}`}>
-                  {(burnoutEEB ?? 0) > 35 ? 'Risco Alto de Estafa/Burnout' : 'Ambiente Saudável e Resiliente'}
-                </p>
-              </div>
-            </div>
-
-            {/* Onda de Estresse em Canvas */}
-            <div className="canvas-graph-container w-full h-[115px] relative rounded-xl border border-white/5 bg-[#000]/70 shrink-0 overflow-hidden">
-              <canvas ref={canvasRef} width={420} height={115} className="w-full h-full block" />
-              <div className="graph-overlay-vals absolute right-3 top-2 text-[8px] font-mono text-white/40 flex flex-col gap-0.5 text-right pointer-events-none">
-                <span>Eficiência Saudável: <b className="text-white">{Number(eficienciaSaudavel ?? 0).toFixed(1)}</b></span>
-                <span>Demissões/Mês: <b className="text-white">{Number(demissoesMes ?? 0).toFixed(0)} colab.</b></span>
-                <span>Faturamento (Φ): <b className="text-[#d2af5a]">R$ {Number(faturamento ?? 0).toFixed(0)}k</b></span>
-                <span>Perda de Caixa: <b className="text-[#d2af5a]/80">R$ -{Number(custoRealTurnover ?? 0).toFixed(0)}k</b></span>
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-        {/* Fórmulas Matemáticas do Esgotamento Humano (LaTeX em HTML) */}
-        <div className="my-3 p-2.5 bg-black/60 border border-[#d2af5a]/15 rounded-xl text-white font-mono text-[9px] select-none">
-          <div className="text-[7.5px] uppercase tracking-wider text-[#d2af5a] mb-1.5 font-bold flex justify-between">
-            <span>Modelagem Comportamental</span>
-            <span>Estafa & Impacto Organizacional</span>
-          </div>
-          <div className="flex justify-center items-center py-2.5 bg-black/30 rounded-lg border border-white/5 text-center text-[10px]">
-            <span>
-              EEB<sub>Estresse</sub> = 
-              <span className="inline-flex flex-col text-center align-middle mx-1.5">
-                <span className="border-b border-white/40 leading-none pb-0.5">∫ P<sub>Metas</sub><sup>2.1</sup> · 28</span>
-                <span className="leading-none pt-0.5">D<sub>Pulse</sub></span>
-              </span>
-              dt = {burnoutEEB}%
-            </span>
-          </div>
-          <div className="flex justify-between items-center text-[7.5px] text-white/50 mt-1.5 px-1 border-t border-white/5 pt-1.5">
-            <span>P<sub>Metas</sub>: Slider Escala {pressaoMetas}</span>
-            <span>D<sub>Pulse</sub>: Período {climaFrequencia} dias</span>
-          </div>
-        </div>
-
-        {/* Sliders e Controles de Pressão */}
-        <div className="hero-controls-pane select-none mt-2">
-          <div>
-            <h3 className="text-[11px] text-[#d2af5a] uppercase tracking-widest font-semibold mb-3 flex items-center gap-2">
-              Alavancas Psico-Operacionais <div className="h-px flex-1 bg-gradient-to-r from-[#d2af5a]/20 to-transparent" />
-            </h3>
-
-            {/* Cultura Organizacional / Estrutura de Squads */}
-            <div className="mb-4">
-              <label className="text-[8.5px] font-bold text-white/55 uppercase block mb-1.5">Estrutura &amp; Cultura Organizacional</label>
-              <div className="flex gap-2">
-                <button
-                  type="button"
-                  onClick={() => setEstruturaOrg('tradicional')}
-                  className={`flex-1 text-[8px] uppercase font-bold py-1.5 px-2 rounded-lg border transition-all cursor-pointer ${estruturaOrg === 'tradicional' ? 'bg-[#d2af5a] text-black border-[#d2af5a]' : 'bg-[#000]/40 text-white/60 border-white/10 hover:border-white/20'}`}
-                >
-                  Tradicional (Hierárquica)
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setEstruturaOrg('squads')}
-                  className={`flex-1 text-[8px] uppercase font-bold py-1.5 px-2 rounded-lg border transition-all cursor-pointer ${estruturaOrg === 'squads' ? 'bg-[#d2af5a] text-black border-[#d2af5a]' : 'bg-[#000]/40 text-white/60 border-white/10 hover:border-white/20'}`}
-                >
-                  Squads Ágeis (Spotify/Magalu)
-                </button>
-              </div>
-            </div>
-
-            {/* Pressão de Metas */}
-            <div className="c-slider-group mb-4">
-              <label>Pressão de Metas <span>Escala {pressaoMetas}</span></label>
-              <input 
-                type="range" 
-                min="1" 
-                max="10" 
-                step="1" 
-                value={pressaoMetas} 
-                onChange={(e) => {
-                  const val = Number(e.target.value)
-                  setPressaoMetas(val)
-                  updateTelemetry({ pressaoMetas: val })
-                }}
-                className="c-slider-input text-[#d2af5a]"
-              />
-            </div>
-
-            {/* Frequência do Clima */}
-            <div className="c-slider-group">
-              <label>Frequência Pulse Surveys <span>A cada {climaFrequencia} dias</span></label>
-              <input 
-                type="range" 
-                min="7" 
-                max="30" 
-                step="7" 
-                value={climaFrequencia} 
-                onChange={(e) => {
-                  const val = Number(e.target.value)
-                  setClimaFrequencia(val)
-                  updateTelemetry({ climaFrequencia: val })
-                }}
-                className="c-slider-input text-[#d2af5a]"
-              />
-            </div>
-          </div>
-
-          {/* Análises das Cascatas 1 e 3 */}
-          <div className="border-t border-white/5 pt-3 mt-4 space-y-2">
-            {burnoutEEB > 30 ? (
-              <div className="flex items-start gap-1.5 text-[9px] text-[#d2af5a]/80 bg-[#d2af5a]/5 p-2 rounded-lg border border-[#d2af5a]/20">
-                <AlertTriangle className="h-3.5 w-3.5 shrink-0 mt-0.5" />
-                <span><b>Cascata 1 Ativa:</b> Burnout de {Number(burnoutEEB ?? 0).toFixed(0)}% gera desligamento em massa. Custo do turnover totaliza R$ {Number(custoRealTurnover ?? 0).toFixed(0)}k/mês. EBITDA Líquido cai para R$ {Number(ebitdaLiquido ?? 0).toFixed(0)}k!</span>
-              </div>
-            ) : (
-              <div className="flex items-start gap-1.5 text-[9px] text-[#d2af5a] bg-[#d2af5a]/5 p-2 rounded-lg border border-[#d2af5a]/20">
-                <Heart className="h-3.5 w-3.5 shrink-0 mt-0.5" />
-                <span><b>Equilíbrio Saudável:</b> A produtividade está em excelente harmonia com a saúde da equipe (Eficiência: {Number(eficienciaSaudavel ?? 0).toFixed(1)}).</span>
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Simulador Comportamental de RH */}
-        <div className="mt-3 p-2.5 bg-[#d2af5a]/5 border border-[#d2af5a]/20 rounded-xl text-left select-none">
-          <div className="text-[7.5px] uppercase font-mono tracking-widest text-[#d2af5a] font-bold mb-1 flex justify-between">
-            <span>Simulação Comportamental Ativa</span>
-            <span className="animate-pulse">● LIVE INTERACTIVE</span>
-          </div>
-          <p className="text-[8.5px] text-white/70 leading-relaxed font-mono">
-            {estruturaOrg === 'squads' ? (
-              <span>
-                Sob cultura de <b>Squads Ágeis (Scrum)</b> inspirada em Spotify e Magalu (sprints de 2 semanas com autonomia na borda e POs dedicados), a exaustão Maslach é mitigada em 35% para <b className="text-[#d2af5a]">{burnoutEEB}%</b>. Com volume de metas em <b className="text-white">{pressaoMetas}/10</b>, ocorrem <b className="text-white">{demissoesMes}</b> desligamentos/mês, gerando perda de caixa de <b className="text-[#d2af5a]">R$ -{custoRealTurnover}k/mês</b>. A eficiência do time sobe 1.45x para <b className="text-[#d2af5a]">{eficienciaSaudavel.toFixed(1)}</b>!
-              </span>
-            ) : (
-              <span>
-                Sob estrutura <b>Tradicional (Hierárquica mecanicista)</b>, a centralização de decisões eleva o estresse. Sob pressão de metas no nível <b className="text-white">{pressaoMetas}/10</b>, a exaustão Maslach atinge <b className="text-[#d2af5a]">{burnoutEEB}%</b>, gerando <b className="text-white">{demissoesMes}</b> desligamentos/mês e perda de caixa invisível de <b className="text-[#d2af5a]">R$ -{custoRealTurnover}k/mês</b>. A eficiência saudável cai para <b className="text-white">{eficienciaSaudavel.toFixed(1)}</b>.
-              </span>
-            )}
-          </p>
-        </div>
-
-        {/* Micro-Terminal de NLP em Tempo Real */}
-        <div className="mt-3 border border-[#d2af5a]/15 bg-[#070707] rounded-xl overflow-hidden shadow-2xl">
+      {/* Main Container - dense space management to fit 560px exactly */}
+      <div className="flex-1 flex flex-col justify-between mt-3 space-y-3 relative z-20 overflow-hidden">
+        
+        {/* TOP: IPB GEMINI NLP SENTIMENT ANALYZER (Larger terminal at the top) */}
+        <div className="border border-[#d2af5a]/15 bg-[#070707] rounded-xl overflow-hidden shadow-2xl shrink-0">
           <div className="bg-black/80 px-3 py-1.5 flex items-center justify-between border-b border-white/5">
             <div className="flex items-center gap-1.5 text-[#d2af5a] font-mono text-[8px] font-bold">
               <TerminalIcon className="h-3.5 w-3.5" />
               <span>IPB GEMINI NLP SENTIMENT ANALYZER</span>
             </div>
-            <div className="text-[7.5px] font-mono text-white/30">NLP SCANNING</div>
+            <div className="text-[7.5px] font-mono text-white/40">🛰️ LIVE WHATSAPP & SLACK NLP CORRELATION ENGINE</div>
           </div>
-          <div className="p-2.5 font-mono text-[7.5px] text-[#d2af5a]/90 h-[70px] overflow-y-auto space-y-0.5 leading-normal scrollbar-none">
+          <div className="p-2.5 font-mono text-[7.5px] text-[#d2af5a]/90 h-[105px] overflow-y-auto space-y-0.5 leading-normal ipb-thinscroll text-left">
             {logs.map((log, index) => (
               <div key={index} className="whitespace-pre-wrap">{log}</div>
             ))}
             <div ref={terminalEndRef} />
           </div>
         </div>
+
+        {/* MIDDLE: Left EEG Wave + Formula, Right Metrics Glossary */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 flex-1 items-stretch min-h-[175px] overflow-hidden">
+          
+          {/* Left Column: EEG + Math */}
+          <div className="flex flex-col justify-between space-y-2 overflow-hidden">
+            <div className="canvas-graph-container w-full h-[95px] relative rounded-xl border border-white/5 bg-[#000]/70 overflow-hidden shrink-0">
+              <canvas ref={canvasRef} width={420} height={95} className="w-full h-full block" />
+              <div className="graph-overlay-vals absolute right-3 top-1.5 text-[7.2px] font-mono text-white/40 flex flex-col gap-0.5 text-right pointer-events-none">
+                <span>Eficiência Saudável: <b className="text-white">{Number(eficienciaSaudavel ?? 0).toFixed(1)}</b></span>
+                <span>Demissões/Mês: <b className="text-white">{Number(demissoesMes ?? 0).toFixed(0)} colab.</b></span>
+                <span>Faturamento: <b className="text-[#d2af5a]">R$ {Number(faturamento ?? 0).toFixed(0)}k</b></span>
+                <span>Perda de Caixa: <b className="text-[#d2af5a]/80">R$ -{Number(custoRealTurnover ?? 0).toFixed(0)}k</b></span>
+              </div>
+            </div>
+
+            {/* Formula box */}
+            <div className="p-2 bg-black/60 border border-[#d2af5a]/15 rounded-xl text-white font-mono text-[8px] flex-1 flex flex-col justify-between overflow-y-auto ipb-thinscroll">
+              <div>
+                <span className="block text-[7px] uppercase tracking-wider text-[#d2af5a] mb-1 font-bold">Custo Real do Turnover (RH vs Finanças)</span>
+                <div className="py-1 bg-black/35 rounded border border-white/5 text-center text-[7.5px] text-[#d2af5a] font-semibold leading-relaxed">
+                  Turnover = Demissões × (Rescisão + Recrutamento + Perda Produtividade)<br/>
+                  Custo Preditivo Mensal: <strong className="text-white">R$ {custoRealTurnover}k/mês</strong>
+                </div>
+              </div>
+              {burnoutEEB >= 31 && (
+                <div className="mt-1 text-[7px] text-[#fac775] leading-normal font-sans text-left">
+                  ⚠️ <strong>ALERTA CRÍTICO (Burnout &gt; 31%):</strong> Risco grave de exaustão Maslach. Sugere-se travar contratações ou mitigar metas para reverter o custo invisível do turnover que sangra o caixa.
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Right Column: Metrics Glossary */}
+          <div className="p-3 bg-black/40 border border-white/5 rounded-xl flex flex-col justify-between overflow-hidden">
+            <span className="block text-[8px] font-mono text-[#d2af5a] font-bold uppercase tracking-wider mb-2 text-left">GLOSSÁRIO DE RISCOS & COMPLIANCE HUMANO</span>
+            
+            <div className="flex-1 overflow-y-auto ipb-thinscroll pr-1 max-h-[145px] space-y-2.5 text-[8.8px] text-white/70 leading-normal text-left">
+              <div>
+                <b className="text-white block">🧠 Índice de Burnout Coletivo (EEB):</b>
+                <span>Mede o nível de exaustão emocional. Serve para prever quedas abruptas de produtividade e erros operacionais. Calculado via Inventário Maslach (MBI) por Pulse Surveys semanais. <em>Cruzamento:</em> se o Burnout sobe, a eficiência de vendas desaba e o CAC de marketing tende a subir.</span>
+              </div>
+              <div className="border-t border-white/5 pt-2">
+                <b className="text-white block">📊 Taxa de Rotatividade (Turnover):</b>
+                <span>Mede o fluxo de entrada e saída (média nacional de 38%). Indica atrito na liderança ou cultura tóxica. <em>Cruzamento:</em> Conecta ao WACC corporativo e Análise Financeira. Perder um talento custa de 1,5 a 2 vezes o salário dele, sangrando o caixa da empresa.</span>
+              </div>
+              <div className="border-t border-white/5 pt-2">
+                <b className="text-white block">📈 Índice de Ansiedade e Estresse Clínico (IAE):</b>
+                <span>Avalia a pressão externa (Brasil lidera com 9,3%). Serve para balizar limites e justificar escalas 4x3. <em>Cruzamento:</em> Correlaciona com as despesas de atestados médicos, absenteísmo e sinistralidade de plano de saúde nas demonstrações contábeis.</span>
+              </div>
+              <div className="border-t border-white/5 pt-2">
+                <b className="text-white block">🌱 Marcadores ESG & Sustentabilidade:</b>
+                <span>
+                  <strong>Materialidade & Renovabilidade:</strong> Eficiência de carbono e energia limpa em servidores cloud sustentáveis.<br/>
+                  <strong>Diversidade (Mulheres C-Level):</strong> Governança medida em tempo real no organograma (média nacional de 17%).
+                </span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        {/* BOTTOM: Sliders & Controls */}
+        <div className="grid grid-cols-1 md:grid-cols-[1.2fr_1fr] gap-4 items-center border-t border-white/5 pt-2 shrink-0">
+          
+          {/* Controls Sliders */}
+          <div className="space-y-2">
+            <div className="flex justify-between items-center text-[8.5px] font-sans">
+              <span className="text-white/60 font-bold uppercase tracking-wider">Cultura Organizacional:</span>
+              <div className="flex gap-1.5">
+                <button
+                  type="button"
+                  onClick={() => setEstruturaOrg('tradicional')}
+                  className={`px-2 py-1 rounded text-[7.2px] font-mono font-bold uppercase transition cursor-pointer border ${estruturaOrg === 'tradicional' ? 'bg-[#d2af5a] text-black border-[#d2af5a]' : 'bg-black/40 text-white/55 border-white/10 hover:border-white/20'}`}
+                >
+                  Tradicional
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setEstruturaOrg('squads')}
+                  className={`px-2 py-1 rounded text-[7.2px] font-mono font-bold uppercase transition cursor-pointer border ${estruturaOrg === 'squads' ? 'bg-[#d2af5a] text-black border-[#d2af5a]' : 'bg-black/40 text-white/55 border-white/10 hover:border-white/20'}`}
+                >
+                  Squads (Magalu)
+                </button>
+              </div>
+            </div>
+
+            {/* Sliders */}
+            <div className="grid grid-cols-2 gap-3 mt-1">
+              <div className="c-slider-group select-none">
+                <label className="text-[7.5px] font-mono text-white/50 flex justify-between">
+                  <span>Pressão Metas:</span>
+                  <b className="text-white">{pressaoMetas}/10</b>
+                </label>
+                <input 
+                  type="range" 
+                  min="1" 
+                  max="10" 
+                  step="1" 
+                  value={pressaoMetas} 
+                  onChange={(e) => {
+                    const val = Number(e.target.value)
+                    setPressaoMetas(val)
+                    updateTelemetry({ pressaoMetas: val })
+                  }}
+                  className="c-slider-input"
+                />
+              </div>
+              <div className="c-slider-group select-none">
+                <label className="text-[7.5px] font-mono text-white/50 flex justify-between">
+                  <span>Pulse Surveys:</span>
+                  <b className="text-white">A cada {climaFrequencia}d</b>
+                </label>
+                <input 
+                  type="range" 
+                  min="7" 
+                  max="30" 
+                  step="7" 
+                  value={climaFrequencia} 
+                  onChange={(e) => {
+                    const val = Number(e.target.value)
+                    setClimaFrequencia(val)
+                    updateTelemetry({ climaFrequencia: val })
+                  }}
+                  className="c-slider-input"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Active Simulation narrative box */}
+          <div className="p-2 bg-[#d2af5a]/5 border border-[#d2af5a]/20 rounded-xl text-left select-none text-[8.2px] leading-relaxed font-mono space-y-1">
+            <div className="text-[6.8px] uppercase font-mono tracking-widest text-[#d2af5a] font-bold flex justify-between items-center border-b border-white/5 pb-1">
+              <span>Análise de Decisão & Riscos</span>
+              <span className="text-[6px] text-[#5dcaa5] font-black">SWOT & PESTEL READY</span>
+            </div>
+            {estruturaOrg === 'squads' ? (
+              <span>
+                Sob **Squads Ágeis**, a exaustão Maslach é mitigada em 35% para <b className="text-[#d2af5a]">{burnoutEEB}%</b>. Com metas em <b className="text-white">{pressaoMetas}/10</b>, ocorrem <b className="text-white">{demissoesMes}</b> desligamentos/mês, gerando perda invisível de <b className="text-[#d2af5a]">R$ -{custoRealTurnover}k/mês</b>. A eficiência sobe para <b className="text-[#d2af5a]">{eficienciaSaudavel.toFixed(1)}</b>!
+              </span>
+            ) : (
+              <span>
+                Sob estrutura **Tradicional**, a centralização eleva o estresse. Sob metas no nível <b className="text-white">{pressaoMetas}/10</b>, a exaustão Maslach atinge <b className="text-[#d2af5a]">{burnoutEEB}%</b>, gerando <b className="text-white">{demissoesMes}</b> demissões/mês e perda de caixa de <b className="text-[#d2af5a]">R$ -{custoRealTurnover}k/mês</b>. A eficiência cai para <b className="text-white">{eficienciaSaudavel.toFixed(1)}</b>.
+              </span>
+            )}
+          </div>
+
+        </div>
+
       </div>
 
-      {/* Footer do Painel */}
-      <div className="hero-footer relative z-20 mt-4">
-        <div className="title-group">
-          <div className="area">Capital Humano & Riscos Psicossociais</div>
-          <h2>Clima & Custos Invisíveis do Burnout</h2>
-          <p>Mapeamento de clima organizacional por inteligência artificial, correlacionando fadiga laboral crônica com vazamentos diretos de rentabilidade.</p>
-        </div>
-        <div className="action-group">
-          <button className="btn-enter-scene text-[#1a120a]">
-            <Sparkles className="h-4 w-4" />
-            <span>Ver Pulse NLP</span>
-          </button>
-        </div>
-      </div>
     </div>
   )
 }
