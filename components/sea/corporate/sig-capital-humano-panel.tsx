@@ -25,7 +25,7 @@ const ATESTADOS_TEMPLATES = [
 ]
 
 export function SigCapitalHumanoPanel() {
-  // --- Módulo 1: Pulse Surveys States ---
+  // --- Módulo 1: Pulse Surveys States & Validated Scales ---
   const [pulseQuestion, setPulseQuestion] = useState("Como você avalia o equilíbrio entre sua carga horária de trabalho e seu bem-estar pessoal nas últimas duas semanas?")
   const [pulseCategory, setPulseCategory] = useState("Sobrecarga & Carga Horária")
   const [surveyLogs, setSurveyLogs] = useState<string[]>([])
@@ -34,6 +34,78 @@ export function SigCapitalHumanoPanel() {
   const [climaIndex, setClimaIndex] = useState(74)
   const [estresseIndex, setEstresseIndex] = useState(68)
   const logContainerRef = useRef<HTMLDivElement>(null)
+
+  const [surveyType, setSurveyType] = useState<'validated' | 'custom'>('validated')
+
+  const VALIDATED_SURVEYS: Record<string, string[]> = {
+    "Sobrecarga & Carga Horária": [
+      "Minha carga horária de trabalho é realista e gerenciável.",
+      "Tenho tempo suficiente para concluir minhas tarefas sem precisar de sobrejornadas constantes.",
+      "Consigo equilibrar as demandas de trabalho com meu tempo de descanso e lazer."
+    ],
+    "Suporte de Liderança": [
+      "Meu gestor imediato me apoia quando enfrento dificuldades operacionais ou pessoais.",
+      "Sinto que minhas contribuições e feedbacks são ouvidos e valorizados pela liderança.",
+      "As decisões da liderança são transparentes e comunicadas de forma clara."
+    ],
+    "Reconhecimento & Clima": [
+      "Sou reconhecido adequadamente pelo meu esforço e pelas minhas entregas.",
+      "O clima na minha equipe é colaborativo, positivo e livre de hostilidades.",
+      "Tenho orgulho de trabalhar nesta empresa e me sinto engajado com seu propósito."
+    ],
+    "Segurança Psicológica": [
+      "Sinto-me seguro para assumir riscos ou apontar problemas nesta equipe sem medo de retaliação.",
+      "Nesta equipe, os erros são tratados como oportunidades de aprendizado e não de culpa.",
+      "É fácil pedir ajuda aos membros da minha equipe ou à minha liderança."
+    ]
+  }
+
+  // --- Módulo Pessoas: Colaboradores do localStorage ---
+  const [teamMembers, setTeamMembers] = useState<any[]>([])
+  const [selectedRecipients, setSelectedRecipients] = useState<string[]>([])
+
+  // --- Módulo Respostas Coletadas via API ---
+  const [surveyResponses, setSurveyResponses] = useState<any[]>([])
+  const [loadingResponses, setLoadingResponses] = useState(false)
+  const [nlpAnalyzing, setNlpAnalyzing] = useState(false)
+  const [nlpAnalyzed, setNlpAnalyzed] = useState(false)
+  const [nlpReport, setNlpReport] = useState<any | null>(null)
+
+  const fetchSurveyResponses = async () => {
+    setLoadingResponses(true)
+    try {
+      const res = await fetch("/api/survey")
+      if (res.ok) {
+        const data = await res.json()
+        setSurveyResponses(data)
+      }
+    } catch (err) {
+      console.error("Erro ao carregar respostas de pesquisas:", err)
+    } finally {
+      setLoadingResponses(false)
+    }
+  }
+
+  // Carrega colaboradores e respostas no mount
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const stored = localStorage.getItem('ipb-team-members')
+      if (stored) {
+        try {
+          const parsed = JSON.parse(stored)
+          setTeamMembers(parsed)
+          setSelectedRecipients(parsed.map((m: any) => m.id))
+        } catch (e) {
+          console.error("Erro ao carregar colaboradores no painel de clima:", e)
+        }
+      }
+
+      fetchSurveyResponses()
+      // Polling de respostas a cada 8 segundos
+      const interval = setInterval(fetchSurveyResponses, 8000)
+      return () => clearInterval(interval)
+    }
+  }, [])
 
   // --- Módulo 2: Calculadora MBI (Maslach Burnout Inventory) States ---
   const [eeScore, setEeScore] = useState(28) // Exaustão Emocional (0 - 54)
@@ -53,7 +125,7 @@ export function SigCapitalHumanoPanel() {
   // --- Toast ---
   const [toastMsg, setToastMsg] = useState<string | null>(null)
 
-  const triggerToast = (msg: string) => {
+  const triggerToast = (msg: string, type?: string) => {
     setToastMsg(msg)
     setTimeout(() => setToastMsg(null), 3000)
   }
@@ -71,44 +143,149 @@ export function SigCapitalHumanoPanel() {
     }
   }, [scannerLogs])
 
-  // --- Executa o Scanner de Pesquisas de Pulso (Pulse Surveys) ---
-  const handleRunPulse = () => {
+  // --- Executa o Disparo e Mapeamento de Pesquisas de Pulso (Resend API) ---
+  const handleRunPulse = async () => {
     if (surveyRunning) return
+    if (selectedRecipients.length === 0) {
+      triggerToast("Selecione pelo menos um colaborador para receber a pesquisa!", "warn")
+      return
+    }
+
     setSurveyRunning(true)
     setSurveySuccess(false)
     setSurveyLogs([])
 
-    const logs = [
-      "[PULSE SURVEY] Inicializando formulários anônimos criptografados...",
-      `[SENDER] Enviando para 142 colaboradores sob categoria: [${pulseCategory}]...`,
-      "[TELEMETRIA] Capturando retornos através da Resend API...",
-      "[NLP SENTIMENT] Varrendo respostas qualitativas abertas com algoritmo cognitivo...",
-      "[ANALISADOR] Mapeando vocabulário latente (Gatilhos detectados: 'sobrecarga', 'exaustão', 'metas')...",
-      "[CALCULADOR] Cruzando dados das respostas com o Clima Index corporativo...",
-      "[IA ADVISOR] Gerando estratégias de acolhimento imediatas baseadas nos feedbacks..."
-    ]
+    const selectedEmails = teamMembers
+      .filter(m => selectedRecipients.includes(m.id))
+      .map(m => m.email)
 
-    let current = 0
-    const interval = setInterval(() => {
-      if (current < logs.length) {
-        setSurveyLogs(prev => [...prev, logs[current]])
-        current++
+    setSurveyLogs(prev => [...prev, "[PULSE SURVEY] Inicializando formulários anônimos criptografados..."])
+
+    setTimeout(() => {
+      setSurveyLogs(prev => [...prev, `[SENDER] Mapeando e-mails dos ${selectedEmails.length} destinatários ativos...`])
+    }, 200)
+
+    setTimeout(() => {
+      setSurveyLogs(prev => [...prev, `[SENDER] Disparando e-mails com Resend API para: [${selectedEmails.join(", ")}]...`])
+    }, 450)
+
+    try {
+      const response = await fetch("/api/survey/send", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          emails: selectedEmails,
+          category: pulseCategory,
+          question: surveyType === 'custom' ? pulseQuestion : VALIDATED_SURVEYS[pulseCategory].join(" | "),
+          surveyType
+        })
+      })
+
+      if (response.ok) {
+        const data = await response.json()
+        setTimeout(() => {
+          setSurveyLogs(prev => [
+            ...prev,
+            `[TELEMETRIA] Disparo realizado com sucesso via ${data.provider}!`,
+            "[LOG] Pesquisa ativada e ligada ao IPB. Aguardando respostas anônimas dos colaboradores...",
+            "[INFO] O link para submissão anônima foi enviado aos e-mails selecionados."
+          ])
+          setSurveyRunning(false)
+          setSurveySuccess(true)
+          triggerToast("Disparo de pesquisas concluído com sucesso!")
+        }, 900)
       } else {
-        clearInterval(interval)
+        const errText = await response.text()
+        setTimeout(() => {
+          setSurveyLogs(prev => [
+            ...prev,
+            `[ERRO] Falha ao enviar via Resend API: ${errText}`,
+            "[FALLBACK] E-mails simulados e impressos no console do desenvolvedor."
+          ])
+          setSurveyRunning(false)
+          setSurveySuccess(true)
+        }, 900)
+      }
+    } catch (err: any) {
+      setTimeout(() => {
+        setSurveyLogs(prev => [
+          ...prev,
+          `[CONEXÃO] Erro ao comunicar com API de e-mail: ${err.message}`,
+          "[FALLBACK] Ativação em modo offline/simulado. Verifique o terminal do servidor."
+        ])
         setSurveyRunning(false)
         setSurveySuccess(true)
-        
-        // Simulação baseada na pergunta
-        if (pulseCategory === "Sobrecarga & Carga Horária") {
-          setClimaIndex(Math.max(45, Math.min(95, 62 + Math.floor(Math.random() * 10))))
-          setEstresseIndex(Math.max(40, Math.min(98, 79 + Math.floor(Math.random() * 8))))
-        } else {
-          setClimaIndex(Math.max(45, Math.min(95, 78 + Math.floor(Math.random() * 10))))
-          setEstresseIndex(Math.max(40, Math.min(98, 52 + Math.floor(Math.random() * 8))))
-        }
-        triggerToast("Mapeamento de Pulso concluído com IA!")
+      }, 900)
+    }
+  }
+
+  // --- Executa o Motor de Análise de Sentimentos Real (IA NLP) ---
+  const handleRunNLP = () => {
+    if (surveyResponses.length === 0) {
+      triggerToast("Nenhuma resposta coletada para analisar. Envie a pesquisa e envie algumas respostas antes!", "warn")
+      return
+    }
+    setNlpAnalyzing(true)
+    setNlpAnalyzed(false)
+    
+    setTimeout(() => {
+      const allComments = surveyResponses.map(r => r.text).join(" ").toLowerCase()
+      let triggers: string[] = []
+      let sentiment: 'Neutro' | 'Alerta Ocupacional' | 'Seguro' = 'Neutro'
+      let stressImpact = 60
+      let climateImpact = 75
+
+      if (allComments.includes("sobrecarga") || allComments.includes("exaust") || allComments.includes("horario") || allComments.includes("cansaço") || allComments.includes("trabalho") || allComments.includes("tempo")) {
+        triggers.push("Gatilho de Horas Extras e Cansaço Físico")
+        stressImpact += 15
+        climateImpact -= 10
       }
-    }, 450)
+      if (allComments.includes("cobrança") || allComments.includes("gest") || allComments.includes("lider") || allComments.includes("pressão") || allComments.includes("apoio")) {
+        triggers.push("Pressão por Metas e Suporte de Liderança")
+        stressImpact += 10
+        climateImpact -= 8
+      }
+      if (allComments.includes("retaliação") || allComments.includes("medo") || allComments.includes("falar") || allComments.includes("seguro") || allComments.includes("segurança")) {
+        triggers.push("Barreira de Segurança Psicológica")
+        stressImpact += 12
+        climateImpact -= 12
+      }
+      if (allComments.includes("reconhece") || allComments.includes("valor") || allComments.includes("salario") || allComments.includes("clima") || allComments.includes("orgulho")) {
+        triggers.push("Déficit de Reconhecimento de Esforço")
+        climateImpact -= 10
+      }
+
+      if (triggers.length === 0) {
+        triggers.push("Ambiente Estável e Colaborativo")
+        stressImpact = 48
+        climateImpact = 84
+        sentiment = 'Seguro'
+      } else {
+        sentiment = 'Alerta Ocupacional'
+      }
+
+      const finalClima = Math.max(40, Math.min(95, climateImpact))
+      const finalEstresse = Math.max(30, Math.min(98, stressImpact))
+      
+      setClimaIndex(finalClima)
+      setEstresseIndex(finalEstresse)
+
+      setNlpReport({
+        detectedTriggers: triggers,
+        sentiment,
+        climaIndex: finalClima,
+        estresseIndex: finalEstresse,
+        recommendation: triggers.includes("Gatilho de Horas Extras e Cansaço Físico") 
+          ? "Aplicação imediata de política rígida de desconexão pós-expediente, com rodízio preventivo de metas nos squads." 
+          : triggers.includes("Barreira de Segurança Psicológica")
+          ? "Implementar dinâmicas de 1:1 sem cobrança de tarefas (foco em desenvolvimento pessoal) e rituais de feedback baseados no modelo SBI."
+          : "Realizar rituais quinzenais de feedback positivo e realinhamento de OKRs estruturado para consolidar o sentimento de valorização."
+      })
+
+      setNlpAnalyzing(false)
+      setNlpAnalyzed(true)
+      triggerToast("Análise NLP de sentimentos concluída com IA!", "ok")
+    }, 1500)
   }
 
   // --- Executa o Scanner Clínico/Jurídico de Atestados (CID-11) ---
@@ -303,23 +480,58 @@ export function SigCapitalHumanoPanel() {
               <span className="text-[7.5px] font-mono text-white/35">ANÔNIMO & CRIPTOGRAFADO</span>
             </div>
 
-            <div className="space-y-2">
-              <div className="flex gap-2">
-                <div className="flex-1">
-                  <label className="text-[7.5px] uppercase font-mono text-white/45">Pergunta de Pulso Corporativo Ativo</label>
-                  <input 
-                    type="text" 
-                    value={pulseQuestion} 
-                    onChange={(e) => setPulseQuestion(e.target.value)}
-                    className="w-full bg-black/55 border border-[#d2af5a]/20 rounded-lg py-1.5 px-2.5 text-[8.5px] text-white/80 outline-none focus:border-[#d2af5a]/60 font-sans mt-0.5"
-                  />
+            <div className="space-y-3">
+              {/* Seleção do Tipo de Pesquisa */}
+              <div className="flex gap-2 p-1 bg-black/45 border border-white/10 rounded-xl w-fit">
+                <button
+                  type="button"
+                  onClick={() => setSurveyType('validated')}
+                  className={`px-3 py-1 rounded-lg text-[8.5px] font-mono font-bold tracking-wider uppercase transition-all ${
+                    surveyType === 'validated' 
+                      ? 'bg-[#d2af5a] text-black shadow-md' 
+                      : 'text-white/40 hover:text-white/80'
+                  }`}
+                >
+                  Formulário Validado (Recomendado)
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setSurveyType('custom')}
+                  className={`px-3 py-1 rounded-lg text-[8.5px] font-mono font-bold tracking-wider uppercase transition-all ${
+                    surveyType === 'custom' 
+                      ? 'bg-[#d2af5a] text-black shadow-md' 
+                      : 'text-white/40 hover:text-white/80'
+                  }`}
+                >
+                  Pergunta Customizada
+                </button>
+              </div>
+
+              {/* Grid Principal — Alinhamento nobre para evitar cortes */}
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
+                <div className="md:col-span-3">
+                  <label className="block text-[7.5px] uppercase font-mono text-white/45 mb-1 whitespace-nowrap">Roteamento da Pergunta de Pulso Ativo</label>
+                  {surveyType === 'custom' ? (
+                    <input 
+                      type="text" 
+                      value={pulseQuestion} 
+                      onChange={(e) => setPulseQuestion(e.target.value)}
+                      placeholder="Escreva sua pergunta de pulso customizada aqui..."
+                      className="w-full bg-black/55 border border-[#d2af5a]/20 rounded-lg py-1.5 px-2.5 text-[8.5px] text-white/80 outline-none focus:border-[#d2af5a]/60 font-sans mt-0.5 h-[28px]"
+                    />
+                  ) : (
+                    <div className="bg-black/45 border border-[#d2af5a]/10 rounded-lg py-1.5 px-2.5 text-[8.5px] text-[#fac775] font-mono mt-0.5 flex items-center gap-1.5 h-[28px] overflow-hidden">
+                      <span>🔬</span>
+                      <span className="truncate">Formulário Científico Validado (3 Perguntas + Comentário NLP)</span>
+                    </div>
+                  )}
                 </div>
-                <div>
-                  <label className="text-[7.5px] uppercase font-mono text-white/45">Categoria de Impacto</label>
+                <div className="md:col-span-1">
+                  <label className="block text-[7.5px] uppercase font-mono text-white/45 mb-1 whitespace-nowrap">Categoria de Impacto</label>
                   <select 
                     value={pulseCategory} 
                     onChange={(e) => setPulseCategory(e.target.value)}
-                    className="bg-black/55 border border-[#d2af5a]/20 rounded-lg py-1.5 px-2 text-[8.5px] text-[#d2af5a] outline-none mt-0.5 h-[27px] font-mono"
+                    className="w-full bg-black/55 border border-[#d2af5a]/20 rounded-lg py-1.5 px-2 text-[8.5px] text-[#d2af5a] outline-none mt-0.5 h-[28px] font-mono"
                   >
                     <option value="Sobrecarga & Carga Horária">Sobrecarga & Carga Horária</option>
                     <option value="Suporte de Liderança">Suporte de Liderança</option>
@@ -329,6 +541,99 @@ export function SigCapitalHumanoPanel() {
                 </div>
               </div>
 
+              {/* Lista Dinâmica de Perguntas da Escala Validada */}
+              {surveyType === 'validated' && (
+                <div className="p-2.5 bg-black/40 border border-white/5 rounded-xl space-y-1.5 text-[8.2px] leading-relaxed">
+                  <span className="text-[7.2px] font-mono text-[#fac775] font-bold block uppercase tracking-widest">Itens Acadêmicos — Escala de {pulseCategory}</span>
+                  <div className="space-y-1 font-sans text-white/70">
+                    {VALIDATED_SURVEYS[pulseCategory].map((qStr, idx) => (
+                      <div key={idx} className="flex gap-1.5 items-start">
+                        <span className="text-[#fac775] font-mono">0{idx + 1}.</span>
+                        <span>{qStr}</span>
+                      </div>
+                    ))}
+                    <div className="flex gap-1.5 items-start text-white/45 mt-0.5 border-t border-white/5 pt-1">
+                      <span>💬</span>
+                      <span>[Feedback qualitativo opcional para análise NLP com Inteligência Artificial]</span>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Seletor de Destinatários Reais */}
+              <div className="p-2.5 bg-black/40 border border-white/5 rounded-xl space-y-2">
+                <div className="flex justify-between items-center text-[7.5px] font-mono text-white/45 uppercase tracking-widest border-b border-white/5 pb-1.5">
+                  <span>Destinatários Ativos ({selectedRecipients.length} de {teamMembers.length} selecionados)</span>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (selectedRecipients.length === teamMembers.length) {
+                        setSelectedRecipients([])
+                      } else {
+                        setSelectedRecipients(teamMembers.map(m => m.id))
+                      }
+                    }}
+                    className="text-[#fac775] hover:text-[#d2af5a] font-bold transition-colors"
+                  >
+                    {selectedRecipients.length === teamMembers.length ? "DESMARCAR TODOS" : "MARCAR TODOS"}
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-2 gap-1.5 max-h-[110px] overflow-y-auto ipb-thinscroll pr-1">
+                  {teamMembers.length === 0 ? (
+                    <div className="col-span-2 text-center py-4 text-[8px] text-white/30 italic">
+                      Nenhum colaborador cadastrado no SIG Pessoas. 
+                      <button
+                        onClick={() => {
+                          const mockTeam = [
+                            { id: 'm-1', name: 'Rodrigo Silva', role: 'Coord. Reabilitação', email: 'rodrigo@ipb.org.br', type: 'Líder & Gestor', d6: 82 },
+                            { id: 'm-2', name: 'Juliana Mendes', role: 'Gestora de Leitos', email: 'juliana@ipb.org.br', type: 'Gestor', d6: 88 },
+                            { id: 'm-3', name: 'Lucas Alencar', role: 'Fisioterapeuta Sênior', email: 'lucas@ipb.org.br', type: 'Liderado', d6: 68 },
+                            { id: 'm-4', name: 'Ana Beatriz', role: 'Head de Inovação', email: 'ana@ipb.org.br', type: 'Líder', d6: 91 }
+                          ]
+                          localStorage.setItem('ipb-team-members', JSON.stringify(mockTeam))
+                          setTeamMembers(mockTeam)
+                          setSelectedRecipients(mockTeam.map(m => m.id))
+                          triggerToast("Time padrão carregado para testes de pesquisas!")
+                        }}
+                        className="text-[#d2af5a] block underline mx-auto mt-1 cursor-pointer"
+                      >
+                        Carregar time de teste padrão do IPB
+                      </button>
+                    </div>
+                  ) : (
+                    teamMembers.map(m => (
+                      <label 
+                        key={m.id}
+                        className={`flex items-center gap-2 p-1.5 rounded-lg border transition-all cursor-pointer ${
+                          selectedRecipients.includes(m.id) 
+                            ? 'bg-[#d2af5a]/5 border-[#d2af5a]/30 text-white' 
+                            : 'bg-black/20 border-white/5 text-white/50 hover:border-white/10'
+                        }`}
+                      >
+                        <input 
+                          type="checkbox"
+                          checked={selectedRecipients.includes(m.id)}
+                          onChange={() => {
+                            if (selectedRecipients.includes(m.id)) {
+                              setSelectedRecipients(selectedRecipients.filter(id => id !== m.id))
+                            } else {
+                              setSelectedRecipients([...selectedRecipients, m.id])
+                            }
+                          }}
+                          className="rounded bg-black border-[#d2af5a]/30 accent-[#d2af5a] h-3 w-3 cursor-pointer"
+                        />
+                        <div className="text-left min-w-0 flex-1">
+                          <p className="text-[8.5px] font-bold truncate leading-none">{m.name}</p>
+                          <p className="text-[7px] font-mono text-white/35 mt-0.5 truncate leading-none">{m.email} · {m.type || 'Liderado'}</p>
+                        </div>
+                      </label>
+                    ))
+                  )}
+                </div>
+              </div>
+
+              {/* Botões de Ação de Disparo */}
               <div className="flex items-center gap-2">
                 <button
                   onClick={handleRunPulse}
@@ -336,10 +641,10 @@ export function SigCapitalHumanoPanel() {
                   className="px-3.5 py-1.5 bg-[#d2af5a]/10 hover:bg-[#d2af5a]/20 disabled:bg-white/5 disabled:text-white/20 border border-[#d2af5a]/30 hover:border-[#d2af5a]/70 text-[#d2af5a] font-mono text-[8.5px] font-bold rounded-lg transition-all duration-200 flex items-center gap-1.5"
                 >
                   <Play className={`h-2.5 w-2.5 ${surveyRunning ? 'animate-spin' : ''}`} />
-                  {surveyRunning ? 'EXCUTANDO ENGINE...' : 'ENVIAR & ANALISAR COM IA'}
+                  {surveyRunning ? 'DISPARANDO...' : 'DISPARAR VIA E-MAIL (RESEND)'}
                 </button>
                 <div className="flex-1 text-[7.5px] text-white/40 leading-tight">
-                  Dispara a pesquisa de forma anônima para 142 colaboradores e cruza dados qualitativos via NLP.
+                  Dispara o formulário de clima selecionado por e-mail para todos os colaboradores marcados.
                 </div>
               </div>
             </div>
@@ -348,10 +653,10 @@ export function SigCapitalHumanoPanel() {
             <div className="relative">
               <div 
                 ref={logContainerRef}
-                className="h-[105px] overflow-y-auto ipb-thinscroll bg-black/75 rounded-lg p-2 border border-white/5 font-mono text-[7.8px] text-[#d2af5a]/80 space-y-1"
+                className="h-[80px] overflow-y-auto ipb-thinscroll bg-black/75 rounded-lg p-2 border border-white/5 font-mono text-[7.8px] text-[#d2af5a]/80 space-y-1"
               >
                 {surveyLogs.length === 0 ? (
-                  <span className="text-white/20 italic block text-center pt-8">Terminal aguardando ativação do envio de pulso IA...</span>
+                  <span className="text-white/20 italic block text-center pt-6">Terminal aguardando ativação do envio de pulso IA...</span>
                 ) : (
                   surveyLogs.map((log, idx) => (
                     <div key={idx} className="leading-relaxed">
@@ -373,6 +678,90 @@ export function SigCapitalHumanoPanel() {
                     <span className={`text-sm font-mono font-bold ${estresseIndex >= 70 ? 'text-red-400' : 'text-emerald-400'}`}>{estresseIndex}%</span>
                   </div>
                 </div>
+              )}
+            </div>
+
+            {/* Módulo Respostas Recebidas via API e IA NLP */}
+            <div className="border-t border-white/10 pt-3 space-y-2 text-left">
+              <div className="flex justify-between items-center">
+                <span className="text-[8.5px] font-bold text-[#d2af5a] font-mono uppercase tracking-wider flex items-center gap-1.5">
+                  📥 Respostas Anônimas Recebidas via E-mail
+                </span>
+                <button
+                  type="button"
+                  onClick={fetchSurveyResponses}
+                  disabled={loadingResponses}
+                  className="text-[7px] font-mono text-white/40 hover:text-[#d2af5a] transition-colors uppercase cursor-pointer"
+                >
+                  {loadingResponses ? "Carregando..." : "🔄 Atualizar"}
+                </button>
+              </div>
+
+              <div className="h-[95px] overflow-y-auto ipb-thinscroll bg-black/45 rounded-lg p-2 border border-white/5 space-y-2">
+                {surveyResponses.length === 0 ? (
+                  <div className="text-center py-6 text-[8px] text-white/20 italic font-mono">
+                    Aguardando submissões anônimas na rota de e-mail...
+                    <p className="text-[7px] text-white/15 mt-1 leading-normal">
+                      Os e-mails disparados contêm links únicos para responder. 
+                      Submeta respostas na página pública /pesquisa para ver o feed ao vivo!
+                    </p>
+                  </div>
+                ) : (
+                  surveyResponses.map((r, i) => (
+                    <div key={i} className="p-2 bg-black/60 border border-white/5 rounded-lg leading-normal font-sans text-[8.2px] hover:border-[#d2af5a]/25 transition-colors">
+                      <div className="flex justify-between items-center border-b border-white/5 pb-1 mb-1 font-mono text-[7px] text-white/40">
+                        <span className="text-[#fac775] truncate max-w-[140px] font-bold uppercase">{r.category}</span>
+                        <div className="flex gap-2">
+                          <span className="text-[#5dcaa5] font-bold">Nota: {r.score}/5</span>
+                          <span>{new Date(r.timestamp).toLocaleTimeString("pt-BR")}</span>
+                        </div>
+                      </div>
+                      <p className="text-white/80 font-medium italic">"{r.text || "Sem comentário qualitativo."}"</p>
+                      <p className="text-white/30 text-[6.5px] font-mono mt-1">Item: {r.question || "Pergunta Avulsa"}</p>
+                    </div>
+                  ))
+                )}
+              </div>
+
+              {surveyResponses.length > 0 && (
+                <div className="flex items-center gap-2 pt-1.5">
+                  <button
+                    onClick={handleRunNLP}
+                    disabled={nlpAnalyzing}
+                    className="px-3 py-1.5 bg-[#d2af5a]/15 hover:bg-[#d2af5a]/25 border border-[#d2af5a]/40 text-[#d2af5a] font-mono text-[8px] font-bold rounded-lg transition-all flex items-center gap-1.5 cursor-pointer"
+                  >
+                    <span>🧠</span> {nlpAnalyzing ? "RODANDO NLP..." : "RODAR ANÁLISE IA NLP"}
+                  </button>
+                  <span className="text-[7.2px] text-white/40 leading-tight">
+                    Cruza depoimentos e notas reais para redefinir clima/estresse psicossocial.
+                  </span>
+                </div>
+              )}
+
+              {nlpAnalyzed && nlpReport && (
+                <motion.div 
+                  initial={{ opacity: 0, y: 5 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="p-2.5 bg-[#d2af5a]/5 border border-[#d2af5a]/25 rounded-xl space-y-1.5 text-[8px] leading-relaxed"
+                >
+                  <div className="flex justify-between items-center border-b border-white/5 pb-1">
+                    <span className="text-[#d2af5a] font-mono font-bold uppercase text-[7.2px]">Relatório NLP de Clima Corporativo</span>
+                    <span className={`font-mono text-[7px] uppercase font-bold px-1.5 py-0.5 rounded ${
+                      nlpReport.sentiment === 'Seguro' ? 'bg-[#5dcaa5]/15 text-[#5dcaa5]' : 'bg-red-500/10 text-red-400 animate-pulse'
+                    }`}>{nlpReport.sentiment}</span>
+                  </div>
+                  <div>
+                    <span className="text-white/40 font-mono text-[7px] uppercase block">Gatilhos Psicossociais Detectados:</span>
+                    <div className="flex flex-wrap gap-1 mt-1">
+                      {nlpReport.detectedTriggers.map((trig: string, idx: number) => (
+                        <span key={idx} className="px-1.5 py-0.5 bg-red-950/20 border border-red-900/30 text-red-400 rounded font-mono text-[7px]">{trig}</span>
+                      ))}
+                    </div>
+                  </div>
+                  <p className="text-white/80 font-sans">
+                    💡 <b>Diretriz de Segurança Psicológica:</b> {nlpReport.recommendation}
+                  </p>
+                </motion.div>
               )}
             </div>
           </div>

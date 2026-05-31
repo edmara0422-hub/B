@@ -38,7 +38,7 @@ export function InteractiveCockpit() {
   const [activePillar, setActivePillar] = useState<'financas' | 'capital_humano' | 'estrategia' | 'esg' | 'ai'>('financas')
   const [countdown, setCountdown] = useState(10)
 
-  // Estados do Novo Simulador de Vantagem Competitiva 6D
+  // Estados do Novo Simulador de Vantagem Real (IVRS)
   const [compFactor, setCompFactor] = useState<'transparencia' | 'evidencia' | 'auditoria'>('transparencia')
   const [effortValue, setEffortValue] = useState<number>(75)
   const [marketLogs, setMarketLogs] = useState<string[]>([])
@@ -58,26 +58,27 @@ export function InteractiveCockpit() {
   const [aiVerdict, setAiVerdict] = useState<string>('Aguardando simulação inteligente...')
   const [aiVerdictStatus, setAiVerdictStatus] = useState<'pending' | 'approved' | 'rejected'>('pending')
 
-  // Estados do Novo Simulador Xeque-Mate Avançado 6D (Modal Popup)
+  // Estados do Simulador de Vantagem Real & Contra-Xeque-Mate (IVRS)
   const [isXequeMateModalOpen, setIsXequeMateModalOpen] = useState<boolean>(false)
   const [magicPromise, setMagicPromise] = useState<string>('Fature R$ 10.000 em 7 dias com Robô de Vendas Automático')
   const [customPromise, setCustomPromise] = useState<string>('')
-  // As 6 Dimensões Reais de Esforço e Vantagem Competitiva (D1 a D6)
-  const [d1SalesHours, setD1SalesHours] = useState<number>(80) // D1: Margem EBITDA (%)
-  const [d2IntelHours, setD2IntelHours] = useState<number>(6) // D2: LTV/CAC Ratio
-  const [d3ContentDensity, setD3ContentDensity] = useState<number>(95) // D3: Transparência de Dados (TDBD %)
-  const [d4HumanSla, setD4HumanSla] = useState<number>(10) // D4: Tempo de Resposta Humana (minutos)
-  const [d5Traceability, setD5Traceability] = useState<number>(30) // D5: Carga Cognitiva / Fadiga de Decisão (%)
-  const [d6HypeImmunity, setD6HypeImmunity] = useState<number>(95) // D6: Imunidade a Hype/Filtro de Ruído (%)
-
+  
+  // As Variáveis Reais de Eficiência de Mercado & Sustentabilidade Cognitiva
+  const [ebitda, setEbitda] = useState<number>(80) // Margem EBITDA (%)
+  const [ltvCac, setLtvCac] = useState<number>(6) // Relação LTV/CAC Ratio
+  const [tdbd, setTdbd] = useState<number>(95) // Tomada de Decisão Baseada em Dados (TDBD %)
+  const [sequestroAmigdala, setSequestroAmigdala] = useState<number>(20) // Sequestro da Amígdala (Risco de Liderança %)
+  const [friccaoPersonagem, setFriccaoPersonagem] = useState<number>(30) // Dissociação Cognitiva (Fricção do Personagem %)
+  const [custoDopaminergico, setCustoDopaminergico] = useState<number>(15) // Custo Dopaminérgico (Manipulação Emocional %)
+ 
   const [auditLogs, setAuditLogs] = useState<string[]>([])
   const [isAuditing, setIsAuditing] = useState<boolean>(false)
   const [auditDone, setAuditDone] = useState<boolean>(false)
   const [showDirectContactAlert, setShowDirectContactAlert] = useState<boolean>(false)
   const auditLogRef = useRef<HTMLDivElement>(null)
-
+ 
   const currentPromise = customPromise || magicPromise
-
+ 
   const glitterIndex = useMemo(() => {
     let score = 20
     const text = currentPromise.toLowerCase()
@@ -86,89 +87,89 @@ export function InteractiveCockpit() {
     if (text.includes('7 dias') || text.includes('rápido') || text.includes('imediato') || text.includes('fácil') || text.includes('sem esforço') || text.includes('dormindo') || text.includes('fórmula')) score += 30
     if (text.includes('robô') || text.includes('bot') || text.includes('automático') || text.includes('piloto automático')) score += 15
     
-    // Imunidade a hype reduz o impacto do glitter concorrente
-    const hypeFactor = (100 - d6HypeImmunity) * 0.15
+    // Custo Dopaminérgico alto aumenta o glitter concorrente
+    const hypeFactor = custoDopaminergico * 0.15
     score += hypeFactor
-
+ 
     return Math.min(Math.round(score), 100)
-  }, [currentPromise, d6HypeImmunity])
-
-  const ivc6DScore = useMemo(() => {
-    const ebitda = d1SalesHours / 100
-    const ltvCac = d2IntelHours
-    const tdbd = d3ContentDensity / 100
-    const cargaCognitiva = d5Traceability / 100
-    const d6Immunity = d6HypeImmunity // Hype immunity
-    const indiceIlusao = (100 - d6Immunity) / 100 // Ilusao is inverse of immunity
-
-    const num = (ebitda * ltvCac) * tdbd
-    const den = Math.max(0.1, cargaCognitiva + indiceIlusao)
+  }, [currentPromise, custoDopaminergico])
+ 
+  const ivrsScoreVal = useMemo(() => {
+    const ebitdaFactor = ebitda / 100
+    const ltvCacFactor = ltvCac
+    const tdbdFactor = tdbd / 100
+    const friccaoFactor = friccaoPersonagem / 100 // Dissociação Cognitiva / Fricção
+    const dopaminaFactor = custoDopaminergico / 100 // Custo Dopaminérgico
+    const amigdalaFactor = sequestroAmigdala / 100 // Sequestro da Amígdala
+ 
+    const num = (ebitdaFactor * ltvCacFactor) * tdbdFactor
+    const den = Math.max(0.05, (friccaoFactor + dopaminaFactor + (amigdalaFactor * 0.2)))
     const ivrs = num / den
-
+ 
     // Normalize IVRS to a beautiful score out of 100%
-    const normalizedScore = Math.min(100, Math.max(10, Math.round((ivrs / 8.0) * 100)))
-
+    const normalizedScore = Math.min(100, Math.max(10, Math.round((ivrs / 10.0) * 100)))
+ 
     // Penalidade concorrencial de Glitter
     const penalty = Math.max(0, (glitterIndex - 30) * 0.12)
-
+ 
     return Math.max(10, Math.min(100, Math.round(normalizedScore - penalty)))
-  }, [d1SalesHours, d2IntelHours, d3ContentDensity, d5Traceability, d6HypeImmunity, glitterIndex])
-
+  }, [ebitda, ltvCac, tdbd, sequestroAmigdala, friccaoPersonagem, custoDopaminergico, glitterIndex])
+ 
   const radarPoints = useMemo(() => {
-    const r1 = (d1SalesHours / 100) * 80
-    const r2 = (d2IntelHours / 10) * 80
-    const r3 = (d3ContentDensity / 100) * 80
-    const r4 = (Math.max(10, Math.round(100 - ((d4HumanSla - 5) / 175) * 90)) / 100) * 80
-    const r5 = ((100 - d5Traceability) / 100) * 80
-    const r6 = (d6HypeImmunity / 100) * 80
-
+    const r1 = (ebitda / 100) * 80
+    const r2 = (ltvCac / 10) * 80
+    const r3 = (tdbd / 100) * 80
+    const r4 = ((100 - sequestroAmigdala) / 100) * 80 // Inverted: lower Sequestro is better!
+    const r5 = ((100 - friccaoPersonagem) / 100) * 80 // Inverted: lower Fricção is better!
+    const r6 = ((100 - custoDopaminergico) / 100) * 80 // Inverted: lower Custo Dopaminérgico is better!
+ 
     const p1x = 100 + r1 * Math.cos(0)
     const p1y = 100 + r1 * Math.sin(0)
-
+ 
     const p2x = 100 + r2 * Math.cos(Math.PI / 3)
     const p2y = 100 + r2 * Math.sin(Math.PI / 3)
-
+ 
     const p3x = 100 + r3 * Math.cos((2 * Math.PI) / 3)
     const p3y = 100 + r3 * Math.sin((2 * Math.PI) / 3)
-
+ 
     const p4x = 100 + r4 * Math.cos(Math.PI)
     const p4y = 100 + r4 * Math.sin(Math.PI)
-
+ 
     const p5x = 100 + r5 * Math.cos((4 * Math.PI) / 3)
     const p5y = 100 + r5 * Math.sin((4 * Math.PI) / 3)
-
+ 
     const p6x = 100 + r6 * Math.cos((5 * Math.PI) / 3)
     const p6y = 100 + r6 * Math.sin((5 * Math.PI) / 3)
-
+ 
     return `${p1x},${p1y} ${p2x},${p2y} ${p3x},${p3y} ${p4x},${p4y} ${p5x},${p5y} ${p6x},${p6y}`
-  }, [d1SalesHours, d2IntelHours, d3ContentDensity, d4HumanSla, d5Traceability, d6HypeImmunity])
-
+  }, [ebitda, ltvCac, tdbd, sequestroAmigdala, friccaoPersonagem, custoDopaminergico])
+ 
   const competitorRadarPoints = useMemo(() => {
-    const r1 = 0.8 * 80
-    const r2 = 0.05 * 80
-    const r3 = 0.15 * 80
+    const r1 = 0.2 * 80
+    const r2 = 0.12 * 80
+    const r3 = 0.1 * 80
     const r4 = 0.1 * 80
-    const r5 = 0.1 * 80
-    const r6 = 0.2 * 80
-
+    const r5 = 0.05 * 80
+    const r6 = 0.05 * 80
+ 
     const p1x = 100 + r1 * Math.cos(0)
     const p1y = 100 + r1 * Math.sin(0)
-
+ 
     const p2x = 100 + r2 * Math.cos(Math.PI / 3)
     const p2y = 100 + r2 * Math.sin(Math.PI / 3)
-
+ 
     const p3x = 100 + r3 * Math.cos((2 * Math.PI) / 3)
     const p3y = 100 + r3 * Math.sin((2 * Math.PI) / 3)
-
+ 
     const p4x = 100 + r4 * Math.cos(Math.PI)
     const p4y = 100 + r4 * Math.sin(Math.PI)
-
+ 
     const p5x = 100 + r5 * Math.cos((4 * Math.PI) / 3)
     const p5y = 100 + r5 * Math.sin((4 * Math.PI) / 3)
-
+ 
     const p6x = 100 + r6 * Math.cos((5 * Math.PI) / 3)
     const p6y = 100 + r6 * Math.sin((5 * Math.PI) / 3)
-
+ 
     return `${p1x},${p1y} ${p2x},${p2y} ${p3x},${p3y} ${p4x},${p4y} ${p5x},${p5y} ${p6x},${p6y}`
   }, [])
 
@@ -205,62 +206,54 @@ export function InteractiveCockpit() {
     setMarketLogs([])
     setCalibrationSource('ia')
     setAiVerdictStatus('pending')
-    setAiVerdict('Processando inteligência de mercado 6D...')
+    setAiVerdict('Processando inteligência de mercado e dados neuropsicológicos...')
 
     const text = businessModelInput.toLowerCase()
     
     // 1. NLP Parser Engine
-    // Determine D1 (outreach/sales outreach): D1 represents Sales Execution Hours (1-12)
-    let D1 = 6 // default
-    if (text.includes('prospecção') || text.includes('leads') || text.includes('vendas') || text.includes('outreach') || text.includes('ativo') || text.includes('fatos')) D1 += 3
-    if (text.includes('humano') || text.includes('especialista') || text.includes('contato')) D1 += 2
-    if (text.includes('automático') || text.includes('robô') || text.includes('bot') || text.includes('fácil') || text.includes('dormindo')) D1 -= 3
-    D1 = Math.max(1, Math.min(12, D1))
+    let ebitda_val = 50 // default
+    if (text.includes('alta margem') || text.includes('lucro') || text.includes('ebitda') || text.includes('saas') || text.includes('recorrente') || text.includes('eficiente') || text.includes('financeiro')) ebitda_val += 25
+    if (text.includes('serviço') || text.includes('agência') || text.includes('customizado') || text.includes('operação pesada') || text.includes('humano') || text.includes('especialista')) ebitda_val -= 15
+    ebitda_val = Math.max(10, Math.min(100, ebitda_val))
 
-    // Determine D2 (Market intelligence): D2 represents Market Intel Hours (0-8)
-    let D2 = 4 // default
-    if (text.includes('concorrência') || text.includes('concorrencial') || text.includes('mapeamento') || text.includes('estudos') || text.includes('intel') || text.includes('crawler')) D2 += 2
-    if (text.includes('auditoria') || text.includes('pesquisa') || text.includes('dados')) D2 += 2
-    if (text.includes('hype') || text.includes('ignorar') || text.includes('caixa preta')) D2 -= 2
-    D2 = Math.max(0, Math.min(8, D2))
+    let ltvCac_val = 4.0 // default
+    if (text.includes('recorrência') || text.includes('saas') || text.includes('assinatura') || text.includes('retenção') || text.includes('longo prazo') || text.includes('ltv') || text.includes('fidelidade') || text.includes('pessoa para pessoa')) ltvCac_val += 2.5
+    if (text.includes('indicação') || text.includes('baixo custo de aquisição') || text.includes('orgânico') || text.includes('viral') || text.includes('cac')) ltvCac_val += 1.5
+    if (text.includes('marketing agressivo') || text.includes('anúncio caro') || text.includes('tráfego pago') || text.includes('guru') || text.includes('hype')) ltvCac_val -= 2.0
+    ltvCac_val = Math.max(1, Math.min(10, ltvCac_val))
 
-    // Determine D3 (Mentorship Density %): D3 represents Content/Mentorship density (10-100)
-    let D3 = 60 // default
-    if (text.includes('monitoria') || text.includes('mentoria') || text.includes('conteúdo') || text.includes('suporte síncrono') || text.includes('entregues') || text.includes('profundidade') || text.includes('grau')) D3 += 25
-    if (text.includes('auditoria') || text.includes('aberta') || text.includes('humana')) D3 += 15
-    if (text.includes('raso') || text.includes('gravado') || text.includes('caixa preta') || text.includes('robô') || text.includes('hype')) D3 -= 35
-    D3 = Math.max(10, Math.min(100, D3))
+    let tdbd_val = 60 // default
+    if (text.includes('dados') || text.includes('tdbd') || text.includes('auditável') || text.includes('métricas') || text.includes('indicadores') || text.includes('analítico') || text.includes('dashboard') || text.includes('bi') || text.includes('rastreabilidade')) tdbd_val += 30
+    if (text.includes('intuição') || text.includes('sentimento') || text.includes('gurus') || text.includes('ilusão') || text.includes('hype') || text.includes('caixa preta') || text.includes('achismos')) tdbd_val -= 25
+    tdbd_val = Math.max(10, Math.min(100, tdbd_val))
 
-    // Determine D4 (Human SLA response minutes): D4 represents Human Response SLA (5-180 min) - LOWER IS BETTER
-    let D4 = 60 // default
-    if (text.includes('sla') || text.includes('tempo de resposta') || text.includes('síncrono') || text.includes('minutos') || text.includes('rápido')) D4 -= 40
-    if (text.includes('humano') || text.includes('especialista') || text.includes('pessoa para pessoa')) D4 -= 15
-    if (text.includes('robô') || text.includes('bot') || text.includes('automatizado') || text.includes('whatsapp') || text.includes('horas')) D4 += 80
-    D4 = Math.max(5, Math.min(180, D4))
+    let amigdala_val = 40 // default
+    if (text.includes('ataque') || text.includes('defesa') || text.includes('agressivo') || text.includes('bloqueia') || text.includes('arrogante') || text.includes('reativo') || text.includes('emocional') || text.includes('arrogância')) amigdala_val += 35
+    if (text.includes('inteligência emocional') || text.includes('suporte consultivo') || text.includes('pessoa para pessoa') || text.includes('empatia') || text.includes('escuta') || text.includes('equipe')) amigdala_val -= 20
+    amigdala_val = Math.max(10, Math.min(100, amigdala_val))
 
-    // Determine D5 (CRM Integrity / Traceability %): D5 represents CRM Integrity (10-100)
-    let D5 = 70 // default
-    if (text.includes('crm') || text.includes('rastreabilidade') || text.includes('pipeline') || text.includes('dados íntegros') || text.includes('métrica') || text.includes('funil') || text.includes('auditável')) D5 += 20
-    if (text.includes('achismos') || text.includes('planilha') || text.includes('intuição')) D5 -= 30
-    D5 = Math.max(10, Math.min(100, D5))
+    let friccao_val = 40 // default
+    if (text.includes('personagem') || text.includes('mentira') || text.includes('engodo') || text.includes('caixa preta') || text.includes('promessa falsa') || text.includes('marketing agressivo') || text.includes('aparência')) friccao_val += 40
+    if (text.includes('verdade radical') || text.includes('eu integral') || text.includes('rastreabilidade') || text.includes('autêntico') || text.includes('fatos')) friccao_val -= 25
+    friccao_val = Math.max(10, Math.min(100, friccao_val))
 
-    // Determine D6 (Hype immunity / Noise filter %): D6 represents Hype Immunity (10-100)
-    let D6 = 70 // default
-    if (text.includes('imunidade') || text.includes('filtro') || text.includes('anti-hype') || text.includes('sem filtro') || text.includes('transparência') || text.includes('realidade') || text.includes('fatos')) D6 += 20
-    if (text.includes('hype') || text.includes('brilho') || text.includes('ganho fácil') || text.includes('promessas') || text.includes('milagre')) D6 -= 40
-    D6 = Math.max(10, Math.min(100, D6))
+    let dopamina_val = 40 // default
+    if (text.includes('fature rápido') || text.includes('promessa') || text.includes('robô de vendas') || text.includes('ganho fácil') || text.includes('enriquecer') || text.includes('milagre') || text.includes('fórmula') || text.includes('fácil') || text.includes('dormindo')) dopamina_val += 35
+    if (text.includes('medo') || text.includes('escassez') || text.includes('ganância') || text.includes('fomo') || text.includes('urgência')) dopamina_val += 20
+    if (text.includes('transparência') || text.includes('fatos') || text.includes('ciência') || text.includes('realidade') || text.includes('pessoa para pessoa') || text.includes('educação')) dopamina_val -= 25
+    dopamina_val = Math.max(10, Math.min(100, dopamina_val))
 
     // 2. Cognitive logs generating dynamic NLP step outputs
     const logs = [
-      `[AI SCANNER 6D] Escaneando a infraestrutura operacional descrita: "${businessModelInput.substring(0, 70)}..."`,
-      `[NLP ANALYSIS] Mapeando vetores de prospecção, entrega prática e blindagem contra Glitter concorrente...`,
-      `[D1 CALIBRATION] IA determinou Execução de Vendas ativa em: ${D1}h/dia (Baseada em esforço ativo vs. automação fútil).`,
-      `[D2 CALIBRATION] IA estimou Inteligência Concorrencial de: ${D2}h/dia (Rastreamento estratégico de features).`,
-      `[D3 CALIBRATION] Densidade de Monitoria indexada em: ${D3}% (Garantia de profundidade de conteúdos).`,
-      `[D4 CALIBRATION] SLA de Resposta Humana auto-ajustado em: ${D4} minutos (Tempo de atendimento por especialistas).`,
-      `[D5 CALIBRATION] Rastreabilidade de Funil no CRM avaliada em: ${D5}% (Confiabilidade de dados reais vs. achismos).`,
-      `[D6 CALIBRATION] Imunidade a Hype de mercado homologada em: ${D6}% (Filtro contra promessas falsas).`,
-      `[VERDICT COMPILING] Consolidando Média Geométrica 6D para gerar veredito estratégico...`
+      `[AI SCANNER] Escaneando a infraestrutura operacional descrita: "${businessModelInput.substring(0, 70)}..."`,
+      `[NLP ANALYSIS] Mapeando vetores de rentabilidade real, atração concorrencial e blindagem dopaminérgica...`,
+      `[EBITDA CALIBRATION] Margem EBITDA estimada em: ${ebitda_val}% (Eficiência financeira real da operação).`,
+      `[LTV/CAC CALIBRATION] Relação LTV/CAC calibrada em: ${ltvCac_val.toFixed(1)}x (Sustentabilidade de aquisição).`,
+      `[TDBD CALIBRATION] Tomada de Decisão Baseada em Dados (TDBD) indexada em: ${tdbd_val}% (Rituais de dados vs. achismo).`,
+      `[SEQUESTRO DA AMÍGDALA] Nível de reatividade emocional da gestão calibrado em: ${amigdala_val}% (Sequestro da Amígdala).`,
+      `[FRICÇÃO COGNITIVA] Dissociação de Personagem calculada em: ${friccao_val}% (Custo para manter a mentira).`,
+      `[CUSTO DOPAMINÉRGICO] Pico de dopamina artificial e FOMO no cliente: ${dopamina_val}% (Risco de arrependimento).`,
+      `[VERDICT COMPILING] Consolidando Indicadores Financeiros e Neuropsicológicos para Cálculo do IVRS...`
     ]
 
     let current = 0
@@ -268,12 +261,12 @@ export function InteractiveCockpit() {
       if (current < logs.length) {
         setMarketLogs(prev => [...prev, logs[current]])
         // Animate the sliders one by one as the AI logs execute
-        if (current === 2) setD1SalesHours(D1)
-        if (current === 3) setD2IntelHours(D2)
-        if (current === 4) setD3ContentDensity(D3)
-        if (current === 5) setD4HumanSla(D4)
-        if (current === 6) setD5Traceability(D5)
-        if (current === 7) setD6HypeImmunity(D6)
+        if (current === 2) setEbitda(ebitda_val)
+        if (current === 3) setLtvCac(ltvCac_val)
+        if (current === 4) setTdbd(tdbd_val)
+        if (current === 5) setSequestroAmigdala(amigdala_val)
+        if (current === 6) setFriccaoPersonagem(friccao_val)
+        if (current === 7) setCustoDopaminergico(dopamina_val)
         current++
       } else {
         clearInterval(interval)
@@ -282,14 +275,14 @@ export function InteractiveCockpit() {
         let finalVerdict = ''
         let status: 'approved' | 'rejected' = 'approved'
 
-        if (D6 < 45 || D3 < 40 || D4 > 100) {
-          finalVerdict = `⚠️ ESTRATÉGIA REJEITADA POR EXCESSO DE HYPE: Risco Crítico de Engodo/Caixa Preta concorrencial. A operação possui baixa densidade de monitoria real (${D3}%) e tempo de resposta inaceitável (${D4} min). Redesenhe o fluxo com foco em verdade radical.`
+        if (dopamina_val > 55 || tdbd_val < 40 || amigdala_val > 75 || ebitda_val < 25) {
+          finalVerdict = `⚠️ ESTRATÉGIA REJEITADA POR EXCESSO DE ILUSÃO: Alto Custo Dopaminérgico (${dopamina_val}%) e baixa integridade de dados (TDBD de ${tdbd_val}%). O "personagem" corre risco crítico de colapso por sequestro da amígdala constante e falta de processos sustentáveis (EBITDA ${ebitda_val}%).`
           status = 'rejected'
-        } else if (D3 >= 80 && D4 <= 25 && D6 >= 80) {
-          finalVerdict = `✅ OPERAÇÃO 6D VALIDADA: Modelo robusto e blindado. Densidade de entrega real de ${D3}% com suporte ágil de ${D4}m. Vantagem competitiva humana de pessoa para pessoa blindada no CRM.`
+        } else if (tdbd_val >= 85 && amigdala_val <= 30 && dopamina_val <= 30 && ltvCac_val >= 4.0) {
+          finalVerdict = `✅ OPERAÇÃO DE VANTAGEM REAL APROVADA: Altíssima integridade de dados (TDBD ${tdbd_val}%), controle emocional da liderança, baixo desgaste dopaminérgico (${dopamina_val}%) e LTV/CAC sustentável de ${ltvCac_val.toFixed(1)}x. Blindagem anticópia ativa!`
           status = 'approved'
         } else {
-          finalVerdict = `💡 MODELO APROVADO COM RESSALVAS: Operação viável, mas vulnerável a ataques de Gurus Hype. Aumente a imunidade a Hype (${D6}%) e melhore o tempo de resposta humana (${D4} min) para blindagem absoluta.`
+          finalVerdict = `💡 MODELO COM RESSALVAS COGNITIVAS: Operação financeiramente rentável, mas o fundador corre risco de burnout pelo cansaço da liderança (Fadiga ${friccao_val}%) ou alta reatividade emocional (${amigdala_val}%). Reduza o Hype e use mais Dados (TDBD).`
           status = 'approved'
         }
 
@@ -303,15 +296,15 @@ export function InteractiveCockpit() {
   }
 
   // Função para mudar dimensão e cair no customizado
-  const handleDimensionChange = (dimension: 'd1' | 'd2' | 'd3' | 'd4' | 'd5' | 'd6', value: number) => {
+  const handleDimensionChange = (dimension: 'ebitda' | 'ltvCac' | 'tdbd' | 'sequestroAmigdala' | 'friccaoPersonagem' | 'custoDopaminergico', value: number) => {
     setSimScenario('custom')
     setCalibrationSource('manual')
-    if (dimension === 'd1') setD1SalesHours(value)
-    else if (dimension === 'd2') setD2IntelHours(value)
-    else if (dimension === 'd3') setD3ContentDensity(value)
-    else if (dimension === 'd4') setD4HumanSla(value)
-    else if (dimension === 'd5') setD5Traceability(value)
-    else if (dimension === 'd6') setD6HypeImmunity(value)
+    if (dimension === 'ebitda') setEbitda(value)
+    else if (dimension === 'ltvCac') setLtvCac(value)
+    else if (dimension === 'tdbd') setTdbd(value)
+    else if (dimension === 'sequestroAmigdala') setSequestroAmigdala(value)
+    else if (dimension === 'friccaoPersonagem') setFriccaoPersonagem(value)
+    else if (dimension === 'custoDopaminergico') setCustoDopaminergico(value)
   }
 
   // AI Strategic Copilot Q&A handler
@@ -321,39 +314,38 @@ export function InteractiveCockpit() {
     setTimeout(() => {
       let answer = ''
       if (questionKey === 'famosos') {
-        answer = `🤖 [Xeque-Mate AI Advisor]: Como bater concorrentes famosos com zero entrega?
+        answer = `🤖 [Mentor IA - Xeque-Mate Concorrencial]: Como vencer gurus famosos e promessas vazias de mercado?
         
-👉 Use o contraste radical de Densidade de Monitoria (D3): A concorrência famosa gasta 95% do tempo com marketing e apenas 15% em entrega prática de conteúdo real. Sua operação entrega ${d3ContentDensity}% de densidade de conteúdo monitorado por especialistas reais.
-👉 Prove isso exibindo sua grade de rituais, logs do sistema IPB e apresente o IVC-6D Score do seu negócio (${ivc6DScore}%) vs. o do Guru (${18}%). Isso elimina qualquer dúvida ("pessoa para pessoa").`
+👉 Use o contraste de Transparência de Dados (TDBD): O mercado opera em caixa preta, vendendo ilusão de palco com promessas de ganhos sem esforço. Ao adotar ${tdbd}% de TDBD no seu negócio, você quebra essa ilusão com dados frios e auditáveis.
+👉 O "Xeque-Mate" do Córtex Pré-Frontal: Confrontar o concorrente com dados e rastreabilidade ativa o Sequestro da Amígdala dele, expondo o colapso do personagem que reage com ataque (arrogância/deboche) ou fuga (bloqueio). Apresente o seu IVRS de ${ivrsScoreVal}% vs. o do Guru (${18}%).`
       } else if (questionKey === 'sla') {
-        answer = `🤖 [Xeque-Mate AI Advisor]: Como provar meu diferencial de SLA rápido?
+        answer = `🤖 [Mentor IA - Inteligência Emocional & Sanidade]: Como provar e posicionar o diferencial de estabilidade emocional?
         
-👉 Enquanto a concorrência famosa esconde-se atrás de robôs genéricos de WhatsApp com SLA de resposta de mais de 3 horas (180 min), você garante um tempo de resposta humana especializada de apenas ${d4HumanSla} minutos (D4).
-👉 Adicione um compromisso contratual de SLA de resposta no seu pitch comercial. Isso transforma promessa em fato 100% auditável pelo CRM integrado do IPB.`
+👉 Enquanto o concorrente opera em reatividade constante e sob sequestro contínuo da amígdala (90% de estresse e urgência artificial), você constrói uma operação baseada na verdade e no equilíbrio mental.
+👉 Provar que a reatividade da sua gestão é de apenas ${sequestroAmigdala}% de Sequestro da Amígdala (comprovando clareza estratégica no Córtex Pré-Frontal) cria uma barreira anticópia definitiva. Um negócio mentalmente saudável cresce de forma sustentável e sem esgotamento de pessoas.`
       } else if (questionKey === 'math') {
-        answer = `🤖 [Xeque-Mate AI Advisor]: Qual a lógica matemática do IVC-6D / IVRS Score?
+        answer = `🤖 [Mentor IA - A Matemática da Sanidade]: Qual é a ciência por trás da fórmula do IVRS?
         
-👉 O Índice de Vantagem Real Sustentável (IVRS) utiliza uma fórmula de sustentabilidade: 
-   IVRS = ((Margem EBITDA * LTV/CAC) * TDBD) / (Carga Cognitiva + Índice de Ilusão).
-👉 A matemática prova que a margem financeira e retenção (LTV/CAC) multiplicadas pela Transparência de Dados (TDBD) desmoronam se a Carga Cognitiva do Fundador (Fadiga) e o Índice de Ilusão de Personagem forem muito altos. É a união da matemática de negócios com a sanidade mental.`
+👉 A fórmula do Índice de Vantagem Real Sustentável (IVRS) prova cientificamente que um negócio não sobrevive só de números de EBITDA:
+   IVRS = (EBITDA * (LTV/CAC) * TDBD) / (Fricção do Personagem + Custo Dopaminérgico + 0.2 * Sequestro da Amígdala).
+👉 Se o EBITDA e a atração são ótimos, mas a liderança sofre com Sequestro da Amígdala e o produto exige mentiras brutais que geram Custo Dopaminérgico (FOMO/Medo) e arrependimento de compra no cliente, o denominador explode e o IVRS desmorona. A matemática comprova: integridade de dados e sanidade humana geram mais lucro no longo prazo.`
       } else if (questionKey === 'zero') {
-        answer = `🤖 [Advisor de Vantagem AI - Perfil: Começar do Zero]:
+        answer = `🤖 [Advisor AI - Começando do Absoluto Zero]:
         
-👉 ALERTA ANTICÓPIA: Não copie o palco alheio! O algoritmo mapeou o seu "Eu Integral" (sua história de vida + vivências práticas).
-👉 INTERSEÇÃO IMEDIATA: A IA cruzou seu histórico e identificou sua intersecção única. Por exemplo, unir Fisioterapia Intensivista (8 anos de UTI) com Business e Tecnologia cria um oceano azul exclusivo onde ninguém consegue competir.
-👉 DIAGNÓSTICO TDBD: O nicho ideal gerado tem 80% menos concorrência no mercado brasileiro hoje. Invista em Auditoria Aberta, Rastreabilidade e SLA humano.`
+👉 ALERTA ANTICÓPIA: Pare de tentar copiar o palco dos outros por medo ou síndrome do impostor! O sistema ativou o Modo Descoberta baseado no "Eu Integral".
+👉 INTERSEÇÃO IMEDIATA: A IA cruzou seu histórico de vida. Se você é Fisioterapeuta Intensivista (8 anos de UTI) e agora estuda Business e Tecnologia, o cruzamento de [UTI + Business + Tech + Saúde Mental] cria um posicionamento anticópia absoluto. Ninguém compete com sua história.
+👉 TERRITÓRIO ÚNICO: Invista em um modelo focado em Rastreabilidade Técnica, Auditoria Aberta e Tomada de Decisão Baseada em Dados (TDBD).`
       } else if (questionKey === 'pivot') {
-        answer = `🤖 [Advisor de Vantagem AI - Perfil: Repensar & Pivotar]:
+        answer = `🤖 [Advisor AI - Repensar & Pivotar Carreira]:
         
-👉 DESCONSTRUÇÃO DE ATIVOS: Cansado do modelo antigo de atuação profissional? Não jogue seus anos de dedicação no lixo!
-👉 TRANSIÇÃO ESTRATÉGICA: Sua capacidade extrema de liderança sob pressão (UTI), gestão de rituais e auditoria clínica são ativos extremamente escassos no mercado de Business e Tecnologia de Automação Digital.
-👉 BLINDAGEM OPERACIONAL: A IA redesenhou sua rota: aplique Inteligência Concorrencial (D2) e CRM em startups de saúde mental de alta complexidade. Vantagem Competitiva Real imediata.`
+👉 DESCONSTRUÇÃO DE ATIVOS: Cansado do modelo tradicional? Não jogue sua bagagem no lixo! A IA desestruturou seus anos de experiência em UTI em blocos de competência pura.
+👉 TRANSIÇÃO ESTRATÉGICA: Sua capacidade extrema de liderança sob estresse, tomada de decisão veloz à beira do leito e auditoria rigorosa de processos são ativos de ouro para o mercado de Business e Tecnologia de Automação Digital.
+👉 ROTA: A IA redesenhou seu posicionamento. Crie uma consultoria de mitigação de riscos e inteligência emocional em startups de saúde mental de alta complexidade. Vantagem imediata e anticópia.`
       } else if (questionKey === 'saas') {
-        answer = `🤖 [Advisor de Vantagem AI - Perfil: Criador de Micro-SaaS]:
+        answer = `🤖 [Advisor AI - Criador de SaaS & novos modelos]:
         
-👉 FRICTION SCRAPING (Mineração de Ódio): A IA vasculhou reclamações sobre softwares concorrentes. A maior dor é a Fadiga de Decisão do Líder devido a sistemas complexos de alta Carga Cognitiva (${d5Traceability}%).
-👉 TERRITÓRIO ÚNICO: Crie um micro-SaaS focado exclusivamente em simplificar e automatizar o indicador de Transparência de Dados (TDBD) para pequenas empresas.
-👉 RETENÇÃO E LTV: Usabilidade extremamente leve, baixa carga cognitiva, com um toque de suporte especializado humano. Seu IVRS decolará.`
+👉 MINERAÇÃO DE ÓDIO (Friction Scraping): Analisamos os concorrentes tradicionais. A principal dor relatada pelos clientes é o cansaço gerado por sistemas complexos de altíssima Carga Cognitiva (${friccaoPersonagem}%).
+👉 O GAP DE MERCADO: Crie um micro-SaaS super enxuto focado em simplificar e automatizar o cálculo de transparência de dados (TDBD) para pequenas empresas, com usabilidade leve e suporte humano direto. Risco baixo, LTV altíssimo.`
       }
       setCopilotAnswer(answer)
       setCopilotLoading(false)
@@ -371,19 +363,21 @@ export function InteractiveCockpit() {
     if (text.includes('fature') || text.includes('ganhe') || text.includes('milhões') || text.includes('10k') || text.includes('10.000')) glitter += 25
     if (text.includes('7 dias') || text.includes('rápido') || text.includes('fácil') || text.includes('sem esforço')) glitter += 30
     if (text.includes('robô') || text.includes('bot') || text.includes('automático')) glitter += 15
-    const hypeFactor = Math.round((100 - d6HypeImmunity) * 0.15)
+    const hypeFactor = Math.round((100 - (100 - custoDopaminergico)) * 0.15)
     glitter = Math.min(100, glitter + hypeFactor)
 
     const logs = [
-      `[INICIALIZANDO] Ativando Auditoria 6D de Verdade Radical e NLP Concorrencial...`,
-      `[NLP PARSE] Detectando gatilhos de pressa e ganho fácil ("Glitter"). Mapeado em ${glitter}% de ruído concorrencial.`,
-      `[DETECTOR DE BRILHO] Promessa analisada: "${currentPromise}"`,
-      `[COMPARATIVO D1] Concorrente atua com promessa de ganho sem esforço (0h Execução) vs. sua Operação Real com ${d1SalesHours}h/dia de trabalho (D1).`,
-      `[COMPARATIVO D3] Guru famoso oferece suporte por robôs rasos (15% monitoria) vs. sua Densidade de Monitoria de ${d3ContentDensity}% (D3).`,
-      `[COMPARATIVO D4] SLA Concorrente esconde-se sob robôs frios (delay de 3h+) vs. seu SLA Humano de ${d4HumanSla} min (D4).`,
-      `[COMPARATIVO D5] Concorrente atua sob achismos e narrativas vs. sua Rastreabilidade CRM de ${d5Traceability}% (D5).`,
-      `[6D_COMPUTATION] Processando Vantagem Competitiva Real (IVC-6D: ${ivc6DScore}%) vs. Glitter do Guru...`,
-      `[VEREDICT NLP] Xeque-mate na promessa de mercado! Vantagem humana auditada e homologada.`
+      `[INICIALIZANDO SCANNER] Ativando Auditoria de Verdade Radical e NLP Concorrencial contra o "Efeito Ilusão"...`,
+      `[NLP PARSE] Analisando promessa concorrente: "${currentPromise}"`,
+      `[GLITTER DETECTED] Mapeado em ${glitter}% de ruído e hype de mercado.`,
+      `[EBITDA COMPARISON] Concorrente queima caixa (0% EBITDA) vs. sua Operação de Margem Real de ${ebitda}% (EBITDA).`,
+      `[LTV/CAC AUDIT] Guru concorrente opera com CAC inflado por tráfego agressivo vs. sua Relação LTV/CAC sustentável de ${ltvCac.toFixed(1)}x.`,
+      `[TDBD CHECK] Promessa do Guru baseia-se em ilusão motivacional vs. seu sistema com ${tdbd}% de Tomada de Decisão Baseada em Dados (TDBD).`,
+      `[AMÍGDALA SEQUESTRADA] Concorrente opera sob reatividade constante e medo (90% Sequestro da Amígdala) vs. seu Controle Emocional de ${sequestroAmigdala}% (Liderança ativa).`,
+      `[DISSOCIAÇÃO COGNITIVA] Personagem oco gasta 95% de energia pré-frontal sustentando a mentira vs. seu Eu Integral com apenas ${friccaoPersonagem}% de fricção.`,
+      `[CUSTO DOPAMINÉRGICO] Guru gera pico dopaminérgico artificial com promessa milagrosa (95% manipulação) vs. sua entrega ética e limpa com apenas ${custoDopaminergico}% de custo dopaminérgico.`,
+      `[XEQUE-MATE COMPILING] Consolidando Vantagem Competitiva Real (IVRS: ${ivrsScoreVal}%) vs. Ilusão de Caixa Preta do concorrente...`,
+      `[VEREDITO] Xeque-mate na ilusão comercial! Operação pautada na verdade de dados e neuropsicologia homologada com sucesso.`
     ]
 
     let current = 0
@@ -631,7 +625,7 @@ export function InteractiveCockpit() {
         <div className="flex items-center gap-3">
           <div className="h-2.5 w-2.5 rounded-full bg-[#d2af5a] animate-pulse shadow-[0_0_8px_#d2af5a]" />
           <h1 className="text-white text-xs font-light tracking-[0.15em] uppercase">
-            BUSINESS INTELLIGENCE <span className="text-[#d2af5a] font-normal">COCKPIT 6D</span>
+            BUSINESS INTELLIGENCE <span className="text-[#d2af5a] font-normal">COCKPIT DE VANTAGEM REAL (IVRS)</span>
           </h1>
         </div>
         
@@ -719,7 +713,7 @@ export function InteractiveCockpit() {
           </div>
         </div>
 
-        {/* COLUNA DIREITA: HUD Ativo + Matriz 6D no Rodapé */}
+        {/* COLUNA DIREITA: HUD Ativo + Simulador de Vantagem Real no Rodapé */}
         <div className="flex flex-col gap-[20px] h-full justify-between">
           
           {/* Container do HUD Ativo (Travado em 560px de altura para alinhamento milimétrico) */}
@@ -731,7 +725,7 @@ export function InteractiveCockpit() {
             {activePillar === 'ai' && <HudAi />}
           </div>
 
-          {/* MATRIZ DE INTERDEPENDÊNCIA 6D (Travado em 260px de altura - Agora convertida no Simulador Concorrencial Contra-Xeque-Mate 6D) */}
+          {/* SIMULADOR DE VANTAGEM REAL (Travado em 260px de altura - Agora convertida no Simulador Concorrencial Contra-Xeque-Mate) */}
           <div className="p-3 rounded-3xl backdrop-blur-xl border flex flex-col justify-between h-[260px] select-text" style={{ background: 'rgba(8, 8, 10, 0.85)', borderColor: 'rgba(210, 175, 90, 0.25)' }}>
             
             {/* Header do Simulador */}
@@ -739,7 +733,7 @@ export function InteractiveCockpit() {
               <div className="flex items-center gap-2">
                 <Award className="h-3.5 w-3.5 text-[#d2af5a] animate-pulse" />
                 <span className="text-[8.5px] font-bold uppercase tracking-[0.15em] text-[#d2af5a]">
-                  🛰️ SIMULADOR DE VANTAGEM COMPETITIVA & CONTRA-XEQUE-MATE 6D
+                  🛰️ SIMULADOR DE VANTAGEM COMPETITIVA & CONTRA-XEQUE-MATE (IVRS)
                 </span>
               </div>
               
@@ -772,14 +766,14 @@ export function InteractiveCockpit() {
             {/* Layout Interno em Duas Colunas */}
             <div className="flex-1 flex gap-3 pt-2 overflow-hidden items-stretch">
               
-              {/* Coluna Esquerda: Painel 6D de Esforço & Sliders Avançados (58% largura) */}
+              {/* Coluna Esquerda: Painel de Esforço & Sliders Avançados (58% largura) */}
               <div className="w-[58%] flex flex-col justify-between text-left space-y-1.5 overflow-visible shrink-0 pr-1 border-r border-white/5">
                 
-                {/* 6D Metrics Mini-Grid */}
+                {/* Metrics Mini-Grid */}
                 <div className="space-y-1 select-none">
                   <div className="flex justify-between items-center block text-[6.8px] font-mono leading-none mb-1">
                     <span className="text-white/45 uppercase tracking-widest">
-                      Esforço Real & Blindagem 6D
+                      Esforço Real & Blindagem Neuro-Operacional (IVRS)
                     </span>
                     <span className={`px-1 rounded text-[5.5px] font-mono font-bold border ${
                       calibrationSource === 'ia' 
@@ -790,61 +784,136 @@ export function InteractiveCockpit() {
                     </span>
                   </div>
                   <div className="grid grid-cols-3 gap-1">
-                    <div className="p-1 rounded bg-black/40 border border-white/5 flex flex-col justify-between">
-                      <span className="text-[5.5px] font-mono text-white/45 uppercase">D1: Execução</span>
-                      <span className="text-[7.8px] font-bold font-mono text-[#d2af5a]">{d1SalesHours}h/dia</span>
+                    <div className="p-1 rounded bg-black/40 border border-white/5 flex flex-col justify-between animate-fade-in">
+                      <span className="text-[5px] font-mono text-white/40 uppercase">EBITDA (%)</span>
+                      <span className="text-[7.5px] font-bold font-mono text-[#d2af5a]">{ebitda}%</span>
                     </div>
-                    <div className="p-1 rounded bg-black/40 border border-white/5 flex flex-col justify-between">
-                      <span className="text-[5.5px] font-mono text-white/45 uppercase">D2: Intel</span>
-                      <span className="text-[7.8px] font-bold font-mono text-[#d2af5a]">{d2IntelHours}h/dia</span>
+                    <div className="p-1 rounded bg-black/40 border border-white/5 flex flex-col justify-between animate-fade-in">
+                      <span className="text-[5px] font-mono text-white/40 uppercase">LTV/CAC Ratio</span>
+                      <span className="text-[7.5px] font-bold font-mono text-[#d2af5a]">{ltvCac.toFixed(1)}x</span>
                     </div>
-                    <div className="p-1 rounded bg-black/40 border border-white/5 flex flex-col justify-between">
-                      <span className="text-[5.5px] font-mono text-white/45 uppercase">D3: Monitoria</span>
-                      <span className="text-[7.8px] font-bold font-mono text-[#d2af5a]">{d3ContentDensity}%</span>
+                    <div className="p-1 rounded bg-black/40 border border-white/5 flex flex-col justify-between animate-fade-in">
+                      <span className="text-[5px] font-mono text-white/40 uppercase">TDBD (%)</span>
+                      <span className="text-[7.5px] font-bold font-mono text-[#d2af5a]">{tdbd}%</span>
                     </div>
-                    <div className="p-1 rounded bg-black/40 border border-white/5 flex flex-col justify-between">
-                      <span className="text-[5.5px] font-mono text-white/45 uppercase">D4: SLA</span>
-                      <span className="text-[7.8px] font-bold font-mono text-[#d2af5a]">{d4HumanSla}m</span>
+                    <div className="p-1 rounded bg-black/40 border border-white/5 flex flex-col justify-between animate-fade-in">
+                      <span className="text-[5px] font-mono text-red-400/80 uppercase">Amígdala (%)</span>
+                      <span className="text-[7.5px] font-bold font-mono text-red-400">{sequestroAmigdala}%</span>
                     </div>
-                    <div className="p-1 rounded bg-black/40 border border-white/5 flex flex-col justify-between">
-                      <span className="text-[5.5px] font-mono text-white/45 uppercase">D5: Rastreio</span>
-                      <span className="text-[7.8px] font-bold font-mono text-[#d2af5a]">{d5Traceability}%</span>
+                    <div className="p-1 rounded bg-black/40 border border-white/5 flex flex-col justify-between animate-fade-in">
+                      <span className="text-[5px] font-mono text-red-400/80 uppercase">Fricção (%)</span>
+                      <span className="text-[7.5px] font-bold font-mono text-red-400">{friccaoPersonagem}%</span>
                     </div>
-                    <div className="p-1 rounded bg-black/40 border border-white/5 flex flex-col justify-between">
-                      <span className="text-[5.5px] font-mono text-white/45 uppercase">D6: Imunidade</span>
-                      <span className="text-[7.8px] font-bold font-mono text-[#d2af5a]">{d6HypeImmunity}%</span>
+                    <div className="p-1 rounded bg-black/40 border border-white/5 flex flex-col justify-between animate-fade-in">
+                      <span className="text-[5px] font-mono text-red-400/80 uppercase">Dopamina (%)</span>
+                      <span className="text-[7.5px] font-bold font-mono text-red-400">{custoDopaminergico}%</span>
                     </div>
                   </div>
                 </div>
 
                 {/* Sliders rápidos da Home */}
-                <div className="space-y-1 select-none">
-                  <div className="flex justify-between items-center text-[7px] font-mono text-white/55 leading-none">
-                    <span>Ajustar D1 (Prospecção Diária):</span>
-                    <b className="text-white font-mono font-bold">{d1SalesHours}h/dia</b>
+                <div className="grid grid-cols-2 gap-x-2.5 gap-y-1 select-none">
+                  {/* EBITDA */}
+                  <div className="space-y-0.5">
+                    <div className="flex justify-between items-center text-[6.5px] font-mono text-white/55 leading-none">
+                      <span>EBITDA:</span>
+                      <b className="text-white font-mono font-bold text-[6.5px]">{ebitda}%</b>
+                    </div>
+                    <input
+                      type="range"
+                      min="10"
+                      max="100"
+                      step="5"
+                      value={ebitda}
+                      onChange={(e) => handleDimensionChange('ebitda', Number(e.target.value))}
+                      className="w-full h-0.5 bg-white/5 rounded appearance-none cursor-pointer accent-[#d2af5a]"
+                    />
                   </div>
-                  <input
-                    type="range"
-                    min="1"
-                    max="12"
-                    step="1"
-                    value={d1SalesHours}
-                    onChange={(e) => handleDimensionChange('d1', Number(e.target.value))}
-                    className="w-full h-0.5 bg-white/5 rounded appearance-none cursor-pointer accent-[#d2af5a]"
-                  />
-                  <div className="flex justify-between items-center text-[7px] font-mono text-white/55 leading-none">
-                    <span>Ajustar D4 (SLA Resposta):</span>
-                    <b className="text-white font-mono font-bold">{d4HumanSla} min</b>
+
+                  {/* Fricção */}
+                  <div className="space-y-0.5">
+                    <div className="flex justify-between items-center text-[6.5px] font-mono text-white/55 leading-none">
+                      <span>Fricção Personagem:</span>
+                      <b className="text-white font-mono font-bold text-[6.5px]">{friccaoPersonagem}%</b>
+                    </div>
+                    <input
+                      type="range"
+                      min="10"
+                      max="100"
+                      step="5"
+                      value={friccaoPersonagem}
+                      onChange={(e) => handleDimensionChange('friccaoPersonagem', Number(e.target.value))}
+                      className="w-full h-0.5 bg-white/5 rounded appearance-none cursor-pointer accent-[#d2af5a]"
+                    />
                   </div>
-                  <input
-                    type="range"
-                    min="5"
-                    max="180"
-                    step="5"
-                    value={d4HumanSla}
-                    onChange={(e) => handleDimensionChange('d4', Number(e.target.value))}
-                    className="w-full h-0.5 bg-white/5 rounded appearance-none cursor-pointer accent-[#d2af5a]"
-                  />
+
+                  {/* LTV/CAC */}
+                  <div className="space-y-0.5">
+                    <div className="flex justify-between items-center text-[6.5px] font-mono text-white/55 leading-none">
+                      <span>LTV/CAC:</span>
+                      <b className="text-white font-mono font-bold text-[6.5px]">{ltvCac.toFixed(1)}x</b>
+                    </div>
+                    <input
+                      type="range"
+                      min="1"
+                      max="10"
+                      step="0.5"
+                      value={ltvCac}
+                      onChange={(e) => handleDimensionChange('ltvCac', Number(e.target.value))}
+                      className="w-full h-0.5 bg-white/5 rounded appearance-none cursor-pointer accent-[#d2af5a]"
+                    />
+                  </div>
+
+                  {/* Dopamina */}
+                  <div className="space-y-0.5">
+                    <div className="flex justify-between items-center text-[6.5px] font-mono text-white/55 leading-none">
+                      <span>Custo Dopaminérgico:</span>
+                      <b className="text-white font-mono font-bold text-[6.5px]">{custoDopaminergico}%</b>
+                    </div>
+                    <input
+                      type="range"
+                      min="10"
+                      max="100"
+                      step="5"
+                      value={custoDopaminergico}
+                      onChange={(e) => handleDimensionChange('custoDopaminergico', Number(e.target.value))}
+                      className="w-full h-0.5 bg-white/5 rounded appearance-none cursor-pointer accent-[#d2af5a]"
+                    />
+                  </div>
+
+                  {/* TDBD */}
+                  <div className="space-y-0.5">
+                    <div className="flex justify-between items-center text-[6.5px] font-mono text-white/55 leading-none">
+                      <span>TDBD (Dados %):</span>
+                      <b className="text-white font-mono font-bold text-[6.5px]">{tdbd}%</b>
+                    </div>
+                    <input
+                      type="range"
+                      min="10"
+                      max="100"
+                      step="5"
+                      value={tdbd}
+                      onChange={(e) => handleDimensionChange('tdbd', Number(e.target.value))}
+                      className="w-full h-0.5 bg-white/5 rounded appearance-none cursor-pointer accent-[#d2af5a]"
+                    />
+                  </div>
+
+                  {/* Amígdala */}
+                  <div className="space-y-0.5">
+                    <div className="flex justify-between items-center text-[6.5px] font-mono text-white/55 leading-none">
+                      <span>Sequestro Amígdala:</span>
+                      <b className="text-white font-mono font-bold text-[6.5px]">{sequestroAmigdala}%</b>
+                    </div>
+                    <input
+                      type="range"
+                      min="10"
+                      max="100"
+                      step="5"
+                      value={sequestroAmigdala}
+                      onChange={(e) => handleDimensionChange('sequestroAmigdala', Number(e.target.value))}
+                      className="w-full h-0.5 bg-white/5 rounded appearance-none cursor-pointer accent-[#d2af5a]"
+                    />
+                  </div>
                 </div>
 
                 {/* Botões de Ativação do Simulador */}
@@ -856,7 +925,7 @@ export function InteractiveCockpit() {
                     className="px-2 py-1.5 bg-black/40 hover:bg-[#d2af5a]/10 disabled:bg-white/5 disabled:text-white/20 border border-[#d2af5a]/20 hover:border-[#d2af5a]/60 text-white/80 hover:text-[#d2af5a] font-mono text-[8px] font-bold rounded-lg transition-all duration-200 flex items-center gap-1 cursor-pointer shrink-0"
                   >
                     <Play className={`h-2.5 w-2.5 ${simRunning ? 'animate-spin text-[#d2af5a]' : 'text-[#d2af5a]'}`} />
-                    {simRunning ? 'RODANDO...' : 'SIMULAR 6D'}
+                    {simRunning ? 'RODANDO...' : 'CALCULAR IVRS'}
                   </button>
 
                   <button
@@ -867,7 +936,7 @@ export function InteractiveCockpit() {
                     className="px-2 py-1.5 bg-[#d2af5a]/15 hover:bg-[#d2af5a]/25 border border-[#d2af5a]/40 hover:border-[#d2af5a] text-[#d2af5a] hover:text-white font-mono text-[8px] font-bold rounded-lg transition-all duration-200 flex items-center gap-1 cursor-pointer shrink-0 animate-pulse"
                   >
                     <Sparkles className="h-2.5 w-2.5 text-[#d2af5a]" />
-                    🔍 REJEITAR ILUSÃO: SIMULADOR 6D
+                    🔍 XEQUE-MATE CONCORRENCIAL
                   </button>
                 </div>
               </div>
@@ -883,7 +952,7 @@ export function InteractiveCockpit() {
                       onClick={() => setRightPanelTab('orb')} 
                       className={`px-1.5 py-0.5 rounded-[4px] text-[6px] font-mono border uppercase tracking-wider transition-all ${rightPanelTab === 'orb' ? 'bg-[#d2af5a]/15 text-[#d2af5a] border-[#d2af5a]/30 font-bold' : 'bg-black/45 text-white/30 border-white/5 hover:border-white/10'}`}
                     >
-                      Orbe 6D
+                      Orbe IVRS
                     </button>
                     <button 
                       onClick={() => setRightPanelTab('terminal')} 
@@ -896,11 +965,11 @@ export function InteractiveCockpit() {
 
                 {/* Conteúdo da Aba Direita */}
                 {rightPanelTab === 'orb' ? (
-                  /* ORBE HOLOGRÁFICO 6D ATIVO E REATIVO */
+                  /* ORBE HOLOGRÁFICO IVRS ATIVO E REATIVO */
                   <div className="flex-1 flex flex-col justify-center items-center relative overflow-hidden bg-black/30 border border-white/5 rounded-xl py-1 select-none">
                     <svg className="w-[105px] h-[105px] glow-orb-glass relative mt-0.5" viewBox="0 0 100 100">
                       <defs>
-                        <radialGradient id="holoCore6DHome" cx="35%" cy="35%" r="65%">
+                        <radialGradient id="holoCoreIVRSHome" cx="35%" cy="35%" r="65%">
                           <stop offset="0%" stopColor="#ffffff" stopOpacity="0.9" />
                           <stop offset="40%" stopColor="#fffbf2" stopOpacity="0.65" />
                           <stop offset="85%" stopColor="#d2af5a" stopOpacity="0.5" />
@@ -927,24 +996,24 @@ export function InteractiveCockpit() {
                         <ellipse cx="50" cy="50" rx="16" ry="28" fill="none" stroke={simScenario === 'gurus' ? '#ef4444' : '#d2af5a'} strokeWidth="0.5" />
                       </g>
 
-                      {/* Núcleo do Orbe reativo ao IVC-6D Score */}
+                      {/* Núcleo do Orbe reativo ao IVRS Score */}
                       <circle 
                         cx="50" 
                         cy="50" 
-                        r={Math.min(26, Math.max(9, (ivc6DScore / 100) * 26))} 
-                        fill={simScenario === 'gurus' ? 'rgba(239, 68, 68, 0.45)' : 'url(#holoCore6DHome)'} 
+                        r={Math.min(26, Math.max(9, (ivrsScoreVal / 100) * 26))} 
+                        fill={simScenario === 'gurus' ? 'rgba(239, 68, 68, 0.45)' : 'url(#holoCoreIVRSHome)'} 
                         className="transition-all duration-500" 
                       />
                       
                       {/* Texto com o Score no Orbe */}
                       <text x="50" y="53" fill="#ffffff" fontSize="9" fontWeight="900" textAnchor="middle" className="ai-text-pulse font-mono tracking-wider">
-                        {ivc6DScore}%
+                        {ivrsScoreVal}%
                       </text>
 
                       {/* Scanline de Telemetria */}
                       <line x1="20" y1="50" x2="80" y2="50" stroke="#ffffff" strokeWidth="0.6" className="base-scan" opacity="0.4" />
                     </svg>
-                    <span className="text-[6.5px] font-mono text-white/35 uppercase tracking-widest leading-none mt-1.5 animate-pulse">HOLO-MATRIX 6D ACTIVE</span>
+                    <span className="text-[6.5px] font-mono text-white/35 uppercase tracking-widest leading-none mt-1.5 animate-pulse">HOLO-MATRIX IVRS ACTIVE</span>
                   </div>
                 ) : (
                   /* TERMINAL DE LOGS AUDITÁVEIS */
@@ -955,7 +1024,7 @@ export function InteractiveCockpit() {
                     {marketLogs.length === 0 ? (
                       <div className="text-white/20 italic pt-6 text-center leading-normal">
                         Aguardando ativação...<br/>
-                        Inicie a simulação para escanear a vantagem concorrencial real 6D.
+                        Inicie a simulação para escanear a vantagem concorrencial real.
                       </div>
                     ) : (
                       marketLogs.map((log, idx) => (
@@ -1002,7 +1071,7 @@ export function InteractiveCockpit() {
               <div className="flex flex-col gap-1">
                 <div className="flex items-center gap-2">
                   <Info className="h-4.5 w-4.5 text-[#d2af5a]" />
-                  <span className="text-[10px] font-bold font-mono tracking-widest text-[#d2af5a] uppercase">MÉTRICA CORPORATIVA 6D</span>
+                  <span className="text-[10px] font-bold font-mono tracking-widest text-[#d2af5a] uppercase">MÉTRICA CORPORATIVA REAL (IVRS)</span>
                 </div>
                 <h2 className="text-white text-lg font-bold tracking-wide mt-1">
                   {selectedMetricInfo.title}
@@ -1096,7 +1165,7 @@ export function InteractiveCockpit() {
                   <div className="p-4 bg-[#d2af5a]/5 border border-[#d2af5a]/25 rounded-2xl">
                     <h3 className="text-[#d2af5a] text-[10px] font-bold uppercase tracking-widest font-mono mb-2 flex items-center gap-1.5">
                       <Layers className="h-3.5 w-3.5" />
-                      Regra de Decisão Cruzada & Impacto 6D
+                      Regra de Decisão Cruzada & Impacto Estratégico (IVRS)
                     </h3>
                     <p className="text-white/90 text-xs font-light leading-relaxed">
                       {selectedMetricInfo.cruzamento}
@@ -1148,7 +1217,7 @@ export function InteractiveCockpit() {
         </div>
       )}
 
-      {/* POPUP MODAL SIMULADOR AVANÇADO CONTRA-XEQUE-MATE 6D */}
+      {/* POPUP MODAL SIMULADOR AVANÇADO CONTRA-XEQUE-MATE (IVRS) */}
       {isXequeMateModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md transition-all duration-300">
           <div className="modal-glass w-full max-w-4xl rounded-3xl overflow-hidden flex flex-col relative animate-in fade-in zoom-in-95 duration-200 text-left select-text" style={{ borderColor: 'rgba(210, 175, 90, 0.4)' }}>
@@ -1158,7 +1227,7 @@ export function InteractiveCockpit() {
               <div className="flex flex-col gap-1">
                 <div className="flex items-center gap-2">
                   <Award className="h-5 w-5 text-[#d2af5a] animate-pulse" />
-                  <span className="text-[10px] font-bold font-mono tracking-[0.2em] text-[#d2af5a] uppercase">SIMULADOR CONCORRENCIAL 6D</span>
+                  <span className="text-[10px] font-bold font-mono tracking-[0.2em] text-[#d2af5a] uppercase">PORTAL DESCOBERTA DE VANTAGEM REAL (IVRS)</span>
                 </div>
                 <h2 className="text-white text-lg font-bold tracking-wide mt-1">
                   Contra-Xeque-Mate: O Diferencial Humano Sem Filtro
@@ -1225,7 +1294,7 @@ export function InteractiveCockpit() {
                     </div>
                     {calibrationSource === 'manual' && (
                       <span className="text-[7.5px] font-mono text-amber-400 animate-pulse mt-1 select-none block">
-                        ⚠️ Descrição alterada. Clique em [SIMULAR 6D] na Home para re-calibrar a IA.
+                        ⚠️ Descrição alterada. Clique em [CALCULAR IVRS] na Home para re-calibrar a IA.
                       </span>
                     )}
                   </div>
@@ -1271,7 +1340,7 @@ export function InteractiveCockpit() {
                     </div>
                   </div>
 
-                  {/* Seção 2: As 6 Dimensões Operacionais do Esforço Real */}
+                  {/* Seção 2: As Dimensões Operacionais do Esforço Real (IVRS) */}
                   <div className="flex flex-col gap-3.5 border-t border-white/5 pt-4">
                     <div className="flex justify-between items-center bg-black/40 px-2 py-1.5 rounded-xl border border-white/5 select-none">
                       <span className="text-[7.5px] font-mono text-white/50">FONTE DE CALIBRAGEM:</span>
@@ -1286,22 +1355,22 @@ export function InteractiveCockpit() {
 
                     <span className="text-[#d2af5a] text-[9.5px] font-mono font-bold uppercase tracking-wider flex items-center gap-1.5 select-none">
                       <Flame className="h-3.5 w-3.5 text-amber-500" />
-                      2. Configurar as 6 Dimensões de Esforço Real (Fatos)
+                      2. Configurar as Dimensões de Esforço Real & Neuropsicologia
                     </span>
 
-                    {/* D1 */}
+                    {/* Margem EBITDA */}
                     <div className="flex flex-col gap-0.5 bg-black/25 p-2.5 border border-white/5 rounded-xl">
                       <div className="flex justify-between items-center text-[9px] font-mono select-none">
-                        <span className="text-white/80 font-bold">D1: Margem EBITDA (%)</span>
-                        <b className="text-[#d2af5a] font-mono font-bold">{d1SalesHours}%</b>
+                        <span className="text-white/80 font-bold">Margem EBITDA (%)</span>
+                        <b className="text-[#d2af5a] font-mono font-bold">{ebitda}%</b>
                       </div>
                       <input
                         type="range"
                         min="10"
                         max="100"
                         step="5"
-                        value={d1SalesHours}
-                        onChange={(e) => handleDimensionChange('d1', Number(e.target.value))}
+                        value={ebitda}
+                        onChange={(e) => handleDimensionChange('ebitda', Number(e.target.value))}
                         className="w-full h-1 bg-white/5 rounded appearance-none cursor-pointer accent-[#d2af5a] select-none"
                       />
                       <span className="text-[7.5px] text-white/35 font-sans leading-none mt-1 select-none">
@@ -1309,19 +1378,19 @@ export function InteractiveCockpit() {
                       </span>
                     </div>
 
-                    {/* D2 */}
+                    {/* LTV/CAC */}
                     <div className="flex flex-col gap-0.5 bg-black/25 p-2.5 border border-white/5 rounded-xl">
                       <div className="flex justify-between items-center text-[9px] font-mono select-none">
-                        <span className="text-white/80 font-bold">D2: LTV/CAC Ratio (Eficiência de Aquisição)</span>
-                        <b className="text-[#d2af5a] font-mono font-bold">{d2IntelHours.toFixed(1)}x</b>
+                        <span className="text-white/80 font-bold">LTV/CAC Ratio (Eficiência de Aquisição)</span>
+                        <b className="text-[#d2af5a] font-mono font-bold">{ltvCac.toFixed(1)}x</b>
                       </div>
                       <input
                         type="range"
                         min="1"
                         max="10"
                         step="0.5"
-                        value={d2IntelHours}
-                        onChange={(e) => handleDimensionChange('d2', Number(e.target.value))}
+                        value={ltvCac}
+                        onChange={(e) => handleDimensionChange('ltvCac', Number(e.target.value))}
                         className="w-full h-1 bg-white/5 rounded appearance-none cursor-pointer accent-[#d2af5a] select-none"
                       />
                       <span className="text-[7.5px] text-white/35 font-sans leading-none mt-1 select-none">
@@ -1329,83 +1398,83 @@ export function InteractiveCockpit() {
                       </span>
                     </div>
 
-                    {/* D3 */}
+                    {/* TDBD */}
                     <div className="flex flex-col gap-0.5 bg-black/25 p-2.5 border border-white/5 rounded-xl">
                       <div className="flex justify-between items-center text-[9px] font-mono select-none">
-                        <span className="text-white/80 font-bold">D3: Transparência de Dados (TDBD %)</span>
-                        <b className="text-[#d2af5a] font-mono font-bold">{d3ContentDensity}%</b>
+                        <span className="text-white/80 font-bold">Transparência de Dados (TDBD %)</span>
+                        <b className="text-[#d2af5a] font-mono font-bold">{tdbd}%</b>
                       </div>
                       <input
                         type="range"
                         min="10"
                         max="100"
                         step="5"
-                        value={d3ContentDensity}
-                        onChange={(e) => handleDimensionChange('d3', Number(e.target.value))}
+                        value={tdbd}
+                        onChange={(e) => handleDimensionChange('tdbd', Number(e.target.value))}
                         className="w-full h-1 bg-white/5 rounded appearance-none cursor-pointer accent-[#d2af5a] select-none"
                       />
                       <span className="text-[7.5px] text-white/35 font-sans leading-none mt-1 select-none">
-                        *Como medir: Percentual de dados abertos, rituais transparentes e tomadas de decisão sem "achismos".
+                        *Como medir: Percentual de dados abertos, rituais transparentes e tomadas de decisão baseadas em fatos e dados sem achismos.
                       </span>
                     </div>
 
-                    {/* D4 */}
+                    {/* Sequestro da Amígdala */}
                     <div className="flex flex-col gap-0.5 bg-black/25 p-2.5 border border-white/5 rounded-xl">
                       <div className="flex justify-between items-center text-[9px] font-mono select-none">
-                        <span className="text-white/80 font-bold">D4: SLA de Resposta Humana (minutos)</span>
-                        <b className="text-[#d2af5a] font-mono font-bold">{d4HumanSla} minutos</b>
-                      </div>
-                      <input
-                        type="range"
-                        min="5"
-                        max="180"
-                        step="5"
-                        value={d4HumanSla}
-                        onChange={(e) => handleDimensionChange('d4', Number(e.target.value))}
-                        className="w-full h-1 bg-white/5 rounded appearance-none cursor-pointer accent-[#d2af5a] select-none"
-                      />
-                      <span className="text-[7.5px] text-white/35 font-sans leading-none mt-1 select-none">
-                        *Como medir: SLA médio em minutos que um especialista humano real leva para responder dúvidas críticas de clientes.
-                      </span>
-                    </div>
-
-                    {/* D5 */}
-                    <div className="flex flex-col gap-0.5 bg-black/25 p-2.5 border border-white/5 rounded-xl">
-                      <div className="flex justify-between items-center text-[9px] font-mono select-none">
-                        <span className="text-white/80 font-bold">D5: Carga Cognitiva / Fadiga de Decisão (%)</span>
-                        <b className="text-[#d2af5a] font-mono font-bold">{d5Traceability}%</b>
+                        <span className="text-white/80 font-bold">Índice de Sequestro da Amígdala (Reatividade Emocional %)</span>
+                        <b className="text-[#d2af5a] font-mono font-bold">{sequestroAmigdala}%</b>
                       </div>
                       <input
                         type="range"
                         min="10"
                         max="100"
                         step="5"
-                        value={d5Traceability}
-                        onChange={(e) => handleDimensionChange('d5', Number(e.target.value))}
+                        value={sequestroAmigdala}
+                        onChange={(e) => handleDimensionChange('sequestroAmigdala', Number(e.target.value))}
                         className="w-full h-1 bg-white/5 rounded appearance-none cursor-pointer accent-[#d2af5a] select-none"
                       />
                       <span className="text-[7.5px] text-white/35 font-sans leading-none mt-1 select-none">
-                        *Como medir: Dreno dopaminérgico e esgotamento pré-frontal do líder para gerenciar e sustentar o negócio.
+                        *Como medir: Nível de reatividade e instabilidade emocional da gestão sob pressão.
                       </span>
                     </div>
 
-                    {/* D6 */}
+                    {/* Fricção do Personagem */}
                     <div className="flex flex-col gap-0.5 bg-black/25 p-2.5 border border-white/5 rounded-xl">
                       <div className="flex justify-between items-center text-[9px] font-mono select-none">
-                        <span className="text-white/80 font-bold">D6: Índice de Ilusão / Personagem Hype (%)</span>
-                        <b className="text-[#d2af5a] font-mono font-bold">{100 - d6HypeImmunity}%</b>
+                        <span className="text-white/80 font-bold">Dissociação Cognitiva (Fricção do Personagem %)</span>
+                        <b className="text-[#d2af5a] font-mono font-bold">{friccaoPersonagem}%</b>
                       </div>
                       <input
                         type="range"
                         min="10"
                         max="100"
                         step="5"
-                        value={100 - d6HypeImmunity}
-                        onChange={(e) => handleDimensionChange('d6', 100 - Number(e.target.value))}
+                        value={friccaoPersonagem}
+                        onChange={(e) => handleDimensionChange('friccaoPersonagem', Number(e.target.value))}
                         className="w-full h-1 bg-white/5 rounded appearance-none cursor-pointer accent-[#d2af5a] select-none"
                       />
                       <span className="text-[7.5px] text-white/35 font-sans leading-none mt-1 select-none">
-                        *Como medir: Energia e fricção gasta sustentando mentiras de marketing ("efeito brilho") e promessas vazias.
+                        *Como medir: Energia que a liderança gasta sustentando uma máscara ou mentiras de marketing ("personagem") vs. o Eu Integral autêntico.
+                      </span>
+                    </div>
+
+                    {/* Custo Dopaminérgico */}
+                    <div className="flex flex-col gap-0.5 bg-black/25 p-2.5 border border-white/5 rounded-xl">
+                      <div className="flex justify-between items-center text-[9px] font-mono select-none">
+                        <span className="text-white/80 font-bold">Custo Dopaminérgico do Produto (Manipulação Emocional %)</span>
+                        <b className="text-[#d2af5a] font-mono font-bold">{custoDopaminergico}%</b>
+                      </div>
+                      <input
+                        type="range"
+                        min="10"
+                        max="100"
+                        step="5"
+                        value={custoDopaminergico}
+                        onChange={(e) => handleDimensionChange('custoDopaminergico', Number(e.target.value))}
+                        className="w-full h-1 bg-white/5 rounded appearance-none cursor-pointer accent-[#d2af5a] select-none"
+                      />
+                      <span className="text-[7.5px] text-white/35 font-sans leading-none mt-1 select-none">
+                        *Como medir: Uso de medo, ganância artificial, FOMO e promessas de pico de dopamina rápida para vender.
                       </span>
                     </div>
 
@@ -1413,7 +1482,7 @@ export function InteractiveCockpit() {
 
                 </div>
 
-                {/* COLUNA DIREITA: Visualização 6D Radar, Pitch de Vendas & Terminal */}
+                {/* COLUNA DIREITA: Visualização Radar IVRS, Pitch de Vendas & Terminal */}
                 <div className="flex flex-col gap-4 justify-between bg-white/[0.01] border border-white/5 p-4 rounded-2xl overflow-hidden">
                   
                   {/* AI Strategic Verdict Banner */}
@@ -1437,7 +1506,7 @@ export function InteractiveCockpit() {
                   <div className="flex justify-between items-center select-none">
                     <span className="text-[#d2af5a] text-[9px] font-mono font-bold uppercase tracking-wider flex items-center gap-1.5">
                       <Activity className="h-3.5 w-3.5 text-[#d2af5a]" />
-                      3. Arena de Cristalização 6D (Radar de Fatos vs. Hype)
+                      3. Arena de Cristalização IVRS (Radar de Fatos vs. Hype)
                     </span>
                     <div className="flex gap-2 text-[6.5px] font-mono">
                       <span className="flex items-center gap-1"><span className="h-1.5 w-1.5 rounded-full bg-[#d2af5a]" /> Seu Negócio</span>
@@ -1488,18 +1557,18 @@ export function InteractiveCockpit() {
                       />
 
                       {/* Lápis de Vértices e Tags de Dimensão */}
-                      <text x="180" y="103" className="fill-white/60 font-mono text-[5.5px] font-bold text-center leading-none">D1</text>
-                      <text x="135" y="180" className="fill-white/60 font-mono text-[5.5px] font-bold text-center leading-none">D2</text>
-                      <text x="50" y="180" className="fill-white/60 font-mono text-[5.5px] font-bold text-center leading-none">D3</text>
-                      <text x="10" y="103" className="fill-white/60 font-mono text-[5.5px] font-bold text-center leading-none">D4</text>
-                      <text x="50" y="23" className="fill-white/60 font-mono text-[5.5px] font-bold text-center leading-none">D5</text>
-                      <text x="135" y="23" className="fill-white/60 font-mono text-[5.5px] font-bold text-center leading-none">D6</text>
+                      <text x="180" y="103" className="fill-[#d2af5a] font-mono text-[4.8px] font-bold text-center leading-none">EBITDA</text>
+                      <text x="130" y="180" className="fill-[#d2af5a] font-mono text-[4.8px] font-bold text-center leading-none">LTV/CAC</text>
+                      <text x="45" y="180" className="fill-[#d2af5a] font-mono text-[4.8px] font-bold text-center leading-none">TDBD</text>
+                      <text x="10" y="103" className="fill-[#d2af5a] font-mono text-[4.8px] font-bold text-center leading-none">Sequestro Amígdala</text>
+                      <text x="45" y="23" className="fill-[#d2af5a] font-mono text-[4.8px] font-bold text-center leading-none">Fricção Personagem</text>
+                      <text x="130" y="23" className="fill-[#d2af5a] font-mono text-[4.8px] font-bold text-center leading-none">Custo Dopaminérgico</text>
                     </svg>
 
                     {/* Badge do Score Geométrico */}
                     <div className="absolute top-2 left-2 flex flex-col items-center bg-black/80 border border-[#d2af5a]/20 px-2 py-1 rounded-xl shadow-lg">
                       <span className="text-[5.5px] font-mono text-white/40 uppercase leading-none">IVRS SCORE</span>
-                      <b className="text-[12px] font-mono font-bold text-[#d2af5a] mt-0.5">{ivc6DScore}%</b>
+                      <b className="text-[12px] font-mono font-bold text-[#d2af5a] mt-0.5">{ivrsScoreVal}%</b>
                     </div>
 
                     <div className="absolute top-2 right-2 flex flex-col items-center bg-black/80 border border-red-500/20 px-2 py-1 rounded-xl shadow-lg">
@@ -1514,12 +1583,12 @@ export function InteractiveCockpit() {
                       📢 GERADOR DE PITCH COMERCIAL CONTRA-XEQUE-MATE (DADOS REAIS):
                     </span>
                     <p className="text-white/85 text-[8.5px] leading-relaxed italic font-sans">
-                      "Ao apresentar para seu cliente ou parceiro, use o brilho do processo real: <b className="text-[#d2af5a] font-sans">Enquanto o mercado atua em caixa preta, com promessas de ganhos fáceis e suporte por robôs limitados, nós eliminamos toda dúvida abrindo o jogo: garantimos {d1SalesHours} horas diárias de execução direta (D1), tempo de resposta humano de {d4HumanSla} minutos (D4) e {d5Traceability}% de rastreabilidade completa no CRM (D5).</b> Escolha o processo real de pessoa para pessoa."
+                      "Ao apresentar para seu cliente ou parceiro, use o brilho do processo real: <b className="text-[#d2af5a] font-sans">Enquanto o mercado atua em caixa preta, sob a ilusão do personagem hype ({custoDopaminergico}% de Custo Dopaminérgico) e promessas automáticas vazias, nós provamos a vantagem competitiva real com dados auditáveis: operamos com {ebitda}% de Margem EBITDA garantida, {ltvCac.toFixed(1)}x de LTV/CAC, tomada de decisão 100% baseada em dados ({tdbd}% TDBD) e controle absoluto do Sequestro da Amígdala de {sequestroAmigdala}%, com baixíssima fricção de personagem ({friccaoPersonagem}%).</b> Escolha o processo real de pessoa para pessoa."
                     </p>
                     {/* Botão de Cópia Rápida */}
                     <button
                       onClick={() => {
-                        const text = `Enquanto o mercado atua em caixa preta com promessas de ganhos fáceis e suporte por robôs limitados, nós eliminamos toda dúvida abrindo o jogo: garantimos ${d1SalesHours} horas diárias de execução direta, tempo de resposta humano de ${d4HumanSla} minutos e ${d5Traceability}% de rastreabilidade completa no CRM. Escolha o processo real de pessoa para pessoa.`;
+                        const text = `Enquanto o mercado atua em caixa preta, sob a ilusão do personagem hype (${custoDopaminergico}% de Custo Dopaminérgico) e promessas automáticas vazias, nós provamos a vantagem competitiva real com dados auditáveis: operamos com ${ebitda}% de Margem EBITDA garantida, ${ltvCac.toFixed(1)}x de LTV/CAC, tomada de decisão 100% baseada em dados (${tdbd}% TDBD) e controle absoluto do Sequestro da Amígdala de ${sequestroAmigdala}%, com baixíssima fricção de personagem (${friccaoPersonagem}%). Escolha o processo real de pessoa para pessoa.`;
                         navigator.clipboard.writeText(text);
                         alert("Argumento de Vendas copiado para o clipboard com sucesso!");
                       }}
@@ -1539,7 +1608,7 @@ export function InteractiveCockpit() {
                         </span>
                         <div className="flex gap-1.5">
                           <button onClick={() => askCopilot('famosos')} className="text-white/40 hover:text-[#d2af5a] transition font-mono text-[6.5px] font-bold uppercase hover:underline">[Vencer Famosos]</button>
-                          <button onClick={() => askCopilot('sla')} className="text-white/40 hover:text-[#d2af5a] transition font-mono text-[6.5px] font-bold uppercase hover:underline">[Provar SLA]</button>
+                          <button onClick={() => askCopilot('sla')} className="text-white/40 hover:text-[#d2af5a] transition font-mono text-[6.5px] font-bold uppercase hover:underline">[Sanidade Liderança]</button>
                           <button onClick={() => askCopilot('math')} className="text-white/40 hover:text-[#d2af5a] transition font-mono text-[6.5px] font-bold uppercase hover:underline">[Fórmula IVRS]</button>
                         </div>
                       </div>
@@ -1556,7 +1625,7 @@ export function InteractiveCockpit() {
                       {copilotLoading ? (
                         <div className="text-white/40 italic flex items-center justify-center h-full gap-2">
                           <Sparkles className="h-3.5 w-3.5 text-[#d2af5a] animate-spin" />
-                          Consultando matriz preditiva 6D do IPB...
+                          Consultando matriz preditiva IVRS do IPB...
                         </div>
                       ) : copilotAnswer ? (
                         <div className="whitespace-pre-line text-[#d2af5a]/95 bg-black/45 p-2 rounded border border-[#d2af5a]/15">
