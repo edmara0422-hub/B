@@ -431,57 +431,103 @@ Diretoria de Governança Corporativa IPB`
 
               <div className="esg-section-card">
                 <h3>Estrutura de Documentos de Governança</h3>
-                <div className="space-y-2 mt-2 font-sans select-none">
+                <div className="space-y-2.5 mt-3.5 font-sans select-none">
+                  
+                  {/* DOCUMENTO 1: POLÍTICAS DE DADOS */}
                   <details className="group border border-white/10 rounded-xl bg-white/[0.02] overflow-hidden">
                     <summary className="flex justify-between items-center p-3 text-[10px] font-bold text-[#d2af5a] cursor-pointer hover:bg-white/[0.04]">
                       <span>POLÍTICAS DE DADOS (4 DOCUMENTOS)</span>
                       <span className="transition-transform group-open:rotate-180">▼</span>
                     </summary>
-                    <div className="p-3 border-t border-white/5 text-[9px] text-white/70 space-y-2 bg-[#000000]/30 font-normal">
-                      <p><b>1. Política de Privacidade:</b> Criptografia de ponta e processamento 100% no client-side para total soberania analítica do usuário.</p>
-                      <p><b>2. Política de Segurança da Informação:</b> Proteção rigorosa e sem vazamento de chaves ou variáveis estratégicas.</p>
-                      <p><b>3. Política de Cookies:</b> Somente cookies essenciais de sessão. Zero trackers comerciais invasivos de terceiros.</p>
-                      <p><b>4. Política de Retenção de Dados:</b> Exclusão total e imediata dos históricos gerenciais sob solicitação imediata do usuário.</p>
+                    <div className="p-3.5 border-t border-white/5 text-[9px] text-white/70 space-y-3 bg-[#000000]/30 font-normal leading-relaxed text-left">
+                      <div className="pb-1.5 border-b border-white/5 mb-1.5 flex items-center justify-between">
+                        <span className="text-[#d2af5a] font-bold uppercase tracking-wider text-[7.5px]">Doc-01 • Soberania Analítica, LGPD e o Marco Regulatório</span>
+                        <span className="text-white/35 font-mono text-[7px]">VERIFICADO 2026</span>
+                      </div>
+                      
+                      <p>A transformação digital e o processamento de business intelligence corporativo ocorrem sob um rigoroso e complexo arcabouço legal nacional. O IPB adota conformidade plena com as diretrizes da <b>Lei Geral de Proteção de Dados (LGPD, Lei 13.709/2018)</b> e a <b>Lei do Governo Digital (Lei 14.129/2021)</b>, que operam como os dois pilares jurídicos basilares de governança de dados no ecossistema brasileiro.</p>
+                      
+                      <div className="space-y-2 pl-2 border-l border-[#d2af5a]/30">
+                        <p><b>1. Política de Privacidade & Soberania Analítica:</b> Criptografia local de ponta e processamento 100% Client-Side. Todos os dados gerenciais inseridos nos simuladores permanecem restritos ao ambiente de execução do usuário, garantindo imunidade técnica contra monitoramento invasivo.</p>
+                        <p><b>2. Política de Segurança da Informação:</b> Rastreabilidade estrita de variáveis e controle avançado de chaves criptográficas, anulando qualquer possibilidade de vazamento de métricas operacionais estratégicas de clientes.</p>
+                        <p><b>3. Política de Cookies e Rastreabilidade Limpa:</b> Utilização exclusiva de cookies essenciais de sessão. Zero ad-trackers comportamentais, rastreadores comerciais de terceiros ou monitoramento silencioso de hábitos.</p>
+                        <p><b>4. Política de Retenção de Dados (Esquecimento):</b> Exclusão definitiva, imediata e irreversível de todo o histórico gerencial armazenado localmente sob simples clique de limpeza do usuário, em conformidade com o Artigo 18 da LGPD.</p>
+                      </div>
+
+                      <div className="mt-2.5 p-2 bg-[#d2af5a]/5 rounded-lg border border-[#d2af5a]/20 text-[8px] text-[#fac775]">
+                        💡 <strong>Sandbox Regulatório & Inovação:</strong> O Marco Civil das Startups (LC 182/21) institucionalizou a prática de ambientes experimentais com flexibilidade de normas. Em total sintonia com o recém-lançado sandbox da <b>ANPD (Autoridade Nacional de Proteção de Dados)</b> para Inteligência Artificial, estruturamos transparência algorítmica rigorosa, mitigação automatizada de vieses em tempo real e proteção de dados em modelos gerenciais vivos.
+                      </div>
                     </div>
                   </details>
 
+                  {/* DOCUMENTO 2: PRÁTICAS OPERACIONAIS */}
                   <details className="group border border-white/10 rounded-xl bg-white/[0.02] overflow-hidden">
                     <summary className="flex justify-between items-center p-3 text-[10px] font-bold text-[#d2af5a] cursor-pointer hover:bg-white/[0.04]">
                       <span>PRÁTICAS OPERACIONAIS (4 DOCUMENTOS)</span>
                       <span className="transition-transform group-open:rotate-180">▼</span>
                     </summary>
-                    <div className="p-3 border-t border-white/5 text-[9px] text-white/70 space-y-2 bg-[#000000]/30 font-normal">
-                      <p><b>1. Engenharia de Software Verde (Green IT):</b> Código altamente leve que reduz a necessidade de processamento e refrigeração de data centers.</p>
-                      <p><b>2. Inclusão Analítica de PMEs:</b> Provisão de suporte offline total e design adaptável para redes de baixa conectividade celular.</p>
-                      <p><b>3. Acessibilidade Integrada:</b> Suporte a escala de layout adaptável para diferentes dimensões e resoluções sem perda de fidelidade.</p>
-                      <p><b>4. Arquitetura UX 6D:</b> Telas estruturadas de alto desempenho que renderizam a 120 FPS fluidos em qualquer smartphone moderno.</p>
+                    <div className="p-3.5 border-t border-white/5 text-[9px] text-white/70 space-y-3 bg-[#000000]/30 font-normal leading-relaxed text-left">
+                      <div className="pb-1.5 border-b border-white/5 mb-1.5 flex items-center justify-between">
+                        <span className="text-[#d2af5a] font-bold uppercase tracking-wider text-[7.5px]">Doc-02 • Sustentabilidade Digital e Otimização Verde de Processos</span>
+                        <span className="text-white/35 font-mono text-[7px]">VERIFICADO 2026</span>
+                      </div>
+
+                      <p>O maior e mais silencioso desafio da transformação tecnológica global reside na sua pegada energética e no impacto das emissões de carbono geradas por arquiteturas ineficientes e infraestruturas em nuvem mal governadas.</p>
+
+                      <div className="space-y-2 pl-2 border-l border-[#d2af5a]/30">
+                        <p><b>1. Engenharia de Software Verde (Green IT):</b> Código otimizado client-side que roda cálculos matemáticos multivariáveis pesados localmente. Isso minimiza requisições HTTP e reduz a carga nos servidores centrais de nuvem, mitigando o aquecimento do hardware.</p>
+                        <p><b>2. Sustentabilidade Computacional Global:</b> Estima-se que data centers globais consumam entre <b>1% e 2% da eletricidade de todo o planeta</b> — uma pegada de carbono equivalente a toda a aviação comercial global. Uma única consulta robusta a uma Inteligência Artificial generativa gasta cerca de <b>10x mais energia elétrica</b> do que uma busca convencional no Google. O IPB combate esse desperdício mitigando requisições recorrentes.</p>
+                        <p><b>3. Inclusão Analítica de PMEs:</b> Apenas 5% das micro e pequenas empresas no Brasil utilizam dados estruturados para tomadas de decisão gerenciais (CETIC.br). Projetamos um core otimizado e offline-first de suporte a dados para democratizar o acesso analítico mesmo em redes celulares brasileiras de baixa conectividade.</p>
+                        <p><b>4. Eficiência de Layout e UX 6D:</b> Interfaces desenhadas com código limpo que renderizam a 120 FPS fluidos, poupando desgaste de ciclos de CPU e estendendo a vida útil de baterias de smartphones.</p>
+                      </div>
                     </div>
                   </details>
 
+                  {/* DOCUMENTO 3: COMPLIANCE FINANCEIRO */}
                   <details className="group border border-white/10 rounded-xl bg-white/[0.02] overflow-hidden">
                     <summary className="flex justify-between items-center p-3 text-[10px] font-bold text-[#d2af5a] cursor-pointer hover:bg-white/[0.04]">
                       <span>COMPLIANCE FINANCEIRO (4 DOCUMENTOS)</span>
                       <span className="transition-transform group-open:rotate-180">▼</span>
                     </summary>
-                    <div className="p-3 border-t border-white/5 text-[9px] text-white/70 space-y-2 bg-[#000000]/30 font-normal">
-                      <p><b>1. Conformidade LGPD & GDPR:</b> Termos de uso de dados explícitos e controle total do usuário sobre seu perfil gerencial.</p>
-                      <p><b>2. ISO 27001 (Segurança de Software):</b> Desenvolvimento com práticas DevSecOps aplicadas em todas as camadas de APIs do Next.js.</p>
-                      <p><b>3. Modelagem Contábil e de Mercado:</b> Relatórios e visualizações contábeis fundamentadas em conceitos consolidados de finanças corporativas.</p>
-                      <p><b>4. Auditoria de Algoritmos:</b> Validação técnica independente dos simuladores de EBITDA, CAC, LTV e queima de caixa.</p>
+                    <div className="p-3.5 border-t border-white/5 text-[9px] text-white/70 space-y-3 bg-[#000000]/30 font-normal leading-relaxed text-left">
+                      <div className="pb-1.5 border-b border-white/5 mb-1.5 flex items-center justify-between">
+                        <span className="text-[#d2af5a] font-bold uppercase tracking-wider text-[7.5px]">Doc-03 • Auditoria Algorítmica, Métricas de Gestão e IA Liability</span>
+                        <span className="text-white/35 font-mono text-[7px]">VERIFICADO 2026</span>
+                      </div>
+
+                      <p>O sucesso das implementações digitais modernas exige integridade técnica absoluta, transparência contábil e a capacidade de provar o retorno sobre o investimento (ROI) de sistemas inteligentes perante os acionistas.</p>
+
+                      <div className="space-y-2 pl-2 border-l border-[#d2af5a]/30">
+                        <p><b>1. Modelagem Contábil e de Mercado:</b> Métricas simuladas (EBITDA, Margem Líquida, WACC e Runway) calculadas por equações auditadas e amplamente aceitas em auditorias financeiras internacionais.</p>
+                        <p><b>2. ISO 27001 (Padrão de Segurança de Código):</b> Desenvolvimento sob rígido controle de DevSecOps, eliminando injeções de scripts maliciosos e garantindo integridade e sigilo na comunicação com APIs externas.</p>
+                        <p><b>3. O Problema do ROI e IA Liability:</b> O maior obstáculo na inteligência de dados em 2025 não é o código — é a economia do ROI. A esmagadora maioria das corporações que implementaram ferramentas de IA (ChatGPT, Copilots, etc.) ainda enfrenta severas dificuldades para extrair e comprovar retornos de caixa claros de suas iniciativas (McKinsey, 2024). A responsabilidade civil e jurídica (<i>liability</i>) por decisões equivocadas ou injustas tomadas por algoritmos opacos é o maior buraco de conformidade corporativa de 2025. O IPB combate essa opacidade fornecendo observabilidade estrita.</p>
+                        <p><b>4. Auditoria Algorítmica & Rastreabilidade:</b> O código aberto do simulador garante que auditores externos possam inspecionar os cálculos de cross-correlação a qualquer momento, eliminando predições gerenciais infundadas.</p>
+                      </div>
                     </div>
                   </details>
 
+                  {/* DOCUMENTO 4: CÓDIGOS E DIRETRIZES */}
                   <details className="group border border-white/10 rounded-xl bg-white/[0.02] overflow-hidden">
                     <summary className="flex justify-between items-center p-3 text-[10px] font-bold text-[#d2af5a] cursor-pointer hover:bg-white/[0.04]">
                       <span>CÓDIGOS E DIRETRIZES (3 DOCUMENTOS)</span>
                       <span className="transition-transform group-open:rotate-180">▼</span>
                     </summary>
-                    <div className="p-3 border-t border-white/5 text-[9px] text-white/70 space-y-2 bg-[#000000]/30 font-normal">
-                      <p><b>1. Código de Ética e Transparência:</b> Proibição explícita do uso de dados de simulações para manipulação contábil de terceiros.</p>
-                      <p><b>2. Código de Conduta Operacional:</b> Incentivo ao uso de metodologias ágeis e cultura baseada em dados reais nos negócios.</p>
-                      <p><b>3. Declaração do Pacto de Neutralidade:</b> Foco contínuo em manter o IPB como uma plataforma digital de baixo impacto ecológico.</p>
+                    <div className="p-3.5 border-t border-white/5 text-[9px] text-white/70 space-y-3 bg-[#000000]/30 font-normal leading-relaxed text-left">
+                      <div className="pb-1.5 border-b border-white/5 mb-1.5 flex items-center justify-between">
+                        <span className="text-[#d2af5a] font-bold uppercase tracking-wider text-[7.5px]">Doc-04 • Ética Algorítmica, Combate ao Greenwashing e Transparência</span>
+                        <span className="text-white/35 font-mono text-[7px]">VERIFICADO 2026</span>
+                      </div>
+
+                      <p>O IPB estabelece diretrizes éticas e morais rígidas para a utilização de dados no dia a dia corporativo, defendendo que a eficiência financeira jamais deve ser alcançada através da distorção ou do greenwashing.</p>
+
+                      <div className="space-y-2 pl-2 border-l border-[#d2af5a]/30">
+                        <p><b>1. Código de Ética e Combate ao Greenwashing:</b> A tecnologia possui um papel duplo no ecossistema ESG. Pode atuar como um habilitador real da sustentabilidade (ex: sensores IoT reduzindo desperdício elétrico ou IA maximizando rotas logísticas), mas também pode ser utilizada pelas empresas para mascarar práticas predatórias atrás de narrativas verdes fictícias. Proibimos estritamente o uso de nossas simulações para justificar greenwashing perante reguladores ou conselhos.</p>
+                        <p><b>2. Transparência na Tomada de Decisão:</b> Proibição expressa de ocultar de forma intencional métricas de atrito de capital humano (como Burnout EEB e Turnover), promovendo uma cultura organizacional baseada em dados reais e integridade executiva.</p>
+                        <p><b>3. Pacto de Neutralidade de Carbono:</b> Compromisso formal em manter o consumo computacional do IPB abaixo de limites rígidos, provando na prática que a eficiência algorítmica reduz custos operacionais (OPEX) e gera impacto ecológico positivo real.</p>
+                      </div>
                     </div>
                   </details>
+
                 </div>
               </div>
             </div>

@@ -39,7 +39,7 @@ export function HudEstrategia() {
   const shareOrganicoQueda = 4.2
 
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  const terminalEndRef = useRef<HTMLDivElement>(null)
+  const terminalRef = useRef<HTMLDivElement>(null)
 
   // --- TELEMETRIA GLOBAL: Sincronização em Tempo Real ---
   useEffect(() => {
@@ -119,7 +119,9 @@ export function HudEstrategia() {
   }, [cenario, metaBudgetPercent, averagePestel])
 
   useEffect(() => {
-    terminalEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+    if (terminalRef.current) {
+      terminalRef.current.scrollTop = terminalRef.current.scrollHeight
+    }
   }, [logs])
 
   // --- CANVAS: Radar Orbital PESTEL com Laser Sweep 360° (NASA Style) ---
@@ -269,11 +271,10 @@ export function HudEstrategia() {
             </div>
             <div className="text-[7.5px] font-mono text-white/40">🛰️ LIVE CENTRAL BANK SGS & MARKETING APIS ENGINE</div>
           </div>
-          <div className="p-2.5 font-mono text-[7.5px] text-[#d2af5a]/90 h-[105px] overflow-y-auto space-y-0.5 leading-normal ipb-thinscroll text-left">
+          <div ref={terminalRef} className="p-2.5 font-mono text-[7.5px] text-[#d2af5a]/90 h-[105px] overflow-y-auto space-y-0.5 leading-normal ipb-thinscroll text-left">
             {logs.map((log, index) => (
               <div key={index} className="whitespace-pre-wrap">{log}</div>
             ))}
-            <div ref={terminalEndRef} />
           </div>
         </div>
 
