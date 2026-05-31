@@ -46,9 +46,10 @@ export function InteractiveCockpit() {
   const [simFinished, setSimFinished] = useState<boolean>(false)
   const simLogRef = useRef<HTMLDivElement>(null)
 
-  // Novo: Controle de abas da Home (Orbe vs Console) e Preset de Cenários
+  // Novo: Controle de abas da Home (Orbe vs Console), Input de IA e Preset de Cenários
   const [rightPanelTab, setRightPanelTab] = useState<'orb' | 'terminal'>('orb')
   const [simScenario, setSimScenario] = useState<'app_vendas' | 'gurus' | 'saas_bi' | 'custom'>('app_vendas')
+  const [businessModelInput, setBusinessModelInput] = useState<string>('Um aplicativo de monitoria de conteúdos e estudos de competição de pessoa para pessoa, focado em auditoria 100% aberta e suporte consultivo por especialistas humanos')
   const [copilotAnswer, setCopilotAnswer] = useState<string | null>(null)
   const [copilotLoading, setCopilotLoading] = useState<boolean>(false)
 
@@ -165,11 +166,12 @@ export function InteractiveCockpit() {
     return `${p1x},${p1y} ${p2x},${p2y} ${p3x},${p3y} ${p4x},${p4y} ${p5x},${p5y} ${p6x},${p6y}`
   }, [])
 
-  // Função para mudar cenário (Preset Concorrencial)
+  // Função para mudar cenário (Preset Concorrencial + Sincronização do texto descritivo)
   const handleScenarioChange = (scenario: 'app_vendas' | 'gurus' | 'saas_bi' | 'custom') => {
     setSimScenario(scenario)
     setCopilotAnswer(null)
     if (scenario === 'app_vendas') {
+      setBusinessModelInput('Um aplicativo de monitoria de conteúdos e estudos de competição de pessoa para pessoa, focado em auditoria 100% aberta, dados reais e suporte síncrono por especialistas humanos')
       setD1SalesHours(8)
       setD2IntelHours(6)
       setD3ContentDensity(95)
@@ -177,6 +179,7 @@ export function InteractiveCockpit() {
       setD5Traceability(95)
       setD6HypeImmunity(95)
     } else if (scenario === 'gurus') {
+      setBusinessModelInput('Gurus tradicionais de mentoria de vendas focados em marketing agressivo de caixa preta, com falsas promessas de ganhos fáceis e suporte frio automatizado por robôs')
       setD1SalesHours(12)
       setD2IntelHours(0.5) // Praticamente nada
       setD3ContentDensity(15) // Raso
@@ -184,6 +187,7 @@ export function InteractiveCockpit() {
       setD5Traceability(10) // Sem CRM
       setD6HypeImmunity(15) // Muito vulnerável
     } else if (scenario === 'saas_bi') {
+      setBusinessModelInput('Um software genérico corporativo de Business Intelligence e dashboards estáticos pré-programados, sem suporte consultivo ou acompanhamento personalizado')
       setD1SalesHours(5)
       setD2IntelHours(4)
       setD3ContentDensity(70)
@@ -191,6 +195,79 @@ export function InteractiveCockpit() {
       setD5Traceability(85)
       setD6HypeImmunity(80)
     }
+  }
+
+  // Função inteligente que executa a Simulação por IA baseada na descrição textual
+  const handleRunMarketSim = () => {
+    if (simRunning) return
+    setSimRunning(true)
+    setSimFinished(false)
+    setMarketLogs([])
+
+    const text = businessModelInput.toLowerCase()
+    
+    // Valores calculados pelo agente cognitivo com base no input
+    let D1 = 6
+    let D2 = 4
+    let D3 = 70
+    let D4 = 60
+    let D5 = 80
+    let D6 = 75
+    
+    if (text.includes('monitoria') || text.includes('conteúdo') || text.includes('vendas sem filtro') || text.includes('app') || text.includes('aplicativo')) {
+      D1 = 9
+      D2 = 7
+      D3 = 95
+      D4 = 10
+      D5 = 95
+      D6 = 95
+    } else if (text.includes('mentoria') || text.includes('consultoria') || text.includes('humano') || text.includes('pessoa para pessoa')) {
+      D1 = 8
+      D2 = 5
+      D3 = 90
+      D4 = 15
+      D5 = 85
+      D6 = 95
+    } else if (text.includes('bi') || text.includes('software') || text.includes('estático') || text.includes('dashboard') || text.includes('saas')) {
+      D1 = 5
+      D2 = 6
+      D3 = 75
+      D4 = 45
+      D5 = 90
+      D6 = 80
+    }
+
+    const logs = [
+      `[AI SCANNER 6D] Analisando diferenciais do seu modelo de negócio: "${businessModelInput}"...`,
+      `[AI RESOLVER] Mapeando vetores de prospecção, entrega e blindagem operacional contra Glitter...`,
+      `[CALCULANDO D1] Execução de Vendas estimada em ${D1}h/dia baseada em fluxo ativo de leads.`,
+      `[CALCULANDO D2] Inteligência Concorrencial estabelecida em ${D2}h/dia de mapeamento contínuo.`,
+      `[CALCULANDO D3] Densidade de Monitoria calculada em ${D3}% (Garantia de entrega e profundidade).`,
+      `[CALCULANDO D4] SLA de Resposta Humana homologada em ${D4} minutos (Alta empatia tática).`,
+      `[CALCULANDO D5] Rastreabilidade de CRM auditada em ${D5}% (Zero achismos, dados auditáveis).`,
+      `[CALCULANDO D6] Imunidade a Hype corporativa aferida em ${D6}%.`,
+      `[CRISTALIZAÇÃO] Gerando Média Geométrica 6D de Fatos vs. Hype Concorrente...`,
+      `[VERDICT] Sucesso absoluto! Vantagem Concorrencial 6D cristalizada no radar. Contra-Xeque-Mate ativo.`
+    ]
+
+    let current = 0
+    const interval = setInterval(() => {
+      if (current < logs.length) {
+        setMarketLogs(prev => [...prev, logs[current]])
+        // Atualizações incrementais e dinâmicas nas notas reais para mover os sliders com animação!
+        if (current === 2) setD1SalesHours(D1)
+        if (current === 3) setD2IntelHours(D2)
+        if (current === 4) setD3ContentDensity(D3)
+        if (current === 5) setD4HumanSla(D4)
+        if (current === 6) setD5Traceability(D5)
+        if (current === 7) setD6HypeImmunity(D6)
+        current++
+      } else {
+        clearInterval(interval)
+        setSimRunning(false)
+        setSimFinished(true)
+      }
+    }, 280)
   }
 
   // Função para mudar dimensão e cair no customizado
@@ -1067,33 +1144,42 @@ export function InteractiveCockpit() {
                 {/* COLUNA ESQUERDA: Configuração de Cenários (Inputs) */}
                 <div className="flex flex-col gap-5 bg-white/[0.01] border border-white/5 p-5 rounded-2xl">
                   
-                  {/* Seção 1: Seletor de Preset Estratégico */}
-                  <div className="flex flex-col gap-2 select-none">
-                    <span className="text-[#d2af5a] text-[9.5px] font-mono font-bold uppercase tracking-wider flex items-center gap-1.5">
+                  {/* Seção 1: Descreva o Seu Modelo de Negócio (Entrada da IA) */}
+                  <div className="flex flex-col gap-2">
+                    <span className="text-[#d2af5a] text-[9.5px] font-mono font-bold uppercase tracking-wider flex items-center gap-1.5 select-none">
                       <Layers className="h-3.5 w-3.5 text-[#d2af5a]" />
-                      1. Selecionar Modelo Competitivo de Negócio
+                      1. Descreva o Seu Modelo de Negócio / Diferencial Humano (IA)
                     </span>
-                    <div className="grid grid-cols-3 gap-2">
+                    <textarea
+                      value={businessModelInput}
+                      onChange={(e) => {
+                        setBusinessModelInput(e.target.value);
+                        setSimScenario('custom');
+                      }}
+                      rows={3}
+                      placeholder="Ex: Um aplicativo de monitoria de concorrência com suporte por especialistas humanos..."
+                      className="bg-black/50 border border-white/10 rounded-xl px-3 py-2 text-xs text-white placeholder-white/20 focus:outline-none focus:border-[#d2af5a]/50 font-sans leading-relaxed resize-none w-full"
+                    />
+                    
+                    {/* Templates/Tags Rápidas de IA */}
+                    <div className="flex flex-wrap gap-1.5 select-none mt-1">
                       <button 
                         onClick={() => handleScenarioChange('app_vendas')}
-                        className={`p-2.5 rounded-xl border text-center transition-all flex flex-col items-center justify-between ${simScenario === 'app_vendas' ? 'bg-[#d2af5a]/15 text-[#d2af5a] border-[#d2af5a]/40' : 'bg-black/45 text-white/55 border-white/5 hover:border-white/10'}`}
+                        className={`px-2 py-0.5 rounded text-[7px] font-mono border transition-all ${simScenario === 'app_vendas' ? 'bg-[#d2af5a]/15 text-[#d2af5a] border-[#d2af5a]/40 font-bold' : 'bg-black/35 text-white/40 border-white/5 hover:border-white/10'}`}
                       >
-                        <span className="text-[8px] font-bold font-mono tracking-wider uppercase">Meu App</span>
-                        <span className="text-[6.5px] text-white/40 font-mono mt-1">Alta Monitoria & Humano</span>
+                        [🔍 Meu App Monitoria]
                       </button>
                       <button 
                         onClick={() => handleScenarioChange('gurus')}
-                        className={`p-2.5 rounded-xl border text-center transition-all flex flex-col items-center justify-between ${simScenario === 'gurus' ? 'bg-red-500/15 text-red-400 border-red-500/40' : 'bg-black/45 text-white/55 border-white/5 hover:border-white/10'}`}
+                        className={`px-2 py-0.5 rounded text-[7px] font-mono border transition-all ${simScenario === 'gurus' ? 'bg-red-500/15 text-red-400 border-red-500/40 font-bold' : 'bg-black/35 text-white/40 border-white/5 hover:border-white/10'}`}
                       >
-                        <span className="text-[8px] font-bold font-mono tracking-wider uppercase">Gurus</span>
-                        <span className="text-[6.5px] text-white/40 font-mono mt-1">Suporte Robô & Hype</span>
+                        [👥 Gurus Hype]
                       </button>
                       <button 
                         onClick={() => handleScenarioChange('saas_bi')}
-                        className={`p-2.5 rounded-xl border text-center transition-all flex flex-col items-center justify-between ${simScenario === 'saas_bi' ? 'bg-blue-500/15 text-blue-400 border-blue-500/40' : 'bg-black/45 text-white/55 border-white/5 hover:border-white/10'}`}
+                        className={`px-2 py-0.5 rounded text-[7px] font-mono border transition-all ${simScenario === 'saas_bi' ? 'bg-blue-500/15 text-blue-400 border-blue-500/40 font-bold' : 'bg-black/35 text-white/40 border-white/5 hover:border-white/10'}`}
                       >
-                        <span className="text-[8px] font-bold font-mono tracking-wider uppercase">SaaS BI</span>
-                        <span className="text-[6.5px] text-white/40 font-mono mt-1">Estático & Sem SLA</span>
+                        [💻 SaaS BI Estático]
                       </button>
                     </div>
                   </div>
