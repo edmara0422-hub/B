@@ -101,6 +101,65 @@ export function InteractiveCockpit() {
     return Math.max(10, Math.min(100, Math.round(geometricMean - penalty)))
   }, [d1SalesHours, d2IntelHours, d3ContentDensity, d4HumanSla, d5Traceability, d6HypeImmunity, glitterIndex])
 
+  const radarPoints = useMemo(() => {
+    const r1 = (d1SalesHours / 12) * 80
+    const r2 = (d2IntelHours / 8) * 80
+    const r3 = (d3ContentDensity / 100) * 80
+    const r4 = (Math.max(10, Math.round(100 - ((d4HumanSla - 5) / 175) * 90)) / 100) * 80
+    const r5 = (d5Traceability / 100) * 80
+    const r6 = (d6HypeImmunity / 100) * 80
+
+    const p1x = 100 + r1 * Math.cos(0)
+    const p1y = 100 + r1 * Math.sin(0)
+
+    const p2x = 100 + r2 * Math.cos(Math.PI / 3)
+    const p2y = 100 + r2 * Math.sin(Math.PI / 3)
+
+    const p3x = 100 + r3 * Math.cos((2 * Math.PI) / 3)
+    const p3y = 100 + r3 * Math.sin((2 * Math.PI) / 3)
+
+    const p4x = 100 + r4 * Math.cos(Math.PI)
+    const p4y = 100 + r4 * Math.sin(Math.PI)
+
+    const p5x = 100 + r5 * Math.cos((4 * Math.PI) / 3)
+    const p5y = 100 + r5 * Math.sin((4 * Math.PI) / 3)
+
+    const p6x = 100 + r6 * Math.cos((5 * Math.PI) / 3)
+    const p6y = 100 + r6 * Math.sin((5 * Math.PI) / 3)
+
+    return `${p1x},${p1y} ${p2x},${p2y} ${p3x},${p3y} ${p4x},${p4y} ${p5x},${p5y} ${p6x},${p6y}`
+  }, [d1SalesHours, d2IntelHours, d3ContentDensity, d4HumanSla, d5Traceability, d6HypeImmunity])
+
+  const competitorRadarPoints = useMemo(() => {
+    const r1 = 0.8 * 80
+    const r2 = 0.05 * 80
+    const r3 = 0.15 * 80
+    const r4 = 0.1 * 80
+    const r5 = 0.1 * 80
+    const r6 = 0.2 * 80
+
+    const p1x = 100 + r1 * Math.cos(0)
+    const p1y = 100 + r1 * Math.sin(0)
+
+    const p2x = 100 + r2 * Math.cos(Math.PI / 3)
+    const p2y = 100 + r2 * Math.sin(Math.PI / 3)
+
+    const p3x = 100 + r3 * Math.cos((2 * Math.PI) / 3)
+    const p3y = 100 + r3 * Math.sin((2 * Math.PI) / 3)
+
+    const p4x = 100 + r4 * Math.cos(Math.PI)
+    const p4y = 100 + r4 * Math.sin(Math.PI)
+
+    const p5x = 100 + r5 * Math.cos((4 * Math.PI) / 3)
+    const p5y = 100 + r5 * Math.sin((4 * Math.PI) / 3)
+
+    const p6x = 100 + r6 * Math.cos((5 * Math.PI) / 3)
+    const p6y = 100 + r6 * Math.sin((5 * Math.PI) / 3)
+
+    return `${p1x},${p1y} ${p2x},${p2y} ${p3x},${p3y} ${p4x},${p4y} ${p5x},${p5y} ${p6x},${p6y}`
+  }, [])
+
+
   const runAudit = () => {
     if (isAuditing) return
     setIsAuditing(true)
@@ -1017,89 +1076,126 @@ export function InteractiveCockpit() {
 
                 </div>
 
-                {/* COLUNA DIREITA: Análise, Indicadores & Terminal */}
-                <div className="flex flex-col gap-4 justify-between bg-white/[0.01] border border-white/5 p-5 rounded-2xl">
+                {/* COLUNA DIREITA: Visualização 6D Radar, Pitch de Vendas & Terminal */}
+                <div className="flex flex-col gap-4 justify-between bg-white/[0.01] border border-white/5 p-4 rounded-2xl overflow-hidden">
                   
-                  {/* Indicadores do Contra-Xeque-Mate */}
-                  <div className="space-y-3.5 select-none">
-                    <span className="text-[#d2af5a] text-[9.5px] font-mono font-bold uppercase tracking-wider flex items-center gap-1.5">
+                  {/* Título da Telemetria Visual */}
+                  <div className="flex justify-between items-center select-none">
+                    <span className="text-[#d2af5a] text-[9px] font-mono font-bold uppercase tracking-wider flex items-center gap-1.5">
                       <Activity className="h-3.5 w-3.5 text-[#d2af5a]" />
-                      3. Indicadores de Telemetria Competitiva 6D
+                      3. Arena de Cristalização 6D (Radar de Fatos vs. Hype)
                     </span>
-
-                    {/* Barra 1: Glitter Index */}
-                    <div className="space-y-1">
-                      <div className="flex justify-between items-center text-[9px] font-mono">
-                        <span className="text-white/50 uppercase">Índice de Engodo e Ilusão (Glitter Index):</span>
-                        <b className={`font-bold ${glitterIndex > 50 ? 'text-red-400' : 'text-emerald-400'}`}>{glitterIndex}%</b>
-                      </div>
-                      <div className="w-full h-2 bg-white/5 border border-white/10 rounded-full overflow-hidden">
-                        <div 
-                          className="h-full bg-gradient-to-r from-amber-500 to-red-500 transition-all duration-500"
-                          style={{ width: `${glitterIndex}%` }}
-                        />
-                      </div>
-                      <span className="text-[7.5px] text-white/30 leading-normal block">
-                        {glitterIndex > 70 
-                          ? "⚠️ ALTO RISCO: O concorrente faz promessas mágicas absurdas e impossíveis de sustentar. Caixa preta operacional." 
-                          : "✅ RISCO BAIXO: Promessas de marketing alinhadas com capacidade real."
-                        }
-                      </span>
-                    </div>
-
-                    {/* Barra 2: Vantagem Competitiva Real */}
-                    <div className="space-y-1">
-                      <div className="flex justify-between items-center text-[9px] font-mono">
-                        <span className="text-[#d2af5a] uppercase">Nossa Vantagem Competitiva Real (IVC-6D):</span>
-                        <b className="text-[#d2af5a] font-bold">{ivc6DScore}%</b>
-                      </div>
-                      <div className="w-full h-2 bg-white/5 border border-white/10 rounded-full overflow-hidden">
-                        <div 
-                          className="h-full bg-gradient-to-r from-[#d2af5a]/50 to-[#d2af5a] transition-all duration-500 shadow-[0_0_8px_rgba(210,175,90,0.5)]"
-                          style={{ width: `${ivc6DScore}%` }}
-                        />
-                      </div>
-                      <span className="text-[7.5px] text-white/30 leading-normal block">
-                        O seu diferencial humano baseia-se em esforço real de prospecção ({d1SalesHours}h/dia), tempo de resposta humana ({d4HumanSla} min) e alta imunidade a hype ({d6HypeImmunity}%).
-                      </span>
+                    <div className="flex gap-2 text-[6.5px] font-mono">
+                      <span className="flex items-center gap-1"><span className="h-1.5 w-1.5 rounded-full bg-[#d2af5a]" /> Seu Negócio</span>
+                      <span className="flex items-center gap-1"><span className="h-1.5 w-1.5 rounded-full bg-red-500" /> Concorrente</span>
                     </div>
                   </div>
 
-                  {/* Equação Matemática da Verdade */}
-                  <div className="p-3 bg-black/60 border border-[#d2af5a]/20 rounded-xl flex flex-col items-center justify-center text-center select-none">
-                    <span className="text-[7.5px] font-mono text-white/30 uppercase tracking-widest mb-1.5">A Equação do Diferencial Técnico</span>
-                    <div className="text-white text-xs font-mono font-medium select-all hover:text-[#d2af5a] transition-colors flex items-center gap-1">
-                      <span>IVC</span> 
-                      <span className="text-[8px] text-[#d2af5a] font-mono">6D</span>
-                      <span>=</span>
-                      <div className="flex flex-col items-center justify-center inline-flex px-1 leading-none text-center">
-                        <span className="border-b border-white/30 pb-0.5 text-[9.5px]">Esforço × Rastreabilidade × Conversão</span>
-                        <span className="pt-0.5 text-[9.5px]">Glitter Concorrente</span>
-                      </div>
+                  {/* ARENA DE CRISTALIZAÇÃO: O Radar SVG Reativo */}
+                  <div className="flex items-center justify-center bg-black/60 p-2.5 border border-white/5 rounded-2xl relative select-none">
+                    
+                    <svg viewBox="0 0 200 200" className="w-[185px] h-[185px] drop-shadow-[0_0_10px_rgba(210,175,90,0.15)]">
+                      {/* Concentric rings representam intervalos de 25%, 50%, 75%, 100% */}
+                      <circle cx="100" cy="100" r="20" className="stroke-white/5 fill-none" strokeWidth="0.5" strokeDasharray="1,2" />
+                      <circle cx="100" cy="100" r="40" className="stroke-white/5 fill-none" strokeWidth="0.5" strokeDasharray="1,2" />
+                      <circle cx="100" cy="100" r="60" className="stroke-white/10 fill-none" strokeWidth="0.5" />
+                      <circle cx="100" cy="100" r="80" className="stroke-[#d2af5a]/10 fill-none" strokeWidth="0.8" />
+
+                      {/* Eixos Grid e Linhas Radiais de Conexão */}
+                      {Array.from({ length: 6 }).map((_, idx) => {
+                        const angle = (idx * Math.PI) / 3;
+                        const targetX = 100 + 80 * Math.cos(angle);
+                        const targetY = 100 + 80 * Math.sin(angle);
+                        return (
+                          <line
+                            key={idx}
+                            x1="100"
+                            y1="100"
+                            x2={targetX}
+                            y2={targetY}
+                            className="stroke-white/5"
+                            strokeWidth="0.5"
+                          />
+                        );
+                      })}
+
+                      {/* Polígono Vermelho: O Concorrente Hype (Opaco, distorcido e fraco fora da D1) */}
+                      <polygon
+                        points={competitorRadarPoints}
+                        className="stroke-red-500/70 fill-red-500/15 transition-all duration-300"
+                        strokeWidth="1"
+                      />
+
+                      {/* Polígono Dourado: Sua Operação Real baseada nas 6 dimensões */}
+                      <polygon
+                        points={radarPoints}
+                        className="stroke-[#d2af5a] fill-[#d2af5a]/25 transition-all duration-500 shadow-[0_0_15px_#d2af5a]"
+                        strokeWidth="1.5"
+                      />
+
+                      {/* Lápis de Vértices e Tags de Dimensão */}
+                      <text x="180" y="103" className="fill-white/60 font-mono text-[5.5px] font-bold text-center leading-none">D1</text>
+                      <text x="135" y="180" className="fill-white/60 font-mono text-[5.5px] font-bold text-center leading-none">D2</text>
+                      <text x="50" y="180" className="fill-white/60 font-mono text-[5.5px] font-bold text-center leading-none">D3</text>
+                      <text x="10" y="103" className="fill-white/60 font-mono text-[5.5px] font-bold text-center leading-none">D4</text>
+                      <text x="50" y="23" className="fill-white/60 font-mono text-[5.5px] font-bold text-center leading-none">D5</text>
+                      <text x="135" y="23" className="fill-white/60 font-mono text-[5.5px] font-bold text-center leading-none">D6</text>
+                    </svg>
+
+                    {/* Badge do Score Geométrico */}
+                    <div className="absolute top-2 left-2 flex flex-col items-center bg-black/80 border border-[#d2af5a]/20 px-2 py-1 rounded-xl shadow-lg">
+                      <span className="text-[5.5px] font-mono text-white/40 uppercase leading-none">IVC-6D SCORE</span>
+                      <b className="text-[12px] font-mono font-bold text-[#d2af5a] mt-0.5">{ivc6DScore}%</b>
                     </div>
+
+                    <div className="absolute top-2 right-2 flex flex-col items-center bg-black/80 border border-red-500/20 px-2 py-1 rounded-xl shadow-lg">
+                      <span className="text-[5.5px] font-mono text-white/40 uppercase leading-none">GLITTER INDEX</span>
+                      <b className="text-[12px] font-mono font-bold text-red-400 mt-0.5">{glitterIndex}%</b>
+                    </div>
+                  </div>
+
+                  {/* GERADOR DE ARGUMENTO DE VENDAS E PITCH (CONTRA-XEQUE-MATE) */}
+                  <div className="p-3 bg-[#d2af5a]/5 border border-[#d2af5a]/20 rounded-xl relative select-text">
+                    <span className="block text-[7.5px] font-mono text-[#d2af5a] font-bold uppercase tracking-widest mb-1 select-none">
+                      📢 GERADOR DE PITCH COMERCIAL CONTRA-XEQUE-MATE (DADOS REAIS):
+                    </span>
+                    <p className="text-white/85 text-[8.5px] leading-relaxed italic font-sans">
+                      "Ao apresentar para seu cliente ou parceiro, use o brilho do processo real: <b className="text-[#d2af5a] font-sans">Enquanto o mercado atua em caixa preta, com promessas de ganhos fáceis e suporte por robôs limitados, nós eliminamos toda dúvida abrindo o jogo: garantimos {d1SalesHours} horas diárias de execução direta (D1), tempo de resposta humano de {d4HumanSla} minutos (D4) e {d5Traceability}% de rastreabilidade completa no CRM (D5).</b> Escolha o processo real de pessoa para pessoa."
+                    </p>
+                    {/* Botão de Cópia Rápida */}
+                    <button
+                      onClick={() => {
+                        const text = `Enquanto o mercado atua em caixa preta com promessas de ganhos fáceis e suporte por robôs limitados, nós eliminamos toda dúvida abrindo o jogo: garantimos ${d1SalesHours} horas diárias de execução direta, tempo de resposta humano de ${d4HumanSla} minutos e ${d5Traceability}% de rastreabilidade completa no CRM. Escolha o processo real de pessoa para pessoa.`;
+                        navigator.clipboard.writeText(text);
+                        alert("Argumento de Vendas copiado para o clipboard com sucesso!");
+                      }}
+                      className="absolute top-1 right-2 text-[#d2af5a] hover:text-white transition font-mono text-[6.5px] font-bold uppercase cursor-pointer select-none"
+                    >
+                      [Copiar Argumento]
+                    </button>
                   </div>
 
                   {/* Terminal de Auditoria NLP */}
-                  <div className="flex-1 flex flex-col gap-1 overflow-hidden min-h-[140px]">
-                    <div className="flex justify-between items-center text-[8px] font-mono uppercase select-none">
-                      <span className="text-white/40">Console de Desconstrução de Narrativa:</span>
+                  <div className="flex flex-col gap-1 overflow-hidden h-[95px]">
+                    <div className="flex justify-between items-center text-[7.5px] font-mono uppercase select-none">
+                      <span className="text-white/40">Console de Desconstrução Concorrencial:</span>
                       <button
                         onClick={runAudit}
                         disabled={isAuditing}
                         className="text-[#d2af5a] hover:underline font-bold transition flex items-center gap-1 cursor-pointer disabled:text-white/20"
                       >
-                        <RefreshCw className={`h-2 w-2 ${isAuditing ? 'animate-spin' : ''}`} />
-                        {isAuditing ? 'Auditando...' : 'Recalibrar Auditoria'}
+                        <RefreshCw className={`h-2.5 w-2.5 ${isAuditing ? 'animate-spin text-[#d2af5a]' : 'text-[#d2af5a]'}`} />
+                        {isAuditing ? 'Auditando...' : 'Re-auditar Concorrente'}
                       </button>
                     </div>
 
                     <div 
                       ref={auditLogRef}
-                      className="flex-1 bg-[#050507] border border-white/5 rounded-xl p-2.5 font-mono text-[8px] text-[#d2af5a]/95 space-y-1 overflow-y-auto ipb-thinscroll leading-relaxed"
+                      className="flex-1 bg-[#050507] border border-white/5 rounded-xl p-2 font-mono text-[7.5px] text-[#d2af5a]/95 space-y-0.5 overflow-y-auto ipb-thinscroll leading-relaxed"
                     >
                       {auditLogs.length === 0 ? (
-                        <div className="text-white/20 italic pt-6 text-center leading-normal">
-                          Iniciando auditoria automática...
+                        <div className="text-white/20 italic pt-3 text-center leading-normal">
+                          Inicie a calibragem das 6 dimensões acima para rodar a auditoria de narrativa.
                         </div>
                       ) : (
                         auditLogs.map((log, idx) => (
