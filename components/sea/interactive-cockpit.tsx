@@ -202,6 +202,7 @@ export function InteractiveCockpit() {
         clearInterval(interval)
         setSimRunning(false)
         setSimFinished(true)
+      }
     }, 250)
   }
 
