@@ -13,6 +13,7 @@ import { VMSystemPanel } from '@/components/sea/vm-system-panel'
 import { ICUSystemPanel } from '@/components/sea/icu-system-panel'
 
 // Importações dos Painéis Corporativos Integrados (SIG, SIE, SIO, COMP)
+import { SigCapitalHumanoPanel } from '@/components/sea/corporate/sig-capital-humano-panel'
 import { SigPessoasPanel } from '@/components/sea/corporate/sig-pessoas-panel'
 import { SigMercadoPanel } from '@/components/sea/corporate/sig-mercado-panel'
 import { SigEsgPanel } from '@/components/sea/corporate/sig-esg-panel'
@@ -39,6 +40,7 @@ const SIDEBAR_GROUPS = [
     code: 'SIG',
     label: 'GERENCIAL',
     items: [
+      { id: 'sig-capital-humano', title: 'Capital Humano', desc: 'Riscos Psicossociais & IA' },
       { id: 'sig-pessoas', title: 'Pessoas', desc: 'Líderes & Gestores' },
       { id: 'sig-empresa', title: 'Empresa', desc: 'Estratégia · BI · Canais' },
       { id: 'sig-mercado', title: 'Mercado', desc: 'Panorama Cruzado' },
@@ -173,6 +175,8 @@ export default function SistemasPageClient() {
         return <VMSystemPanel />
       case 'S3':
         return <ICUSystemPanel />
+      case 'sig-capital-humano':
+        return <SigCapitalHumanoPanel />
       case 'sig-pessoas':
         return <SigPessoasPanel mode="pessoas" />
       case 'sig-empresa':
