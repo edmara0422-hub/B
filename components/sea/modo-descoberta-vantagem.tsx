@@ -1304,22 +1304,20 @@ export function ModoDescobertaVantagem({ onClose, onCalibrateCockpit }: ModoDesc
                         {/* Competitor's Area Polygon (Red) */}
                         <polygon 
                           points={compPoints} 
-                          className="competitor-polygon"
+                          className="competitor-polygon transition-all duration-300"
                           fill="rgba(239, 68, 68, 0.12)" 
                           stroke="#ef4444" 
                           strokeWidth="1.2" 
                           strokeDasharray="2,2" 
-                          className="competitor-polygon transition-all duration-300"
                         />
 
                         {/* User's Area Polygon (Gold) */}
                         <polygon 
                           points={userPoints} 
-                          className="user-polygon"
+                          className="user-polygon transition-all duration-300 shadow-[0_0_10px_#d2af5a]"
                           fill="rgba(210, 175, 90, 0.18)" 
                           stroke="#d2af5a" 
                           strokeWidth="2.2" 
-                          className="user-polygon transition-all duration-300 shadow-[0_0_10px_#d2af5a]"
                         />
 
                         {/* Node dots for hovered axis */}
