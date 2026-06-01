@@ -32,8 +32,8 @@ function CameraRig() {
   const { camera } = useThree()
   const m = useMouse()
   useFrame((_, d) => {
-    camera.position.x += (m.current.x * 1.2 - camera.position.x) * d * 0.6
-    camera.position.y += (m.current.y * 0.8 - camera.position.y) * d * 0.6
+    camera.position.x += (m.current.x * 2.2 - camera.position.x) * d * 0.8
+    camera.position.y += (m.current.y * 1.6 - camera.position.y) * d * 0.8
     camera.lookAt(0, 0, 0)
   })
   return null
@@ -113,11 +113,11 @@ function VineTendrils() {
     g.setAttribute('position', new THREE.Float32BufferAttribute(seg, 3))
     return g
   }, [])
-  useFrame((_, d) => { if (ref.current) ref.current.rotation.y += d * 0.010 })
+  useFrame((_, d) => { if (ref.current) ref.current.rotation.y += d * 0.008 })
   return (
     <group ref={ref}>
       <lineSegments geometry={geo}>
-        <lineBasicMaterial color="#0d0d0d" transparent opacity={0.4} />
+        <lineBasicMaterial color="#d2af5a" transparent opacity={0.25} depthWrite={false} blending={THREE.AdditiveBlending} />
       </lineSegments>
     </group>
   )
@@ -127,20 +127,29 @@ function Scene({ tier }: { tier: 'high' | 'mid' | 'low' }) {
   return (
     <>
       {/* Sem <color background> — canvas transparente pra body bg passar atrás */}
-      <ambientLight intensity={0.01} />
+      <ambientLight intensity={0.15} />
       <CameraRig />
-      {/* Reduzido pra ser mais discreto — IpbBackground (2D) é o protagonista. */}
-      <StarLayer count={tier === 'high' ? 1200 : 600} spread={80} zRange={[-60, -20]} size={0.014} speed={0.002} opacity={0.35} />
-      <StarLayer count={tier === 'high' ? 300 : 180} spread={55} zRange={[-20, 0]} size={0.025} speed={0.004} opacity={0.45} />
-      <StarLayer count={80} spread={30} zRange={[0, 8]} size={0.04} speed={0.007} opacity={0.55} />
-      {/* Sparkles mais sutis */}
+      
+      {/* Estrelas 3D com maior presença para destacar o parallax e profundidade 6D */}
+      <StarLayer count={tier === 'high' ? 1400 : 700} spread={85} zRange={[-60, -20]} size={0.022} speed={0.003} opacity={0.4} />
+      <StarLayer count={tier === 'high' ? 350 : 200} spread={60} zRange={[-20, 0]} size={0.035} speed={0.005} opacity={0.5} />
+      <StarLayer count={100} spread={35} zRange={[0, 8]} size={0.05} speed={0.008} opacity={0.6} />
+      
+      {/* Estrelas Brilhantes Ativas */}
+      <BrightStars />
+
+      {/* Teia de Vinhas Bioneurais Douradas Ativa */}
+      <VineTendrils />
+
+      {/* Sparkles dourados flutuantes com maior volume */}
       {tier !== 'low' && (
-        <Sparkles count={20} scale={18} size={1.2} speed={0.1} opacity={0.3} color="#ffffff" />
+        <Sparkles count={35} scale={22} size={1.8} speed={0.12} opacity={0.45} color="#d2af5a" />
       )}
-      {/* Bloom bem mais suave (intensity 1.4 → 0.5, threshold 0.5 → 0.7) */}
+      
+      {/* Bloom e Vinheta de Alta Fidelidade (NASA level glow) */}
       {tier !== 'low' && (
         <EffectComposer multisampling={tier === 'high' ? 4 : 0}>
-          <Bloom intensity={0.5} luminanceThreshold={0.7} luminanceSmoothing={0.9} mipmapBlur radius={0.6} />
+          <Bloom intensity={1.1} luminanceThreshold={0.45} luminanceSmoothing={0.85} mipmapBlur radius={0.5} />
           <Vignette offset={0.3} darkness={0.7} />
         </EffectComposer>
       )}
