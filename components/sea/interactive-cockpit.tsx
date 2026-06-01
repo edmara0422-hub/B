@@ -1069,7 +1069,7 @@ export function InteractiveCockpit() {
             </div>
 
             {/* Modal Content - Novo Modo Descoberta de Vantagem Real */}
-            <div className="p-6 overflow-y-auto flex-1 min-h-0 bg-black/25 flex flex-col gap-6">
+            <div className="p-6 overflow-y-auto max-h-[60vh] ipb-thinscroll flex-1 min-h-0 bg-black/25 flex flex-col gap-6">
               <ModoDescobertaVantagem 
                 onClose={() => setIsXequeMateModalOpen(false)}
                 onCalibrateCockpit={(metrics) => {
