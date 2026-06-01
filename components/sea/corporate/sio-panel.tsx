@@ -1,10 +1,11 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Landmark, AlertCircle, Sparkles, Settings, ArrowRight, Play, CheckCircle2 } from 'lucide-react'
+import { Landmark, AlertCircle, Sparkles, Settings, ArrowRight, Play, CheckCircle2, Cpu } from 'lucide-react'
+import * as tf from '@tensorflow/tfjs'
 
-type SioSubTab = 'finance' | 'pricing' | 'ia' | 'processos'
+type SioSubTab = 'finance' | 'pricing' | 'ia' | 'processos' | 'predict'
 
 export function SioPanel({ initialTab }: { initialTab?: SioSubTab }) {
   const [subTab, setSubTab] = useState<SioSubTab>(initialTab || 'finance')
@@ -43,6 +44,16 @@ export function SioPanel({ initialTab }: { initialTab?: SioSubTab }) {
     p7: { label: 'Auditorias de Processo Periódicas', weight: 10, checked: false },
   })
 
+  // TensorFlow.js Predictive Analytics States
+  const [mlEbitda, setMlEbitda] = useState<number>(80)
+  const [mlLtvCac, setMlLtvCac] = useState<number>(6)
+  const [mlPressure, setMlPressure] = useState<number>(5)
+  const [mlEpochs, setMlEpochs] = useState<number>(80)
+  const [mlLoading, setMlLoading] = useState<boolean>(false)
+  const [mlFinished, setMlFinished] = useState<boolean>(false)
+  const [mlLogs, setMlLogs] = useState<string[]>([])
+  const [forecastData, setForecastData] = useState<number[]>([12, 19, 28, 35, 42, 55])
+
   // Calculate dynamic maturity based on checked weights
   const totalMaturity = Object.values(procChecks).reduce((acc, curr) => {
     return acc + (curr.checked ? curr.weight : 0)
@@ -65,6 +76,86 @@ export function SioPanel({ initialTab }: { initialTab?: SioSubTab }) {
   const handleApplyAdvisor = () => {
     setAdvisorApplied(true)
     setAdvisorFeedback('Regra R1 (Trial 14d) foi provisionada com sucesso em produção para 100% dos leads! Monitorando conversão...')
+  }
+
+  // Live TensorFlow.js Neural Network Model compile & fit
+  const handleTrainPrediction = async () => {
+    if (mlLoading) return
+    setMlLoading(true)
+    setMlFinished(false)
+    setMlLogs(['[TENSORFLOW] Inicializando Tensores locais...'])
+
+    setTimeout(async () => {
+      try {
+        // 1. Prepare training tensors
+        // Relationship formula: Y = EBITDA * LTV/CAC * X * (10 / Pressure)
+        const xs = tf.tensor2d([1, 2, 3, 4, 5, 6], [6, 1])
+        const baseFactor = (mlEbitda / 100) * mlLtvCac * (10 / mlPressure)
+        
+        const ys = tf.tensor2d([
+          baseFactor * 10,
+          baseFactor * 18,
+          baseFactor * 26,
+          baseFactor * 35,
+          baseFactor * 42,
+          baseFactor * 55
+        ], [6, 1])
+
+        setMlLogs(prev => [...prev, `[TENSORFLOW] Tensores prontos. Compilando rede neural sequencial...`])
+
+        // 2. Build model architecture (1 dense layer,Relu activated, 1 linear output layer)
+        const model = tf.sequential()
+        model.add(tf.layers.dense({ units: 6, inputShape: [1], activation: 'relu' }))
+        model.add(tf.layers.dense({ units: 1 }))
+
+        model.compile({
+          optimizer: tf.train.adam(0.08),
+          loss: 'meanSquaredError'
+        })
+
+        setMlLogs(prev => [...prev, `[MODEL] Compilado com otimizador Adam. Iniciando fit para ${mlEpochs} épocas...`])
+
+        // 3. Train model with custom callbacks for real loss tracking
+        await model.fit(xs, ys, {
+          epochs: mlEpochs,
+          callbacks: {
+            onEpochEnd: (epoch, log) => {
+              if (epoch % Math.ceil(mlEpochs / 4) === 0 || epoch === mlEpochs - 1) {
+                setMlLogs(prev => [...prev, `⚡ [Época ${epoch + 1}/${mlEpochs}] Loss: ${log?.loss?.toFixed(4)}`])
+              }
+            }
+          }
+        })
+
+        // 4. Predict the next 7th month (Forecast)
+        const nextX = tf.tensor2d([7], [1, 1])
+        const predY = model.predict(nextX) as tf.Tensor
+        const predVal = (await predY.data())[0]
+
+        // 5. Update local forecast dataset
+        const generatedForecast = [
+          Math.round(baseFactor * 10),
+          Math.round(baseFactor * 18),
+          Math.round(baseFactor * 26),
+          Math.round(baseFactor * 35),
+          Math.round(baseFactor * 42),
+          Math.round(baseFactor * 55),
+          Math.round(Math.max(10, predVal))
+        ]
+
+        setForecastData(generatedForecast)
+        setMlLogs(prev => [
+          ...prev, 
+          `[SUCESSO] Treinamento finalizado.`, 
+          `🔮 [FUTURO MÊS 7] Regressão estimada: R$ ${Math.round(Math.max(10, predVal) * 1000).toLocaleString('pt-BR')} de faturamento.`
+        ])
+        setMlFinished(true)
+      } catch (err) {
+        setMlLogs(prev => [...prev, `[ERRO] Falha no processador TFJS: ${err}`])
+      } finally {
+        setMlLoading(false)
+      }
+    }, 100)
   }
 
   return (
@@ -264,9 +355,10 @@ export function SioPanel({ initialTab }: { initialTab?: SioSubTab }) {
           color: #e0c887 !important;
         }
       `}</style>
+      
       {/* Sub tabs Row */}
-      <div className="flex gap-2 border-b border-white/[0.06] pb-2.5">
-        {(['finance', 'pricing', 'ia', 'processos'] as const).map(tab => (
+      <div className="flex gap-2 border-b border-white/[0.06] pb-2.5 select-none">
+        {(['finance', 'pricing', 'ia', 'processos', 'predict'] as const).map(tab => (
           <button
             key={tab}
             onClick={() => setSubTab(tab)}
@@ -276,6 +368,7 @@ export function SioPanel({ initialTab }: { initialTab?: SioSubTab }) {
             {tab === 'pricing' && 'Smart Pricing'}
             {tab === 'ia' && 'IA Advisor'}
             {tab === 'processos' && 'Processos'}
+            {tab === 'predict' && 'Previsão Preditiva'}
           </button>
         ))}
       </div>
@@ -463,36 +556,36 @@ export function SioPanel({ initialTab }: { initialTab?: SioSubTab }) {
                 {/* Pyramid Layout */}
                 <div className="pyramid">
                   <div className="pyr-row" data-active="true">
-                    <div className="pyr-lvl">R1</div>
-                    <div className="pyr-body">
-                      <div className="pyr-name">Trial 14d · Educação</div>
-                      <div className="pyr-bar"><i style={{ width: '88%' }}></i></div>
-                    </div>
-                    <div className="pyr-val text-[#5dcaa5] bg-[#5dcaa5]/10 border border-[#5dcaa5]/20">ON</div>
+                     <div className="pyr-lvl">R1</div>
+                     <div className="pyr-body">
+                       <div className="pyr-name">Trial 14d · Educação</div>
+                       <div className="pyr-bar"><i style={{ width: '88%' }}></i></div>
+                     </div>
+                     <div className="pyr-val text-[#5dcaa5] bg-[#5dcaa5]/10 border border-[#5dcaa5]/20">ON</div>
                   </div>
                   <div className="pyr-row" data-active="true">
-                    <div className="pyr-lvl">R2</div>
-                    <div className="pyr-body">
-                      <div className="pyr-name">Desconto Volume 5+ seats</div>
-                      <div className="pyr-bar"><i style={{ width: '72%' }}></i></div>
-                    </div>
-                    <div className="pyr-val text-[#5dcaa5] bg-[#5dcaa5]/10 border border-[#5dcaa5]/20">ON</div>
+                     <div className="pyr-lvl">R2</div>
+                     <div className="pyr-body">
+                       <div className="pyr-name">Desconto Volume 5+ seats</div>
+                       <div className="pyr-bar"><i style={{ width: '72%' }}></i></div>
+                     </div>
+                     <div className="pyr-val text-[#5dcaa5] bg-[#5dcaa5]/10 border border-[#5dcaa5]/20">ON</div>
                   </div>
                   <div className="pyr-row" data-active="true">
-                    <div className="pyr-lvl">R3</div>
-                    <div className="pyr-body">
-                      <div className="pyr-name">Annual −15%</div>
-                      <div className="pyr-bar"><i style={{ width: '55%' }}></i></div>
-                    </div>
-                    <div className="pyr-val text-[#5dcaa5] bg-[#5dcaa5]/10 border border-[#5dcaa5]/20">ON</div>
+                     <div className="pyr-lvl">R3</div>
+                     <div className="pyr-body">
+                       <div className="pyr-name">Annual −15%</div>
+                       <div className="pyr-bar"><i style={{ width: '55%' }}></i></div>
+                     </div>
+                     <div className="pyr-val text-[#5dcaa5] bg-[#5dcaa5]/10 border border-[#5dcaa5]/20">ON</div>
                   </div>
                   <div className="pyr-row" data-active="false">
-                    <div className="pyr-lvl">R4</div>
-                    <div className="pyr-body">
-                      <div className="pyr-name">Bundle Premium</div>
-                      <div className="pyr-bar"><i style={{ width: '0%' }}></i></div>
-                    </div>
-                    <div className="pyr-val text-white/30 bg-white/[0.04]">OFF</div>
+                     <div className="pyr-lvl">R4</div>
+                     <div className="pyr-body">
+                       <div className="pyr-name">Bundle Premium</div>
+                       <div className="pyr-bar"><i style={{ width: '0%' }}></i></div>
+                     </div>
+                     <div className="pyr-val text-white/30 bg-white/[0.04]">OFF</div>
                   </div>
                 </div>
 
@@ -568,14 +661,14 @@ export function SioPanel({ initialTab }: { initialTab?: SioSubTab }) {
                     <button
                       onClick={handleApplyAdvisor}
                       disabled={advisorApplied}
-                      className="px-3.5 py-1.5 rounded bg-[#d2af5a] hover:bg-[#c5a55a] text-black font-semibold text-xs tracking-wider transition disabled:opacity-40 disabled:pointer-events-none"
+                      className="px-3.5 py-1.5 rounded bg-[#d2af5a] hover:bg-[#c5a55a] text-black font-semibold text-xs tracking-wider transition disabled:opacity-40 disabled:pointer-events-none cursor-pointer"
                     >
                       Aplicar Regra
                     </button>
-                    <button className="px-3.5 py-1.5 rounded border border-white/10 hover:border-white/20 bg-white/[0.02] text-xs font-semibold tracking-wider text-white/80 transition">
+                    <button className="px-3.5 py-1.5 rounded border border-white/10 hover:border-white/20 bg-white/[0.02] text-xs font-semibold tracking-wider text-white/80 transition cursor-pointer">
                       Simular Impacto
                     </button>
-                    <button className="px-3.5 py-1.5 rounded border border-white/10 hover:border-white/20 bg-white/[0.02] text-xs font-semibold tracking-wider text-white/80 transition">
+                    <button className="px-3.5 py-1.5 rounded border border-white/10 hover:border-white/20 bg-white/[0.02] text-xs font-semibold tracking-wider text-white/80 transition cursor-pointer">
                       Agendar Revisão
                     </button>
                   </div>
@@ -698,7 +791,7 @@ export function SioPanel({ initialTab }: { initialTab?: SioSubTab }) {
                     </div>
 
                     {/* Circular gauge */}
-                    <div className="relative w-[140px] height-[140px] flex items-center justify-center mb-4">
+                    <div className="relative w-[140px] h-[140px] flex items-center justify-center mb-4">
                       <svg width="140" height="140" viewBox="0 0 140 140" className="-rotate-90">
                         <circle cx="70" cy="70" r="58" fill="none" stroke="rgba(255,255,255,0.03)" strokeWidth="8" />
                         <circle
@@ -767,6 +860,187 @@ export function SioPanel({ initialTab }: { initialTab?: SioSubTab }) {
                   </div>
                 </div>
               </div>
+            </div>
+          </motion.div>
+        )}
+
+        {subTab === 'predict' && (
+          <motion.div
+            key="predict"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            className="space-y-4 animate-fadeIn"
+          >
+            <div className="dash-card-systems">
+              <div className="flex justify-between items-start mb-6">
+                <div>
+                  <div className="text-[7.5px] font-mono text-[#d2af5a] tracking-[0.2em] font-bold uppercase mb-1">SEC · 05 ◆ TensorFlow.js ML Engine</div>
+                  <h3 className="text-[15px] lg:text-xl font-light text-white tracking-wide">
+                    Previsão Preditiva <span className="text-[#d2af5a] font-medium">de Faturamento</span>
+                  </h3>
+                  <p className="text-[10px] lg:text-[11.5px] text-white/50 mt-1 max-w-lg">
+                    Compile e treine uma rede neural sequencial local para prever o crescimento com base na telemetria atual.
+                  </p>
+                </div>
+                <div className="flex items-center gap-1.5 px-2 py-1 rounded bg-[#d2af5a]/5 border border-[#d2af5a]/15 text-[8.5px] font-mono text-[#d2af5a]">
+                  <Cpu className="h-3 w-3 animate-spin" style={{ animationDuration: '4s' }} />
+                  <span>TFJS LOCAL MODEL</span>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
+                
+                {/* Lado Esquerdo: Parâmetros de Entrada & Ação */}
+                <div className="flex flex-col justify-between bg-black/20 border border-white/5 p-5 rounded-2xl">
+                  
+                  <div className="space-y-4 text-left select-none">
+                    <span className="text-[9.5px] font-mono text-[#d2af5a] uppercase tracking-wider block border-b border-white/5 pb-1.5">
+                      ⚙ Parâmetros Clínico-Operacionais
+                    </span>
+
+                    {/* EBITDA */}
+                    <div className="space-y-1">
+                      <div className="flex justify-between text-xs text-white/80 leading-none">
+                        <span>Margem EBITDA Alvo:</span>
+                        <b className="text-white font-mono">{mlEbitda}%</b>
+                      </div>
+                      <input
+                        type="range" min="10" max="100" step="5" value={mlEbitda}
+                        onChange={(e) => setMlEbitda(Number(e.target.value))}
+                        className="w-full h-1 bg-white/10 rounded cursor-pointer accent-[#d2af5a]"
+                      />
+                    </div>
+
+                    {/* LTV/CAC */}
+                    <div className="space-y-1">
+                      <div className="flex justify-between text-xs text-white/80 leading-none">
+                        <span>LTV / CAC Estimado:</span>
+                        <b className="text-white font-mono">{mlLtvCac}x</b>
+                      </div>
+                      <input
+                        type="range" min="1" max="12" step="0.5" value={mlLtvCac}
+                        onChange={(e) => setMlLtvCac(Number(e.target.value))}
+                        className="w-full h-1 bg-white/10 rounded cursor-pointer accent-[#d2af5a]"
+                      />
+                    </div>
+
+                    {/* Pressure */}
+                    <div className="space-y-1">
+                      <div className="flex justify-between text-xs text-white/80 leading-none">
+                        <span>Pressão Operacional (Metas):</span>
+                        <b className="text-white font-mono">{mlPressure}/10</b>
+                      </div>
+                      <input
+                        type="range" min="1" max="10" step="1" value={mlPressure}
+                        onChange={(e) => setMlPressure(Number(e.target.value))}
+                        className="w-full h-1 bg-white/10 rounded cursor-pointer accent-[#d2af5a]"
+                      />
+                    </div>
+
+                    {/* Training Epochs */}
+                    <div className="space-y-1">
+                      <div className="flex justify-between text-xs text-white/80 leading-none">
+                        <span>Épocas de Treino (Epochs):</span>
+                        <b className="text-white font-mono">{mlEpochs}</b>
+                      </div>
+                      <input
+                        type="range" min="10" max="200" step="10" value={mlEpochs}
+                        onChange={(e) => setMlEpochs(Number(e.target.value))}
+                        className="w-full h-1 bg-white/10 rounded cursor-pointer accent-[#d2af5a]"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="pt-4 border-t border-white/5 mt-6 flex flex-col gap-2">
+                    <button
+                      onClick={handleTrainPrediction}
+                      disabled={mlLoading}
+                      className="w-full py-2.5 bg-gradient-to-r from-[#d2af5a] to-amber-500 hover:brightness-110 text-black font-bold uppercase tracking-wider text-[10px] rounded-xl transition flex items-center justify-center gap-1.5 cursor-pointer shadow-[0_4px_15px_rgba(210,175,90,0.15)] disabled:opacity-40"
+                    >
+                      {mlLoading ? (
+                        <>
+                          <Cpu className="h-3.5 w-3.5 animate-spin" />
+                          Processando Tensores...
+                        </>
+                      ) : (
+                        <>
+                          <Play className="h-3.5 w-3.5 text-black" />
+                          Treinar Rede Neural Local
+                        </>
+                      )}
+                    </button>
+                    <span className="text-[7.5px] font-mono text-white/20 block text-center">
+                      *O treinamento é executado offline em sua máquina via compilador WASM do TensorFlow.js.
+                    </span>
+                  </div>
+                </div>
+
+                {/* Lado Direito: Terminal de Treino & Gráfico de Projeção */}
+                <div className="flex flex-col justify-between bg-black/30 border border-white/5 p-5 rounded-2xl overflow-hidden relative">
+                  
+                  {/* Console Logs */}
+                  <div className="flex flex-col gap-2">
+                    <span className="text-[7.5px] font-mono text-white/40 uppercase tracking-widest text-left select-none">
+                      Console de Auditoria TensorFlow.js
+                    </span>
+                    <div className="h-[96px] bg-[#050507] border border-white/5 rounded-xl p-3 font-mono text-[8px] text-[#d2af5a] space-y-0.5 overflow-y-auto text-left ipb-thinscroll select-text">
+                      {mlLogs.length === 0 ? (
+                        <div className="text-white/20 italic pt-6 text-center leading-normal">
+                          Aguardando início do protocolo...<br/>
+                          Ajuste as variáveis e dispare o treinamento da rede neural.
+                        </div>
+                      ) : (
+                        mlLogs.map((log, idx) => (
+                          <div key={idx} className="animate-in fade-in slide-in-from-left-1 duration-150">
+                            {log}
+                          </div>
+                        ))
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Gráfico Linear preditivo simplificado */}
+                  <div className="mt-4 border-t border-white/5 pt-4 flex flex-col justify-end flex-1 select-none">
+                    <span className="text-[7.5px] font-mono text-white/40 uppercase tracking-widest text-left mb-3">
+                      Projeção Linear Preditiva (Histórico M1-M6 + Futuro M7)
+                    </span>
+                    
+                    <div className="flex items-end justify-between h-[68px] gap-2 px-2 pb-2">
+                      {forecastData.map((val, idx) => {
+                        const isForecast = idx === 6
+                        const maxVal = Math.max(...forecastData) || 1
+                        const pctHeight = Math.max(10, (val / maxVal) * 100)
+                        return (
+                          <div key={idx} className="flex-1 flex flex-col items-center justify-end h-full relative group">
+                            {/* Bar */}
+                            <motion.div
+                              initial={{ height: 0 }}
+                              animate={{ height: `${pctHeight}%` }}
+                              className={`w-full rounded-t-sm transition-all duration-500 ${
+                                isForecast 
+                                  ? 'bg-gradient-to-t from-emerald-500 to-teal-400 shadow-[0_0_10px_rgba(16,185,129,0.4)]' 
+                                  : 'bg-gradient-to-t from-[#d2af5a]/40 to-[#d2af5a]/80'
+                              }`}
+                            />
+                            {/* Value label */}
+                            <span className={`absolute -top-3.5 font-mono text-[7px] text-center w-8 leading-none ${isForecast ? 'text-emerald-400 font-bold' : 'text-white/60'}`}>
+                              R${val}k
+                            </span>
+                            {/* Month label */}
+                            <span className="text-[6.5px] font-mono text-white/25 mt-1.5">
+                              {isForecast ? 'M7*' : `M${idx + 1}`}
+                            </span>
+                          </div>
+                        )
+                      })}
+                    </div>
+                  </div>
+
+                </div>
+
+              </div>
+
             </div>
           </motion.div>
         )}

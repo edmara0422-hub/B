@@ -3,6 +3,10 @@
 import { motion } from 'framer-motion'
 import { GlassCard } from './glass-card'
 import { LineChart, Line, ResponsiveContainer, YAxis } from 'recharts'
+import React, { useState, useEffect, useMemo, useRef } from 'react'
+import { Canvas, useFrame } from '@react-three/fiber'
+import { OrbitControls } from '@react-three/drei'
+import * as THREE from 'three'
 
 // Mock VM data
 const vmData = [
@@ -15,109 +19,167 @@ const vmData = [
   { time: 6, pressure: 5, volume: 0, flow: 0 },
 ]
 
-// Brain SVG component
-function BrainVisual() {
-  return (
-    <div className="relative w-full aspect-square max-w-[200px] mx-auto">
-      {/* Glow background */}
-      <div className="absolute inset-0 bg-gradient-radial from-white/5 to-transparent rounded-full" />
-      
-      {/* Brain SVG */}
-      <motion.svg
-        viewBox="0 0 100 100"
-        className="w-full h-full"
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.5 }}
-      >
-        {/* Main brain shape */}
-        <motion.path
-          d="M50 15 C30 15 20 30 20 45 C20 55 25 60 25 65 C25 75 35 85 50 85 C65 85 75 75 75 65 C75 60 80 55 80 45 C80 30 70 15 50 15"
-          fill="none"
-          stroke="rgba(255,255,255,0.3)"
-          strokeWidth="0.5"
-          initial={{ pathLength: 0 }}
-          animate={{ pathLength: 1 }}
-          transition={{ duration: 2, ease: 'easeInOut' }}
-        />
-        
-        {/* Brain details - left hemisphere */}
-        <motion.path
-          d="M35 30 Q25 40 30 55 Q35 65 40 70"
-          fill="none"
-          stroke="rgba(255,255,255,0.2)"
-          strokeWidth="0.3"
-          initial={{ pathLength: 0 }}
-          animate={{ pathLength: 1 }}
-          transition={{ duration: 1.5, delay: 0.3 }}
-        />
-        
-        {/* Brain details - right hemisphere */}
-        <motion.path
-          d="M65 30 Q75 40 70 55 Q65 65 60 70"
-          fill="none"
-          stroke="rgba(255,255,255,0.2)"
-          strokeWidth="0.3"
-          initial={{ pathLength: 0 }}
-          animate={{ pathLength: 1 }}
-          transition={{ duration: 1.5, delay: 0.5 }}
-        />
-        
-        {/* Center line */}
-        <motion.path
-          d="M50 20 L50 80"
-          fill="none"
-          stroke="rgba(255,255,255,0.15)"
-          strokeWidth="0.3"
-          strokeDasharray="2 2"
-          initial={{ pathLength: 0 }}
-          animate={{ pathLength: 1 }}
-          transition={{ duration: 1, delay: 0.7 }}
-        />
-        
-        {/* Pulsing nodes */}
-        {[
-          { cx: 35, cy: 40 },
-          { cx: 65, cy: 40 },
-          { cx: 40, cy: 60 },
-          { cx: 60, cy: 60 },
-          { cx: 50, cy: 50 },
-        ].map((node, i) => (
-          <motion.circle
-            key={i}
-            cx={node.cx}
-            cy={node.cy}
-            r="2"
-            fill="rgba(255,255,255,0.4)"
-            animate={{
-              r: [2, 3, 2],
-              opacity: [0.4, 0.8, 0.4],
-            }}
-            transition={{
-              duration: 2,
-              repeat: Infinity,
-              delay: i * 0.3,
-            }}
-          />
-        ))}
-      </motion.svg>
+// 3D Procedural Holographic Brain Particle Mesh Component
+function HolographicBrain({ activeColor = '#d2af5a' }: { activeColor?: string }) {
+  const pointsRef = useRef<THREE.Points>(null)
+  const groupRef = useRef<THREE.Group>(null)
 
-      {/* Labels around brain */}
-      <div className="absolute top-2 right-0 text-[8px] text-silver-light/60">
-        <p>Neuro-Estado:</p>
-        <p className="text-white/80">Receptiva</p>
+  // Procedural 3D vertex generation representing a 6D neural brain hemisphere structure
+  const [particles, connections] = useMemo(() => {
+    const pts = []
+    const conn = []
+    const numPoints = 280
+
+    for (let i = 0; i < numPoints; i++) {
+      const u = Math.random()
+      const v = Math.random()
+      const theta = u * 2.0 * Math.PI
+      const phi = Math.acos(2.0 * v - 1.0)
+      
+      // Deformation algorithm to sculpt a double-lobed brain structure
+      const isLeft = theta > Math.PI
+      const lobeSeparation = isLeft ? -0.18 : 0.18
+      const r = 1.0 + Math.sin(theta * 2.0) * 0.15 + Math.cos(phi * 3.0) * 0.1
+      
+      const x = r * Math.sin(phi) * Math.cos(theta) * 0.72 + lobeSeparation
+      const y = r * Math.sin(phi) * Math.sin(theta) * 1.0 // vertical lobe elongation
+      const z = r * Math.cos(phi) * 0.65 // horizontal width
+
+      pts.push(new THREE.Vector3(x, y, z))
+    }
+
+    // Connect near nodes to represent neural synapses
+    for (let i = 0; i < pts.length; i++) {
+      for (let j = i + 1; j < pts.length; j++) {
+        if (pts[i].distanceTo(pts[j]) < 0.38 && Math.random() > 0.76) {
+          conn.push([pts[i], pts[j]])
+        }
+      }
+    }
+
+    return [pts, conn]
+  }, [])
+
+  useFrame((state) => {
+    const elapsed = state.clock.getElapsedTime()
+    
+    // Slow rotational telemetry and heartbeat oscillation
+    if (groupRef.current) {
+      groupRef.current.rotation.y = elapsed * 0.22
+      groupRef.current.rotation.x = Math.sin(elapsed * 0.1) * 0.08
+    }
+
+    // Wave-like animation of individual neural points
+    if (pointsRef.current) {
+      const geo = pointsRef.current.geometry
+      const pos = geo.attributes.position
+      
+      for (let i = 0; i < particles.length; i++) {
+        const offset = Math.sin(elapsed * 2.0 + particles[i].x * 3.0) * 0.02
+        pos.setY(i, particles[i].y + offset)
+      }
+      pos.needsUpdate = true
+    }
+  })
+
+  // Format array for three.js buffer attributes
+  const positionsArr = useMemo(() => {
+    const arr = new Float32Array(particles.length * 3)
+    particles.forEach((p, idx) => {
+      arr[idx * 3] = p.x
+      arr[idx * 3 + 1] = p.y
+      arr[idx * 3 + 2] = p.z
+    })
+    return arr
+  }, [particles])
+
+  return (
+    <group ref={groupRef}>
+      {/* Interactive Glowing Core */}
+      <mesh>
+        <sphereGeometry args={[0.3, 16, 16]} />
+        <meshBasicMaterial color={activeColor} transparent opacity={0.16} wireframe />
+      </mesh>
+
+      {/* Glowing neural particles */}
+      <points ref={pointsRef}>
+        <bufferGeometry>
+          <bufferAttribute
+            attach="attributes-position"
+            args={[positionsArr, 3]}
+          />
+        </bufferGeometry>
+        <pointsMaterial
+          color={activeColor}
+          size={0.038}
+          sizeAttenuation={true}
+          transparent
+          opacity={0.88}
+        />
+      </points>
+
+      {/* Glowing neural synaptic connection lines */}
+      {connections.map((line, idx) => (
+        <line key={idx}>
+          <bufferGeometry attach="geometry">
+            <bufferAttribute
+              attach="attributes-position"
+              args={[new Float32Array([
+                line[0].x, line[0].y, line[0].z,
+                line[1].x, line[1].y, line[1].z
+              ]), 3]}
+            />
+          </bufferGeometry>
+          <lineBasicMaterial
+            color={activeColor}
+            transparent
+            opacity={0.18}
+            linewidth={0.5}
+          />
+        </line>
+      ))}
+    </group>
+  )
+}
+
+// 3D Canvas visualizer wrapper (with SSR safety check)
+function Brain3DVisual({ activeColor = '#d2af5a' }: { activeColor?: string }) {
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  if (!mounted) {
+    return (
+      <div className="w-full aspect-square max-w-[200px] mx-auto flex items-center justify-center bg-black/40 border border-white/5 rounded-2xl relative select-none">
+        <span className="text-[7.5px] font-mono text-white/20 uppercase tracking-widest animate-pulse">
+          Carregando Telemetria 3D...
+        </span>
       </div>
-      <div className="absolute top-1/4 left-0 text-[8px] text-silver-light/60 text-right">
-        <p>Fisioterapia</p>
-        <p className="text-white/80">Adaptativa</p>
+    )
+  }
+
+  return (
+    <div className="relative w-full aspect-square max-w-[200px] mx-auto bg-black/30 border border-white/5 rounded-2xl overflow-hidden select-none">
+      
+      {/* Dynamic Gold Radial Glow behind the canvas */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(210,175,90,0.05),transparent_70%)] pointer-events-none" />
+
+      <Canvas camera={{ position: [0, 0, 2.6], fov: 50 }} className="relative z-10 w-full h-full">
+        <ambientLight intensity={0.5} />
+        <pointLight position={[10, 10, 10]} intensity={0.8} />
+        <HolographicBrain activeColor={activeColor} />
+        <OrbitControls enableZoom={false} autoRotate autoRotateSpeed={0.4} />
+      </Canvas>
+
+      {/* Grid overlay markers styled like space systems */}
+      <div className="absolute top-2 right-2 border border-white/10 bg-black/60 text-[6.5px] font-mono text-white/40 px-1.5 py-0.5 rounded uppercase tracking-widest pointer-events-none">
+        Active 6D Hologram
       </div>
-      <div className="absolute bottom-1/4 right-0 text-[8px] text-silver-light/60">
-        <p>Fisioterapia</p>
-        <p className="text-white/80">Adaptativa</p>
-      </div>
-      <div className="absolute bottom-4 left-1/4 text-[8px] text-silver-light/60">
-        <p>Fisioterapia</p>
-        <p className="text-white/80">Adoptativa</p>
+      
+      <div className="absolute bottom-2 left-2 text-[6.5px] font-mono text-white/30 uppercase tracking-widest pointer-events-none">
+        SYS_BRAIN_MESH_PROJ
       </div>
     </div>
   )
@@ -126,7 +188,7 @@ function BrainVisual() {
 // VM Charts mini component
 function VMCharts() {
   return (
-    <div className="mt-4 pt-4 border-t border-white/5">
+    <div className="mt-4 pt-4 border-t border-white/5 select-none">
       <div className="flex items-center justify-between mb-2">
         <span className="text-[9px] tracking-wider text-silver-light/60 uppercase">Mechanical Ventilation (VM)</span>
         <div className="flex gap-3 text-[8px] text-silver-light/50">
@@ -152,7 +214,7 @@ function VMCharts() {
               />
             </LineChart>
           </ResponsiveContainer>
-          <p className="text-[7px] text-silver-light/40 text-center mt-0.5">Pressao</p>
+          <p className="text-[7px] text-silver-light/40 text-center mt-0.5 font-mono">Pressao</p>
         </div>
         
         {/* Volume */}
@@ -169,7 +231,7 @@ function VMCharts() {
               />
             </LineChart>
           </ResponsiveContainer>
-          <p className="text-[7px] text-silver-light/40 text-center mt-0.5">Volume</p>
+          <p className="text-[7px] text-silver-light/40 text-center mt-0.5 font-mono">Volume</p>
         </div>
         
         {/* Flow */}
@@ -186,7 +248,7 @@ function VMCharts() {
               />
             </LineChart>
           </ResponsiveContainer>
-          <p className="text-[7px] text-silver-light/40 text-center mt-0.5">Fluxo</p>
+          <p className="text-[7px] text-silver-light/40 text-center mt-0.5 font-mono">Fluxo</p>
         </div>
       </div>
     </div>
@@ -195,14 +257,14 @@ function VMCharts() {
 
 export function BioneuralPanel() {
   return (
-    <GlassCard className="p-4">
-      <div className="flex items-center justify-between mb-3">
+    <GlassCard className="p-4 relative overflow-hidden">
+      <div className="flex items-center justify-between mb-3 select-none">
         <h3 className="text-xs tracking-wider text-silver-light/80 uppercase font-medium">
           Analise Bioneural (6D)
         </h3>
       </div>
       
-      <BrainVisual />
+      <Brain3DVisual />
       <VMCharts />
     </GlassCard>
   )
