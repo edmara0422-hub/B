@@ -40,6 +40,28 @@ export function InteractiveCockpit() {
   const [activePillar, setActivePillar] = useState<'financas' | 'capital_humano' | 'estrategia' | 'esg' | 'ai'>('financas')
   const [countdown, setCountdown] = useState(10)
 
+  // Efeito 3D Tilt nos Mini-Cards da Coluna Esquerda
+  const handleCardTilt = (e: React.MouseEvent<HTMLDivElement>) => {
+    const card = e.currentTarget
+    const box = card.getBoundingClientRect()
+    const x = e.clientX - box.left - box.width / 2
+    const y = e.clientY - box.top - box.height / 2
+    
+    const tiltX = -(y / (box.height / 2)) * 8
+    const tiltY = (x / (box.width / 2)) * 8
+    
+    card.style.transform = `perspective(1000px) rotateX(${tiltX.toFixed(2)}deg) rotateY(${tiltY.toFixed(2)}deg) translateY(-3px)`
+    card.style.boxShadow = `${-tiltY * 1.5}px ${tiltX * 1.5}px 30px rgba(210, 175, 90, 0.25)`
+    card.style.transition = 'transform 0.1s ease, box-shadow 0.1s ease'
+  }
+
+  const handleCardReset = (e: React.MouseEvent<HTMLDivElement>) => {
+    const card = e.currentTarget
+    card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0px)`
+    card.style.boxShadow = ``
+    card.style.transition = 'transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1)'
+  }
+
   // Estados do Novo Simulador de Vantagem Real (IVRS)
   const [compFactor, setCompFactor] = useState<'transparencia' | 'evidencia' | 'auditoria'>('transparencia')
   const [effortValue, setEffortValue] = useState<number>(75)
@@ -717,6 +739,8 @@ export function InteractiveCockpit() {
           {/* Card 1: Pessoas (Pilar 1 ou Pilar 2 se ativo) */}
           <div 
             onClick={() => setActivePillar(activePillar === 'capital_humano' ? 'financas' : 'capital_humano')}
+            onMouseMove={handleCardTilt}
+            onMouseLeave={handleCardReset}
             className={`hud-card-interactive group relative overflow-hidden flex flex-col justify-between p-0.5 bg-[#0a0a0c]/85 border rounded-3xl backdrop-blur-xl h-[195px] transition-all ${activePillar === 'capital_humano' ? 'hud-card-active-glow' : 'border-[#d2af5a]/25'}`}
           >
             {activePillar === 'capital_humano' ? <MiniFinancas /> : <MiniCapitalHumano />}
@@ -725,6 +749,8 @@ export function InteractiveCockpit() {
           {/* Card 2: Estratégia (Pilar 3 ou Pilar 2 se ativo) */}
           <div 
             onClick={() => setActivePillar(activePillar === 'estrategia' ? 'financas' : 'estrategia')}
+            onMouseMove={handleCardTilt}
+            onMouseLeave={handleCardReset}
             className={`hud-card-interactive group relative overflow-hidden flex flex-col justify-between p-0.5 bg-[#0a0a0c]/85 border rounded-3xl backdrop-blur-xl h-[195px] transition-all ${activePillar === 'estrategia' ? 'hud-card-active-glow' : 'border-[#d2af5a]/25'}`}
           >
             {activePillar === 'estrategia' ? <MiniFinancas /> : <MiniEstrategia />}
@@ -733,6 +759,8 @@ export function InteractiveCockpit() {
           {/* Card 3: ESG (ESG ou Pilar 2 se ativo) */}
           <div 
             onClick={() => setActivePillar(activePillar === 'esg' ? 'financas' : 'esg')}
+            onMouseMove={handleCardTilt}
+            onMouseLeave={handleCardReset}
             className={`hud-card-interactive group relative overflow-hidden flex flex-col justify-between p-0.5 bg-[#0a0a0c]/85 border rounded-3xl backdrop-blur-xl h-[195px] transition-all ${activePillar === 'esg' ? 'hud-card-active-glow' : 'border-[#d2af5a]/25'}`}
           >
             {activePillar === 'esg' ? <MiniFinancas /> : <MiniEsg />}
@@ -741,6 +769,8 @@ export function InteractiveCockpit() {
           {/* Card 4: AI Assistant (Persistente no final da coluna esquerda, agora interativo!) */}
           <div 
             onClick={() => setActivePillar(activePillar === 'ai' ? 'financas' : 'ai')}
+            onMouseMove={handleCardTilt}
+            onMouseLeave={handleCardReset}
             className={`hud-card-interactive group relative overflow-hidden flex flex-col justify-between p-0.5 bg-[#0a0a0c]/85 border rounded-3xl backdrop-blur-xl h-[195px] transition-all ${activePillar === 'ai' ? 'hud-card-active-glow' : 'border-[#d2af5a]/25'}`}
           >
             {activePillar === 'ai' ? <MiniFinancas /> : <MiniAi />}

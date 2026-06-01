@@ -22,6 +22,142 @@ interface ModoDescobertaProps {
   }) => void
 }
 
+interface NeuralParticleStormProps {
+  active: boolean
+}
+
+function NeuralParticleStorm({ active }: NeuralParticleStormProps) {
+  const canvasRef = useRef<HTMLCanvasElement | null>(null)
+
+  useEffect(() => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+    const ctx = canvas.getContext('2d')
+    if (!ctx) return
+
+    let animationFrameId: number
+    const width = 280
+    const height = 280
+    canvas.width = width
+    canvas.height = height
+
+    const particleCount = 24
+    const particles: Array<{
+      x: number
+      y: number
+      vx: number
+      vy: number
+      radius: number
+      alpha: number
+      pulseSpeed: number
+      pulsePhase: number
+    }> = []
+
+    // Initialize particles floating around the center orb
+    for (let i = 0; i < particleCount; i++) {
+      const angle = Math.random() * Math.PI * 2
+      const distance = 45 + Math.random() * 75
+      particles.push({
+        x: width / 2 + Math.cos(angle) * distance,
+        y: height / 2 + Math.sin(angle) * distance,
+        vx: (Math.random() - 0.5) * 0.45,
+        vy: (Math.random() - 0.5) * 0.45,
+        radius: 1 + Math.random() * 1.8,
+        alpha: 0.18 + Math.random() * 0.35,
+        pulseSpeed: 0.02 + Math.random() * 0.03,
+        pulsePhase: Math.random() * Math.PI
+      })
+    }
+
+    const render = () => {
+      ctx.clearRect(0, 0, width, height)
+
+      const centerX = width / 2
+      const centerY = height / 2
+
+      // Draw faint connections between particles
+      ctx.lineWidth = 0.55
+      for (let i = 0; i < particleCount; i++) {
+        const p1 = particles[i]
+        for (let j = i + 1; j < particleCount; j++) {
+          const p2 = particles[j]
+          const dx = p1.x - p2.x
+          const dy = p1.y - p2.y
+          const dist = Math.sqrt(dx * dx + dy * dy)
+
+          if (dist < 60) {
+            const opacity = (1 - dist / 60) * 0.14 * (active ? 2.2 : 1.0)
+            ctx.strokeStyle = `rgba(210, 175, 90, ${opacity})`
+            ctx.beginPath()
+            ctx.moveTo(p1.x, p1.y)
+            ctx.lineTo(p2.x, p2.y)
+            ctx.stroke()
+          }
+        }
+      }
+
+      // Update and draw particles
+      particles.forEach((p) => {
+        const speedMultiplier = active ? 2.4 : 0.95
+        p.x += p.vx * speedMultiplier
+        p.y += p.vy * speedMultiplier
+
+        const dx = centerX - p.x
+        const dy = centerY - p.y
+        const distToCenter = Math.sqrt(dx * dx + dy * dy)
+
+        // Float boundaries & gravity
+        if (distToCenter > 120) {
+          p.vx += (dx / distToCenter) * 0.005
+          p.vy += (dy / distToCenter) * 0.005
+        }
+
+        // Float drift boundaries
+        if (p.x < 15 || p.x > width - 15) p.vx *= -0.8
+        if (p.y < 15 || p.y > height - 15) p.vy *= -0.8
+
+        p.pulsePhase += p.pulseSpeed * (active ? 2.5 : 1.0)
+        const currentAlpha = p.alpha * (0.5 + 0.5 * Math.sin(p.pulsePhase))
+
+        // Draw particle
+        ctx.beginPath()
+        ctx.arc(p.x, p.y, p.radius * (active ? 1.4 : 1.0), 0, Math.PI * 2)
+        ctx.fillStyle = `rgba(210, 175, 90, ${currentAlpha})`
+        ctx.shadowColor = '#d2af5a'
+        ctx.shadowBlur = active ? 9 : 2
+        ctx.fill()
+        ctx.shadowBlur = 0 // Reset
+
+        // Draw synapses to center
+        if (distToCenter < 100 && distToCenter > 40) {
+          const synapseOpacity = (1 - distToCenter / 100) * 0.08 * (active ? 2.4 : 0.8)
+          ctx.strokeStyle = `rgba(210, 175, 90, ${synapseOpacity})`
+          ctx.beginPath()
+          ctx.moveTo(p.x, p.y)
+          ctx.lineTo(centerX, centerY)
+          ctx.stroke()
+        }
+      })
+
+      animationFrameId = requestAnimationFrame(render)
+    }
+
+    render()
+
+    return () => {
+      cancelAnimationFrame(animationFrameId)
+    }
+  }, [active])
+
+  return (
+    <canvas 
+      ref={canvasRef} 
+      className="absolute pointer-events-none select-none z-0" 
+      style={{ width: '280px', height: '280px' }}
+    />
+  )
+}
+
 export function ModoDescobertaVantagem({ onClose, onCalibrateCockpit }: ModoDescobertaProps) {
   const [step, setStep] = useState<number>(0)
   
@@ -73,6 +209,7 @@ export function ModoDescobertaVantagem({ onClose, onCalibrateCockpit }: ModoDesc
   
   // --- Passo 4: Xeque-Mate Final ---
   const [showPitchCopyAlert, setShowPitchCopyAlert] = useState(false)
+  const [hoveredAxis, setHoveredAxis] = useState<number | null>(null)
 
   // Presets Rápidos de Histórico
   const applyPreset = () => {
@@ -259,6 +396,35 @@ export function ModoDescobertaVantagem({ onClose, onCalibrateCockpit }: ModoDesc
       verdict: "✅ OPERAÇÃO DE VANTAGEM REAL APROVADA: Equilíbrio financeiro saudável e posicionamento pautado na integridade e verdade radical. Seus ativos cruzados anulam concorrentes comuns."
     }
   }, [skill1, skill2, skill3, skill4])
+
+  // --- DADOS E CÁLCULOS DO GRÁFICO DE RADAR ---
+  const radarData = useMemo(() => [
+    { label: "EBITDA", user: calculatedDiferencial.ebitda, comp: 25, rawUser: `${calculatedDiferencial.ebitda}%`, rawComp: "25%", desc: "Margem de lucro operacional real da operação." },
+    { label: "LTV/CAC", user: Math.min(100, calculatedDiferencial.ltvCac * 12), comp: 15, rawUser: `${calculatedDiferencial.ltvCac}x`, rawComp: "1.2x", desc: "Multiplicador de retorno vitalício sobre custo de aquisição." },
+    { label: "TDBD", user: calculatedDiferencial.tdbd, comp: 20, rawUser: `${calculatedDiferencial.tdbd}%`, rawComp: "20%", desc: "Tomada de decisão baseada em dados e fatos vs. achismo." },
+    { label: "Resiliência", user: 100 - calculatedDiferencial.sequestroAmigdala, comp: 30, rawUser: `${100 - calculatedDiferencial.sequestroAmigdala}%`, rawComp: "30%", desc: "Controle emocional e resiliência sob pressão extrema." },
+    { label: "Autenticidade", user: 100 - calculatedDiferencial.friccaoPersonagem, comp: 25, rawUser: `${100 - calculatedDiferencial.friccaoPersonagem}%`, rawComp: "25%", desc: "Uso do Eu Integral genuíno com baixíssima fricção de persona." },
+    { label: "Sustentabilidade", user: 100 - calculatedDiferencial.custoDopaminergico, comp: 15, rawUser: `${100 - calculatedDiferencial.custoDopaminergico}%`, rawComp: "15%", desc: "Posicionamento de mercado de baixo custo dopaminérgico e FOMO." },
+  ], [calculatedDiferencial])
+
+  const getCoordinates = (val: number, i: number) => {
+    const angle = -Math.PI / 2 + (i * Math.PI / 3)
+    const r = (val / 100) * 80
+    return {
+      x: 100 + r * Math.cos(angle),
+      y: 100 + r * Math.sin(angle)
+    }
+  }
+
+  const userPoints = useMemo(() => radarData.map((d, i) => {
+    const coords = getCoordinates(d.user, i)
+    return `${coords.x},${coords.y}`
+  }).join(" "), [radarData])
+
+  const compPoints = useMemo(() => radarData.map((d, i) => {
+    const coords = getCoordinates(d.comp, i)
+    return `${coords.x},${coords.y}`
+  }).join(" "), [radarData])
 
   // Calibrar Cockpit ao fechar ou confirmar
   const handleConfirmCalibration = () => {
@@ -621,6 +787,9 @@ export function ModoDescobertaVantagem({ onClose, onCalibrateCockpit }: ModoDesc
             <div className="flex-1 flex flex-col items-center justify-center gap-6 my-6 relative z-10">
               <div className="relative flex items-center justify-center">
                 
+                {/* Tempestade de Partículas Neurais Avançada */}
+                <NeuralParticleStorm active={audioPlaying} />
+                
                 {/* Halo pulsante */}
                 <div 
                   className={`absolute h-24 w-24 rounded-full border border-[#d2af5a]/30 transition-all duration-1000 ${
@@ -802,7 +971,93 @@ export function ModoDescobertaVantagem({ onClose, onCalibrateCockpit }: ModoDesc
       {/* PASSO 3: O MAPEAMENTO DO PONTO CEGO DO MERCADO (TDBD) */}
       {step === 3 && (
         <div className="flex flex-col gap-6 items-center py-8 px-4 relative overflow-hidden min-h-[400px]">
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(210,175,90,0.04),transparent_65%)] pointer-events-none select-none" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(210,175,90,0.04),transparent_65%)] pointer-events-none select-none animate-pulse" style={{ animationDuration: '4s' }} />
+
+          {/* Fundo 3D Holographic Grid Scanner */}
+          <div className="scanning-perspective-container select-none pointer-events-none">
+            <div className="scanning-3d-grid" />
+            <div className="scanning-laser-line" />
+            <div className="biometric-scanner-ring ring-lg" />
+            <div className="biometric-scanner-ring ring-md" />
+            <div className="biometric-scanner-ring ring-sm" />
+          </div>
+
+          <style dangerouslySetInnerHTML={{ __html: `
+            .scanning-perspective-container {
+              position: absolute;
+              inset: 0;
+              perspective: 450px;
+              overflow: hidden;
+              pointer-events: none;
+              z-index: 0;
+              opacity: 0.65;
+            }
+            .scanning-3d-grid {
+              position: absolute;
+              width: 250%;
+              height: 250%;
+              top: -75%;
+              left: -75%;
+              background-image: 
+                linear-gradient(to right, rgba(210, 175, 90, 0.09) 1.5px, transparent 1.5px),
+                linear-gradient(to bottom, rgba(210, 175, 90, 0.09) 1.5px, transparent 1.5px);
+              background-size: 30px 30px;
+              transform: rotateX(68deg) translateY(-20px);
+              animation: scanningGridMove 12s linear infinite;
+            }
+            @keyframes scanningGridMove {
+              0% { transform: rotateX(68deg) translateY(-60px); }
+              100% { transform: rotateX(68deg) translateY(0px); }
+            }
+            .scanning-laser-line {
+              position: absolute;
+              width: 100%;
+              height: 3px;
+              background: linear-gradient(to right, transparent, rgba(210, 175, 90, 0.25) 15%, #ffffff 50%, rgba(210, 175, 90, 0.25) 85%, transparent);
+              box-shadow: 0 0 18px rgba(210, 175, 90, 0.7), 0 0 35px rgba(210, 175, 90, 0.35);
+              top: 0%;
+              left: 0;
+              animation: scanningLaserSweep 5s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate;
+              z-index: 2;
+            }
+            @keyframes scanningLaserSweep {
+              0% { top: -10%; }
+              100% { top: 110%; }
+            }
+            .biometric-scanner-ring {
+              position: absolute;
+              border: 1px dashed rgba(210, 175, 90, 0.15);
+              border-radius: 50%;
+              top: 50%;
+              left: 50%;
+              transform: translate(-50%, -50%);
+              pointer-events: none;
+            }
+            .biometric-scanner-ring.ring-lg {
+              width: 500px;
+              height: 500px;
+              animation: biometricRingRotateCW 40s linear infinite;
+              border-color: rgba(210, 175, 90, 0.08);
+            }
+            .biometric-scanner-ring.ring-md {
+              width: 320px;
+              height: 320px;
+              animation: biometricRingRotateCCW 25s linear infinite;
+              border-color: rgba(210, 175, 90, 0.12);
+            }
+            .biometric-scanner-ring.ring-sm {
+              width: 180px;
+              height: 180px;
+              animation: biometricRingRotateCW 15s linear infinite;
+              border-color: rgba(210, 175, 90, 0.2);
+            }
+            @keyframes biometricRingRotateCW {
+              100% { transform: translate(-50%, -50%) rotate(360deg); }
+            }
+            @keyframes biometricRingRotateCCW {
+              100% { transform: translate(-50%, -50%) rotate(-360deg); }
+            }
+          `}} />
 
           {/* Scanner Holográfico */}
           <div className="h-20 w-20 rounded-full border border-[#d2af5a]/40 bg-black/40 flex items-center justify-center relative shadow-[0_0_25px_rgba(210,175,90,0.15)] select-none">
@@ -929,45 +1184,228 @@ export function ModoDescobertaVantagem({ onClose, onCalibrateCockpit }: ModoDesc
 
               {/* A Anatomia da Vantagem: Métricas Reais do Seu Posicionamento */}
               <div className="flex flex-col gap-3">
-                <span className="text-[#d2af5a] text-[9.5px] font-mono font-bold uppercase tracking-wider select-none">
+                <span className="text-[#d2af5a] text-[9.5px] font-mono font-bold uppercase tracking-wider select-none font-bold">
                   ⚙️ ANATOMIA DE FORÇA OPERACIONAL & NEUROPSICOLOGIA (TDBD vs. HYPE):
                 </span>
                 
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                  <div className="bg-black/40 border border-white/5 p-3 rounded-2xl space-y-1">
-                    <span className="text-white/40 text-[7.5px] font-mono uppercase block select-none">Tomada de Decisão baseada em Dados</span>
-                    <b className="text-[#d2af5a] text-sm font-mono block">{calculatedDiferencial.tdbd}% TDBD</b>
-                    <span className="text-[7px] text-white/30 block font-sans select-none">Sua empresa decide em fatos, concorrentes em achismo.</span>
+                <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 items-center">
+                  
+                  {/* COLUNA ESQUERDA: Radar Chart (2/5 da largura) */}
+                  <div className="lg:col-span-2 flex flex-col items-center justify-center bg-black/40 border border-white/5 p-4.5 rounded-2xl relative overflow-hidden min-h-[300px] select-none">
+                    
+                    <div className="text-center mb-2.5">
+                      <span className="text-[7.5px] font-mono text-white/35 uppercase tracking-widest block">Gráfico Radial de Sanidade</span>
+                      <h5 className="text-[10px] font-mono font-bold text-[#d2af5a] uppercase">Sua Operação vs Gurus Hype</h5>
+                    </div>
+
+                    <div className="relative w-full max-w-[220px] aspect-square flex items-center justify-center">
+                      <svg viewBox="0 0 200 200" className="w-full h-full overflow-visible">
+                        {/* Concentric Hexagonal Reference Grid */}
+                        {[20, 40, 60, 80].map((r) => {
+                          const hexPoints = Array.from({ length: 6 }).map((_, idx) => {
+                            const angle = -Math.PI / 2 + (idx * Math.PI / 3)
+                            return `${100 + r * Math.cos(angle)},${100 + r * Math.sin(angle)}`
+                          }).join(" ")
+                          return (
+                            <polygon 
+                              key={r} 
+                              points={hexPoints} 
+                              fill="none" 
+                              stroke="rgba(210, 175, 90, 0.08)" 
+                              strokeWidth="0.8" 
+                            />
+                          )
+                        })}
+
+                        {/* Axes lines and outer labels */}
+                        {radarData.map((d, i) => {
+                          const angle = -Math.PI / 2 + (i * Math.PI / 3)
+                          const xOuter = 100 + 80 * Math.cos(angle)
+                          const yOuter = 100 + 80 * Math.sin(angle)
+                          const xLabel = 100 + 94 * Math.cos(angle)
+                          const yLabel = 100 + 94 * Math.sin(angle)
+                          const textAnchor = Math.cos(angle) > 0.1 ? "start" : Math.cos(angle) < -0.1 ? "end" : "middle"
+
+                          return (
+                            <g key={i} className="group">
+                              {/* Axis Line */}
+                              <line 
+                                x1="100" 
+                                y1="100" 
+                                x2={xOuter} 
+                                y2={yOuter} 
+                                stroke="rgba(255, 255, 255, 0.08)" 
+                                strokeWidth="0.8" 
+                              />
+                              {/* Label */}
+                              <text
+                                x={xLabel}
+                                y={yLabel + (angle === Math.PI / 2 ? 4 : angle === -Math.PI / 2 ? -4 : 2)}
+                                textAnchor={textAnchor}
+                                fill={hoveredAxis === i ? "#d2af5a" : "rgba(255, 255, 255, 0.45)"}
+                                className="font-mono text-[7px] font-bold cursor-pointer transition-all uppercase"
+                                onMouseEnter={() => setHoveredAxis(i)}
+                                onMouseLeave={() => setHoveredAxis(null)}
+                              >
+                                {d.label}
+                              </text>
+                            </g>
+                          )
+                        })}
+
+                        {/* Competitor's Area Polygon (Red) */}
+                        <polygon 
+                          points={compPoints} 
+                          fill="rgba(239, 68, 68, 0.12)" 
+                          stroke="#ef4444" 
+                          strokeWidth="1.2" 
+                          strokeDasharray="2,2" 
+                          className="transition-all duration-300"
+                        />
+
+                        {/* User's Area Polygon (Gold) */}
+                        <polygon 
+                          points={userPoints} 
+                          fill="rgba(210, 175, 90, 0.18)" 
+                          stroke="#d2af5a" 
+                          strokeWidth="2.2" 
+                          className="transition-all duration-300 shadow-[0_0_10px_#d2af5a]"
+                        />
+
+                        {/* Node dots for hovered axis */}
+                        {radarData.map((d, i) => {
+                          const userCoords = getCoordinates(d.user, i)
+                          const compCoords = getCoordinates(d.comp, i)
+                          const isHovered = hoveredAxis === i
+
+                          return (
+                            <g key={i} className="pointer-events-none">
+                              {/* Competitor dot */}
+                              <circle 
+                                cx={compCoords.x} 
+                                cy={compCoords.y} 
+                                r={isHovered ? 4.5 : 2.5} 
+                                fill="#ef4444" 
+                                className="transition-all duration-200"
+                              />
+                              {/* User dot */}
+                              <circle 
+                                cx={userCoords.x} 
+                                cy={userCoords.y} 
+                                r={isHovered ? 5.5 : 3.5} 
+                                fill="#d2af5a" 
+                                stroke={isHovered ? "#ffffff" : "none"}
+                                strokeWidth="0.8"
+                                className="transition-all duration-200"
+                              />
+                              {isHovered && (
+                                <circle 
+                                  cx={userCoords.x} 
+                                  cy={userCoords.y} 
+                                  r="9" 
+                                  fill="none" 
+                                  stroke="#d2af5a" 
+                                  strokeWidth="0.8" 
+                                  className="animate-ping opacity-60" 
+                                />
+                              )}
+                            </g>
+                          )
+                        })}
+
+                        {/* Overlay invisible interactive circles for hover zones */}
+                        {radarData.map((d, i) => {
+                          const angle = -Math.PI / 2 + (i * Math.PI / 3)
+                          const xOuter = 100 + 82 * Math.cos(angle)
+                          const yOuter = 100 + 82 * Math.sin(angle)
+                          return (
+                            <circle
+                              key={i}
+                              cx={xOuter}
+                              cy={yOuter}
+                              r="20"
+                              fill="transparent"
+                              className="cursor-pointer"
+                              onMouseEnter={() => setHoveredAxis(i)}
+                              onMouseLeave={() => setHoveredAxis(null)}
+                            />
+                          )
+                        })}
+                      </svg>
+
+                      {/* Tooltip Overlay */}
+                      {hoveredAxis !== null && (
+                        <div className="absolute inset-2 flex flex-col items-center justify-center bg-black/92 backdrop-blur-md border border-[#d2af5a]/35 p-3 rounded-2xl pointer-events-none select-none text-center animate-in zoom-in-95 duration-150 shadow-[0_0_20px_rgba(210,175,90,0.12)]">
+                          <span className="text-[9px] font-mono font-bold text-[#d2af5a] uppercase tracking-wider">{radarData[hoveredAxis].label}</span>
+                          <span className="text-[7px] font-sans text-white/50 leading-tight mt-0.5 max-w-[140px]">{radarData[hoveredAxis].desc}</span>
+                          <div className="flex gap-4 mt-2 border-t border-white/5 pt-1.5 w-full justify-center">
+                            <div className="flex flex-col">
+                              <span className="text-[6.5px] text-white/35 font-mono">VOCÊ</span>
+                              <span className="text-[10px] font-mono font-bold text-[#d2af5a]">
+                                {radarData[hoveredAxis].rawUser}
+                              </span>
+                            </div>
+                            <div className="flex flex-col">
+                              <span className="text-[6.5px] text-white/35 font-mono">CLONES</span>
+                              <span className="text-[10px] font-mono font-bold text-red-400">
+                                {radarData[hoveredAxis].rawComp}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Legend */}
+                    <div className="flex gap-3.5 mt-2 text-[8px] font-mono select-none">
+                      <span className="flex items-center gap-1 text-[#d2af5a]">
+                        <span className="h-1.5 w-1.5 rounded-full bg-[#d2af5a] shadow-[0_0_4px_#d2af5a]" />
+                        Você (Auditável)
+                      </span>
+                      <span className="flex items-center gap-1 text-[#ef4444]">
+                        <span className="h-1.5 w-1.5 rounded-full bg-[#ef4444] shadow-[0_0_4px_#ef4444]" />
+                        Concorrência (Hype)
+                      </span>
+                    </div>
                   </div>
 
-                  <div className="bg-black/40 border border-white/5 p-3 rounded-2xl space-y-1">
-                    <span className="text-white/40 text-[7.5px] font-mono uppercase block select-none">Sequestro da Amígdala</span>
-                    <b className="text-[#d2af5a] text-sm font-mono block">{calculatedDiferencial.sequestroAmigdala}% Risco</b>
-                    <span className="text-[7px] text-white/30 block font-sans select-none">Controle emocional de Córtex Pré-Frontal vs. desespero concorrente.</span>
-                  </div>
+                  {/* COLUNA DIREITA: Metrics Grid (3/5 da largura) */}
+                  <div className="lg:col-span-3 grid grid-cols-2 sm:grid-cols-3 gap-3">
+                    <div className="bg-black/40 border border-white/5 p-3 rounded-2xl space-y-1">
+                      <span className="text-white/40 text-[7.5px] font-mono uppercase block select-none">Tomada de Decisão baseada em Dados</span>
+                      <b className="text-[#d2af5a] text-sm font-mono block">{calculatedDiferencial.tdbd}% TDBD</b>
+                      <span className="text-[7px] text-white/30 block font-sans select-none">Sua empresa decide em fatos, concorrentes em achismo.</span>
+                    </div>
 
-                  <div className="bg-black/40 border border-white/5 p-3 rounded-2xl space-y-1">
-                    <span className="text-white/40 text-[7.5px] font-mono uppercase block select-none">Fricção de Personagem</span>
-                    <b className="text-[#d2af5a] text-sm font-mono block">{calculatedDiferencial.friccaoPersonagem}% Desgaste</b>
-                    <span className="text-[7px] text-white/30 block font-sans select-none">Uso do Eu Integral autêntico poupa cortisol na operação.</span>
-                  </div>
+                    <div className="bg-black/40 border border-white/5 p-3 rounded-2xl space-y-1">
+                      <span className="text-white/40 text-[7.5px] font-mono uppercase block select-none">Sequestro da Amígdala</span>
+                      <b className="text-[#d2af5a] text-sm font-mono block">{calculatedDiferencial.sequestroAmigdala}% Risco</b>
+                      <span className="text-[7px] text-white/30 block font-sans select-none">Controle emocional de Córtex Pré-Frontal vs. desespero concorrente.</span>
+                    </div>
 
-                  <div className="bg-black/40 border border-white/5 p-3 rounded-2xl space-y-1">
-                    <span className="text-white/40 text-[7.5px] font-mono uppercase block select-none">Custo Dopaminérgico</span>
-                    <b className="text-[#d2af5a] text-sm font-mono block">{calculatedDiferencial.custoDopaminergico}% Manipulação</b>
-                    <span className="text-[7px] text-white/30 block font-sans select-none">Produto baseado na educação e verdade radical vs. FOMO agressivo.</span>
-                  </div>
+                    <div className="bg-black/40 border border-white/5 p-3 rounded-2xl space-y-1">
+                      <span className="text-white/40 text-[7.5px] font-mono uppercase block select-none">Fricção de Personagem</span>
+                      <b className="text-[#d2af5a] text-sm font-mono block">{calculatedDiferencial.friccaoPersonagem}% Desgaste</b>
+                      <span className="text-[7px] text-white/30 block font-sans select-none">Uso do Eu Integral autêntico poupa cortisol na operação.</span>
+                    </div>
 
-                  <div className="bg-black/40 border border-white/5 p-3 rounded-2xl space-y-1">
-                    <span className="text-white/40 text-[7.5px] font-mono uppercase block select-none">Margem EBITDA</span>
-                    <b className="text-[#d2af5a] text-sm font-mono block">{calculatedDiferencial.ebitda}% EBITDA</b>
-                    <span className="text-[7px] text-white/30 block font-sans select-none">Margem de lucro real sem queima estúpida de caixa em tráfego.</span>
-                  </div>
+                    <div className="bg-black/40 border border-white/5 p-3 rounded-2xl space-y-1">
+                      <span className="text-white/40 text-[7.5px] font-mono uppercase block select-none">Custo Dopaminérgico</span>
+                      <b className="text-[#d2af5a] text-sm font-mono block">{calculatedDiferencial.custoDopaminergico}% Manipulação</b>
+                      <span className="text-[7px] text-white/30 block font-sans select-none">Produto baseado na educação e verdade radical vs. FOMO agressivo.</span>
+                    </div>
 
-                  <div className="bg-black/40 border border-white/5 p-3 rounded-2xl space-y-1">
-                    <span className="text-white/40 text-[7.5px] font-mono uppercase block select-none">Eficiência LTV/CAC</span>
-                    <b className="text-[#d2af5a] text-sm font-mono block">{calculatedDiferencial.ltvCac}x Retorno</b>
-                    <span className="text-[7px] text-white/30 block font-sans select-none">Indicação e retenção orgânica vs. leilão de anúncios caros.</span>
+                    <div className="bg-black/40 border border-white/5 p-3 rounded-2xl space-y-1">
+                      <span className="text-white/40 text-[7.5px] font-mono uppercase block select-none">Margem EBITDA</span>
+                      <b className="text-[#d2af5a] text-sm font-mono block">{calculatedDiferencial.ebitda}% EBITDA</b>
+                      <span className="text-[7px] text-white/30 block font-sans select-none">Margem de lucro real sem queima estúpida de caixa em tráfego.</span>
+                    </div>
+
+                    <div className="bg-black/40 border border-white/5 p-3 rounded-2xl space-y-1">
+                      <span className="text-white/40 text-[7.5px] font-mono uppercase block select-none">Eficiência LTV/CAC</span>
+                      <b className="text-[#d2af5a] text-sm font-mono block">{calculatedDiferencial.ltvCac}x Retorno</b>
+                      <span className="text-[7px] text-white/30 block font-sans select-none">Indicação e retenção orgânica vs. leilão de anúncios caros.</span>
+                    </div>
                   </div>
                 </div>
               </div>
