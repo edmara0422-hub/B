@@ -718,8 +718,8 @@ export function InteractiveCockpit() {
         {/* COLUNA DIREITA: HUD Ativo + Simulador de Vantagem Real no Rodapé */}
         <div className="flex flex-col gap-[20px] h-full justify-between">
           
-          {/* Container do HUD Ativo (Travado em 560px de altura para alinhamento milimétrico) */}
-          <div className="w-full h-[560px]">
+          {/* Container do HUD Ativo (Travado em 520px de altura para alinhamento milimétrico com nova altura do rodapé) */}
+          <div className="w-full h-[520px]">
             {activePillar === 'financas' && <HudFinancas />}
             {activePillar === 'capital_humano' && <HudCapitalHumano />}
             {activePillar === 'estrategia' && <HudEstrategia />}
@@ -727,10 +727,10 @@ export function InteractiveCockpit() {
             {activePillar === 'ai' && <HudAi />}
           </div>
 
-          {/* SIMULADOR DE VANTAGEM REAL (Travado em 260px de altura) */}
+          {/* SIMULADOR DE VANTAGEM REAL (Travado em 300px de altura) */}
           {aiVerdictStatus !== 'approved' ? (
             /* CASO 1: AGUARDANDO PROTOCOLO DESCOBERTA REAL */
-            <div className="p-4 rounded-3xl backdrop-blur-xl border flex flex-col justify-between h-[260px] relative overflow-hidden select-text" style={{ background: 'rgba(8, 8, 10, 0.85)', borderColor: 'rgba(210, 175, 90, 0.25)' }}>
+            <div className="p-3.5 rounded-3xl backdrop-blur-xl border flex flex-col justify-between h-[300px] relative overflow-hidden select-text" style={{ background: 'rgba(8, 8, 10, 0.85)', borderColor: 'rgba(210, 175, 90, 0.25)' }}>
               
               {/* Ambient gold glow */}
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(210,175,90,0.04),transparent_65%)] pointer-events-none" />
@@ -749,7 +749,7 @@ export function InteractiveCockpit() {
               </div>
 
               {/* Corpo: Chamada Visual de Alto Impacto para Tomada de Decisão */}
-              <div className="flex-1 flex flex-col justify-center py-2 relative z-10 text-left">
+              <div className="flex-1 flex flex-col justify-center py-1.5 relative z-10 text-left">
                 <h3 className="text-white text-xs font-bold leading-normal tracking-wide">
                   Mapeie e valide as barreiras de entrada e o posicionamento da sua operação
                 </h3>
@@ -770,7 +770,7 @@ export function InteractiveCockpit() {
               </div>
 
               {/* Rodapé: Botão de Ação de Grande Destaque */}
-              <div className="pt-2 border-t border-white/5 flex items-center justify-between shrink-0 relative z-10">
+              <div className="pt-1.5 border-t border-white/5 flex items-center justify-between shrink-0 relative z-10">
                 <span className="text-[7.5px] font-mono text-white/25">
                   *Tomada de Decisão Baseada em Dados (TDBD) & Neurociência aplicada.
                 </span>
@@ -789,7 +789,7 @@ export function InteractiveCockpit() {
             </div>
           ) : (
             /* CASO 2: MODO BLINDADO ATIVO - POSICIONAMENTO CRISTALIZADO */
-            <div className="p-4 rounded-3xl backdrop-blur-xl border flex flex-col justify-between h-[260px] relative overflow-hidden select-text animate-in fade-in zoom-in-95 duration-300" style={{ background: 'rgba(8, 8, 10, 0.85)', borderColor: 'rgba(16, 185, 129, 0.4)' }}>
+            <div className="p-3 rounded-3xl backdrop-blur-xl border flex flex-col justify-between h-[300px] relative overflow-hidden select-text animate-in fade-in zoom-in-95 duration-300" style={{ background: 'rgba(8, 8, 10, 0.85)', borderColor: 'rgba(16, 185, 129, 0.4)' }}>
               
               {/* Ambient green/emerald glow */}
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(16,185,129,0.05),transparent_65%)] pointer-events-none" />
@@ -808,35 +808,35 @@ export function InteractiveCockpit() {
               </div>
 
               {/* Corpo: Dados da sua Operação Forgada */}
-              <div className="flex-1 flex gap-4 py-2 relative z-10 items-stretch overflow-hidden">
+              <div className="flex-1 flex gap-4 py-1.5 relative z-10 items-stretch overflow-hidden">
                 
                 {/* Lado Esquerdo: Pitch e Posicionamento */}
                 <div className="flex-1 flex flex-col justify-center text-left">
                   <span className="text-[7.5px] font-mono text-white/35 uppercase tracking-wider block mb-1">
                     POSICIONAMENTO DE OCEANO AZUL (PRESET AUTÊNTICO):
                   </span>
-                  <p className="text-white text-[11px] font-serif leading-relaxed italic pr-2">
+                  <p className="text-white text-[10px] font-serif leading-snug italic pr-1">
                     {ebitda === 85 
                       ? '"Eu trago a calma e resiliência extrema de 8 anos salvando vidas em UTI para desintegrar a ilusão dos gurus de palco, aplicando TDBD para blindar seu negócio e sua sanidade contra o caos competitivo."'
                       : `"${aiVerdict.replace('✅ OPERAÇÃO DE EXCELÊNCIA INTEGRAL APROVADA: ', '').replace('✅ OPERAÇÃO DE VANTAGEM REAL APROVADA: ', '').split('.')[0]}."`
                     }
                   </p>
-                  <span className="text-[8px] font-mono text-[#d2af5a] mt-2 block">
+                  <span className="text-[7.5px] font-mono text-[#d2af5a] mt-1.5 block leading-tight">
                     {aiVerdict.length > 80 ? aiVerdict.substring(0, 100) + '...' : aiVerdict}
                   </span>
                 </div>
 
                 {/* Lado Direito: Grid de Métrica Otimizada */}
-                <div className="w-[38%] border-l border-white/5 pl-4 flex flex-col justify-center gap-2 shrink-0">
-                  <div className="p-1.5 rounded-lg bg-black/40 border border-white/5 flex flex-col">
+                <div className="w-[38%] border-l border-white/5 pl-3 flex flex-col justify-center gap-1.5 shrink-0">
+                  <div className="p-1 px-1.5 rounded-lg bg-black/40 border border-white/5 flex flex-col">
                     <span className="text-[5.5px] font-mono text-white/40 uppercase">Eficiência (IVRS)</span>
                     <span className="text-[10px] font-extrabold font-mono text-[#d2af5a]">{ebitda}%</span>
                   </div>
-                  <div className="p-1.5 rounded-lg bg-black/40 border border-white/5 flex flex-col">
+                  <div className="p-1 px-1.5 rounded-lg bg-black/40 border border-white/5 flex flex-col">
                     <span className="text-[5.5px] font-mono text-white/40 uppercase">Tomada Decisão (TDBD)</span>
                     <span className="text-[10px] font-extrabold font-mono text-emerald-400">{tdbd}%</span>
                   </div>
-                  <div className="p-1.5 rounded-lg bg-black/40 border border-white/5 flex flex-col">
+                  <div className="p-1 px-1.5 rounded-lg bg-black/40 border border-white/5 flex flex-col">
                     <span className="text-[5.5px] font-mono text-white/40 uppercase">Risco Liderança</span>
                     <span className="text-[10px] font-extrabold font-mono text-red-400">{sequestroAmigdala}%</span>
                   </div>
@@ -845,7 +845,7 @@ export function InteractiveCockpit() {
               </div>
 
               {/* Rodapé: Botões de Ação */}
-              <div className="pt-2 border-t border-white/5 flex items-center justify-between shrink-0 relative z-10 select-none">
+              <div className="pt-1.5 border-t border-white/5 flex items-center justify-between shrink-0 relative z-10 select-none">
                 <span className="text-[7.5px] font-mono text-emerald-400/60 font-semibold flex items-center gap-1">
                   <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-ping"></span>
                   Sincronizado com os Sliders do Painel
@@ -860,10 +860,26 @@ export function InteractiveCockpit() {
                       navigator.clipboard.writeText(pitchCopy);
                       alert("Argumento de Venda de Ouro copiado com sucesso!");
                     }}
-                    className="px-2.5 py-1.5 bg-white/5 hover:bg-white/10 border border-white/10 text-white/80 hover:text-white font-mono text-[8px] font-bold rounded-lg transition-all cursor-pointer flex items-center gap-1"
+                    className="px-2 py-1 bg-white/5 hover:bg-white/10 border border-white/10 text-white/80 hover:text-white font-mono text-[7.5px] font-bold rounded-lg transition-all cursor-pointer flex items-center gap-1"
                   >
                     <Copy className="h-2.5 w-2.5" />
                     Copiar Pitch
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      setIsXequeMateModalOpen(true)
+                    }}
+                    className="px-2 py-1 bg-[#d2af5a]/10 hover:bg-[#d2af5a]/25 border border-[#d2af5a]/30 hover:border-[#d2af5a]/60 text-[#d2af5a] font-mono text-[7.5px] font-bold rounded-lg transition-all cursor-pointer flex items-center gap-1"
+                  >
+                    <Sparkles className="h-2.5 w-2.5 text-[#d2af5a]" />
+                    Recalibrar Posicionamento
+                  </button>
+                </div>
+              </div>
+              
+            </div>
+          )}                 Copiar Pitch
                   </button>
 
                   <button
