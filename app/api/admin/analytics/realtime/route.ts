@@ -14,7 +14,7 @@ async function geolocateMissingIps(admin: ReturnType<typeof getSupabaseAdminClie
     .from('ip_geolocation')
     .select('ip')
     .in('ip', ips)
-  const cachedSet = new Set((cached ?? []).map((r) => r.ip))
+  const cachedSet = new Set((cached ?? []).map((r: any) => r.ip))
   const missing = ips.filter((ip) => !cachedSet.has(ip))
   if (missing.length === 0) return
 
