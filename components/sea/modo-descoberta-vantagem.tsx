@@ -278,6 +278,43 @@ export function ModoDescobertaVantagem({ onClose, onCalibrateCockpit }: ModoDesc
   return (
     <div className="w-full flex flex-col gap-6 text-white leading-relaxed select-text" style={{ fontFamily: "'Poppins', -apple-system, sans-serif" }}>
       
+      <style dangerouslySetInnerHTML={{ __html: `
+        @keyframes pulseConnector {
+          0% { stroke-dashoffset: 0; opacity: 0.3; }
+          100% { stroke-dashoffset: -20; opacity: 0.95; }
+        }
+        .neon-connector-line {
+          stroke: #d2af5a;
+          stroke-width: 1.2px;
+          stroke-dasharray: 4, 3;
+          animation: pulseConnector 1.5s linear infinite;
+        }
+        @keyframes rotateHoloOuter {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+        @keyframes rotateHoloInner {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(-360deg); }
+        }
+        .holo-orbit-outer {
+          transform-origin: center;
+          animation: rotateHoloOuter 12s linear infinite;
+        }
+        .holo-orbit-inner {
+          transform-origin: center;
+          animation: rotateHoloInner 8s linear infinite;
+        }
+        @keyframes floatHoloNode {
+          0% { transform: translateY(0px); }
+          50% { transform: translateY(-4px); }
+          100% { transform: translateY(0px); }
+        }
+        .holo-node-group {
+          animation: floatHoloNode 4s ease-in-out infinite alternate;
+        }
+      `}} />
+
       {/* HEADER DE ETAPA - BARRA DE PROGRESSO NEON */}
       <div className="flex flex-col gap-2 bg-black/40 border border-white/5 p-4 rounded-2xl select-none" style={{ fontFamily: "'Poppins', -apple-system, sans-serif" }}>
         <div className="flex justify-between items-center text-[9px] font-mono text-[#d2af5a] font-bold uppercase tracking-wider">
@@ -464,8 +501,8 @@ export function ModoDescobertaVantagem({ onClose, onCalibrateCockpit }: ModoDesc
                   stroke="rgba(210,175,90,0.15)" 
                   strokeWidth="0.8" 
                   strokeDasharray="4 6"
-                  className={isFusing ? "animate-spin" : ""}
-                  style={{ transformOrigin: 'center', animationDuration: '10s' }}
+                  className={`holo-orbit-outer ${isFusing ? "animate-spin" : ""}`}
+                  style={{ transformOrigin: 'center' }}
                 />
                 <circle 
                   cx="100" 
@@ -474,37 +511,37 @@ export function ModoDescobertaVantagem({ onClose, onCalibrateCockpit }: ModoDesc
                   fill="none" 
                   stroke="rgba(210,175,90,0.1)" 
                   strokeWidth="0.5" 
-                  className={isFusing ? "animate-spin" : ""}
-                  style={{ transformOrigin: 'center', animationDuration: '6s', animationDirection: 'reverse' }}
+                  className={`holo-orbit-inner ${isFusing ? "animate-spin" : ""}`}
+                  style={{ transformOrigin: 'center', animationDirection: 'reverse' }}
                 />
 
                 {/* Linhas de conexão (feixes) */}
                 {isFusing && (
                   <>
-                    <line x1="40" y1="40" x2="100" y2="100" stroke="#d2af5a" strokeWidth="0.8" strokeDasharray="2,2" className="animate-pulse" />
-                    <line x1="160" y1="40" x2="100" y2="100" stroke="#d2af5a" strokeWidth="0.8" strokeDasharray="2,2" className="animate-pulse" />
-                    <line x1="40" y1="160" x2="100" y2="100" stroke="#d2af5a" strokeWidth="0.8" strokeDasharray="2,2" className="animate-pulse" />
-                    <line x1="160" y1="160" x2="100" y2="100" stroke="#d2af5a" strokeWidth="0.8" strokeDasharray="2,2" className="animate-pulse" />
+                    <line x1="40" y1="40" x2="100" y2="100" className="neon-connector-line" />
+                    <line x1="160" y1="40" x2="100" y2="100" className="neon-connector-line" />
+                    <line x1="40" y1="160" x2="100" y2="100" className="neon-connector-line" />
+                    <line x1="160" y1="160" x2="100" y2="100" className="neon-connector-line" />
                   </>
                 )}
 
                 {/* Os 4 Ativos Orbitando (Nos 4 cantos) */}
-                <g className={`transition-all duration-1000 ${isFusing ? 'translate-x-[20px] translate-y-[20px] scale-75 opacity-50' : ''}`} style={{ transformOrigin: '40px 40px' }}>
+                <g className={`holo-node-group transition-all duration-1000 ${isFusing ? 'translate-x-[20px] translate-y-[20px] scale-75 opacity-50' : ''}`} style={{ transformOrigin: '40px 40px', animationDelay: '0s' }}>
                   <circle cx="40" cy="40" r="16" fill="rgba(10,10,12,0.9)" stroke="#d2af5a" strokeWidth="1" />
                   <text x="40" y="43" textAnchor="middle" className="fill-[#d2af5a] font-mono text-[8px] font-bold">UTI</text>
                 </g>
 
-                <g className={`transition-all duration-1000 ${isFusing ? 'translate-x-[-20px] translate-y-[20px] scale-75 opacity-50' : ''}`} style={{ transformOrigin: '160px 40px' }}>
+                <g className={`holo-node-group transition-all duration-1000 ${isFusing ? 'translate-x-[-20px] translate-y-[20px] scale-75 opacity-50' : ''}`} style={{ transformOrigin: '160px 40px', animationDelay: '0.5s' }}>
                   <circle cx="160" cy="40" r="16" fill="rgba(10,10,12,0.9)" stroke="#d2af5a" strokeWidth="1" />
                   <text x="160" y="43" textAnchor="middle" className="fill-[#d2af5a] font-mono text-[8px] font-bold">BIZ</text>
                 </g>
 
-                <g className={`transition-all duration-1000 ${isFusing ? 'translate-x-[20px] translate-y-[-20px] scale-75 opacity-50' : ''}`} style={{ transformOrigin: '40px 160px' }}>
+                <g className={`holo-node-group transition-all duration-1000 ${isFusing ? 'translate-x-[20px] translate-y-[-20px] scale-75 opacity-50' : ''}`} style={{ transformOrigin: '40px 160px', animationDelay: '1s' }}>
                   <circle cx="40" cy="160" r="16" fill="rgba(10,10,12,0.9)" stroke="#d2af5a" strokeWidth="1" />
                   <text x="40" y="163" textAnchor="middle" className="fill-[#d2af5a] font-mono text-[8px] font-bold">TECH</text>
                 </g>
 
-                <g className={`transition-all duration-1000 ${isFusing ? 'translate-x-[-20px] translate-y-[-20px] scale-75 opacity-50' : ''}`} style={{ transformOrigin: '160px 160px' }}>
+                <g className={`holo-node-group transition-all duration-1000 ${isFusing ? 'translate-x-[-20px] translate-y-[-20px] scale-75 opacity-50' : ''}`} style={{ transformOrigin: '160px 160px', animationDelay: '1.5s' }}>
                   <circle cx="160" cy="160" r="16" fill="rgba(10,10,12,0.9)" stroke="#d2af5a" strokeWidth="1" />
                   <text x="160" y="163" textAnchor="middle" className="fill-[#d2af5a] font-mono text-[8px] font-bold">PSI</text>
                 </g>

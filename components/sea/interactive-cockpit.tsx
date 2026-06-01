@@ -661,18 +661,50 @@ export function InteractiveCockpit() {
         }
         .hud-card-interactive {
           cursor: pointer;
-          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .hud-card-interactive:hover {
-          border-color: rgba(210, 175, 90, 0.5) !important;
-          box-shadow: 0 0 20px rgba(210, 175, 90, 0.12) !important;
-          transform: translateY(-2px);
+          border-color: rgba(210, 175, 90, 0.65) !important;
+          box-shadow: 0 0 25px rgba(210, 175, 90, 0.18), inset 0 0 10px rgba(210, 175, 90, 0.08) !important;
+          transform: translateY(-3px);
+        }
+        .hud-card-active-glow {
+          border-color: #d2af5a !important;
+          box-shadow: 0 0 22px rgba(210, 175, 90, 0.28), inset 0 0 10px rgba(210, 175, 90, 0.15) !important;
+          animation: cardGlowBreathe 3s ease-in-out infinite alternate;
+        }
+        @keyframes cardGlowBreathe {
+          0% {
+            box-shadow: 0 0 12px rgba(210, 175, 90, 0.15), inset 0 0 5px rgba(210, 175, 90, 0.08);
+          }
+          100% {
+            box-shadow: 0 0 26px rgba(210, 175, 90, 0.45), inset 0 0 15px rgba(210, 175, 90, 0.22);
+          }
         }
         .modal-glass {
           background: rgba(10, 10, 14, 0.94);
           backdrop-filter: blur(35px);
           border: 1.5px solid rgba(210, 175, 90, 0.45);
           box-shadow: 0 0 45px rgba(210, 175, 90, 0.18);
+        }
+        @keyframes radarScan {
+          0% {
+            transform: translateY(-100%);
+          }
+          100% {
+            transform: translateY(300px);
+          }
+        }
+        .radar-scan-line {
+          position: absolute;
+          left: 0;
+          right: 0;
+          height: 1.5px;
+          background: linear-gradient(90deg, transparent, rgba(210, 175, 90, 0.45), transparent);
+          box-shadow: 0 0 10px rgba(210, 175, 90, 0.3);
+          animation: radarScan 4s linear infinite;
+          pointer-events: none;
+          z-index: 5;
         }
       `}} />
 
@@ -685,7 +717,7 @@ export function InteractiveCockpit() {
           {/* Card 1: Pessoas (Pilar 1 ou Pilar 2 se ativo) */}
           <div 
             onClick={() => setActivePillar(activePillar === 'capital_humano' ? 'financas' : 'capital_humano')}
-            className={`hud-card-interactive group relative overflow-hidden flex flex-col justify-between p-0.5 bg-[#0a0a0c]/85 border rounded-3xl backdrop-blur-xl h-[195px] transition-all ${activePillar === 'capital_humano' ? 'border-[#d2af5a] shadow-[0_0_15px_rgba(210,175,90,0.25)]' : 'border-[#d2af5a]/25'}`}
+            className={`hud-card-interactive group relative overflow-hidden flex flex-col justify-between p-0.5 bg-[#0a0a0c]/85 border rounded-3xl backdrop-blur-xl h-[195px] transition-all ${activePillar === 'capital_humano' ? 'hud-card-active-glow' : 'border-[#d2af5a]/25'}`}
           >
             {activePillar === 'capital_humano' ? <MiniFinancas /> : <MiniCapitalHumano />}
           </div>
@@ -693,7 +725,7 @@ export function InteractiveCockpit() {
           {/* Card 2: Estratégia (Pilar 3 ou Pilar 2 se ativo) */}
           <div 
             onClick={() => setActivePillar(activePillar === 'estrategia' ? 'financas' : 'estrategia')}
-            className={`hud-card-interactive group relative overflow-hidden flex flex-col justify-between p-0.5 bg-[#0a0a0c]/85 border rounded-3xl backdrop-blur-xl h-[195px] transition-all ${activePillar === 'estrategia' ? 'border-[#d2af5a] shadow-[0_0_15px_rgba(210,175,90,0.25)]' : 'border-[#d2af5a]/25'}`}
+            className={`hud-card-interactive group relative overflow-hidden flex flex-col justify-between p-0.5 bg-[#0a0a0c]/85 border rounded-3xl backdrop-blur-xl h-[195px] transition-all ${activePillar === 'estrategia' ? 'hud-card-active-glow' : 'border-[#d2af5a]/25'}`}
           >
             {activePillar === 'estrategia' ? <MiniFinancas /> : <MiniEstrategia />}
           </div>
@@ -701,7 +733,7 @@ export function InteractiveCockpit() {
           {/* Card 3: ESG (ESG ou Pilar 2 se ativo) */}
           <div 
             onClick={() => setActivePillar(activePillar === 'esg' ? 'financas' : 'esg')}
-            className={`hud-card-interactive group relative overflow-hidden flex flex-col justify-between p-0.5 bg-[#0a0a0c]/85 border rounded-3xl backdrop-blur-xl h-[195px] transition-all ${activePillar === 'esg' ? 'border-[#d2af5a] shadow-[0_0_15px_rgba(210,175,90,0.25)]' : 'border-[#d2af5a]/25'}`}
+            className={`hud-card-interactive group relative overflow-hidden flex flex-col justify-between p-0.5 bg-[#0a0a0c]/85 border rounded-3xl backdrop-blur-xl h-[195px] transition-all ${activePillar === 'esg' ? 'hud-card-active-glow' : 'border-[#d2af5a]/25'}`}
           >
             {activePillar === 'esg' ? <MiniFinancas /> : <MiniEsg />}
           </div>
@@ -709,7 +741,7 @@ export function InteractiveCockpit() {
           {/* Card 4: AI Assistant (Persistente no final da coluna esquerda, agora interativo!) */}
           <div 
             onClick={() => setActivePillar(activePillar === 'ai' ? 'financas' : 'ai')}
-            className={`hud-card-interactive group relative overflow-hidden flex flex-col justify-between p-0.5 bg-[#0a0a0c]/85 border rounded-3xl backdrop-blur-xl h-[195px] transition-all ${activePillar === 'ai' ? 'border-[#d2af5a] shadow-[0_0_15px_rgba(210,175,90,0.25)]' : 'border-[#d2af5a]/25'}`}
+            className={`hud-card-interactive group relative overflow-hidden flex flex-col justify-between p-0.5 bg-[#0a0a0c]/85 border rounded-3xl backdrop-blur-xl h-[195px] transition-all ${activePillar === 'ai' ? 'hud-card-active-glow' : 'border-[#d2af5a]/25'}`}
           >
             {activePillar === 'ai' ? <MiniFinancas /> : <MiniAi />}
           </div>
@@ -730,8 +762,9 @@ export function InteractiveCockpit() {
           {/* SIMULADOR DE VANTAGEM REAL (Travado em 300px de altura) */}
           {aiVerdictStatus !== 'approved' ? (
             /* CASO 1: AGUARDANDO PROTOCOLO DESCOBERTA REAL */
-            <div className="p-3.5 rounded-3xl backdrop-blur-xl border flex flex-col justify-between h-[300px] relative overflow-hidden select-text" style={{ background: 'rgba(8, 8, 10, 0.85)', borderColor: 'rgba(210, 175, 90, 0.25)' }}>
+            <div className="p-3.5 rounded-3xl backdrop-blur-xl border flex flex-col justify-between h-[300px] relative overflow-hidden select-text animate-in fade-in" style={{ background: 'rgba(8, 8, 10, 0.85)', borderColor: 'rgba(210, 175, 90, 0.25)' }}>
               
+              <div className="radar-scan-line" />
               {/* Ambient gold glow */}
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(210,175,90,0.04),transparent_65%)] pointer-events-none" />
 
@@ -759,13 +792,25 @@ export function InteractiveCockpit() {
                 
                 {/* Indicador visual das 4 etapas */}
                 <div className="flex items-center gap-2.5 mt-3 select-none text-[7.5px] font-mono text-white/30">
-                  <span className="flex items-center gap-1"><span className="h-1.5 w-1.5 rounded-full bg-[#d2af5a]"></span> 1. Ativos & Origens</span>
+                  <span className="flex items-center gap-1">
+                    <span className="h-1.5 w-1.5 rounded-full bg-[#d2af5a] shadow-[0_0_6px_#d2af5a] animate-pulse"></span> 
+                    1. Ativos & Origens
+                  </span>
                   <span className="text-white/10">➔</span>
-                  <span className="flex items-center gap-1"><span className="h-1.5 w-1.5 rounded-full bg-[#d2af5a]"></span> 2. Diálogo de Alinhamento</span>
+                  <span className="flex items-center gap-1">
+                    <span className="h-1.5 w-1.5 rounded-full bg-[#d2af5a]/60"></span> 
+                    2. Diálogo
+                  </span>
                   <span className="text-white/10">➔</span>
-                  <span className="flex items-center gap-1"><span className="h-1.5 w-1.5 rounded-full bg-[#d2af5a]"></span> 3. Diagnóstico de Fricções</span>
+                  <span className="flex items-center gap-1">
+                    <span className="h-1.5 w-1.5 rounded-full bg-[#d2af5a]/40"></span> 
+                    3. Diagnóstico
+                  </span>
                   <span className="text-white/10">➔</span>
-                  <span className="flex items-center gap-1"><span className="h-1.5 w-1.5 rounded-full bg-[#d2af5a]"></span> 4. Matriz de Blindagem</span>
+                  <span className="flex items-center gap-1">
+                    <span className="h-1.5 w-1.5 rounded-full bg-[#d2af5a]/20"></span> 
+                    4. Xeque-Mate
+                  </span>
                 </div>
               </div>
 
@@ -791,6 +836,7 @@ export function InteractiveCockpit() {
             /* CASO 2: MODO BLINDADO ATIVO - POSICIONAMENTO CRISTALIZADO */
             <div className="p-3 rounded-3xl backdrop-blur-xl border flex flex-col justify-between h-[300px] relative overflow-hidden select-text animate-in fade-in zoom-in-95 duration-300" style={{ background: 'rgba(8, 8, 10, 0.85)', borderColor: 'rgba(16, 185, 129, 0.4)' }}>
               
+              <div className="radar-scan-line" style={{ background: 'linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.45), transparent)', boxShadow: '0 0 10px rgba(16, 185, 129, 0.3)' }} />
               {/* Ambient green/emerald glow */}
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(16,185,129,0.05),transparent_65%)] pointer-events-none" />
 
