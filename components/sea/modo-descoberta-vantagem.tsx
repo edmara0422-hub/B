@@ -7,6 +7,9 @@ import {
   Volume2, VolumeX, HelpCircle, Activity, Heart, Copy
 } from 'lucide-react'
 
+import { saveStrategicDossier } from '@/lib/rxdb'
+import { gsap } from 'gsap'
+
 // Definição dos tipos para passar métricas de volta para o Cockpit principal
 interface ModoDescobertaProps {
   onClose: () => void
@@ -177,6 +180,7 @@ export function ModoDescobertaVantagem({ onClose, onCalibrateCockpit }: ModoDesc
   const [socraticAnswers, setSocraticAnswers] = useState<string[]>(['', ''])
   const [autocriticaBar, setAutocriticaBar] = useState(100) // fricção de autocrítica (%)
   const audioRef = useRef<HTMLAudioElement | null>(null)
+  const radarSvgRef = useRef<SVGSVGElement | null>(null)
 
   // Perguntas da mentora por voz
   const socraticQuestions = [
@@ -281,6 +285,48 @@ export function ModoDescobertaVantagem({ onClose, onCalibrateCockpit }: ModoDesc
   useEffect(() => {
     return () => stopAudio()
   }, [activeQuestionIdx])
+
+  // --- Efeito de Entrada Elástica GSAP no Gráfico Radial (Passo 4) ---
+  useEffect(() => {
+    if (step === 4 && radarSvgRef.current) {
+      const tl = gsap.timeline({ defaults: { ease: "elastic.out(1, 0.85)", duration: 1.3 } })
+      
+      tl.fromTo(radarSvgRef.current.querySelectorAll('.hex-grid-line'),
+        { scale: 0, opacity: 0, transformOrigin: '100px 100px' },
+        { scale: 1, opacity: 1, stagger: 0.08, duration: 0.9 }
+      )
+      
+      tl.fromTo(radarSvgRef.current.querySelectorAll('.radar-axis-line'),
+        { scale: 0, opacity: 0, transformOrigin: '100px 100px' },
+        { scale: 1, opacity: 1, stagger: 0.05, duration: 0.7 },
+        "-=0.6"
+      )
+
+      tl.fromTo(radarSvgRef.current.querySelectorAll('.radar-axis-label'),
+        { opacity: 0, scale: 0.5, transformOrigin: 'center' },
+        { opacity: 1, scale: 1, stagger: 0.05, duration: 0.6 },
+        "-=0.5"
+      )
+      
+      tl.fromTo(radarSvgRef.current.querySelector('.competitor-polygon'),
+        { scale: 0.1, opacity: 0, transformOrigin: '100px 100px' },
+        { scale: 1, opacity: 0.85, duration: 1.2, ease: "back.out(1.5)" },
+        "-=0.7"
+      )
+
+      tl.fromTo(radarSvgRef.current.querySelector('.user-polygon'),
+        { scale: 0.02, opacity: 0, transformOrigin: '100px 100px' },
+        { scale: 1, opacity: 1, duration: 1.5, ease: "elastic.out(1.1, 0.7)" },
+        "-=1.0"
+      )
+
+      tl.fromTo(radarSvgRef.current.querySelectorAll('.radar-node'),
+        { scale: 0, opacity: 0, transformOrigin: 'center' },
+        { scale: 1, opacity: 1, stagger: 0.04, duration: 0.7 },
+        "-=1.1"
+      )
+    }
+  }, [step])
 
   const selectSocraticPreset = (presetText: string) => {
     const updated = [...socraticAnswers]
@@ -1199,7 +1245,7 @@ export function ModoDescobertaVantagem({ onClose, onCalibrateCockpit }: ModoDesc
                     </div>
 
                     <div className="relative w-full max-w-[220px] aspect-square flex items-center justify-center">
-                      <svg viewBox="0 0 200 200" className="w-full h-full overflow-visible">
+                      <svg ref={radarSvgRef} viewBox="0 0 200 200" className="w-full h-full overflow-visible">
                         {/* Concentric Hexagonal Reference Grid */}
                         {[20, 40, 60, 80].map((r) => {
                           const hexPoints = Array.from({ length: 6 }).map((_, idx) => {
@@ -1210,6 +1256,7 @@ export function ModoDescobertaVantagem({ onClose, onCalibrateCockpit }: ModoDesc
                             <polygon 
                               key={r} 
                               points={hexPoints} 
+                              className="hex-grid-line"
                               fill="none" 
                               stroke="rgba(210, 175, 90, 0.08)" 
                               strokeWidth="0.8" 
@@ -1234,6 +1281,7 @@ export function ModoDescobertaVantagem({ onClose, onCalibrateCockpit }: ModoDesc
                                 y1="100" 
                                 x2={xOuter} 
                                 y2={yOuter} 
+                                className="radar-axis-line"
                                 stroke="rgba(255, 255, 255, 0.08)" 
                                 strokeWidth="0.8" 
                               />
@@ -1243,7 +1291,7 @@ export function ModoDescobertaVantagem({ onClose, onCalibrateCockpit }: ModoDesc
                                 y={yLabel + (angle === Math.PI / 2 ? 4 : angle === -Math.PI / 2 ? -4 : 2)}
                                 textAnchor={textAnchor}
                                 fill={hoveredAxis === i ? "#d2af5a" : "rgba(255, 255, 255, 0.45)"}
-                                className="font-mono text-[7px] font-bold cursor-pointer transition-all uppercase"
+                                className="radar-axis-label font-mono text-[7px] font-bold cursor-pointer transition-all uppercase"
                                 onMouseEnter={() => setHoveredAxis(i)}
                                 onMouseLeave={() => setHoveredAxis(null)}
                               >
@@ -1256,20 +1304,22 @@ export function ModoDescobertaVantagem({ onClose, onCalibrateCockpit }: ModoDesc
                         {/* Competitor's Area Polygon (Red) */}
                         <polygon 
                           points={compPoints} 
+                          className="competitor-polygon"
                           fill="rgba(239, 68, 68, 0.12)" 
                           stroke="#ef4444" 
                           strokeWidth="1.2" 
                           strokeDasharray="2,2" 
-                          className="transition-all duration-300"
+                          className="competitor-polygon transition-all duration-300"
                         />
 
                         {/* User's Area Polygon (Gold) */}
                         <polygon 
                           points={userPoints} 
+                          className="user-polygon"
                           fill="rgba(210, 175, 90, 0.18)" 
                           stroke="#d2af5a" 
                           strokeWidth="2.2" 
-                          className="transition-all duration-300 shadow-[0_0_10px_#d2af5a]"
+                          className="user-polygon transition-all duration-300 shadow-[0_0_10px_#d2af5a]"
                         />
 
                         {/* Node dots for hovered axis */}
@@ -1286,7 +1336,7 @@ export function ModoDescobertaVantagem({ onClose, onCalibrateCockpit }: ModoDesc
                                 cy={compCoords.y} 
                                 r={isHovered ? 4.5 : 2.5} 
                                 fill="#ef4444" 
-                                className="transition-all duration-200"
+                                className="radar-node transition-all duration-200"
                               />
                               {/* User dot */}
                               <circle 
@@ -1296,7 +1346,7 @@ export function ModoDescobertaVantagem({ onClose, onCalibrateCockpit }: ModoDesc
                                 fill="#d2af5a" 
                                 stroke={isHovered ? "#ffffff" : "none"}
                                 strokeWidth="0.8"
-                                className="transition-all duration-200"
+                                className="radar-node transition-all duration-200"
                               />
                               {isHovered && (
                                 <circle 
@@ -1455,10 +1505,22 @@ export function ModoDescobertaVantagem({ onClose, onCalibrateCockpit }: ModoDesc
 
                 <div className="flex gap-2 w-full md:w-auto justify-end select-none">
                   <button 
-                    onClick={() => {
-                      alert("Dossiê de Posicionamento salvo com sucesso no banco de inteligência da empresa!")
+                    onClick={async () => {
+                      await saveStrategicDossier({
+                        title: calculatedDiferencial.title,
+                        ocean: calculatedDiferencial.ocean,
+                        copy: calculatedDiferencial.copy,
+                        ebitda: calculatedDiferencial.ebitda,
+                        ltvCac: calculatedDiferencial.ltvCac,
+                        tdbd: calculatedDiferencial.tdbd,
+                        sequestroAmigdala: calculatedDiferencial.sequestroAmigdala,
+                        friccaoPersonagem: calculatedDiferencial.friccaoPersonagem,
+                        custoDopaminergico: calculatedDiferencial.custoDopaminergico,
+                        verdict: calculatedDiferencial.verdict
+                      })
+                      alert("Dossiê de Posicionamento salvo com sucesso no banco de dados local-first RxDB! O cockpit tático foi calibrado automaticamente.")
                     }}
-                    className="px-4 py-2 bg-white/5 border border-white/10 hover:bg-white/10 text-white font-bold uppercase tracking-wider text-[9px] rounded-lg transition-all cursor-pointer"
+                    className="px-4 py-2 bg-[#d2af5a]/10 border border-[#d2af5a]/30 hover:bg-[#d2af5a]/20 text-[#d2af5a] font-bold uppercase tracking-wider text-[9px] rounded-lg transition-all cursor-pointer"
                   >
                     Salvar Dossiê IPB
                   </button>

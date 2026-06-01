@@ -16,6 +16,7 @@ import { HudEsg } from './hud-esg'
 import { HudAi } from './hud-ai'
 
 import { ModoDescobertaVantagem } from './modo-descoberta-vantagem'
+import { loadStrategicDossier } from '@/lib/rxdb'
 
 interface MetricDetail {
   id: string
@@ -100,6 +101,33 @@ export function InteractiveCockpit() {
   const [auditDone, setAuditDone] = useState<boolean>(false)
   const [showDirectContactAlert, setShowDirectContactAlert] = useState<boolean>(false)
   const auditLogRef = useRef<HTMLDivElement>(null)
+ 
+  // Carregar dados calibrados do RxDB local-first na inicialização
+  useEffect(() => {
+    async function initDbState() {
+      const saved = await loadStrategicDossier()
+      if (saved) {
+        setEbitda(saved.ebitda)
+        setLtvCac(saved.ltvCac)
+        setTdbd(saved.tdbd)
+        setSequestroAmigdala(saved.sequestroAmigdala)
+        setFriccaoPersonagem(saved.friccaoPersonagem)
+        setCustoDopaminergico(saved.custoDopaminergico)
+        setAiVerdict(saved.verdict)
+        setAiVerdictStatus('approved')
+        setSimScenario('custom')
+        setCalibrationSource('ia')
+        setAuditDone(true)
+        setAuditLogs([
+          `[MEMÓRIA LOCAL RXDB] Carregando calibragem tática persistida local-first...`,
+          `[TDBD RECUPERADO] Decisões baseadas em dados em ${saved.tdbd}% de fidelidade.`,
+          `[CONTROLE RECUPERADO] Sequestro da Amígdala avaliado em ${saved.sequestroAmigdala}% de risco.`,
+          `[OCEANO AZUL] Posicionamento ativo: "${saved.ocean}"`
+        ])
+      }
+    }
+    initDbState()
+  }, [])
  
   const currentPromise = customPromise || magicPromise
  
