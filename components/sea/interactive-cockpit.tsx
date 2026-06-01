@@ -879,22 +879,6 @@ export function InteractiveCockpit() {
               </div>
               
             </div>
-          )}                 Copiar Pitch
-                  </button>
-
-                  <button
-                    onClick={() => {
-                      setIsXequeMateModalOpen(true)
-                    }}
-                    className="px-2.5 py-1.5 bg-[#d2af5a]/10 hover:bg-[#d2af5a]/25 border border-[#d2af5a]/30 hover:border-[#d2af5a]/60 text-[#d2af5a] font-mono text-[8px] font-bold rounded-lg transition-all cursor-pointer flex items-center gap-1"
-                  >
-                    <Sparkles className="h-2.5 w-2.5 text-[#d2af5a]" />
-                    Recalibrar Posicionamento
-                  </button>
-                </div>
-              </div>
-              
-            </div>
           )}
 
         </div>
