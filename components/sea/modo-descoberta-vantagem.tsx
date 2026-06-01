@@ -251,7 +251,7 @@ export function ModoDescobertaVantagem({ onClose, onCalibrateCockpit }: ModoDesc
       {/* HEADER DE ETAPA - BARRA DE PROGRESSO NEON */}
       <div className="flex flex-col gap-2 bg-black/40 border border-white/5 p-4 rounded-2xl select-none">
         <div className="flex justify-between items-center text-[9px] font-mono text-[#d2af5a] font-bold uppercase tracking-wider">
-          <span>PORTAL DE DESCOBERTA NEURO-ESTRATÉGICA</span>
+          <span>PORTAL DE DESCOBERTA ESTRATÉGICA</span>
           <span>ETAPA {step + 1} DE 5</span>
         </div>
         <div className="h-1.5 w-full bg-white/5 rounded-full overflow-hidden flex gap-0.5">
@@ -267,11 +267,11 @@ export function ModoDescobertaVantagem({ onClose, onCalibrateCockpit }: ModoDesc
           ))}
         </div>
         <div className="flex justify-between text-[8px] font-mono text-white/35 mt-1">
-          <span>0. A Ilusão</span>
-          <span>1. O Eu Integral</span>
-          <span>2. Voz Socrática</span>
-          <span>3. Ponto Cego</span>
-          <span>4. Xeque-Mate</span>
+          <span>0. A Fricção</span>
+          <span>1. Ativos & Origens</span>
+          <span>2. Alinhamento</span>
+          <span>3. Fricções</span>
+          <span>4. Matriz de Blindagem</span>
         </div>
       </div>
 
@@ -286,25 +286,24 @@ export function ModoDescobertaVantagem({ onClose, onCalibrateCockpit }: ModoDesc
           
           <div className="flex flex-col gap-2 max-w-xl">
             <h3 className="text-xl font-bold tracking-wide text-white">
-              O Mercado Digital Virou uma Fábrica de Dopamina Barata
+              A Instabilidade de Posicionamentos Genéricos no Mercado
             </h3>
             <p className="text-white/60 text-xs font-mono leading-relaxed mt-1">
-              "Gurus" vendem estilo de vida perfeito e promessas de ganhos sem esforço para sequestrar a amígdala do comprador que está no limite da exaustão. 
-              Ao agir sob o medo e a urgência artificial, cria-se uma <b>ilusão de caixa preta</b>.
+              Propostas comerciais superficiais e promessas de escala sem sustentabilidade operacional geram altos níveis de atrito e exaustão cognitiva no cliente final. Sem dados robustos e processos auditáveis, a operação fica vulnerável a flutuações e perde tração real.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-2xl text-left mt-2">
             <div className="p-4 bg-red-950/15 border border-red-900/30 rounded-2xl space-y-1.5">
-              <span className="text-red-400 text-[10px] font-mono font-bold uppercase block select-none">A Ilusão (Gurus Clones)</span>
+              <span className="text-red-400 text-[10px] font-mono font-bold uppercase block select-none">A Fricção (Propostas Vazias)</span>
               <p className="text-white/50 text-[11px] font-sans leading-relaxed">
-                Fundamentada em vieses cognitivos e promessas mágicas de piloto automático. Quando pressionados por fatos, a reputação oca colapsa em reatividade (ataque ou fuga).
+                Posicionamentos puramente narrativos sem respaldo operacional. Diante de demandas de alta performance ou crises de escala, a falta de processos estruturados resulta em quebras sistêmicas e reatividade operacional.
               </p>
             </div>
             <div className="p-4 bg-[#d2af5a]/5 border border-[#d2af5a]/20 rounded-2xl space-y-1.5">
-              <span className="text-[#d2af5a] text-[10px] font-mono font-bold uppercase block select-none">O Xeque-Mate (Sua Vantagem)</span>
+              <span className="text-[#d2af5a] text-[10px] font-mono font-bold uppercase block select-none">O Xeque-Mate (Diferencial Estruturado)</span>
               <p className="text-white/85 text-[11px] font-sans leading-relaxed">
-                A pergunta cirúrgica: <i>"Qual é o seu dado real de tração? Onde está a entrega auditável?"</i>. Isso força o comprador a sair do limbo emocional e aciona o Córtex Pré-Frontal (TDBD).
+                Consiste na validação quantificável e na rastreabilidade técnica: <i>"Onde estão os dados de entrega real? Como garantimos o SLA e o suporte especializado?"</i>. Isso estabelece credibilidade e ativa a confiança baseada em dados (TDBD).
               </p>
             </div>
           </div>
@@ -314,11 +313,11 @@ export function ModoDescobertaVantagem({ onClose, onCalibrateCockpit }: ModoDesc
               onClick={() => setStep(1)}
               className="py-3 px-6 rounded-xl bg-gradient-to-r from-[#d2af5a] to-amber-500 hover:brightness-110 text-black font-bold uppercase tracking-wider text-xs transition-all shadow-[0_4px_20px_rgba(210,175,90,0.25)] flex items-center justify-center gap-2 cursor-pointer"
             >
-              Eu Não Sei Qual é o Meu Diferencial
+              Iniciar Análise de Vantagem Competitiva
               <ArrowRight className="h-4 w-4" />
             </button>
             <span className="text-[9px] font-mono text-white/35">
-              *A IA ativará o Modo Descoberta Neuropsicológica e de Vantagem Real imediato.
+              *A IA ativará o protocolo de identificação de ativos e blindagem de posicionamento operacional.
             </span>
           </div>
         </div>

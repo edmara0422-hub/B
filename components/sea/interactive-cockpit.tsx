@@ -740,7 +740,7 @@ export function InteractiveCockpit() {
                 <div className="flex items-center gap-2">
                   <Award className="h-4 w-4 text-[#d2af5a] animate-pulse" />
                   <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#d2af5a] font-mono">
-                    ✨ PROTOCOLO DE VANTAGEM REAL & CONTRA-XEQUE-MATE (IVRS v3.0)
+                    🛰️ SIMULADOR DE VANTAGEM COMPETITIVA & CONTRA-XEQUE-MATE (IVRS)
                   </span>
                 </div>
                 <span className="px-2 py-0.5 bg-[#d2af5a]/10 border border-[#d2af5a]/30 text-[#d2af5a] font-mono text-[7px] rounded-md font-bold select-none animate-pulse">
@@ -751,22 +751,21 @@ export function InteractiveCockpit() {
               {/* Corpo: Chamada Visual de Alto Impacto para Tomada de Decisão */}
               <div className="flex-1 flex flex-col justify-center py-2 relative z-10 text-left">
                 <h3 className="text-white text-xs font-bold leading-normal tracking-wide">
-                  Você sabe qual é o seu diferencial real ou ainda está preso no Hype Concorrencial?
+                  Mapeie e valide as barreiras de entrada e o posicionamento da sua operação
                 </h3>
                 <p className="text-white/50 text-[10px] leading-relaxed mt-1.5 font-sans">
-                  O mercado está saturado de gurus clones vendendo promessas ocas e gerando exaustão límbica. 
-                  Ative o <b>Modo Descoberta Neuropsicológica</b> para fundir seus ativos de vida, rodar a auditoria do ponto cego e blindar sua barreira anticópia definitiva.
+                  A plataforma de inteligência analisará a convergência de seus ativos corporativos e técnicos, identificando fricções de mercado e gerando uma barreira de entrada estruturada baseada em dados e resiliência operacional.
                 </p>
                 
                 {/* Indicador visual das 4 etapas */}
                 <div className="flex items-center gap-2.5 mt-3 select-none text-[7.5px] font-mono text-white/30">
-                  <span className="flex items-center gap-1"><span className="h-1.5 w-1.5 rounded-full bg-[#d2af5a]"></span> 1. Eu Integral</span>
+                  <span className="flex items-center gap-1"><span className="h-1.5 w-1.5 rounded-full bg-[#d2af5a]"></span> 1. Ativos & Origens</span>
                   <span className="text-white/10">➔</span>
-                  <span className="flex items-center gap-1"><span className="h-1.5 w-1.5 rounded-full bg-[#d2af5a]"></span> 2. Voz Socrática</span>
+                  <span className="flex items-center gap-1"><span className="h-1.5 w-1.5 rounded-full bg-[#d2af5a]"></span> 2. Diálogo de Alinhamento</span>
                   <span className="text-white/10">➔</span>
-                  <span className="flex items-center gap-1"><span className="h-1.5 w-1.5 rounded-full bg-[#d2af5a]"></span> 3. Mapeamento Ponto Cego</span>
+                  <span className="flex items-center gap-1"><span className="h-1.5 w-1.5 rounded-full bg-[#d2af5a]"></span> 3. Diagnóstico de Fricções</span>
                   <span className="text-white/10">➔</span>
-                  <span className="flex items-center gap-1"><span className="h-1.5 w-1.5 rounded-full bg-[#d2af5a]"></span> 4. Xeque-Mate Final</span>
+                  <span className="flex items-center gap-1"><span className="h-1.5 w-1.5 rounded-full bg-[#d2af5a]"></span> 4. Matriz de Blindagem</span>
                 </div>
               </div>
 
@@ -804,7 +803,7 @@ export function InteractiveCockpit() {
                   </span>
                 </div>
                 <span className="px-2 py-0.5 bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 font-mono text-[7px] rounded-md font-bold select-none">
-                  IVRS v3.0 HOMOLOGADO
+                  IVRS HOMOLOGADO
                 </span>
               </div>
 
@@ -1052,13 +1051,13 @@ export function InteractiveCockpit() {
               <div className="flex flex-col gap-1">
                 <div className="flex items-center gap-2">
                   <Award className="h-5 w-5 text-[#d2af5a] animate-pulse" />
-                  <span className="text-[10px] font-bold font-mono tracking-[0.2em] text-[#d2af5a] uppercase">PORTAL DESCOBERTA DE VANTAGEM REAL (IVRS)</span>
+                  <span className="text-[10px] font-bold font-mono tracking-[0.2em] text-[#d2af5a] uppercase">🛰️ SIMULADOR DE VANTAGEM COMPETITIVA & CONTRA-XEQUE-MATE (IVRS)</span>
                 </div>
                 <h2 className="text-white text-lg font-bold tracking-wide mt-1">
-                  Contra-Xeque-Mate: O Diferencial Humano Sem Filtro
+                  Contra-Xeque-Mate: Validação de Diferencial Corporativo
                 </h2>
                 <p className="text-white/45 text-[10px] font-mono leading-relaxed mt-1">
-                  Escanear, auditar e vencer o "efeito brilho" e as falsas promessas de mercado com dados, processo e suor.
+                  Análise profunda de ativos técnicos, fricção operacional e resiliência executiva para forjar barreiras de entrada reais.
                 </p>
               </div>
               <button 
