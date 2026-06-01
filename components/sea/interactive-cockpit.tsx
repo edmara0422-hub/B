@@ -1044,7 +1044,7 @@ export function InteractiveCockpit() {
       {/* POPUP MODAL SIMULADOR AVANÇADO CONTRA-XEQUE-MATE (IVRS) */}
       {isXequeMateModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md transition-all duration-300">
-          <div className="modal-glass w-full max-w-4xl rounded-3xl overflow-hidden flex flex-col relative animate-in fade-in zoom-in-95 duration-200 text-left select-text" style={{ borderColor: 'rgba(210, 175, 90, 0.4)' }}>
+          <div className="modal-glass w-full max-w-4xl max-h-[90vh] rounded-3xl overflow-hidden flex flex-col relative animate-in fade-in zoom-in-95 duration-200 text-left select-text" style={{ borderColor: 'rgba(210, 175, 90, 0.4)' }}>
             
             {/* Modal Header */}
             <div className="p-5 border-b border-[#d2af5a]/20 flex justify-between items-start bg-black/40 select-none">
@@ -1069,7 +1069,7 @@ export function InteractiveCockpit() {
             </div>
 
             {/* Modal Content - Novo Modo Descoberta de Vantagem Real */}
-            <div className="p-6 overflow-y-auto max-h-[520px] bg-black/25 flex flex-col gap-6">
+            <div className="p-6 overflow-y-auto flex-1 min-h-0 bg-black/25 flex flex-col gap-6">
               <ModoDescobertaVantagem 
                 onClose={() => setIsXequeMateModalOpen(false)}
                 onCalibrateCockpit={(metrics) => {

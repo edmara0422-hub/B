@@ -197,6 +197,36 @@ export function ModoDescobertaVantagem({ onClose, onCalibrateCockpit }: ModoDesc
     }, 450)
   }
 
+  // --- ESPELHAMENTO COGNITIVO E REFRAÇÃO DA IA ---
+  const cognitiveMirroring = useMemo(() => {
+    const answer = socraticAnswers[activeQuestionIdx]?.trim()
+    if (!answer) return null
+    
+    if (activeQuestionIdx === 0) {
+      if (answer.toLowerCase().includes('velocidade') || answer.toLowerCase().includes('erro') || answer.toLowerCase().includes('processo')) {
+        return "A velocidade de análise clínica herdada do ambiente crítico de UTI é seu ativo de barreira anticópia definitivo em processos corporativos. Isso neutraliza os erros de execução comuns a concorrentes sem rigor técnico e blinda a operação de alta fidelidade."
+      }
+      if (answer.toLowerCase().includes('desmembrar') || answer.toLowerCase().includes('dados') || answer.toLowerCase().includes('técnicos')) {
+        return "Sua habilidade de traduzir complexidade em clareza humana é um ativo neuropsicológico que elimina a reatividade dos stakeholders, gerando LTV robusto e eliminando qualquer objeção à sua entrega."
+      }
+      if (answer.toLowerCase().includes('segurança') || answer.toLowerCase().includes('calma') || answer.toLowerCase().includes('desabando')) {
+        return "Sua serenidade sob caos crítico neutraliza de imediato o Sequestro de Amígdala de quem busca socorro, tornando-se a âncora de fidelização e a martelada definitiva na credibilidade de seu mercado."
+      }
+      return `Sua essência apoia-se em um ativo autêntico: "${answer.length > 60 ? answer.slice(0, 60) + '...' : answer}". Esta expressão livre reduz a Fricção do Personagem na sua marca para níveis saudáveis.`
+    } else {
+      if (answer.toLowerCase().includes('promessas') || answer.toLowerCase().includes('rápido') || answer.toLowerCase().includes('clones')) {
+        return "Sua indignação ética contra promessas infladas é a sua maior âncora de verdade real. O contraste entre sua entrega auditável e gurus clones desintegra qualquer objeção de incredulidade no ato."
+      }
+      if (answer.toLowerCase().includes('reatividade') || answer.toLowerCase().includes('instabilidade') || answer.toLowerCase().includes('bloqueiam')) {
+        return "Sua estabilidade de Córtex Pré-Frontal ante o desespero de concorrentes reativos prova a solidez da sua governança corporativa, poupando cortisol e demonstrando maturidade estratégica absoluta."
+      }
+      if (answer.toLowerCase().includes('dados') || answer.toLowerCase().includes('rastreabilidade') || answer.toLowerCase().includes('palco')) {
+        return "Seu foco em dados auditáveis e Tomada de Decisão Baseada em Dados (TDBD) desarma imediatamente discursos falaciosos de marketing, convertendo clientes de alto padrão sob o selo de governança definitiva."
+      }
+      return `Sua intolerância a propostas vazias blinda seu posicionamento. Ela blinda sua empresa e atrai clientes qualificados sob o modelo de Tomada de Decisão Baseada em Dados (TDBD).`
+    }
+  }, [activeQuestionIdx, socraticAnswers])
+
   // --- VALORES RESULTANTES DA SUA IA DE XEQUE-MATE ---
   const calculatedDiferencial = useMemo(() => {
     // Retorna o oceano azul gerado
@@ -249,7 +279,7 @@ export function ModoDescobertaVantagem({ onClose, onCalibrateCockpit }: ModoDesc
     <div className="w-full flex flex-col gap-6 text-white leading-relaxed select-text" style={{ fontFamily: "'Poppins', -apple-system, sans-serif" }}>
       
       {/* HEADER DE ETAPA - BARRA DE PROGRESSO NEON */}
-      <div className="flex flex-col gap-2 bg-black/40 border border-white/5 p-4 rounded-2xl select-none">
+      <div className="flex flex-col gap-2 bg-black/40 border border-white/5 p-4 rounded-2xl select-none" style={{ fontFamily: "'Poppins', -apple-system, sans-serif" }}>
         <div className="flex justify-between items-center text-[9px] font-mono text-[#d2af5a] font-bold uppercase tracking-wider">
           <span>PORTAL DE DESCOBERTA ESTRATÉGICA</span>
           <span>ETAPA {step + 1} DE 5</span>
@@ -267,11 +297,11 @@ export function ModoDescobertaVantagem({ onClose, onCalibrateCockpit }: ModoDesc
           ))}
         </div>
         <div className="flex justify-between text-[8px] font-mono text-white/35 mt-1">
-          <span>0. A Fricção</span>
-          <span>1. Ativos & Origens</span>
-          <span>2. Alinhamento</span>
-          <span>3. Fricções</span>
-          <span>4. Matriz de Blindagem</span>
+          <span>0. O Diagnóstico</span>
+          <span>1. Matriz Eu Integral</span>
+          <span>2. Investigação Socrática</span>
+          <span>3. Ponto Cego</span>
+          <span>4. O Contra-Xeque-Mate</span>
         </div>
       </div>
 
@@ -622,10 +652,22 @@ export function ModoDescobertaVantagem({ onClose, onCalibrateCockpit }: ModoDesc
                 <span className="text-[8.5px] font-mono text-white/35 block uppercase tracking-wider select-none mb-1">
                   Mentor IA diz:
                 </span>
-                <p className="text-white text-xs font-serif italic leading-relaxed text-center">
+                <p className="text-white text-xs font-sans italic leading-relaxed text-center">
                   "{socraticQuestions[activeQuestionIdx].text}"
                 </p>
               </div>
+
+              {/* ACTIVE MIRRORING CARD */}
+              {cognitiveMirroring && (
+                <div className="w-full mt-2 bg-[#d2af5a]/5 border border-[#d2af5a]/20 p-3.5 rounded-2xl animate-in fade-in zoom-in-95 duration-200">
+                  <span className="text-[#d2af5a] text-[8px] font-mono font-bold uppercase tracking-wider block select-none mb-1">
+                    🎙️ ESPELHAMENTO COGNITIVO DE IA
+                  </span>
+                  <p className="text-white/85 text-[10.5px] font-sans leading-relaxed italic">
+                    "{cognitiveMirroring}"
+                  </p>
+                </div>
+              )}
 
             </div>
 
@@ -842,7 +884,7 @@ export function ModoDescobertaVantagem({ onClose, onCalibrateCockpit }: ModoDesc
                   <b className="text-white text-xs block font-mono">
                     {calculatedDiferencial.ocean}
                   </b>
-                  <p className="text-white/80 text-[10.5px] leading-relaxed italic font-serif mt-2 pl-3 border-l-2 border-[#d2af5a]">
+                  <p className="text-white/80 text-[10.5px] leading-relaxed italic font-sans mt-2 pl-3 border-l-2 border-[#d2af5a]">
                     "{calculatedDiferencial.copy}"
                   </p>
                 </div>
@@ -893,13 +935,23 @@ export function ModoDescobertaVantagem({ onClose, onCalibrateCockpit }: ModoDesc
                 </div>
               </div>
 
+              {/* Martelada de Ouro: Eliminação Absoluta de Objeções */}
+              <div className="bg-[#d2af5a]/10 border border-[#d2af5a]/25 p-5 rounded-2xl flex flex-col gap-2 relative">
+                <span className="text-[#d2af5a] text-[9px] font-mono font-bold uppercase tracking-wider select-none flex items-center gap-1.5">
+                  🔨 A MARTELADA DE OURO (ELIMINAÇÃO ABSOLUTA DE OBJEÇÕES)
+                </span>
+                <p className="text-white/85 text-[10px] leading-relaxed font-sans">
+                  <b>Como eliminar qualquer objeção instantaneamente:</b> Diante de questionamentos sobre preço ou autoridade, a sua <b>martelada definitiva</b> funde a integridade inimitável construída no leito de UTI com métricas matemáticas auditáveis. Mostre que sua operação é pautada na verdade real, anulando objeções pelo contraste com clones de palco. Ninguém consegue checkmatar quem opera sob dados sólidos e verdade inquestionável.
+                </p>
+              </div>
+
               {/* O Xeque-Mate na Prática: Copy do Argumento de Vendas */}
               <div className="bg-[#d2af5a]/5 border border-[#d2af5a]/25 p-4 rounded-2xl relative select-text">
                 <span className="block text-[8px] font-mono text-[#d2af5a] font-bold uppercase tracking-widest mb-1.5 select-none">
                   📢 SEU ARGUMENTO DE CONTRA-XEQUE-MATE COMERCIAL (COPIÁVEL):
                 </span>
                 <p className="text-white/85 text-[9.5px] leading-relaxed italic font-sans pr-6">
-                  "Ao falar com o seu mercado, posicione o contraste absoluto:enquanto a concorrência atua em uma caixa preta de ilusão de marketing ({calculatedDiferencial.custoDopaminergico * 5}% de Hype/Custo Dopaminérgico) com suporte frio de robôs, nós provamos a entrega real com dados auditáveis: temos {calculatedDiferencial.ebitda}% de Margem EBITDA estruturada, {calculatedDiferencial.ltvCac}x de LTV/CAC, tomamos decisões 100% baseadas em dados ({calculatedDiferencial.tdbd}% TDBD) e possuímos controle emocional do Sequestro da Amígdala de apenas {calculatedDiferencial.sequestroAmigdala}% devido à clareza do nosso Eu Integral. Não compre promessas de palco, compre processos reais de pessoas para pessoas."
+                  "Ao falar com o seu mercado, posicione o contraste absoluto: enquanto a concorrência atua em uma caixa preta de ilusão de marketing ({calculatedDiferencial.custoDopaminergico * 5}% de Hype/Custo Dopaminérgico) com suporte frio de robôs, nós provamos a entrega real com dados auditáveis: temos {calculatedDiferencial.ebitda}% de Margem EBITDA estruturada, {calculatedDiferencial.ltvCac}x de LTV/CAC, tomamos decisões 100% baseadas em dados ({calculatedDiferencial.tdbd}% TDBD) e possuímos controle emocional do Sequestro da Amígdala de apenas {calculatedDiferencial.sequestroAmigdala}% devido à clareza do nosso Eu Integral. Não compre promessas de palco, compre processos reais de pessoas para pessoas."
                 </p>
                 <button
                   onClick={() => {
