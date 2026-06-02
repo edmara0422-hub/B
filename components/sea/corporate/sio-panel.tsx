@@ -362,13 +362,38 @@ export function SioPanel({ initialTab }: { initialTab?: SioSubTab }) {
           <button
             key={tab}
             onClick={() => setSubTab(tab)}
-            className={`system-tab-btn ${subTab === tab ? 'active' : ''}`}
+            className={`system-tab-btn flex items-center gap-1.5 ${subTab === tab ? 'active' : ''}`}
           >
-            {tab === 'finance' && 'Cockpit Financeiro'}
-            {tab === 'pricing' && 'Smart Pricing'}
-            {tab === 'ia' && 'IA Advisor'}
-            {tab === 'processos' && 'Processos'}
-            {tab === 'predict' && 'Previsão Preditiva'}
+            {tab === 'finance' && (
+              <>
+                <span>Cockpit Financeiro</span>
+                <span className="text-[7px] font-mono opacity-50 bg-white/10 px-1 py-0.2 rounded border border-white/5">FIQ</span>
+              </>
+            )}
+            {tab === 'pricing' && (
+              <>
+                <span>Smart Pricing</span>
+                <span className="text-[7px] font-mono opacity-50 bg-white/10 px-1 py-0.2 rounded border border-white/5">FIQ</span>
+              </>
+            )}
+            {tab === 'ia' && (
+              <>
+                <span>IA Advisor</span>
+                <span className="text-[7px] font-mono opacity-50 bg-white/10 px-1 py-0.2 rounded border border-white/5">FIQ</span>
+              </>
+            )}
+            {tab === 'processos' && (
+              <>
+                <span>Processos</span>
+                <span className="text-[7px] font-mono opacity-50 bg-white/10 px-1 py-0.2 rounded border border-white/5">ISI</span>
+              </>
+            )}
+            {tab === 'predict' && (
+              <>
+                <span>Previsão Preditiva</span>
+                <span className="text-[7px] font-mono opacity-50 bg-white/10 px-1 py-0.2 rounded border border-white/5">FIQ</span>
+              </>
+            )}
           </button>
         ))}
       </div>

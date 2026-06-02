@@ -397,11 +397,26 @@ export function SiePanel({ initialTab }: { initialTab?: SieSubTab }) {
           <button
             key={tab}
             onClick={() => setSubTab(tab)}
-            className={`system-tab-btn ${subTab === tab ? 'active' : ''}`}
+            className={`system-tab-btn flex items-center gap-1.5 ${subTab === tab ? 'active' : ''}`}
           >
-            {tab === 'forecast' && 'Meu Negócio, Cenários & Forecast'}
-            {tab === 'inovacao' && 'Inovação'}
-            {tab === 'canvas' && 'Canvas & Pitch'}
+            {tab === 'forecast' && (
+              <>
+                <span>Meu Negócio, Cenários & Forecast</span>
+                <span className="text-[7px] font-mono opacity-50 bg-white/10 px-1 py-0.2 rounded border border-white/5">IE</span>
+              </>
+            )}
+            {tab === 'inovacao' && (
+              <>
+                <span>Inovação</span>
+                <span className="text-[7px] font-mono opacity-50 bg-white/10 px-1 py-0.2 rounded border border-white/5">IE</span>
+              </>
+            )}
+            {tab === 'canvas' && (
+              <>
+                <span>Canvas & Pitch</span>
+                <span className="text-[7px] font-mono opacity-50 bg-white/10 px-1 py-0.2 rounded border border-white/5">IE</span>
+              </>
+            )}
           </button>
         ))}
       </div>

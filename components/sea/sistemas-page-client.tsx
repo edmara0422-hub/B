@@ -30,6 +30,7 @@ const SIDEBAR_GROUPS = [
     id: 'clin',
     code: 'CLIN',
     label: 'CLÍNICO',
+    areas: 'PNEUMO · NEURO · CARDIO',
     items: [
       { id: 'S1', title: 'IPB ICU', desc: 'S1 · Módulo Clínico' },
       { id: 'S2', title: 'Calculadoras', desc: 'S2 · Módulo Clínico' },
@@ -40,44 +41,48 @@ const SIDEBAR_GROUPS = [
     id: 'sig',
     code: 'SIG',
     label: 'GERENCIAL',
+    areas: 'LPC · GOC · MME',
     items: [
-      { id: 'sig-capital-humano', title: 'Capital Humano', desc: 'Riscos Psicossociais & IA' },
-      { id: 'sig-pessoas', title: 'Pessoas', desc: 'Líderes & Gestores' },
-      { id: 'sig-empresa', title: 'Empresa', desc: 'Estratégia · BI · Canais' },
-      { id: 'sig-mercado', title: 'Mercado', desc: 'Panorama Cruzado' },
-      { id: 'sig-esg', title: 'ESG', desc: 'Sustentabilidade & Governança' },
-      { id: 'sig-feedback', title: 'Feedback & NPS', desc: 'Cultura & Feedback' },
-      { id: 'arquivos', title: 'Arquivos', desc: 'Relatórios do Cockpit' },
+      { id: 'sig-capital-humano', title: 'Capital Humano', desc: 'Riscos Psicossociais & IA · LPC · GOC' },
+      { id: 'sig-pessoas', title: 'Pessoas', desc: 'Líderes & Gestores · LPC' },
+      { id: 'sig-empresa', title: 'Empresa', desc: 'Estratégia · BI · Canais · GOC' },
+      { id: 'sig-mercado', title: 'Mercado', desc: 'Panorama Cruzado · MME' },
+      { id: 'sig-esg', title: 'ESG', desc: 'Sustentabilidade & Governança · GOC' },
+      { id: 'sig-feedback', title: 'Feedback & NPS', desc: 'Cultura & Feedback · LPC' },
+      { id: 'arquivos', title: 'Arquivos', desc: 'Relatórios do Cockpit · GOC' },
     ]
   },
   {
     id: 'sie',
     code: 'SIE',
     label: 'ESTRATÉGICO',
+    areas: 'IE',
     items: [
-      { id: 'meu-negocio', title: 'Meu Negócio, Cenários & Forecast', desc: 'Runway · OKRs · Forecast' },
-      { id: 'sie-inovacao', title: 'Inovação', desc: 'Ambiente P&D' },
-      { id: 'sie-canvas', title: 'Canvas & Pitch', desc: 'Modelo Canvas' },
+      { id: 'meu-negocio', title: 'Meu Negócio, Cenários & Forecast', desc: 'Runway · OKRs · Forecast · IE' },
+      { id: 'sie-inovacao', title: 'Inovação', desc: 'Ambiente P&D · IE' },
+      { id: 'sie-canvas', title: 'Canvas & Pitch', desc: 'Modelo Canvas · IE' },
     ]
   },
   {
     id: 'sio',
     code: 'SIO',
     label: 'OPERACIONAL',
+    areas: 'FIQ · ISI',
     items: [
-      { id: 'sio-ia', title: 'IA Advisor', desc: 'Análise de dados preditivos' },
-      { id: 'sio-finance', title: 'Cockpit Financeiro', desc: 'Liquidez e despesas' },
-      { id: 'sio-pricing', title: 'Smart Pricing', desc: 'Estratégia de preços' },
-      { id: 'sio-processos', title: 'Processos', desc: 'Fluxogramas e SOPs' },
+      { id: 'sio-ia', title: 'IA Advisor', desc: 'Análise de dados preditivos · FIQ' },
+      { id: 'sio-finance', title: 'Cockpit Financeiro', desc: 'Liquidez e despesas · FIQ' },
+      { id: 'sio-pricing', title: 'Smart Pricing', desc: 'Estratégia de preços · FIQ' },
+      { id: 'sio-processos', title: 'Processos', desc: 'Fluxogramas e SOPs · ISI' },
     ]
   },
   {
     id: 'comp',
     code: 'COMP',
     label: 'COMPLIANCE',
+    areas: 'GOVERNANÇA',
     items: [
-      { id: 'comp-denuncias', title: 'Canal de Denúncias', desc: 'Governança IPB' },
-      { id: 'comp-governanca', title: 'Governança', desc: 'Políticas & Contratos' },
+      { id: 'comp-denuncias', title: 'Canal de Denúncias', desc: 'Governança IPB · COMP' },
+      { id: 'comp-governanca', title: 'Governança', desc: 'Políticas & Contratos · COMP' },
     ]
   }
 ]
@@ -167,7 +172,8 @@ export default function SistemasPageClient() {
     const group = visibleGroups.find(g => g.items.some(i => i.id === activeNavId))
     const item = group?.items.find(i => i.id === activeNavId)
     if (group && item) {
-      return `${group.code} · ${group.label} · ${item.title.toUpperCase()}`
+      const areasStr = (group as any).areas ? ` (${(group as any).areas})` : ''
+      return `${group.code}${areasStr} · ${group.label} · ${item.title.toUpperCase()}`
     }
     return 'IPB OPERATIONAL · COCKPIT'
   }
@@ -785,11 +791,17 @@ export default function SistemasPageClient() {
           font-family: var(--f-body); font-size: 10px; letter-spacing: .03em;
           color: var(--ink-mute); transition: all .3s; font-weight: 400;
         }
+        .app-workspace-layout .tab .areas {
+          font-family: var(--f-mono); font-size: 7px; letter-spacing: .05em;
+          color: rgba(255,255,255,.25); transition: all .3s; font-weight: 500;
+          text-align: center; margin-top: 1px;
+        }
         .app-workspace-layout .tab:hover .tab-frame { transform: scale(1.07) }
         .app-workspace-layout .tab:hover .tab-frame::before { opacity: .28 }
         .app-workspace-layout .tab:hover .code { color: var(--s-3) }
         .app-workspace-layout .tab:hover .name { color: var(--ink-2) }
-
+        .app-workspace-layout .tab:hover .areas { color: rgba(255,255,255,.45) }
+ 
         /* ACTIVE TAB */
         .app-workspace-layout .tab.active .tab-frame::before { background: var(--grad-gold); opacity: .8 }
         .app-workspace-layout .tab.active .tab-frame::after {
@@ -802,6 +814,7 @@ export default function SistemasPageClient() {
           color: transparent; -webkit-text-fill-color: transparent; font-weight: 700;
         }
         .app-workspace-layout .tab.active .name { color: var(--g-3); font-weight: 500 }
+        .app-workspace-layout .tab.active .areas { color: var(--g-3); opacity: 0.8 }
         .app-workspace-layout .tab.active::before {
           content: ''; position: absolute; left: -10px; top: 20%; bottom: 20%; width: 2px;
           background: var(--grad-gold);
@@ -1176,6 +1189,7 @@ export default function SistemasPageClient() {
                     <div className="code">{group.code}</div>
                   </div>
                   <div className="name">{group.label}</div>
+                  {(group as any).areas && <div className="areas">{(group as any).areas}</div>}
                 </div>
 
                 {/* Sub Itens */}
