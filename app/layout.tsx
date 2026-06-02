@@ -9,7 +9,7 @@ export const viewport: Viewport = {
 }
 
 export const metadata: Metadata = {
-  title: 'IPB - Innovation Prototyping Board',
+  title: 'BS - BUSINESS SYLLABUS',
   description: 'Plataforma imersiva de aprendizado com simulacoes avancadas.',
   icons: {
     icon: '/icon.svg?v=3',

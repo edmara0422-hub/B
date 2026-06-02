@@ -48,7 +48,7 @@ export default function ProfilePage() {
   // Carrega feedbacks cacheados locais ao iniciar
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const cached = localStorage.getItem("ipb_feedbacks")
+      const cached = localStorage.getItem("bs_feedbacks")
       if (cached) {
         try {
           setFeedbacksList(JSON.parse(cached))
@@ -169,7 +169,7 @@ export default function ProfilePage() {
     // Atualiza cache local e localStorage
     const updated = [newFb, ...feedbacksList]
     setFeedbacksList(updated)
-    localStorage.setItem("ipb_feedbacks", JSON.stringify(updated))
+    localStorage.setItem("bs_feedbacks", JSON.stringify(updated))
 
     try {
       await fetch("/api/feedback", {
@@ -203,7 +203,7 @@ export default function ProfilePage() {
         body: JSON.stringify({
           user_id: activeAdminId || null,
           name: profileName || "Usuária",
-          email: supportEmail || profileEmail || "sem-email@ipb.app",
+          email: supportEmail || profileEmail || "sem-email@business-syllabus.app",
           message: supportMessage
         })
       })
@@ -412,7 +412,7 @@ export default function ProfilePage() {
             </h4>
           </div>
           <p style={{ fontSize: 11, color: "rgba(255,255,255,0.7)", fontWeight: 300, margin: 0, lineHeight: 1.5 }}>
-            O quanto você recomendaria o aplicativo IPB para um sócio ou parceiro de negócios de 0 a 10?
+            O quanto você recomendaria o aplicativo Business Syllabus para um sócio ou parceiro de negócios de 0 a 10?
           </p>
 
           {/* Grid de Pontuação Interativa (0 a 10) */}
@@ -522,8 +522,8 @@ export default function ProfilePage() {
         <div className={menuBtn}>
           <Info className="h-4 w-4 text-white/75" />
           <div className="flex-1">
-            <p className="text-[12px] font-semibold text-white/90">IPB</p>
-            <p className="text-[10px] text-white/60">Versão 1.0.0 · Intelligence Platform Business.</p>
+            <p className="text-[12px] font-semibold text-white/90">Business Syllabus</p>
+            <p className="text-[10px] text-white/60">Versão 1.0.0 · BS - Business Syllabus.</p>
           </div>
         </div>
       </div>
@@ -546,8 +546,8 @@ export default function ProfilePage() {
 
 const FAQ_ITEMS = [
   {
-    q: 'O IPB substitui auditorias ou análises fiscais formais?',
-    a: 'Não. O IPB (Intelligence Platform Business) é uma ferramenta de apoio à decisão gerencial e raciocínio estratégico. Ele não substitui pareceres contábeis, auditorias financeiras oficiais ou sistemas formais de ERP exigidos legalmente.',
+    q: 'O Business Syllabus substitui auditorias ou análises fiscais formais?',
+    a: 'Não. O Business Syllabus (BS) é uma ferramenta de apoio à decisão gerencial e raciocínio estratégico. Ele não substitui pareceres contábeis, auditorias financeiras oficiais ou sistemas formais de ERP exigidos legalmente.',
   },
   {
     q: 'Meus dados de negócio ficam salvos onde?',
@@ -558,8 +558,8 @@ const FAQ_ITEMS = [
     a: 'Role até o final desta página na seção "Alterar senha". Digite sua nova senha de acesso duas vezes e clique em confirmar para salvar de forma segura.',
   },
   {
-    q: 'Posso usar o IPB sem conexão com a internet?',
-    a: 'Sim. O IPB foi desenvolvido com arquitetura offline-first. As simulações matemáticas locais e matrizes funcionam de forma independente. Apenas a sincronização de nuvem e o Assistente IA de negócios necessitam de internet.',
+    q: 'Posso usar o Business Syllabus sem conexão com a internet?',
+    a: 'Sim. O Business Syllabus foi desenvolvido com arquitetura offline-first. As simulações matemáticas locais e matrizes funcionam de forma independente. Apenas a sincronização de nuvem e o Assistente IA de negócios necessitam de internet.',
   },
   {
     q: 'O Tutor/Assistente de IA de Negócios pode falhar?',

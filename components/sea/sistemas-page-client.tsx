@@ -1140,9 +1140,9 @@ export default function SistemasPageClient() {
         <aside className="side">
           {/* HEADER */}
           <div className="side-header justify-between">
-            <div className="brand-mark"><span>IP</span></div>
+            <div className="brand-mark"><span>BS</span></div>
             <div className="side-title-block">
-              <span className="h1">IPB OPERATIONAL</span>
+              <span className="h1">BUSINESS SYLLABUS</span>
               <span className="h2">COCKPIT · v0.9.4</span>
             </div>
             
@@ -1267,7 +1267,7 @@ export default function SistemasPageClient() {
                 <span>Abrir Menu</span>
               </button>
             )}
-            <div className="thd-title"><b>IPB</b> <span className="sep">◆</span> Operational Workspace</div>
+            <div className="thd-title"><b>BS</b> <span className="sep">◆</span> Business Syllabus</div>
             <div className="thd-crumb">{getBreadcrumb()}</div>
           </div>
           
