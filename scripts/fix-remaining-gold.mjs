@@ -1,6 +1,6 @@
 import fs from 'fs'
 
-const file = 'components/sea/conteudos-page-client.tsx'
+const file = 'components/business-syllabus/conteudos-page-client.tsx'
 let content = fs.readFileSync(file, 'utf8')
 
 // We want to find any class attribute and replace tailwind classes inside it.

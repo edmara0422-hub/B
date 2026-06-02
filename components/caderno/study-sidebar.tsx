@@ -59,7 +59,7 @@ export function StudySidebar({
   }
 
   return (
-    <div className="ipb-soft flex h-full flex-col rounded-[1.5rem]">
+    <div className="bs-soft flex h-full flex-col rounded-[1.5rem]">
       {/* Tool tabs */}
       <div className="flex gap-1 border-b border-white/[0.06] p-2">
         {TABS.map(({ id, label, icon: Icon }) => (

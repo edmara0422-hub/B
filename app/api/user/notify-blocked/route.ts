@@ -62,14 +62,14 @@ export async function POST(request: Request) {
         body: JSON.stringify({
           from: 'seguranca@sea-fisio.com.br',
           to: emailTo,
-          subject: `⚠️ [Segurança IPB] Tentativa de Login Bloqueado: ${email}`,
+          subject: `⚠️ [Segurança Business Syllabus] Tentativa de Login Bloqueado: ${email}`,
           html: `
             <div style="font-family: sans-serif; padding: 24px; color: #1e293b; max-width: 600px; border: 1px solid #f8717130; border-radius: 16px; background-color: #0b0f19; background-image: radial-gradient(at top left, rgba(239, 68, 68, 0.05), transparent);">
               <h2 style="color: #f87171; margin-top: 0; display: flex; align-items: center; gap: 8px; font-size: 18px; letter-spacing: 0.05em; text-transform: uppercase;">
                 ⚠️ Tentativa de Acesso Bloqueado
               </h2>
               <p style="font-size: 13px; line-height: 1.6; color: #94a3b8;">
-                O sistema de segurança da plataforma <strong>IPB (Intelligence Platform Business)</strong> interceptou com sucesso uma tentativa de login em uma conta bloqueada pelo administrador.
+                O sistema de segurança da plataforma <strong>BS (Business Syllabus)</strong> interceptou com sucesso uma tentativa de login em uma conta bloqueada pelo administrador.
               </p>
               
               <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 16px; border-radius: 12px; margin: 20px 0;">
@@ -102,7 +102,7 @@ export async function POST(request: Request) {
               </div>
               
               <p style="font-size: 11px; color: #475569; text-align: center; margin-top: 24px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 16px;">
-                Este é um alerta automático de segurança do IPB. O acesso foi sumariamente impedido e nenhuma ação corretiva imediata é requerida.
+                Este é um alerta automático de segurança do Business Syllabus. O acesso foi sumariamente impedido e nenhuma ação corretiva imediata é requerida.
               </p>
             </div>
           `,
@@ -118,7 +118,7 @@ export async function POST(request: Request) {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            text: `⚠️ *Tentativa de Acesso Bloqueado interceptada no IPB*\n*Usuário:* ${profile.name || 'Sem nome'}\n*E-mail:* ${email}\n*IP:* ${ip}\n*Dispositivo:* ${ua}`,
+            text: `⚠️ *Tentativa de Acesso Bloqueado interceptada no Business Syllabus*\n*Usuário:* ${profile.name || 'Sem nome'}\n*E-mail:* ${email}\n*IP:* ${ip}\n*Dispositivo:* ${ua}`,
           }),
         })
       } catch {}

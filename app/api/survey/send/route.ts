@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
 
     let providerUsed = "simulated_console"
     const sendPromises = emails.map(async (email) => {
-      // Monta o e-mail estilizado com a linguagem de design Dourado e Preto do IPB
+      // Monta o e-mail estilizado com a linguagem de design Dourado e Preto do Business Syllabus
       const encodedCategory = encodeURIComponent(category)
       const encodedQuestion = encodeURIComponent(question)
       const surveyLink = `${origin}/pesquisa?c=${encodedCategory}&q=${encodedQuestion}`
@@ -53,18 +53,18 @@ export async function POST(req: NextRequest) {
 
           <div style="border-top: 1px solid rgba(255,255,255,0.05); padding-top: 20px; font-size: 10px; color: #8a9098; line-height: 1.5;">
             <p style="margin: 0 0 4px;">• <b>Conformidade de Segurança:</b> Esta pesquisa atende os quesitos do Programa de Gerenciamento de Riscos (PGR - NR-1).</p>
-            <p style="margin: 0;">• <b>Privacidade por Design:</b> O IPB garante a anonimização técnica irrevogável das respostas recolhidas.</p>
+            <p style="margin: 0;">• <b>Privacidade por Design:</b> O BS garante a anonimização técnica irrevogável das respostas recolhidas.</p>
           </div>
 
           <footer style="margin-top: 32px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 16px; text-align: center; font-size: 10px; color: #555555;">
-            IPB App · Gestão Cognitiva de Equipes e Telemetria Humana
+            Business Syllabus App · Gestão Cognitiva de Equipes e Telemetria Humana
           </footer>
         </div>
       `;
 
       const result = await sendMail({
         to: email,
-        subject: `Pesquisa de Clima IPB - ${category}`,
+        subject: `Pesquisa de Clima BS - ${category}`,
         html: htmlContent
       });
 

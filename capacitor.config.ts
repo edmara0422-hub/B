@@ -19,7 +19,7 @@ import type { CapacitorConfig } from '@capacitor/cli';
 const PRODUCTION_MODE = true;
 
 const DEV_SERVER_URL = 'http://192.168.18.9:3000';
-const VERCEL_URL = 'https://ipb-intelligence.vercel.app';
+const VERCEL_URL = 'https://bs-intelligence.vercel.app';
 
 const config: CapacitorConfig = {
   appId: 'com.businesssyllabus.app',

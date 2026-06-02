@@ -177,7 +177,7 @@ export function SimSixHatsMatrix({ theme, addLog }: SimulationProps) {
 }
 `
 
-const file = 'components/sea/simulations-6d.tsx'
+const file = 'components/business-syllabus/simulations-6d.tsx'
 let content = fs.readFileSync(file, 'utf8')
 
 // If the components already exist, we don't want to append again

@@ -13,11 +13,11 @@ if (!fs.existsSync(outDir)) {
 let content = fs.readFileSync(inputFile, 'utf-8');
 
 // Replacements
-content = content.replace(/SEA/g, 'IPB');
+content = content.replace(/SEA/g, 'BS');
 content = content.replace(/Sea/g, 'Ipb');
-content = content.replace(/sea-/g, 'ipb-');
-content = content.replace(/Sistema de Estudo Avançado/g, 'IPB');
-content = content.replace(/Sistema de Estudo Avancado/g, 'IPB');
+content = content.replace(/sea-/g, 'bs-');
+content = content.replace(/Sistema de Estudo Avançado/g, 'BS');
+content = content.replace(/Sistema de Estudo Avancado/g, 'BS');
 
 // Separate JS and CSS
 const splitToken = 'ReactDOM.createRoot(document.getElementById("root")).render(<App/>);';

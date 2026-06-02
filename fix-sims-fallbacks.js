@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const path = 'components/sea/conteudos-page-client.tsx';
+const path = 'components/business-syllabus/conteudos-page-client.tsx';
 let content = fs.readFileSync(path, 'utf8');
 
 const replacement = `            {dbId === 'P2-S1' && (

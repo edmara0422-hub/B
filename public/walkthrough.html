@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-  <title>IPB Design Space</title>
+  <title>BS Design Space</title>
   <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -11,7 +11,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Inter:wght@300;400;500;600&family=Poppins:wght@200;300;400;500;600&display=swap" rel="stylesheet">
   <style>
 /* ──────────────────────────────────────────────────────────────────────────
-   IPB FISIO — Editorial scroll story (Stripe/Apple-style)
+   BS FISIO — Editorial scroll story (Stripe/Apple-style)
    ────────────────────────────────────────────────────────────────────────── */
 :root {
   --bg:      #050505;
@@ -62,19 +62,19 @@ body::after {
   filter: blur(70px);
 }
 
-/* Vine + IPB canvases (loaded externally) */
+/* Vine + BS canvases (loaded externally) */
 .vine-canvas-root { position: fixed; inset: 0; z-index: 1; pointer-events: none; }
-.ipb-bg-root { position: fixed; inset: 0; z-index: 2; pointer-events: none; overflow: hidden; background: transparent; }
-.ipb-bg-canvas { position: fixed; inset: 0; z-index: 3; pointer-events: none; }
-.ipb-bg-halos { position: fixed; inset: 0; z-index: 4; pointer-events: none; overflow: hidden; }
-.ipb-halo { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); border-radius: 50%; }
-.ipb-halo-gold {
+.bs-bg-root { position: fixed; inset: 0; z-index: 2; pointer-events: none; overflow: hidden; background: transparent; }
+.bs-bg-canvas { position: fixed; inset: 0; z-index: 3; pointer-events: none; }
+.bs-bg-halos { position: fixed; inset: 0; z-index: 4; pointer-events: none; overflow: hidden; }
+.bs-halo { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); border-radius: 50%; }
+.bs-halo-gold {
   width: min(80vw, 700px); height: min(80vw, 700px);
   background: radial-gradient(circle, rgba(210,175,90,0.025) 0%, transparent 70%);
   border: 1px solid rgba(210,175,90,0.04);
   animation: halo-a 6s ease-in-out infinite;
 }
-.ipb-halo-silver {
+.bs-halo-silver {
   width: min(110vw, 960px); height: min(110vw, 960px);
   background: radial-gradient(circle, rgba(192,200,215,0.015) 0%, transparent 65%);
   border: 1px solid rgba(192,200,215,0.025);
@@ -82,13 +82,13 @@ body::after {
 }
 @keyframes halo-a { 0%,100% { opacity: 0.5; transform: translate(-50%,-50%) scale(1); } 50% { opacity: 1; transform: translate(-50%,-50%) scale(1.04); } }
 @keyframes halo-b { 0%,100% { opacity: 0.4; transform: translate(-50%,-50%) scale(1); } 50% { opacity: 0.9; transform: translate(-50%,-50%) scale(1.02); } }
-.ipb-ray { position: absolute; top: 0; bottom: 0; width: 1px;
+.bs-ray { position: absolute; top: 0; bottom: 0; width: 1px;
   background: linear-gradient(180deg, transparent 0%, rgba(210,175,90,0.25) 50%, transparent 100%);
   opacity: 0; animation: ray 8s ease-in-out infinite;
 }
-.ipb-ray-silver { background: linear-gradient(180deg, transparent 0%, rgba(192,200,215,0.22) 50%, transparent 100%); }
+.bs-ray-silver { background: linear-gradient(180deg, transparent 0%, rgba(192,200,215,0.22) 50%, transparent 100%); }
 @keyframes ray { 0%,100% { opacity: 0; } 50% { opacity: 0.1; } }
-.ipb-grid {
+.bs-grid {
   position: absolute; inset: 0;
   background-image:
     linear-gradient(rgba(192,192,192,0.015) 1px, transparent 1px),
@@ -391,7 +391,7 @@ body::after {
 }
 
 /* ──────────────────────────────────────────────────────────────────────
-   IPB app screen styles — same as before, just keep at bottom
+   Business Syllabus App screen styles — same as before, just keep at bottom
    ────────────────────────────────────────────────────────────────────── */
 .app-bg {
   position: absolute; inset: 0;
@@ -1430,7 +1430,7 @@ body {
 a { color: inherit; text-decoration: none; }
 ::selection { background: var(--gold); color: var(--bg); }
 
-/* ── Text shimmer (IPB-style noble) ───────────────────────────────────── */
+/* ── Text shimmer (BS-style noble) ───────────────────────────────────── */
 @keyframes shimmer {
   0%   { background-position: -300% center; }
   100% { background-position:  300% center; }
@@ -1453,17 +1453,17 @@ a { color: inherit; text-decoration: none; }
 
 /* ── Vine canvas (3D starfield) + ambient layers ─────────────────────── */
 .vine-canvas-root { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
-.ipb-bg-root      { position: fixed; inset: 0; z-index: 1; pointer-events: none; overflow: hidden; background: transparent; }
-.ipb-bg-canvas    { position: fixed; inset: 0; z-index: 2; pointer-events: none; }
-.ipb-bg-halos     { position: fixed; inset: 0; z-index: 3; pointer-events: none; overflow: hidden; }
-.ipb-halo { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); border-radius: 50%; }
-.ipb-halo-gold {
+.bs-bg-root      { position: fixed; inset: 0; z-index: 1; pointer-events: none; overflow: hidden; background: transparent; }
+.bs-bg-canvas    { position: fixed; inset: 0; z-index: 2; pointer-events: none; }
+.bs-bg-halos     { position: fixed; inset: 0; z-index: 3; pointer-events: none; overflow: hidden; }
+.bs-halo { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); border-radius: 50%; }
+.bs-halo-gold {
   width: min(80vw, 700px); height: min(80vw, 700px);
   background: radial-gradient(circle, rgba(210,175,90,0.025) 0%, transparent 70%);
   border: 1px solid rgba(210,175,90,0.04);
   animation: halo-a 6s ease-in-out infinite;
 }
-.ipb-halo-silver {
+.bs-halo-silver {
   width: min(110vw, 960px); height: min(110vw, 960px);
   background: radial-gradient(circle, rgba(192,200,215,0.015) 0%, transparent 65%);
   border: 1px solid rgba(192,200,215,0.025);
@@ -1471,13 +1471,13 @@ a { color: inherit; text-decoration: none; }
 }
 @keyframes halo-a { 0%,100% { opacity: 0.5; transform: translate(-50%,-50%) scale(1); } 50% { opacity: 1; transform: translate(-50%,-50%) scale(1.04); } }
 @keyframes halo-b { 0%,100% { opacity: 0.4; transform: translate(-50%,-50%) scale(1); } 50% { opacity: 0.9; transform: translate(-50%,-50%) scale(1.02); } }
-.ipb-ray { position: absolute; top: 0; bottom: 0; width: 1px;
+.bs-ray { position: absolute; top: 0; bottom: 0; width: 1px;
   background: linear-gradient(180deg, transparent 0%, rgba(210,175,90,0.25) 50%, transparent 100%);
   opacity: 0; animation: ray 8s ease-in-out infinite;
 }
-.ipb-ray-silver { background: linear-gradient(180deg, transparent 0%, rgba(192,200,215,0.22) 50%, transparent 100%); }
+.bs-ray-silver { background: linear-gradient(180deg, transparent 0%, rgba(192,200,215,0.22) 50%, transparent 100%); }
 @keyframes ray { 0%,100% { opacity: 0; } 50% { opacity: 0.1; } }
-.ipb-grid {
+.bs-grid {
   position: absolute; inset: 0;
   background-image:
     linear-gradient(rgba(192,192,192,0.015) 1px, transparent 1px),
@@ -1953,43 +1953,43 @@ a { color: inherit; text-decoration: none; }
 
 
 /* ──────────────────────────────────────────────────────────────────────────
-   IPB · walkthrough section embedded in the portfolio
-   Tokens from edmara0422-hub/IPB-FISIO @ app/globals.css
+   BS · walkthrough section embedded in the portfolio
+   Tokens from edmara0422-hub/BS-FISIO @ app/globals.css
    ────────────────────────────────────────────────────────────────────────── */
-.ipb-walk {
+.bs-walk {
   padding: 120px 0;
   border-top: 1px solid var(--line);
 }
-.ipb-walk-eyebrow {
+.bs-walk-eyebrow {
   display: flex; align-items: baseline; gap: 14px;
   margin-bottom: 40px;
   font-family: var(--mono); font-size: 13px;
   letter-spacing: 0.32em; text-transform: uppercase;
   color: var(--gold);
 }
-.ipb-walk-eyebrow .num {
+.bs-walk-eyebrow .num {
   font-family: var(--serif); font-style: italic;
   font-size: 32px; font-weight: 400;
   color: var(--gold-bright); letter-spacing: 0; text-transform: none;
 }
-.ipb-walk-title {
+.bs-walk-title {
   font-family: var(--sans); font-weight: 200;
   font-size: clamp(40px, 6vw, 80px);
   line-height: 1.02; letter-spacing: -0.025em;
   margin: 0 0 32px;
 }
-.ipb-walk-title em {
+.bs-walk-title em {
   font-family: var(--serif); font-style: italic; font-weight: 300;
   background: linear-gradient(180deg, #ffd97a 0%, #d2af5a 100%);
   -webkit-background-clip: text; background-clip: text;
   -webkit-text-fill-color: transparent;
 }
-.ipb-walk-lead {
+.bs-walk-lead {
   font-size: 22px; line-height: 1.65; font-weight: 300;
   color: var(--ink-soft); max-width: 640px; margin: 0 0 80px;
 }
 
-.ipb-walk-strip {
+.bs-walk-strip {
   display: flex; gap: 40px;
   overflow-x: auto; overflow-y: hidden;
   padding: 24px 0 56px;
@@ -1997,8 +1997,8 @@ a { color: inherit; text-decoration: none; }
   scrollbar-color: rgba(255,255,255,0.18) transparent;
   scrollbar-width: thin;
 }
-.ipb-walk-strip::-webkit-scrollbar { height: 8px; }
-.ipb-walk-strip::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 4px; }
+.bs-walk-strip::-webkit-scrollbar { height: 8px; }
+.bs-walk-strip::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 4px; }
 
 /* ── Phone frame ─────────────────────────────────────────────────────── */
 .phone-figure {
@@ -2049,8 +2049,8 @@ a { color: inherit; text-decoration: none; }
   color: var(--ink-mute); text-align: center; line-height: 1.5;
 }
 
-/* ── IPB backdrop (real tokens) ──────────────────────────────────────── */
-.ipb-bg {
+/* ── BS backdrop (real tokens) ──────────────────────────────────────── */
+.bs-bg {
   position: absolute; inset: 0;
   background:
     radial-gradient(circle at 50% -10%, rgba(255,255,255,0.10), transparent 22%),
@@ -2060,24 +2060,24 @@ a { color: inherit; text-decoration: none; }
   color: #fff;
   overflow: hidden;
 }
-.ipb-bg-noise {
+.bs-bg-noise {
   position: absolute; inset: 0; pointer-events: none;
   background:
     linear-gradient(110deg, transparent 0%, rgba(255,255,255,0.035) 18%, transparent 34%),
     repeating-linear-gradient(90deg, rgba(255,255,255,0.008) 0 1px, transparent 1px 120px);
   opacity: 0.7;
 }
-.ipb-bg-halo {
+.bs-bg-halo {
   position: absolute; bottom: -8rem; left: 12%; right: 12%; height: 14rem;
   background: radial-gradient(ellipse at center, rgba(207,214,223,0.12) 0%, transparent 74%);
   filter: blur(50px); pointer-events: none;
 }
 
-@keyframes ipb-shimmer {
+@keyframes bs-shimmer {
   0%   { background-position: -300% center; }
   100% { background-position:  300% center; }
 }
-.ipb-shimmer {
+.bs-shimmer {
   background: linear-gradient(100deg,
     rgba(196,200,212,0.55) 0%,
     rgba(226,229,238,1.00) 18%,
@@ -2089,19 +2089,19 @@ a { color: inherit; text-decoration: none; }
   background-size: 250% auto;
   -webkit-background-clip: text; background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: ipb-shimmer 8s linear infinite;
+  animation: bs-shimmer 8s linear infinite;
 }
 
-.ipb-mark {
+.bs-mark {
   display: grid; place-items: center;
   border: 1px solid rgba(255,255,255,0.16);
   background: linear-gradient(180deg, rgba(255,255,255,0.9) 0%, rgba(219,225,232,0.36) 16%, rgba(96,101,108,0.94) 42%, rgba(14,15,18,0.98) 100%);
   box-shadow: inset 0 1px 0 rgba(255,255,255,0.24), 0 16px 32px rgba(0,0,0,0.36);
 }
-.ipb-mark span { font-weight: 600; letter-spacing: 0.28em; color: #fff; padding-left: 0.32em; }
+.bs-mark span { font-weight: 600; letter-spacing: 0.28em; color: #fff; padding-left: 0.32em; }
 
 /* Top bar */
-.ipb-topbar {
+.bs-topbar {
   position: absolute; top: 0; left: 0; right: 0; z-index: 40;
   padding: 10px 12px;
   background: rgba(5,5,5,0.82);
@@ -2109,19 +2109,19 @@ a { color: inherit; text-decoration: none; }
   border-bottom: 1px solid rgba(192,192,192,0.06);
   display: flex; align-items: center; justify-content: space-between; gap: 6px;
 }
-.ipb-topbar .ipb-greet {
+.bs-topbar .bs-greet {
   display: inline-flex; align-items: center; gap: 6px;
   padding: 3px 10px; border-radius: 999px;
   background: rgba(255,255,255,0.04);
   border: 1px solid rgba(255,255,255,0.10);
   font-size: 9px; font-weight: 500; color: rgba(255,255,255,0.45);
 }
-.ipb-topbar .ipb-greet .dot {
+.bs-topbar .bs-greet .dot {
   width: 6px; height: 6px; border-radius: 50%;
   background: #d2af5a; box-shadow: 0 0 6px rgba(210,175,90,0.6);
 }
-.ipb-topbar .ipb-icons { display: flex; gap: 4px; font-size: 11px; color: rgba(255,255,255,0.7); }
-.ipb-topbar .ipb-icons span {
+.bs-topbar .bs-icons { display: flex; gap: 4px; font-size: 11px; color: rgba(255,255,255,0.7); }
+.bs-topbar .bs-icons span {
   width: 22px; height: 22px; border-radius: 6px;
   border: 1px solid rgba(255,255,255,0.12);
   background: linear-gradient(180deg, rgba(255,255,255,0.14) 0%, rgba(8,8,10,0.98) 100%);
@@ -2129,7 +2129,7 @@ a { color: inherit; text-decoration: none; }
 }
 
 /* Bottom nav */
-.ipb-bottomnav {
+.bs-bottomnav {
   position: absolute; bottom: 0; left: 0; right: 0; z-index: 40;
   padding: 6px 8px 10px;
   background: rgba(5,5,5,0.82);
@@ -2137,12 +2137,12 @@ a { color: inherit; text-decoration: none; }
   border-top: 1px solid rgba(192,192,192,0.06);
   display: grid; grid-template-columns: 1fr 1fr; gap: 4px;
 }
-.ipb-tab {
+.bs-tab {
   padding: 10px 0; border-radius: 12px;
   font-size: 9px; font-weight: 600; letter-spacing: 0.1em;
   color: rgba(255,255,255,0.65); background: transparent; border: none;
 }
-.ipb-tab.is-on {
+.bs-tab.is-on {
   color: #050505;
   background: linear-gradient(180deg, rgba(255,255,255,0.98) 0%, rgba(238,242,248,0.78) 18%, rgba(195,202,212,0.54) 50%, rgba(130,138,148,0.38) 80%, rgba(78,84,92,0.42) 100%);
   border: 1px solid rgba(255,255,255,0.42);
@@ -2150,12 +2150,12 @@ a { color: inherit; text-decoration: none; }
 }
 
 /* ── 01 Landing ──────────────────────────────────────────────────────── */
-.ipb-landing {
+.bs-landing {
   position: absolute; inset: 0;
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   padding: 24px;
 }
-.ipb-orb {
+.bs-orb {
   width: 220px; height: 220px; border-radius: 50%;
   background: radial-gradient(circle at 35% 35%, rgba(255,255,255,0.18) 0%, rgba(200,200,200,0.12) 22%, rgba(150,150,150,0.07) 50%, rgba(30,30,30,0.01) 100%);
   box-shadow: 0 0 60px rgba(200,200,200,0.06), inset 0 0 40px rgba(255,255,255,0.04);
@@ -2163,80 +2163,80 @@ a { color: inherit; text-decoration: none; }
   display: grid; place-items: center;
   position: relative;
 }
-.ipb-orb::before, .ipb-orb::after {
+.bs-orb::before, .bs-orb::after {
   content: ""; position: absolute; inset: 0; border-radius: 50%;
   border: 1px solid rgba(255,255,255,0.05);
 }
-.ipb-orb::after { inset: -10px; border-color: rgba(255,255,255,0.03); }
-.ipb-orb-inner { text-align: center; }
-.ipb-orb-title {
+.bs-orb::after { inset: -10px; border-color: rgba(255,255,255,0.03); }
+.bs-orb-inner { text-align: center; }
+.bs-orb-title {
   font-size: 52px; font-weight: 600; color: rgba(255,255,255,0.92);
   letter-spacing: 0.02em; line-height: 1;
   filter: drop-shadow(0 0 18px rgba(255,255,255,0.3));
 }
-.ipb-orb-btn {
+.bs-orb-btn {
   margin-top: 22px; padding: 5px 18px; border-radius: 999px;
   border: 1px solid rgba(255,255,255,0.15);
   background: rgba(255,255,255,0.06);
   font-size: 10px; letter-spacing: 0.18em;
   color: rgba(255,255,255,0.7); text-transform: lowercase;
 }
-.ipb-landing-phrase {
+.bs-landing-phrase {
   margin: 26px 0 16px;
   font-size: 11px; line-height: 1.6; font-weight: 300;
   color: rgba(255,255,255,0.35); text-align: center;
 }
-.ipb-landing-dots { display: flex; gap: 4px; }
-.ipb-landing-dots span { display: block; height: 3px; border-radius: 999px; transition: all 0.4s; }
+.bs-landing-dots { display: flex; gap: 4px; }
+.bs-landing-dots span { display: block; height: 3px; border-radius: 999px; transition: all 0.4s; }
 
 /* ── 02 Cadastro ─────────────────────────────────────────────────────── */
-.ipb-auth {
+.bs-auth {
   position: absolute; inset: 0;
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   padding: 24px;
 }
-.ipb-auth-brand { text-align: center; margin-bottom: 24px; }
-.ipb-auth-brand h1 { font-size: 28px; font-weight: 700; letter-spacing: 0.08em; color: #fff; margin: 0; }
-.ipb-auth-brand p { font-size: 8px; letter-spacing: 0.2em; color: rgba(255,255,255,0.4); margin-top: 4px; text-transform: uppercase; }
-.ipb-auth-card {
+.bs-auth-brand { text-align: center; margin-bottom: 24px; }
+.bs-auth-brand h1 { font-size: 28px; font-weight: 700; letter-spacing: 0.08em; color: #fff; margin: 0; }
+.bs-auth-brand p { font-size: 8px; letter-spacing: 0.2em; color: rgba(255,255,255,0.4); margin-top: 4px; text-transform: uppercase; }
+.bs-auth-card {
   width: 100%; padding: 18px;
   border-radius: 18px;
   background: rgba(10,12,16,0.55);
   border: 1px solid rgba(200,205,215,0.08);
   backdrop-filter: blur(24px);
 }
-.ipb-auth-tabs {
+.bs-auth-tabs {
   display: flex; gap: 2px; padding: 2px;
   background: rgba(10,12,16,0.8); border: 1px solid rgba(255,255,255,0.06);
   border-radius: 9px; margin-bottom: 14px;
 }
-.ipb-auth-tabs span {
+.bs-auth-tabs span {
   flex: 1; padding: 6px 0; text-align: center;
   font-size: 8px; font-weight: 600; letter-spacing: 0.14em;
   color: rgba(255,255,255,0.4); text-transform: uppercase;
 }
-.ipb-auth-tabs .is-on {
+.bs-auth-tabs .is-on {
   background: rgba(255,255,255,0.10); color: #fff; border-radius: 6px;
 }
-.ipb-auth-field {
+.bs-auth-field {
   position: relative; margin-bottom: 8px;
 }
-.ipb-auth-field .ic {
+.bs-auth-field .ic {
   position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
   font-size: 11px; color: rgba(255,255,255,0.3);
 }
-.ipb-auth-field input {
+.bs-auth-field input {
   width: 100%; height: 34px; padding-left: 32px; padding-right: 10px;
   background: rgba(255,255,255,0.05);
   border: 1px solid rgba(255,255,255,0.10); border-radius: 8px;
   font-size: 11px; color: #fff; font-family: inherit;
 }
-.ipb-auth-consent {
+.bs-auth-consent {
   display: flex; align-items: flex-start; gap: 8px; margin-top: 6px;
   font-size: 8px; color: rgba(255,255,255,0.42); line-height: 1.5;
 }
-.ipb-auth-consent u { color: rgba(255,255,255,0.7); }
-.ipb-auth-cta {
+.bs-auth-consent u { color: rgba(255,255,255,0.7); }
+.bs-auth-cta {
   width: 100%; height: 36px; margin-top: 10px;
   background: rgba(10,12,16,0.8);
   border: 1px solid rgba(255,255,255,0.10); border-radius: 8px;
@@ -2246,80 +2246,80 @@ a { color: inherit; text-decoration: none; }
 }
 
 /* ── 03 Confirm ──────────────────────────────────────────────────────── */
-.ipb-confirm {
+.bs-confirm {
   position: absolute; inset: 0;
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   padding: 28px;
 }
-.ipb-confirm-icon { font-size: 28px; margin-bottom: 16px; }
-.ipb-confirm h1 {
+.bs-confirm-icon { font-size: 28px; margin-bottom: 16px; }
+.bs-confirm h1 {
   font-size: 24px; font-weight: 300; line-height: 1.1; text-align: center;
   margin: 0 0 14px; letter-spacing: -0.01em;
 }
-.ipb-confirm-success {
+.bs-confirm-success {
   padding: 5px 12px; border-radius: 999px;
   border: 1px solid rgba(74,222,128,0.22); background: rgba(74,222,128,0.05);
   font-size: 9px; color: #86efac;
 }
-.ipb-confirm > p {
+.bs-confirm > p {
   margin: 20px 0 0; font-size: 11px; color: rgba(255,255,255,0.62);
   text-align: center; line-height: 1.6;
 }
-.ipb-confirm > p b { color: #fff; font-weight: 500; }
-.ipb-confirm-steps {
+.bs-confirm > p b { color: #fff; font-weight: 500; }
+.bs-confirm-steps {
   width: 100%; margin-top: 22px; padding: 14px;
   border-radius: 12px;
   background: rgba(10,12,16,0.55); border: 1px solid rgba(255,255,255,0.08);
 }
-.ipb-confirm-steps .k {
+.bs-confirm-steps .k {
   font-size: 8px; letter-spacing: 0.22em; color: rgba(255,255,255,0.4);
   text-transform: uppercase; margin-bottom: 8px;
 }
-.ipb-confirm-step {
+.bs-confirm-step {
   display: flex; align-items: baseline; gap: 10px;
   padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.04);
 }
-.ipb-confirm-step:last-child { border: none; }
-.ipb-confirm-step .num {
+.bs-confirm-step:last-child { border: none; }
+.bs-confirm-step .num {
   font-family: "Cormorant Garamond", serif; font-style: italic;
   font-size: 14px; color: var(--gold); line-height: 1;
 }
-.ipb-confirm-step span:last-child {
+.bs-confirm-step span:last-child {
   font-size: 10px; color: rgba(255,255,255,0.72); font-weight: 300;
 }
 
 /* ── 04 Splash ──────────────────────────────────────────────────────── */
-.ipb-splash {
+.bs-splash {
   position: absolute; inset: 0;
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   padding: 32px;
 }
-.ipb-splash-title {
+.bs-splash-title {
   font-size: 64px; font-weight: 200; letter-spacing: -0.02em; margin: 0; line-height: 1;
 }
-.ipb-splash p {
+.bs-splash p {
   margin-top: 10px; font-size: 8px; letter-spacing: 0.42em;
   color: rgba(255,255,255,0.25); text-transform: uppercase;
 }
-.ipb-splash-bar {
+.bs-splash-bar {
   position: absolute; left: 32px; right: 32px; bottom: 32px;
   height: 2px; border-radius: 999px; background: rgba(255,255,255,0.08); overflow: hidden;
 }
-.ipb-splash-bar > div {
+.bs-splash-bar > div {
   height: 100%; width: 68%;
   background: linear-gradient(90deg, rgba(120,120,120,0.08) 0%, rgba(255,255,255,0.9) 50%, rgba(120,120,120,0.12) 100%);
 }
 
 /* ── 05 Home ─────────────────────────────────────────────────────────── */
-.ipb-home {
+.bs-home {
   position: absolute; top: 54px; bottom: 56px; left: 8px; right: 8px;
   overflow: hidden;
 }
-.ipb-marquee {
+.bs-marquee {
   display: flex; gap: 8px; overflow: hidden;
   height: 132px; margin-bottom: 10px;
 }
-.ipb-sim {
+.bs-sim {
   flex: 1; min-width: 0;
   position: relative; overflow: hidden;
   border-radius: 18px;
@@ -2328,29 +2328,29 @@ a { color: inherit; text-decoration: none; }
   padding: 8px;
   display: flex; flex-direction: column; justify-content: flex-end;
 }
-.ipb-sim-neuro  { background: radial-gradient(ellipse at center, rgba(45,212,191,0.18), rgba(4,12,16,0.95) 70%); }
-.ipb-sim-cardio { background: radial-gradient(ellipse at center, rgba(239,68,68,0.18),  rgba(5,3,4,0.92)  70%); }
-.ipb-sim-pneumo { background: radial-gradient(ellipse at center, rgba(56,189,248,0.18), rgba(4,6,7,0.92)  70%); }
-.ipb-sim-glow {
+.bs-sim-neuro  { background: radial-gradient(ellipse at center, rgba(45,212,191,0.18), rgba(4,12,16,0.95) 70%); }
+.bs-sim-cardio { background: radial-gradient(ellipse at center, rgba(239,68,68,0.18),  rgba(5,3,4,0.92)  70%); }
+.bs-sim-pneumo { background: radial-gradient(ellipse at center, rgba(56,189,248,0.18), rgba(4,6,7,0.92)  70%); }
+.bs-sim-glow {
   position: absolute; inset: 0;
   background: radial-gradient(circle at 50% 35%, rgba(255,255,255,0.10), transparent 60%);
 }
-.ipb-sim-foot { position: relative; z-index: 2; display: flex; flex-direction: column; gap: 2px; }
-.ipb-sim-foot .eyebrow { font-size: 6px; letter-spacing: 0.24em; text-transform: uppercase; color: rgba(255,255,255,0.4); }
-.ipb-sim-neuro  .eyebrow { color: rgba(45,212,191,0.55); }
-.ipb-sim-cardio .eyebrow { color: rgba(255,160,160,0.55); }
-.ipb-sim-pneumo .eyebrow { color: rgba(150,230,255,0.55); }
-.ipb-sim-foot .title   { font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.88); }
-.ipb-sim-neuro  .title { color: rgba(204,253,235,0.92); }
-.ipb-sim-foot .badge {
+.bs-sim-foot { position: relative; z-index: 2; display: flex; flex-direction: column; gap: 2px; }
+.bs-sim-foot .eyebrow { font-size: 6px; letter-spacing: 0.24em; text-transform: uppercase; color: rgba(255,255,255,0.4); }
+.bs-sim-neuro  .eyebrow { color: rgba(45,212,191,0.55); }
+.bs-sim-cardio .eyebrow { color: rgba(255,160,160,0.55); }
+.bs-sim-pneumo .eyebrow { color: rgba(150,230,255,0.55); }
+.bs-sim-foot .title   { font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.88); }
+.bs-sim-neuro  .title { color: rgba(204,253,235,0.92); }
+.bs-sim-foot .badge {
   align-self: flex-start; margin-top: 4px;
   font-size: 7px; font-weight: 600; letter-spacing: 0.18em;
   padding: 2px 7px; border-radius: 999px;
 }
-.ipb-sim-foot .badge.cardio { background: rgba(204,17,32,0.12); border: 1px solid rgba(204,17,32,0.22); color: rgba(255,160,160,0.7); }
-.ipb-sim-foot .badge.pneumo { background: rgba(56,189,248,0.10); border: 1px solid rgba(56,189,248,0.18); color: rgba(150,230,255,0.7); }
+.bs-sim-foot .badge.cardio { background: rgba(204,17,32,0.12); border: 1px solid rgba(204,17,32,0.22); color: rgba(255,160,160,0.7); }
+.bs-sim-foot .badge.pneumo { background: rgba(56,189,248,0.10); border: 1px solid rgba(56,189,248,0.18); color: rgba(150,230,255,0.7); }
 
-.ipb-card {
+.bs-card {
   padding: 10px 12px;
   border-radius: 14px;
   background:
@@ -2360,25 +2360,25 @@ a { color: inherit; text-decoration: none; }
   border: 1px solid rgba(255,255,255,0.10);
   box-shadow: inset 0 1px 0 rgba(255,255,255,0.10), 0 4px 14px rgba(0,0,0,0.22);
 }
-.ipb-card-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
-.ipb-card-head .k { font-size: 9px; font-weight: 600; letter-spacing: 0.2em; color: rgba(255,255,255,0.5); text-transform: uppercase; }
-.ipb-card-head .v { font-size: 8px; color: rgba(255,255,255,0.3); }
-.ipb-perf {
+.bs-card-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
+.bs-card-head .k { font-size: 9px; font-weight: 600; letter-spacing: 0.2em; color: rgba(255,255,255,0.5); text-transform: uppercase; }
+.bs-card-head .v { font-size: 8px; color: rgba(255,255,255,0.3); }
+.bs-perf {
   display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 8px;
 }
-.ipb-perf > div {
+.bs-perf > div {
   padding: 8px 10px; border-radius: 8px;
   background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);
 }
-.ipb-perf .n { display: block; font-size: 18px; font-weight: 300; line-height: 1; }
-.ipb-perf .l { display: block; font-size: 7px; letter-spacing: 0.14em; color: rgba(255,255,255,0.4); text-transform: uppercase; margin-top: 3px; }
-.ipb-chart { display: flex; align-items: flex-end; gap: 3px; height: 28px; }
-.ipb-chart > div { flex: 1; border-radius: 2px; }
+.bs-perf .n { display: block; font-size: 18px; font-weight: 300; line-height: 1; }
+.bs-perf .l { display: block; font-size: 7px; letter-spacing: 0.14em; color: rgba(255,255,255,0.4); text-transform: uppercase; margin-top: 3px; }
+.bs-chart { display: flex; align-items: flex-end; gap: 3px; height: 28px; }
+.bs-chart > div { flex: 1; border-radius: 2px; }
 
-.ipb-quicklinks {
+.bs-quicklinks {
   display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 8px;
 }
-.ipb-quicklinks button {
+.bs-quicklinks button {
   padding: 8px 10px; border-radius: 10px;
   background: rgba(10,12,16,0.55); border: 1px solid rgba(255,255,255,0.06);
   font-size: 9px; color: rgba(255,255,255,0.75);
@@ -2386,12 +2386,12 @@ a { color: inherit; text-decoration: none; }
 }
 
 /* ── 06 Explorar ─────────────────────────────────────────────────────── */
-.ipb-explore {
+.bs-explore {
   position: absolute; top: 54px; bottom: 56px; left: 12px; right: 12px;
   display: flex; flex-direction: column; gap: 10px;
   padding-top: 16px;
 }
-.ipb-explore-card {
+.bs-explore-card {
   flex: 1; padding: 18px;
   border-radius: 22px;
   background: linear-gradient(160deg, rgba(168,184,255,0.06) 0%, rgba(255,255,255,0.01) 40%, transparent 100%);
@@ -2399,34 +2399,34 @@ a { color: inherit; text-decoration: none; }
   box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), 0 28px 60px rgba(0,0,0,0.5);
   display: flex; flex-direction: column; justify-content: space-between;
 }
-.ipb-explore-card.alt {
+.bs-explore-card.alt {
   background: linear-gradient(160deg, rgba(126,239,192,0.06) 0%, rgba(255,255,255,0.01) 40%, transparent 100%);
 }
-.ipb-explore-icon {
+.bs-explore-icon {
   width: 36px; height: 36px; border-radius: 12px;
   background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08);
   display: grid; place-items: center; font-size: 16px; color: rgba(255,255,255,0.5);
 }
-.ipb-explore-card .k { font-size: 8px; letter-spacing: 0.28em; color: rgba(255,255,255,0.32); text-transform: uppercase; margin-top: 14px; }
-.ipb-explore-card h3 { font-size: 22px; font-weight: 200; color: rgba(255,255,255,0.88); margin: 6px 0 10px; line-height: 1.1; }
-.ipb-explore-card .cta {
+.bs-explore-card .k { font-size: 8px; letter-spacing: 0.28em; color: rgba(255,255,255,0.32); text-transform: uppercase; margin-top: 14px; }
+.bs-explore-card h3 { font-size: 22px; font-weight: 200; color: rgba(255,255,255,0.88); margin: 6px 0 10px; line-height: 1.1; }
+.bs-explore-card .cta {
   align-self: flex-start;
   padding: 6px 12px; border-radius: 10px;
   border: 1px solid rgba(255,255,255,0.10); background: rgba(255,255,255,0.05);
   font-size: 9px; font-weight: 600; letter-spacing: 0.22em; color: rgba(255,255,255,0.6); text-transform: uppercase;
 }
-.ipb-explore-dots { display: flex; justify-content: center; gap: 6px; }
-.ipb-explore-dots span { display: block; width: 5px; height: 4px; border-radius: 999px; background: rgba(255,255,255,0.14); }
+.bs-explore-dots { display: flex; justify-content: center; gap: 6px; }
+.bs-explore-dots span { display: block; width: 5px; height: 4px; border-radius: 999px; background: rgba(255,255,255,0.14); }
 
 /* ── 07 Sistemas ─────────────────────────────────────────────────────── */
-.ipb-sistemas {
+.bs-sistemas {
   position: absolute; top: 54px; bottom: 56px; left: 10px; right: 10px;
   padding-top: 12px;
 }
-.ipb-sist-grid {
+.bs-sist-grid {
   display: grid; grid-template-columns: 78px 1fr; gap: 6px; height: 100%;
 }
-.ipb-sist-side {
+.bs-sist-side {
   display: flex; flex-direction: column; gap: 4px;
   padding: 8px 6px;
   border-radius: 14px;
@@ -2435,31 +2435,31 @@ a { color: inherit; text-decoration: none; }
     linear-gradient(160deg, rgba(255,255,255,0.05) 0%, rgba(0,0,0,0.12) 100%);
   border: 1px solid rgba(255,255,255,0.10);
 }
-.ipb-sist-side .k { font-size: 6px; letter-spacing: 0.22em; color: rgba(255,255,255,0.4); text-transform: uppercase; padding: 0 4px; margin-bottom: 4px; }
-.ipb-sist-side button {
+.bs-sist-side .k { font-size: 6px; letter-spacing: 0.22em; color: rgba(255,255,255,0.4); text-transform: uppercase; padding: 0 4px; margin-bottom: 4px; }
+.bs-sist-side button {
   display: flex; align-items: center; gap: 6px;
   padding: 6px; border-radius: 10px;
   background: transparent; border: 1px solid transparent;
   font-family: inherit; text-align: left;
 }
-.ipb-sist-side button.is-on {
+.bs-sist-side button.is-on {
   background: linear-gradient(135deg, rgba(255,255,255,0.09), rgba(255,255,255,0.04));
   border: 1px solid rgba(210,175,90,0.22);
   box-shadow: inset 0 1px 0 rgba(210,175,90,0.14);
 }
-.ipb-sist-side button .dot {
+.bs-sist-side button .dot {
   width: 6px; height: 6px; border-radius: 50%;
   background: var(--gold); flex-shrink: 0;
 }
-.ipb-sist-side button .dot.off { background: rgba(255,255,255,0.16); }
-.ipb-sist-side button span:last-child {
+.bs-sist-side button .dot.off { background: rgba(255,255,255,0.16); }
+.bs-sist-side button span:last-child {
   font-size: 7px; font-weight: 600; letter-spacing: 0.1em;
   color: rgba(255,255,255,0.7); line-height: 1.3;
 }
-.ipb-sist-side button.is-on span:last-child { color: rgba(255,255,255,0.95); }
+.bs-sist-side button.is-on span:last-child { color: rgba(255,255,255,0.95); }
 
-.ipb-sist-main { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
-.ipb-sist-hero {
+.bs-sist-main { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.bs-sist-hero {
   padding: 10px;
   border-radius: 14px;
   background:
@@ -2468,16 +2468,16 @@ a { color: inherit; text-decoration: none; }
   border: 1px solid rgba(255,255,255,0.10);
   display: flex; align-items: flex-start; gap: 8px;
 }
-.ipb-sist-hero-icon {
+.bs-sist-hero-icon {
   width: 32px; height: 32px; border-radius: 8px;
   background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.10);
   display: grid; place-items: center; font-size: 14px; flex-shrink: 0;
 }
-.ipb-sist-hero p.k { font-size: 6px; letter-spacing: 0.22em; color: rgba(255,255,255,0.3); text-transform: uppercase; }
-.ipb-sist-hero h3 { font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.95); margin: 2px 0 4px; }
-.ipb-sist-hero .desc { font-size: 8px; line-height: 1.5; color: rgba(255,255,255,0.5); }
+.bs-sist-hero p.k { font-size: 6px; letter-spacing: 0.22em; color: rgba(255,255,255,0.3); text-transform: uppercase; }
+.bs-sist-hero h3 { font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.95); margin: 2px 0 4px; }
+.bs-sist-hero .desc { font-size: 8px; line-height: 1.5; color: rgba(255,255,255,0.5); }
 
-.ipb-sist-panel {
+.bs-sist-panel {
   flex: 1;
   padding: 10px;
   border-radius: 14px;
@@ -2486,63 +2486,63 @@ a { color: inherit; text-decoration: none; }
     linear-gradient(160deg, rgba(255,255,255,0.05) 0%, rgba(0,0,0,0.12) 100%);
   border: 1px solid rgba(255,255,255,0.10);
 }
-.ipb-sist-panel .k {
+.bs-sist-panel .k {
   font-size: 7px; font-weight: 600; letter-spacing: 0.22em;
   color: var(--silver); text-transform: uppercase; margin-bottom: 8px;
 }
-.ipb-sist-block {
+.bs-sist-block {
   padding: 8px 10px; border-radius: 10px; margin-bottom: 4px;
   border: 1px solid rgba(255,255,255,0.07);
   background: rgba(0,0,0,0.10);
 }
-.ipb-sist-block .bn { font-size: 10px; font-weight: 600; color: rgba(255,255,255,0.88); }
-.ipb-sist-block .bd { font-size: 8px; color: rgba(255,255,255,0.5); margin-top: 2px; }
+.bs-sist-block .bn { font-size: 10px; font-weight: 600; color: rgba(255,255,255,0.88); }
+.bs-sist-block .bd { font-size: 8px; color: rgba(255,255,255,0.5); margin-top: 2px; }
 
 /* ── 08 Calculadora VM ────────────────────────────────────────────────── */
-.ipb-calc {
+.bs-calc {
   position: absolute; top: 54px; bottom: 56px; left: 10px; right: 10px;
   padding-top: 10px;
   overflow: hidden;
 }
-.ipb-calc-back { font-size: 9px; color: rgba(255,255,255,0.5); margin: 0 0 8px; }
-.ipb-calc-title {
+.bs-calc-back { font-size: 9px; color: rgba(255,255,255,0.5); margin: 0 0 8px; }
+.bs-calc-title {
   font-size: 16px; font-weight: 300; margin: 0;
   letter-spacing: -0.01em; line-height: 1.1;
 }
-.ipb-calc-sub { font-size: 9px; color: rgba(255,255,255,0.55); margin: 4px 0 12px; line-height: 1.4; }
+.bs-calc-sub { font-size: 9px; color: rgba(255,255,255,0.55); margin: 4px 0 12px; line-height: 1.4; }
 
-.ipb-calc-panel {
+.bs-calc-panel {
   padding: 10px;
   border-radius: 12px;
   background: rgba(10,12,16,0.55); border: 1px solid rgba(255,255,255,0.08);
   margin-bottom: 10px;
 }
-.ipb-calc-panel .k {
+.bs-calc-panel .k {
   font-size: 7px; font-weight: 600; letter-spacing: 0.22em;
   color: rgba(255,255,255,0.5); text-transform: uppercase; margin-bottom: 6px;
 }
-.ipb-calc-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; }
-.ipb-calc-input { padding: 5px 6px; border-radius: 6px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); }
-.ipb-calc-input .lbl { font-size: 6px; letter-spacing: 0.18em; color: rgba(255,255,255,0.45); text-transform: uppercase; }
-.ipb-calc-input .val { font-size: 12px; color: #fff; font-weight: 600; line-height: 1; margin: 3px 0; }
-.ipb-calc-input .val span { font-size: 6px; font-weight: 300; color: rgba(255,255,255,0.5); margin-left: 3px; }
-.ipb-calc-input .slider {
+.bs-calc-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; }
+.bs-calc-input { padding: 5px 6px; border-radius: 6px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); }
+.bs-calc-input .lbl { font-size: 6px; letter-spacing: 0.18em; color: rgba(255,255,255,0.45); text-transform: uppercase; }
+.bs-calc-input .val { font-size: 12px; color: #fff; font-weight: 600; line-height: 1; margin: 3px 0; }
+.bs-calc-input .val span { font-size: 6px; font-weight: 300; color: rgba(255,255,255,0.5); margin-left: 3px; }
+.bs-calc-input .slider {
   height: 2px; background: rgba(255,255,255,0.08); border-radius: 2px; overflow: hidden;
 }
-.ipb-calc-input .slider .fill { height: 100%; width: 55%; background: linear-gradient(90deg, var(--gold), var(--gold-bright)); }
+.bs-calc-input .slider .fill { height: 100%; width: 55%; background: linear-gradient(90deg, var(--gold), var(--gold-bright)); }
 
-.ipb-calc-results { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
-.ipb-calc-res {
+.bs-calc-results { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.bs-calc-res {
   padding: 8px; border-radius: 10px;
   background: rgba(10,12,16,0.55); border: 1px solid rgba(255,255,255,0.06);
 }
-.ipb-calc-res .k { font-size: 6px; letter-spacing: 0.22em; color: rgba(255,255,255,0.4); text-transform: uppercase; }
-.ipb-calc-res .v { font-size: 16px; font-weight: 600; color: #fff; line-height: 1; margin: 3px 0; }
-.ipb-calc-res .v span { font-size: 7px; color: rgba(255,255,255,0.5); font-weight: 300; margin-left: 3px; }
-.ipb-calc-res .t { font-size: 7px; font-weight: 600; letter-spacing: 0.04em; }
-.ipb-calc-res.good .t { color: #4ade80; }
-.ipb-calc-res.warn .t { color: #facc15; }
-.ipb-calc-res.neutral .t { color: rgba(255,255,255,0.5); }
+.bs-calc-res .k { font-size: 6px; letter-spacing: 0.22em; color: rgba(255,255,255,0.4); text-transform: uppercase; }
+.bs-calc-res .v { font-size: 16px; font-weight: 600; color: #fff; line-height: 1; margin: 3px 0; }
+.bs-calc-res .v span { font-size: 7px; color: rgba(255,255,255,0.5); font-weight: 300; margin-left: 3px; }
+.bs-calc-res .t { font-size: 7px; font-weight: 600; letter-spacing: 0.04em; }
+.bs-calc-res.good .t { color: #4ade80; }
+.bs-calc-res.warn .t { color: #facc15; }
+.bs-calc-res.neutral .t { color: rgba(255,255,255,0.5); }
 
   </style>
 </head>
@@ -2553,14 +2553,14 @@ a { color: inherit; text-decoration: none; }
     
 agora vai crir esse html pagina
 
-subistuino todo nome IPB pq mudamos para IPB
+subistuino todo nome BS pq mudamos para BS
 
 
 
 
 
 // ──────────────────────────────────────────────────────────────────────────────
-// IPB app screens — rendered inside the iPhone, real tokens from the repo
+// Business Syllabus App screens — rendered inside the iPhone, real tokens from the repo
 // ──────────────────────────────────────────────────────────────────────────────
 
 // Lucide-style inline SVG icons (matching lucide-react stroke style)
@@ -2705,9 +2705,9 @@ function AppLanding() {
       {/* CAMADA 3: Orb central */}
       <canvas ref={orbRef} className="s-splash-orb" />
 
-      {/* CAMADA 4: Logo IPB + subtítulo */}
+      {/* CAMADA 4: Logo Business Syllabus + subtítulo */}
       <div className="s-splash-text">
-        <h1 className="s-splash-title">IPB</h1>
+        <h1 className="s-splash-title">BS</h1>
         <p style={{ width: "80px", lineHeight: "1.4", fontWeight: "200", letterSpacing: "2.2px" }}>Sistema de Estudo Avançado</p>
       </div>
     </div>);
@@ -2719,7 +2719,7 @@ function AppCadastro() {
     <div className="app-bg">
       <div className="s-auth">
         <div className="s-auth-brand">
-          <h1>IPB</h1>
+          <h1>BS</h1>
           <p>Sistema de Estudo Avancado</p>
         </div>
         <div className="s-auth-card">
@@ -2775,7 +2775,7 @@ function AppLogin() {
     <div className="app-bg">
       <div className="s-auth">
         <div className="s-auth-brand">
-          <h1>IPB</h1>
+          <h1>BS</h1>
           <p>Sistema de Estudo Avançado</p>
         </div>
         <div className="s-auth-card">
@@ -2949,9 +2949,9 @@ function AppSplash() {
       {/* CAMADA 3: Orb central */}
       <canvas ref={orbRef} className="s-splash-orb" />
 
-      {/* CAMADA 4: Logo IPB + subtítulo */}
+      {/* CAMADA 4: Logo Business Syllabus + subtítulo */}
       <div className="s-splash-text">
-        <h1 className="s-splash-title">IPB</h1>
+        <h1 className="s-splash-title">BS</h1>
         <p style={{ fontWeight: "500", textAlign: "center", lineHeight: "8", letterSpacing: "0px", height: "33px", width: "55px" }}>Sistema de Estudo Avançado</p>
       </div>
 
@@ -2975,7 +2975,7 @@ function AppTopBar() {
 
   return (
     <header className="app-top" data-tour="topbar">
-      <div className="app-top-mark">IPB</div>
+      <div className="app-top-mark">BS</div>
       <div className="app-top-center">
         <div className="app-top-greet">
           <span className="ico">{isDay ? "☀" : "☾"}</span>
@@ -3087,12 +3087,12 @@ const GOV_CONTENT = {
         "Transparência — honestidade sobre limitações e incertezas",
         "Inovação com propósito — tecnologia a serviço da vida",
         "Responsabilidade ambiental — zero papel, pegada de carbono mínima",
-        "Colaboração — crescemos com quem usa e constrói o IPB",
+        "Colaboração — crescemos com quem usa e constrói o Business Syllabus",
       ]},
     ],
   },
   politicas: {
-    title: "Políticas IPB FISIO",
+    title: "Políticas BS FISIO",
     sections: [
       { heading: "4 Pilares da Governança Digital", items: [
         "Responsabilização — cada decisão de produto tem responsável identificável; rastreabilidade total via Git",
@@ -3104,7 +3104,7 @@ const GOV_CONTENT = {
         "Lei nº 13.709/2018 — princípio de minimização de dados",
         "Nenhum PII de pacientes coletado, armazenado ou transmitido a servidores externos",
         "Dados clínicos permanecem exclusivamente no dispositivo (localStorage sandboxed)",
-        "Prontuário IPB é ferramenta de apoio ao raciocínio — não é PEP (Resolução CFM 1.638/2002)",
+        "Prontuário Business Syllabus é ferramenta de apoio ao raciocínio — não é PEP (Resolução CFM 1.638/2002)",
         "Direito ao esquecimento: exclusão permanente sem justificativa, a qualquer momento",
         "Sem compartilhamento com terceiros, parceiros ou para marketing",
       ]},
@@ -3125,7 +3125,7 @@ const GOV_CONTENT = {
     ],
   },
   praticas: {
-    title: "Práticas IPB FISIO",
+    title: "Práticas BS FISIO",
     sections: [
       { heading: "Segurança do Paciente", items: [
         "Cálculos validados: driving pressure (Amato 2015), RSBI (Yang & Tobin 1991), P/F (Berlin 2012)",
@@ -3154,7 +3154,7 @@ const GOV_CONTENT = {
     ],
   },
   compliance: {
-    title: "Compliance IPB FISIO",
+    title: "Compliance BS FISIO",
     sections: [
       { heading: "Legislação Brasileira", items: [
         "LGPD — Lei 13.709/2018",
@@ -3166,7 +3166,7 @@ const GOV_CONTENT = {
       { heading: "Regulamentação Profissional", items: [
         "COFFITO — Código de Ética (Resolução 424/2013)",
         "COFFITO 516/2020 — Teleconsulta",
-        "CFM 1.638/2002 — Definição de PEP (IPB não é PEP)",
+        "CFM 1.638/2002 — Definição de PEP (BS não é PEP)",
         "ANVISA RDC 36/2013 — Segurança do paciente",
         "NR 32 — Saúde no trabalho em saúde",
       ]},
@@ -3183,18 +3183,18 @@ const GOV_CONTENT = {
     title: "Termos de Uso",
     sections: [
       { heading: "Aceitação", items: [
-        "Ao acessar o IPB, o usuário aceita integralmente estes Termos",
+        "Ao acessar o Business Syllabus, o usuário aceita integralmente estes Termos",
         "Uso destinado a fisioterapeutas e estudantes supervisionados",
         "Vedado a menores de 18 anos sem supervisão",
         "Aceite revogável via exclusão de conta",
       ]},
       { heading: "Limitações de Responsabilidade", items: [
-        "IPB é ferramenta de APOIO — não substitui julgamento clínico",
+        "BS é ferramenta de APOIO — não substitui julgamento clínico",
         "Decisões clínicas são responsabilidade EXCLUSIVA do profissional",
         "Cálculos baseados em literatura, interpretar com quadro clínico",
       ]},
       { heading: "Propriedade Intelectual", items: [
-        "Conteúdo propriedade exclusiva do IPB (Lei 9.610/1998)",
+        "Conteúdo propriedade exclusiva do Business Syllabus (Lei 9.610/1998)",
         "Reprodução requer autorização prévia",
       ]},
     ],
@@ -3307,7 +3307,7 @@ function FeedbackModal({ onClose }) {
 
         {tab === "nps" && (
           <>
-            <p className="modal-hint">De 0 a 10, o quanto recomendaria o IPB?</p>
+            <p className="modal-hint">De 0 a 10, o quanto recomendaria o Business Syllabus?</p>
             <div className="modal-nps">
               {Array.from({length:11}, (_,i) => (
                 <button key={i} className={npsScore===i?"on":""} onClick={()=>setNpsScore(i)}>{i}</button>
@@ -3400,9 +3400,9 @@ function AppHome() {
 
         <div className="s-perf-bar" data-tour="perf">
           <div className="s-perf-cards" style={{ transform: `translateX(-${perfPage * 100}%)` }}>
-            {/* CARD 1 — Impacto IPB + NPS + Governança */}
+            {/* CARD 1 — Impacto Business Syllabus + NPS + Governança */}
             <div className="s-perf-card">
-              <p className="k">Impacto IPB</p>
+              <p className="k">Impacto Business Syllabus</p>
               <div className="s-perf-impact">
                 <div className="mini"><span className="ic">🩺</span><span className="n">12</span><span className="l">Prontuários</span></div>
                 <div className="mini"><span className="ic">📚</span><span className="n">47</span><span className="l">Conteúdos</span></div>
@@ -3524,7 +3524,7 @@ function AppExplore() {
 
 function AppSistemas({ active = "S1" }) {
   const systems = [
-  ["S1", "IPB ICU", "📋"],
+  ["S1", "BS ICU", "📋"],
   ["S2", "Calculadoras", "🧮"],
   ["S3", "Referência", "📖"]];
 
@@ -3611,8 +3611,8 @@ function AppEnd() {
   return (
     <div className="app-bg">
       <div className="s-end">
-        <div className="s-end-mark shim">IPB</div>
-        <h1>Pronto. Você <em>aprendeu</em><br />o essencial do IPB.</h1>
+        <div className="s-end-mark shim">BS</div>
+        <h1>Pronto. Você <em>aprendeu</em><br />o essencial do Business Syllabus.</h1>
         <p>17 telas, 6 capítulos, um app inteiro que cabe na sua mão. Agora é só usar — e cuidar de paciente como se cuida de gente.</p>
         <button>Recomeçar tour ↻</button>
       </div>
@@ -3684,7 +3684,7 @@ function AuthInteractive() {
     <div className="app-bg">
       <div className="s-auth">
         <div className="s-auth-brand">
-          <h1>IPB</h1>
+          <h1>BS</h1>
           <p>Sistema de Estudo Avancado</p>
         </div>
         <div className="s-auth-card">
@@ -3760,7 +3760,7 @@ function AuthInteractive() {
 const SECTIONS = [
 {
   type: "hero",
-  eyebrow: "IPB FISIO · 2026",
+  eyebrow: "BS FISIO · 2026",
   title: ["A UTI", "que cabe", "na sua mão."],
   body: "Plataforma clínica e educacional para fisioterapeutas intensivistas. Feita por quem entende o plantão — porque já viveu.",
   foot: ["Role pra ver", "▼"],
@@ -3784,7 +3784,7 @@ const SECTIONS = [
   num: "03",
   eyebrow: "Splash premium · 3,5s",
   title: ["Cada milissegundo", "é design."],
-  body: "Orb canvas com glow expandindo conforme o progresso. Anéis duplos pulsando em frequências diferentes. 8 partículas orbitando em órbita oval (sin(angle) × 0.88). Logo IPB com shimmer prata→branco→dourado em loop. Progress bar com easing quartic — 1 − (1−r)⁴ — acelera no fim.",
+  body: "Orb canvas com glow expandindo conforme o progresso. Anéis duplos pulsando em frequências diferentes. 8 partículas orbitando em órbita oval (sin(angle) × 0.88). Logo Business Syllabus com shimmer prata→branco→dourado em loop. Progress bar com easing quartic — 1 − (1−r)⁴ — acelera no fim.",
   stat: ["Canvas 2D + Three.js", "Bloom + IpbBackground"],
   phone: <AppSplash />,
   phoneLabel: "splash · 3.5s + 1s hold",
@@ -3795,7 +3795,7 @@ const SECTIONS = [
   num: "04",
   eyebrow: "Home — sua base diária",
   title: ["TopBar.", "Marquee.", "BottomNav."],
-  body: "TopBar fixo com logo IPB metálico, saudação dinâmica (Sol 6-18h, Lua 18-6h), data formato 20.MAI.2026, zoom A−/A+, sino com badge, perfil. Marquee horizontal das simulações 3D rolando em loop infinito. BottomNav fixo com 2 abas — HOME e EXPLORAR. Simplicidade total.",
+  body: "TopBar fixo com logo Business Syllabus metálico, saudação dinâmica (Sol 6-18h, Lua 18-6h), data formato 20.MAI.2026, zoom A−/A+, sino com badge, perfil. Marquee horizontal das simulações 3D rolando em loop infinito. BottomNav fixo com 2 abas — HOME e EXPLORAR. Simplicidade total.",
   stat: ["2 abas", "HOME · EXPLORAR"],
   phone: <AppHome />,
   phoneLabel: "home · 3 simulações 3D",
@@ -3806,7 +3806,7 @@ const SECTIONS = [
   num: "05",
   eyebrow: "Scan IA · a revolução",
   title: ["Foto.", "Pronto."],
-  body: "Foto do display do ventilador — Hamilton, Drager, Servo, Magnamed, Mindray, GE, Newport, Leistung, qualquer marca, até os analógicos. O IPB lê modo e parâmetros sozinho. Foto da gasometria? Extrai pH, PaO₂, PaCO₂, BE, lactato e calcula P/F na hora. Foto das curvas e loops? Detecta padrões e assincronias. Foto da TIE (PulmoVista)? Interpreta ROIs e titulação de PEEP.",
+  body: "Foto do display do ventilador — Hamilton, Drager, Servo, Magnamed, Mindray, GE, Newport, Leistung, qualquer marca, até os analógicos. O BS lê modo e parâmetros sozinho. Foto da gasometria? Extrai pH, PaO₂, PaCO₂, BE, lactato e calcula P/F na hora. Foto das curvas e loops? Detecta padrões e assincronias. Foto da TIE (PulmoVista)? Interpreta ROIs e titulação de PEEP.",
   stat: ["20s", "para documentar um paciente complexo"],
   phone: <AppExplore />,
   phoneLabel: "explorar · conteúdos + sistemas",
@@ -3826,12 +3826,12 @@ const SECTIONS = [
 {
   type: "feature",
   num: "07",
-  eyebrow: "IPB ICU",
-  title: ["O IPB ICU", "que escaneia."],
-  body: "IPB ICU com cálculos automáticos: DP, Cest, Cdyn, MP, RSBI, P/F Berlin 2023. Histórico salvo de cada gasometria, balanço hídrico e parâmetros de VM. Compara o agora com o de 6 horas atrás. Vê tendência: melhorou, piorou, em quê. Nenhum app de calculadora faz isso.",
+  eyebrow: "BS ICU",
+  title: ["O BS ICU", "que escaneia."],
+  body: "BS ICU com cálculos automáticos: DP, Cest, Cdyn, MP, RSBI, P/F Berlin 2023. Histórico salvo de cada gasometria, balanço hídrico e parâmetros de VM. Compara o agora com o de 6 horas atrás. Vê tendência: melhorou, piorou, em quê. Nenhum app de calculadora faz isso.",
   stat: ["Tendência visual", "Compara turno a turno"],
   phone: <AppSistemas active="S1" />,
-  phoneLabel: "sistemas · IPB ICU",
+  phoneLabel: "sistemas · BS ICU",
   side: "right"
 },
 {
@@ -3839,7 +3839,7 @@ const SECTIONS = [
   num: "08",
   eyebrow: "Feito por fisio, pra fisio",
   title: ["Outros apps", "são feitos", "por médicos."],
-  body: "O IPB é exclusivo para fisioterapeutas: conteúdo alinhado ao raciocínio fisio. Calculadoras prioritárias — RSBI, PImax, PEmax, índice de Tobin, CV. Protocolos com foco em conduta: prona, recrutamento, VNI, desmame, traqueostomia.",
+  body: "O BS é exclusivo para fisioterapeutas: conteúdo alinhado ao raciocínio fisio. Calculadoras prioritárias — RSBI, PImax, PEmax, índice de Tobin, CV. Protocolos com foco em conduta: prona, recrutamento, VNI, desmame, traqueostomia.",
   stat: ["100%", "feito por fisioterapeuta"],
   phone: <AppSistemas active="S2" />,
   phoneLabel: "sistemas · calculadoras",
@@ -3943,12 +3943,12 @@ function TopBar() {
   return (
     <header className="topbar">
       <div className="topbar-brand">
-        <div className="topbar-mark">IPB</div>
+        <div className="topbar-mark">BS</div>
         <span className="topbar-name">FISIO</span>
       </div>
       <nav className="topbar-nav">
         <span>scan IA</span>
-        <span>IPB ICU</span>
+        <span>BS ICU</span>
         <span>calculadora</span>
         <span>simulações 3D</span>
       </nav>
@@ -4180,7 +4180,7 @@ function Masthead() {
       <nav className="masthead-nav">
         <a href="#carta">carta</a>
         <a href="#projetos">projetos</a>
-        <a href="#ipb-walk">app</a>
+        <a href="#bs-walk">app</a>
         <a href="#contato">contato</a>
       </nav>
     </header>
@@ -4331,13 +4331,13 @@ function Projetos() {
           Uma só obsessão.
         </h2>
         <p className="projects-lead">
-          IPB Fisioterapia e IPB Business são os dois pilares do meu trabalho hoje. Saúde intensivista e inteligência executiva — dois mundos, uma mesma assinatura: decisão baseada em dado vivo, com governança desde o código.
+          BS Fisioterapia e BS Business são os dois pilares do meu trabalho hoje. Saúde intensivista e inteligência executiva — dois mundos, uma mesma assinatura: decisão baseada em dado vivo, com governança desde o código.
         </p>
       </div>
 
       <Projeto
         index="01"
-        sigla="IPB"
+        sigla="BS"
         area="saúde · fisioterapia intensivista"
         tag="“Para que nenhum fisioterapeuta entre em uma UTI sem a preparação que o paciente merece.”"
         body={[
@@ -4345,12 +4345,12 @@ function Projetos() {
           "Construído com privacidade por design e conformidade integral com LGPD, COFFITO e RDC ANVISA 36/2013.",
         ]}
         status="em operação ativa"
-        slotId="logo-ipb"
+        slotId="logo-bs"
       />
 
       <Projeto
         index="02"
-        sigla="IPB"
+        sigla="BS"
         area="business · inteligência executiva"
         tag="“O sistema que transforma dados reais em decisões que fazem sentido.”"
         body={[
@@ -4358,7 +4358,7 @@ function Projetos() {
           "Sem achismo, sem promessa. Cada decisão tem fonte e é auditável.",
         ]}
         status="em operação ativa"
-        slotId="logo-ipb"
+        slotId="logo-bs"
         reverse
       />
     </section>
@@ -4427,7 +4427,7 @@ function Foot() {
 }
 
 // ──────────────────────────────────────────────────────────────────────────────
-// IPB — Como funciona o app (real screens from the repo)
+// BS — Como funciona o app (real screens from the repo)
 // ──────────────────────────────────────────────────────────────────────────────
 function PhoneFrame({ children, label, num }) {
   return (
@@ -4443,35 +4443,35 @@ function PhoneFrame({ children, label, num }) {
   );
 }
 
-// Real IPB backdrop tokens, taken from app/globals.css of edmara0422-hub/IPB-FISIO
+// Real BS backdrop tokens, taken from app/globals.css of edmara0422-hub/BS-FISIO
 function IpbBg({ children }) {
   return (
-    <div className="ipb-bg">
-      <div className="ipb-bg-noise"></div>
-      <div className="ipb-bg-halo"></div>
+    <div className="bs-bg">
+      <div className="bs-bg-noise"></div>
+      <div className="bs-bg-halo"></div>
       {children}
     </div>
   );
 }
 function IpbMark({ size = 22 }) {
   return (
-    <div className="ipb-mark" style={{ width: size, height: size, borderRadius: size * 0.22 }}>
-      <span style={{ fontSize: size * 0.34 }}>IPB</span>
+    <div className="bs-mark" style={{ width: size, height: size, borderRadius: size * 0.22 }}>
+      <span style={{ fontSize: size * 0.34 }}>BS</span>
     </div>
   );
 }
 function IpbShimmer({ children }) {
-  return <span className="ipb-shimmer">{children}</span>;
+  return <span className="bs-shimmer">{children}</span>;
 }
 function IpbTopBar() {
   return (
-    <header className="ipb-topbar">
+    <header className="bs-topbar">
       <IpbMark/>
-      <div className="ipb-greet">
+      <div className="bs-greet">
         <span className="dot"></span>
         Bom dia, Edmara
       </div>
-      <div className="ipb-icons">
+      <div className="bs-icons">
         <span>🔔</span><span>👤</span>
       </div>
     </header>
@@ -4479,9 +4479,9 @@ function IpbTopBar() {
 }
 function IpbBottomNav({ active }) {
   return (
-    <nav className="ipb-bottomnav">
-      <button className={"ipb-tab " + (active === "home" ? "is-on" : "")}>⌂ HOME</button>
-      <button className={"ipb-tab " + (active === "explore" ? "is-on" : "")}>◈ EXPLORAR</button>
+    <nav className="bs-bottomnav">
+      <button className={"bs-tab " + (active === "home" ? "is-on" : "")}>⌂ HOME</button>
+      <button className={"bs-tab " + (active === "explore" ? "is-on" : "")}>◈ EXPLORAR</button>
     </nav>
   );
 }
@@ -4490,15 +4490,15 @@ function IpbBottomNav({ active }) {
 function ScreenLanding() {
   return (
     <IpbBg>
-      <div className="ipb-landing">
-        <div className="ipb-orb">
-          <div className="ipb-orb-inner">
-            <div className="ipb-orb-title">IPB</div>
-            <button className="ipb-orb-btn">Entrar</button>
+      <div className="bs-landing">
+        <div className="bs-orb">
+          <div className="bs-orb-inner">
+            <div className="bs-orb-title">BS</div>
+            <button className="bs-orb-btn">Entrar</button>
           </div>
         </div>
-        <p className="ipb-landing-phrase">Raciocínio clínico<br/>à beira do leito.</p>
-        <div className="ipb-landing-dots">
+        <p className="bs-landing-phrase">Raciocínio clínico<br/>à beira do leito.</p>
+        <div className="bs-landing-dots">
           {Array.from({length:13}).map((_, i) => (
             <span key={i} style={{ width: i <= 2 ? 14 : 5, background: i <= 2 ? "rgba(255,255,255,0.25)" : "rgba(255,255,255,0.06)" }}></span>
           ))}
@@ -4512,24 +4512,24 @@ function ScreenLanding() {
 function ScreenCadastro() {
   return (
     <IpbBg>
-      <div className="ipb-auth">
-        <div className="ipb-auth-brand">
-          <h1>IPB</h1>
+      <div className="bs-auth">
+        <div className="bs-auth-brand">
+          <h1>BS</h1>
           <p>Sistema de Estudo Avançado</p>
         </div>
-        <div className="ipb-auth-card">
-          <div className="ipb-auth-tabs">
+        <div className="bs-auth-card">
+          <div className="bs-auth-tabs">
             <span>Entrar</span>
             <span className="is-on">Cadastrar</span>
           </div>
-          <div className="ipb-auth-field"><span className="ic">👤</span><input readOnly value="Edmara"/></div>
-          <div className="ipb-auth-field"><span className="ic">✉</span><input readOnly value="edmararbusiness1@er-site.com"/></div>
-          <div className="ipb-auth-field"><span className="ic">🔒</span><input readOnly value="••••••••"/></div>
-          <label className="ipb-auth-consent">
+          <div className="bs-auth-field"><span className="ic">👤</span><input readOnly value="Edmara"/></div>
+          <div className="bs-auth-field"><span className="ic">✉</span><input readOnly value="edmararbusiness1@er-site.com"/></div>
+          <div className="bs-auth-field"><span className="ic">🔒</span><input readOnly value="••••••••"/></div>
+          <label className="bs-auth-consent">
             <input type="checkbox" checked readOnly/>
             <span>Aceito os <u>Termos</u> e a <u>Política de Privacidade</u></span>
           </label>
-          <button className="ipb-auth-cta">Criar conta →</button>
+          <button className="bs-auth-cta">Criar conta →</button>
         </div>
       </div>
     </IpbBg>
@@ -4540,12 +4540,12 @@ function ScreenCadastro() {
 function ScreenConfirm() {
   return (
     <IpbBg>
-      <div className="ipb-confirm">
-        <div className="ipb-confirm-icon">✉</div>
+      <div className="bs-confirm">
+        <div className="bs-confirm-icon">✉</div>
         <h1><IpbShimmer>Confirme<br/>seu e-mail</IpbShimmer></h1>
-        <div className="ipb-confirm-success">• Conta criada com sucesso</div>
+        <div className="bs-confirm-success">• Conta criada com sucesso</div>
         <p>Enviamos um link para <b>edmararbusiness1@er-site.com</b>. Clique no link para liberar seu acesso.</p>
-        <div className="ipb-confirm-steps">
+        <div className="bs-confirm-steps">
           <div className="k">Passo a passo</div>
           {[
             ["01","Verifique a caixa de entrada"],
@@ -4553,7 +4553,7 @@ function ScreenConfirm() {
             ["03","Clique no link de confirmação"],
             ["04","Volte aqui e faça login"],
           ].map(([n, l]) => (
-            <div key={n} className="ipb-confirm-step">
+            <div key={n} className="bs-confirm-step">
               <span className="num">{n}</span>
               <span>{l}</span>
             </div>
@@ -4568,10 +4568,10 @@ function ScreenConfirm() {
 function ScreenSplash() {
   return (
     <IpbBg>
-      <div className="ipb-splash">
-        <h1 className="ipb-splash-title"><IpbShimmer>IPB</IpbShimmer></h1>
+      <div className="bs-splash">
+        <h1 className="bs-splash-title"><IpbShimmer>BS</IpbShimmer></h1>
         <p>Sistema de Estudo Avançado</p>
-        <div className="ipb-splash-bar"><div></div></div>
+        <div className="bs-splash-bar"><div></div></div>
       </div>
     </IpbBg>
   );
@@ -4582,27 +4582,27 @@ function ScreenHome() {
   return (
     <IpbBg>
       <IpbTopBar/>
-      <main className="ipb-home">
+      <main className="bs-home">
         {/* Simulations marquee — real colors from repo: Neuro teal, Cardio rose, Pneumo cyan */}
-        <div className="ipb-marquee">
-          <div className="ipb-sim ipb-sim-neuro">
-            <div className="ipb-sim-glow"></div>
-            <div className="ipb-sim-foot">
+        <div className="bs-marquee">
+          <div className="bs-sim bs-sim-neuro">
+            <div className="bs-sim-glow"></div>
+            <div className="bs-sim-foot">
               <span className="eyebrow">Sistema Neural</span>
               <span className="title">🧠 Neuro</span>
             </div>
           </div>
-          <div className="ipb-sim ipb-sim-cardio">
-            <div className="ipb-sim-glow"></div>
-            <div className="ipb-sim-foot">
+          <div className="bs-sim bs-sim-cardio">
+            <div className="bs-sim-glow"></div>
+            <div className="bs-sim-foot">
               <span className="eyebrow">Cardio</span>
               <span className="title">♥ Coração</span>
               <span className="badge cardio">72 BPM</span>
             </div>
           </div>
-          <div className="ipb-sim ipb-sim-pneumo">
-            <div className="ipb-sim-glow"></div>
-            <div className="ipb-sim-foot">
+          <div className="bs-sim bs-sim-pneumo">
+            <div className="bs-sim-glow"></div>
+            <div className="bs-sim-foot">
               <span className="eyebrow">Pneumo</span>
               <span className="title">🫁 Pulmão</span>
               <span className="badge pneumo">PEEP 5</span>
@@ -4610,23 +4610,23 @@ function ScreenHome() {
           </div>
         </div>
 
-        <div className="ipb-card">
-          <div className="ipb-card-head">
+        <div className="bs-card">
+          <div className="bs-card-head">
             <p className="k">Sua performance</p>
             <p className="v">Semana</p>
           </div>
-          <div className="ipb-perf">
+          <div className="bs-perf">
             <div><span className="n"><IpbShimmer>12</IpbShimmer></span><span className="l">estudos esta semana</span></div>
             <div><span className="n"><IpbShimmer>94%</IpbShimmer></span><span className="l">acerto em revisão</span></div>
           </div>
-          <div className="ipb-chart">
+          <div className="bs-chart">
             {[20,35,28,50,42,65,78].map((h,i)=>(
               <div key={i} style={{ height: `${h}%`, background: i===6 ? "linear-gradient(180deg,#e0b85e,#8a7034)" : "rgba(255,255,255,0.12)" }}></div>
             ))}
           </div>
         </div>
 
-        <div className="ipb-quicklinks">
+        <div className="bs-quicklinks">
           <button>📄 Termos</button>
           <button>🔒 Privacidade</button>
           <button>💬 Feedback</button>
@@ -4643,20 +4643,20 @@ function ScreenExplorar() {
   return (
     <IpbBg>
       <IpbTopBar/>
-      <main className="ipb-explore">
-        <div className="ipb-explore-card">
-          <div className="ipb-explore-icon">📚</div>
+      <main className="bs-explore">
+        <div className="bs-explore-card">
+          <div className="bs-explore-icon">📚</div>
           <p className="k">Conteúdos</p>
           <h3>Protocolos, referências<br/>e fluxos clínicos</h3>
           <span className="cta">Abrir →</span>
         </div>
-        <div className="ipb-explore-card alt">
-          <div className="ipb-explore-icon">⚙</div>
+        <div className="bs-explore-card alt">
+          <div className="bs-explore-icon">⚙</div>
           <p className="k">Sistemas</p>
           <h3>Módulos interativos<br/>neuro · cardio · pneumo</h3>
           <span className="cta">Abrir →</span>
         </div>
-        <div className="ipb-explore-dots">
+        <div className="bs-explore-dots">
           <span style={{ width: 24, background: "rgba(255,255,255,0.55)" }}></span>
           <span></span>
         </div>
@@ -4671,34 +4671,34 @@ function ScreenSistemas() {
   return (
     <IpbBg>
       <IpbTopBar/>
-      <main className="ipb-sistemas">
-        <div className="ipb-sist-grid">
-          <aside className="ipb-sist-side">
+      <main className="bs-sistemas">
+        <div className="bs-sist-grid">
+          <aside className="bs-sist-side">
             <p className="k">Sistemas</p>
-            <button className="is-on"><span className="dot"></span><span>S1<br/>IPB ICU</span></button>
+            <button className="is-on"><span className="dot"></span><span>S1<br/>BS ICU</span></button>
             <button><span className="dot off"></span><span>S2<br/>Calculadoras</span></button>
             <button><span className="dot off"></span><span>S3<br/>Referência</span></button>
           </aside>
-          <div className="ipb-sist-main">
-            <div className="ipb-sist-hero">
-              <div className="ipb-sist-hero-icon">📋</div>
+          <div className="bs-sist-main">
+            <div className="bs-sist-hero">
+              <div className="bs-sist-hero-icon">📋</div>
               <div>
                 <p className="k">Sistema S1</p>
-                <h3>IPB ICU</h3>
+                <h3>BS ICU</h3>
                 <p className="desc">Registros clínicos, balanços, evolução, indicadores e exportação à beira do leito.</p>
               </div>
             </div>
-            <div className="ipb-sist-panel">
+            <div className="bs-sist-panel">
               <p className="k">Respiratório · 3 blocos</p>
-              <div className="ipb-sist-block">
+              <div className="bs-sist-block">
                 <p className="bn">Insuficiência respiratória</p>
                 <p className="bd">SDRA leve a moderada · 5 problemas</p>
               </div>
-              <div className="ipb-sist-block">
+              <div className="bs-sist-block">
                 <p className="bn">Ventilação mecânica</p>
                 <p className="bd">Estratégia protetora · 6 problemas</p>
               </div>
-              <div className="ipb-sist-block">
+              <div className="bs-sist-block">
                 <p className="bn">Desmame</p>
                 <p className="bd">RSBI &lt; 80 · 3 problemas</p>
               </div>
@@ -4716,14 +4716,14 @@ function ScreenCalcVM() {
   return (
     <IpbBg>
       <IpbTopBar/>
-      <main className="ipb-calc">
-        <p className="ipb-calc-back">‹ Voltar</p>
-        <h1 className="ipb-calc-title"><IpbShimmer>Calculadora de VM</IpbShimmer></h1>
-        <p className="ipb-calc-sub">Simulação clínica com parâmetros ventilatórios, oxigenação e desmame.</p>
+      <main className="bs-calc">
+        <p className="bs-calc-back">‹ Voltar</p>
+        <h1 className="bs-calc-title"><IpbShimmer>Calculadora de VM</IpbShimmer></h1>
+        <p className="bs-calc-sub">Simulação clínica com parâmetros ventilatórios, oxigenação e desmame.</p>
 
-        <div className="ipb-calc-panel">
+        <div className="bs-calc-panel">
           <p className="k">Parâmetros ventilatórios</p>
-          <div className="ipb-calc-grid">
+          <div className="bs-calc-grid">
             {[
               ["FR","16","ciclos/min"],
               ["PEEP","5","cmH₂O"],
@@ -4732,7 +4732,7 @@ function ScreenCalcVM() {
               ["VT","500","mL"],
               ["Fluxo","40","L/min"],
             ].map(([l,v,u]) => (
-              <div key={l} className="ipb-calc-input">
+              <div key={l} className="bs-calc-input">
                 <p className="lbl">{l}</p>
                 <p className="val">{v}<span>{u}</span></p>
                 <div className="slider"><div className="fill"></div></div>
@@ -4741,14 +4741,14 @@ function ScreenCalcVM() {
           </div>
         </div>
 
-        <div className="ipb-calc-results">
+        <div className="bs-calc-results">
           {[
             ["DP",          "15", "cmH₂O", "Platô - PEEP", "neutral"],
             ["P/F",        "225",      "", "Moderado",     "warn"],
             ["RSBI",      "62.5",      "", "Favorável",    "good"],
             ["ROX",       "4.92",      "", "Sucesso CPAP", "good"],
           ].map(([k,v,u,t,tone]) => (
-            <div key={k} className={"ipb-calc-res " + tone}>
+            <div key={k} className={"bs-calc-res " + tone}>
               <p className="k">{k}</p>
               <p className="v"><IpbShimmer>{v}</IpbShimmer><span>{u}</span></p>
               <p className="t">{t}</p>
@@ -4761,7 +4761,7 @@ function ScreenCalcVM() {
   );
 }
 
-// ── IPB section wrapper ──────────────────────────────────────────────────
+// ── BS section wrapper ──────────────────────────────────────────────────
 function IpbSection() {
   const screens = [
     { n: "01", title: "Landing",         sub: "Frases ciclando + orb",         C: ScreenLanding },
@@ -4770,24 +4770,24 @@ function IpbSection() {
     { n: "04", title: "Splash",          sub: "Carregando o sistema",          C: ScreenSplash },
     { n: "05", title: "Home",            sub: "Simulações 3D + performance",   C: ScreenHome },
     { n: "06", title: "Explorar",        sub: "Conteúdos · Sistemas",          C: ScreenExplorar },
-    { n: "07", title: "IPB ICU",         sub: "Prontuário à beira do leito",   C: ScreenSistemas },
+    { n: "07", title: "BS ICU",         sub: "Prontuário à beira do leito",   C: ScreenSistemas },
     { n: "08", title: "Calculadora VM",  sub: "DP · RSBI · P/F · ROX",         C: ScreenCalcVM },
   ];
   return (
-    <section className="ipb-walk" id="ipb-walk">
-      <div className="ipb-walk-eyebrow">
+    <section className="bs-walk" id="bs-walk">
+      <div className="bs-walk-eyebrow">
         <span className="num">iii.</span>
-        <span>IPB · como funciona o app</span>
+        <span>BS · como funciona o app</span>
       </div>
-      <h2 className="ipb-walk-title">
+      <h2 className="bs-walk-title">
         Oito telas. Um <em>passo a passo</em><br/>
         do app que estou construindo.
       </h2>
-      <p className="ipb-walk-lead">
+      <p className="bs-walk-lead">
         Da primeira vez que você abre o app até a Calculadora de Ventilação Mecânica funcionando — feito com os dados reais do código.
       </p>
 
-      <div className="ipb-walk-strip">
+      <div className="bs-walk-strip">
         {screens.map(s => (
           <PhoneFrame key={s.n} num={s.n} label={`${s.title} · ${s.sub}`}>
             <s.C/>
@@ -4834,8 +4834,8 @@ function App() {
 ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
 
 /* ──────────────────────────────────────────────────────────────────────────
-   IPB Walkthrough screens — replicate the actual app design tokens
-   Tokens lifted from: app/globals.css of edmara0422-hub/IPB-FISIO
+   BS Walkthrough screens — replicate the actual app design tokens
+   Tokens lifted from: app/globals.css of edmara0422-hub/BS-FISIO
    ────────────────────────────────────────────────────────────────────────── */
 
 
@@ -4913,7 +4913,7 @@ function ShimmerText({ children, style }) {
   );
 }
 
-// IPB letter mark
+// BS letter mark
 function IpbMark({ size = 28 }) {
   return (
     <div style={{
@@ -4926,7 +4926,7 @@ function IpbMark({ size = 28 }) {
       <span style={{
         fontSize: size * 0.32, fontWeight: 600, letterSpacing: "0.28em",
         color: "#fff", paddingLeft: "0.32em",
-      }}>IPB</span>
+      }}>BS</span>
     </div>
   );
 }
@@ -5054,7 +5054,7 @@ function Screen01_Landing() {
               fontSize: 64, fontWeight: 600, lineHeight: 1, letterSpacing: "0.02em",
               color: "rgba(255,255,255,0.92)",
               filter: "drop-shadow(0 0 20px rgba(255,255,255,0.3))",
-            }}>IPB</div>
+            }}>BS</div>
             <button style={{
               marginTop: 28, padding: "6px 20px", borderRadius: 999,
               border: "1px solid rgba(255,255,255,0.15)",
@@ -5150,7 +5150,7 @@ function Screen03_Cadastro() {
         padding: 24,
       }}>
         <div style={{ marginBottom: 32, textAlign: "center" }}>
-          <h1 style={{ fontSize: 32, fontWeight: 700, color: "#fff", letterSpacing: "0.08em", margin: 0 }}>IPB</h1>
+          <h1 style={{ fontSize: 32, fontWeight: 700, color: "#fff", letterSpacing: "0.08em", margin: 0 }}>BS</h1>
           <p style={{ fontSize: 8, letterSpacing: "0.2em", color: "rgba(255,255,255,0.4)", marginTop: 4, textTransform: "uppercase" }}>
             Sistema de Estudo Avançado
           </p>
@@ -5277,7 +5277,7 @@ function Screen05_Login() {
         padding: 24,
       }}>
         <div style={{ marginBottom: 32, textAlign: "center" }}>
-          <h1 style={{ fontSize: 32, fontWeight: 700, color: "#fff", letterSpacing: "0.08em", margin: 0 }}>IPB</h1>
+          <h1 style={{ fontSize: 32, fontWeight: 700, color: "#fff", letterSpacing: "0.08em", margin: 0 }}>BS</h1>
           <p style={{ fontSize: 8, letterSpacing: "0.2em", color: "rgba(255,255,255,0.4)", marginTop: 4, textTransform: "uppercase" }}>
             Sistema de Estudo Avançado
           </p>
@@ -5348,7 +5348,7 @@ function Screen06_Splash() {
       }}>
         <ShimmerText style={{
           fontSize: 84, fontWeight: 200, letterSpacing: "-0.02em", lineHeight: 1,
-        }}>IPB</ShimmerText>
+        }}>BS</ShimmerText>
         <p style={{
           marginTop: 12, fontSize: 9, letterSpacing: "0.42em", textTransform: "uppercase",
           color: "rgba(255,255,255,0.25)",
@@ -5591,7 +5591,7 @@ function Screen10_Sistemas() {
 
         {[
           {
-            n: "01", k: "IPB ICU", sub: "Sistema de Apoio Clínico em UTI",
+            n: "01", k: "BS ICU", sub: "Sistema de Apoio Clínico em UTI",
             desc: "Raciocínio fisiopatológico por aparelho — Respiratório, Cardio, Neuro.",
             cta: "abrir sistema",
             featured: true,
@@ -5628,14 +5628,14 @@ function Screen10_Sistemas() {
   );
 }
 
-// ── 11 · IPB ICU — overview ──────────────────────────────────────────────
+// ── 11 · BS ICU — overview ──────────────────────────────────────────────
 function Screen11_ICUOverview() {
   return (
     <IpbBg>
       <TopBar/>
       <main style={{ position: "absolute", inset: "62px 10px 72px", overflow: "hidden" }}>
         <div style={{ marginBottom: 10 }}>
-          <p style={{ fontSize: 8, letterSpacing: "0.22em", color: "rgba(255,255,255,0.4)", textTransform: "uppercase" }}>Sistemas / IPB ICU</p>
+          <p style={{ fontSize: 8, letterSpacing: "0.22em", color: "rgba(255,255,255,0.4)", textTransform: "uppercase" }}>Sistemas / BS ICU</p>
           <h2 style={{ fontSize: 20, fontWeight: 300, color: "#fff", margin: 0 }}>
             <ShimmerText>Apoio clínico</ShimmerText>
           </h2>
@@ -5719,7 +5719,7 @@ function Screen11_ICUOverview() {
   );
 }
 
-// ── 12 · IPB ICU — expanded problem ─────────────────────────────────────
+// ── 12 · BS ICU — expanded problem ─────────────────────────────────────
 function Screen12_ICUExpanded() {
   return (
     <IpbBg>
@@ -5996,8 +5996,8 @@ const STEPS = [
   { n: "08", title: "Explorar",                 sub: "Conteúdos · Sistemas",             C: Screen08_Explorar },
   { n: "09", title: "Conteúdos",                sub: "Biblioteca filtrável",             C: Screen09_Conteudos },
   { n: "10", title: "Sistemas",                 sub: "Os 3 sistemas clínicos",           C: Screen10_Sistemas },
-  { n: "11", title: "IPB ICU · visão geral",    sub: "Busca + grid de aparelhos",        C: Screen11_ICUOverview },
-  { n: "12", title: "IPB ICU · problema aberto",sub: "Objetivos · Fases · Condutas",     C: Screen12_ICUExpanded },
+  { n: "11", title: "BS ICU · visão geral",    sub: "Busca + grid de aparelhos",        C: Screen11_ICUOverview },
+  { n: "12", title: "BS ICU · problema aberto",sub: "Objetivos · Fases · Condutas",     C: Screen12_ICUExpanded },
   { n: "13", title: "Calculadora VM · novato",  sub: "IA conduz passo a passo",          C: Screen13_CalcVM },
   { n: "14", title: "Prontuário",               sub: "Sandboxed local · LGPD",           C: Screen14_Prontuario },
 ];
@@ -6006,8 +6006,8 @@ const STEPS = [
 function App() {
   return (
     <DesignCanvas
-      title="IPB · Walkthrough completo"
-      subtitle="Cadastro → Confirmação → Home → Sistemas → IPB ICU passo a passo"
+      title="BS · Walkthrough completo"
+      subtitle="Cadastro → Confirmação → Home → Sistemas → BS ICU passo a passo"
     >
       <DCSection id="auth" title="Acesso · cadastro até a Home">
         {STEPS.slice(0, 6).map(s => (
@@ -6029,7 +6029,7 @@ function App() {
         ))}
       </DCSection>
 
-      <DCSection id="sistemas" title="Sistemas · passo a passo do IPB ICU">
+      <DCSection id="sistemas" title="Sistemas · passo a passo do BS ICU">
         {STEPS.slice(10).map(s => (
           <DCArtboard key={s.n} id={s.n} label={`${s.n} · ${s.title}`} width={390} height={844}>
             <IOSDevice>

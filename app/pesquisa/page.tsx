@@ -84,7 +84,7 @@ function SurveyFormContent() {
             {/* Header */}
             <div className="border-b border-white/10 pb-4 text-center">
               <span className="text-[9px] font-mono text-[#d2af5a] font-bold uppercase tracking-widest block mb-1">
-                IPB · Pesquisa de Pulso Anônima
+                Business Syllabus · Pesquisa de Pulso Anônima
               </span>
               <h2 className="text-[15px] font-bold text-white tracking-wide uppercase">
                 🌱 ESCALA DE {category}
@@ -96,7 +96,7 @@ function SurveyFormContent() {
             </div>
 
             <p className="text-[10px] text-white/50 leading-relaxed text-center font-sans">
-              O IPB assegura confidencialidade absoluta. Sua avaliação não carrega identificadores e é tratada com total criptografia na governança do PGR (NR-1).
+              O BS assegura confidencialidade absoluta. Sua avaliação não carrega identificadores e é tratada com total criptografia na governança do PGR (NR-1).
             </p>
 
             {/* Questions List */}
@@ -177,7 +177,7 @@ function SurveyFormContent() {
             </div>
             <h2 className="text-lg font-bold text-white tracking-wide">AVALIAÇÃO RECEBIDA!</h2>
             <p className="text-[11px] text-white/60 font-sans max-w-sm mx-auto leading-relaxed">
-              Sua avaliação anônima foi gravada com sucesso nas trilhas de governança do IPB. A Inteligência Artificial já está integrando seus feedbacks socioemocionais.
+              Sua avaliação anônima foi gravada com sucesso nas trilhas de governança do Business Syllabus. A Inteligência Artificial já está integrando seus feedbacks socioemocionais.
             </p>
             <div className="pt-4">
               <span className="text-[8px] font-mono text-[#d2af5a] uppercase tracking-widest block bg-white/5 border border-white/10 rounded-full px-4 py-1.5 w-fit mx-auto">
@@ -205,7 +205,7 @@ export default function PesquisaPage() {
       <div className="relative z-10 w-full flex flex-col items-center">
         <Suspense fallback={
           <div className="p-8 text-center text-white/40 font-mono text-xs animate-pulse">
-            Carregando criptografia do formulário IPB...
+            Carregando criptografia do formulário Business Syllabus...
           </div>
         }>
           <SurveyFormContent />

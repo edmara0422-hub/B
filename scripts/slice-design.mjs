@@ -5,7 +5,7 @@ const inputFile = path.join(process.cwd(), 'my-project@0.1.0');
 let content = fs.readFileSync(inputFile, 'utf-8');
 
 // Replacements
-content = content.replace(/SEA/g, 'IPB').replace(/Sea/g, 'Ipb').replace(/sea-/g, 'ipb-');
+content = content.replace(/SEA/g, 'BS').replace(/Sea/g, 'Ipb').replace(/sea-/g, 'bs-');
 content = content.replace(/Object\.assign\(window/g, 'if (typeof window !== "undefined") Object.assign(window');
 
 // Isolate the third app (DesignCanvas app)

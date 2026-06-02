@@ -12,7 +12,7 @@ export function MiniFinancas() {
 
   useEffect(() => {
     const handleTelemetry = () => {
-      const telemetry = (window as any).IPBTelemetry
+      const telemetry = (window as any).BSTelemetry
       if (telemetry) {
         setFaturamento(telemetry.faturamento ?? 150)
         setCac(telemetry.cac ?? 350)
@@ -22,8 +22,8 @@ export function MiniFinancas() {
       }
     }
     handleTelemetry()
-    window.addEventListener('ipb-telemetry', handleTelemetry)
-    return () => window.removeEventListener('ipb-telemetry', handleTelemetry)
+    window.addEventListener('bs-telemetry', handleTelemetry)
+    return () => window.removeEventListener('bs-telemetry', handleTelemetry)
   }, [])
 
   // Central equations synced with HUD
@@ -36,7 +36,7 @@ export function MiniFinancas() {
 
   const triggerMetricClick = (metricId: string) => {
     if (typeof window !== 'undefined') {
-      window.dispatchEvent(new CustomEvent('ipb-metric-click', { detail: { metricId } }))
+      window.dispatchEvent(new CustomEvent('bs-metric-click', { detail: { metricId } }))
     }
   }
 

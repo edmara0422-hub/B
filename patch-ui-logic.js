@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const targetPath = 'components/sea/conteudos-page-client.tsx';
+const targetPath = 'components/business-syllabus/conteudos-page-client.tsx';
 let content = fs.readFileSync(targetPath, 'utf8');
 
 content = content.replace(

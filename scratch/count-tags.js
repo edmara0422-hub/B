@@ -1,5 +1,5 @@
 const fs = require('fs');
-const content = fs.readFileSync('/Users/edmararocha/Documents/IPB/components/sea/corporate/sig-pessoas-panel.tsx', 'utf8');
+const content = fs.readFileSync('/Users/edmararocha/Documents/Business Syllabus/components/business-syllabus/corporate/sig-pessoas-panel.tsx', 'utf8');
 
 // We want to analyze the activeTab === 'home' block
 // Starts around line 1602: activeTab === 'home' && (

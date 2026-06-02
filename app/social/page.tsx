@@ -9,12 +9,12 @@ export default function SocialDesignSpace() {
   const [activeTab, setActiveTab] = useState('tiktok');
 
   return (
-    <div className="ipb-social-bg min-h-screen w-full relative pb-24">
+    <div className="bs-social-bg min-h-screen w-full relative pb-24">
       {/* Top Navigation */}
       <header className="fixed top-0 inset-x-0 z-50 px-6 py-4 bg-black/60 backdrop-blur-xl border-b border-white/5 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 rounded-lg bg-gradient-to-b from-white/90 via-[#dbe1e8]/30 to-[#0e0f12]/90 flex items-center justify-center border border-white/20 shadow-[inset_0_1px_0_rgba(255,255,255,0.2)]">
-            <span className="text-[10px] font-bold tracking-[0.2em] text-white pl-1">IPB</span>
+            <span className="text-[10px] font-bold tracking-[0.2em] text-white pl-1">BS</span>
           </div>
           <span className="text-sm font-light text-white/80 tracking-widest uppercase">Design Space</span>
         </div>
@@ -39,7 +39,7 @@ export default function SocialDesignSpace() {
         
         <div className="text-center mb-16">
           <h1 className="text-4xl md:text-5xl font-light mb-4 tracking-tight">
-            <span className="ipb-shimmer-text font-medium">Conteúdo Social</span> para o IPB
+            <span className="bs-shimmer-text font-medium">Conteúdo Social</span> para o Business Syllabus
           </h1>
           <p className="text-white/40 font-light tracking-wide max-w-lg mx-auto">
             Design interativo e em alta performance para capturar a atenção de profissionais de saúde em segundos.
@@ -59,7 +59,7 @@ export default function SocialDesignSpace() {
               <TikTokMockup 
                 tag="6D IMERSIVO"
                 title="Pulmão na SDRA grave: Veja o que acontece 🫁"
-                description="Simulação 3D exclusiva do IPB FISIO."
+                description="Simulação 3D exclusiva do Business Syllabus FISIO."
                 Icon={Activity}
                 gradient="from-[#050505] via-[#050505] to-[#121a2f]"
               />
@@ -123,7 +123,7 @@ function TikTokMockup({ tag, title, description, Icon, gradient }: { tag: string
           {/* Top nav */}
           <div className="flex justify-between items-start pt-12 px-5">
              <div className="text-white/80 font-semibold text-lg flex items-center gap-2">
-               IPB <span className="text-white/40 text-xs font-light">FISIO</span>
+               BS <span className="text-white/40 text-xs font-light">FISIO</span>
              </div>
              <div className="text-white/60">
                 <Camera size={20} />
@@ -135,7 +135,7 @@ function TikTokMockup({ tag, title, description, Icon, gradient }: { tag: string
             <div className="flex flex-col items-center gap-1">
               <div className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center mb-1 p-[2px]">
                  <div className="w-full h-full rounded-full bg-gradient-to-tr from-[#121212] to-[#333] border border-white/10 flex items-center justify-center">
-                    <span className="text-[9px] font-bold text-[#d2af5a]">IPB</span>
+                    <span className="text-[9px] font-bold text-[#d2af5a]">BS</span>
                  </div>
               </div>
               <div className="w-5 h-5 rounded-full bg-[#ea4335] text-white flex items-center justify-center absolute -bottom-2 border-2 border-black">
@@ -169,7 +169,7 @@ function TikTokMockup({ tag, title, description, Icon, gradient }: { tag: string
               {/* Music ticker */}
               <div className="flex items-center gap-2 text-white/80">
                 <Music size={12} />
-                <span className="text-xs font-light truncate w-48">Som original - IPB Fisio Oficial</span>
+                <span className="text-xs font-light truncate w-48">Som original - BS Fisio Oficial</span>
               </div>
             </div>
           </div>
@@ -204,12 +204,12 @@ function InstagramMockup({ category, title, body }: { category: string, title: s
         <div className="flex items-center gap-3">
            <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-[#d2af5a] to-[#7a5c20] p-[1.5px]">
               <div className="w-full h-full bg-black rounded-full border border-black flex items-center justify-center">
-                 <span className="text-[8px] font-bold text-white">IPB</span>
+                 <span className="text-[8px] font-bold text-white">BS</span>
               </div>
            </div>
            <div>
              <div className="text-white text-xs font-medium flex items-center gap-1">
-               ipb.fisio
+               bs.fisio
                <Shield size={10} className="text-blue-400 fill-blue-400" />
              </div>
              <div className="text-white/40 text-[9px]">Instituto Presbiteriano</div>
@@ -224,12 +224,12 @@ function InstagramMockup({ category, title, body }: { category: string, title: s
         {/* Glow */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(210,175,90,0.15)_0%,_transparent_70%)]" />
         
-        <div className="relative z-10 ipb-glass-panel p-6 w-full max-w-[280px]">
+        <div className="relative z-10 bs-glass-panel p-6 w-full max-w-[280px]">
            <span className="inline-block px-2 py-1 rounded bg-white/5 border border-white/10 text-[#d2af5a] text-[8px] font-bold tracking-[0.2em] uppercase mb-4">
              {category}
            </span>
            <h2 className="text-xl text-white font-medium mb-3 leading-snug">
-             <span className="ipb-shimmer-text">{title}</span>
+             <span className="bs-shimmer-text">{title}</span>
            </h2>
            <div className="h-[1px] w-12 bg-white/10 mx-auto mb-3" />
            <p className="text-white/60 text-xs font-light leading-relaxed">
@@ -259,7 +259,7 @@ function InstagramMockup({ category, title, body }: { category: string, title: s
           2,451 curtidas
         </div>
         <div className="text-white/90 text-xs font-light leading-snug">
-          <span className="font-medium mr-1">ipb.fisio</span>
+          <span className="font-medium mr-1">bs.fisio</span>
           Deslize para o lado para entender como aplicamos isso na beira do leito. 🫁✨
         </div>
       </div>

@@ -118,7 +118,7 @@ export function AdminStrategicCockpit() {
       </div>
       <div className="text-center space-y-1.5">
         <p className="text-xs font-black tracking-[0.2em] text-violet-400 uppercase">Sincronizando Diagnóstico Clínico</p>
-        <p className="text-[10px] text-white/40">Carregando telemetria e maturidade estratégica do IPB...</p>
+        <p className="text-[10px] text-white/40">Carregando telemetria e maturidade estratégica do Business Syllabus...</p>
       </div>
     </div>
   )
@@ -151,7 +151,7 @@ export function AdminStrategicCockpit() {
             </div>
             <div>
               <h1 className="text-2xl font-extrabold text-white tracking-tight bg-gradient-to-r from-white via-white to-white/70 bg-clip-text text-transparent">
-                IPB · COCKPIT ESTRATÉGICO
+                BS · COCKPIT ESTRATÉGICO
               </h1>
               <div className="flex items-center flex-wrap gap-2 mt-1.5">
                 <span className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#d2af5a]/10 border border-white/10 text-[10px] font-black text-white/90 uppercase tracking-wider">
@@ -255,7 +255,7 @@ export function AdminStrategicCockpit() {
                     <div className="flex-1 min-w-0">
                       <h3 className="text-xs font-black text-red-400 uppercase tracking-[0.2em] mb-1.5">ALERTA ESTRATÉGICO URGENTE</h3>
                       <p className="text-[15px] text-white font-semibold leading-relaxed">
-                        {alert.message.replace('SaaS', 'Plataforma').replace('Produto pronto (TRL 7+) + mercado receptivo, mas sem receita. Pare de construir, comece a vender.', 'IPB está estável e pronto para uso clínico na UTI (TRL 7), mas possui receita nula. Hora de focar em conversões e parcerias hospitalares.')}
+                        {alert.message.replace('SaaS', 'Plataforma').replace('Produto pronto (TRL 7+) + mercado receptivo, mas sem receita. Pare de construir, comece a vender.', 'BS está estável e pronto para uso clínico na UTI (TRL 7), mas possui receita nula. Hora de focar em conversões e parcerias hospitalares.')}
                       </p>
                       {alert.action && (
                         <div className="mt-4.5 inline-flex items-center gap-2 px-3 py-1.5 bg-red-500/20 rounded-xl border border-red-500/30">
@@ -283,7 +283,7 @@ export function AdminStrategicCockpit() {
                           <Brain className="h-6 w-6 text-white" />
                         </div>
                         <div>
-                          <h2 className="text-base font-extrabold text-white tracking-tight">AI Diagnostic Panel · IPB</h2>
+                          <h2 className="text-base font-extrabold text-white tracking-tight">AI Diagnostic Panel · BS</h2>
                           <p className="text-[9px] text-violet-400 uppercase font-black tracking-widest">Processamento Neural Clínico Ativo</p>
                         </div>
                       </div>
@@ -976,7 +976,7 @@ function MaturityExecutionCard({ state, onReload }: { state?: CockpitData['state
           </div>
           <div>
             <h3 className="text-base font-extrabold text-white tracking-tight">Maturidade Operacional Clínico-EdTech</h3>
-            <p className="text-[10px] text-white/40 uppercase font-black tracking-widest">Níveis operacionais reais do IPB</p>
+            <p className="text-[10px] text-white/40 uppercase font-black tracking-widest">Níveis operacionais reais do Business Syllabus</p>
           </div>
        </div>
 

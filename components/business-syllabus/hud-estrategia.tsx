@@ -14,7 +14,7 @@ export function HudEstrategia() {
 
   // Logs de processamento estratégico
   const [logs, setLogs] = useState<string[]>([
-    '[INIT] Inicializando IPB Estratégia & Market Engine...',
+    '[INIT] Inicializando Business Syllabus Estratégia & Market Engine...',
     '[BIGQUERY] Analisando 12M+ de requisições no Google Trends (Keyword: Business Inteligência)',
     '[VERTEX] Processando elasticidade de anúncios...'
   ])
@@ -45,8 +45,8 @@ export function HudEstrategia() {
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const win = window as any
-      if (!win.IPBTelemetry) {
-        win.IPBTelemetry = {
+      if (!win.BSTelemetry) {
+        win.BSTelemetry = {
           cenario,
           metaBudgetPercent,
           faturamento,
@@ -57,7 +57,7 @@ export function HudEstrategia() {
           climaFrequencia: 14
         }
       } else {
-        win.IPBTelemetry = {
+        win.BSTelemetry = {
           faturamento: 150,
           cac: 350,
           opex: 60,
@@ -66,18 +66,18 @@ export function HudEstrategia() {
           cenario: 'normal',
           climaFrequencia: 14,
           metaBudgetPercent: 80,
-          ...win.IPBTelemetry
+          ...win.BSTelemetry
         }
       }
 
-      setCenario(win.IPBTelemetry.cenario ?? 'normal')
-      setMetaBudgetPercent(win.IPBTelemetry.metaBudgetPercent ?? 80)
-      setFaturamento(win.IPBTelemetry.faturamento ?? 150)
-      setClientes(win.IPBTelemetry.clientes ?? 1200)
+      setCenario(win.BSTelemetry.cenario ?? 'normal')
+      setMetaBudgetPercent(win.BSTelemetry.metaBudgetPercent ?? 80)
+      setFaturamento(win.BSTelemetry.faturamento ?? 150)
+      setClientes(win.BSTelemetry.clientes ?? 1200)
     }
 
     const handleTelemetry = (e: Event) => {
-      const telemetry = (window as any).IPBTelemetry
+      const telemetry = (window as any).BSTelemetry
       if (telemetry) {
         setCenario(telemetry.cenario ?? 'normal')
         setMetaBudgetPercent(telemetry.metaBudgetPercent ?? 80)
@@ -86,15 +86,15 @@ export function HudEstrategia() {
       }
     }
 
-    window.addEventListener('ipb-telemetry', handleTelemetry)
-    return () => window.removeEventListener('ipb-telemetry', handleTelemetry)
+    window.addEventListener('bs-telemetry', handleTelemetry)
+    return () => window.removeEventListener('bs-telemetry', handleTelemetry)
   }, [])
 
   const updateTelemetry = (updates: Record<string, any>) => {
     if (typeof window !== 'undefined') {
       const win = window as any
-      win.IPBTelemetry = { ...win.IPBTelemetry, ...updates }
-      window.dispatchEvent(new CustomEvent('ipb-telemetry'))
+      win.BSTelemetry = { ...win.BSTelemetry, ...updates }
+      window.dispatchEvent(new CustomEvent('bs-telemetry'))
     }
   }
 
@@ -262,16 +262,16 @@ export function HudEstrategia() {
       {/* Main Container - dense space management to fit 560px exactly */}
       <div className="flex-1 flex flex-col justify-between mt-3 space-y-3 relative z-20 overflow-hidden">
         
-        {/* TOP: IPB TRENDS SCANNER TERMINAL */}
+        {/* TOP: BS TRENDS SCANNER TERMINAL */}
         <div className="border border-[#d2af5a]/15 bg-[#070707] rounded-xl overflow-hidden shadow-2xl shrink-0">
           <div className="bg-black/80 px-3 py-1.5 flex items-center justify-between border-b border-white/5">
             <div className="flex items-center gap-1.5 text-[#d2af5a] font-mono text-[8px] font-bold">
               <TerminalIcon className="h-3.5 w-3.5" />
-              <span>IPB TRENDS & MULTIVARIABLE SCANNER TERMINAL</span>
+              <span>BUSINESS SYLLABUS TRENDS & MULTIVARIABLE SCANNER TERMINAL</span>
             </div>
             <div className="text-[7.5px] font-mono text-white/40">🛰️ LIVE CENTRAL BANK SGS & MARKETING APIS ENGINE</div>
           </div>
-          <div ref={terminalRef} className="p-2.5 font-mono text-[7.5px] text-[#d2af5a]/90 h-[105px] overflow-y-auto space-y-0.5 leading-normal ipb-thinscroll text-left">
+          <div ref={terminalRef} className="p-2.5 font-mono text-[7.5px] text-[#d2af5a]/90 h-[105px] overflow-y-auto space-y-0.5 leading-normal bs-thinscroll text-left">
             {logs.map((log, index) => (
               <div key={index} className="whitespace-pre-wrap">{log}</div>
             ))}
@@ -299,7 +299,7 @@ export function HudEstrategia() {
             </div>
 
             {/* Formula box */}
-            <div className="p-2 bg-black/60 border border-[#d2af5a]/15 rounded-xl text-white font-mono text-[8px] flex-1 flex flex-col justify-between overflow-y-auto ipb-thinscroll text-left">
+            <div className="p-2 bg-black/60 border border-[#d2af5a]/15 rounded-xl text-white font-mono text-[8px] flex-1 flex flex-col justify-between overflow-y-auto bs-thinscroll text-left">
               <div>
                 <span className="block text-[7px] uppercase tracking-wider text-[#d2af5a] mb-1 font-bold">Cálculo de Juros Reais & WACC Corporativo</span>
                 <div className="py-1.5 px-2 bg-black/35 rounded border border-white/5 text-[7.5px] text-[#d2af5a] leading-relaxed font-mono space-y-1">
@@ -325,7 +325,7 @@ export function HudEstrategia() {
           <div className="p-3 bg-black/40 border border-white/5 rounded-xl flex flex-col justify-between overflow-hidden">
             <span className="block text-[8px] font-mono text-[#d2af5a] font-bold uppercase tracking-wider mb-2 text-left">GLOSSÁRIO DE RISCOS & COMPLIANCE MACRO</span>
             
-            <div className="flex-1 overflow-y-auto ipb-thinscroll pr-1 max-h-[145px] space-y-2.5 text-[8.8px] text-white/70 leading-normal text-left">
+            <div className="flex-1 overflow-y-auto bs-thinscroll pr-1 max-h-[145px] space-y-2.5 text-[8.8px] text-white/70 leading-normal text-left">
               <div>
                 <b className="text-white block">📈 Taxa Real de Juros:</b>
                 <span>O juro descontado da inflação. Serve para o investidor e empresário decidirem se vale a pena arriscar abrindo uma empresa ou se é melhor deixar rendendo no banco. Com SELIC a 14.40% e IPCA a 4.39%, o juro real é de 10.01%. <em>Cruzamento:</em> Juro real a 10% trava investimentos reais (CAPEX) e foca em eficiência operacional via IA.</span>

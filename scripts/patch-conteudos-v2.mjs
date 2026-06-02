@@ -1,6 +1,6 @@
 import fs from 'fs';
 
-const file = 'components/sea/conteudos-page-client.tsx';
+const file = 'components/business-syllabus/conteudos-page-client.tsx';
 let lines = fs.readFileSync(file, 'utf8').split('\n');
 
 const importIdx = lines.findIndex(l => l.includes("import { SUBJECTS_DB }"));

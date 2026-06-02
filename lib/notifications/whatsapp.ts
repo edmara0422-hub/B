@@ -1,5 +1,5 @@
 /**
- * IPB - Módulo de Disparo de Notificações via WhatsApp
+ * BS - Módulo de Disparo de Notificações via WhatsApp
  * 
  * Este módulo gerencia o envio de mensagens automáticas de alertas e atualizações
  * utilizando um gateway de API de WhatsApp (como Evolution API, Z-API, ou similar).

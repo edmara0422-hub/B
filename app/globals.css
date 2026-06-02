@@ -4,43 +4,43 @@
 @source '../app/page.tsx';
 @source '../app/(main)/layout.tsx';
 @source '../app/(main)/loading.tsx';
-@source '../app/(main)/sea/page.tsx';
+@source '../app/(main)/bs/page.tsx';
 @source '../app/(main)/explore/page.tsx';
 @source '../app/(main)/explore/conteudos/page.tsx';
 @source '../components';
-@source '../components/sea';
+@source '../components/business-syllabus';
 @source '../components/experience';
-@source '../components/sea/bottom-nav.tsx';
-@source '../components/sea/conteudos-page-client.tsx';
-@source '../components/sea/conteudos-page-entry.tsx';
-@source '../components/sea/explore-page-client.tsx';
-@source '../components/sea/study-rail-board.tsx';
-@source '../components/sea/explore-page-entry.tsx';
-@source '../components/sea/glass-panel.tsx';
-@source '../components/sea/greeting-clock-card.tsx';
-@source '../components/sea/home-page-client.tsx';
-@source '../components/sea/main-shell.tsx';
-@source '../components/sea/performance-bar.tsx';
-@source '../components/sea/premium-splash.tsx';
-@source '../components/sea/route-screen-fallback.tsx';
-@source '../components/sea/sea-backdrop.tsx';
-@source '../components/sea/ipb-background.tsx';
-@source '../components/sea/vine-canvas.tsx';
-@source '../components/sea/sea-landing.tsx';
-@source '../components/sea/sea-page-entry.tsx';
-@source '../components/sea/simulations-grid.tsx';
-@source '../components/sea/top-bar-sea.tsx';
-@source '../components/sea/auth-form.tsx';
-@source '../components/sea/auth-guard.tsx';
+@source '../components/business-syllabus/bottom-nav.tsx';
+@source '../components/business-syllabus/conteudos-page-client.tsx';
+@source '../components/business-syllabus/conteudos-page-entry.tsx';
+@source '../components/business-syllabus/explore-page-client.tsx';
+@source '../components/business-syllabus/study-rail-board.tsx';
+@source '../components/business-syllabus/explore-page-entry.tsx';
+@source '../components/business-syllabus/glass-panel.tsx';
+@source '../components/business-syllabus/greeting-clock-card.tsx';
+@source '../components/business-syllabus/home-page-client.tsx';
+@source '../components/business-syllabus/main-shell.tsx';
+@source '../components/business-syllabus/performance-bar.tsx';
+@source '../components/business-syllabus/premium-splash.tsx';
+@source '../components/business-syllabus/route-screen-fallback.tsx';
+@source '../components/business-syllabus/sea-backdrop.tsx';
+@source '../components/business-syllabus/bs-background.tsx';
+@source '../components/business-syllabus/vine-canvas.tsx';
+@source '../components/business-syllabus/sea-landing.tsx';
+@source '../components/business-syllabus/sea-page-entry.tsx';
+@source '../components/business-syllabus/simulations-grid.tsx';
+@source '../components/business-syllabus/top-bar-sea.tsx';
+@source '../components/business-syllabus/auth-form.tsx';
+@source '../components/business-syllabus/auth-guard.tsx';
 @source '../components/caderno/caderno-module.tsx';
 @source '../components/caderno/caderno-block.tsx';
 @source '../components/caderno/study-sidebar.tsx';
 @source '../app/auth/reset-password/page.tsx';
 @source '../app/(main)/profile/page.tsx';
 @source '../app/(main)/admin/page.tsx';
-@source '../components/sea/sistemas-page-client.tsx';
-@source '../components/sea/prontuario-system-panel.tsx';
-@source '../components/sea/vm-system-panel.tsx';
+@source '../components/business-syllabus/sistemas-page-client.tsx';
+@source '../components/business-syllabus/prontuario-system-panel.tsx';
+@source '../components/business-syllabus/vm-system-panel.tsx';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -179,7 +179,7 @@
     overscroll-behavior: none;
   }
 
-  /* BODY com 3 camadas de detalhes radiais (BASE do fundo espacial) — IPB kit exato.
+  /* BODY com 3 camadas de detalhes radiais (BASE do fundo espacial) — BS kit exato.
      Sem isso o fundo fica chapado e os 2 canvases (IpbBackground/VineCanvas) ficam
      "soltos" sem a base de gradients atrás. */
   body {
@@ -326,7 +326,7 @@
     background-image: radial-gradient(circle at center, var(--tw-gradient-stops));
   }
 
-  /* chrome-shell — mesma cor transparente do .ipb-soft (Home) */
+  /* chrome-shell — mesma cor transparente do .bs-soft (Home) */
   .chrome-shell,
   .chrome-card {
     position: relative;
@@ -531,11 +531,11 @@ body.sea-splash-active [data-sea-bottom-nav='true'] {
   }
 }
 
-/* ─── IPB Design Kit additions ─────────────────────────────────── */
+/* ─── BS Design Kit additions ─────────────────────────────────── */
 
-/* CARD .ipb-card — cópia EXATA do Card3D do Explorar.
+/* CARD .bs-card — cópia EXATA do Card3D do Explorar.
    TRANSPARENTE de verdade (sem backdrop-blur). Só prata sutil + drop preto. */
-.ipb-card {
+.bs-card {
   position: relative;
   background: rgba(5, 5, 5, 0.45);
   border: 0.2px solid rgba(255, 255, 255, 0.08);
@@ -547,8 +547,8 @@ body.sea-splash-active [data-sea-bottom-nav='true'] {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* CARD .ipb-soft — prata predominante, dourado e preto SUTIS. */
-.ipb-soft {
+/* CARD .bs-soft — prata predominante, dourado e preto SUTIS. */
+.bs-soft {
   position: relative;
   background: rgba(5, 5, 5, 0.45) !important;
   backdrop-filter: blur(28px) saturate(130%) !important;
@@ -560,7 +560,7 @@ body.sea-splash-active [data-sea-bottom-nav='true'] {
 }
 
 /* Fio prata sutil no topo (com hint dourado bem leve no centro) */
-.ipb-soft::before {
+.bs-soft::before {
   content: '';
   position: absolute;
   top: 0;
@@ -576,7 +576,7 @@ body.sea-splash-active [data-sea-bottom-nav='true'] {
   pointer-events: none;
 }
 
-.ipb-soft:hover {
+.bs-soft:hover {
   background: rgba(10, 10, 12, 0.55) !important;
   border-color: rgba(255, 255, 255, 0.22) !important;
   box-shadow: 
@@ -586,7 +586,7 @@ body.sea-splash-active [data-sea-bottom-nav='true'] {
 }
 
 /* Top shimmer sutil prata (igual Explorar — sem dourado) */
-.ipb-card::before {
+.bs-card::before {
   content: '';
   position: absolute;
   top: 0;
@@ -633,22 +633,22 @@ body.sea-splash-active [data-sea-bottom-nav='true'] {
   to   { opacity: 1; transform: translateY(0); }
 }
 
-.ipb-fadein {
+.bs-fadein {
   animation: ipbfade 0.35s ease-out;
 }
 
 /* Scrollbar fininha */
-.ipb-thinscroll {
+.bs-thinscroll {
   scrollbar-width: thin;
   scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
 }
-.ipb-thinscroll::-webkit-scrollbar { width: 6px; height: 6px; }
-.ipb-thinscroll::-webkit-scrollbar-track { background: transparent; }
-.ipb-thinscroll::-webkit-scrollbar-thumb {
+.bs-thinscroll::-webkit-scrollbar { width: 6px; height: 6px; }
+.bs-thinscroll::-webkit-scrollbar-track { background: transparent; }
+.bs-thinscroll::-webkit-scrollbar-thumb {
   background: rgba(255, 255, 255, 0.10);
   border-radius: 3px;
 }
-.ipb-thinscroll::-webkit-scrollbar-thumb:hover {
+.bs-thinscroll::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.20);
 }
 
@@ -656,7 +656,7 @@ body.sea-splash-active [data-sea-bottom-nav='true'] {
 @media print {
   body { visibility: hidden !important; }
   body::before {
-    content: 'Impressao de dados clinicos nao e permitida — IPB';
+    content: 'Impressao de dados clinicos nao e permitida — BS';
     visibility: visible !important;
     display: block;
     padding: 60px;
@@ -678,7 +678,7 @@ body.sea-splash-active [data-sea-bottom-nav='true'] {
    ========================================================================== */
 
 /* Card Padrão (Prata Titânio): Vidro Translúcido com Micro-Borda */
-.ipb-card-silver {
+.bs-card-silver {
   position: relative;
   overflow: hidden;
   background: rgba(5, 5, 5, 0.45);
@@ -690,13 +690,13 @@ body.sea-splash-active [data-sea-bottom-nav='true'] {
   -webkit-backdrop-filter: blur(28px) saturate(130%);
   transition: all 0.3s ease;
 }
-.ipb-card-silver:hover {
+.bs-card-silver:hover {
   border-color: rgba(255, 255, 255, 0.16);
   background: rgba(10, 10, 12, 0.55);
 }
 
 /* Card Ativo (Dourado Nobre): Vidro com Micro-Borda e Brilho Dourado */
-.ipb-card-gold {
+.bs-card-gold {
   position: relative;
   overflow: hidden;
   background: rgba(5, 5, 5, 0.45);
@@ -709,7 +709,7 @@ body.sea-splash-active [data-sea-bottom-nav='true'] {
   -webkit-backdrop-filter: blur(28px) saturate(130%);
   transition: all 0.3s ease;
 }
-.ipb-card-gold:hover {
+.bs-card-gold:hover {
   border-color: rgba(255, 255, 255, 0.2);
   box-shadow: 
     inset 0 1px 0 rgba(255, 255, 255, 0.12),
@@ -1224,10 +1224,10 @@ body.sea-splash-active [data-sea-bottom-nav='true'] {
 .esg-scroll-panel::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.10); border-radius: 3px; }
 
 /* Scrollbar do wrapper ESG completo */
-.ipb-esg-scroll::-webkit-scrollbar { width: 4px; }
-.ipb-esg-scroll::-webkit-scrollbar-track { background: transparent; }
-.ipb-esg-scroll::-webkit-scrollbar-thumb { background: rgba(212, 184, 122, 0.28); border-radius: 4px; }
-.ipb-esg-scroll::-webkit-scrollbar-thumb:hover { background: rgba(212, 184, 122, 0.50); }
+.bs-esg-scroll::-webkit-scrollbar { width: 4px; }
+.bs-esg-scroll::-webkit-scrollbar-track { background: transparent; }
+.bs-esg-scroll::-webkit-scrollbar-thumb { background: rgba(212, 184, 122, 0.28); border-radius: 4px; }
+.bs-esg-scroll::-webkit-scrollbar-thumb:hover { background: rgba(212, 184, 122, 0.50); }
 
 .esg-dashboard-header { display: flex; align-items: center; gap: 12px; }
 .esg-dashboard-header .seal-big {
@@ -1603,7 +1603,6 @@ body.sea-splash-active [data-sea-bottom-nav='true'] {
   color: transparent; -webkit-text-fill-color: transparent;
 }
 .hex-tab.active .name { color: #e0c887; font-weight: 600 }
-
 
 
 

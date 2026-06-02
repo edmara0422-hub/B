@@ -52,7 +52,7 @@ export function TopBarSEA() {
   const displayName = profile?.name ?? user?.user_metadata?.name ?? user?.email?.split('@')[0] ?? ''
   const firstName = displayName.split(' ')[0]
 
-  // Data formato IPB: "06.MAI.2026"
+  // Data formato Business Syllabus: "06.MAI.2026"
   const dateLabel = mounted
     ? `${String(now.getDate()).padStart(2, '0')}.${['JAN', 'FEV', 'MAR', 'ABR', 'MAI', 'JUN', 'JUL', 'AGO', 'SET', 'OUT', 'NOV', 'DEZ'][now.getMonth()]}.${now.getFullYear()}`
     : ''
@@ -137,7 +137,7 @@ export function TopBarSEA() {
         }}
       />
       <div className="flex w-full items-center justify-between gap-2">
-        {/* ── ESQUERDA: logo IPB metálico + tagline ── */}
+        {/* ── ESQUERDA: logo Business Syllabus metálico + tagline ── */}
         <div className="flex items-center gap-2 md:gap-3">
           {/* Logo square — dourado champanhe mesclado com prata (estilo premium) */}
           <div
@@ -150,7 +150,7 @@ export function TopBarSEA() {
                 'inset 0 1px 2px rgba(255,255,255,0.55), inset 0 -1px 2px rgba(0,0,0,0.35), 0 0 14px rgba(201, 148, 58,0.35), 0 4px 12px rgba(0,0,0,0.55)',
             }}
           >
-            {/* Texto IPB — prata claro sobre fundo dourado */}
+            {/* Texto Business Syllabus — prata claro sobre fundo dourado */}
             <span
               className="text-[0.5rem] font-black tracking-[0.03em] md:text-[0.6rem] relative z-10"
               style={{
@@ -182,7 +182,7 @@ export function TopBarSEA() {
           </p>
         </div>
 
-        {/* ── CENTRO: saudação + data (estilo IPB) ── */}
+        {/* ── CENTRO: saudação + data (estilo Business Syllabus) ── */}
         <div className="flex items-center gap-2">
           {mounted && (
             <>

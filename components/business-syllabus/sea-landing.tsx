@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { IpbBackground } from './ipb-background'
+import { IpbBackground } from './bs-background'
 
 const PHRASES = [
   'Raciocínio de negócios\ne estratégia de mercado.',
@@ -136,7 +136,7 @@ export function SeaLanding({ onEnter }: { onEnter: () => void }) {
       animate={exiting ? { opacity: 0 } : { opacity: 1 }}
       transition={{ duration: 0.7, ease: 'easeInOut' }}
     >
-      {/* Fundo espacial IPB: partículas dourdas + halos + raios + grade */}
+      {/* Fundo espacial BS: partículas dourdas + halos + raios + grade */}
       <IpbBackground />
 
       {/* Orb + ALL content inside it */}

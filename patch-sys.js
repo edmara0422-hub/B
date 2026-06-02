@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const file = 'components/sea/sistemas-page-client.tsx';
+const file = 'components/business-syllabus/sistemas-page-client.tsx';
 let content = fs.readFileSync(file, 'utf8');
 
 // 1. Add 'sig-consultoria' to SIDEBAR_GROUPS under 'SIG'

@@ -650,7 +650,7 @@ export function SioPanel({ initialTab }: { initialTab?: SioSubTab }) {
             <div className="dash-card-systems">
               <div className="flex justify-between items-start mb-6">
                 <div>
-                  <div className="text-[7.5px] font-mono text-[#d2af5a] tracking-[0.2em] font-bold uppercase mb-1">SEC · 03 ◆ IPBA AI</div>
+                  <div className="text-[7.5px] font-mono text-[#d2af5a] tracking-[0.2em] font-bold uppercase mb-1">SEC · 03 ◆ BS AI</div>
                   <h3 className="text-[15px] lg:text-xl font-light text-white tracking-wide">
                     Insight <span className="text-[#d2af5a] font-medium">Operacional</span>
                   </h3>
@@ -662,7 +662,7 @@ export function SioPanel({ initialTab }: { initialTab?: SioSubTab }) {
                   <div className="orb">
                     <div className="core"></div>
                   </div>
-                  <div className="text-[11px] font-bold text-white tracking-wide mt-2">IPBA AI</div>
+                  <div className="text-[11px] font-bold text-white tracking-wide mt-2">BS AI</div>
                   <div className="text-[8.5px] text-white/50">Status · <b className="text-[#5dcaa5]">ATIVO</b></div>
                 </div>
 
@@ -877,7 +877,7 @@ export function SioPanel({ initialTab }: { initialTab?: SioSubTab }) {
                       <div className="flex justify-between items-center p-3 bg-black/40 border-l-2 border-[#e24b4a] rounded-r-md">
                         <div>
                           <b className="block text-xs text-white">Auditoria Anual (D&O)</b>
-                          <span className="block text-[9.5px] text-white/40 mt-0.5">Fechamento de conformidade legal IPB</span>
+                          <span className="block text-[9.5px] text-white/40 mt-0.5">Fechamento de conformidade legal BS</span>
                         </div>
                         <span className="text-[8.5px] font-mono font-bold bg-[#e24b4a]/10 text-[#e24b4a] px-2 py-0.5 rounded">BLOQ</span>
                       </div>
@@ -1009,7 +1009,7 @@ export function SioPanel({ initialTab }: { initialTab?: SioSubTab }) {
                     <span className="text-[7.5px] font-mono text-white/40 uppercase tracking-widest text-left select-none">
                       Console de Auditoria TensorFlow.js
                     </span>
-                    <div className="h-[96px] bg-[#050507] border border-white/5 rounded-xl p-3 font-mono text-[8px] text-[#d2af5a] space-y-0.5 overflow-y-auto text-left ipb-thinscroll select-text">
+                    <div className="h-[96px] bg-[#050507] border border-white/5 rounded-xl p-3 font-mono text-[8px] text-[#d2af5a] space-y-0.5 overflow-y-auto text-left bs-thinscroll select-text">
                       {mlLogs.length === 0 ? (
                         <div className="text-white/20 italic pt-6 text-center leading-normal">
                           Aguardando início do protocolo...<br/>

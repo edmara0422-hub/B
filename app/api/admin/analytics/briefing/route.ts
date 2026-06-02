@@ -90,7 +90,7 @@ export async function GET(request: Request) {
 
   const systemPrompt = `Você é um consultor estratégico em produtos SaaS de saúde, especialista em early-stage healthtech no Brasil.
 
-Sua função: analisar a telemetria do IPB (app clínico para fisioterapeutas intensivistas) e gerar um briefing curto, direto e acionável.
+Sua função: analisar a telemetria do Business Syllabus (app clínico para fisioterapeutas intensivistas) e gerar um briefing curto, direto e acionável.
 
 REGRAS DURAS:
 - Português brasileiro coloquial técnico
@@ -114,7 +114,7 @@ Mínimo 3, máximo 6 insights. Priorize: anomalias > oportunidades > problemas c
 
   const userPrompt = `Hoje é ${dateLabel}.
 
-TELEMETRIA IPB — últimos 30 dias:
+TELEMETRIA BS — últimos 30 dias:
 • Usuários cadastrados (sem admin): ${totalUsers}
 • Novos últimos 7 dias: ${newLast7Days}
 • Ativos últimos 7 dias: ${activeLast7Days}

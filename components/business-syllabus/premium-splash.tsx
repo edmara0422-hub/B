@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
 import dynamic from 'next/dynamic'
-import { IpbBackground } from './ipb-background'
+import { IpbBackground } from './bs-background'
 
 // VineCanvas (Three.js) só no client — lazy load pra não pesar o initial bundle
 const VineCanvas = dynamic(() => import('./vine-canvas'), { ssr: false })
@@ -69,7 +69,7 @@ export function PremiumSplash({
 
   return (
     <div className="fixed inset-0 z-[90] h-[100dvh] w-screen overflow-hidden" style={{ background: '#050507' }} suppressHydrationWarning>
-      {/* Fundo espacial IPB: 3D (estrelas + bloom) + 2D (partículas dourdas + halos) */}
+      {/* Fundo espacial BS: 3D (estrelas + bloom) + 2D (partículas dourdas + halos) */}
       <VineCanvas />
       <IpbBackground />
 
@@ -250,4 +250,3 @@ function SplashOrb({ progress }: { progress: number }) {
     />
   )
 }
-

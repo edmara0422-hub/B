@@ -64,7 +64,7 @@ export async function GET(request: Request) {
 
   const systemPrompt = `Você é um analista de Customer Insights especializado em early-stage SaaS de saúde no Brasil.
 
-Sua função: ler comentários de feedback/NPS do IPB (app pra fisioterapeutas intensivistas) e devolver análise estruturada.
+Sua função: ler comentários de feedback/NPS do Business Syllabus (app pra fisioterapeutas intensivistas) e devolver análise estruturada.
 
 REGRAS:
 - Português brasileiro técnico mas direto
@@ -94,7 +94,7 @@ Máximo 4 críticos, 3 elogios. Se zero feedbacks negativos, critical = [].`
     return `id=${f.id} | type=${f.type} | score=${f.score ?? 'n/a'} | data=${f.created_at.slice(0,10)}\n"${(f.message ?? '').slice(0, 400)}"`
   }).join('\n\n')
 
-  const userPrompt = `${valid.length} feedbacks do IPB (mais recentes primeiro):
+  const userPrompt = `${valid.length} feedbacks do Business Syllabus (mais recentes primeiro):
 
 ${feedbackList}
 

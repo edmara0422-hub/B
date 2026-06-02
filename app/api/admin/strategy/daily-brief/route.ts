@@ -79,7 +79,7 @@ async function generateBrief(admin: any, state: Record<string, unknown>) {
   const activeSubs = (subsRes.data ?? []).filter((s: any) => s.status === 'active').length
   const mrr = (state.financials as any)?.mrr ?? 0
 
-  const systemPrompt = `Você é um Consultor Estratégico de IA especialista em Healthtechs e Edtechs Médicas, focado no IPB (Plataforma de Decisão Clínica e Estudo em Fisioterapia Intensiva).
+  const systemPrompt = `Você é um Consultor Estratégico de IA especialista em Healthtechs e Edtechs Médicas, focado no Business Syllabus (Plataforma de Decisão Clínica e Estudo em Fisioterapia Intensiva).
 Seu objetivo é analisar o progresso de validação clínica, uso dos simuladores, MRR e adesão de usuários para gerar um diagnóstico diário seco, direto, provocativo e focado em tração clínica.
 
 DADOS ATUAIS DA PLATAFORMA:

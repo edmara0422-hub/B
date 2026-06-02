@@ -16,20 +16,20 @@ export function HudFinancas() {
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const win = window as any
-      if (!win.IPBTelemetry) win.IPBTelemetry = {}
-      win.IPBTelemetry.faturamento = Math.round(capVal / 5 + finVal / 10)
-      win.IPBTelemetry.cac = Math.round(soldVal * 0.7)
-      win.IPBTelemetry.opex = 60
-      win.IPBTelemetry.clientes = Math.round(finVal * 1.2)
-      win.IPBTelemetry.pressaoMetas = Math.round((capVal + finVal - 2240) / 100 + 5)
-      window.dispatchEvent(new CustomEvent('ipb-telemetry'))
+      if (!win.BSTelemetry) win.BSTelemetry = {}
+      win.BSTelemetry.faturamento = Math.round(capVal / 5 + finVal / 10)
+      win.BSTelemetry.cac = Math.round(soldVal * 0.7)
+      win.BSTelemetry.opex = 60
+      win.BSTelemetry.clientes = Math.round(finVal * 1.2)
+      win.BSTelemetry.pressaoMetas = Math.round((capVal + finVal - 2240) / 100 + 5)
+      window.dispatchEvent(new CustomEvent('bs-telemetry'))
     }
   }, [capVal, finVal, soldVal])
 
   // Sync with global cockpit telemetry
   useEffect(() => {
     const handleTelemetry = () => {
-      const telemetry = (window as any).IPBTelemetry
+      const telemetry = (window as any).BSTelemetry
       if (telemetry) {
         if (telemetry.usdRate !== undefined) setUsdRate(telemetry.usdRate)
         if (telemetry.countdown !== undefined) setCountdown(telemetry.countdown)
@@ -37,8 +37,8 @@ export function HudFinancas() {
       }
     }
     handleTelemetry()
-    window.addEventListener('ipb-telemetry', handleTelemetry)
-    return () => window.removeEventListener('ipb-telemetry', handleTelemetry)
+    window.addEventListener('bs-telemetry', handleTelemetry)
+    return () => window.removeEventListener('bs-telemetry', handleTelemetry)
   }, [])
 
   // Math equations based on input sliders
@@ -85,13 +85,13 @@ export function HudFinancas() {
 
   const triggerMetricClick = (metricId: string) => {
     if (typeof window !== 'undefined') {
-      window.dispatchEvent(new CustomEvent('ipb-metric-click', { detail: { metricId } }))
+      window.dispatchEvent(new CustomEvent('bs-metric-click', { detail: { metricId } }))
     }
   }
 
   return (
     <div 
-      className="w-full h-full flex flex-col justify-between p-4 bg-[#08080a]/85 border border-[#d2af5a]/25 rounded-3xl backdrop-blur-xl select-text overflow-y-auto ipb-thinscroll pr-1"
+      className="w-full h-full flex flex-col justify-between p-4 bg-[#08080a]/85 border border-[#d2af5a]/25 rounded-3xl backdrop-blur-xl select-text overflow-y-auto bs-thinscroll pr-1"
       style={{ fontFamily: "'Poppins', -apple-system, system-ui, sans-serif" }}
     >
       <style dangerouslySetInnerHTML={{ __html: `

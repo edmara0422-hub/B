@@ -186,7 +186,7 @@ export function ModoDescobertaVantagem({ onClose, onCalibrateCockpit }: ModoDesc
   const socraticQuestions = [
     {
       text: "Diga-me com o coração livre de falsa modéstia: o que os seus clientes, pacientes ou alunos te elogiam constantemente, e que você costuma ignorar ou acha que é 'bobagem' ou fácil demais?",
-      ttsText: "Olá! Sou sua mentora neuropsicológica de negócios do IPB. Vamos driblar a sua autocrítica. Diga-me com sinceridade: o que os seus clientes, pacientes ou alunos te elogiam constantemente, e que você costuma ignorar por achar que é fácil demais ou óbvio?",
+      ttsText: "Olá! Sou sua mentora neuropsicológica de negócios do Business Syllabus. Vamos driblar a sua autocrítica. Diga-me com sinceridade: o que os seus clientes, pacientes ou alunos te elogiam constantemente, e que você costuma ignorar por achar que é fácil demais ou óbvio?",
       placeholder: "Ex: As pessoas dizem que eu trago calma extrema e segurança nos piores momentos de crise...",
       presets: [
         "Minha velocidade cirúrgica para enxergar o erro no processo sob estresse extremo.",
@@ -1116,7 +1116,7 @@ export function ModoDescobertaVantagem({ onClose, onCalibrateCockpit }: ModoDesc
               Escaneando o "Ponto Cego" do Seu Nicho
             </h3>
             <p className="text-white/45 text-[10.5px] font-mono">
-              O algoritmo IPB está processando dados reais e sentimentos para identificar onde seus concorrentes clones estão falhando e qual é o seu território intocado.
+              O algoritmo Business Syllabus está processando dados reais e sentimentos para identificar onde seus concorrentes clones estão falhando e qual é o seu território intocado.
             </p>
           </div>
 
@@ -1139,7 +1139,7 @@ export function ModoDescobertaVantagem({ onClose, onCalibrateCockpit }: ModoDesc
             <div className="absolute top-1 right-2 text-[7px] text-white/20 select-none uppercase tracking-widest">
               TDBD Market Engine
             </div>
-            <div className="h-full overflow-y-auto space-y-0.5 ipb-thinscroll pr-2">
+            <div className="h-full overflow-y-auto space-y-0.5 bs-thinscroll pr-2">
               {scanLogs.map((log, idx) => (
                 <div key={idx} className="animate-in fade-in slide-in-from-left-2 duration-200">
                   <span className="text-white/25 mr-1.5">[{new Date().toLocaleTimeString()}]</span>
@@ -1498,7 +1498,7 @@ export function ModoDescobertaVantagem({ onClose, onCalibrateCockpit }: ModoDesc
               {/* Botões de Ação Inferiores */}
               <div className="flex flex-col md:flex-row gap-3 justify-between items-center border-t border-white/5 pt-4">
                 <span className="text-[8px] text-white/35 font-sans leading-relaxed max-w-sm">
-                  🛡️ <b>Mapeamento Integral IPB:</b> A fusão neuropsicológica desmistifica clones e resgata seu valor real baseado na verdade auditável.
+                  🛡️ <b>Mapeamento Integral BS:</b> A fusão neuropsicológica desmistifica clones e resgata seu valor real baseado na verdade auditável.
                 </span>
 
                 <div className="flex gap-2 w-full md:w-auto justify-end select-none">
@@ -1520,7 +1520,7 @@ export function ModoDescobertaVantagem({ onClose, onCalibrateCockpit }: ModoDesc
                     }}
                     className="px-4 py-2 bg-[#d2af5a]/10 border border-[#d2af5a]/30 hover:bg-[#d2af5a]/20 text-[#d2af5a] font-bold uppercase tracking-wider text-[9px] rounded-lg transition-all cursor-pointer"
                   >
-                    Salvar Dossiê IPB
+                    Salvar Dossiê BS
                   </button>
                   <button 
                     onClick={handleConfirmCalibration}

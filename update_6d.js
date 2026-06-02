@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const file = '/Users/edmararocha/Documents/IPB/components/sea/corporate/sig-pessoas-panel.tsx';
+const file = '/Users/edmararocha/Documents/Business Syllabus/components/business-syllabus/corporate/sig-pessoas-panel.tsx';
 let content = fs.readFileSync(file, 'utf8');
 
 // 1. Add d1..d5 to TeamMember type

@@ -15,7 +15,7 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: 'Não autorizado.' }, { status: 401 })
   }
 
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL ?? 'https://ipb-intelligence.vercel.app'
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL ?? 'https://bs-intelligence.vercel.app'
 
   try {
     // 1. Gera o brief diário (força novo)

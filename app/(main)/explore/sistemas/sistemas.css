@@ -1,8 +1,8 @@
 @import 'tailwindcss' source(none);
-@source '../../../../components/sea/sistemas-page-client.tsx';
-@source '../../../../components/sea/study-rail-board.tsx';
-@source '../../../../components/sea/prontuario-system-panel.tsx';
-@source '../../../../components/sea/vm-system-panel.tsx';
+@source '../../../../components/business-syllabus/sistemas-page-client.tsx';
+@source '../../../../components/business-syllabus/study-rail-board.tsx';
+@source '../../../../components/business-syllabus/prontuario-system-panel.tsx';
+@source '../../../../components/business-syllabus/vm-system-panel.tsx';
 
 /* Force font-size 10px only inside S1 prontuario panel */
 [data-s1-prontuario] input,

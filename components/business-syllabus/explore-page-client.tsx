@@ -82,7 +82,7 @@ function Carousel3D() {
       {/* Carrossel full-width — mesmo padrão do Home (scroll-snap horizontal) */}
       <div
         ref={scrollRef}
-        className="ipb-thinscroll flex w-full snap-x snap-mandatory overflow-x-auto [&>*]:snap-center [&>*]:snap-always [&>*]:shrink-0 [&>*]:w-full"
+        className="bs-thinscroll flex w-full snap-x snap-mandatory overflow-x-auto [&>*]:snap-center [&>*]:snap-always [&>*]:shrink-0 [&>*]:w-full"
         style={{ scrollbarWidth: 'none', height: 'clamp(360px, 58vh, 560px)' }}
       >
         {CARDS.map((card) => (
@@ -220,4 +220,3 @@ function FlatCard({ card, onClick }: { card: (typeof CARDS)[number]; onClick: ()
     </motion.div>
   )
 }
-

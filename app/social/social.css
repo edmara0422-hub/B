@@ -1,4 +1,4 @@
-.ipb-social-bg {
+.bs-social-bg {
   position: absolute;
   inset: 0;
   background: 
@@ -12,7 +12,7 @@
   overflow-x: hidden;
 }
 
-.ipb-social-bg::before {
+.bs-social-bg::before {
   content: '';
   position: fixed;
   inset: 0;
@@ -24,7 +24,7 @@
   z-index: 0;
 }
 
-.ipb-glass-panel {
+.bs-glass-panel {
   position: relative;
   background: 
     radial-gradient(ellipse at 0% 50%, rgba(220,225,235,0.12) 0%, transparent 42%),
@@ -39,7 +39,7 @@
   overflow: hidden;
 }
 
-.ipb-shimmer-text {
+.bs-shimmer-text {
   background-image: linear-gradient(100deg,
     rgba(196,200,212,0.6) 0%,
     rgba(255,255,255,1.0) 20%,

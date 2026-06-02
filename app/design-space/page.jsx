@@ -7,7 +7,7 @@ import "./editorial.css";
 // Inject Lucide React icons manually to replace inline ones if needed, 
 // or keep their custom inline SVG logic below.
 // ──────────────────────────────────────────────────────────────────────────────
-// IPB app screens — rendered inside the iPhone, real tokens from the repo
+// Business Syllabus App screens — rendered inside the iPhone, real tokens from the repo
 // ──────────────────────────────────────────────────────────────────────────────
 
 // Lucide-style inline SVG icons (matching lucide-react stroke style)
@@ -152,9 +152,9 @@ function AppLanding() {
       {/* CAMADA 3: Orb central */}
       <canvas ref={orbRef} className="s-splash-orb" />
 
-      {/* CAMADA 4: Logo IPB + subtítulo */}
+      {/* CAMADA 4: Logo Business Syllabus + subtítulo */}
       <div className="s-splash-text">
-        <h1 className="s-splash-title">IPB</h1>
+        <h1 className="s-splash-title">BS</h1>
         <p style={{ width: "80px", lineHeight: "1.4", fontWeight: "200", letterSpacing: "2.2px" }}>Sistema de Estudo Avançado</p>
       </div>
     </div>);
@@ -166,7 +166,7 @@ function AppCadastro() {
     <div className="app-bg">
       <div className="s-auth">
         <div className="s-auth-brand">
-          <h1>IPB</h1>
+          <h1>BS</h1>
           <p>Sistema de Estudo Avancado</p>
         </div>
         <div className="s-auth-card">
@@ -222,7 +222,7 @@ function AppLogin() {
     <div className="app-bg">
       <div className="s-auth">
         <div className="s-auth-brand">
-          <h1>IPB</h1>
+          <h1>BS</h1>
           <p>Sistema de Estudo Avançado</p>
         </div>
         <div className="s-auth-card">
@@ -396,9 +396,9 @@ function AppSplash() {
       {/* CAMADA 3: Orb central */}
       <canvas ref={orbRef} className="s-splash-orb" />
 
-      {/* CAMADA 4: Logo IPB + subtítulo */}
+      {/* CAMADA 4: Logo Business Syllabus + subtítulo */}
       <div className="s-splash-text">
-        <h1 className="s-splash-title">IPB</h1>
+        <h1 className="s-splash-title">BS</h1>
         <p style={{ fontWeight: "500", textAlign: "center", lineHeight: "8", letterSpacing: "0px", height: "33px", width: "55px" }}>Sistema de Estudo Avançado</p>
       </div>
 
@@ -422,7 +422,7 @@ function AppTopBar() {
 
   return (
     <header className="app-top" data-tour="topbar">
-      <div className="app-top-mark">IPB</div>
+      <div className="app-top-mark">BS</div>
       <div className="app-top-center">
         <div className="app-top-greet">
           <span className="ico">{isDay ? "☀" : "☾"}</span>
@@ -517,15 +517,15 @@ const GOV_CONTENT = {
     title: "Missão, Visão e Valores",
     sections: [
       { heading: "Missão", items: [
-        "Capacitar profissionais do INTELLIGENCE PLATFORM BUSINESS intensivistas com tecnologia de ponta, tornando o conhecimento clínico complexo acessível, aplicável e seguro à beira do leito",
+        "Capacitar profissionais do BUSINESS SYLLABUS intensivistas com tecnologia de ponta, tornando o conhecimento clínico complexo acessível, aplicável e seguro à beira do leito",
         "Reduzir a distância entre a evidência científica e a prática clínica diária, em qualquer hospital, de qualquer região do Brasil",
-        "Ser o sistema de estudo mais completo, confiável e humanizado para INTELLIGENCE PLATFORM BUSINESS em terapia intensiva",
+        "Ser o sistema de estudo mais completo, confiável e humanizado para BUSINESS SYLLABUS em terapia intensiva",
       ]},
       { heading: "Visão", items: [
-        "Ser a plataforma de referência em educação clínica para profissionais do INTELLIGENCE PLATFORM BUSINESS intensivistas na América Latina até 2030",
+        "Ser a plataforma de referência em educação clínica para profissionais do BUSINESS SYLLABUS intensivistas na América Latina até 2030",
         "Contribuir para que zero pacientes sejam prejudicados por falta de preparo técnico de seus cuidadores",
         "Democratizar o acesso ao conhecimento, eliminando barreiras geográficas, econômicas e institucionais",
-        "Liderar a transformação digital da INTELLIGENCE PLATFORM BUSINESS hospitalar com inovação responsável e ética",
+        "Liderar a transformação digital da BUSINESS SYLLABUS hospitalar com inovação responsável e ética",
       ]},
       { heading: "Valores", items: [
         "Excelência clínica — conteúdo fundamentado em evidências de alto nível",
@@ -534,12 +534,12 @@ const GOV_CONTENT = {
         "Transparência — honestidade sobre limitações e incertezas",
         "Inovação com propósito — tecnologia a serviço da vida",
         "Responsabilidade ambiental — zero papel, pegada de carbono mínima",
-        "Colaboração — crescemos com quem usa e constrói o IPB",
+        "Colaboração — crescemos com quem usa e constrói o Business Syllabus",
       ]},
     ],
   },
   politicas: {
-    title: "Políticas IPB INTELLIGENCE PLATFORM BUSINESS",
+    title: "Políticas Business Syllabus BUSINESS SYLLABUS",
     sections: [
       { heading: "4 Pilares da Governança Digital", items: [
         "Responsabilização — cada decisão de produto tem responsável identificável; rastreabilidade total via Git",
@@ -551,7 +551,7 @@ const GOV_CONTENT = {
         "Lei nº 13.709/2018 — princípio de minimização de dados",
         "Nenhum PII de pacientes coletado, armazenado ou transmitido a servidores externos",
         "Dados clínicos permanecem exclusivamente no dispositivo (localStorage sandboxed)",
-        "Prontuário IPB é ferramenta de apoio ao raciocínio — não é PEP (Resolução CFM 1.638/2002)",
+        "Prontuário Business Syllabus é ferramenta de apoio ao raciocínio — não é PEP (Resolução CFM 1.638/2002)",
         "Direito ao esquecimento: exclusão permanente sem justificativa, a qualquer momento",
         "Sem compartilhamento com terceiros, parceiros ou para marketing",
       ]},
@@ -572,7 +572,7 @@ const GOV_CONTENT = {
     ],
   },
   praticas: {
-    title: "Práticas IPB INTELLIGENCE PLATFORM BUSINESS",
+    title: "Práticas Business Syllabus BUSINESS SYLLABUS",
     sections: [
       { heading: "Segurança do Paciente", items: [
         "Cálculos validados: driving pressure (Amato 2015), RSBI (Yang & Tobin 1991), P/F (Berlin 2012)",
@@ -587,7 +587,7 @@ const GOV_CONTENT = {
       { heading: "Educação Baseada em Evidências", items: [
         "Guidelines: AMIB, SBPT, ATS, ERS, ESICM, AARC",
         "Simulações 3D de órgãos reais (pulmão, coração, cérebro)",
-        "IA tutor com raciocínio INTELLIGENCE PLATFORM BUSINESSpatológico, não definições",
+        "IA tutor com raciocínio BUSINESS SYLLABUSpatológico, não definições",
         "Curvas P×t, F×t, V×t em tempo real",
         "Loops P×V e F×V com análise de histerese, WOB",
         "Calculadoras: peso ideal, VC, complacência, resistência, MRC, PERME, IMS",
@@ -601,7 +601,7 @@ const GOV_CONTENT = {
     ],
   },
   compliance: {
-    title: "Compliance IPB INTELLIGENCE PLATFORM BUSINESS",
+    title: "Compliance Business Syllabus BUSINESS SYLLABUS",
     sections: [
       { heading: "Legislação Brasileira", items: [
         "LGPD — Lei 13.709/2018",
@@ -613,7 +613,7 @@ const GOV_CONTENT = {
       { heading: "Regulamentação Profissional", items: [
         "COFFITO — Código de Ética (Resolução 424/2013)",
         "COFFITO 516/2020 — Teleconsulta",
-        "CFM 1.638/2002 — Definição de PEP (IPB não é PEP)",
+        "CFM 1.638/2002 — Definição de PEP (BS não é PEP)",
         "ANVISA RDC 36/2013 — Segurança do paciente",
         "NR 32 — Saúde no trabalho em saúde",
       ]},
@@ -630,18 +630,18 @@ const GOV_CONTENT = {
     title: "Termos de Uso",
     sections: [
       { heading: "Aceitação", items: [
-        "Ao acessar o IPB, o usuário aceita integralmente estes Termos",
-        "Uso destinado a profissionais do INTELLIGENCE PLATFORM BUSINESS e estudantes supervisionados",
+        "Ao acessar o Business Syllabus, o usuário aceita integralmente estes Termos",
+        "Uso destinado a profissionais do BUSINESS SYLLABUS e estudantes supervisionados",
         "Vedado a menores de 18 anos sem supervisão",
         "Aceite revogável via exclusão de conta",
       ]},
       { heading: "Limitações de Responsabilidade", items: [
-        "IPB é ferramenta de APOIO — não substitui julgamento clínico",
+        "BS é ferramenta de APOIO — não substitui julgamento clínico",
         "Decisões clínicas são responsabilidade EXCLUSIVA do profissional",
         "Cálculos baseados em literatura, interpretar com quadro clínico",
       ]},
       { heading: "Propriedade Intelectual", items: [
-        "Conteúdo propriedade exclusiva do IPB (Lei 9.610/1998)",
+        "Conteúdo propriedade exclusiva do Business Syllabus (Lei 9.610/1998)",
         "Reprodução requer autorização prévia",
       ]},
     ],
@@ -754,7 +754,7 @@ function FeedbackModal({ onClose }) {
 
         {tab === "nps" && (
           <>
-            <p className="modal-hint">De 0 a 10, o quanto recomendaria o IPB?</p>
+            <p className="modal-hint">De 0 a 10, o quanto recomendaria o Business Syllabus?</p>
             <div className="modal-nps">
               {Array.from({length:11}, (_,i) => (
                 <button key={i} className={npsScore===i?"on":""} onClick={()=>setNpsScore(i)}>{i}</button>
@@ -847,9 +847,9 @@ function AppHome() {
 
         <div className="s-perf-bar" data-tour="perf">
           <div className="s-perf-cards" style={{ transform: `translateX(-${perfPage * 100}%)` }}>
-            {/* CARD 1 — Impacto IPB + NPS + Governança */}
+            {/* CARD 1 — Impacto Business Syllabus + NPS + Governança */}
             <div className="s-perf-card">
-              <p className="k">Impacto IPB</p>
+              <p className="k">Impacto Business Syllabus</p>
               <div className="s-perf-impact">
                 <div className="mini"><span className="ic">🩺</span><span className="n">12</span><span className="l">Prontuários</span></div>
                 <div className="mini"><span className="ic">📚</span><span className="n">47</span><span className="l">Conteúdos</span></div>
@@ -892,7 +892,7 @@ function AppHome() {
               </div>
               <p className="k center">CSV · Valor Compartilhado</p>
               <div className="s-perf-csv">
-                <div><b>Social</b><span>Reduz evasão · Capacita INTELLIGENCE PLATFORM BUSINESS · Melhora desfechos</span></div>
+                <div><b>Social</b><span>Reduz evasão · Capacita BUSINESS SYLLABUS · Melhora desfechos</span></div>
                 <div><b>Econômico</b><span>EdTech inexplorado · Diferencial por inclusão</span></div>
                 <div><b>Ambiental</b><span>Digitalização reduz pegada · Código otimizado</span></div>
               </div>
@@ -971,7 +971,7 @@ function AppExplore() {
 
 function AppSistemas({ active = "S1" }) {
   const systems = [
-  ["S1", "IPB ICU", "📋"],
+  ["S1", "BS ICU", "📋"],
   ["S2", "Calculadoras", "🧮"],
   ["S3", "Referência", "📖"]];
 
@@ -1058,8 +1058,8 @@ function AppEnd() {
   return (
     <div className="app-bg">
       <div className="s-end">
-        <div className="s-end-mark shim">IPB</div>
-        <h1>Pronto. Você <em>aprendeu</em><br />o essencial do IPB.</h1>
+        <div className="s-end-mark shim">BS</div>
+        <h1>Pronto. Você <em>aprendeu</em><br />o essencial do Business Syllabus.</h1>
         <p>17 telas, 6 capítulos, um app inteiro que cabe na sua mão. Agora é só usar — e cuidar de paciente como se cuida de gente.</p>
         <button>Recomeçar tour ↻</button>
       </div>
@@ -1131,7 +1131,7 @@ function AuthInteractive() {
     <div className="app-bg">
       <div className="s-auth">
         <div className="s-auth-brand">
-          <h1>IPB</h1>
+          <h1>BS</h1>
           <p>Sistema de Estudo Avancado</p>
         </div>
         <div className="s-auth-card">
@@ -1207,7 +1207,7 @@ function AuthInteractive() {
 const SECTIONS = [
 {
   type: "hero",
-  eyebrow: "IPB INTELLIGENCE PLATFORM BUSINESS · 2026",
+  eyebrow: "BS BUSINESS SYLLABUS · 2026",
   title: ["O ecossistema", "que conecta", "clínica e gestão."],
   body: "Plataforma integral de inteligência clínica e educacional. Módulos avançados de capacitação, IA para escaneamento de parâmetros e gestão hospitalar em tempo real.",
   foot: ["Role pra ver", "▼"],
@@ -1231,7 +1231,7 @@ const SECTIONS = [
   num: "03",
   eyebrow: "Splash premium · 3,5s",
   title: ["Cada milissegundo", "é design."],
-  body: "Orb canvas com glow expandindo conforme o progresso. Anéis duplos pulsando em frequências diferentes. 8 partículas orbitando em órbita oval (sin(angle) × 0.88). Logo IPB com shimmer prata→branco→dourado em loop. Progress bar com easing quartic — 1 − (1−r)⁴ — acelera no fim.",
+  body: "Orb canvas com glow expandindo conforme o progresso. Anéis duplos pulsando em frequências diferentes. 8 partículas orbitando em órbita oval (sin(angle) × 0.88). Logo Business Syllabus com shimmer prata→branco→dourado em loop. Progress bar com easing quartic — 1 − (1−r)⁴ — acelera no fim.",
   stat: ["Canvas 2D + Three.js", "Bloom + IpbBackground"],
   phone: <AppSplash />,
   phoneLabel: "splash · 3.5s + 1s hold",
@@ -1242,7 +1242,7 @@ const SECTIONS = [
   num: "04",
   eyebrow: "Home — sua base diária",
   title: ["TopBar.", "Marquee.", "BottomNav."],
-  body: "TopBar fixo com logo IPB metálico, saudação dinâmica (Sol 6-18h, Lua 18-6h), data formato 20.MAI.2026, zoom A−/A+, sino com badge, perfil. Marquee horizontal das simulações 3D rolando em loop infinito. BottomNav fixo com 2 abas — HOME e EXPLORAR. Simplicidade total.",
+  body: "TopBar fixo com logo Business Syllabus metálico, saudação dinâmica (Sol 6-18h, Lua 18-6h), data formato 20.MAI.2026, zoom A−/A+, sino com badge, perfil. Marquee horizontal das simulações 3D rolando em loop infinito. BottomNav fixo com 2 abas — HOME e EXPLORAR. Simplicidade total.",
   stat: ["2 abas", "HOME · EXPLORAR"],
   phone: <AppHome />,
   phoneLabel: "home · 3 simulações 3D",
@@ -1253,7 +1253,7 @@ const SECTIONS = [
   num: "05",
   eyebrow: "Scan IA · a revolução",
   title: ["Foto.", "Pronto."],
-  body: "Foto do display do ventilador — Hamilton, Drager, Servo, Magnamed, Mindray, GE, Newport, Leistung, qualquer marca, até os analógicos. O IPB lê modo e parâmetros sozinho. Foto da gasometria? Extrai pH, PaO₂, PaCO₂, BE, lactato e calcula P/F na hora. Foto das curvas e loops? Detecta padrões e assincronias. Foto da TIE (PulmoVista)? Interpreta ROIs e titulação de PEEP.",
+  body: "Foto do display do ventilador — Hamilton, Drager, Servo, Magnamed, Mindray, GE, Newport, Leistung, qualquer marca, até os analógicos. O BS lê modo e parâmetros sozinho. Foto da gasometria? Extrai pH, PaO₂, PaCO₂, BE, lactato e calcula P/F na hora. Foto das curvas e loops? Detecta padrões e assincronias. Foto da TIE (PulmoVista)? Interpreta ROIs e titulação de PEEP.",
   stat: ["20s", "para documentar um paciente complexo"],
   phone: <AppExplore />,
   phoneLabel: "explorar · conteúdos + sistemas",
@@ -1273,21 +1273,21 @@ const SECTIONS = [
 {
   type: "feature",
   num: "07",
-  eyebrow: "IPB ICU",
-  title: ["O IPB ICU", "que escaneia."],
-  body: "IPB ICU com cálculos automáticos: DP, Cest, Cdyn, MP, RSBI, P/F Berlin 2023. Histórico salvo de cada gasometria, balanço hídrico e parâmetros de VM. Compara o agora com o de 6 horas atrás. Vê tendência: melhorou, piorou, em quê. Nenhum app de calculadora faz isso.",
+  eyebrow: "BS ICU",
+  title: ["O BS ICU", "que escaneia."],
+  body: "BS ICU com cálculos automáticos: DP, Cest, Cdyn, MP, RSBI, P/F Berlin 2023. Histórico salvo de cada gasometria, balanço hídrico e parâmetros de VM. Compara o agora com o de 6 horas atrás. Vê tendência: melhorou, piorou, em quê. Nenhum app de calculadora faz isso.",
   stat: ["Tendência visual", "Compara turno a turno"],
   phone: <AppSistemas active="S1" />,
-  phoneLabel: "sistemas · IPB ICU",
+  phoneLabel: "sistemas · BS ICU",
   side: "right"
 },
 {
   type: "feature",
   num: "08",
-  eyebrow: "Feito por INTELLIGENCE PLATFORM BUSINESS, pra INTELLIGENCE PLATFORM BUSINESS",
+  eyebrow: "Feito por BUSINESS SYLLABUS, pra BUSINESS SYLLABUS",
   title: ["Outros apps", "são feitos", "por médicos."],
-  body: "O IPB é exclusivo para profissionais do INTELLIGENCE PLATFORM BUSINESS: conteúdo alinhado ao raciocínio INTELLIGENCE PLATFORM BUSINESS. Calculadoras prioritárias — RSBI, PImax, PEmax, índice de Tobin, CV. Protocolos com foco em conduta: prona, recrutamento, VNI, desmame, traqueostomia.",
-  stat: ["100%", "feito por profissional do INTELLIGENCE PLATFORM BUSINESS"],
+  body: "O BS é exclusivo para profissionais do BUSINESS SYLLABUS: conteúdo alinhado ao raciocínio BUSINESS SYLLABUS. Calculadoras prioritárias — RSBI, PImax, PEmax, índice de Tobin, CV. Protocolos com foco em conduta: prona, recrutamento, VNI, desmame, traqueostomia.",
+  stat: ["100%", "feito por profissional do BUSINESS SYLLABUS"],
   phone: <AppSistemas active="S2" />,
   phoneLabel: "sistemas · calculadoras",
   side: "left"
@@ -1295,7 +1295,7 @@ const SECTIONS = [
 {
   type: "closing",
   eyebrow: "09",
-  title: ["A primeira plataforma", "feita por INTELLIGENCE PLATFORM BUSINESS,", "pra INTELLIGENCE PLATFORM BUSINESS."],
+  title: ["A primeira plataforma", "feita por BUSINESS SYLLABUS,", "pra BUSINESS SYLLABUS."],
   body: "O ecossistema que conecta clínica, educação e gestão."
 }];
 
@@ -1390,12 +1390,12 @@ function TopBar() {
   return (
     <header className="topbar">
       <div className="topbar-brand">
-        <div className="topbar-mark">IPB</div>
-        <span className="topbar-name">INTELLIGENCE PLATFORM BUSINESS</span>
+        <div className="topbar-mark">BS</div>
+        <span className="topbar-name">BUSINESS SYLLABUS</span>
       </div>
       <nav className="topbar-nav">
         <span>scan IA</span>
-        <span>IPB ICU</span>
+        <span>BS ICU</span>
         <span>calculadora</span>
         <span>simulações 3D</span>
       </nav>
@@ -1776,7 +1776,7 @@ function BusinessManifestoPage() {
             <p style={{ fontSize: '1.1rem', lineHeight: 1.7, color: 'var(--ink-soft)', fontWeight: 300, maxWidth: '600px' }}>
               No mercado corporativo global, processos e infraestruturas são apenas o meio. A verdadeira inovação acontece quando entendemos que negócios, liderança e gestão são, na essência, <b>pessoas conectando-se com outras pessoas</b>.
               <br/><br/>
-              A Intelligence Platform Business é o reflexo de uma visão executiva e multidisciplinar. É a convicção de que o verdadeiro diferencial de mercado não é a tecnologia isolada, mas a visão estratégica e a liderança humana que a conduzem.
+              A Business Syllabus é o reflexo de uma visão executiva e multidisciplinar. É a convicção de que o verdadeiro diferencial de mercado não é a tecnologia isolada, mas a visão estratégica e a liderança humana que a conduzem.
             </p>
           </motion.div>
         </div>

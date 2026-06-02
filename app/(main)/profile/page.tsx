@@ -224,7 +224,7 @@ export default function ProfilePage() {
   }
 
   const inputClass = 'w-full h-9 rounded-[0.5rem] border border-white/15 bg-white/[0.08] px-3 text-[12px] text-white placeholder:text-white/40 outline-none focus:border-white/30'
-  const menuBtn = 'ipb-soft flex w-full items-center gap-2.5 rounded-[0.8rem] px-3 py-2.5 text-left transition-all'
+  const menuBtn = 'bs-soft flex w-full items-center gap-2.5 rounded-[0.8rem] px-3 py-2.5 text-left transition-all'
 
   return (
     <div className="relative min-h-screen text-white px-2 pb-32 pt-16 md:px-4">
@@ -269,7 +269,7 @@ export default function ProfilePage() {
 
         {/* ── Nome ── */}
         {editField === 'name' ? (
-          <div className="flex items-center gap-1 rounded-[0.7rem] ipb-soft px-3 py-1.5">
+          <div className="flex items-center gap-1 rounded-[0.7rem] bs-soft px-3 py-1.5">
             <User className="h-3.5 w-3.5 shrink-0 text-white/30" />
             <input className={inputClass} value={editValue} onChange={(e) => setEditValue(e.target.value)} placeholder="Seu nome" autoFocus />
             <button onClick={handleSaveName} disabled={saving} className="shrink-0 text-[#4ade80]"><Save className="h-3.5 w-3.5" /></button>
@@ -288,7 +288,7 @@ export default function ProfilePage() {
 
         {/* ── Email ── */}
         {editField === 'email' ? (
-          <div className="flex items-center gap-1 rounded-[0.7rem] ipb-soft px-3 py-1.5">
+          <div className="flex items-center gap-1 rounded-[0.7rem] bs-soft px-3 py-1.5">
             <Mail className="h-3.5 w-3.5 shrink-0 text-white/30" />
             <input className={inputClass} type="email" value={editValue} onChange={(e) => setEditValue(e.target.value)} placeholder="Seu email" autoFocus />
             <button onClick={handleSaveEmail} disabled={saving} className="shrink-0 text-[#4ade80]"><Save className="h-3.5 w-3.5" /></button>
@@ -307,7 +307,7 @@ export default function ProfilePage() {
 
         {/* ── WhatsApp / Telefone ── */}
         {editField === 'phone' ? (
-          <div className="flex items-center gap-1 rounded-[0.7rem] ipb-soft px-3 py-1.5">
+          <div className="flex items-center gap-1 rounded-[0.7rem] bs-soft px-3 py-1.5">
             <Phone className="h-3.5 w-3.5 shrink-0 text-white/30" />
             <input className={inputClass} value={editValue} onChange={(e) => setEditValue(e.target.value)} placeholder="Seu WhatsApp (ex: 5511999999999)" autoFocus />
             <button onClick={handleSavePhone} disabled={saving} className="shrink-0 text-[#4ade80]"><Save className="h-3.5 w-3.5" /></button>
@@ -331,7 +331,7 @@ export default function ProfilePage() {
           <ChevronRight className={`h-3.5 w-3.5 text-white/55 transition-transform ${changePassword ? 'rotate-90' : ''}`} />
         </button>
         {changePassword && (
-          <div className="rounded-[0.7rem] ipb-soft px-3 py-2 space-y-1.5">
+          <div className="rounded-[0.7rem] bs-soft px-3 py-2 space-y-1.5">
             <input className={inputClass} type="password" placeholder="Nova senha (min 6 caracteres)" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} />
             <input className={inputClass} type="password" placeholder="Confirmar nova senha" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
             <button onClick={handleChangePassword} disabled={saving} className="w-full h-7 rounded-[0.5rem] border border-white/10 bg-white/5 text-[8px] font-semibold text-white/60 disabled:opacity-50">
@@ -368,7 +368,7 @@ export default function ProfilePage() {
           <div className="space-y-1 mb-4">
             <button
               onClick={() => router.push('/admin')}
-              className="flex w-full items-center gap-2 rounded-[0.7rem] ipb-soft px-3 py-2.5 transition-all"
+              className="flex w-full items-center gap-2 rounded-[0.7rem] bs-soft px-3 py-2.5 transition-all"
             >
               <Shield className="h-4 w-4 text-white/70" />
               <div className="flex-1 text-left">
@@ -379,7 +379,7 @@ export default function ProfilePage() {
             </button>
             <button
               onClick={() => router.push('/admin/conteudos-arquivados')}
-              className="flex w-full items-center gap-2 rounded-[0.7rem] ipb-soft px-3 py-2.5 transition-all mt-1"
+              className="flex w-full items-center gap-2 rounded-[0.7rem] bs-soft px-3 py-2.5 transition-all mt-1"
             >
               <BookOpen className="h-4 w-4 text-white/70" />
               <div className="flex-1 text-left">
@@ -404,7 +404,7 @@ export default function ProfilePage() {
 
       {/* NPS UI Form */}
       <div className="mb-5">
-        <form onSubmit={handleNpsSubmit} className="ipb-soft font-sans" style={{ display: "flex", flexDirection: "column", gap: 14, padding: 20, borderRadius: "1rem" }}>
+        <form onSubmit={handleNpsSubmit} className="bs-soft font-sans" style={{ display: "flex", flexDirection: "column", gap: 14, padding: 20, borderRadius: "1rem" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
             <Star size={14} style={{ color: "#e0b85e" }} />
             <h4 style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.16em", textTransform: "uppercase", color: "#e0b85e", margin: 0 }}>
@@ -480,7 +480,7 @@ export default function ProfilePage() {
           padding: 24, zIndex: 1000, backdropFilter: "blur(8px)"
         }}>
           {supportSuccess ? (
-            <div className="ipb-soft font-sans" style={{ width: "100%", maxWidth: 460, background: "#0a0a0a", border: "1.5px solid #e0b85e", display: "flex", flexDirection: "column", gap: 16, textAlign: "center", padding: 24, borderRadius: "1.2rem" }}>
+            <div className="bs-soft font-sans" style={{ width: "100%", maxWidth: 460, background: "#0a0a0a", border: "1.5px solid #e0b85e", display: "flex", flexDirection: "column", gap: 16, textAlign: "center", padding: 24, borderRadius: "1.2rem" }}>
               <h4 style={{ fontSize: 16, fontWeight: 600, color: "#fff", margin: 0 }}>Chamado Enviado com Sucesso!</h4>
               <p style={{ fontSize: 12, color: "rgba(255,255,255,0.7)", margin: 0, lineHeight: 1.6 }}>
                 Sua mensagem foi entregue com sucesso ao suporte. Responderemos diretamente em <strong>{supportEmail}</strong>.
@@ -490,7 +490,7 @@ export default function ProfilePage() {
               </button>
             </div>
           ) : (
-            <form onSubmit={handleSendSupport} className="ipb-soft font-sans" style={{ width: "100%", maxWidth: 460, background: "rgba(10,10,10,0.9)", border: "1.5px solid #e0b85e", display: "flex", flexDirection: "column", gap: 16, boxShadow: "0 24px 64px rgba(0,0,0,0.8)", padding: 24, borderRadius: "1.2rem" }}>
+            <form onSubmit={handleSendSupport} className="bs-soft font-sans" style={{ width: "100%", maxWidth: 460, background: "rgba(10,10,10,0.9)", border: "1.5px solid #e0b85e", display: "flex", flexDirection: "column", gap: 16, boxShadow: "0 24px 64px rgba(0,0,0,0.8)", padding: 24, borderRadius: "1.2rem" }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid rgba(255,255,255,0.1)", paddingBottom: 12 }}>
                 <h4 style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.14em", textTransform: "uppercase", color: "#e0b85e", margin: 0 }}>Suporte Helpdesk</h4>
                 <button type="button" onClick={() => { setSupportOpen(false); setSupportMessage(""); }} style={{ background: "none", border: "none", color: "rgba(255,255,255,0.4)", cursor: "pointer" }}>Fechar</button>
@@ -597,7 +597,7 @@ function AjudaModal({ onClose, onOpenSupport }: { onClose: () => void; onOpenSup
         <div className="max-h-[62vh] space-y-4 overflow-y-auto pr-1">
 
           {/* Status do sistema */}
-          <div className="flex items-center gap-2 rounded-[0.8rem] ipb-soft px-3 py-2">
+          <div className="flex items-center gap-2 rounded-[0.8rem] bs-soft px-3 py-2">
             <span className="h-1.5 w-1.5 rounded-full bg-white/50" />
             <p className="text-[8px] text-white/50">Sistema operacional ativo</p>
           </div>
@@ -607,7 +607,7 @@ function AjudaModal({ onClose, onOpenSupport }: { onClose: () => void; onOpenSup
             <p className="mb-2 text-[8px] font-semibold uppercase tracking-wider text-white/40">Perguntas Frequentes</p>
             <div className="space-y-1.5">
               {FAQ_ITEMS.map((item, i) => (
-                <div key={i} className="rounded-[0.8rem] ipb-soft overflow-hidden">
+                <div key={i} className="rounded-[0.8rem] bs-soft overflow-hidden">
                   <button
                     className="flex w-full items-center justify-between px-3 py-2.5 text-left"
                     onClick={() => setOpenIndex(openIndex === i ? null : i)}
@@ -632,7 +632,7 @@ function AjudaModal({ onClose, onOpenSupport }: { onClose: () => void; onOpenSup
                   onClose()
                   onOpenSupport()
                 }}
-                className="flex w-full items-center gap-2 rounded-[0.8rem] ipb-soft px-3 py-2.5 hover:bg-white/[0.04] text-left"
+                className="flex w-full items-center gap-2 rounded-[0.8rem] bs-soft px-3 py-2.5 hover:bg-white/[0.04] text-left"
               >
                 <Mail className="h-3.5 w-3.5 shrink-0 text-white/40" />
                 <div>
@@ -648,7 +648,7 @@ function AjudaModal({ onClose, onOpenSupport }: { onClose: () => void; onOpenSup
             <p className="mb-2 text-[8px] font-semibold uppercase tracking-wider text-white/40">Documentos Legais</p>
             <div className="grid grid-cols-3 gap-1.5">
               {['Termos de Uso', 'Políticas', 'Compliance'].map((doc) => (
-                <div key={doc} className="rounded-[0.7rem] ipb-soft px-2 py-2 text-center">
+                <div key={doc} className="rounded-[0.7rem] bs-soft px-2 py-2 text-center">
                   <p className="text-[8px] text-white/45">{doc}</p>
                   <p className="text-[7px] text-white/25 mt-0.5">Home → Governança</p>
                 </div>

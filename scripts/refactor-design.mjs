@@ -8,8 +8,8 @@ const outCss = path.join(process.cwd(), 'app', 'design-space', 'design.css');
 
 let content = fs.readFileSync(inputFile, 'utf-8');
 
-// Replace IPB/SEA as requested
-content = content.replace(/SEA/g, 'IPB').replace(/Sea/g, 'Ipb').replace(/sea-/g, 'ipb-');
+// Replace BS/SEA as requested
+content = content.replace(/SEA/g, 'BS').replace(/Sea/g, 'Ipb').replace(/sea-/g, 'bs-');
 content = content.replace(/Object\.assign\(window/g, 'if (typeof window !== "undefined") Object.assign(window');
 
 const lines = content.split('\n');

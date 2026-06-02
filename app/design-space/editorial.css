@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Inter:wght@300;400;500;600&family=Poppins:wght@200;300;400;500;600&display=swap');
 
 /* ──────────────────────────────────────────────────────────────────────────
-   SEA IPB INTELLIGENCE PLATFORM BUSINESS — Editorial scroll story (Stripe/Apple-style)
+   SEA BS BUSINESS SYLLABUS — Editorial scroll story (Stripe/Apple-style)
    ────────────────────────────────────────────────────────────────────────── */
 :root {
   --bg:      #050505;
@@ -52,19 +52,19 @@ body::after {
   filter: blur(70px);
 }
 
-/* Vine + IPB canvases (loaded externally) */
+/* Vine + BS canvases (loaded externally) */
 .vine-canvas-root { position: fixed; inset: 0; z-index: 1; pointer-events: none; }
-.ipb-bg-root { position: fixed; inset: 0; z-index: 2; pointer-events: none; overflow: hidden; background: transparent; }
-.ipb-bg-canvas { position: fixed; inset: 0; z-index: 3; pointer-events: none; }
-.ipb-bg-halos { position: fixed; inset: 0; z-index: 4; pointer-events: none; overflow: hidden; }
-.ipb-halo { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); border-radius: 50%; }
-.ipb-halo-gold {
+.bs-bg-root { position: fixed; inset: 0; z-index: 2; pointer-events: none; overflow: hidden; background: transparent; }
+.bs-bg-canvas { position: fixed; inset: 0; z-index: 3; pointer-events: none; }
+.bs-bg-halos { position: fixed; inset: 0; z-index: 4; pointer-events: none; overflow: hidden; }
+.bs-halo { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); border-radius: 50%; }
+.bs-halo-gold {
   width: min(80vw, 700px); height: min(80vw, 700px);
   background: radial-gradient(circle, rgba(210,175,90,0.025) 0%, transparent 70%);
   border: 1px solid rgba(210,175,90,0.04);
   animation: halo-a 6s ease-in-out infinite;
 }
-.ipb-halo-silver {
+.bs-halo-silver {
   width: min(110vw, 960px); height: min(110vw, 960px);
   background: radial-gradient(circle, rgba(192,200,215,0.015) 0%, transparent 65%);
   border: 1px solid rgba(192,200,215,0.025);
@@ -72,13 +72,13 @@ body::after {
 }
 @keyframes halo-a { 0%,100% { opacity: 0.5; transform: translate(-50%,-50%) scale(1); } 50% { opacity: 1; transform: translate(-50%,-50%) scale(1.04); } }
 @keyframes halo-b { 0%,100% { opacity: 0.4; transform: translate(-50%,-50%) scale(1); } 50% { opacity: 0.9; transform: translate(-50%,-50%) scale(1.02); } }
-.ipb-ray { position: absolute; top: 0; bottom: 0; width: 1px;
+.bs-ray { position: absolute; top: 0; bottom: 0; width: 1px;
   background: linear-gradient(180deg, transparent 0%, rgba(210,175,90,0.25) 50%, transparent 100%);
   opacity: 0; animation: ray 8s ease-in-out infinite;
 }
-.ipb-ray-silver { background: linear-gradient(180deg, transparent 0%, rgba(192,200,215,0.22) 50%, transparent 100%); }
+.bs-ray-silver { background: linear-gradient(180deg, transparent 0%, rgba(192,200,215,0.22) 50%, transparent 100%); }
 @keyframes ray { 0%,100% { opacity: 0; } 50% { opacity: 0.1; } }
-.ipb-grid {
+.bs-grid {
   position: absolute; inset: 0;
   background-image:
     linear-gradient(rgba(192,192,192,0.015) 1px, transparent 1px),
@@ -1420,7 +1420,7 @@ body {
 a { color: inherit; text-decoration: none; }
 ::selection { background: var(--gold); color: var(--bg); }
 
-/* ── Text shimmer (IPB-style noble) ───────────────────────────────────── */
+/* ── Text shimmer (BS-style noble) ───────────────────────────────────── */
 @keyframes shimmer {
   0%   { background-position: -300% center; }
   100% { background-position:  300% center; }
@@ -1443,17 +1443,17 @@ a { color: inherit; text-decoration: none; }
 
 /* ── Vine canvas (3D starfield) + ambient layers ─────────────────────── */
 .vine-canvas-root { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
-.ipb-bg-root      { position: fixed; inset: 0; z-index: 1; pointer-events: none; overflow: hidden; background: transparent; }
-.ipb-bg-canvas    { position: fixed; inset: 0; z-index: 2; pointer-events: none; }
-.ipb-bg-halos     { position: fixed; inset: 0; z-index: 3; pointer-events: none; overflow: hidden; }
-.ipb-halo { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); border-radius: 50%; }
-.ipb-halo-gold {
+.bs-bg-root      { position: fixed; inset: 0; z-index: 1; pointer-events: none; overflow: hidden; background: transparent; }
+.bs-bg-canvas    { position: fixed; inset: 0; z-index: 2; pointer-events: none; }
+.bs-bg-halos     { position: fixed; inset: 0; z-index: 3; pointer-events: none; overflow: hidden; }
+.bs-halo { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); border-radius: 50%; }
+.bs-halo-gold {
   width: min(80vw, 700px); height: min(80vw, 700px);
   background: radial-gradient(circle, rgba(210,175,90,0.025) 0%, transparent 70%);
   border: 1px solid rgba(210,175,90,0.04);
   animation: halo-a 6s ease-in-out infinite;
 }
-.ipb-halo-silver {
+.bs-halo-silver {
   width: min(110vw, 960px); height: min(110vw, 960px);
   background: radial-gradient(circle, rgba(192,200,215,0.015) 0%, transparent 65%);
   border: 1px solid rgba(192,200,215,0.025);
@@ -1461,13 +1461,13 @@ a { color: inherit; text-decoration: none; }
 }
 @keyframes halo-a { 0%,100% { opacity: 0.5; transform: translate(-50%,-50%) scale(1); } 50% { opacity: 1; transform: translate(-50%,-50%) scale(1.04); } }
 @keyframes halo-b { 0%,100% { opacity: 0.4; transform: translate(-50%,-50%) scale(1); } 50% { opacity: 0.9; transform: translate(-50%,-50%) scale(1.02); } }
-.ipb-ray { position: absolute; top: 0; bottom: 0; width: 1px;
+.bs-ray { position: absolute; top: 0; bottom: 0; width: 1px;
   background: linear-gradient(180deg, transparent 0%, rgba(210,175,90,0.25) 50%, transparent 100%);
   opacity: 0; animation: ray 8s ease-in-out infinite;
 }
-.ipb-ray-silver { background: linear-gradient(180deg, transparent 0%, rgba(192,200,215,0.22) 50%, transparent 100%); }
+.bs-ray-silver { background: linear-gradient(180deg, transparent 0%, rgba(192,200,215,0.22) 50%, transparent 100%); }
 @keyframes ray { 0%,100% { opacity: 0; } 50% { opacity: 0.1; } }
-.ipb-grid {
+.bs-grid {
   position: absolute; inset: 0;
   background-image:
     linear-gradient(rgba(192,192,192,0.015) 1px, transparent 1px),
@@ -1944,7 +1944,7 @@ a { color: inherit; text-decoration: none; }
 
 /* ──────────────────────────────────────────────────────────────────────────
    SEA · walkthrough section embedded in the portfolio
-   Tokens from edmara0422-hub/SEA-IPB INTELLIGENCE PLATFORM BUSINESS @ app/globals.css
+   Tokens from edmara0422-hub/SEA-BS BUSINESS SYLLABUS @ app/globals.css
    ────────────────────────────────────────────────────────────────────────── */
 .sea-walk {
   padding: 120px 0;

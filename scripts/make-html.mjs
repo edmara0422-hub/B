@@ -6,8 +6,8 @@ const outHtml = path.join(process.cwd(), 'public', 'design-space.html');
 
 let content = fs.readFileSync(inputFile, 'utf-8');
 
-// Replace IPB/SEA as requested
-content = content.replace(/SEA/g, 'IPB').replace(/Sea/g, 'Ipb').replace(/sea-/g, 'ipb-');
+// Replace BS/SEA as requested
+content = content.replace(/SEA/g, 'BS').replace(/Sea/g, 'Ipb').replace(/sea-/g, 'bs-');
 
 const lines = content.split('\n');
 
@@ -26,7 +26,7 @@ const htmlContent = `<!DOCTYPE html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>IPB Design Space</title>
+    <title>BS Design Space</title>
     <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>

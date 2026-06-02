@@ -1,6 +1,6 @@
 import fs from 'fs'
 
-const file = 'components/sea/conteudos-page-client.tsx'
+const file = 'components/business-syllabus/conteudos-page-client.tsx'
 let content = fs.readFileSync(file, 'utf8')
 
 // Replace rgba(212,184,122,X) with rgba(var(--theme-primary-rgb),X) inside inline styles

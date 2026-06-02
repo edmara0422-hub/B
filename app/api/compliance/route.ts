@@ -49,14 +49,14 @@ export async function POST(req: NextRequest) {
         </div>
         
         <footer style="margin-top: 24px; border-top: 1px solid #222; padding-top: 12px; text-align: center; font-size: 10px; color: #555;">
-          IPB App · Comitê de Governança, Ética e Integridade Corporativa
+          Business Syllabus App · Comitê de Governança, Ética e Integridade Corporativa
         </footer>
       </div>
     `;
 
     await sendMail({
       to: "erbusiness0422@gmail.com",
-      subject: "Compliance - IPB App", // Assunto estruturado obrigatório
+      subject: "Compliance - Business Syllabus App", // Assunto estruturado obrigatório
       html: htmlContent
     });
 

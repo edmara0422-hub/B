@@ -7,7 +7,7 @@ import { EffectComposer, Bloom, Vignette } from '@react-three/postprocessing'
 import * as THREE from 'three'
 
 /**
- * VineCanvas — fundo 3D do kit IPB.
+ * VineCanvas — fundo 3D do kit BS.
  * 3 camadas de estrelas em profundidades diferentes + estrelas brilhantes em primeiro plano
  * + sparkles flutuantes + vinhas em espiral + post-processing (bloom + vignette).
  * Mouse follow leve (paralax). PerformanceMonitor auto-ajusta qualidade conforme FPS.

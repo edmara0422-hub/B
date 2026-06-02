@@ -24,7 +24,7 @@ type CheckItem = {
   detalhe?: string    // extra line below
 }
 
-// ─── Static knowledge about IPB stack ───────────────────────────────────
+// ─── Static knowledge about BS stack ───────────────────────────────────
 
 const PHASES: { id: PhaseId; label: string; sublabel: string }[] = [
   { id: 'f1', label: 'F1', sublabel: 'Infra' },
@@ -538,12 +538,12 @@ export function StrategicPanel() {
 
   return (
     <div className="space-y-6 text-white font-sans p-2">
-      {/* ── TOP NAV: TIMELINE DE FASES DE CRESCIMENTO (IPB Soft style) ── */}
-      <div className="ipb-soft rounded-[1.2rem] p-5">
+      {/* ── TOP NAV: TIMELINE DE FASES DE CRESCIMENTO (BS Soft style) ── */}
+      <div className="bs-soft rounded-[1.2rem] p-5">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <span className="h-1.5 w-1.5 rounded-full bg-[#d2af5a] animate-pulse" />
-            <span className="text-[7.5px] md:text-[9px] uppercase tracking-[0.25em] font-mono font-bold text-white/50">IPB STRATEGIC COCKPIT</span>
+            <span className="text-[7.5px] md:text-[9px] uppercase tracking-[0.25em] font-mono font-bold text-white/50">BUSINESS SYLLABUS STRATEGIC COCKPIT</span>
           </div>
           <div className="flex items-center gap-1.5 rounded-full border border-[#d2af5a]/35 bg-[#d2af5a]/5 px-2.5 py-0.5 text-[8px] font-mono font-bold text-[#d2af5a]">
             {phase.toUpperCase()} ATIVA
@@ -587,8 +587,8 @@ export function StrategicPanel() {
       {/* ── CENTRAL GRID: 3 COLUMNS ── */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         
-        {/* COLUNA 1: METRICAS E SAUDE CLINICA (IPB Soft) */}
-        <div className="ipb-soft rounded-[1.2rem] p-5 flex flex-col justify-between">
+        {/* COLUNA 1: METRICAS E SAUDE CLINICA (BS Soft) */}
+        <div className="bs-soft rounded-[1.2rem] p-5 flex flex-col justify-between">
           <div>
             <p className="text-[7.5px] md:text-[9px] font-bold uppercase tracking-[0.15em] text-[#d2af5a] mb-4 border-b border-white/5 pb-2">Clinical & Business Metrics</p>
             
@@ -597,7 +597,7 @@ export function StrategicPanel() {
               <div 
                 onClick={() => setActiveCard(activeCard === 'patients' ? null : 'patients')}
                 className={`rounded-[1rem] p-4 transition-all duration-300 cursor-pointer ${
-                  activeCard === 'patients' ? 'ipb-card-gold' : 'ipb-card-silver'
+                  activeCard === 'patients' ? 'bs-card-gold' : 'bs-card-silver'
                 }`}
               >
                 <div className="flex items-center justify-between">
@@ -638,7 +638,7 @@ export function StrategicPanel() {
               <div 
                 onClick={() => setActiveCard(activeCard === 'activity' ? null : 'activity')}
                 className={`rounded-[1rem] p-4 transition-all duration-300 cursor-pointer ${
-                  activeCard === 'activity' ? 'ipb-card-gold' : 'ipb-card-silver'
+                  activeCard === 'activity' ? 'bs-card-gold' : 'bs-card-silver'
                 }`}
               >
                 <div className="flex items-center justify-between">
@@ -672,7 +672,7 @@ export function StrategicPanel() {
               <div 
                 onClick={() => setActiveCard(activeCard === 'retention' ? null : 'retention')}
                 className={`rounded-[1rem] p-4 transition-all duration-300 cursor-pointer ${
-                  activeCard === 'retention' ? 'ipb-card-gold' : 'ipb-card-silver'
+                  activeCard === 'retention' ? 'bs-card-gold' : 'bs-card-silver'
                 }`}
               >
                 <div className="flex items-center justify-between">
@@ -707,7 +707,7 @@ export function StrategicPanel() {
               <div 
                 onClick={() => setActiveCard(activeCard === 'nps' ? null : 'nps')}
                 className={`rounded-[1rem] p-4 transition-all duration-300 cursor-pointer ${
-                  activeCard === 'nps' ? 'ipb-card-gold' : 'ipb-card-silver'
+                  activeCard === 'nps' ? 'bs-card-gold' : 'bs-card-silver'
                 }`}
               >
                 <div className="flex items-center justify-between">
@@ -742,8 +742,8 @@ export function StrategicPanel() {
           )}
         </div>
 
-        {/* COLUNA 2: LLaMA AI ADVISOR (IPB Soft) */}
-        <div className="ipb-soft rounded-[1.2rem] p-5 flex flex-col justify-between">
+        {/* COLUNA 2: LLaMA AI ADVISOR (BS Soft) */}
+        <div className="bs-soft rounded-[1.2rem] p-5 flex flex-col justify-between">
           <div>
             <div className="flex items-center justify-between border-b border-white/5 pb-2 mb-4">
               <div className="flex flex-col">
@@ -782,8 +782,8 @@ export function StrategicPanel() {
           </div>
         </div>
 
-        {/* COLUNA 3: CHECKLIST & OKRs (IPB Soft) */}
-        <div className="ipb-soft rounded-[1.2rem] p-5 flex flex-col justify-between">
+        {/* COLUNA 3: CHECKLIST & OKRs (BS Soft) */}
+        <div className="bs-soft rounded-[1.2rem] p-5 flex flex-col justify-between">
           <div>
             <div className="flex items-center justify-between border-b border-white/5 pb-2 mb-4">
               <div className="flex flex-col">
@@ -846,8 +846,8 @@ export function StrategicPanel() {
 
       </div>
 
-      {/* ── NORTE ESTRATÉGICO COMPACTO (IPB Soft) ── */}
-      <div className="ipb-soft rounded-[1.2rem] p-5">
+      {/* ── NORTE ESTRATÉGICO COMPACTO (BS Soft) ── */}
+      <div className="bs-soft rounded-[1.2rem] p-5">
         <p className="text-[7.5px] md:text-[9px] font-bold uppercase tracking-[0.2em] font-mono text-[#d2af5a] mb-3">Norte Estratégico</p>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 divide-y md:divide-y-0 md:divide-x divide-white/5">
           <div className="pb-3 md:pb-0">
@@ -865,7 +865,7 @@ export function StrategicPanel() {
         </div>
       </div>
 
-      {/* ── ADVANCED PANEL: GOVERNANÇA E CONTROLE (GAVETA COLAPSÁVEL COM IPB-SOFT) ── */}
+      {/* ── ADVANCED PANEL: GOVERNANÇA E CONTROLE (GAVETA COLAPSÁVEL COM BS-SOFT) ── */}
       <div className="border-t border-white/5 pt-6 mt-6">
         <div className="flex justify-between items-center mb-4">
           <p className="text-[8px] md:text-[10px] font-bold uppercase tracking-[0.25em] font-mono text-[#d2af5a]">Governance & Advanced Architecture</p>
@@ -874,35 +874,35 @@ export function StrategicPanel() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {/* SGI */}
           <Sec label="Digital Integration Map (SGI)" badge={`${sgiOk}/${sgi.length}`} open={open.sgi} toggle={() => tog('sgi')}>
-            <div className="space-y-1 ipb-soft p-2.5 rounded-[0.8rem]">
+            <div className="space-y-1 bs-soft p-2.5 rounded-[0.8rem]">
               {sgi.map((item, i) => <CheckRow key={i} item={item} />)}
             </div>
           </Sec>
 
           {/* DDDM */}
           <Sec label="Data-Driven Strategy (DDDM)" badge={`${dddmOk}/${dddm.length}`} open={open.dddm} toggle={() => tog('dddm')}>
-            <div className="space-y-1 ipb-soft p-2.5 rounded-[0.8rem]">
+            <div className="space-y-1 bs-soft p-2.5 rounded-[0.8rem]">
               {dddm.map((item, i) => <CheckRow key={i} item={item} />)}
             </div>
           </Sec>
 
           {/* Trends */}
           <Sec label="Market Trends" badge={`${tendOk}/${tend.length}`} open={open.tend} toggle={() => tog('tend')}>
-            <div className="space-y-1 ipb-soft p-2.5 rounded-[0.8rem]">
+            <div className="space-y-1 bs-soft p-2.5 rounded-[0.8rem]">
               {tend.map((item, i) => <CheckRow key={i} item={item} />)}
             </div>
           </Sec>
 
           {/* Sustentabilidade */}
           <Sec label="Sustentabilidade" badge={`${sustOk}/${sust.length}`} open={open.sust} toggle={() => tog('sust')}>
-            <div className="space-y-1 ipb-soft p-2.5 rounded-[0.8rem]">
+            <div className="space-y-1 bs-soft p-2.5 rounded-[0.8rem]">
               {sust.map((item, i) => <CheckRow key={i} item={item} />)}
             </div>
           </Sec>
 
           {/* Governança */}
           <Sec label="Corporate Governance" open={open.gov} toggle={() => tog('gov')}>
-            <div className="space-y-2 ipb-soft p-2.5 rounded-[0.8rem]">
+            <div className="space-y-2 bs-soft p-2.5 rounded-[0.8rem]">
               {gov.map((pilar, pi) => {
                 const okCount = pilar.items.filter(i => i.ok).length
                 return (
@@ -930,7 +930,7 @@ export function StrategicPanel() {
 
           {/* Monitor */}
           <Sec label="Strategic Telemetry Monitor" open={open.monitor} toggle={() => tog('monitor')}>
-            <div className="space-y-2 ipb-soft p-2.5 rounded-[0.8rem]">
+            <div className="space-y-2 bs-soft p-2.5 rounded-[0.8rem]">
               <div className="grid grid-cols-2 gap-1.5">
                 {monitor.map((item, i) => (
                   <div key={i} className="flex items-center gap-1.5 rounded-[0.5rem] border border-white/5 px-2 py-1.5 bg-white/[0.01]">

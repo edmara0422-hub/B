@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const file = 'components/sea/conteudos-page-client.tsx';
+const file = 'components/business-syllabus/conteudos-page-client.tsx';
 let content = fs.readFileSync(file, 'utf8');
 
 // 1. Add M5 to MODULES array

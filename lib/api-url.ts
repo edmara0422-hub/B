@@ -3,4 +3,4 @@
 // No Capacitor build estático: aponta para o servidor remoto
 // No Capacitor (estático): aponta para Vercel. No browser normal: relativo.
 const isCapacitor = typeof window !== 'undefined' && !!(window as unknown as Record<string, unknown>).Capacitor
-export const API_BASE = process.env.NEXT_PUBLIC_API_URL || (isCapacitor ? 'https://ipb-intelligence.vercel.app' : '')
+export const API_BASE = process.env.NEXT_PUBLIC_API_URL || (isCapacitor ? 'https://bs-intelligence.vercel.app' : '')

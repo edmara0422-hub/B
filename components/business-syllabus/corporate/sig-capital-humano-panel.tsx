@@ -89,7 +89,7 @@ export function SigCapitalHumanoPanel() {
   // Carrega colaboradores e respostas no mount
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      const stored = localStorage.getItem('ipb-team-members')
+      const stored = localStorage.getItem('bs-team-members')
       if (stored) {
         try {
           const parsed = JSON.parse(stored)
@@ -187,7 +187,7 @@ export function SigCapitalHumanoPanel() {
           setSurveyLogs(prev => [
             ...prev,
             `[TELEMETRIA] Disparo realizado com sucesso via ${data.provider}!`,
-            "[LOG] Pesquisa ativada e ligada ao IPB. Aguardando respostas anônimas dos colaboradores...",
+            "[LOG] Pesquisa ativada e ligada ao Business Syllabus. Aguardando respostas anônimas dos colaboradores...",
             "[INFO] O link para submissão anônima foi enviado aos e-mails selecionados."
           ])
           setSurveyRunning(false)
@@ -408,7 +408,7 @@ export function SigCapitalHumanoPanel() {
 
   return (
     <div 
-      className="w-full h-full flex flex-col p-4 bg-[#050507]/90 border border-[#d2af5a]/25 rounded-3xl backdrop-blur-2xl select-text overflow-y-auto ipb-thinscroll pr-1 text-white"
+      className="w-full h-full flex flex-col p-4 bg-[#050507]/90 border border-[#d2af5a]/25 rounded-3xl backdrop-blur-2xl select-text overflow-y-auto bs-thinscroll pr-1 text-white"
       style={{ fontFamily: "'Poppins', -apple-system, system-ui, sans-serif" }}
     >
       {/* Toast Global */}
@@ -579,26 +579,26 @@ export function SigCapitalHumanoPanel() {
                   </button>
                 </div>
 
-                <div className="grid grid-cols-2 gap-1.5 max-h-[110px] overflow-y-auto ipb-thinscroll pr-1">
+                <div className="grid grid-cols-2 gap-1.5 max-h-[110px] overflow-y-auto bs-thinscroll pr-1">
                   {teamMembers.length === 0 ? (
                     <div className="col-span-2 text-center py-4 text-[8px] text-white/30 italic">
                       Nenhum colaborador cadastrado no SIG Pessoas. 
                       <button
                         onClick={() => {
                           const mockTeam = [
-                            { id: 'm-1', name: 'Rodrigo Silva', role: 'Coord. Reabilitação', email: 'rodrigo@ipb.org.br', type: 'Líder & Gestor', d6: 82 },
-                            { id: 'm-2', name: 'Juliana Mendes', role: 'Gestora de Leitos', email: 'juliana@ipb.org.br', type: 'Gestor', d6: 88 },
-                            { id: 'm-3', name: 'Lucas Alencar', role: 'Fisioterapeuta Sênior', email: 'lucas@ipb.org.br', type: 'Liderado', d6: 68 },
-                            { id: 'm-4', name: 'Ana Beatriz', role: 'Head de Inovação', email: 'ana@ipb.org.br', type: 'Líder', d6: 91 }
+                            { id: 'm-1', name: 'Rodrigo Silva', role: 'Coord. Reabilitação', email: 'rodrigo@bs.org.br', type: 'Líder & Gestor', d6: 82 },
+                            { id: 'm-2', name: 'Juliana Mendes', role: 'Gestora de Leitos', email: 'juliana@bs.org.br', type: 'Gestor', d6: 88 },
+                            { id: 'm-3', name: 'Lucas Alencar', role: 'Fisioterapeuta Sênior', email: 'lucas@bs.org.br', type: 'Liderado', d6: 68 },
+                            { id: 'm-4', name: 'Ana Beatriz', role: 'Head de Inovação', email: 'ana@bs.org.br', type: 'Líder', d6: 91 }
                           ]
-                          localStorage.setItem('ipb-team-members', JSON.stringify(mockTeam))
+                          localStorage.setItem('bs-team-members', JSON.stringify(mockTeam))
                           setTeamMembers(mockTeam)
                           setSelectedRecipients(mockTeam.map(m => m.id))
                           triggerToast("Time padrão carregado para testes de pesquisas!")
                         }}
                         className="text-[#d2af5a] block underline mx-auto mt-1 cursor-pointer"
                       >
-                        Carregar time de teste padrão do IPB
+                        Carregar time de teste padrão do Business Syllabus
                       </button>
                     </div>
                   ) : (
@@ -653,7 +653,7 @@ export function SigCapitalHumanoPanel() {
             <div className="relative">
               <div 
                 ref={logContainerRef}
-                className="h-[80px] overflow-y-auto ipb-thinscroll bg-black/75 rounded-lg p-2 border border-white/5 font-mono text-[7.8px] text-[#d2af5a]/80 space-y-1"
+                className="h-[80px] overflow-y-auto bs-thinscroll bg-black/75 rounded-lg p-2 border border-white/5 font-mono text-[7.8px] text-[#d2af5a]/80 space-y-1"
               >
                 {surveyLogs.length === 0 ? (
                   <span className="text-white/20 italic block text-center pt-6">Terminal aguardando ativação do envio de pulso IA...</span>
@@ -697,7 +697,7 @@ export function SigCapitalHumanoPanel() {
                 </button>
               </div>
 
-              <div className="h-[95px] overflow-y-auto ipb-thinscroll bg-black/45 rounded-lg p-2 border border-white/5 space-y-2">
+              <div className="h-[95px] overflow-y-auto bs-thinscroll bg-black/45 rounded-lg p-2 border border-white/5 space-y-2">
                 {surveyResponses.length === 0 ? (
                   <div className="text-center py-6 text-[8px] text-white/20 italic font-mono">
                     Aguardando submissões anônimas na rota de e-mail...
@@ -896,7 +896,7 @@ export function SigCapitalHumanoPanel() {
             <div className="relative">
               <div 
                 ref={scannerLogRef}
-                className="h-[80px] overflow-y-auto ipb-thinscroll bg-black/75 rounded-lg p-2 border border-white/5 font-mono text-[7.8px] text-[#d2af5a]/80 space-y-1"
+                className="h-[80px] overflow-y-auto bs-thinscroll bg-black/75 rounded-lg p-2 border border-white/5 font-mono text-[7.8px] text-[#d2af5a]/80 space-y-1"
               >
                 {scannerLogs.length === 0 ? (
                   <span className="text-white/20 italic block text-center pt-6">Terminal aguardando upload/escaneamento de atestado...</span>

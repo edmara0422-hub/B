@@ -32,7 +32,7 @@ const SIDEBAR_GROUPS = [
     label: 'CLÍNICO',
     areas: 'PNEUMO · NEURO · CARDIO',
     items: [
-      { id: 'S1', title: 'IPB ICU', desc: 'S1 · Módulo Clínico' },
+      { id: 'S1', title: 'BS ICU', desc: 'S1 · Módulo Clínico' },
       { id: 'S2', title: 'Calculadoras', desc: 'S2 · Módulo Clínico' },
       { id: 'S3', title: 'Referência Clínica', desc: 'S3 · Módulo Clínico' },
     ]
@@ -81,7 +81,7 @@ const SIDEBAR_GROUPS = [
     label: 'COMPLIANCE',
     areas: 'GOVERNANÇA',
     items: [
-      { id: 'comp-denuncias', title: 'Canal de Denúncias', desc: 'Governança IPB · COMP' },
+      { id: 'comp-denuncias', title: 'Canal de Denúncias', desc: 'Governança Business Syllabus · COMP' },
       { id: 'comp-governanca', title: 'Governança', desc: 'Políticas & Contratos · COMP' },
     ]
   }
@@ -175,7 +175,7 @@ export default function SistemasPageClient() {
       const areasStr = (group as any).areas ? ` (${(group as any).areas})` : ''
       return `${group.code}${areasStr} · ${group.label} · ${item.title.toUpperCase()}`
     }
-    return 'IPB OPERATIONAL · COCKPIT'
+    return 'BUSINESS SYLLABUS OPERATIONAL · COCKPIT'
   }
 
   // Renderizador central de conteúdo do Router

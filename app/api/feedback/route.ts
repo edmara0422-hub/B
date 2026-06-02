@@ -89,7 +89,7 @@ export async function POST(req: NextRequest) {
         </div>
         
         <footer style="margin-top: 24px; border-top: 1px solid #222; padding-top: 12px; text-align: center; font-size: 11px; color: #555;">
-          IPB App · Sistema Automatizado de Alertas de Experiência
+          Business Syllabus App · Sistema Automatizado de Alertas de Experiência
         </footer>
       </div>
     `;
@@ -97,7 +97,7 @@ export async function POST(req: NextRequest) {
     // 3. Envia o e-mail de qualquer forma! (Garante resiliência total)
     await sendMail({
       to: "erbusiness0422@gmail.com",
-      subject: `NPS - IPB App`,
+      subject: `NPS - Business Syllabus App`,
       html: htmlContent
     });
 

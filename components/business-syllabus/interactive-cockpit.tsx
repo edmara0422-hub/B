@@ -462,13 +462,13 @@ export function InteractiveCockpit() {
 
   useEffect(() => {
     const handleTelemetry = () => {
-      const telemetry = (window as any).IPBTelemetry
+      const telemetry = (window as any).BSTelemetry
       if (telemetry) {
         setPressaoMetas(telemetry.pressaoMetas ?? 5)
       }
     }
     handleTelemetry()
-    window.addEventListener('ipb-telemetry', handleTelemetry)
+    window.addEventListener('bs-telemetry', handleTelemetry)
     
     // Escuta cliques em métricas vindo de qualquer mini-card
     const handleMetricClick = (e: any) => {
@@ -477,9 +477,9 @@ export function InteractiveCockpit() {
         setActiveTab('info')
       }
     }
-    window.addEventListener('ipb-metric-click', handleMetricClick)
+    window.addEventListener('bs-metric-click', handleMetricClick)
 
-    // Função para buscar cotação real de USD do backend IPB
+    // Função para buscar cotação real de USD do backend BS
     const fetchUsdRate = async () => {
       setApiLiveStatus('FETCHING')
       try {
@@ -510,8 +510,8 @@ export function InteractiveCockpit() {
     fetchUsdRate()
 
     return () => {
-      window.removeEventListener('ipb-telemetry', handleTelemetry)
-      window.removeEventListener('ipb-metric-click', handleMetricClick)
+      window.removeEventListener('bs-telemetry', handleTelemetry)
+      window.removeEventListener('bs-metric-click', handleMetricClick)
       clearInterval(timer)
     }
   }, [])
@@ -520,11 +520,11 @@ export function InteractiveCockpit() {
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const win = window as any
-      if (!win.IPBTelemetry) win.IPBTelemetry = {}
-      win.IPBTelemetry.usdRate = usdRate
-      win.IPBTelemetry.countdown = countdown
-      win.IPBTelemetry.apiLiveStatus = apiLiveStatus
-      window.dispatchEvent(new CustomEvent('ipb-telemetry'))
+      if (!win.BSTelemetry) win.BSTelemetry = {}
+      win.BSTelemetry.usdRate = usdRate
+      win.BSTelemetry.countdown = countdown
+      win.BSTelemetry.apiLiveStatus = apiLiveStatus
+      window.dispatchEvent(new CustomEvent('bs-telemetry'))
     }
   }, [usdRate, countdown, apiLiveStatus])
 
@@ -1173,7 +1173,7 @@ export function InteractiveCockpit() {
             </div>
 
             {/* Modal Content - Novo Modo Descoberta de Vantagem Real */}
-            <div className="p-6 overflow-y-auto max-h-[60vh] ipb-thinscroll flex-1 min-h-0 bg-black/25 flex flex-col gap-6">
+            <div className="p-6 overflow-y-auto max-h-[60vh] bs-thinscroll flex-1 min-h-0 bg-black/25 flex flex-col gap-6">
               <ModoDescobertaVantagem 
                 onClose={() => setIsXequeMateModalOpen(false)}
                 onCalibrateCockpit={(metrics) => {

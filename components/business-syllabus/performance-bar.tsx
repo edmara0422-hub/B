@@ -127,7 +127,7 @@ export function PerformanceBar() {
       {/* Scroll-snap horizontal: 1 card por tela, full-width, todo conteúdo visível */}
       <div
         ref={scrollRef}
-        className="ipb-thinscroll flex snap-x snap-mandatory gap-0 overflow-x-auto [&>*]:snap-center [&>*]:snap-always [&>*]:shrink-0 [&>*]:w-full"
+        className="bs-thinscroll flex snap-x snap-mandatory gap-0 overflow-x-auto [&>*]:snap-center [&>*]:snap-always [&>*]:shrink-0 [&>*]:w-full"
         style={{ scrollbarWidth: 'none' }}
       >
         <CombinedStatsCard
@@ -197,7 +197,7 @@ export function PerformanceBar() {
 // ─── Card Sustentabilidade ───
 function SustentabilidadeCard() {
   return (
-    <div className="ipb-soft w-full rounded-[1.4rem] p-4 md:p-5">
+    <div className="bs-soft w-full rounded-[1.4rem] p-4 md:p-5">
       <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/75">
         Sustentabilidade
       </p>
@@ -205,7 +205,7 @@ function SustentabilidadeCard() {
       {/* TBL */}
       <div className="mb-3 grid grid-cols-3 gap-1.5">
         {TBL_ITEMS.map((item) => (
-          <div key={item.label} className="rounded-[0.8rem] ipb-soft px-2 py-2.5 text-center">
+          <div key={item.label} className="rounded-[0.8rem] bs-soft px-2 py-2.5 text-center">
             <item.icon className="mx-auto mb-1 h-4 w-4 text-white/80" />
             <p className="text-[11px] font-semibold text-white/90">{item.label}</p>
             <p className="mt-0.5 text-[9px] leading-relaxed text-white/60">{item.desc}</p>
@@ -218,7 +218,7 @@ function SustentabilidadeCard() {
         <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/75">ODS</p>
         <div className="flex flex-wrap justify-center gap-1">
           {ODS_ITEMS.map((item) => (
-            <div key={item.num} className="flex items-center gap-1 rounded-full ipb-soft px-2 py-0.5">
+            <div key={item.num} className="flex items-center gap-1 rounded-full bs-soft px-2 py-0.5">
               <span className="text-[11px] font-bold text-white/90">{item.num}</span>
               <span className="text-[9px] text-white/70">{item.label}</span>
             </div>
@@ -231,7 +231,7 @@ function SustentabilidadeCard() {
         <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/75">CSV — Valor Compartilhado</p>
         <div className="grid grid-cols-3 gap-1.5">
           {CSV_ITEMS.map((item) => (
-            <div key={item.label} className="rounded-[0.6rem] ipb-soft px-2 py-2 text-center">
+            <div key={item.label} className="rounded-[0.6rem] bs-soft px-2 py-2 text-center">
               <p className="text-[10px] font-semibold text-white/90">{item.label}</p>
               <p className="text-[9px] leading-relaxed text-white/60">{item.desc}</p>
             </div>
@@ -240,7 +240,7 @@ function SustentabilidadeCard() {
       </div>
 
       {/* Sustentabilidade Digital */}
-      <div className="mt-3 rounded-[0.8rem] ipb-soft px-3 py-3">
+      <div className="mt-3 rounded-[0.8rem] bs-soft px-3 py-3">
         <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/75">Sustentabilidade Digital & ESG</p>
         <div className="grid grid-cols-2 gap-1.5">
           {[
@@ -249,7 +249,7 @@ function SustentabilidadeCard() {
             { label: 'Antigreenwashing', desc: 'Sem selos sem evidência. O SEA só declara práticas sustentáveis que são verificáveis no código, na arquitetura ou nos processos.' },
             { label: 'ESG como produto', desc: 'Sustentabilidade não é relatório — é funcionalidade. Zero papel, menos IRAS, menos tempo de VM = impacto ESG no desfecho do paciente.' },
           ].map((item) => (
-            <div key={item.label} className="rounded-[0.6rem] ipb-soft px-2 py-2">
+            <div key={item.label} className="rounded-[0.6rem] bs-soft px-2 py-2">
               <p className="text-[10px] font-semibold text-white/90">{item.label}</p>
               <p className="mt-1 text-[9px] leading-relaxed text-white/55">{item.desc}</p>
             </div>
@@ -262,7 +262,7 @@ function SustentabilidadeCard() {
 
 const GOV_CONTENT: Record<string, { title: string; sections: { heading: string; items: string[] }[] }> = {
   missao: {
-    title: 'Missão, Visão e Valores — IPB',
+    title: 'Missão, Visão e Valores — BS',
     sections: [
       {
         heading: 'Missão',
@@ -303,15 +303,15 @@ const GOV_CONTENT: Record<string, { title: string; sections: { heading: string; 
     ],
   },
   cookies: {
-    title: 'Política de Cookies — IPB',
+    title: 'Política de Cookies — BS',
     sections: [
       {
         heading: 'O que são Cookies',
         items: [
           'Cookies são pequenos arquivos de texto armazenados no seu dispositivo quando você acessa uma plataforma digital',
           'Eles permitem que o sistema reconheça o seu dispositivo em acessos futuros e melhore a experiência de uso',
-          'O IPB utiliza cookies de forma mínima, respeitando o princípio de privacidade desde a concepção (privacy by design)',
-          'Nenhum cookie do IPB contém dados pessoais de pacientes ou informações clínicas identificáveis',
+          'O BS utiliza cookies de forma mínima, respeitando o princípio de privacidade desde a concepção (privacy by design)',
+          'Nenhum cookie do Business Syllabus contém dados pessoais de pacientes ou informações clínicas identificáveis',
         ],
       },
       {
@@ -321,7 +321,7 @@ const GOV_CONTENT: Record<string, { title: string; sections: { heading: string; 
           'Cookies de autenticação: gerados pelo Supabase Auth para manter o login seguro; expiram automaticamente após o logout ou inatividade prolongada',
           'Cookies de preferências: armazenam configurações locais como tema, idioma e preferências de exibição',
           'Cookies analíticos: coletam dados de uso de forma anônima e agregada para melhoria do produto — nenhum dado é vinculado à identidade do usuário',
-          'O IPB NÃO utiliza cookies de publicidade, rastreamento cross-site ou perfilamento comportamental',
+          'O BS NÃO utiliza cookies de publicidade, rastreamento cross-site ou perfilamento comportamental',
         ],
       },
       {
@@ -339,7 +339,7 @@ const GOV_CONTENT: Record<string, { title: string; sections: { heading: string; 
           'Você pode aceitar, recusar ou personalizar os cookies no banner exibido no primeiro acesso à plataforma',
           'A qualquer momento, acesse as configurações do seu navegador para gerenciar ou excluir cookies armazenados',
           'A desativação de cookies essenciais pode impedir o funcionamento correto da plataforma',
-          'Para limpar todos os dados locais do IPB, acesse Perfil → Excluir minha conta ou limpe o localStorage pelo navegador',
+          'Para limpar todos os dados locais do Business Syllabus, acesse Perfil → Excluir minha conta ou limpe o localStorage pelo navegador',
           'Suporte para dúvidas sobre cookies: erbusiness0422@gmail.com',
         ],
       },
@@ -348,7 +348,7 @@ const GOV_CONTENT: Record<string, { title: string; sections: { heading: string; 
         items: [
           'Cookies de sessão são excluídos automaticamente ao fechar o navegador',
           'Cookies persistentes têm validade máxima de 12 meses',
-          'O IPB utiliza Supabase (infraestrutura de autenticação) que pode definir cookies técnicos próprios — sujeitos à política de privacidade da Supabase Inc.',
+          'O BS utiliza Supabase (infraestrutura de autenticação) que pode definir cookies técnicos próprios — sujeitos à política de privacidade da Supabase Inc.',
           'Não utilizamos Google Analytics, Meta Pixel, ou qualquer outro tracker de terceiros para fins publicitários',
         ],
       },
@@ -360,16 +360,16 @@ const GOV_CONTENT: Record<string, { title: string; sections: { heading: string; 
       {
         heading: 'Quem é o DPO',
         items: [
-          'O Encarregado de Proteção de Dados (DPO — Data Protection Officer) é a pessoa responsável por garantir que o IPB trate os dados pessoais de forma ética, legal e transparente',
-          'Designado conforme o Art. 41 da LGPD (Lei nº 13.709/2018), o DPO atua como canal oficial entre o IPB, os titulares de dados e a Autoridade Nacional de Proteção de Dados (ANPD)',
+          'O Encarregado de Proteção de Dados (DPO — Data Protection Officer) é a pessoa responsável por garantir que o Business Syllabus trate os dados pessoais de forma ética, legal e transparente',
+          'Designado conforme o Art. 41 da LGPD (Lei nº 13.709/2018), o DPO atua como canal oficial entre o Business Syllabus, os titulares de dados e a Autoridade Nacional de Proteção de Dados (ANPD)',
           'DPO responsável: Edmara Rocha',
-          'Cargo: Fundadora e Responsável pela Proteção de Dados — IPB',
+          'Cargo: Fundadora e Responsável pela Proteção de Dados — BS',
         ],
       },
       {
         heading: 'Como Contatar o DPO',
         items: [
-          'E-mail oficial: erbusiness0422@gmail.com — assunto: "DPO IPB"',
+          'E-mail oficial: erbusiness0422@gmail.com — assunto: "DPO Business Syllabus"',
           'Prazo de resposta: até 5 dias úteis para solicitações gerais; até 15 dias para exercício de direitos previstos na LGPD',
           'O canal de contato com o DPO é independente do suporte técnico — utilize-o exclusivamente para questões relacionadas à privacidade e proteção de dados',
           'Em caso de não resposta dentro do prazo, o titular pode contatar diretamente a ANPD: www.gov.br/anpd',
@@ -403,7 +403,7 @@ const GOV_CONTENT: Record<string, { title: string; sections: { heading: string; 
     ],
   },
   politicas: {
-    title: 'Políticas IPB',
+    title: 'Políticas Business Syllabus',
     sections: [
       {
         heading: '4 Pilares da Governança Digital SEA',
@@ -417,7 +417,7 @@ const GOV_CONTENT: Record<string, { title: string; sections: { heading: string; 
       {
         heading: 'Política de Privacidade e Proteção de Dados (LGPD)',
         items: [
-          'Lei nº 13.709/2018 (LGPD) — O IPB opera sob o princípio de minimização de dados. Nenhum dado pessoal identificável (PII) de pacientes é coletado, armazenado ou transmitido a servidores externos',
+          'Lei nº 13.709/2018 (LGPD) — O BS opera sob o princípio de minimização de dados. Nenhum dado pessoal identificável (PII) de pacientes é coletado, armazenado ou transmitido a servidores externos',
           'Os dados clínicos inseridos no prontuário permanecem exclusivamente no dispositivo do profissional (localStorage sandboxed do navegador/app)',
           'O prontuário SEA é classificado como ferramenta de apoio ao raciocínio clínico pessoal — não é Prontuário Eletrônico do Paciente (PEP) conforme Resolução CFM nº 1.638/2002',
           'A sincronização opcional via Supabase utiliza identificadores anônimos (UUID), sem vinculação a dados pessoais',
@@ -473,7 +473,7 @@ const GOV_CONTENT: Record<string, { title: string; sections: { heading: string; 
     ],
   },
   praticas: {
-    title: 'Práticas IPB',
+    title: 'Práticas Business Syllabus',
     sections: [
       {
         heading: 'Práticas de Segurança do Paciente',
@@ -536,12 +536,12 @@ const GOV_CONTENT: Record<string, { title: string; sections: { heading: string; 
     ],
   },
   termos: {
-    title: 'Termos de Uso — IPB',
+    title: 'Termos de Uso — Business Syllabus',
     sections: [
       {
         heading: 'Aceitação e Elegibilidade',
         items: [
-          'Ao acessar ou utilizar o IPB, o usuário declara ter lido, compreendido e aceito integralmente estes Termos de Uso',
+          'Ao acessar ou utilizar o Business Syllabus, o usuário declara ter lido, compreendido e aceito integralmente estes Termos de Uso',
           'O uso da plataforma é destinado exclusivamente a profissionais de saúde habilitados (fisioterapeutas, médicos, enfermeiros e estudantes supervisionados) e a fins educacionais e de apoio clínico',
           'É vedado o uso por menores de 18 anos sem supervisão de responsável legal profissional',
           'O aceite pode ser revogado a qualquer momento mediante exclusão da conta, cessando todos os direitos de uso',
@@ -551,7 +551,7 @@ const GOV_CONTENT: Record<string, { title: string; sections: { heading: string; 
       {
         heading: 'Licença de Uso e Restrições',
         items: [
-          'O IPB concede ao usuário uma licença pessoal, intransferível, não exclusiva e revogável para uso da plataforma',
+          'O BS concede ao usuário uma licença pessoal, intransferível, não exclusiva e revogável para uso da plataforma',
           'É proibido copiar, modificar, distribuir, vender, sublicenciar ou criar obras derivadas sem autorização expressa por escrito',
           'O usuário não pode realizar engenharia reversa, descompilar ou desmontar qualquer componente da plataforma',
           'É vedado o uso de bots, scrapers, crawlers ou qualquer mecanismo automatizado de acesso não autorizado',
@@ -562,24 +562,24 @@ const GOV_CONTENT: Record<string, { title: string; sections: { heading: string; 
       {
         heading: 'Limitações de Responsabilidade',
         items: [
-          'O IPB é uma ferramenta de apoio ao raciocínio clínico e educação — não substitui julgamento clínico profissional, diagnóstico médico ou prescrição terapêutica',
+          'O BS é uma ferramenta de apoio ao raciocínio clínico e educação — não substitui julgamento clínico profissional, diagnóstico médico ou prescrição terapêutica',
           'As decisões clínicas são de responsabilidade exclusiva do profissional habilitado que utiliza a plataforma',
-          'O IPB não se responsabiliza por danos decorrentes do uso inadequado das informações apresentadas fora do contexto clínico correto',
+          'O BS não se responsabiliza por danos decorrentes do uso inadequado das informações apresentadas fora do contexto clínico correto',
           'Cálculos e alertas automáticos são baseados em literatura científica validada, mas devem ser interpretados em conjunto com o quadro clínico completo do paciente',
           'A plataforma pode apresentar indisponibilidade temporária por manutenção, atualizações ou falhas de infraestrutura de terceiros',
-          'O IPB não garante que a plataforma estará livre de erros, vírus ou outros componentes prejudiciais',
+          'O BS não garante que a plataforma estará livre de erros, vírus ou outros componentes prejudiciais',
           'A responsabilidade total da empresa, em qualquer hipótese, é limitada ao valor pago pelo usuário nos últimos 12 meses',
         ],
       },
       {
         heading: 'Propriedade Intelectual e Conteúdo',
         items: [
-          'Todo o conteúdo da plataforma — textos, algoritmos, simulações 3D, protocolos, calculadoras e interface — é propriedade exclusiva do IPB, protegido pela Lei nº 9.610/1998 (Lei de Direitos Autorais)',
+          'Todo o conteúdo da plataforma — textos, algoritmos, simulações 3D, protocolos, calculadoras e interface — é propriedade exclusiva do Business Syllabus, protegido pela Lei nº 9.610/1998 (Lei de Direitos Autorais)',
           'O conteúdo educacional é desenvolvido por fisioterapeutas especialistas e revisado com base em guidelines internacionais',
           'O usuário pode utilizar o conteúdo exclusivamente para fins de aprendizado pessoal e aplicação clínica individual',
           'Capturas de tela, reprodução parcial ou total do conteúdo para publicação em redes sociais, cursos ou materiais de terceiros requer autorização prévia',
           'Feedbacks, sugestões e denúncias enviadas pelo usuário podem ser utilizados para melhoria da plataforma sem obrigação de compensação',
-          'Marcas, logotipos e identidade visual do IPB são protegidos e não podem ser utilizados sem licença expressa',
+          'Marcas, logotipos e identidade visual do Business Syllabus são protegidos e não podem ser utilizados sem licença expressa',
         ],
       },
       {
@@ -589,7 +589,7 @@ const GOV_CONTENT: Record<string, { title: string; sections: { heading: string; 
           'Dados clínicos inseridos no prontuário SEA permanecem no dispositivo do usuário e não são transmitidos a servidores externos',
           'O usuário é responsável pela segurança de suas credenciais de acesso (e-mail e senha)',
           'Em caso de suspeita de acesso não autorizado, o usuário deve alterar imediatamente a senha e notificar o suporte',
-          'O IPB adota criptografia TLS 1.3 em todas as comunicações e armazenamento local sandboxed',
+          'O BS adota criptografia TLS 1.3 em todas as comunicações e armazenamento local sandboxed',
           'Dados de uso anônimos (métricas de acesso, NPS) podem ser coletados para melhoria contínua, sem identificação pessoal',
         ],
       },
@@ -597,10 +597,10 @@ const GOV_CONTENT: Record<string, { title: string; sections: { heading: string; 
         heading: 'Vigência, Alterações e Rescisão',
         items: [
           'Estes Termos entram em vigor no momento do primeiro acesso e permanecem válidos enquanto a conta estiver ativa',
-          'O IPB pode atualizar estes Termos a qualquer momento, com notificação prévia de 15 dias por e-mail ou aviso na plataforma',
+          'O BS pode atualizar estes Termos a qualquer momento, com notificação prévia de 15 dias por e-mail ou aviso na plataforma',
           'A continuidade do uso após notificação implica aceitação automática dos novos Termos',
           'O usuário pode rescindir o contrato a qualquer momento excluindo sua conta — os dados são removidos permanentemente em até 30 dias',
-          'O IPB pode suspender ou encerrar contas que violem estes Termos, sem aviso prévio em casos de violação grave',
+          'O BS pode suspender ou encerrar contas que violem estes Termos, sem aviso prévio em casos de violação grave',
           'Foro: fica eleito o foro da Comarca de São Paulo/SP para resolução de disputas, com preferência por mediação extrajudicial',
           'Dúvidas sobre estes Termos: erbusiness0422@gmail.com — resposta em até 5 dias úteis',
         ],
@@ -608,7 +608,7 @@ const GOV_CONTENT: Record<string, { title: string; sections: { heading: string; 
     ],
   },
   compliance: {
-    title: 'Compliance IPB',
+    title: 'Compliance Business Syllabus',
     sections: [
       {
         heading: 'Conformidade com Legislação Brasileira',
@@ -729,7 +729,7 @@ function CombinedStatsCard({
   isActive: boolean
 }) {
   return (
-    <div className="ipb-soft w-full rounded-[1.4rem] p-4 md:p-5">
+    <div className="bs-soft w-full rounded-[1.4rem] p-4 md:p-5">
       {/* Seção 1 — Impacto SEA */}
       <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/75">
         Impacto SEA
@@ -776,7 +776,7 @@ function CombinedStatsCard({
               else if (item.label === 'Missão e Valores') onGovOpen('missao')
               else if (item.label === 'DPO') onGovOpen('dpo')
             }}
-            className="flex items-center gap-2 rounded-[1rem] ipb-soft px-3 py-2.5 text-left transition-all hover:bg-white/[0.08] hover:border-white/20 disabled:cursor-default disabled:hover:bg-transparent"
+            className="flex items-center gap-2 rounded-[1rem] bs-soft px-3 py-2.5 text-left transition-all hover:bg-white/[0.08] hover:border-white/20 disabled:cursor-default disabled:hover:bg-transparent"
           >
             <item.icon className="h-4 w-4 shrink-0 text-white/80" />
             <span className="text-[10px] font-medium tracking-wider text-white/90">{item.label}</span>
@@ -790,7 +790,7 @@ function CombinedStatsCard({
 // Card de stat reutilizável (NPS, Avaliações, Feedbacks)
 function StatBox({ value, label }: { value: string | number; label: string }) {
   return (
-    <div className="rounded-[0.8rem] ipb-soft px-2 py-3 text-center transition-colors hover:bg-white/[0.06]">
+    <div className="rounded-[0.8rem] bs-soft px-2 py-3 text-center transition-colors hover:bg-white/[0.06]">
       <p className="text-2xl font-bold tabular-nums text-white/95">{value}</p>
       <p className="mt-1 text-[10px] font-medium text-white/75">{label}</p>
     </div>
@@ -799,7 +799,7 @@ function StatBox({ value, label }: { value: string | number; label: string }) {
 
 function MiniImpact({ icon: Icon, value, label }: { icon: typeof Leaf; value: number; label: string }) {
   return (
-    <div className="rounded-[0.7rem] ipb-soft px-2 py-2.5 text-center">
+    <div className="rounded-[0.7rem] bs-soft px-2 py-2.5 text-center">
       <Icon className="mx-auto mb-1 h-4 w-4 text-white/75" />
       <p className="text-lg font-bold tabular-nums text-white/95">{value}</p>
       <p className="text-[9px] font-medium uppercase tracking-wider text-white/70">{label}</p>

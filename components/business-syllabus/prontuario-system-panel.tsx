@@ -136,19 +136,19 @@ const FONT_SIZE = '10px'
 const INPUT_STYLE = { fontSize: FONT_SIZE } as const
 
 const INPUT_CLASS =
-  'w-full rounded-[0.6rem] ipb-soft px-1.5 py-1 text-[10px] tabular-nums text-white outline-none transition-all placeholder:text-white/22 focus:border-white/18'
+  'w-full rounded-[0.6rem] bs-soft px-1.5 py-1 text-[10px] tabular-nums text-white outline-none transition-all placeholder:text-white/22 focus:border-white/18'
 
 const INPUT_CLASS_SM =
-  'w-full rounded-[0.5rem] ipb-soft px-1 py-0.5 text-[10px] tabular-nums text-white outline-none transition-all placeholder:text-white/20 focus:border-white/18'
+  'w-full rounded-[0.5rem] bs-soft px-1 py-0.5 text-[10px] tabular-nums text-white outline-none transition-all placeholder:text-white/20 focus:border-white/18'
 
 const INPUT_CLASS_LAB =
-  'w-full rounded-[0.4rem] ipb-soft px-1 py-0.5 text-[10px] tabular-nums text-white outline-none transition-all placeholder:text-white/25 focus:border-white/18'
+  'w-full rounded-[0.4rem] bs-soft px-1 py-0.5 text-[10px] tabular-nums text-white outline-none transition-all placeholder:text-white/25 focus:border-white/18'
 const INPUT_FLEX =
-  'rounded-[0.5rem] ipb-soft px-1 py-0.5 text-[10px] tabular-nums text-white outline-none transition-all placeholder:text-white/20 focus:border-white/18'
+  'rounded-[0.5rem] bs-soft px-1 py-0.5 text-[10px] tabular-nums text-white outline-none transition-all placeholder:text-white/20 focus:border-white/18'
 
 const TEXTAREA_CLASS = `${INPUT_CLASS} min-h-[2.5rem] resize-none`
 const AUTO_TEXTAREA_CLASS =
-  'w-full rounded-[0.6rem] ipb-soft px-1.5 py-1 text-[10px] tabular-nums text-white outline-none transition-all placeholder:text-white/22 focus:border-white/18 resize-none overflow-hidden min-h-[1.4rem]'
+  'w-full rounded-[0.6rem] bs-soft px-1.5 py-1 text-[10px] tabular-nums text-white outline-none transition-all placeholder:text-white/22 focus:border-white/18 resize-none overflow-hidden min-h-[1.4rem]'
 
 const STATUS_OPTIONS = [
   ['', '--'],
@@ -2536,7 +2536,7 @@ function ScanLightbox({ data, onClose }: { data: LightboxPayload | null; onClose
       if (!result) return
       const imgFile = new File([result.blob], 'regua-tot.jpg', { type: 'image/jpeg' })
       if (navigator.share && navigator.canShare?.({ files: [imgFile] })) {
-        await navigator.share({ files: [imgFile], title: 'Régua TOT — IPB' })
+        await navigator.share({ files: [imgFile], title: 'Régua TOT — BS' })
       } else {
         const url = URL.createObjectURL(result.blob)
         const a = document.createElement('a'); a.href = url; a.download = 'regua-tot.jpg'; a.click()
@@ -4452,10 +4452,10 @@ export function ProntuarioSystemPanel() {
     options: readonly string[],
     icon: string,
   ) => (
-    <div className="rounded-[0.75rem] ipb-soft p-1.5">
+    <div className="rounded-[0.75rem] bs-soft p-1.5">
       <p className="mb-1 text-[7px] font-semibold uppercase tracking-[0.12em] text-white/40">{icon} {label}</p>
       <select
-        className="w-full rounded-[0.4rem] ipb-soft px-1 py-0.5 text-[8px] text-white outline-none"
+        className="w-full rounded-[0.4rem] bs-soft px-1 py-0.5 text-[8px] text-white outline-none"
         defaultValue=""
         onChange={(event) => {
           toggleStringArrayField(field, event.target.value)
@@ -5766,7 +5766,7 @@ export function ProntuarioSystemPanel() {
             <div className="space-y-1">
               <p className="text-[8px] text-white/48">Código deste dispositivo — copie e cole no outro aparelho para usar os mesmos dados:</p>
               <div className="flex items-center gap-2">
-                <code className="flex-1 truncate rounded-[0.6rem] ipb-soft px-2.5 py-1.5 text-[10px] text-[#60a5fa] font-mono">
+                <code className="flex-1 truncate rounded-[0.6rem] bs-soft px-2.5 py-1.5 text-[10px] text-[#60a5fa] font-mono">
                   {typeof window !== 'undefined' ? (localStorage.getItem('sea-session-id') ?? '—') : '—'}
                 </code>
                 <button
@@ -5793,7 +5793,7 @@ export function ProntuarioSystemPanel() {
                   value={syncCodeInput}
                   onChange={e => setSyncCodeInput(e.target.value)}
                   placeholder="Cole o código aqui..."
-                  className="flex-1 rounded-[0.6rem] ipb-soft px-2.5 py-1.5 text-[10px] text-white placeholder:text-white/28 outline-none focus:border-white/20"
+                  className="flex-1 rounded-[0.6rem] bs-soft px-2.5 py-1.5 text-[10px] text-white placeholder:text-white/28 outline-none focus:border-white/20"
                 />
                 <button
                   onClick={importSession}
@@ -6188,7 +6188,7 @@ export function ProntuarioSystemPanel() {
                       <div className="space-y-1.5">
                         {currentRecord.examesLabList?.length ? (
                           currentRecord.examesLabList.map((exam, index) => (
-                            <div key={`lab-${index}`} className="rounded-[0.7rem] ipb-soft p-1.5">
+                            <div key={`lab-${index}`} className="rounded-[0.7rem] bs-soft p-1.5">
                               <div className="mb-1 flex items-center gap-1">
                                 <input
                                   className={`${INPUT_CLASS_SM} w-32`}
@@ -6283,7 +6283,7 @@ export function ProntuarioSystemPanel() {
                             const m = exam.measurements
                             const isSeletiva = m?.seletiva
                             return (
-                              <div key={`img-${index}`} className="space-y-1 rounded-[0.7rem] ipb-soft p-1.5">
+                              <div key={`img-${index}`} className="space-y-1 rounded-[0.7rem] bs-soft p-1.5">
                                 {/* linha 1: data · tipo · scan · apagar */}
                                 <div className="flex items-center gap-1.5">
                                   <input
@@ -6658,7 +6658,7 @@ export function ProntuarioSystemPanel() {
                             ? { trend: 'desligado' as const, label: 'SEDATIVO SUSPENSO', color: '#22d3ee', indica: `Suspenso em ${formatDateTime(item.suspensao!)}. Monitorar RASS, CAM-ICU, drive respiratorio.`, evolucao: 'Avaliar delirium de abstinencia. Se agitacao: tratar causa antes de reintroduzir.' }
                             : analiseSedativo(item.inicio, item.atual)
                           return (
-                          <div key={`sed-${index}`} className="rounded-[0.7rem] ipb-soft p-1.5" style={isSuspended ? { opacity: 0.6 } : undefined}>
+                          <div key={`sed-${index}`} className="rounded-[0.7rem] bs-soft p-1.5" style={isSuspended ? { opacity: 0.6 } : undefined}>
                             <div className="grid gap-1 grid-cols-2 sm:grid-cols-[1.3fr_1fr_1fr_1fr_auto]">
                               <FieldShell label="Droga">
                                 <select className={INPUT_CLASS_SM} style={INPUT_STYLE} value={item.droga} onChange={(event) => updateListItem('sedativos', index, 'droga', event.target.value)}>
@@ -6754,7 +6754,7 @@ export function ProntuarioSystemPanel() {
                             ? { trend: 'desligado' as const, label: 'BNM SUSPENSO', color: '#22d3ee', indica: `Suspenso em ${formatDateTime(item.suspensao!)}. Monitorar TOF, P0.1, drive respiratorio, forca muscular.`, evolucao: 'Avaliar MRC, ICUAW. Iniciar mobilizacao precoce.' }
                             : analiseBNM(item.inicio, item.atual)
                           return (
-                          <div key={`bnm-${index}`} className="rounded-[0.7rem] ipb-soft p-1.5" style={isSuspended ? { opacity: 0.6 } : undefined}>
+                          <div key={`bnm-${index}`} className="rounded-[0.7rem] bs-soft p-1.5" style={isSuspended ? { opacity: 0.6 } : undefined}>
                             <div className="grid gap-1 grid-cols-2 sm:grid-cols-[1.3fr_1fr_1fr_1fr_auto]">
                               <FieldShell label="Droga">
                                 <select className={INPUT_CLASS_SM} style={INPUT_STYLE} value={item.droga} onChange={(event) => updateListItem('bnmList', index, 'droga', event.target.value)}>
@@ -6868,7 +6868,7 @@ export function ProntuarioSystemPanel() {
                           ? { trend: 'desligado' as const, label: 'DVA SUSPENSA', color: '#22d3ee', indica: `Suspensa em ${formatDateTime(item.suspensao!)}. Monitorar PAM, FC, lactato e perfusao nas proximas 6-12h.`, evolucao: 'Se hipotensao: reavaliar volemia e reintroduzir DVA.' }
                           : analiseDVA(item.inicio, item.dose, item.droga, item.dobrada)
                         return (
-                        <div key={`dva-${index}`} className="rounded-[0.7rem] ipb-soft p-1.5" style={isSuspended ? { opacity: 0.6 } : undefined}>
+                        <div key={`dva-${index}`} className="rounded-[0.7rem] bs-soft p-1.5" style={isSuspended ? { opacity: 0.6 } : undefined}>
                           <div className="grid gap-1 grid-cols-2 md:grid-cols-[1.3fr_1fr_1fr_1fr_auto]">
                             <FieldShell label="Droga" span="col-span-2 md:col-span-1">
                               <select className={INPUT_CLASS_SM} style={INPUT_STYLE} value={item.droga} onChange={(event) => updateListItem('dvaList', index, 'droga', event.target.value)}>
@@ -7192,7 +7192,7 @@ export function ProntuarioSystemPanel() {
                     <div className="w-[55%]">
                       <p className="mb-1 text-[8px] font-semibold uppercase tracking-[0.12em] text-white/48">Data</p>
                       <input
-                        className="w-full rounded-[0.5rem] ipb-soft px-1.5 py-1 text-[10px] text-white outline-none placeholder:text-white/30"
+                        className="w-full rounded-[0.5rem] bs-soft px-1.5 py-1 text-[10px] text-white outline-none placeholder:text-white/30"
                         type="text"
                         placeholder="dd/mm/aa"
                         value={currentRecord.gasoData}
@@ -7202,7 +7202,7 @@ export function ProntuarioSystemPanel() {
                     <div className="w-[45%]">
                       <p className="mb-1 text-[8px] font-semibold uppercase tracking-[0.12em] text-white/48">Hora</p>
                       <input
-                        className="w-full rounded-[0.5rem] ipb-soft px-1.5 py-1 text-[10px] text-white outline-none placeholder:text-white/30"
+                        className="w-full rounded-[0.5rem] bs-soft px-1.5 py-1 text-[10px] text-white outline-none placeholder:text-white/30"
                         type="text"
                         placeholder="hh:mm"
                         value={currentRecord.gasoHora}
@@ -7429,7 +7429,7 @@ export function ProntuarioSystemPanel() {
                       const insights = analyzeGasoTrend(currentRecord.gasometrias)
                       if (!insights.length) return null
                       return (
-                        <div className="mb-3 rounded-[1rem] ipb-soft p-3 space-y-1">
+                        <div className="mb-3 rounded-[1rem] bs-soft p-3 space-y-1">
                           <p className="text-[8px] font-semibold uppercase tracking-[0.14em] text-white/36 mb-1.5">Evolução gasométrica</p>
                           {insights.map((ins, i) => (
                             <p key={i} className="text-[8px] leading-snug" style={{ color: ins.color }}>{ins.text}</p>
@@ -7439,7 +7439,7 @@ export function ProntuarioSystemPanel() {
                     })()}
                     <div className="space-y-2">
                       {currentRecord.gasometrias.map((entry, index) => (
-                        <div key={`${entry.ts}-${index}`} className="rounded-[1rem] ipb-soft p-3">
+                        <div key={`${entry.ts}-${index}`} className="rounded-[1rem] bs-soft p-3">
                           <div className="flex items-start justify-between gap-2">
                             <div className="min-w-0 flex-1">
                               <p className="text-[8px] font-semibold text-white/86">
@@ -8247,7 +8247,7 @@ export function ProntuarioSystemPanel() {
                       const insights = analyzeVMTrend(currentRecord.vmHist)
                       if (!insights.length) return null
                       return (
-                        <div className="mb-3 rounded-[1rem] ipb-soft p-3 space-y-1">
+                        <div className="mb-3 rounded-[1rem] bs-soft p-3 space-y-1">
                           <p className="text-[8px] font-semibold uppercase tracking-[0.14em] text-white/36 mb-1.5">Evolução ventilatória</p>
                           {insights.map((ins, i) => (
                             <p key={i} className="text-[8px] leading-snug" style={{ color: ins.color }}>{ins.text}</p>
@@ -8292,7 +8292,7 @@ export function ProntuarioSystemPanel() {
                         if (entry.pf) { const v = parseFloat(entry.pf); calcs.push({ label: 'P/F', value: entry.pf, color: v < 100 ? '#f87171' : v < 200 ? '#fb923c' : v < 300 ? '#facc15' : '#4ade80' }) }
 
                         return (
-                          <div key={`${entry.ts}-${index}`} className="rounded-[1rem] ipb-soft p-3">
+                          <div key={`${entry.ts}-${index}`} className="rounded-[1rem] bs-soft p-3">
                             <div className="flex items-start justify-between gap-2">
                               <div className="min-w-0 flex-1">
                                 <p className="text-[8px] font-semibold text-white/86">
@@ -8343,7 +8343,7 @@ export function ProntuarioSystemPanel() {
                     <>
                       <div className="mt-1.5 grid gap-1 xl:grid-cols-3">
                         {peepRows.map((row, index) => (
-                          <div key={`peep-row-${index}`} className="rounded-[0.7rem] ipb-soft p-1.5">
+                          <div key={`peep-row-${index}`} className="rounded-[0.7rem] bs-soft p-1.5">
                             <div className="mb-1 flex items-center justify-between">
                               <p className="text-[7px] font-semibold uppercase tracking-[0.14em] text-white/36">Nivel {index + 1}</p>
                               <button
@@ -8496,7 +8496,7 @@ export function ProntuarioSystemPanel() {
                       </div>
 
                       {/* Painel informativo com abas */}
-                      <div id="__desmame_info__" style={{ display: 'none' }} className="mt-1.5 rounded-[0.7rem] border ipb-soft overflow-hidden">
+                      <div id="__desmame_info__" style={{ display: 'none' }} className="mt-1.5 rounded-[0.7rem] border bs-soft overflow-hidden">
                           <div id="__desmame_info_content__">
                             {/* Tabs */}
                             <div className="scrollbar-hide flex overflow-x-auto border-b border-white/8">
@@ -8624,7 +8624,7 @@ export function ProntuarioSystemPanel() {
                           <p className="mb-1.5 text-[8px] font-semibold uppercase tracking-[0.18em] text-white/36">Historico · {currentRecord.desmHist.length}</p>
                           <div className="space-y-1.5">
                             {currentRecord.desmHist.map((entry, i) => (
-                              <div key={`desm-${i}`} className="rounded-[0.8rem] ipb-soft p-2.5">
+                              <div key={`desm-${i}`} className="rounded-[0.8rem] bs-soft p-2.5">
                                 <div className="flex items-start justify-between gap-2">
                                   <div className="min-w-0 flex-1">
                                     <p className="text-[8px] text-white/40">{formatDateTime(entry.ts)}</p>
@@ -8823,7 +8823,7 @@ export function ProntuarioSystemPanel() {
                       </div>
 
                       {/* Eligibility checklist */}
-                      <div className="mb-3 rounded-[1rem] ipb-soft p-2.5">
+                      <div className="mb-3 rounded-[1rem] bs-soft p-2.5">
                         <div className="mb-2 flex items-center justify-between">
                           <p className="text-[8px] font-semibold uppercase tracking-[0.16em] text-white/36">Elegibilidade automatica</p>
                           <span className="rounded-full border px-2 py-0.5 text-[8px] font-bold" style={{
@@ -8851,7 +8851,7 @@ export function ProntuarioSystemPanel() {
                       </div>
 
                       {/* Avaliação clínica — compacta */}
-                      <div className="mb-3 rounded-[0.8rem] ipb-soft p-2 space-y-1.5">
+                      <div className="mb-3 rounded-[0.8rem] bs-soft p-2 space-y-1.5">
                         <p className="text-[8px] font-semibold uppercase tracking-[0.14em] text-white/30">Avaliacao clinica</p>
 
                         <div className="flex flex-wrap gap-1">
@@ -9163,7 +9163,7 @@ export function ProntuarioSystemPanel() {
                         <div className="mt-2 space-y-1.5">
                           <p className="text-[7px] font-semibold uppercase tracking-[0.14em] text-white/36">Historico Prona</p>
                           {currentRecord.pronaHist.map((entry, i) => (
-                            <div key={`prona-${i}`} className="flex items-center justify-between gap-1 rounded-[0.5rem] ipb-soft px-1.5 py-1">
+                            <div key={`prona-${i}`} className="flex items-center justify-between gap-1 rounded-[0.5rem] bs-soft px-1.5 py-1">
                               <p className="text-[8px] text-white/50">
                                 {formatDateTime(entry.ts)} · {entry.tempo || '--'} · {entry.dataInicio || '--'} {entry.horaInicio || ''}
                               </p>
@@ -9381,7 +9381,7 @@ export function ProntuarioSystemPanel() {
                         const prev = currentRecord.mrcHist![i + 1]
                         const diff = prev != null ? entry.total - prev.total : null
                         return (
-                          <div key={`mrc-h-${i}`} className="flex items-center justify-between gap-2 rounded-[0.8rem] ipb-soft px-2.5 py-1.5">
+                          <div key={`mrc-h-${i}`} className="flex items-center justify-between gap-2 rounded-[0.8rem] bs-soft px-2.5 py-1.5">
                             <div className="flex items-center gap-2">
                               <span className="text-[8px] text-white/36">{formatDateTime(entry.ts)}</span>
                               <span className="rounded-full border px-1.5 py-0.5 text-[8px] font-bold" style={{ color: entry.total >= 48 ? '#4ade80' : entry.total >= 36 ? '#facc15' : '#f87171', borderColor: entry.total >= 48 ? '#4ade8030' : entry.total >= 36 ? '#facc1530' : '#f8717130', background: entry.total >= 48 ? '#4ade8010' : entry.total >= 36 ? '#facc1510' : '#f8717110' }}>
@@ -9437,7 +9437,7 @@ export function ProntuarioSystemPanel() {
                         const prev = currentRecord.permeHist![i + 1]
                         const diff = prev != null ? entry.total - prev.total : null
                         return (
-                          <div key={`perme-h-${i}`} className="flex items-center justify-between gap-2 rounded-[0.8rem] ipb-soft px-2.5 py-1.5">
+                          <div key={`perme-h-${i}`} className="flex items-center justify-between gap-2 rounded-[0.8rem] bs-soft px-2.5 py-1.5">
                             <div className="flex items-center gap-2">
                               <span className="text-[8px] text-white/36">{formatDateTime(entry.ts)}</span>
                               <span className="rounded-full border px-1.5 py-0.5 text-[8px] font-bold" style={{ color: entry.total >= 15 ? '#4ade80' : entry.total >= 8 ? '#facc15' : '#f87171', borderColor: entry.total >= 15 ? '#4ade8030' : entry.total >= 8 ? '#facc1530' : '#f8717130', background: entry.total >= 15 ? '#4ade8010' : entry.total >= 8 ? '#facc1510' : '#f8717110' }}>
@@ -9490,7 +9490,7 @@ export function ProntuarioSystemPanel() {
                         const score = parseInt(entry.score)
                         const diff = prev != null ? score - parseInt(prev.score) : null
                         return (
-                          <div key={`ims-h-${i}`} className="flex items-center justify-between gap-2 rounded-[0.8rem] ipb-soft px-2.5 py-1.5">
+                          <div key={`ims-h-${i}`} className="flex items-center justify-between gap-2 rounded-[0.8rem] bs-soft px-2.5 py-1.5">
                             <div className="flex items-center gap-2">
                               <span className="text-[8px] text-white/36">{formatDateTime(entry.ts)}</span>
                               <span className="rounded-full border px-1.5 py-0.5 text-[8px] font-bold" style={{ color: score >= 7 ? '#4ade80' : score >= 4 ? '#facc15' : '#f87171', borderColor: score >= 7 ? '#4ade8030' : score >= 4 ? '#facc1530' : '#f8717130', background: score >= 7 ? '#4ade8010' : score >= 4 ? '#facc1510' : '#f8717110' }}>
@@ -9760,14 +9760,14 @@ export function ProntuarioSystemPanel() {
                       <button
                         onClick={() => moveRecord(record.id, 'up')}
                         disabled={idx === 0}
-                        className="flex h-5 w-7 items-center justify-center rounded-[0.4rem] ipb-soft text-white/42 disabled:opacity-20 hover:text-white/70"
+                        className="flex h-5 w-7 items-center justify-center rounded-[0.4rem] bs-soft text-white/42 disabled:opacity-20 hover:text-white/70"
                       >
                         <span className="text-[8px] leading-none">↑</span>
                       </button>
                       <button
                         onClick={() => moveRecord(record.id, 'down')}
                         disabled={idx === records.length - 1}
-                        className="flex h-5 w-7 items-center justify-center rounded-[0.4rem] ipb-soft text-white/42 disabled:opacity-20 hover:text-white/70"
+                        className="flex h-5 w-7 items-center justify-center rounded-[0.4rem] bs-soft text-white/42 disabled:opacity-20 hover:text-white/70"
                       >
                         <span className="text-[8px] leading-none">↓</span>
                       </button>

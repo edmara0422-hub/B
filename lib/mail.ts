@@ -61,7 +61,7 @@ export async function sendMail({ to, subject, html }: MailOptions) {
       });
 
       const info = await transporter.sendMail({
-        from: `"IPB App" <${user}>`,
+        from: `"Business Syllabus App" <${user}>`,
         to,
         subject,
         html,

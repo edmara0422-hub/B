@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { Leaf, Star, Mail, MessageSquare, Send, CheckCircle2, Trash2 } from 'lucide-react'
 
-// Domínios de Transformação Digital baseados no IPB (David Rogers, Columbia Business School, 2016)
+// Domínios de Transformação Digital baseados no Business Syllabus (David Rogers, Columbia Business School, 2016)
 const ODS_DATA: Record<string, string> = {
   '3': '<b>Clientes & Redes:</b> Repensar as relações de mercado, transformando audiências passivas em redes dinâmicas de engajamento e valor mútuo.',
   '4': '<b>Capacitação e Cultura:</b> Oferecer simulações interativas corporativas com feedbacks matemáticos precisos para tomadas de decisão ágeis.',
@@ -12,7 +12,7 @@ const ODS_DATA: Record<string, string> = {
   '12': '<b>Consumo Responsável (Zero Papel):</b> Digital-first real. Menos arquivos em papel e otimização total de processos internos para eficiência absoluta de OPEX.'
 }
 
-// Governance Data for IPB Business
+// Governance Data for BS Business
 const GOV_DATA: Record<string, { title: string; body: string }> = {
   'politicas': {
     title: 'Políticas de Privacidade (LGPD)',
@@ -24,23 +24,23 @@ const GOV_DATA: Record<string, { title: string; body: string }> = {
   },
   'compliance': {
     title: 'Compliance & Auditoria Corporativa',
-    body: 'O IPB atende aos padrões rígidos de auditoria e transparência de dados. Nossas simulações de EBITDA, WACC e LTV/CAC utilizam fórmulas matemáticas financeiras consolidadas e auditadas para garantir total conformidade com práticas de mercado.'
+    body: 'O BS atende aos padrões rígidos de auditoria e transparência de dados. Nossas simulações de EBITDA, WACC e LTV/CAC utilizam fórmulas matemáticas financeiras consolidadas e auditadas para garantir total conformidade com práticas de mercado.'
   },
   'termos': {
     title: 'Termos de Uso Estratégico',
-    body: 'A plataforma IPB é licenciada para simulação estratégica e suporte à decisão gerencial. A utilização dos simuladores visa o aprimoramento cognitivo de diretores, fundadores e analistas, não substituindo pareceres contábeis e de auditorias formais.'
+    body: 'A plataforma BS é licenciada para simulação estratégica e suporte à decisão gerencial. A utilização dos simuladores visa o aprimoramento cognitivo de diretores, fundadores e analistas, não substituindo pareceres contábeis e de auditorias formais.'
   },
   'cookies': {
     title: 'Políticas de Cookies Limpas',
     body: 'Utilizamos apenas cookies essenciais para manter sua sessão ativa de progresso corporativo. Livre de cookies de rastreamento comportamental de terceiros e anúncios. Foco total em privacidade.'
   },
   'missao': {
-    title: 'Missão e Valores IPB',
+    title: 'Missão e Valores BS',
     body: 'Nossa missão é impulsionar a real Transformação Digital em empresas através de dados analíticos. Acreditamos que governança transparente, segurança de dados e crescimento saudável (LTV > 3x CAC) andam lado a lado.'
   },
   'dpo': {
     title: 'Data Protection Officer (DPO)',
-    body: 'Para esclarecimentos sobre a privacidade, governança de chaves de acesso ou exclusão imediata e definitiva do seu histórico de progresso, contate nosso DPO corporativo pelo e-mail: <b>dpo@ipb.com.br</b>.'
+    body: 'Para esclarecimentos sobre a privacidade, governança de chaves de acesso ou exclusão imediata e definitiva do seu histórico de progresso, contate nosso DPO corporativo pelo e-mail: <b>dpo@bs.com.br</b>.'
   }
 }
 
@@ -72,7 +72,7 @@ export function HudEsg() {
       const nowStr = new Date().toLocaleDateString('pt-BR')
       if (docType === 'ata') {
         setGeneratedDoc(
-`INTELLIGENCE PLATFORM BUSINESS (IPB)
+`BUSINESS SYLLABUS (BS)
 ATA DE ASSEMBLEIA GERAL EXTRAORDINÁRIA - ESG
 
 Data: ${nowStr}
@@ -83,14 +83,14 @@ Deliberações:
 2. Adoção integral do framework de governança de dados no client-side para conformidade irrestrita com a LGPD.
 3. Formalização da neutralidade de carbono operacional através do uso eficiente de banda de rede e offline-first.
 
-Presidente da Assembleia Geral IPB`
+Presidente da Assembleia Geral BS`
         )
       } else if (docType === 'termo') {
         setGeneratedDoc(
-`IPB - INTELLIGENCE PLATFORM BUSINESS
+`BS - BUSINESS SYLLABUS
 TERMO DE ADESÃO AO CÓDIGO DE CONDUTA E SEGURANÇA DE DADOS
 
-Eu, usuário e gestor da plataforma, declaro adesão formal aos termos de uso e conduta da plataforma IPB em ${nowStr}.
+Eu, usuário e gestor da plataforma, declaro adesão formal aos termos de uso e conduta da plataforma BS em ${nowStr}.
 Comprometo-me a utilizar os simuladores de WACC, EBITDA e métricas de LTV/CAC exclusivamente para fins estratégicos de desenvolvimento e treinamento corporativo, respeitando as normas éticas de governança de dados.
 
 Assinado digitalmente na data de adesão.`
@@ -98,15 +98,15 @@ Assinado digitalmente na data de adesão.`
       } else {
         setGeneratedDoc(
 `DECLARAÇÃO DE COMPLIANCE AMBIENTAL & ESG
-INTELLIGENCE PLATFORM BUSINESS (IPB)
+BUSINESS SYLLABUS (BS)
 
 Emitido em: ${nowStr}
-Certificamos que as práticas de engenharia de software do IPB atendem aos preceitos de sustentabilidade digital e Green IT:
+Certificamos que as práticas de engenharia de software do Business Syllabus atendem aos preceitos de sustentabilidade digital e Green IT:
 - Execução local (Client-Side) de cálculos de projeções reduzindo drasticamente requisições de servidores.
 - Interface otimizada que reduz a dissipação de energia nos dispositivos móveis dos tomadores de decisão.
 - Alinhamento estratégico total com a ODS 12 da ONU.
 
-Diretoria de Governança Corporativa IPB`
+Diretoria de Governança Corporativa BS`
         )
       }
     }, 1200)
@@ -144,7 +144,7 @@ Diretoria de Governança Corporativa IPB`
     e.preventDefault()
     if (!supportMessage.trim()) return
     setSupportSending(true)
-    const targetEmail = supportEmail || 'sem-email@ipb.app'
+    const targetEmail = supportEmail || 'sem-email@bs.app'
     setLastSubmittedEmail(targetEmail)
 
     try {
@@ -152,7 +152,7 @@ Diretoria de Governança Corporativa IPB`
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          name: 'Usuária IPB',
+          name: 'Usuária BS',
           email: targetEmail,
           message: supportMessage.trim()
         })
@@ -192,7 +192,7 @@ Diretoria de Governança Corporativa IPB`
           overflowY: 'auto',
           paddingRight: '6px'
         }}
-        className="ipb-esg-scroll ipb-thinscroll"
+        className="bs-esg-scroll bs-thinscroll"
       >
         <div className="hero-content" style={{ gridTemplateColumns: '1fr', paddingBottom: '0' }}>
           <div className="esg-dashboard-grid">
@@ -211,7 +211,7 @@ Diretoria de Governança Corporativa IPB`
                     <CheckCircle2 className="h-7 w-7 text-[#5dcaa5]" />
                     <span className="text-[11.5px] font-bold text-white uppercase tracking-wider">Agradecemos muito pelo seu feedback!</span>
                     <p className="text-[9.5px] text-white/60 leading-normal max-w-xs">
-                      Sua avaliação de satisfação foi processada com sucesso e integrada aos painéis analíticos do IPB.
+                      Sua avaliação de satisfação foi processada com sucesso e integrada aos painéis analíticos do Business Syllabus.
                     </p>
                     <button
                       onClick={() => setNpsSubmitted(false)}
@@ -223,7 +223,7 @@ Diretoria de Governança Corporativa IPB`
                 ) : (
                   <>
                     <p className="text-[10px] text-white/70 leading-relaxed mb-3">
-                      O quanto você recomendaria o aplicativo IPB para um sócio ou parceiro de negócios, de 0 a 10?
+                      O quanto você recomendaria o aplicativo Business Syllabus para um sócio ou parceiro de negócios, de 0 a 10?
                     </p>
 
                     <div className="esg-nps-widget">
@@ -294,7 +294,7 @@ Diretoria de Governança Corporativa IPB`
                     <div className="flex flex-col gap-1">
                       <label className="text-[8px] font-bold text-[#d2af5a] uppercase">Mensagem / Relatório de Problema</label>
                       <textarea
-                        placeholder="Descreva sua solicitação de ajuda ou suporte técnico do IPB..."
+                        placeholder="Descreva sua solicitação de ajuda ou suporte técnico do Business Syllabus..."
                         rows={3}
                         value={supportMessage}
                         onChange={(e) => setSupportMessage(e.target.value)}
@@ -348,7 +348,7 @@ Diretoria de Governança Corporativa IPB`
                 <h3>Gerador de Documentos Corporativos com IA</h3>
                 <div className="p-3 border border-[#d2af5a]/20 bg-[#d2af5a]/5 rounded-xl flex flex-col gap-2.5 mt-2">
                   <p className="text-[9px] text-white/60 leading-relaxed">
-                    Gere atas de assembleia, termos de conduta ou declarações de compliance em conformidade com as regras ESG do IPB automaticamente.
+                    Gere atas de assembleia, termos de conduta ou declarações de compliance em conformidade com as regras ESG do Business Syllabus automaticamente.
                   </p>
                   <div className="flex gap-2">
                     <select
@@ -369,7 +369,7 @@ Diretoria de Governança Corporativa IPB`
                     </button>
                   </div>
                   {generatedDoc && (
-                    <div className="bg-[#000000]/80 border border-white/10 rounded-lg p-3 max-h-[140px] overflow-y-auto ipb-thinscroll">
+                    <div className="bg-[#000000]/80 border border-white/10 rounded-lg p-3 max-h-[140px] overflow-y-auto bs-thinscroll">
                       <pre className="font-mono text-[8px] text-green-400 whitespace-pre-wrap leading-relaxed select-text text-left">
                         {generatedDoc}
                       </pre>
@@ -445,7 +445,7 @@ Diretoria de Governança Corporativa IPB`
                         <span className="text-white/35 font-mono text-[7px]">VERIFICADO 2026</span>
                       </div>
                       
-                      <p>A transformação digital e o processamento de business intelligence corporativo ocorrem sob um rigoroso e complexo arcabouço legal nacional. O IPB adota conformidade plena com as diretrizes da <b>Lei Geral de Proteção de Dados (LGPD, Lei 13.709/2018)</b> e a <b>Lei do Governo Digital (Lei 14.129/2021)</b>, que operam como os dois pilares jurídicos basilares de governança de dados no ecossistema brasileiro.</p>
+                      <p>A transformação digital e o processamento de business intelligence corporativo ocorrem sob um rigoroso e complexo arcabouço legal nacional. O BS adota conformidade plena com as diretrizes da <b>Lei Geral de Proteção de Dados (LGPD, Lei 13.709/2018)</b> e a <b>Lei do Governo Digital (Lei 14.129/2021)</b>, que operam como os dois pilares jurídicos basilares de governança de dados no ecossistema brasileiro.</p>
                       
                       <div className="space-y-2 pl-2 border-l border-[#d2af5a]/30">
                         <p><b>1. Política de Privacidade & Soberania Analítica:</b> Criptografia local de ponta e processamento 100% Client-Side. Todos os dados gerenciais inseridos nos simuladores permanecem restritos ao ambiente de execução do usuário, garantindo imunidade técnica contra monitoramento invasivo.</p>
@@ -476,7 +476,7 @@ Diretoria de Governança Corporativa IPB`
 
                       <div className="space-y-2 pl-2 border-l border-[#d2af5a]/30">
                         <p><b>1. Engenharia de Software Verde (Green IT):</b> Código otimizado client-side que roda cálculos matemáticos multivariáveis pesados localmente. Isso minimiza requisições HTTP e reduz a carga nos servidores centrais de nuvem, mitigando o aquecimento do hardware.</p>
-                        <p><b>2. Sustentabilidade Computacional Global:</b> Estima-se que data centers globais consumam entre <b>1% e 2% da eletricidade de todo o planeta</b> — uma pegada de carbono equivalente a toda a aviação comercial global. Uma única consulta robusta a uma Inteligência Artificial generativa gasta cerca de <b>10x mais energia elétrica</b> do que uma busca convencional no Google. O IPB combate esse desperdício mitigando requisições recorrentes.</p>
+                        <p><b>2. Sustentabilidade Computacional Global:</b> Estima-se que data centers globais consumam entre <b>1% e 2% da eletricidade de todo o planeta</b> — uma pegada de carbono equivalente a toda a aviação comercial global. Uma única consulta robusta a uma Inteligência Artificial generativa gasta cerca de <b>10x mais energia elétrica</b> do que uma busca convencional no Google. O BS combate esse desperdício mitigando requisições recorrentes.</p>
                         <p><b>3. Inclusão Analítica de PMEs:</b> Apenas 5% das micro e pequenas empresas no Brasil utilizam dados estruturados para tomadas de decisão gerenciais (CETIC.br). Projetamos um core otimizado e offline-first de suporte a dados para democratizar o acesso analítico mesmo em redes celulares brasileiras de baixa conectividade.</p>
                         <p><b>4. Eficiência de Layout e UX 6D:</b> Interfaces desenhadas com código limpo que renderizam a 120 FPS fluidos, poupando desgaste de ciclos de CPU e estendendo a vida útil de baterias de smartphones.</p>
                       </div>
@@ -500,7 +500,7 @@ Diretoria de Governança Corporativa IPB`
                       <div className="space-y-2 pl-2 border-l border-[#d2af5a]/30">
                         <p><b>1. Modelagem Contábil e de Mercado:</b> Métricas simuladas (EBITDA, Margem Líquida, WACC e Runway) calculadas por equações auditadas e amplamente aceitas em auditorias financeiras internacionais.</p>
                         <p><b>2. ISO 27001 (Padrão de Segurança de Código):</b> Desenvolvimento sob rígido controle de DevSecOps, eliminando injeções de scripts maliciosos e garantindo integridade e sigilo na comunicação com APIs externas.</p>
-                        <p><b>3. O Problema do ROI e IA Liability:</b> O maior obstáculo na inteligência de dados em 2025 não é o código — é a economia do ROI. A esmagadora maioria das corporações que implementaram ferramentas de IA (ChatGPT, Copilots, etc.) ainda enfrenta severas dificuldades para extrair e comprovar retornos de caixa claros de suas iniciativas (McKinsey, 2024). A responsabilidade civil e jurídica (<i>liability</i>) por decisões equivocadas ou injustas tomadas por algoritmos opacos é o maior buraco de conformidade corporativa de 2025. O IPB combate essa opacidade fornecendo observabilidade estrita.</p>
+                        <p><b>3. O Problema do ROI e IA Liability:</b> O maior obstáculo na inteligência de dados em 2025 não é o código — é a economia do ROI. A esmagadora maioria das corporações que implementaram ferramentas de IA (ChatGPT, Copilots, etc.) ainda enfrenta severas dificuldades para extrair e comprovar retornos de caixa claros de suas iniciativas (McKinsey, 2024). A responsabilidade civil e jurídica (<i>liability</i>) por decisões equivocadas ou injustas tomadas por algoritmos opacos é o maior buraco de conformidade corporativa de 2025. O BS combate essa opacidade fornecendo observabilidade estrita.</p>
                         <p><b>4. Auditoria Algorítmica & Rastreabilidade:</b> O código aberto do simulador garante que auditores externos possam inspecionar os cálculos de cross-correlação a qualquer momento, eliminando predições gerenciais infundadas.</p>
                       </div>
                     </div>
@@ -518,12 +518,12 @@ Diretoria de Governança Corporativa IPB`
                         <span className="text-white/35 font-mono text-[7px]">VERIFICADO 2026</span>
                       </div>
 
-                      <p>O IPB estabelece diretrizes éticas e morais rígidas para a utilização de dados no dia a dia corporativo, defendendo que a eficiência financeira jamais deve ser alcançada através da distorção ou do greenwashing.</p>
+                      <p>O BS estabelece diretrizes éticas e morais rígidas para a utilização de dados no dia a dia corporativo, defendendo que a eficiência financeira jamais deve ser alcançada através da distorção ou do greenwashing.</p>
 
                       <div className="space-y-2 pl-2 border-l border-[#d2af5a]/30">
                         <p><b>1. Código de Ética e Combate ao Greenwashing:</b> A tecnologia possui um papel duplo no ecossistema ESG. Pode atuar como um habilitador real da sustentabilidade (ex: sensores IoT reduzindo desperdício elétrico ou IA maximizando rotas logísticas), mas também pode ser utilizada pelas empresas para mascarar práticas predatórias atrás de narrativas verdes fictícias. Proibimos estritamente o uso de nossas simulações para justificar greenwashing perante reguladores ou conselhos.</p>
                         <p><b>2. Transparência na Tomada de Decisão:</b> Proibição expressa de ocultar de forma intencional métricas de atrito de capital humano (como Burnout EEB e Turnover), promovendo uma cultura organizacional baseada em dados reais e integridade executiva.</p>
-                        <p><b>3. Pacto de Neutralidade de Carbono:</b> Compromisso formal em manter o consumo computacional do IPB abaixo de limites rígidos, provando na prática que a eficiência algorítmica reduz custos operacionais (OPEX) e gera impacto ecológico positivo real.</p>
+                        <p><b>3. Pacto de Neutralidade de Carbono:</b> Compromisso formal em manter o consumo computacional do Business Syllabus abaixo de limites rígidos, provando na prática que a eficiência algorítmica reduz custos operacionais (OPEX) e gera impacto ecológico positivo real.</p>
                       </div>
                     </div>
                   </details>

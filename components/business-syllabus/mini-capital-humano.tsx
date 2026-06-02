@@ -8,14 +8,14 @@ export function MiniCapitalHumano() {
 
   useEffect(() => {
     const handleTelemetry = () => {
-      const telemetry = (window as any).IPBTelemetry
+      const telemetry = (window as any).BSTelemetry
       if (telemetry) {
         setPressaoMetas(telemetry.pressaoMetas ?? 5)
       }
     }
     handleTelemetry()
-    window.addEventListener('ipb-telemetry', handleTelemetry)
-    return () => window.removeEventListener('ipb-telemetry', handleTelemetry)
+    window.addEventListener('bs-telemetry', handleTelemetry)
+    return () => window.removeEventListener('bs-telemetry', handleTelemetry)
   }, [])
 
   const burnoutEEB = useMemo(() => {
@@ -61,7 +61,7 @@ export function MiniCapitalHumano() {
 
   const triggerMetricClick = (metricId: string) => {
     if (typeof window !== 'undefined') {
-      window.dispatchEvent(new CustomEvent('ipb-metric-click', { detail: { metricId } }))
+      window.dispatchEvent(new CustomEvent('bs-metric-click', { detail: { metricId } }))
     }
   }
 

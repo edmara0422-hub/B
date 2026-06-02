@@ -9,7 +9,7 @@ export async function GET() {
     'Taxa de atestados por estresse indicando curva de absenteísmo ascendente',
     'Pulse surveys respondido por 92% da equipe. Clima estável.',
     'Análise de Sentimentos NLP: Comentários positivos detectados em canais de Inovação e ESG.',
-    'IPB Engine: Telemetria operacional sincronizada via Cloud Computing Verde.',
+    'BS Engine: Telemetria operacional sincronizada via Cloud Computing Verde.',
     'Gemini BI: Alinhamento de WACC e EBITDA detectado como saudável.',
     'Alerta de Risco: Excesso de pressão de metas (Escala > 8) pode induzir burnout crônico.'
   ];

@@ -47,7 +47,7 @@ type Tab = 'home' | 'explore' | 'other'
 
 function pathToTab(p: string | null): Tab {
   const s = p?.replace(/\/$/, '') ?? ''
-  if (s === '/bs' || s === '/home' || s === '' || s === '/sea/index') return 'home'
+  if (s === '/bs' || s === '/home' || s === '' || s === '/bs/index') return 'home'
   if (s === '/explore') return 'explore'
   return 'other'
 }

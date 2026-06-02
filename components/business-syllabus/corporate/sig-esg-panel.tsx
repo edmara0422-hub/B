@@ -170,7 +170,7 @@ export function SigEsgPanel() {
   function handleAnalyze() {
     setAnalyzing(true)
     setTimeout(() => {
-      let recText = `🌱 <b>Análise Diagnóstica do IPBA ESG Advisor:</b> O seu score geral consolidado é de <b>${overallScore}/100</b>.`
+      let recText = `🌱 <b>Análise Diagnóstica do Business Syllabus ESG Advisor:</b> O seu score geral consolidado é de <b>${overallScore}/100</b>.`
       if (overallScore < 40) {
         recText += ` Sua operação está em nível de <b>Alta Exposição a Riscos Regulatórios e Reputacionais</b>. A falta de um canal de denúncias estruturado e de auditorias de cadeia de valor abre passivos consideráveis. Priorize criar um código de conduta básica e homologar o Canal de Denúncias no portal.`
       } else if (overallScore < 70) {

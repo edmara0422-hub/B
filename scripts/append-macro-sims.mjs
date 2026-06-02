@@ -1,6 +1,6 @@
 import fs from 'fs'
 
-const file = 'components/sea/simulations-6d.tsx'
+const file = 'components/business-syllabus/simulations-6d.tsx'
 let content = fs.readFileSync(file, 'utf8')
 
 const newSims = `

@@ -8,7 +8,7 @@ import { create } from 'zustand'
  *
  * Range: 14 steps discretos de [0.2 ... 2.0] (20% até 200%).
  * Persiste em localStorage('sea_font_scale').
- * Toast feedback visual em cada mudança (igual IPB).
+ * Toast feedback visual em cada mudança (igual BS).
  */
 
 const FONT_SCALES = [0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.15, 1.3, 1.5, 1.75, 2.0] as const

@@ -16,7 +16,7 @@ export function SiePanel({ initialTab }: { initialTab?: SieSubTab }) {
   }, [initialTab])
   
   // State for Pitch Simulator
-  const [pitchName, setPitchName] = useState('IP BUSINESS')
+  const [pitchName, setPitchName] = useState('BUSINESS SYLLABUS')
   const [pitchTarget, setPitchTarget] = useState('startups e PMEs de escala')
   const [pitchPain, setPitchPain] = useState('tomar decisões demoradas e erradas por falta de dados centralizados')
   const [pitchMarket, setPitchMarket] = useState('cockpit operacional inteligente')
@@ -70,7 +70,7 @@ export function SiePanel({ initialTab }: { initialTab?: SieSubTab }) {
           diagnosis = 'Sua empresa e o mercado estão ambos na Fase 1 (Infraestrutura básica). Embora alinhado, há uma oportunidade competitiva brutal de saltar etapas direto para a Fase 3 e digitalizar de ponta a ponta.'
           actions = [
             'Migrar servidores locais legados para nuvem eficiente e paperless.',
-            'Adotar o Cockpit Financeiro IPB para gerenciar liquidez em tempo real.',
+            'Adotar o Cockpit Financeiro Business Syllabus para gerenciar liquidez em tempo real.',
             'Capacitar lideranças com ferramentas de IA para agilizar rotinas operacionais.'
           ]
           metric = '+40% de Agilidade e Redução de Papelada'
@@ -86,7 +86,7 @@ export function SiePanel({ initialTab }: { initialTab?: SieSubTab }) {
           diagnosis = 'Excelente! Sua empresa e o mercado operam na Fase 3 (Estratégia & IA). Para manter a liderança absoluta, é vital aprimorar modelos dinâmicos proprietários e ética de compliance.'
           actions = [
             'Calibrar algoritmos de Smart Pricing no checkout para otimização de margens.',
-            'Escalar a cultura de squads de alto rendimento baseada no modelo dinâmico IPB.',
+            'Escalar a cultura de squads de alto rendimento baseada no modelo dinâmico Business Syllabus.',
             'Fortalecer a governança ética com canais de denúncia anônimos com segurança técnica.'
           ]
           metric = '+2.5x em Margem LTV/CAC e Retenção'
@@ -104,7 +104,7 @@ export function SiePanel({ initialTab }: { initialTab?: SieSubTab }) {
           diagnosis = 'Alerta Crítico: Sua empresa ainda lida com Infraestrutura básica (Fase 1) enquanto o mercado opera na Fase 3 (IA e dados preditivos). Há um sério risco de obsolescência competitiva acelerada.'
           actions = [
             'Ignorar a burocracia clássica de TI e saltar direto para soluções integradas em nuvem e IA.',
-            'Adotar o AI Advisor IPB para analisar a correlação entre caixa (Runway) e produtividade.',
+            'Adotar o AI Advisor BS para analisar a correlação entre caixa (Runway) e produtividade.',
             'Rodar uma Design Sprint de 5 dias para estruturar o primeiro MVP de tecnologia interna.'
           ]
           metric = 'Previsão de Caixa Preditiva Ativa Imediatamente'
@@ -123,7 +123,7 @@ export function SiePanel({ initialTab }: { initialTab?: SieSubTab }) {
           actions = [
             'Refinar o funil de vendas digital integrando automações de CRM robustas.',
             'Otimizar o Runway financeiro com controle restrito de despesas no cockpit.',
-            'Estabelecer rituais de governança corporativa no pilar gerencial do IPB.'
+            'Estabelecer rituais de governança corporativa no pilar gerencial do Business Syllabus.'
           ]
           metric = '-30% de Custos Operacionais contra Mercado'
         } else if (empresa === 3 && mercado === 1) {
@@ -179,9 +179,9 @@ export function SiePanel({ initialTab }: { initialTab?: SieSubTab }) {
               let challengeTitle = 'Desafio Customizado'
               let customText = sprintCustomText
               if (sprintChallenge === 'denuncias') {
-                challengeTitle = 'Canal de Denúncias Anônimo & Seguro IPB'
+                challengeTitle = 'Canal de Denúncias Anônimo & Seguro Business Syllabus'
               } else if (sprintChallenge === 'telemetria') {
-                challengeTitle = 'MVP de Telemetria & Saúde Comportamental de Lideranças IPB'
+                challengeTitle = 'MVP de Telemetria & Saúde Comportamental de Lideranças BS'
               } else if (sprintChallenge === 'pricing') {
                 challengeTitle = 'Smart Pricing Dinâmico baseado em IA para Assinaturas'
               }
@@ -200,7 +200,7 @@ export function SiePanel({ initialTab }: { initialTab?: SieSubTab }) {
                     : sprintChallenge === 'telemetria'
                     ? 'Mapeie os fluxos de atrito semanais entre squads. O Alvo Principal é criar um painel centralizado que cruze horas extras com indicadores subjetivos de stress sem sobrecarregar os gestores.'
                     : sprintChallenge === 'pricing'
-                    ? 'Mapeie os pontos de preço atuais e a elasticidade do cliente IPB. Defina o Alvo Principal: Testar um sistema de cupons dinâmicos da IA que detecta intenção de saída na página de checkout.'
+                    ? 'Mapeie os pontos de preço atuais e a elasticidade do cliente BS. Defina o Alvo Principal: Testar um sistema de cupons dinâmicos da IA que detecta intenção de saída na página de checkout.'
                     : `Analise as dores, processos atuais e frustrações ligadas ao desafio "${customText}". Monte um mapa simples de jornada do usuário final e defina o Alvo Principal do Sprint: validar a menor fração possível da ideia na sexta-feira.`,
                   deliverable: 'Mapa de Jornada do Usuário & Alvo Definido',
                   tip: 'O Decisor deve dar a palavra final sobre qual área focar no mapa de fluxo para evitar desperdício.'
@@ -216,7 +216,7 @@ export function SiePanel({ initialTab }: { initialTab?: SieSubTab }) {
                   instructions: sprintChallenge === 'denuncias'
                     ? 'Pesquise referências de sistemas de criptografia simples (ex: Bitwarden, Proton). Cada participante do squad desenha individualmente o fluxo ideal de denúncia em 3 telas (envio rápido, recebimento de chave token única de 12 palavras, e chat anônimo temporário sem cadastro).'
                     : sprintChallenge === 'telemetria'
-                    ? 'Faça Lightning Demos de ferramentas como Gallup Q12 e Slack health-checks. Desenhe um widget de check-in diário de 3 segundos que roda direto no chat corporativo do IPB.'
+                    ? 'Faça Lightning Demos de ferramentas como Gallup Q12 e Slack health-checks. Desenhe um widget de check-in diário de 3 segundos que roda direto no chat corporativo do Business Syllabus.'
                     : sprintChallenge === 'pricing'
                     ? 'Pesquise como Netflix e Amazon oferecem upsells. Desenhe individualmente um pop-up inteligente que oferece desconto progressivo ou extensão de trial de forma ultra-personalizada.'
                     : `Pesquise no mercado quem já resolveu desafios semelhantes. Faça rascunhos rápidos individuais (sendo 8 variações em 8 minutos usando Crazy Eights) e prepare uma proposta em 3 etapas com foco em extrema facilidade de uso.`,
@@ -245,7 +245,7 @@ export function SiePanel({ initialTab }: { initialTab?: SieSubTab }) {
                   focus: sprintChallenge === 'denuncias'
                     ? 'Construir uma fachada interativa realista (Fake it before you make it).'
                     : sprintChallenge === 'telemetria'
-                    ? 'Montar a interface do dashboard estratégico no IPB App.'
+                    ? 'Montar a interface do dashboard estratégico no Business Syllabus App.'
                     : sprintChallenge === 'pricing'
                     ? 'Prototipar a experiência de finalização de compra.'
                     : 'Construir a "fachada" realista e interativa.',
@@ -254,7 +254,7 @@ export function SiePanel({ initialTab }: { initialTab?: SieSubTab }) {
                     : sprintChallenge === 'telemetria'
                     ? 'Crie o mockup de telemetria com gráficos dinâmicos de stress acumulado e sugestões de intervenção ágil da IA. Use dados mockados realistas para dar substância.'
                     : sprintChallenge === 'pricing'
-                    ? 'Monte uma landing page de checkout simulando a IA calculando o preço ideal em tempo real. Adicione uma barra de carregamento premium com a chamada "Ajustando plano ao perfil do IPB".'
+                    ? 'Monte uma landing page de checkout simulando a IA calculando o preço ideal em tempo real. Adicione uma barra de carregamento premium com a chamada "Ajustando plano ao perfil do Business Syllabus".'
                     : `Use as melhores ferramentas visuais disponíveis para simular a experiência real para o desafio "${challengeTitle}". Construa apenas o necessário para simular o Storyboard de quarta-feira. Deve parecer um produto polido e finalizado.`,
                   deliverable: 'Protótipo Interativo em Alta Fidelidade (Mock real)',
                   tip: 'Divida o time: um "Criador" desenha as telas, outro escreve os textos ("Redator") e um reúne tudo.'
@@ -930,7 +930,7 @@ export function SiePanel({ initialTab }: { initialTab?: SieSubTab }) {
                 {/* Tipo de Inovação */}
                 <div className="bg-black/15 p-5 rounded-xl border border-white/[0.04]">
                   <h4 className="text-[11px] lg:text-xs font-semibold text-white tracking-wider border-b border-white/[0.06] pb-3 mb-4 uppercase">
-                    TIPO DE PRÁTICA DO IPB
+                    TIPO DE PRÁTICA DO BS
                   </h4>
                   <div className="space-y-3">
                     <label className="flex items-center gap-3 text-xs text-white/80 cursor-pointer select-none">

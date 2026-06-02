@@ -553,5 +553,5 @@ export function SigPessoasPanel() {
 }
 `
 
-fs.writeFileSync('components/sea/corporate/sig-pessoas-panel.tsx', content);
+fs.writeFileSync('components/business-syllabus/corporate/sig-pessoas-panel.tsx', content);
 console.log('Done redesigning SIG PESSOAS');

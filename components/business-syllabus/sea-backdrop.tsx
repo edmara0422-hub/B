@@ -4,7 +4,7 @@
 'use client'
 
 import dynamic from 'next/dynamic'
-import { IpbBackground } from './ipb-background'
+import { IpbBackground } from './bs-background'
 
 const VineCanvas = dynamic(() => import('./vine-canvas'), { ssr: false })
 

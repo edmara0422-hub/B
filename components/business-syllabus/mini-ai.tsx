@@ -15,7 +15,7 @@ export function MiniAi() {
   const [messages, setMessages] = useState<Message[]>([
     {
       sender: 'ai',
-      text: 'Olá! Sou seu IPB AI Advisor 6D. Posso cruzar seus dados macro, humanos e financeiros ao vivo. Qual cenário deseja simular?',
+      text: 'Olá! Sou seu Business Syllabus AI Advisor 6D. Posso cruzar seus dados macro, humanos e financeiros ao vivo. Qual cenário deseja simular?',
       timestamp: '10:21'
     }
   ])
@@ -93,7 +93,7 @@ export function MiniAi() {
       } else if (lowerText.includes('squad') || lowerText.includes('liderança') || lowerText.includes('plano') || lowerText.includes('estrategia') || lowerText.includes('tuckman')) {
         aiResponseText = '👥 [Maturidade & Escopo Organizacional: Pilar 1 & 3]\n\nSeu time apresenta ambiguidade de reporte em momentos de pico de atividade.\n\n💡 Plano de Ação de Governança:\n1. Adote squads matriciais autônomos com um Product Owner (PO) dedicado por projeto.\n2. Conceda autonomia de decisão (Maturidade M4) com monitoramento assíncrono.\n3. Calibre o multiplicador Tuckman (Performing a x1.45) alinhando o contrato de aliança.'
       } else {
-        aiResponseText = '🔍 [IPB Advisor 6D: Análise Integrada Habilitada]\n\nEstou conectado às APIs macro e humanas. Diga o que deseja simular:\n\n💬 \'Como Burnout afeta meu EBITDA?\'\n💬 \'Qual o plano estratégico para a alta da SELIC?\'\n💬 \'Como otimizar LTV/CAC e Churn?\'\n💬 \'Criar plano de ação de squads matriciais\'\n\nEstou pronto para formular qualquer estratégia interdisciplinar premium.'
+        aiResponseText = '🔍 [BS Advisor 6D: Análise Integrada Habilitada]\n\nEstou conectado às APIs macro e humanas. Diga o que deseja simular:\n\n💬 \'Como Burnout afeta meu EBITDA?\'\n💬 \'Qual o plano estratégico para a alta da SELIC?\'\n💬 \'Como otimizar LTV/CAC e Churn?\'\n💬 \'Criar plano de ação de squads matriciais\'\n\nEstou pronto para formular qualquer estratégia interdisciplinar premium.'
       }
 
       const aiMsg: Message = {
@@ -201,7 +201,7 @@ export function MiniAi() {
             </button>
           )}
           <span className="text-[11px] font-normal text-white/95 tracking-wide">
-            <span className="text-[#d2af5a] font-bold">IPB</span> AI Assistant
+            <span className="text-[#d2af5a] font-bold">BS</span> AI Assistant
           </span>
         </div>
         

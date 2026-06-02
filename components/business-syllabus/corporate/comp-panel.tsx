@@ -98,7 +98,7 @@ export function CompPanel({ initialTab }: { initialTab?: CompSubTab }) {
   const handleGenerateDoc = () => {
     setGenerating(true)
     setTimeout(() => {
-      setGeneratedDoc('📄 Código de Conduta e Governança Corporativa V1.0 gerado com base nas diretrizes do IPB e em conformidade com as melhores práticas de ESG e Compliance.')
+      setGeneratedDoc('📄 Código de Conduta e Governança Corporativa V1.0 gerado com base nas diretrizes do Business Syllabus e em conformidade com as melhores práticas de ESG e Compliance.')
       setGenerating(false)
     }, 1500)
   }
@@ -111,7 +111,7 @@ export function CompPanel({ initialTab }: { initialTab?: CompSubTab }) {
         cobit: {
           score: 94,
           status: 'Excelente',
-          summary: 'Alinhamento estratégico total das metas de TI com o EBITDA e as diretrizes ESG do IPB. O pilar D6 (Conformidade) e o radar de integridade auditam feedbacks contínuos.',
+          summary: 'Alinhamento estratégico total das metas de TI com o EBITDA e as diretrizes ESG do Business Syllabus. O pilar D6 (Conformidade) e o radar de integridade auditam feedbacks contínuos.',
           action: 'Refinar mapeamento de custos ocultos de ferramentas de TI trimestralmente.'
         },
         iso38500: {
@@ -186,7 +186,7 @@ export function CompPanel({ initialTab }: { initialTab?: CompSubTab }) {
             className={`system-tab-btn ${subTab === tab ? 'active' : ''}`}
           >
             {tab === 'denuncias' && 'Canal de Denúncias'}
-            {tab === 'governanca' && 'Governança & Riscos IPB'}
+            {tab === 'governanca' && 'Governança & Riscos BS'}
           </button>
         ))}
       </div>
@@ -225,7 +225,7 @@ export function CompPanel({ initialTab }: { initialTab?: CompSubTab }) {
                       <CheckCircle2 className="h-9 w-9 text-[#5dcaa5] animate-pulse" />
                       <span className="text-[12px] font-bold text-white uppercase tracking-wider">Denúncia Enviada Anônimamente!</span>
                       <p className="text-[10.5px] text-white/70 max-w-sm leading-relaxed">
-                        Agradecemos muito pelo seu feedback! Sua denúncia foi entregue com total anonimato, criptografia e segurança ao Comitê de Compliance do IPB. O protocolo está sendo avaliado sob sigilo absoluto.
+                        Agradecemos muito pelo seu feedback! Sua denúncia foi entregue com total anonimato, criptografia e segurança ao Comitê de Compliance do Business Syllabus. O protocolo está sendo avaliado sob sigilo absoluto.
                       </p>
                       <button
                         onClick={() => {
@@ -475,7 +475,7 @@ export function CompPanel({ initialTab }: { initialTab?: CompSubTab }) {
 
                     {/* Verification details of Encryption, 2FA and Backup */}
                     <div className="p-3.5 bg-black/60 border border-white/5 rounded-xl space-y-2.5">
-                      <span className="block text-[8px] font-mono text-white/40 uppercase tracking-wider">🛡️ Auditoria de Segurança IPB App (Verificação de Integridade)</span>
+                      <span className="block text-[8px] font-mono text-white/40 uppercase tracking-wider">🛡️ Auditoria de Segurança Business Syllabus App (Verificação de Integridade)</span>
                       
                       <div className="space-y-2 text-[10.5px]">
                         <div className="flex items-center justify-between border-b border-white/[0.03] pb-1.5">

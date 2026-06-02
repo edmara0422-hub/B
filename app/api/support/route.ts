@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
       const insertObj = {
         user_id: user_id || null,
         name: name || "Usuária",
-        email: email || "sem-email@ipb.app",
+        email: email || "sem-email@bs.app",
         message: message.trim()
       };
 
@@ -37,7 +37,7 @@ export async function POST(req: NextRequest) {
           .insert({
             user_id: null,
             name: name || "Usuária",
-            email: email || "sem-email@ipb.app",
+            email: email || "sem-email@bs.app",
             message: message.trim()
           });
         
@@ -65,7 +65,7 @@ export async function POST(req: NextRequest) {
         </div>
         
         <footer style="margin-top: 24px; border-top: 1px solid #222; padding-top: 12px; text-align: center; font-size: 11px; color: #444;">
-          IPB App · Sistema de Relatório de Helpdesk
+          Business Syllabus App · Sistema de Relatório de Helpdesk
         </footer>
       </div>
     `;
@@ -73,7 +73,7 @@ export async function POST(req: NextRequest) {
     // Envia o e-mail de suporte de qualquer forma!
     await sendMail({
       to: "erbusiness0422@gmail.com",
-      subject: "Suporte IPB App", // Assunto estruturado obrigatório
+      subject: "Suporte Business Syllabus App", // Assunto estruturado obrigatório
       html: htmlContent
     });
 

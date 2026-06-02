@@ -119,8 +119,8 @@ export function HudAi() {
   // Translation LLM Adaptive Studio Parameters
   const [targetLang, setTargetLang] = useState<'pt' | 'es' | 'ja' | 'en'>('pt')
   const [sourceLang, setSourceLang] = useState<'en' | 'pt' | 'es' | 'ja'>('en')
-  const [glossaryInput, setGlossaryInput] = useState('IPB = Plataforma de Inteligência\nEBITDA = Lucro Operacional\nRunway = Tempo de Sobrevivência')
-  const [translationInput, setTranslationInput] = useState('Welcome to the IPB enterprise system. Our EBITDA is solid and our Runway is 99 months.')
+  const [glossaryInput, setGlossaryInput] = useState('BS = Plataforma de Inteligência\nEBITDA = Lucro Operacional\nRunway = Tempo de Sobrevivência')
+  const [translationInput, setTranslationInput] = useState('Welcome to the BS enterprise system. Our EBITDA is solid and our Runway is 99 months.')
   const [translationOutput, setTranslationOutput] = useState('')
   const [isTranslating, setIsTranslating] = useState(false)
   const [translationLogs, setTranslationLogs] = useState<string[]>([])
@@ -130,13 +130,13 @@ export function HudAi() {
   const [jinaDimensions, setJinaDimensions] = useState<32 | 64 | 128 | 256 | 512 | 768 | 1024>(1024)
   const [jinaLateChunking, setJinaLateChunking] = useState(false)
   const [jinaNormalized, setJinaNormalized] = useState(true)
-  const [jinaInput, setJinaInput] = useState('Welcome to the IPB enterprise system. Our EBITDA runway is solid.')
+  const [jinaInput, setJinaInput] = useState('Welcome to the BS enterprise system. Our EBITDA runway is solid.')
   const [embeddingResult, setEmbeddingResult] = useState<any>(null)
   const [isEmbedding, setIsEmbedding] = useState(false)
   const [embeddingLogs, setEmbeddingLogs] = useState<string[]>([])
 
   // Voyage Multimodal 3.5 Parameters
-  const [voyageInputText, setVoyageInputText] = useState('Welcome to the IPB enterprise system. This is a gold business analytics cube.')
+  const [voyageInputText, setVoyageInputText] = useState('Welcome to the BS enterprise system. This is a gold business analytics cube.')
   const [voyageHasImage, setVoyageHasImage] = useState(true)
   const [voyageHasVideo, setVoyageHasVideo] = useState(false)
   const [voyageInputType, setVoyageInputType] = useState<'query' | 'document' | 'null'>('null')
@@ -363,7 +363,7 @@ export function HudAi() {
       `[INPUT-MIX] Agrupando entradas do mixer:`,
       `  ├─ Texto: "${voyageInputText.slice(0, 30)}..."`,
       voyageHasImage ? `  ├─ Imagem: gs://generativeai-downloads/images/banana.jpg` : ``,
-      voyageHasVideo ? `  ├─ Vídeo: gs://ipb-video-bucket/example_video_01.mp4` : ``,
+      voyageHasVideo ? `  ├─ Vídeo: gs://bs-video-bucket/example_video_01.mp4` : ``,
       `[CONFIG] Output Dimensions: ${voyageDimensions} | Output Data Type: ${voyageDataType}`,
       `[PRE-PROCESS] Calculando tensores para mídias intercaladas...`
     ].filter(Boolean))
@@ -805,7 +805,7 @@ export function HudAi() {
           ...prev,
           `[POLL-3] Status do Job: DONE! Operação concluída.`,
           `[SUCCESS] Vídeo salvo no bucket GCP Cloud Storage:`,
-          `  └─ URI: gs://ipb-video-bucket/timestamps/sample_0.mp4`,
+          `  └─ URI: gs://bs-video-bucket/timestamps/sample_0.mp4`,
           `[SUCCESS] Transcrevendo bytes de vídeo para execução no cockpit.`
         ])
       } else if (step === 4) {
@@ -818,7 +818,7 @@ export function HudAi() {
           ...prev,
           {
             sender: 'bot',
-            text: `<b>[Geração Veo 3 Concluída!]</b> O modelo <b>Veo 3.0</b> gerou com sucesso o vídeo corporativo 3D com áudio em resolução <b>${veoResolution}</b>! O job assíncrono <code>${randomOpId}</code> foi concluído na GCP e os arquivos estão prontos no bucket <code>gs://ipb-video-bucket/</code>.`
+            text: `<b>[Geração Veo 3 Concluída!]</b> O modelo <b>Veo 3.0</b> gerou com sucesso o vídeo corporativo 3D com áudio em resolução <b>${veoResolution}</b>! O job assíncrono <code>${randomOpId}</code> foi concluído na GCP e os arquivos estão prontos no bucket <code>gs://bs-video-bucket/</code>.`
           }
         ])
       }
@@ -1147,7 +1147,7 @@ export function HudAi() {
 
   const cenarioFaturamento = () => {
     if (typeof window !== 'undefined') {
-      const telemetry = (window as any).IPBTelemetry
+      const telemetry = (window as any).BSTelemetry
       if (telemetry?.faturamento) return telemetry.faturamento
     }
     return 150
@@ -1155,7 +1155,7 @@ export function HudAi() {
 
   const cenarioCac = () => {
     if (typeof window !== 'undefined') {
-      const telemetry = (window as any).IPBTelemetry
+      const telemetry = (window as any).BSTelemetry
       if (telemetry?.cac) return telemetry.cac
     }
     return 350
@@ -1238,7 +1238,7 @@ export function HudAi() {
 
   const averagePestel = () => {
     if (typeof window !== 'undefined') {
-      const telemetry = (window as any).IPBTelemetry
+      const telemetry = (window as any).BSTelemetry
       if (telemetry?.cenario === 'juros_altos') return 33
     }
     return 67
@@ -2647,7 +2647,7 @@ curl -X POST \\
                     <textarea 
                       value={glossaryInput}
                       onChange={(e) => setGlossaryInput(e.target.value)}
-                      placeholder="IPB = Plataforma de Inteligência..."
+                      placeholder="BS = Plataforma de Inteligência..."
                       className="bg-black border border-white/10 rounded p-1 text-[7.5px] font-mono text-[#d2af5a] h-[45px] resize-none outline-none focus:border-[#d2af5a] scrollbar-none"
                     />
                   </div>

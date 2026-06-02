@@ -19,7 +19,7 @@ export function HudCapitalHumano() {
 
   // Logs do Terminal NLP de Riscos Psicossociais
   const [logs, setLogs] = useState<string[]>([
-    '[INIT] Inicializando IPB Comportamento & NLP Engine...',
+    '[INIT] Inicializando Business Syllabus Comportamento & NLP Engine...',
     '[GEMINI NLP] Varrendo canais públicos do Slack & WhatsApp (Análise de sentimentos ativa)...',
     '[MASLACH] Calibrando escala Maslach coletiva de exaustão emocional...'
   ])
@@ -56,8 +56,8 @@ export function HudCapitalHumano() {
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const win = window as any
-      if (!win.IPBTelemetry) {
-        win.IPBTelemetry = {
+      if (!win.BSTelemetry) {
+        win.BSTelemetry = {
           pressaoMetas,
           climaFrequencia,
           faturamento,
@@ -68,7 +68,7 @@ export function HudCapitalHumano() {
           metaBudgetPercent: 80
         }
       } else {
-        win.IPBTelemetry = {
+        win.BSTelemetry = {
           faturamento: 150,
           cac: 350,
           opex: 60,
@@ -77,18 +77,18 @@ export function HudCapitalHumano() {
           cenario: 'normal',
           climaFrequencia: 14,
           metaBudgetPercent: 80,
-          ...win.IPBTelemetry
+          ...win.BSTelemetry
         }
       }
 
-      setPressaoMetas(win.IPBTelemetry.pressaoMetas ?? 5)
-      setClimaFrequencia(win.IPBTelemetry.climaFrequencia ?? 14)
-      setFaturamento(win.IPBTelemetry.faturamento ?? 150)
-      setCac(win.IPBTelemetry.cac ?? 350)
+      setPressaoMetas(win.BSTelemetry.pressaoMetas ?? 5)
+      setClimaFrequencia(win.BSTelemetry.climaFrequencia ?? 14)
+      setFaturamento(win.BSTelemetry.faturamento ?? 150)
+      setCac(win.BSTelemetry.cac ?? 350)
     }
 
     const handleTelemetry = (e: Event) => {
-      const telemetry = (window as any).IPBTelemetry
+      const telemetry = (window as any).BSTelemetry
       if (telemetry) {
         setPressaoMetas(telemetry.pressaoMetas ?? 5)
         setClimaFrequencia(telemetry.climaFrequencia ?? 14)
@@ -99,8 +99,8 @@ export function HudCapitalHumano() {
       }
     }
 
-    window.addEventListener('ipb-telemetry', handleTelemetry)
-    return () => window.removeEventListener('ipb-telemetry', handleTelemetry)
+    window.addEventListener('bs-telemetry', handleTelemetry)
+    return () => window.removeEventListener('bs-telemetry', handleTelemetry)
   }, [])
 
   // Efeito para buscar logs de comportamento reais via API
@@ -124,8 +124,8 @@ export function HudCapitalHumano() {
   const updateTelemetry = (updates: Record<string, any>) => {
     if (typeof window !== 'undefined') {
       const win = window as any
-      win.IPBTelemetry = { ...win.IPBTelemetry, ...updates }
-      window.dispatchEvent(new CustomEvent('ipb-telemetry'))
+      win.BSTelemetry = { ...win.BSTelemetry, ...updates }
+      window.dispatchEvent(new CustomEvent('bs-telemetry'))
     }
   }
 
@@ -285,7 +285,7 @@ export function HudCapitalHumano() {
 
   return (
     <div 
-      className="w-full h-full flex flex-col justify-between p-4 bg-[#08080a]/85 border border-[#d2af5a]/25 rounded-3xl backdrop-blur-xl select-text relative overflow-y-auto ipb-thinscroll"
+      className="w-full h-full flex flex-col justify-between p-4 bg-[#08080a]/85 border border-[#d2af5a]/25 rounded-3xl backdrop-blur-xl select-text relative overflow-y-auto bs-thinscroll"
       style={{ fontFamily: "'Poppins', -apple-system, system-ui, sans-serif" }}
     >
       <div className="scanlines z-10" />
@@ -310,16 +310,16 @@ export function HudCapitalHumano() {
       {/* Main Container - dense space management to fit 560px exactly */}
       <div className="flex-1 flex flex-col justify-between mt-3 space-y-3 relative z-20 overflow-visible">
         
-        {/* TOP: IPB GEMINI NLP SENTIMENT ANALYZER (Larger terminal at the top) */}
+        {/* TOP: BUSINESS SYLLABUS GEMINI NLP SENTIMENT ANALYZER (Larger terminal at the top) */}
         <div className="border border-[#d2af5a]/15 bg-[#070707] rounded-xl overflow-hidden shadow-2xl shrink-0">
           <div className="bg-black/80 px-3 py-1.5 flex items-center justify-between border-b border-white/5">
             <div className="flex items-center gap-1.5 text-[#d2af5a] font-mono text-[8px] font-bold">
               <TerminalIcon className="h-3.5 w-3.5" />
-              <span>IPB GEMINI NLP SENTIMENT ANALYZER</span>
+              <span>BUSINESS SYLLABUS GEMINI NLP SENTIMENT ANALYZER</span>
             </div>
             <div className="text-[7.5px] font-mono text-white/40">🛰️ LIVE WHATSAPP & SLACK NLP CORRELATION ENGINE</div>
           </div>
-          <div ref={terminalRef} className="p-2.5 font-mono text-[9px] text-[#d2af5a]/90 h-[195px] overflow-y-auto space-y-0.5 leading-normal ipb-thinscroll text-left">
+          <div ref={terminalRef} className="p-2.5 font-mono text-[9px] text-[#d2af5a]/90 h-[195px] overflow-y-auto space-y-0.5 leading-normal bs-thinscroll text-left">
             {logs.map((log, index) => (
               <div key={index} className="whitespace-pre-wrap">{log}</div>
             ))}
@@ -342,7 +342,7 @@ export function HudCapitalHumano() {
             </div>
 
             {/* Formula box */}
-            <div className="p-2.5 bg-black/60 border border-[#d2af5a]/15 rounded-xl text-white font-mono text-[8px] flex-1 flex flex-col justify-between overflow-y-auto ipb-thinscroll text-left space-y-2">
+            <div className="p-2.5 bg-black/60 border border-[#d2af5a]/15 rounded-xl text-white font-mono text-[8px] flex-1 flex flex-col justify-between overflow-y-auto bs-thinscroll text-left space-y-2">
               <div>
                 <span className="block text-[7px] uppercase tracking-wider text-[#d2af5a] mb-1 font-black">1. Equação do Atrito Humano & EBITDA</span>
                 <div className="py-1.5 px-2 bg-black/35 rounded border border-white/5 text-[7.5px] text-[#d2af5a] leading-relaxed font-mono">
@@ -375,7 +375,7 @@ export function HudCapitalHumano() {
           <div className="p-3 bg-black/40 border border-white/5 rounded-xl flex flex-col justify-between overflow-hidden">
             <span className="block text-[8.5px] font-mono text-[#d2af5a] font-bold uppercase tracking-wider mb-2 text-left">🧠 INTELIGÊNCIA DE RISCOS, TELEMETRIA IA & DDDM</span>
             
-            <div className="flex-1 overflow-y-auto ipb-thinscroll pr-1 max-h-[220px] space-y-2.5 text-[8.8px] text-white/70 leading-normal text-left">
+            <div className="flex-1 overflow-y-auto bs-thinscroll pr-1 max-h-[220px] space-y-2.5 text-[8.8px] text-white/70 leading-normal text-left">
               <div>
                 <b className="text-red-400 block font-mono">⚠️ ANOMALIA DE TELEMETRIA: ESTRESSE 9.3% vs. REALIDADE (67%)</b>
                 <span className="text-white/90">

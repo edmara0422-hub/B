@@ -1,5 +1,5 @@
 const fs = require('fs');
-const file = '/Users/edmararocha/Documents/IPB/components/sea/conteudos-page-client.tsx';
+const file = '/Users/edmararocha/Documents/Business Syllabus/components/business-syllabus/conteudos-page-client.tsx';
 let content = fs.readFileSync(file, 'utf8');
 
 content = content.replace(

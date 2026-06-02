@@ -8,14 +8,14 @@ export function MiniEstrategia() {
 
   useEffect(() => {
     const handleTelemetry = () => {
-      const telemetry = (window as any).IPBTelemetry
+      const telemetry = (window as any).BSTelemetry
       if (telemetry) {
         setCenario(telemetry.cenario ?? 'normal')
       }
     }
     handleTelemetry()
-    window.addEventListener('ipb-telemetry', handleTelemetry)
-    return () => window.removeEventListener('ipb-telemetry', handleTelemetry)
+    window.addEventListener('bs-telemetry', handleTelemetry)
+    return () => window.removeEventListener('bs-telemetry', handleTelemetry)
   }, [])
 
   const jurosReais = useMemo(() => {
@@ -33,7 +33,7 @@ export function MiniEstrategia() {
 
   const triggerMetricClick = (metricId: string) => {
     if (typeof window !== 'undefined') {
-      window.dispatchEvent(new CustomEvent('ipb-metric-click', { detail: { metricId } }))
+      window.dispatchEvent(new CustomEvent('bs-metric-click', { detail: { metricId } }))
     }
   }
 

@@ -1,7 +1,7 @@
 export default function PrivacidadePage() {
   return (
     <div className="min-h-screen bg-[#010101] text-white px-6 py-12 max-w-2xl mx-auto">
-      <h1 className="text-[12px] font-bold mb-4">Politica de Privacidade — IPB</h1>
+      <h1 className="text-[12px] font-bold mb-4">Politica de Privacidade — Business Syllabus</h1>
       <p className="text-[8px] text-white/40 mb-6">Ultima atualizacao: 18 de maio de 2026.</p>
       <div className="space-y-4 text-[8px] leading-relaxed text-white/60">
 
@@ -31,7 +31,7 @@ export default function PrivacidadePage() {
             <li>Eventos de interacao (funcionalidades acessadas, tempo de uso) vinculados ao ID de usuario. Utilizados para melhoria do app. Nao incluem conteudo clinico.</li>
           </ul>
 
-          <p className="text-white/70 mt-2 mb-0.5">O que o IPB NAO coleta sobre o paciente</p>
+          <p className="text-white/70 mt-2 mb-0.5">O que o Business Syllabus NAO coleta sobre o paciente</p>
           <ul className="list-disc pl-4 space-y-0.5">
             <li>Nome, CPF, RG, data de nascimento ou qualquer identificador direto do paciente.</li>
             <li>Hospital, clinica, instituicao ou unidade onde o paciente esta internado.</li>
@@ -43,7 +43,7 @@ export default function PrivacidadePage() {
 
         <section>
           <h2 className="text-[9px] font-semibold text-white/80 mb-1">2. Anonimizacao por Design (LGPD Art. 12)</h2>
-          <p>O IPB foi arquitetado com o principio de privacidade por padrao: o paciente nunca e identificado no sistema. A estrutura tecnica do app impede a coleta de dados que vinculem os parametros clinicos a um individuo especifico, ao hospital ou a localizacao.</p>
+          <p>O BS foi arquitetado com o principio de privacidade por padrao: o paciente nunca e identificado no sistema. A estrutura tecnica do app impede a coleta de dados que vinculem os parametros clinicos a um individuo especifico, ao hospital ou a localizacao.</p>
           <p className="mt-1">Cada registro contem apenas: numero do leito (sem vinculo institucional), parametros antropometricos (idade, sexo, peso, altura — necessarios para calculos clinicos), historia clinica e diagnostico descritos pelo profissional. Conforme a LGPD Art. 12, dados anonimizados deixam de ser considerados dados pessoais.</p>
           <p className="mt-1">Mesmo no servidor da administradora (Supabase, AWS Sao Paulo), nao ha como identificar de qual hospital, cidade ou instituicao os dados clinicos foram inseridos — apenas o usuario que os inseriu.</p>
         </section>
@@ -85,7 +85,7 @@ export default function PrivacidadePage() {
 
         <section>
           <h2 className="text-[9px] font-semibold text-white/80 mb-1">6. Analises Automatizadas (LGPD Art. 20)</h2>
-          <p>O IPB realiza analises automatizadas sobre os dados clinicos inseridos para apoiar a tomada de decisao profissional. Estas analises incluem:</p>
+          <p>O BS realiza analises automatizadas sobre os dados clinicos inseridos para apoiar a tomada de decisao profissional. Estas analises incluem:</p>
           <ul className="list-disc pl-4 mt-1 space-y-0.5">
             <li>Calculo de escores clinicos (Glasgow, RASS, RSBI, NRS, BPS, P/F, HACOR, SOFA e outros).</li>
             <li>Interpretacao de parametros laboratoriais com alertas coloridos por gravidade.</li>
@@ -154,7 +154,7 @@ export default function PrivacidadePage() {
           <h2 className="text-[9px] font-semibold text-white/80 mb-1">13. Encarregado de Protecao de Dados (DPO)</h2>
           <p>Responsavel pelo tratamento de dados: <span className="text-white/70">Edmara Rocha</span></p>
           <p>Email: <span className="text-white/70">erbusiness0422@gmail.com</span></p>
-          <p className="mt-0.5 text-white/40">IPB — Plataforma educacional para profissionais de fisioterapia.</p>
+          <p className="mt-0.5 text-white/40">Business Syllabus — Plataforma educacional para profissionais de fisioterapia.</p>
         </section>
 
       </div>

@@ -807,7 +807,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
         krs = 'KR1: Alcançar eNPS corporativo de 80 pontos; KR2: Garantir 100% de cobertura nos rituais de feedback SBI quinzenais; KR3: Reduzir burnout subjetivo no pulso do time em 40%.'
         rat = 'Playbook Nubank: Utiliza inteligência socioemocional e alianças de clã para estabilizar equipes sob demandas intensas.'
       } else {
-        const customTitle = customOkrChallenge.trim() || 'Desafio Estratégico IPB'
+        const customTitle = customOkrChallenge.trim() || 'Desafio Estratégico Business Syllabus'
         obj = `Otimizar Performance de: ${customTitle}`
         krs = 'KR1: Validar 100% do escopo do desafio em sprints ágeis de 2 semanas; KR2: Coletar feedback do cliente final a cada ciclo de entrega; KR3: Alcançar 70% de sucesso nas metas ambiciosas traçadas.'
         rat = 'Estratégia Customizada IA: Alinha o seu principal gargalo operacional à disciplina de OKRs com feedback em ciclos rápidos.'
@@ -2555,7 +2555,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                       }}
                       className="flex-1 py-2 bg-[#d2af5a]/10 hover:bg-[#d2af5a]/20 border border-[#d2af5a]/30 rounded-lg text-[9px] font-mono font-bold text-[#d2af5a] tracking-widest uppercase cursor-pointer text-center"
                     >
-                      Estruturar Squad de Dados IPB
+                      Estruturar Squad de Dados BS
                     </button>
                     <button 
                       onClick={() => {
@@ -4502,7 +4502,7 @@ export function SigPessoasPanel({ mode = 'pessoas' }: { mode?: 'pessoas' | 'empr
                                     const fileContent = 
                                       `========================================================================\n` +
                                       `RELATÓRIO DE CONSULTORIA ORGANIZACIONAL - NOSSA CONSULTORIA BI\n` +
-                                      `ATIVIDADE PRÁTICA SUPERVISIONADA (ATP) - ETAPA 4 - IPB / UNINTER\n` +
+                                      `ATIVIDADE PRÁTICA SUPERVISIONADA (ATP) - ETAPA 4 - BS / UNINTER\n` +
                                       `========================================================================\n\n` +
                                       `1. INTRODUÇÃO\n` +
                                       `Este relatório de consultoria consolida o diagnóstico organizacional realizado ao longo das últimas semanas na empresa fictícia Nossa Consultoria BI (Auditoria 6D), integrando conceitos teóricos da gestão à prática observada. O estudo abrangeu o setup core das funções administrativas, a análise detalhada do macroambiente (político, econômico, sociocultural e legal) e microambiente competitivo (cinco forças de Porter). Além disso, mapeou-se a matriz de poder e interesse dos stakeholders internos e externos, a estrutura do organograma híbrido adotado e os sistemas de controle operacionais de metas e comportamento. A ATP nos permitiu compreender como o acúmulo de conhecimento prático de gestão compensa a falta de planejamento racional e estruturado inicial. O resultado final é uma proposta de governança corporativa transparente que descentraliza decisões técnicas sem abrir mão de segurança e conformidade de dados, gerando recomendações aplicáveis de intervenção estratégica no negócio.\n\n` +

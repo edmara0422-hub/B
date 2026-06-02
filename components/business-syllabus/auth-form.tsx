@@ -274,4 +274,3 @@ export function AuthForm() {
     </div>
   )
 }
-

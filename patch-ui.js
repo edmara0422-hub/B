@@ -3,7 +3,7 @@ const fs = require('fs');
 const uiContent = fs.readFileSync('new-m2-ui.txt', 'utf8');
 const [playlistsStr, simMappingStr] = uiContent.split('// -- Sim Mapping --');
 
-const targetPath = 'components/sea/conteudos-page-client.tsx';
+const targetPath = 'components/business-syllabus/conteudos-page-client.tsx';
 let content = fs.readFileSync(targetPath, 'utf8');
 
 // Inject playlists before `const NEURO_PLAYLIST`

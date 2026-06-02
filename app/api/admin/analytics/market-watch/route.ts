@@ -81,7 +81,7 @@ REGRAS:
 - Português brasileiro técnico e direto
 - Cada item ≤ 25 palavras
 - Cite a fonte (domínio do URL) entre parênteses
-- Foque em IMPLICAÇÕES PRÁTICAS pro IPB, não em resumo descritivo
+- Foque em IMPLICAÇÕES PRÁTICAS pro Business Syllabus, não em resumo descritivo
 - Se algo é hype/marketing, ignore — só evidência ou movimento de mercado real
 
 RETORNE JSON ESTRITO (sem markdown, sem \`\`\`):
@@ -102,7 +102,7 @@ RETORNE JSON ESTRITO (sem markdown, sem \`\`\`):
 
 Mínimo 4, máximo 8 items. Priorize compliance > evidência > mercado > clínico.`
 
-  const userPrompt = `Resultados de pesquisa da web (Tavily) sobre temas críticos pro IPB:
+  const userPrompt = `Resultados de pesquisa da web (Tavily) sobre temas críticos pro Business Syllabus:
 
 ${contextSections}
 

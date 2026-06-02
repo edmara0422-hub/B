@@ -9,4 +9,3 @@ export function BrainHeroScene({
 }) {
   return null
 }
-

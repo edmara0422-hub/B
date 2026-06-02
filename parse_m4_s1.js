@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const file = '/Users/edmararocha/Documents/IPB/data/caderno-content-m1-m8.ts';
+const file = '/Users/edmararocha/Documents/Business Syllabus/data/caderno-content-m1-m8.ts';
 let dbContent = fs.readFileSync(file, 'utf8');
 
 const newData = {

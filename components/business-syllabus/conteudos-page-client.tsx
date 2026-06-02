@@ -38,7 +38,7 @@ import { useAuthStore } from '@/lib/stores/authStore'
 import { useAccessibility } from '@/hooks/use-accessibility'
 import { CadernoModulePanel } from '@/components/caderno/caderno-module'
 import { loadModuleContent } from '@/data/caderno-content-loader'
-import { IpbBackground } from '@/components/business-syllabus/ipb-background'
+import { IpbBackground } from '@/components/business-syllabus/bs-background'
 import { 
   SimAlignIT, SimRogersReactor, SimNeuralMatrix, SimServerlessFlow,
   SimInnovationIgnition, SimHorizonsBalancer, SimPsychologicalShield, SimDataLakehouse,
@@ -387,7 +387,7 @@ function FloatingVideoPlayer({ moduleTitle, moduleId }: { moduleTitle: string; m
   }, [playing])
 
   return (
-    <div className="ipb-glass-card w-full flex flex-col pointer-events-auto transition-all duration-300">
+    <div className="bs-glass-card w-full flex flex-col pointer-events-auto transition-all duration-300">
       <div className="relative aspect-[16/10] bg-black/80 flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0" style={{
           background: `radial-gradient(circle at 50% 50%, ${theme.glow}, transparent 70%)`
@@ -601,7 +601,7 @@ function ExecutiveMasterclassTheater({
   }
 
   return (
-    <div className="ipb-glass-card w-full flex flex-col pointer-events-auto transition-all duration-300">
+    <div className="bs-glass-card w-full flex flex-col pointer-events-auto transition-all duration-300">
       {/* Video Cinema screen occupies full width (100%) */}
       <div className="relative aspect-[21/9] bg-black flex items-center justify-center overflow-hidden rounded-t-xl">
         <div className="absolute inset-0" style={{
@@ -940,7 +940,7 @@ function ExecutivePerformanceDashboard({ moduleId }: { moduleId?: string }) {
   const ActiveIcon = kpis[activeKpi].icon
 
   return (
-    <div className="w-full flex-1 ipb-glass-card p-4 flex flex-col justify-between h-full transition-all duration-300 pointer-events-auto">
+    <div className="w-full flex-1 bs-glass-card p-4 flex flex-col justify-between h-full transition-all duration-300 pointer-events-auto">
       <div>
         <div className="flex justify-between items-center">
           <span className="text-[7.5px] uppercase tracking-wider font-bold" style={{ color: theme.primary }}>KPIs Estratégicos</span>
@@ -1688,13 +1688,13 @@ function ExecutiveStudyBriefing({
   }, [activeSubjectIndex])
 
   useEffect(() => {
-    const saved = localStorage.getItem(`ipb-notes-${syllabusItem.id}`)
+    const saved = localStorage.getItem(`bs-notes-${syllabusItem.id}`)
     setNotes(saved ?? '')
   }, [syllabusItem.id])
 
   const handleSaveNotes = (val: string) => {
     setNotes(val)
-    localStorage.setItem(`ipb-notes-${syllabusItem.id}`, val)
+    localStorage.setItem(`bs-notes-${syllabusItem.id}`, val)
   }
 
   const handleAskTutor = async (question: string) => {
@@ -1749,7 +1749,7 @@ function ExecutiveStudyBriefing({
   }
 
   return (
-    <div className="ipb-soft relative overflow-hidden rounded-[2rem] p-6 space-y-6">
+    <div className="bs-soft relative overflow-hidden rounded-[2rem] p-6 space-y-6">
       
       {/* Top Strategic Navigation Header */}
       <div className="flex items-center justify-between pb-4 border-b border-white/[0.04] flex-wrap gap-3" style={{ borderBottom: '0.2px solid rgba(255,255,255,0.04)' }}>
@@ -1797,7 +1797,7 @@ function ExecutiveStudyBriefing({
           <span className="text-[10px] px-2 py-0.5 rounded bg-white/5 border border-white/10 text-white/40 font-mono uppercase">Mapeamento Integrado</span>
         </div>
         
-        <div className="flex gap-2 overflow-x-auto pb-2 pr-2 ipb-thinscroll select-none scroll-smooth">
+        <div className="flex gap-2 overflow-x-auto pb-2 pr-2 bs-thinscroll select-none scroll-smooth">
           {syllabusList.map((item, idx) => {
             const isSelected = idx === activeSubjectIndex
             const isGold = idx % 2 === 0
@@ -1863,7 +1863,7 @@ function ExecutiveStudyBriefing({
                       background: `radial-gradient(circle at 0% 0%, ${isGoldTheme ? '#d2af5a' : '#cbd5e1'}, transparent 50%)`
                     }} />
 
-                    <div className="overflow-y-auto space-y-4 pr-2 ipb-thinscroll h-full">
+                    <div className="overflow-y-auto space-y-4 pr-2 bs-thinscroll h-full">
                       <div className="flex justify-between items-start border-b border-white/[0.06] pb-3 w-full sticky top-0 bg-[#0c0905]/95 backdrop-blur-md z-10">
                         <div>
                           <span className="text-xs px-2 py-0.5 rounded font-mono bg-[#d2af5a]/10 [.theme-silver_&]:bg-[#cbd5e1]/10 border border-[#d2af5a]/20 [.theme-silver_&]:border-[#cbd5e1]/20 text-[#d2af5a] [.theme-silver_&]:text-[#cbd5e1] uppercase">SUMÁRIO ACADÊMICO</span>
@@ -1875,7 +1875,7 @@ function ExecutiveStudyBriefing({
                       </div>
 
                       {/* Chapter Pagination Pills */}
-                      <div className="flex gap-2 overflow-x-auto pb-2 border-b border-white/[0.06] ipb-thinscroll sticky top-[57px] bg-[#0c0905]/95 backdrop-blur-md z-10">
+                      <div className="flex gap-2 overflow-x-auto pb-2 border-b border-white/[0.06] bs-thinscroll sticky top-[57px] bg-[#0c0905]/95 backdrop-blur-md z-10">
                         {activeSubjectData.chapters.map((chap: any, idx: number) => {
                           const isSelected = activeChapterIndex === idx
                           return (
@@ -1971,7 +1971,7 @@ function ExecutiveStudyBriefing({
                   </div>
 
                   {/* Right Column: Simulation Board & Pillars inside the content */}
-                  <div className="lg:col-span-5 p-6 rounded-2xl bg-white/[0.015] border border-white/[0.04] backdrop-blur-md relative overflow-y-auto ipb-thinscroll flex flex-col justify-between h-[600px] lg:h-[720px]"
+                  <div className="lg:col-span-5 p-6 rounded-2xl bg-white/[0.015] border border-white/[0.04] backdrop-blur-md relative overflow-y-auto bs-thinscroll flex flex-col justify-between h-[600px] lg:h-[720px]"
                     style={{ boxShadow: '0 8px 24px rgba(0,0,0,0.15)' }}
                   >
                     <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{
@@ -2016,7 +2016,7 @@ function ExecutiveStudyBriefing({
                 <div className="p-6 rounded-2xl bg-white/[0.015] border border-white/[0.04] backdrop-blur-md flex flex-col justify-between h-[600px] lg:h-[720px] relative overflow-hidden"
                   style={{ boxShadow: '0 8px 24px rgba(0,0,0,0.15)' }}
                 >
-                  <div className="flex-1 overflow-y-auto space-y-4 pr-2 ipb-thinscroll">
+                  <div className="flex-1 overflow-y-auto space-y-4 pr-2 bs-thinscroll">
                     {tutorHistory.map((msg, i) => (
                       <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                         <div 
@@ -2097,7 +2097,7 @@ function ExecutiveStudyBriefing({
                       value={notes}
                       onChange={(e) => handleSaveNotes(e.target.value)}
                       placeholder={`Escreva suas notas estratégicas e memorandos de implementação para a disciplina: ${syllabusItem.title}...`}
-                      className="flex-1 bg-white/[0.02] border border-white/[0.05] rounded-xl p-4 text-xs lg:text-sm text-white/80 leading-relaxed outline-none focus:border-[#d2af5a]/30 [.theme-silver_&]:focus:border-[#cbd5e1]/30 [.theme-silver_&]:border-[#cbd5e1]/30 resize-none placeholder:text-white/20 ipb-thinscroll"
+                      className="flex-1 bg-white/[0.02] border border-white/[0.05] rounded-xl p-4 text-xs lg:text-sm text-white/80 leading-relaxed outline-none focus:border-[#d2af5a]/30 [.theme-silver_&]:focus:border-[#cbd5e1]/30 [.theme-silver_&]:border-[#cbd5e1]/30 resize-none placeholder:text-white/20 bs-thinscroll"
                     />
                   </div>
                 </div>
@@ -2111,7 +2111,7 @@ function ExecutiveStudyBriefing({
   )
 }
 
-// ── Workspace Sidebar — lógica IPB Intelligence Kit ──────────────────────────
+// ── Workspace Sidebar — lógica BS Intelligence Kit ──────────────────────────
 
 type TopicSummary = { id: string; title: string }
 type ModuleTopicsMap = Record<string, TopicSummary[]>
@@ -2137,7 +2137,7 @@ function WorkspaceSidebar({
   const q = search.toLowerCase().trim()
 
   return (
-    <div className="workspace-sidebar-stretch ipb-soft flex flex-col overflow-hidden rounded-[1.2rem] h-full lg:rounded-[1.65rem]">
+    <div className="workspace-sidebar-stretch bs-soft flex flex-col overflow-hidden rounded-[1.2rem] h-full lg:rounded-[1.65rem]">
       {/* Header: label + busca + close */}
       <div
         className="shrink-0 rounded-t-[1.65rem] px-2 pb-2 pt-2.5 lg:px-4 lg:pb-3 lg:pt-4"
@@ -2169,7 +2169,7 @@ function WorkspaceSidebar({
       </div>
 
       {/* Árvore */}
-      <div className="ipb-thinscroll flex-1 overflow-y-auto px-2 py-2">
+      <div className="bs-thinscroll flex-1 overflow-y-auto px-2 py-2">
         {modules.map((mod, idx) => {
           const isActive = activeIndex === idx
           const ModIcon = mod.icon
@@ -2289,7 +2289,7 @@ function ModuleRail({
   const ARCHIVED_MODULE_IDS = ['M2', 'M3']
 
   return (
-    <div className="ipb-soft relative overflow-hidden rounded-[1.8rem] px-5 py-6 md:px-8">
+    <div className="bs-soft relative overflow-hidden rounded-[1.8rem] px-5 py-6 md:px-8">
       {/* Header */}
       <div className="mb-6 flex items-center justify-between">
         <div className="flex items-center gap-2.5">
@@ -2551,7 +2551,7 @@ export default function ConteudosPageClient({ mode = 'normal' }: { mode?: 'norma
       {/* Embedded CSS rules for premium glass and borders */}
       <style dangerouslySetInnerHTML={{
         __html: `
-          .ipb-soft {
+          .bs-soft {
             background: rgba(5, 5, 5, 0.45) !important;
             backdrop-filter: blur(28px) saturate(130%) !important;
             -webkit-backdrop-filter: blur(28px) saturate(130%) !important;
@@ -2565,7 +2565,7 @@ export default function ConteudosPageClient({ mode = 'normal' }: { mode?: 'norma
               0 12px 40px rgba(0, 0, 0, 0.75) !important;
             transition: all .3s cubic-bezier(.22,.61,.36,1);
           }
-          .ipb-soft::before {
+          .bs-soft::before {
             content: "";
             position: absolute;
             inset: 0;
@@ -2578,7 +2578,7 @@ export default function ConteudosPageClient({ mode = 'normal' }: { mode?: 'norma
             pointer-events: none;
             z-index: 1;
           }
-          .ipb-glass-card {
+          .bs-glass-card {
             background: rgba(5, 5, 5, 0.45) !important;
             backdrop-filter: blur(28px) saturate(130%) !important;
             -webkit-backdrop-filter: blur(28px) saturate(130%) !important;
@@ -2592,7 +2592,7 @@ export default function ConteudosPageClient({ mode = 'normal' }: { mode?: 'norma
               0 8px 32px rgba(0, 0, 0, 0.6) !important;
             transition: all .3s ease;
           }
-          .ipb-glass-card::before {
+          .bs-glass-card::before {
             content: "";
             position: absolute;
             inset: 0;
@@ -2605,7 +2605,7 @@ export default function ConteudosPageClient({ mode = 'normal' }: { mode?: 'norma
             pointer-events: none;
             z-index: 1;
           }
-          .ipb-glass-card:hover {
+          .bs-glass-card:hover {
             border-color: ${activeTheme.accent} !important;
             transform: translateY(-2px);
             box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), 0 14px 36px rgba(0,0,0,0.75) !important;
@@ -2680,7 +2680,7 @@ export default function ConteudosPageClient({ mode = 'normal' }: { mode?: 'norma
 
               {/* Premium Archived Systems Launcher (Only for Admin in Archived Mode) */}
               {mode === 'archived' && (
-                <div className="ipb-soft relative overflow-hidden rounded-[1.8rem] px-5 py-6 md:px-8 bg-gradient-to-br from-amber-500/5 to-transparent border border-[#d2af5a]/10">
+                <div className="bs-soft relative overflow-hidden rounded-[1.8rem] px-5 py-6 md:px-8 bg-gradient-to-br from-amber-500/5 to-transparent border border-[#d2af5a]/10">
                   <div className="flex items-center gap-2.5 mb-4">
                     <div className="flex h-8 w-8 items-center justify-center rounded-[0.7rem] border border-[#d2af5a]/20 bg-[#d2af5a]/10">
                       <Calculator className="h-4 w-4 text-[#d2af5a]" />
@@ -2692,7 +2692,7 @@ export default function ConteudosPageClient({ mode = 'normal' }: { mode?: 'norma
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     {[
-                      { id: 'S1', title: 'IPB ICU', desc: 'Prontuário clínico eletrônico e monitoramento de leitos', icon: Cpu },
+                      { id: 'S1', title: 'BS ICU', desc: 'Prontuário clínico eletrônico e monitoramento de leitos', icon: Cpu },
                       { id: 'S2', title: 'Calculadoras VM', desc: 'Ventilação Mecânica Protetora, desmame e VNI', icon: Calculator },
                       { id: 'S3', title: 'Referência Clínica', desc: 'Protocolos de intensivismo, fisiologia e ventilação', icon: FileText }
                     ].map((sys) => (
@@ -2728,7 +2728,7 @@ export default function ConteudosPageClient({ mode = 'normal' }: { mode?: 'norma
                   >
                     
                     {/* Premium Cockpit Dashboard */}
-                    <div className="ipb-soft flex flex-col">
+                    <div className="bs-soft flex flex-col">
                       
                       {/* Sub-Header / Topbar */}
                       <div className="flex items-center justify-between px-6 py-3.5 border-bottom border-white/[0.04]" style={{ borderBottom: '0.2px solid rgba(255,255,255,0.04)' }}>
@@ -2798,7 +2798,7 @@ export default function ConteudosPageClient({ mode = 'normal' }: { mode?: 'norma
                           </div>
 
                           {/* Card 2: Sumário e Telemetria */}
-                          <div className="ipb-glass-card p-4 flex flex-col justify-between">
+                          <div className="bs-glass-card p-4 flex flex-col justify-between">
                             <div>
                               <span className="text-[7.5px] uppercase tracking-wider font-medium" style={{ color: activeTheme.primary }}>Sumário</span>
                               <h4 className="text-xs font-semibold text-white/90 mt-1">Mapeamento e Telemetria</h4>
@@ -2822,7 +2822,7 @@ export default function ConteudosPageClient({ mode = 'normal' }: { mode?: 'norma
                         onChangeSubjectIndex={handleSubjectIndexChange}
                       />
                     ) : (
-                      <div className="ipb-soft relative overflow-hidden rounded-[2rem]">
+                      <div className="bs-soft relative overflow-hidden rounded-[2rem]">
                         <div className="p-5 md:p-6">
                           
                           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
@@ -2941,7 +2941,7 @@ export default function ConteudosPageClient({ mode = 'normal' }: { mode?: 'norma
                         <BookOpen className="h-7 w-7 text-[#d2af5a] [.theme-silver_&]:text-[#cbd5e1]" />
                       </motion.div>
                       <div className="h-px w-12 bg-gradient-to-r from-transparent via-white/20 to-transparent" />
-                      <p className="text-[10px] uppercase tracking-[0.38em] text-[#d2af5a] [.theme-silver_&]:text-[#cbd5e1] font-semibold">Plataforma Acadêmica IPB</p>
+                      <p className="text-[10px] uppercase tracking-[0.38em] text-[#d2af5a] [.theme-silver_&]:text-[#cbd5e1] font-semibold">Plataforma Acadêmica BS</p>
                       <p className="max-w-xs text-[12px] leading-relaxed text-white/44">
                         Selecione um dos módulos acadêmicos acima na trilha para inicializar o cockpit operacional e carregar o caderno de estudos.
                       </p>
