@@ -32,6 +32,11 @@ interface Message {
 
 type ModelType =
   | 'gemini-3.1-pro'
+  | 'gemini-3.1-pro-preview'
+  | 'gemini-3.1-pro-preview-customtools'
+  | 'gemini-3-flash-preview'
+  | 'gemini-3-pro-image-preview'
+  | 'gemini-3-pro-preview'
   | 'gemini-3.5-flash'
   | 'gemini-3.1-flash-lite'
   | 'gemini-3.1-flash-lite-preview'
@@ -45,7 +50,18 @@ type ModelType =
   | 'deepseek-v4-flash'
   | 'llama-4-maverick'
   | 'llama-4-scout'
+  | 'llama-3.3'
   | 'mimo-v2.5'
+  | 'qwen-3.5-397b'
+  | 'minimax-m2'
+  | 'minimax-m2.1'
+  | 'minimax-m2.5'
+  | 'minimax-m2.7'
+  | 'glm-5'
+  | 'gemma-3-27b'
+  | 'medgemma-1.5-4b'
+  | 'qwen-3-next'
+  | 'gpt-oss'
   | 'jina-embeddings-v3'
   | 'voyage-multimodal-3.5'
   | 'voyage-4-lite'
@@ -57,7 +73,7 @@ export function HudAi() {
   const [chatHistory, setChatHistory] = useState<Message[]>([
     { 
       sender: 'bot', 
-      text: 'Olá, <em>Edmara</em>. Carreguei os recursos Ultra do **GCP Vertex AI**! Os novos modelos **Gemini 3.5 Flash (1M)**, **Gemini 3.1 Flash Lite (GA)** e o personalizado **Translation LLM** estão ativos! Também disponibilizei a suíte flagship **Grok 4.3**, **Grok 4.20** e os ultra-rápidos **Grok 4.1 Fast (Reasoning/Non-Reasoning)** operando no cockpit!' 
+      text: 'Olá, <em>Edmara</em>. Carreguei os recursos Ultra do **GCP Vertex AI**! Os novos modelos **Gemini 3.5 Flash (1M)**, **Gemini 3.1 Flash Lite (GA)** e o personalizado **Translation LLM** estão ativos! Também disponibilizei a suíte flagship **Grok 4.3**, os modelos **Qwen3.5 (397B)**, **MiniMax-M2/M2.7 (MoE)**, a infraestrutura **GLM-5 (Slime RL)** e os ultra-rápidos **Grok 4.1 Fast (Reasoning/Non-Reasoning)** operando no cockpit!' 
     }
   ])
   const [inputValue, setInputValue] = useState('')
@@ -83,8 +99,8 @@ export function HudAi() {
   const [multimodalType, setMultimodalType] = useState<'image' | 'video'>('image')
 
   // Imagen 4 Parameters
-  const [imagenModel, setImagenModel] = useState<'imagen-4.0-ultra' | 'imagen-4.0-fast'>('imagen-4.0-ultra')
-  const [aspectRatio, setAspectRatio] = useState<'1:1' | '16:9' | '9:16' | '4:3'>('16:9')
+  const [imagenModel, setImagenModel] = useState<'imagen-4.0-generate-001' | 'imagen-4.0-ultra-generate-001' | 'imagen-4.0-fast-generate-001'>('imagen-4.0-ultra-generate-001')
+  const [aspectRatio, setAspectRatio] = useState<'1:1' | '16:9' | '9:16' | '3:4' | '4:3'>('16:9')
   const [enhancePrompt, setEnhancePrompt] = useState(true)
   const [imagePrompt, setImagePrompt] = useState('Sleek dark-mode corporate dashboard, champagne gold gradients, NASA-style mission control room')
   const [isGeneratingImage, setIsGeneratingImage] = useState(false)
@@ -190,7 +206,18 @@ export function HudAi() {
       setRightPanelTab('translate')
     } else if (model === 'jina-embeddings-v3' || model === 'voyage-multimodal-3.5' || model === 'voyage-4-lite') {
       setRightPanelTab('embeddings')
-    } else if (model.startsWith('gemini') || model.startsWith('grok')) {
+    } else if (
+      model.startsWith('gemini') ||
+      model.startsWith('grok') ||
+      model.startsWith('llama') ||
+      model === 'qwen-3.5-397b' ||
+      model.startsWith('minimax') ||
+      model === 'glm-5' ||
+      model === 'gemma-3-27b' ||
+      model === 'medgemma-1.5-4b' ||
+      model === 'qwen-3-next' ||
+      model === 'gpt-oss'
+    ) {
       setRightPanelTab('garden')
     }
   }, [model])
@@ -205,7 +232,7 @@ export function HudAi() {
       `[GLOSSARY] ${glossaryInput.split('\n').filter(Boolean).length} termos de glossary identificados.`,
       `[ADAPTIVE] Alinhando pares de exemplos paralelos de aprendizado em poucos disparos (few-shot)...`,
       `[API-CALL] Projetando chamada na API avançada de Tradução: general/translation-llm`,
-      `[CONNECTING] Parent: projects/ipb-dev/locations/us-central1`
+      `[CONNECTING] Parent: projects/business-syllabus-dev/locations/us-central1`
     ])
 
     let step = 0
@@ -468,14 +495,7 @@ export function HudAi() {
           ...prev,
           {
             sender: 'bot',
-            text: `<b>[Voyage 4 Lite]</b> Concluí a vetorização em lote de <b>${lines.length} textos</b> na dimensão <b>${voyage4Dimensions}</b>. Os embeddings gerados estão no Shared Space da Voyage e prontos para buscas RAG!`
-          }
-        ])
-      }
-    }, 1500)
-  }
-
-  // --- ANIMAÇÃO DE IMPLANTAÇÃO GCP VERTEX AI (DEEPSEEK-V4 & GEMMA 4 & LLAMA 4 & XIAOMI MIMO) ---
+            text: `<b>[Voyage 4 Lite]</b> Concluí a vetorização em lote de <b>${lines.length}  // --- ANIMAÇÃO DE IMPLANTAÇÃO GCP VERTEX AI (DEEPSEEK-V4 & GEMMA 4 & LLAMA 4 & XIAOMI MIMO) ---
   const startModelDeployment = () => {
     if (tuningActive) return
     setTuningActive(true)
@@ -485,6 +505,13 @@ export function HudAi() {
     const isLlama = model.startsWith('llama')
     const isDeepSeek = model.startsWith('deepseek')
     const isMiMo = model === 'mimo-v2.5'
+    const isQwen = model === 'qwen-3.5-397b'
+    const isQwenNext = model === 'qwen-3-next'
+    const isMinimax = model.startsWith('minimax')
+    const isGlm = model === 'glm-5'
+    const isGemma3 = model === 'gemma-3-27b'
+    const isMedGemma = model === 'medgemma-1.5-4b'
+    const isGptOss = model === 'gpt-oss'
     const isVoyage = model === 'voyage-multimodal-3.5'
     const isVoyage4 = model === 'voyage-4-lite'
     
@@ -494,12 +521,19 @@ export function HudAi() {
     let endpointUrl = 'us-central1-aiplatform.googleapis.com'
 
     if (isLlama) {
-      activeModelName = model === 'llama-4-maverick' ? 'Llama-4-Maverick-17B-128E' : 'Llama-4-Scout-17B-16E'
-      publisherPath = model === 'llama-4-maverick' 
-        ? 'publishers/meta/models/llama-4-maverick-17b-128e-instruct-maas' 
-        : 'publishers/meta/models/llama-4-scout-17b-16e-instruct-maas'
-      region = 'us-east5' 
-      endpointUrl = 'us-east5-aiplatform.googleapis.com'
+      if (model === 'llama-3.3') {
+        activeModelName = 'Llama-3.3-70B-Instruct'
+        publisherPath = 'publishers/meta/models/llama3-3'
+        region = 'us-central1'
+        endpointUrl = 'us-central1-aiplatform.googleapis.com'
+      } else {
+        activeModelName = model === 'llama-4-maverick' ? 'Llama-4-Maverick-17B-128E' : 'Llama-4-Scout-17B-16E'
+        publisherPath = model === 'llama-4-maverick' 
+          ? 'publishers/meta/models/llama-4-maverick-17b-128e-instruct-maas' 
+          : 'publishers/meta/models/llama-4-scout-17b-16e-instruct-maas'
+        region = 'us-east5' 
+        endpointUrl = 'us-east5-aiplatform.googleapis.com'
+      }
     } else if (isDeepSeek) {
       activeModelName = model === 'deepseek-v4-pro' ? 'DeepSeek-V4-Pro' : 'DeepSeek-V4-Flash'
       publisherPath = model === 'deepseek-v4-pro'
@@ -510,6 +544,41 @@ export function HudAi() {
       publisherPath = 'XiaomiMiMo/MiMo-V2.5@MiMo-V2.5'
       region = 'us-south1'
       endpointUrl = 'us-south1-aiplatform.googleapis.com'
+    } else if (isQwen) {
+      activeModelName = 'Qwen3.5-397B-A17B'
+      publisherPath = 'publishers/qwen/models/qwen3-5@qwen3.5-397b-a17b'
+      region = 'us-central1'
+      endpointUrl = 'us-central1-aiplatform.googleapis.com'
+    } else if (isQwenNext) {
+      activeModelName = 'Qwen3-Next-80B'
+      publisherPath = 'qwen/qwen3-next@Qwen3-Next-80B-A3B-Instruct'
+      region = 'us-south1'
+      endpointUrl = 'us-south1-aiplatform.googleapis.com'
+    } else if (isMinimax) {
+      activeModelName = model === 'minimax-m2.7' ? 'MiniMax-M2.7' : model === 'minimax-m2.5' ? 'MiniMax-M2.5' : model === 'minimax-m2.1' ? 'MiniMax-M2.1' : 'MiniMax-M2'
+      publisherPath = `publishers/minimaxai/models/minimax-m2@${model.replace('minimax-', '')}`
+      region = 'us-east1'
+      endpointUrl = 'us-east1-aiplatform.googleapis.com'
+    } else if (isGlm) {
+      activeModelName = 'GLM-5 Flagship'
+      publisherPath = 'publishers/glm/models/glm5@latest'
+      region = 'us-central1'
+      endpointUrl = 'us-central1-aiplatform.googleapis.com'
+    } else if (isGemma3) {
+      activeModelName = 'Gemma-3-27B-IT'
+      publisherPath = 'publishers/google/models/gemma3@gemma-3-27b-it'
+      region = 'us-central1'
+      endpointUrl = 'us-central1-aiplatform.googleapis.com'
+    } else if (isMedGemma) {
+      activeModelName = 'MedGemma-1.5-4B-IT'
+      publisherPath = 'publishers/google/models/medgemma@medgemma-1.5-4b-it'
+      region = 'us-central1'
+      endpointUrl = 'us-central1-aiplatform.googleapis.com'
+    } else if (isGptOss) {
+      activeModelName = 'GPT-OSS-20B'
+      publisherPath = 'openai/gpt-oss@gpt-oss-20b'
+      region = 'europe-west4'
+      endpointUrl = 'europe-west4-aiplatform.googleapis.com'
     } else if (isVoyage) {
       activeModelName = 'Voyage Multimodal 3.5'
       publisherPath = 'mongodb/voyage-multimodal-3.5@latest'
@@ -527,7 +596,7 @@ export function HudAi() {
       `[VERTEX-AI] Conectando ao Model Garden - Região: ${region}`,
       `[MODEL-GARDEN] Carregando pesos gerenciados de: ${publisherPath}`,
       isLlama 
-        ? `[LICENÇA] Aceitando os termos da Llama 4 Community License Agreement... Aceito`
+        ? `[LICENÇA] Aceitando os termos da ${model === 'llama-3.3' ? 'Llama 3.3' : 'Llama 4'} Community License Agreement... Aceito`
         : `[LICENÇA] Aceitando os termos de licença de uso aberto... Aceito`
     ])
 
@@ -540,35 +609,77 @@ export function HudAi() {
           ...prev,
           `[GCP-CONFIG] Configurando host e alocando TPUs na região ${region}...`,
           isLlama 
-            ? `[MOE-ALLOC] Llama 4 carregado. Experts MoE ativos: ${model === 'llama-4-maverick' ? '128 experts (400B total / 17B ativos)' : '16 experts (109B total / 17B ativos)'}`
+            ? (model === 'llama-3.3'
+                ? `[GPU-ALLOC] Llama 3.3 70B carregado. GPU Cluster H100 TDP 700W otimizado e ativo (7.0M hours pre-trained baseline)`
+                : `[MOE-ALLOC] Llama 4 carregado. Experts MoE ativos: ${model === 'llama-4-maverick' ? '128 experts (400B total / 17B ativos)' : '16 experts (109B total / 17B ativos)'}`)
             : isDeepSeek 
               ? `[MOE-ALLOC] DeepSeek MoE ativado (1.6T total params, 49B ativos por token com precisão FP4/FP8 misto)`
               : isMiMo 
                 ? `[MOE-ALLOC] MiMo-V2.5 Sparse MoE ativo (310B total / 15B ativos, 8 experts por token)`
-                : isVoyage || isVoyage4 
-                  ? `[ENDPOINT-ALLOC] Inicializando Dedicated Endpoint Vertex AI para Voyage...`
-                  : `[PLE-ALLOC] Ativando Per-Layer Embeddings (PLE) nos decodificadores da arquitetura Gemma 4`,
+                : isQwen
+                  ? `[MOE-ALLOC] Qwen3.5 MoE ativado (397B total, 17B experts ativos por token)`
+                  : isQwenNext
+                    ? `[TPU-ALLOC] Qwen3 Next 80B Model Garden loading (Auto-scaling with A3B-Thinking active)`
+                    : isMinimax
+                      ? `[FORGE-ALLOC] MiniMax ${activeModelName} no framework Forge ativado (${model === 'minimax-m2.7' ? 'Auto-Evolution 100+ rounds' : '100 tokens/segundo RL runtime'})`
+                      : isGlm
+                        ? `[SLIME-ALLOC] GLM-5 Slime Asynchronous RL Infrastructure ativada (alta taxa de transferência e eficácia de amostras)`
+                        : isGemma3
+                          ? `[TPU-ALLOC] Alocando TPUv5e para Gemma 3 27B IT (14 Trillion tokens pre-trained context)`
+                          : isMedGemma
+                            ? `[CLINICAL-ALLOC] Alocando GPU com SigLIP image encoder de MedGemma 1.5 4B (radiology & dermatology classification model)`
+                            : isGptOss
+                              ? `[TPU-ALLOC] GPT OSS 20B Model Garden loading (OpenAI open-weight inference enabled)`
+                              : isVoyage || isVoyage4 
+                                ? `[ENDPOINT-ALLOC] Inicializando Dedicated Endpoint Vertex AI para Voyage...`
+                                : `[PLE-ALLOC] Ativando Per-Layer Embeddings (PLE) nos decodificadores da arquitetura Gemma 4`,
           isMiMo 
             ? `[ENCODER-ALLOC] Alocando 729M-param ViT (28 camadas) + 261M-param Audio Transformer`
-            : isVoyage4 
-              ? `[GPU-SPECS] Configurando VM a3-highgpu-1g com NVIDIA H100 80GB...`
-              : isLlama
-                ? `[QUANT] Carregando pesos FP8 compilados de fábrica para otimização de VRAM`
-                : isDeepSeek
-                  ? `[PRECISION] Carregando pesos de decodificadores MoE em FP4 e atenção central em FP8`
-                  : `[ATTENTION] Configurando Hybrid Attention com sliding window de 1024 tokens`
+            : isQwen
+              ? `[VISION-ENCODER] Alocando codificador de visão nativo de alta fidelidade e resolução variável`
+              : isGemma3
+                ? `[MULTIMODAL] Inicializando JAX e Pathways Jigsaw vision projection layers`
+                : isMedGemma
+                  ? `[SIGLIP] Inicializando SigLIP image encoder (896x896 resolution, 256 image tokens mapped)`
+                  : isVoyage4 
+                    ? `[GPU-SPECS] Configurando VM a3-highgpu-1g com NVIDIA H100 80GB...`
+                    : isLlama
+                      ? (model === 'llama-3.3'
+                          ? `[QUANT] Otimizando pesos de inferência para 70B parâmetros em FP8 no cluster us-central1`
+                          : `[QUANT] Carregando pesos FP8 compilados de fábrica para otimização de VRAM`)
+                      : isDeepSeek
+                        ? `[PRECISION] Carregando pesos de decodificadores MoE em FP4 e atenção central em FP8`
+                        : isGlm
+                          ? `[RL-QUANT] Otimizando pesos de inferência para decodificadores esparsos via feedback de recompensa de processo`
+                          : `[ATTENTION] Configurando Hybrid Attention com sliding window de 1024 tokens`
         ])
         setTuningProgress(30)
       } else if (step === 3) {
         setTuningLogs(prev => [
           ...prev,
           isMiMo
-            ? `[MTP] Multi-Token Prediction (MTP) de 3 camadas ativa (329M parâmetros)...`
-            : isLlama && model === 'llama-4-scout'
-              ? `[vLLM] Configurando suporte a contextos astronômicos de 10 MILHÕES de tokens (10M Context Window)...`
-              : isVoyage || isVoyage4 
-                ? `[MODEL-GARDEN] Instanciando MongoDB Voyage com 32K context window...`
-                : `[vLLM] Configurando suporte a contextos de 1 milhão de tokens (1M Context Intelligence)...`,
+            ? `[MTP] Multi-Token Prediction (MTP) de 3 camadas activa (329M parâmetros)...`
+            : isQwen
+              ? `[vLLM] Configurando suporte a contextos astronômicos de 262,144 tokens nativos (extensíveis até 1,010,000 tokens)`
+              : isQwenNext
+                ? `[vLLM] Configurando suporte a contextos gigantescos de 80B params via auto-scaling`
+                : isGlm
+                  ? `[SLIME-INF] Configurando paralelismo de pipeline e balanceamento dinâmico de carga com slime`
+                  : isGemma3
+                    ? `[vLLM] Ativando Grouped-query attention (GQA) com 128K context length`
+                    : isMedGemma
+                      ? `[EHRQA] Ativando EHR-specific clinical reasoning context window de 128K tokens`
+                      : isGptOss
+                        ? `[vLLM] Configurando suporte a contextos de 128K com auto-scaling TPUv5e`
+                        : isLlama
+                          ? (model === 'llama-3.3'
+                              ? `[vLLM] Configurando suporte a contextos de 128K com GQA de alta fidelidade`
+                              : model === 'llama-4-scout'
+                                ? `[vLLM] Configurando suporte a contextos astronômicos de 10 MILHÕES de tokens (10M Context Window)...`
+                                : `[vLLM] Configurando suporte a contextos de 1 milhão de tokens (1M Context Intelligence)...`)
+                          : isVoyage || isVoyage4 
+                            ? `[MODEL-GARDEN] Instanciando MongoDB Voyage com 32K context window...`
+                            : `[vLLM] Configurando suporte a contextos de 1 milhão de tokens (1M Context Intelligence)...`,
           `[MEMORY] Checkpoints de segurança validados no cluster host...`,
           `[INF-TEST] Disparando requisição chat.completions de teste a frio no endpoint...`
         ])
@@ -577,7 +688,7 @@ export function HudAi() {
         setTuningLogs(prev => [
           ...prev,
           `[INF-TEST] Inferência concluída com sucesso.`,
-          `[ENDPOINT] Criado Endpoint GCP: https://${endpointUrl}/v1/projects/ipb-dev/locations/${region}/endpoints/openapi/predict`,
+          `[ENDPOINT] Criado Endpoint GCP: https://${endpointUrl}/v1/projects/business-syllabus-dev/locations/${region}/endpoints/openapi/predict`,
           `[SUCCESS] O modelo ${activeModelName} está ativado no plano de desenvolvedor gratuito (sem cobranças de API).`
         ])
         setTuningProgress(100)
@@ -589,6 +700,12 @@ export function HudAi() {
             {
               sender: 'bot',
               text: `<b>[Deploy / Open Model Ativo!]</b> O modelo <b>${activeModelName}</b> foi implantado com sucesso no endpoint de <b>${region}</b>.`
+            }
+          ])
+        }, 1000)
+      }
+    }, 3000)
+  }     text: `<b>[Deploy / Open Model Ativo!]</b> O modelo <b>${activeModelName}</b> foi implantado com sucesso no endpoint de <b>${region}</b>.`
             }
           ])
         }, 1000)
@@ -662,7 +779,7 @@ export function HudAi() {
       `[GCP] Inicializando veo-3.0-generate-001:predictLongRunning...`,
       `[CONFIG] Resolução: ${veoResolution} | Gerar Áudio: ${veoAudio ? 'True' : 'False'} | Sample Count: 1`,
       `[VEO-3] Lançando operação de longa duração (Long-Running Operation)...`,
-      `[RESPONSE] Operação iniciada. ID retornado: projects/ipb/locations/us-central1/publishers/google/models/veo-3.0-generate-001/operations/${randomOpId}`,
+      `[RESPONSE] Operação iniciada. ID retornado: projects/business-syllabus/locations/us-central1/publishers/google/models/veo-3.0-generate-001/operations/${randomOpId}`,
       `[POLL-INIT] Iniciando loop de checagem veo-3.0-generate-001:fetchPredictOperation...`
     ])
 
@@ -719,10 +836,31 @@ export function HudAi() {
 
     const isDeepSeek = model.startsWith('deepseek')
     const isGemma4 = model.startsWith('gemma')
-    const isLlama4 = model.startsWith('llama')
+    const isLlama4 = model.startsWith('llama') && model !== 'llama-3.3'
+    const isLlama3_3 = model === 'llama-3.3'
     const isGrokReasoning = model === 'grok-4.1-fast-reasoning'
+    const isQwen = model === 'qwen-3.5-397b'
+    const isQwenNext = model === 'qwen-3-next'
+    const isMinimax = model.startsWith('minimax')
+    const isGlm = model === 'glm-5'
+    const isGemma3 = model === 'gemma-3-27b'
+    const isMedGemma = model === 'medgemma-1.5-4b'
+    const isGptOss = model === 'gpt-oss'
 
-    if ((isDeepSeek || isGemma4 || isGrokReasoning) && showThinking && reasoningMode !== 'non-think') {
+    const hasReasoning =
+      isDeepSeek ||
+      isGemma4 ||
+      isLlama3_3 ||
+      isGrokReasoning ||
+      isQwen ||
+      isQwenNext ||
+      isMinimax ||
+      isGlm ||
+      isGemma3 ||
+      isMedGemma ||
+      isGptOss
+
+    if (hasReasoning && showThinking && reasoningMode !== 'non-think') {
       let tText = ''
       
       const dsThoughts = [
@@ -731,7 +869,7 @@ export function HudAi() {
         `[Modo de Raciocínio: ${reasoningMode === 'think-max' ? 'Think Max' : 'Think High'}]`,
         `[Precisão: FP4 Experts + FP8 mixed attention]`,
         `1. Entrada do usuário: "${text}"`,
-        `2. Analisando o ecossistema de negócios do IPB:`,
+        `2. Analisando o ecossistema de negócios de Business Syllabus:`,
         `   - Receita Mensal: R$ 150k`,
         `   - OPEX fixo: R$ 60k`,
         `   - Pressão de metas atual do cockpit: escala 5`,
@@ -776,7 +914,112 @@ export function HudAi() {
         `</think>`
       ]
 
-      const thoughts = isDeepSeek ? dsThoughts : isGemma4 ? gemmaThoughts : grokThoughts
+      const qwenThoughts = [
+        '<think>',
+        `[Modelo: Qwen3.5-397B-A17B MoE (Causal Language Model with Vision Encoder)]`,
+        `[Modo de Raciocínio: ${reasoningMode === 'think-max' ? 'Think Max' : 'Think High'}]`,
+        `1. Entrada do usuário: "${text}"`,
+        `2. Processando telemetria e imagens da dashboard com Vision Encoder.`,
+        `3. CPC Meta Ads: US$ 12.40 vs TikTok Ads: US$ 6.80. Curva LTV/CAC saturando no Meta.`,
+        `4. Decisão: Realocar 30% do orçamento para TikTok Ads barateia o CAC e otimiza o EBITDA.`,
+        `5. Finalizando a resposta em conformidade com benchmarks de STEM e Coding.`,
+        `</think>`
+      ]
+
+      const qwenNextThoughts = [
+        '<think>',
+        `[Modelo: Qwen3-Next-80B-A3B-Thinking - Serving for text generation]`,
+        `1. Entrada de comando capturada: "${text}"`,
+        `2. Varrendo pesos de raciocínio de 80B com Auto-scaling da GCP.`,
+        `3. Formulando resposta lógica para o ecossistema do Business Syllabus.`,
+        `4. Lançando tokens formatados com alta fidelidade.`,
+        `</think>`
+      ]
+
+      const minimaxThoughts = [
+        '<thought>',
+        `[Modelo: ${model === 'minimax-m2.7' ? 'MiniMax-M2.7 (Auto-Evolution)' : model === 'minimax-m2.5' ? 'MiniMax-M2.5 (100 tok/sec)' : 'MiniMax-M2'}]`,
+        `[Framework: Forge RL Engine (decodificadores esparsos ativos)]`,
+        `1. Comando recebido no cockpit: "${text}"`,
+        `2. Analisando OPEX (R$ 60k) e Runway operacional (99 meses).`,
+        `3. Executando rastro de pensamento interleaved com regras de compliance MiniMax.`,
+        `4. Sugerindo blindagem via Renda Fixa/CDI e otimização de campanhas.`,
+        `</thought>`
+      ]
+
+      const glmThoughts = [
+        '<think>',
+        `[Modelo: GLM-5 Flagship - Asynchronous RL Infrastructure (slime)]`,
+        `1. Comando SWOT Viva em andamento com RL pipeline.`,
+        `2. Correlacionando PESTEL score (${averagePestel()}%) com margem de lucro operacional.`,
+        `3. Realocando budget digital para TikTok Ads (CPM de US$ 6.80 vs US$ 12.40).`,
+        `</think>`
+      ]
+
+      const gemma3Thoughts = [
+        '<|think|>',
+        `[Modelo: Gemma 3 27B IT - Lightweight state-of-the-art open model from Google]`,
+        `[Mapeamento: 14 Trillion Tokens pre-training context]`,
+        `1. Entrada do usuário: "${text}"`,
+        `2. Analisando o runway estrutural (99 meses) e o EBITDA (R$ 90k/mês).`,
+        `3. Recomendação: Alocação CDI contra volatilidade operacional.`,
+        `<|channel>thought\nConcluído.<channel|>`
+      ]
+
+      const medGemmaThoughts = [
+        '<think>',
+        `[Modelo: MedGemma 1.5 4B Multimodal IT - Clinical Reasoning Engine]`,
+        `[Input Modality: Multimodal Text/Vision (896x896 resolution, 256 SigLIP image tokens)]`,
+        `1. Entrada médica/operacional: "${text}"`,
+        `2. Analisando EHR data e discharge summaries de saúde corporativa.`,
+        `3. Diagnosticando estresse na equipe (turnover indicando fadiga do time de 34% sob pressão 5).`,
+        `4. Tratamento prescrito: Reajuste imediato de metas de 150k para 120k.`,
+        `</think>`
+      ]
+
+      const gptOssThoughts = [
+        '<think>',
+        `[Modelo: GPT OSS 20B/120B (OpenAI Open-Weights Reasoning)]`,
+        `1. Entrada de comando capturada: "${text}"`,
+        `2. Varrendo pesos de raciocínio de 20B/120B do GPT OSS.`,
+        `3. Formulando resposta lógica para o ecossistema do Business Syllabus.`,
+        `4. Lançando tokens formatados com alta fidelidade e aderência a benchmarks.`,
+        `</think>`
+      ]
+
+      const llama3_3Thoughts = [
+        '<think>',
+        `[Modelo: Llama 3.3 70B Instruct - Meta's Custom Built GPU Cluster]`,
+        `[Benchmarks CoT: GPQA Diamond (50.5% Acc) | MATH CoT (77.0% Score)]`,
+        `1. Comando de entrada recebido no cockpit: "${text}"`,
+        `2. Analisando telemetria operacional com o modelo Llama 3.3.`,
+        `3. Processando recomendação estratégica para Business Syllabus.`,
+        `4. Estruturando resposta em conformidade com a licença de uso comunitária Meta.`,
+        `</think>`
+      ]
+
+      const thoughts = isDeepSeek 
+        ? dsThoughts 
+        : isGemma4 
+          ? gemmaThoughts 
+          : isGrokReasoning 
+            ? grokThoughts 
+            : isQwen 
+              ? qwenThoughts 
+              : isQwenNext
+                ? qwenNextThoughts
+                : isMinimax 
+                  ? minimaxThoughts 
+                  : isGlm 
+                    ? glmThoughts 
+                    : isGemma3 
+                      ? gemma3Thoughts 
+                      : isMedGemma
+                        ? medGemmaThoughts
+                        : isGptOss
+                          ? gptOssThoughts
+                          : llama3_3Thoughts
+
       let idx = 0
 
       const thinkInterval = setInterval(() => {
@@ -796,6 +1039,25 @@ export function HudAi() {
             Para otimizar o EBITDA Líquido final para <b>R$ 90k</b>, recomendo diminuir as metas em 20% no curto prazo. Isso desacelera o esgotamento humano, reduz o turnover a zero e economiza em multas rescisórias.`
           } else if (isGemma4) {
             finalReply = `<b>[Gemma 4 MoE]:</b> Com a taxa SELIC a 14.40% e juro real a 10.01%, o rebalanceamento estratégico ideal é **alocar 40% do caixa livre (R$ 340k)** em títulos de renda fixa atrelados ao CDI. Isso gera receita recorrente passiva e blinda a operação de atritos operacionais.`
+          } else if (isQwen) {
+            finalReply = `<b>[Qwen3.5-397B-A17B]:</b> Análise multimodal concluída! Minha engine identificou uma ineficiência na alocação de anúncios digitais. Direcionar 30% do budget para o TikTok Ads (CPM US$ 6.80) contra o Meta Ads (CPM US$ 12.40) otimizará o LTV/CAC e reduzirá o custo operacional em <b>18%</b>, fortalecendo a saúde financeira do Business Syllabus.`
+          } else if (isQwenNext) {
+            finalReply = `<b>[Qwen3-Next-80B]:</b> Análise com raciocínio profundo concluída! O cockpit integrado do Business Syllabus indica eficiência máxima na realocação de verba de Ads. Recomendo direcionar 30% do orçamento para o TikTok Ads.`
+          } else if (isMinimax) {
+            finalReply = `<b>[${model.toUpperCase()} Interleaved]:</b> <thought>Processando resposta final no formato intercalado no cockpit.</thought> Minha engine interleaved estruturou as respostas do cockpit com a saúde financeira mantendo-se em patamares excelentes, indicando que o CDI a 14.40% nominal oferece ROI atrativo livre de risco.`
+          } else if (isGlm) {
+            finalReply = `<b>[GLM-5 Flagship]:</b> Varredura operacional via slime RL concluída! Para combater o desgaste de margem e o CAC médio, a migração de 30% do budget de anúncios digitais para TikTok Ads é o movimento de maior eficiência comprovada.`
+          } else if (isGemma3) {
+            finalReply = `<b>[Gemma 3 27B IT]:</b> Com a taxa SELIC de 14.40% e juros reais a 10.01%, recomendo blindar a operação de Business Syllabus alocando 40% do caixa disponível (R$ 340k) no CDI. Isso gera receita recorrente de baixo atrito.`
+          } else if (isMedGemma) {
+            finalReply = `<b>[MedGemma-1.5-4B]:</b> Diagnóstico clínico do Business Syllabus concluído! Identifiquei fadiga crítica no time sob pressão de escala 5. O tratamento recomendado é readequar as metas para 120k de faturamento. Isso reduz o burnout e otimiza o EBITDA para R$ 90k/mês.`
+          } else if (isGptOss) {
+            finalReply = `<b>[GPT-OSS-20B/120B]:</b> Processamento de raciocínio da OpenAI Open-Weights concluído. O EBITDA de R$ 90k/mês e o runway de 99 meses podem ser otimizados alocando 40% do caixa excedente no CDI livre de risco (Selic 14.40%).`
+          } else if (isLlama3_3) {
+            finalReply = `<b>[Llama 3.3 70B Instruct (Built with Llama)]:</b> 
+            Edmara, com base em 15 trilhões de tokens de treinamento e raciocínio estruturado, a análise do cockpit do Business Syllabus aponta que o turnover da equipe sob pressão alta (escala 5) gera um custo invisível de <b>R$ -90k/mês</b>.
+            <br/><br/>
+            Para reverter essa ineficiência e consolidar a saúde financeira, a redução imediata de 20% nas metas de faturamento é a decisão ideal. Isso estabiliza o time e mantém a margem saudável.`
           } else {
             finalReply = `<b>[Grok 4.1 Fast (Reasoning)]:</b> Minha engine rápida sintetizou os custos e validou que a arbitragem de canais (Meta vs TikTok) derruba o CAC em <b>22%</b> instantaneamente. Excelente janela de realocação.`
           }
@@ -818,22 +1080,38 @@ export function HudAi() {
 
         if (isLlama4) {
           reply = `<b>[${model === 'llama-4-maverick' ? 'Llama 4 Maverick' : 'Llama 4 Scout'} (Built with Llama)]:</b>
-          Edmara, vamos bater um papo reto sobre essa operação. Analisei os números do IPB e, cara, o CAC médio a R$ ${cenarioCac()} está consumindo seu capital de giro muito rápido. 
+          Edmara, vamos bater um papo reto sobre essa operação. Analisei os números do Business Syllabus e, cara, o CAC médio a R$ ${cenarioCac()} está consumindo seu capital de giro muito rápido. 
           Seu faturamento de R$ ${cenarioFaturamento()}k sustenta a empresa, mas a pressão alta gera turnover e morde seu EBITDA operacional. 
           Eu recomendo equilibrar essa meta para dar um fôlego pros analistas e manter o caixa crescendo de forma sólida.`
+        } else if (model === 'llama-3.3') {
+          reply = `<b>[Llama 3.3 70B (Built with Llama)]:</b> Edmara, operando com inferência de alta velocidade! O faturamento de R$ ${cenarioFaturamento()}k sustenta o Business Syllabus, e o runway de 99 meses garante estabilidade.`
         } else if (model === 'translation-llm') {
           reply = `<b>[Translation LLM]:</b> Tradução adaptativa com glossário ativa!<br/><br/>
           Entrada: <i>"${text}"</i><br/>
           Saída traduzida (PT): <i>"Olá Edmara. Analisei a telemetria com os termos restritos de Glossary integrados."</i><br/><br/>
           <i>Use o painel lateral <b>Adaptive Translation Studio</b> para configurar seus próprios glossários e ver o alinhamento de terminologia em tempo real!</i>`
         } else if (model === 'jina-embeddings-v3') {
-          reply = `<b>[Jina Embeddings v3]:</b> API de embeddings ativa! Converta as telemetrias financeiras do IPB em vetores densos e compacte-os via Matryoshka.<br/><br/><i>Use o painel lateral <b>Jina & Voyage Sandbox</b> para gerar e compactar vetores em tempo real!</i>`
+          reply = `<b>[Jina Embeddings v3]:</b> API de embeddings ativa! Converta as telemetrias financeiras do Business Syllabus em vetores densos e compacte-os via Matryoshka.<br/><br/><i>Use o painel lateral <b>Jina & Voyage Sandbox</b> para gerar e compactar vetores em tempo real!</i>`
         } else if (model === 'voyage-multimodal-3.5') {
           reply = `<b>[Voyage Multimodal 3.5]:</b> API de embeddings multimodais ativada! Consigo vetorizar de forma integrada textos, imagens e vídeos em um único vetor denso de até 2048 dimensões. Ideal para buscas semânticas profundas em bancos de dados vectoriais.<br/><br/><i>Use o painel lateral <b>Embed Sandbox</b> para misturar mídias e gerar vetores quantizados (int8, binary) em tempo real!</i>`
         } else if (model === 'voyage-4-lite') {
           reply = `<b>[Voyage 4 Lite]:</b> API de embeddings de texto ultra-rápida e de baixo custo ativada! Com uma janela de contexto de 32K e suporte à quantização avançada (float, int8, binary) em um espaço de embeddings compartilhado, sou ideal para realizar buscas semânticas rápidas de baixo atrito.<br/><br/><i>Use o painel lateral <b>Embed Sandbox</b> para vetorizar em lote e comparar taxas de compressão Matryoshka live!</i>`
         } else if (model === 'mimo-v2.5') {
           reply = `<b>[MiMo-V2.5 (310B MoE)]:</b> Conexão de inferência multimodal estabelecida! Minha arquitetura com decodificadores esparsos (15B ativos) e encoders ViT (729M) e Audio (261M) está pronta para processar textos, imagens, áudios e vídeos de até 1M de tokens no cockpit.`
+        } else if (model === 'qwen-3.5-397b') {
+          reply = `<b>[Qwen 3.5 397B]:</b> Inferência instantânea ativa! EBITDA operacional está em R$ 90k/mês com Runway de 99 meses. A análise macroeconômica do Business Syllabus indica alta resiliência.`
+        } else if (model === 'qwen-3-next') {
+          reply = `<b>[Qwen3-Next-80B]:</b> Canal de inferência rápida operacional. As métricas de LTV/CAC e margem EBITDA estão alinhadas com as projeções do cockpit.`
+        } else if (model.startsWith('minimax')) {
+          reply = `<b>[${model.toUpperCase()}]:</b> Inferência rápida de 100 tokens/segundo ativa no Forge RL Runtime! EBITDA do Business Syllabus está estável.`
+        } else if (model === 'glm-5') {
+          reply = `<b>[GLM-5 Flagship]:</b> Inferência rápida com suporte a Slime RL ativa. O cockpit exibe conformidade estratégica de alto nível.`
+        } else if (model === 'gemma-3-27b') {
+          reply = `<b>[Gemma 3 27B IT]:</b> Resposta gerada via modelo aberto do Google. A saúde financeira está estável com CAC médio sob controle.`
+        } else if (model === 'medgemma-1.5-4b') {
+          reply = `<b>[MedGemma-1.5-4B]:</b> Inferência clínica rápida concluída. Telemetria de estresse corporativo do Business Syllabus mapeada.`
+        } else if (model === 'gpt-oss') {
+          reply = `<b>[GPT-OSS-20B]:</b> Conexão instantânea de inferência estabelecida com o endpoint europe-west4. EBITDA operacional robusto.`
         } else if (model === 'gemini-3.5-flash') {
           reply = `<b>[Gemini 3.5 Flash]:</b> Resposta gerada com o novo modelo Flash. O custo de token foi reduzido e a latência de processamento de contexto de 1M caiu para <b>12ms</b>! O seu EBITDA de R$ 90k/mês está estável e seu runway é robusto.`
         } else if (model === 'gemini-3.1-flash-lite') {
@@ -842,6 +1120,16 @@ export function HudAi() {
           reply = `<b>[Gemini 3.1 Flash Lite Preview]:</b> Conexão estabelecida com a prévia pública do modelo Lite. Desempenho idêntico ao Flash, mas com faturamento de custos operacionais mitigado.`
         } else if (model === 'gemini-3.1-pro') {
           reply = `<b>[Gemini 3.1 Pro Preview]:</b> Analisei a sua estrutura com a janela de 1M de tokens. Sugiro otimizar a alocação de anúncios digitais direcionando 20% do orçamento do Meta Ads (CPM US$ 12.40) para o TikTok Ads (CPM US$ 6.80) para otimizar o LTV/CAC.`
+        } else if (model === 'gemini-3.1-pro-preview') {
+          reply = `<b>[Gemini 3.1 Pro Preview]:</b> Analisei a telemetria do Business Syllabus com o modelo flagship. Suporte nativo a 1 milhão de tokens de contexto e raciocínio profundo de agentes ativo.`
+        } else if (model === 'gemini-3.1-pro-preview-customtools') {
+          reply = `<b>[Gemini 3.1 Pro Preview (Custom Tools)]:</b> Conectado ao endpoint especializado em chamadas de ferramentas personalizadas. Processando ações com bash, view_file e search_code em alto desempenho.`
+        } else if (model === 'gemini-3-flash-preview') {
+          reply = `<b>[Gemini 3 Flash Preview]:</b> Nosso modelo de inferência de agente de alto desempenho ativado! Trazendo inteligência de codificação e compreensão multimodal próxima do Pro, com equilíbrio otimizado de custo e latência.`
+        } else if (model === 'gemini-3-pro-image-preview') {
+          reply = `<b>[Gemini 3 Pro Image Preview]:</b> Inicializado canal criativo de alta fidelidade! Integrando geração de imagens e edição conversacional live. Suporta saída multimodal [TEXT, IMAGE] nativa com latência de resposta aprimorada.`
+        } else if (model === 'gemini-3-pro-preview') {
+          reply = `<b>[Gemini 3 Pro Preview]:</b> Nosso modelo flagship de inteligência agentica e codificação ativado no cockpit de Business Syllabus! Com janela de 1M de tokens e compreensão multimodal superior para tarefas analíticas complexas.`
         } else if (model === 'grok-4.3') {
           reply = `<b>[Grok 4.3]:</b> Flagship de última geração da xAI implantado globalmente. Menor taxa de alucinação e excelentes capacidades estruturadas em tomados de decisão.`
         } else if (model === 'grok-4.20-non-reasoning') {
@@ -960,7 +1248,18 @@ export function HudAi() {
   const renderDynamicCode = () => {
     const isGemini = model.startsWith('gemini')
     const isGrok = model.startsWith('grok')
-    const isOpenModel = model.startsWith('gemma') || model.startsWith('deepseek') || model.startsWith('llama') || model === 'mimo-v2.5'
+    const isOpenModel =
+      model.startsWith('gemma') ||
+      model.startsWith('deepseek') ||
+      model.startsWith('llama') ||
+      model === 'mimo-v2.5' ||
+      model === 'qwen-3.5-397b' ||
+      model.startsWith('minimax') ||
+      model === 'glm-5' ||
+      model === 'qwen-3-next' ||
+      model === 'gpt-oss' ||
+      model === 'gemma-3-27b' ||
+      model === 'medgemma-1.5-4b'
 
     if (model === 'voyage-4-lite') {
       if (codeLanguageTab === 'python') {
@@ -1156,13 +1455,113 @@ curl -X POST \\
     }
 
     if (isGemini) {
+      if (model === 'gemini-3-pro-image-preview') {
+        if (codeLanguageTab === 'python') {
+          if (expressMode) {
+            return `# Google Gen AI SDK (Python) - Express Mode
+from google import genai
+from google.genai import types
+
+client = genai.Client(
+    vertexai=True,
+    api_key="YOUR_API_KEY"
+)
+
+prompt = "Generate a hyper-realistic infographic of a gourmet cheeseburger, deconstructed to show the texture of the toasted brioche bun, the seared crust of the patty, and the glistening melt of the cheese."
+response = client.models.generate_content(
+    model="gemini-3-pro-image-preview",
+    contents=prompt,
+    config=types.GenerateContentConfig(
+        response_modalities=['IMAGE', 'TEXT'],
+        image_config=types.ImageConfig(
+            aspect_ratio="16:9",
+            image_size="2K",
+        ),
+    ),
+)
+print("Finish Reason:", response.candidates[0].finish_reason)`
+          } else {
+            return `# Google Gen AI SDK (Python) - Standard Vertex AI
+from google import genai
+from google.genai import types
+
+PROJECT_ID = "YOUR_PROJECT_ID"
+LOCATION = "global"
+client = genai.Client(
+    vertexai=True,
+    project=PROJECT_ID,
+    location=LOCATION
+)
+
+prompt = "Generate a hyper-realistic infographic of a gourmet cheeseburger, deconstructed to show the texture of the toasted brioche bun, the seared crust of the patty, and the glistening melt of the cheese."
+response = client.models.generate_content(
+    model="gemini-3-pro-image-preview",
+    contents=prompt,
+    config=types.GenerateContentConfig(
+        response_modalities=['IMAGE', 'TEXT'],
+        image_config=types.ImageConfig(
+            aspect_ratio="16:9",
+            image_size="2K",
+        ),
+    ),
+)
+print("Finish Reason:", response.candidates[0].finish_reason)`
+          }
+        } else {
+          if (expressMode) {
+            return `# Agent Platform API - Express Mode (curl)
+curl -X POST \\
+  -H "Content-Type: application/json" \\
+  https://aiplatform.googleapis.com/v1/publishers/google/models/gemini-3-pro-image-preview:generateContent?key=YOUR_API_KEY \\
+  -d '{
+    "contents": {
+      "role": "user",
+      "parts": {
+        "text": "Generate a hyper-realistic infographic of a gourmet cheeseburger, deconstructed to show the texture of the toasted brioche bun, the seared crust of the patty, and the glistening melt of the cheese."
+      }
+    },
+    "generation_config": {
+      "response_modalities": ["TEXT", "IMAGE"]
+    }
+  }'`
+          } else {
+            return `# Agent Platform API - Standard Vertex AI (curl)
+curl -X POST \\
+  -H "Authorization: Bearer $(gcloud auth print-access-token)" \\
+  -H "Content-Type: application/json" \\
+  https://aiplatform.googleapis.com/v1/projects/YOUR_PROJECT_ID/locations/global/publishers/google/models/gemini-3-pro-image-preview:generateContent \\
+  -d '{
+    "contents": {
+      "role": "user",
+      "parts": {
+        "text": "Generate a hyper-realistic infographic of a gourmet cheeseburger, deconstructed to show the texture of the toasted brioche bun, the seared crust of the patty, and the glistening melt of the cheese."
+      }
+    },
+    "generation_config": {
+      "response_modalities": ["TEXT", "IMAGE"]
+    }
+  }'`
+          }
+        }
+      }
+
       const modelId = model === 'gemini-3.1-pro' 
         ? 'gemini-3.1-pro' 
-        : model === 'gemini-3.5-flash' 
-          ? 'gemini-3.5-flash' 
-          : model === 'gemini-3.1-flash-lite' 
-            ? 'gemini-3.1-flash-lite' 
-            : 'gemini-3.1-flash-lite-preview'
+        : model === 'gemini-3.1-pro-preview'
+          ? 'gemini-3.1-pro-preview'
+          : model === 'gemini-3.1-pro-preview-customtools'
+            ? 'gemini-3.1-pro-preview-customtools'
+            : model === 'gemini-3-flash-preview'
+              ? 'gemini-3-flash-preview'
+              : model === 'gemini-3-pro-image-preview'
+                ? 'gemini-3-pro-image-preview'
+                : model === 'gemini-3-pro-preview'
+                  ? 'gemini-3-pro-preview'
+                  : model === 'gemini-3.5-flash' 
+                    ? 'gemini-3.5-flash' 
+                    : model === 'gemini-3.1-flash-lite' 
+                      ? 'gemini-3.1-flash-lite' 
+                      : 'gemini-3.1-flash-lite-preview'
 
       if (codeLanguageTab === 'python') {
         if (expressMode) {
@@ -1171,13 +1570,13 @@ from google import genai
 from google.genai import types
 
 client = genai.Client(
-    enterprise=True, 
+    vertexai=True, 
     api_key="YOUR_API_KEY"
 )
 
 response = client.models.generate_content(
     model="${modelId}",
-    contents="O que descreve o EBITDA do IPB?",
+    contents="O que descreve o EBITDA do Business Syllabus?",
 )
 print(response.text)`
         } else {
@@ -1186,14 +1585,14 @@ from google import genai
 from google.genai import types
 
 client = genai.Client(
-    enterprise=True,
+    vertexai=True,
     project="YOUR_PROJECT_ID",
     location="global"
 )
 
 response = client.models.generate_content(
     model="${modelId}",
-    contents="O que descreve o EBITDA do IPB?"
+    contents="O que descreve o EBITDA do Business Syllabus?"
 )
 print(response.text)`
         }
@@ -1207,7 +1606,7 @@ curl -X POST \\
     "contents": {
       "role": "user",
       "parts": [{
-        "text": "O que descreve o EBITDA do IPB?"
+        "text": "O que descreve o EBITDA do Business Syllabus?"
       }]
     }
   }'`
@@ -1221,7 +1620,7 @@ curl -X POST \\
     "contents": {
       "role": "user",
       "parts": [{
-        "text": "O que descreve o EBITDA do IPB?"
+        "text": "O que descreve o EBITDA do Business Syllabus?"
       }]
     }
   }'`
@@ -1243,14 +1642,14 @@ curl -X POST \\
 from google import genai
 
 client = genai.Client(
-    enterprise=True, 
+    vertexai=True, 
     project="YOUR_PROJECT_ID", 
     location="global"
 )
 
 response = client.models.generate_content(
     model="publishers/xai/models/${modelId}",
-    contents="Análise de elasticidade macroeconômica do IPB."
+    contents="Análise de elasticidade macroeconômica do Business Syllabus."
 )
 print(response.text)`
       } else {
@@ -1275,13 +1674,47 @@ curl -X POST \\
         activeModelId = model === 'deepseek-v4-pro' ? 'deepseek-v4-pro' : 'deepseek-v4-flash'
         publisherName = 'publishers/deepseek-ai/models/'
       } else if (model.startsWith('llama')) {
-        activeModelId = model === 'llama-4-maverick' ? 'llama-4-maverick-17b-128e-instruct-maas' : 'llama-4-scout-17b-16e-instruct-maas'
-        publisherName = 'publishers/meta/models/'
-        region = 'us-east5'
+        if (model === 'llama-3.3') {
+          activeModelId = 'Llama-3-3-70B-Instruct'
+          publisherName = 'publishers/meta/models/llama3-3'
+          region = 'us-central1'
+        } else {
+          activeModelId = model === 'llama-4-maverick' ? 'llama-4-maverick-17b-128e-instruct-maas' : 'llama-4-scout-17b-16e-instruct-maas'
+          publisherName = 'publishers/meta/models/'
+          region = 'us-east5'
+        }
       } else if (model === 'mimo-v2.5') {
         activeModelId = 'MiMo-V2.5'
         publisherName = 'XiaomiMiMo/MiMo-V2.5@'
         region = 'us-south1'
+      } else if (model === 'qwen-3.5-397b') {
+        activeModelId = 'Qwen3.5-397B-A17B'
+        publisherName = 'publishers/qwen/models/'
+        region = 'us-central1'
+      } else if (model === 'qwen-3-next') {
+        activeModelId = 'Qwen3-Next-80B-A3B-Instruct'
+        publisherName = 'qwen/'
+        region = 'us-south1'
+      } else if (model.startsWith('minimax')) {
+        activeModelId = model === 'minimax-m2.7' ? 'minimax-m2.7' : model === 'minimax-m2.5' ? 'minimax-m2.5' : model === 'minimax-m2.1' ? 'minimax-m2.1' : 'minimax-m2'
+        publisherName = 'publishers/minimaxai/models/'
+        region = 'us-east1'
+      } else if (model === 'glm-5') {
+        activeModelId = 'glm5@latest'
+        publisherName = 'publishers/glm/models/'
+        region = 'us-central1'
+      } else if (model === 'gemma-3-27b') {
+        activeModelId = 'gemma-3-27b-it'
+        publisherName = 'publishers/google/models/gemma3@'
+        region = 'us-central1'
+      } else if (model === 'medgemma-1.5-4b') {
+        activeModelId = 'medgemma-1.5-4b-it'
+        publisherName = 'publishers/google/models/medgemma@'
+        region = 'us-central1'
+      } else if (model === 'gpt-oss') {
+        activeModelId = 'gpt-oss-20b'
+        publisherName = 'openai/'
+        region = 'europe-west4'
       }
 
       if (codeLanguageTab === 'python') {
@@ -1300,11 +1733,160 @@ instances = [{"prompt": "Calcular Runway estratégico."}]
 response = endpoint.predict(instances=instances)
 print(response.predictions[0])`
         }
+
+        if (model === 'qwen-3.5-397b') {
+          return `# Qwen3.5-397B-A17B Model Garden Deployment
+import vertexai
+from vertexai import model_garden
+
+PROJECT_ID = "YOUR_PROJECT_ID"
+REGION = "us-central1"
+vertexai.init(project=PROJECT_ID, location=REGION)
+
+model = model_garden.OpenModel("publishers/qwen/models/qwen3-5@qwen3.5-397b-a17b")
+endpoint = model.deploy(accept_eula=True)
+
+# Run Inference with Thinking Mode (Temp=0.6, TopP=0.95)
+instances = [{
+    "@requestFormat": "chatCompletions",
+    "messages": [{"role": "user", "content": "Calcular Runway estratégico."}],
+    "max_tokens": 32768,
+    "temperature": 0.6,
+    "top_p": 0.95
+}]
+response = endpoint.predict(instances=instances, use_dedicated_endpoint=True)
+print(response.predictions[0])`
+        }
+
+        if (model === 'qwen-3-next') {
+          return `# Qwen3-Next-80B Deployment (Python)
+import vertexai
+from vertexai import model_garden
+
+vertexai.init(project="YOUR_PROJECT_ID", location="us-south1")
+model = model_garden.OpenModel("qwen/qwen3-next@Qwen3-Next-80B-A3B-Instruct")
+endpoint = model.deploy()
+
+instances = [{"prompt": "Calcular Runway estratégico."}]
+response = endpoint.predict(instances=instances)
+print(response.predictions[0])`
+        }
+
+        if (model === 'llama-3.3') {
+          return `# Meta Llama 3.3 70B Instruct Model Garden Deployment
+import vertexai
+from vertexai import model_garden
+
+PROJECT_ID = "YOUR_PROJECT_ID"
+REGION = "us-central1"
+vertexai.init(project=PROJECT_ID, location=REGION)
+
+# Deploy Llama 3.3 from Model Garden
+model = model_garden.OpenModel("publishers/meta/models/llama3-3")
+endpoint = model.deploy(accept_eula=True)
+
+# Run Inference with standard chat schema
+instances = [{
+    "@requestFormat": "chatCompletions",
+    "messages": [{"role": "user", "content": "Calcular Runway estratégico do Business Syllabus."}],
+    "max_tokens": 4096,
+    "temperature": 0.7,
+    "top_p": 0.9
+}]
+response = endpoint.predict(instances=instances)
+print(response.predictions[0])`
+        }
+
+        if (model.startsWith('minimax')) {
+          return `# MiniMax Forge RL Deployment (Python)
+import vertexai
+from vertexai import model_garden
+
+vertexai.init(project="YOUR_PROJECT_ID", location="us-east1")
+model = model_garden.OpenModel(f"publishers/minimaxai/models/minimax-m2@{model.replace('minimax-', '')}")
+endpoint = model.deploy(accept_eula=True)
+
+instances = [{
+    "prompt": "]~!b[]~b]system\\nYou are a helpful assistant.[e~[\\n]~b]user\\nCalcular Runway estratégico.[e~[\\n]~b]ai\\n",
+    "max_tokens": 128,
+    "temperature": 1.0,
+    "top_p": 0.95
+}]
+response = endpoint.predict(instances=instances)
+print(response.predictions[0])`
+        }
+
+        if (model === 'glm-5') {
+          return `# GLM-5 Slime RL Deployment
+import vertexai
+from vertexai import model_garden
+
+vertexai.init(project="YOUR_PROJECT_ID", location="us-central1")
+model = model_garden.OpenModel("publishers/glm/models/glm5@latest")
+endpoint = model.deploy(accept_eula=True)
+
+instances = [{
+    "@requestFormat": "chatCompletions",
+    "messages": [{"role": "user", "content": "Calcular Runway."}],
+    "max_tokens": 32768
+}]
+response = endpoint.predict(instances=instances)
+print(response.predictions[0])`
+        }
+
+        if (model === 'gemma-3-27b') {
+          return `# Gemma 3 27B IT Deployment (JAX & Pathways)
+import vertexai
+from vertexai import model_garden
+
+vertexai.init(project="YOUR_PROJECT_ID", location="us-central1")
+model = model_garden.OpenModel("publishers/google/models/gemma3@gemma-3-27b-it")
+endpoint = model.deploy(accept_eula=True)
+
+instances = [{
+    "@requestFormat": "chatCompletions",
+    "messages": [{"role": "user", "content": "Calcular Runway estratégico."}]
+}]
+response = endpoint.predict(instances=instances)
+print(response.predictions[0])`
+        }
+
+        if (model === 'medgemma-1.5-4b') {
+          return `# MedGemma-1.5-4B-IT Clinical VLM Deployment
+import vertexai
+from vertexai import model_garden
+
+vertexai.init(project="YOUR_PROJECT_ID", location="us-central1")
+model = model_garden.OpenModel("publishers/google/models/medgemma@medgemma-1.5-4b-it")
+endpoint = model.deploy(accept_eula=True)
+
+instances = [{
+    "@requestFormat": "chatCompletions",
+    "messages": [{"role": "user", "content": "Análise clínica do Business Syllabus."}]
+}]
+response = endpoint.predict(instances=instances)
+print(response.predictions[0])`
+        }
+
+        if (model === 'gpt-oss') {
+          return `# OpenAI GPT-OSS-20B Deployment (europe-west4)
+import vertexai
+from vertexai import model_garden
+
+vertexai.init(project="YOUR_PROJECT_ID", location="europe-west4")
+model = model_garden.OpenModel("openai/gpt-oss@gpt-oss-20b")
+endpoint = model.deploy()
+
+instances = [{"prompt": "Calcular Runway estratégico."}]
+response = endpoint.predict(instances=instances)
+print(response.predictions[0])`
+        }
+
         return `# Open Model Garden Deployment and Inference (Python)
 from google.cloud import aiplatform
 
 # 1. Obter endpoint implantado
-endpoint = aiplatform.Endpoint("projects/YOUR_PROJECT/locations/${region}/endpoints/YOUR_ENDPOINT")
+endpoint = aiplatform.Endpoint("projects/YOUR_PROJECT/locations/\${region}/endpoints/YOUR_ENDPOINT")
 
 # 2. Executar inferência MoE
 instances = [{
@@ -1314,17 +1896,162 @@ instances = [{
 response = endpoint.predict(instances=instances)
 print(response)`
       } else {
+        if (model === 'qwen-3.5-397b') {
+          return `# Qwen3.5 Model Garden Inference API (curl)
+curl -X POST \\
+  -H "Authorization: Bearer \$(gcloud auth print-access-token)" \\
+  -H "Content-Type: application/json" \\
+  https://us-central1-aiplatform.googleapis.com/v1/projects/YOUR_PROJECT/locations/us-central1/endpoints/openapi/chat/completions \\
+  -d '{
+    "instances": [
+      {
+        "@requestFormat": "chatCompletions",
+        "messages": [{"role": "user", "content": "Calcular Runway estratégico."}],
+        "max_tokens": 100,
+        "temperature": 0.6,
+        "top_p": 0.95
+      }
+    ]
+  }'`
+        }
+
+        if (model === 'qwen-3-next') {
+          return `# Qwen3-Next Model Garden Inference API (curl)
+curl -X POST \\
+  -H "Authorization: Bearer \$(gcloud auth print-access-token)" \\
+  -H "Content-Type: application/json" \\
+  https://us-south1-aiplatform.googleapis.com/v1/projects/YOUR_PROJECT/locations/us-south1/endpoints/openapi/chat/completions \\
+  -d '{
+    "instances": [
+      {
+        "prompt": "Calcular Runway estratégico."
+      }
+    ]
+  }'`
+        }
+
+        if (model === 'llama-3.3') {
+          return `# Meta Llama 3.3 Vertex Inference API (curl)
+curl -X POST \\
+  -H "Authorization: Bearer \$(gcloud auth print-access-token)" \\
+  -H "Content-Type: application/json" \\
+  https://us-central1-aiplatform.googleapis.com/v1/projects/YOUR_PROJECT/locations/us-central1/endpoints/YOUR_ENDPOINT/openapi/chat/completions \\
+  -d '{
+    "instances": [
+      {
+        "@requestFormat": "chatCompletions",
+        "messages": [{"role": "user", "content": "Calcular Runway estratégico."}],
+        "max_tokens": 1024,
+        "temperature": 0.7,
+        "top_p": 0.9
+      }
+    ]
+  }'`
+        }
+
+        if (model.startsWith('minimax')) {
+          return `# MiniMax OpenAPI Endpoint (curl)
+curl -X POST \\
+  -H "Authorization: Bearer \$(gcloud auth print-access-token)" \\
+  -H "Content-Type: application/json" \\
+  https://us-east1-aiplatform.googleapis.com/v1/projects/YOUR_PROJECT/locations/us-east1/endpoints/openapi/chat/completions \\
+  -d '{
+    "instances": [
+      {
+        "prompt": "]~!b[]~b]system\\nYou are a helpful assistant.[e~[\\n]~b]user\\nCalcular Runway.[e~[\\n]~b]ai\\n",
+        "max_tokens": 128,
+        "temperature": 1.0,
+        "top_p": 0.95,
+        "raw_response": true
+      }
+    ]
+  }'`
+        }
+
+        if (model === 'glm-5') {
+          return `# GLM-5 Vertex Inference API (curl)
+curl -X POST \\
+  -H "Authorization: Bearer \$(gcloud auth print-access-token)" \\
+  -H "Content-Type: application/json" \\
+  https://us-central1-aiplatform.googleapis.com/v1/projects/YOUR_PROJECT/locations/us-central1/endpoints/openapi/chat/completions \\
+  -d '{
+    "model": "publishers/glm/models/glm5@latest",
+    "messages": [{"role": "user", "content": "Calcular Runway estratégico."}]
+  }'`
+        }
+
+        if (model === 'gemma-3-27b') {
+          return `# Gemma 3 Vertex Inference API (curl)
+curl -X POST \\
+  -H "Authorization: Bearer \$(gcloud auth print-access-token)" \\
+  -H "Content-Type: application/json" \\
+  https://us-central1-aiplatform.googleapis.com/v1/projects/YOUR_PROJECT/locations/us-central1/endpoints/openapi/chat/completions \\
+  -d '{
+    "model": "publishers/google/models/gemma3@gemma-3-27b-it",
+    "messages": [{"role": "user", "content": "Calcular Runway estratégico."}]
+  }'`
+        }
+
+        if (model === 'medgemma-1.5-4b') {
+          return `# MedGemma Vertex Inference API (curl)
+curl -X POST \\
+  -H "Authorization: Bearer \$(gcloud auth print-access-token)" \\
+  -H "Content-Type: application/json" \\
+  https://us-central1-aiplatform.googleapis.com/v1/projects/YOUR_PROJECT/locations/us-central1/endpoints/openapi/chat/completions \\
+  -d '{
+    "model": "publishers/google/models/medgemma@medgemma-1.5-4b-it",
+    "messages": [{"role": "user", "content": "Análise clínica do Business Syllabus."}]
+  }'`
+        }
+
+        if (model === 'gpt-oss') {
+          return `# GPT OSS Inference API (curl)
+curl -X POST \\
+  -H "Authorization: Bearer \$(gcloud auth print-access-token)" \\
+  -H "Content-Type: application/json" \\
+  https://europe-west4-aiplatform.googleapis.com/v1/projects/YOUR_PROJECT/locations/europe-west4/endpoints/openapi/chat/completions \\
+  -d '{
+    "instances": [
+      {
+        "prompt": "Calcular Runway estratégico."
+      }
+    ]
+  }'`
+        }
+
         return `# Model Garden Inference API (curl)
 curl -X POST \\
-  -H "Authorization: Bearer $(gcloud auth print-access-token)" \\
+  -H "Authorization: Bearer \$(gcloud auth print-access-token)" \\
   -H "Content-Type: application/json" \\
-  https://${region}-aiplatform.googleapis.com/v1/projects/YOUR_PROJECT/locations/${region}/endpoints/openapi/chat/completions \\
-  -d '{"model": "${publisherName}${activeModelId}", "messages": [{"role": "user", "content": "Calcular Runway."}]}'`
+  https://\${region}-aiplatform.googleapis.com/v1/projects/YOUR_PROJECT/locations/\${region}/endpoints/openapi/chat/completions \\
+  -d '{"model": "\${publisherName}\${activeModelId}", "messages": [{"role": "user", "content": "Calcular Runway."}]}'`
       }
     }
 
-    return ''
-  }
+  const isReasoningModel = 
+    model.startsWith('deepseek') ||
+    model.startsWith('gemma') ||
+    model.startsWith('minimax') ||
+    model.startsWith('llama') ||
+    model === 'grok-4.1-fast-reasoning' ||
+    model === 'qwen-3.5-397b' ||
+    model === 'qwen-3-next' ||
+    model === 'glm-5' ||
+    model === 'medgemma-1.5-4b' ||
+    model === 'gpt-oss'
+
+  const isDeployedModel = 
+    model.startsWith('gemma') ||
+    model.startsWith('deepseek') ||
+    model.startsWith('llama') ||
+    model.startsWith('minimax') ||
+    model === 'mimo-v2.5' ||
+    model === 'qwen-3.5-397b' ||
+    model === 'qwen-3-next' ||
+    model === 'glm-5' ||
+    model === 'gpt-oss' ||
+    model === 'voyage-multimodal-3.5' ||
+    model === 'voyage-4-lite'
 
   return (
     <div className="hud-card-container relative w-full h-full flex flex-col justify-between">
@@ -1334,7 +2061,7 @@ curl -X POST \\
       <div className="hero-header relative z-20">
         <div className="live-head text-[#d2af5a] flex items-center gap-2">
           <div className="pulse-dot" />
-          <span>AI-04 • IPB ADVANCED MODEL GARDEN (GEMINI 3.5, VOYAGE 4 & MIMO v2.5)</span>
+          <span>AI-04 • BUSINESS SYLLABUS ADVANCED MODEL GARDEN (GEMINI 3.5, VOYAGE 4 & MIMO v2.5)</span>
         </div>
         <div className="ch-label">FREE GCP DEV ACCESS • ADAPTIVE TRANSLATION & SUITE ACTIVE</div>
       </div>
@@ -1360,6 +2087,11 @@ curl -X POST \\
               >
                 <optgroup label="Suíte Google Gemini">
                   <option value="gemini-3.1-pro">Gemini 3.1 Pro (1M)</option>
+                  <option value="gemini-3.1-pro-preview">Gemini 3.1 Pro Preview</option>
+                  <option value="gemini-3.1-pro-preview-customtools">Gemini 3.1 Pro Preview (Custom Tools)</option>
+                  <option value="gemini-3-pro-preview">Gemini 3 Pro Preview</option>
+                  <option value="gemini-3-pro-image-preview">Gemini 3 Pro Image Preview</option>
+                  <option value="gemini-3-flash-preview">Gemini 3 Flash Preview</option>
                   <option value="gemini-3.5-flash">Gemini 3.5 Flash (1M)</option>
                   <option value="gemini-3.1-flash-lite">Gemini 3.1 Flash Lite (GA)</option>
                   <option value="gemini-3.1-flash-lite-preview">Gemini 3.1 Flash Lite Preview</option>
@@ -1371,13 +2103,24 @@ curl -X POST \\
                   <option value="grok-4.1-fast-reasoning">Grok 4.1 Fast (Reasoning)</option>
                   <option value="grok-4.1-fast-non-reasoning">Grok 4.1 Fast (Non-Reasoning)</option>
                 </optgroup>
-                <optgroup label="Model Garden Partners (MoE)">
+                <optgroup label="Model Garden Partners (MoE & Reasoning)">
                   <option value="gemma-4-moe">Gemma 4 26B (Pensante)</option>
                   <option value="deepseek-v4-pro">DeepSeek-V4-Pro (1.6T MoE)</option>
                   <option value="deepseek-v4-flash">DeepSeek-V4-Flash (284B)</option>
                   <option value="llama-4-maverick">Llama 4 Maverick (400B MoE)</option>
                   <option value="llama-4-scout">Llama 4 Scout (10M Context)</option>
+                  <option value="llama-3.3">Llama 3.3 (70B Instruct)</option>
                   <option value="mimo-v2.5">Xiaomi MiMo V2.5 (310B)</option>
+                  <option value="qwen-3.5-397b">Qwen 3.5 (397B MoE)</option>
+                  <option value="qwen-3-next">Qwen3 Next (80B)</option>
+                  <option value="minimax-m2">MiniMax M2 (MoE)</option>
+                  <option value="minimax-m2.1">MiniMax M2.1 (MoE)</option>
+                  <option value="minimax-m2.5">MiniMax M2.5 (MoE)</option>
+                  <option value="minimax-m2.7">MiniMax M2.7 (MoE)</option>
+                  <option value="glm-5">GLM-5 Flagship (Slime RL)</option>
+                  <option value="gemma-3-27b">Gemma 3 27B IT</option>
+                  <option value="medgemma-1.5-4b">MedGemma 1.5 4B Clinical VLM</option>
+                  <option value="gpt-oss">GPT-OSS 20B/120B</option>
                 </optgroup>
                 <optgroup label="Model Garden Partners (Embeddings)">
                   <option value="jina-embeddings-v3">Jina Embeddings v3</option>
@@ -1387,7 +2130,7 @@ curl -X POST \\
               </select>
 
               {/* Seletor de Reasoning Mode do DeepSeek-V4 */}
-              {(model.startsWith('deepseek') || model === 'grok-4.1-fast-reasoning') && (
+              {isReasoningModel && (
                 <select
                   value={reasoningMode}
                   onChange={(e: any) => setReasoningMode(e.target.value)}
@@ -1399,7 +2142,7 @@ curl -X POST \\
                 </select>
               )}
 
-              {(model.startsWith('gemma') || model.startsWith('deepseek') || model === 'grok-4.1-fast-reasoning') && (
+              {isReasoningModel && (
                 <button 
                   onClick={() => setShowThinking(!showThinking)}
                   className={`px-1.5 py-0.5 rounded text-[7.5px] font-mono border transition-all flex items-center gap-0.5 cursor-pointer ${showThinking ? 'bg-[#d2af5a]/10 text-[#d2af5a] border-[#d2af5a]/35' : 'text-white/20 border-white/10'}`}
@@ -1495,7 +2238,7 @@ curl -X POST \\
           <div className="ai-chat-input-bar border-t border-white/5 bg-black/40 flex items-center p-1.5">
             <input
               type="text"
-              placeholder={model.startsWith('gemma') || model.startsWith('deepseek') || model === 'grok-4.1-fast-reasoning' ? "Fale com a IA (Pensamento Ativo)..." : "Pergunte sobre EBITDA, WACC, SWOT, CDI..."}
+              placeholder={isReasoningModel ? "Fale com a IA (Pensamento Ativo)..." : "Pergunte sobre EBITDA, WACC, SWOT, CDI..."}
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               onKeyDown={(e) => {
@@ -1596,7 +2339,7 @@ curl -X POST \\
                 </div>
 
                 {/* Progresso de Deploy (Apenas para modelos que exigem carregamento de VRAM/TPU) */}
-                {(model.startsWith('gemma') || model.startsWith('deepseek') || model.startsWith('llama') || model === 'mimo-v2.5' || model === 'voyage-multimodal-3.5' || model === 'voyage-4-lite') && (
+                {isDeployedModel && (
                   <div className="mt-1 space-y-1">
                     <div className="flex justify-between text-[8px] font-mono">
                       <span className="text-[#d2af5a] font-bold">Status do Cluster TPU:</span>
@@ -1613,7 +2356,7 @@ curl -X POST \\
               </div>
 
               {/* Console de Logs de Execução do GCP SDK (Apenas se Open Model for selecionado) */}
-              {(model.startsWith('gemma') || model.startsWith('deepseek') || model.startsWith('llama') || model === 'mimo-v2.5' || model === 'voyage-multimodal-3.5' || model === 'voyage-4-lite') ? (
+              {isDeployedModel ? (
                 <div className="border border-white/5 bg-[#050505] rounded-lg mt-2 overflow-hidden flex-1 flex flex-col justify-between min-h-[80px]">
                   <div className="bg-black/95 px-2 py-1 flex items-center justify-between border-b border-white/5">
                     <div className="flex items-center gap-1 text-[#4ade80] font-mono text-[7px] font-bold">
@@ -1641,7 +2384,7 @@ curl -X POST \\
               )}
 
               {/* Botão de Deploy para Open Models */}
-              {(model.startsWith('gemma') || model.startsWith('deepseek') || model.startsWith('llama') || model === 'mimo-v2.5' || model === 'voyage-multimodal-3.5' || model === 'voyage-4-lite') && (
+              {isDeployedModel && (
                 <div className="mt-2">
                   {tuningProgress === 100 ? (
                     <div className="w-full py-1.5 bg-[#d2af5a]/10 border border-[#d2af5a]/30 text-white/90 rounded-xl text-[8px] font-mono font-bold flex items-center justify-center gap-1.5">
@@ -1834,7 +2577,7 @@ curl -X POST \\
                     <div className="mt-1 relative rounded-lg border border-[#d2af5a]/20 bg-black/40 overflow-hidden flex flex-col items-center justify-center p-1.5">
                       <div className="flex items-center gap-1 text-white/90 font-mono text-[7px] font-bold mb-1">
                         <Film className="h-3 w-3 animate-pulse" />
-                        <span>projects/ipb/TIMESTAMP/video_0.mp4</span>
+                        <span>projects/business-syllabus/TIMESTAMP/video_0.mp4</span>
                       </div>
                       <img 
                         src={generatedVideos[0]} 
