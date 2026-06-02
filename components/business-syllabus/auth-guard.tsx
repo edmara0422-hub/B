@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuthStore } from '@/lib/stores/authStore'
-import { PremiumSplash } from '@/components/sea/premium-splash'
+import { PremiumSplash } from '@/components/business-syllabus/premium-splash'
 
 export function AuthGuard({ children }: { children: React.ReactNode }) {
   const { user, isLoading, initialized, initialize } = useAuthStore()

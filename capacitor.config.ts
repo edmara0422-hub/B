@@ -22,14 +22,14 @@ const DEV_SERVER_URL = 'http://192.168.18.9:3000';
 const VERCEL_URL = 'https://ipb-intelligence.vercel.app';
 
 const config: CapacitorConfig = {
-  appId: 'com.ipb.app',
-  appName: 'IPB',
+  appId: 'com.businesssyllabus.app',
+  appName: 'Business Syllabus',
   webDir: 'out',
   server: { url: VERCEL_URL },
   ios: {
     contentInset: 'automatic',
     preferredContentMode: 'mobile',
-    scheme: 'IPB',
+    scheme: 'BusinessSyllabus',
     allowsLinkPreview: false,
     scrollEnabled: true,
   },

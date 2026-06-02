@@ -4,6 +4,6 @@ import { useRouter } from 'next/navigation'
 
 export default function HomePage() {
   const router = useRouter()
-  useEffect(() => { router.replace('/sea') }, [router])
+  useEffect(() => { router.replace('/bs') }, [router])
   return null
 }

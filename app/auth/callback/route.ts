@@ -33,14 +33,14 @@ export async function GET(request: NextRequest) {
       type: type as 'signup' | 'recovery' | 'email',
     })
     if (!error) {
-      return NextResponse.redirect(new URL('/sea', origin))
+      return NextResponse.redirect(new URL('/bs', origin))
     }
   }
 
   if (code) {
     const { data, error } = await supabase.auth.exchangeCodeForSession(code)
     if (!error && data.session) {
-      return NextResponse.redirect(new URL('/sea', origin))
+      return NextResponse.redirect(new URL('/bs', origin))
     }
   }
 

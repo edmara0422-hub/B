@@ -3,19 +3,19 @@
 import { ReactNode, useLayoutEffect, useState, useCallback, startTransition, useEffect } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
 import dynamic from 'next/dynamic'
-import { BottomNav } from '@/components/sea/bottom-nav'
-import { PremiumSplash } from '@/components/sea/premium-splash'
-import { SeaLanding } from '@/components/sea/sea-landing'
+import { BottomNav } from '@/components/business-syllabus/bottom-nav'
+import { PremiumSplash } from '@/components/business-syllabus/premium-splash'
+import { SeaLanding } from '@/components/business-syllabus/sea-landing'
 import { useAccessibility } from '@/hooks/use-accessibility'
 import { usePresenceHeartbeat } from '@/hooks/use-presence-heartbeat'
 
 // Lazy-load both pages once — they stay mounted forever after
 const HomePageClient = dynamic(
-  () => import('@/components/sea/home-page-client'),
+  () => import('@/components/business-syllabus/home-page-client'),
   { ssr: false }
 )
 const ExplorePageClient = dynamic(
-  () => import('@/components/sea/explore-page-client'),
+  () => import('@/components/business-syllabus/explore-page-client'),
   { ssr: false }
 )
 
@@ -23,43 +23,31 @@ const ExplorePageClient = dynamic(
 function usePreloadRoutes() {
   useEffect(() => {
     const id = setTimeout(() => {
-      import('@/components/sea/conteudos-page-client')
-      import('@/components/sea/sistemas-page-client')
-      import('@/components/sea/explore-page-client')
+      import('@/components/business-syllabus/conteudos-page-client')
+      import('@/components/business-syllabus/sistemas-page-client')
+      import('@/components/business-syllabus/explore-page-client')
     }, 1500)
     return () => clearTimeout(id)
   }, [])
 }
 
-// Versão do app: aumente este número para que TODOS os usuários vejam o splash
-// novamente após um update importante. Boas práticas: bump em deploys com
-// mudanças visuais ou funcionais relevantes; mantenha estável em fixes menores.
-const APP_VERSION = '1.0.0'
-
-// localStorage (persiste entre sessões) com a última versão vista.
-// Se versão atual ≠ última vista → mostra splash + atualiza versão.
-// Reload comum (sem mudança de versão): sessionStorage flag pula splash.
-const APP_VERSION_KEY = 'sea-app-version'
+// Flag em sessionStorage: persiste entre reloads mas é apagado quando o app é
+// completamente fechado/reaberto. Reload = pula landing/splash; fechar+reabrir
+// = mostra landing/splash de novo.
 const SPLASH_SHOWN_KEY = 'sea-splash-shown'
-
-function shouldShowSplash(): boolean {
-  if (typeof window === 'undefined') return false
-  return true
+function readSplashShown(): boolean {
+  return false
 }
-
 function markSplashShown() {
   if (typeof window === 'undefined') return
-  try {
-    sessionStorage.setItem(SPLASH_SHOWN_KEY, '1')
-    localStorage.setItem(APP_VERSION_KEY, APP_VERSION)
-  } catch { /* ignore */ }
+  try { sessionStorage.setItem(SPLASH_SHOWN_KEY, '1') } catch { /* ignore */ }
 }
 
 type Tab = 'home' | 'explore' | 'other'
 
 function pathToTab(p: string | null): Tab {
   const s = p?.replace(/\/$/, '') ?? ''
-  if (s === '/sea' || s === '/home' || s === '' || s === '/sea/index') return 'home'
+  if (s === '/bs' || s === '/home' || s === '' || s === '/sea/index') return 'home'
   if (s === '/explore') return 'explore'
   return 'other'
 }
@@ -79,7 +67,9 @@ export function MainShell({ children }: { children: ReactNode }) {
   // Após login (sessionStorage limpo pelo signIn), inicia direto no splash —
   // skip landing porque o usuário já passou pela tela de auth e quer ver SEA.
   // Reload simples (flag set) → 'ready' direto, mantendo o usuário onde estava.
-  const [phase, setPhase] = useState<'landing' | 'splash' | 'ready'>('ready')
+  const [phase, setPhase] = useState<'landing' | 'splash' | 'ready'>(() =>
+    readSplashShown() ? 'ready' : 'splash'
+  )
   // Once we reach 'ready', persist the flag so reloads skip the intro.
   useEffect(() => {
     if (phase === 'ready') markSplashShown()
@@ -108,7 +98,7 @@ export function MainShell({ children }: { children: ReactNode }) {
     }
     // Update URL in background without blocking
     startTransition(() => {
-      router.push(t === 'home' ? '/sea' : '/explore', { scroll: false })
+      router.push(t === 'home' ? '/bs' : '/explore', { scroll: false })
     })
   }, [router])
 

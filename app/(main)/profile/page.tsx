@@ -230,7 +230,7 @@ export default function ProfilePage() {
     <div className="relative min-h-screen text-white px-2 pb-32 pt-16 md:px-4">
       <div className="relative z-10 mx-auto w-full max-w-2xl md:max-w-none">
       {/* Back */}
-      <button onClick={() => router.push('/sea')} className="mb-5 flex items-center gap-1.5 text-[11px] text-white/65 hover:text-white/90 transition-colors">
+      <button onClick={() => router.push('/bs')} className="mb-5 flex items-center gap-1.5 text-[11px] text-white/65 hover:text-white/90 transition-colors">
         <ArrowLeft className="h-3 w-3" /> Voltar
       </button>
 

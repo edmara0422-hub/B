@@ -8,7 +8,7 @@ if (importIdx !== -1 && !lines.join('\n').includes('SimAlignIT')) {
   lines.splice(importIdx, 0, `import { 
   SimAlignIT, SimRogersReactor, SimNeuralMatrix, SimServerlessFlow,
   SimInnovationIgnition, SimHorizonsBalancer, SimPsychologicalShield, SimDataLakehouse
-} from '@/components/sea/simulations-6d'`);
+} from '@/components/business-syllabus/simulations-6d'`);
 }
 
 // Re-read because splice changed index

@@ -113,7 +113,7 @@ export function PremiumSplash({
             animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ duration: 0.6, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
           >
-            IPB
+            BUSINESS SYLLABUS
           </motion.h1>
           <motion.p
             className="mt-1.5 text-[5.5px] uppercase tracking-[0.12em] text-white/30 md:text-[8px] md:tracking-[0.20em] max-w-[180px] md:max-w-[280px] mx-auto leading-relaxed"
@@ -121,7 +121,7 @@ export function PremiumSplash({
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.38, ease: 'easeOut' }}
           >
-            Intelligence Platform Business
+            Business Syllabus
           </motion.p>
         </motion.div>
       </div>

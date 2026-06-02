@@ -2,8 +2,8 @@
 
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { BottomNav } from '@/components/sea/bottom-nav'
-import { GlassPanel } from '@/components/sea/glass-panel'
+import { BottomNav } from '@/components/business-syllabus/bottom-nav'
+import { GlassPanel } from '@/components/business-syllabus/glass-panel'
 import { Button } from '@/components/ui/button'
 import { ArrowLeft, Brain, Building2, Target, Users, Loader2, Play } from 'lucide-react'
 import Link from 'next/link'

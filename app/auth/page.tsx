@@ -1,5 +1,5 @@
 import { Suspense } from 'react'
-import { AuthForm } from '@/components/sea/auth-form'
+import { AuthForm } from '@/components/business-syllabus/auth-form'
 
 export default function AuthPage() {
   return (

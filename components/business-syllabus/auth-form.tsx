@@ -42,7 +42,7 @@ export function AuthForm() {
     if (mode === 'login') {
       const result = await signIn(formData.email, formData.password)
       if (result.error) { setError(result.error); return }
-      router.push('/sea')
+      router.push('/bs')
     } else {
       if (!formData.name) { setError('Informe seu nome.'); return }
       if (formData.password.length < 6) { setError('Senha deve ter no minimo 6 caracteres.'); return }
@@ -62,9 +62,9 @@ export function AuthForm() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <h1 className="text-4xl font-bold text-white tracking-wider">IPB</h1>
+        <h1 className="text-4xl font-bold text-white tracking-wider">BUSINESS SYLLABUS</h1>
         <p className="text-[8px] tracking-[0.2em] text-white/40 mt-1 uppercase">
-          Intelligence Platform Business
+          Business Syllabus
         </p>
       </motion.div>
 

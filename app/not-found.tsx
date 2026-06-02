@@ -18,7 +18,7 @@ export default function NotFound() {
       <p style={{ fontSize: '3rem', fontWeight: 700, color: '#fff', margin: 0 }}>404</p>
       <p style={{ fontSize: '0.875rem', opacity: 0.5, margin: 0 }}>Página não encontrada.</p>
       <Link
-        href="/sea"
+        href="/bs"
         style={{
           marginTop: '8px',
           background: 'transparent',

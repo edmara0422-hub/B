@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { GlassPanel } from '@/components/sea/glass-panel'
+import { GlassPanel } from '@/components/business-syllabus/glass-panel'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
 import { BarChart, Bar } from 'recharts'
 import { TrendingUp, Users, AlertTriangle } from 'lucide-react'

@@ -13,8 +13,8 @@ import {
   Activity, LogOut, Smartphone, MapPin,
 } from 'lucide-react'
 import { AreaChart, Area, BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts'
-import { AdminTelemetry } from '@/components/sea/admin-telemetry'
-import { AdminStrategicCockpit } from '@/components/sea/admin-strategic-cockpit'
+import { AdminTelemetry } from '@/components/business-syllabus/admin-telemetry'
+import { AdminStrategicCockpit } from '@/components/business-syllabus/admin-strategic-cockpit'
 
 type AdminTab = 'users' | 'subscriptions' | 'estrategia' | 'communication' | 'config' | 'equipes'
 type Team = { id: string; nome: string; memberIds: string[] }
@@ -90,7 +90,7 @@ export default function AdminPage() {
 
   const flash = (m: string) => { setMsg(m); setTimeout(() => setMsg(''), 3000) }
 
-  useEffect(() => { if (initialized && !isAdmin) router.replace('/sea') }, [initialized, isAdmin, router])
+  useEffect(() => { if (initialized && !isAdmin) router.replace('/bs') }, [initialized, isAdmin, router])
 
   // Auto-refresh do modal de atividade a cada 15s pra mostrar presença real-time
   useEffect(() => {
@@ -327,7 +327,7 @@ export default function AdminPage() {
     await supabase.from('profiles').update({ role: 'admin' }).eq('id', id)
     await supabase.from('profiles').update({ role: 'user' }).eq('id', user.id)
     flash('Admin transferido. Saindo...')
-    setTimeout(async () => { await supabase!.auth.signOut(); router.replace('/sea') }, 1500)
+    setTimeout(async () => { await supabase!.auth.signOut(); router.replace('/bs') }, 1500)
   }
 
   // ── Teams ──

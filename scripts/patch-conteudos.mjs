@@ -10,7 +10,7 @@ if (content.match(importRegex)) {
   SimAlignIT, SimRogersReactor, SimNeuralMatrix, SimServerlessFlow,
   SimInnovationIgnition, SimHorizonsBalancer, SimPsychologicalShield, SimDataLakehouse,
   SimNeuroCreativity, SimIdeationFunnel, SimSixHatsMatrix
-} from '@/components/sea/simulations-6d'\`)
+} from '@/components/business-syllabus/simulations-6d'\`)
 }
 
 // 2. Fix the "Grade de Disciplinas (30 Aulas)"

@@ -1,9 +1,9 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { GreetingHeader } from '@/components/sea/greeting-header'
-import { BottomNav } from '@/components/sea/bottom-nav'
-import { CardioExperience } from '@/components/sea/cardio-experience'
+import { GreetingHeader } from '@/components/business-syllabus/greeting-header'
+import { BottomNav } from '@/components/business-syllabus/bottom-nav'
+import { CardioExperience } from '@/components/business-syllabus/cardio-experience'
 import { Button } from '@/components/ui/button'
 import { ArrowLeft } from 'lucide-react'
 import Link from 'next/link'

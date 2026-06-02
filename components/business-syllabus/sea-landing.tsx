@@ -146,7 +146,7 @@ export function SeaLanding({ onEnter }: { onEnter: () => void }) {
         {/* Inside orb: SEA top-center, Entrar bottom */}
         <div className="absolute inset-0 flex flex-col items-center justify-center">
           <div className="-mt-6 flex items-center justify-center gap-[0.02em] text-[4.8rem] font-semibold leading-none sm:text-[5.5rem]">
-            {'SEA'.split('').map((letter, i) => (
+            {'BS'.split('').map((letter, i) => (
               <motion.span
                 key={i}
                 className="text-white/90 drop-shadow-[0_0_20px_rgba(255,255,255,0.3)]"
@@ -183,7 +183,7 @@ export function SeaLanding({ onEnter }: { onEnter: () => void }) {
               transition={{ duration: 0.5 }}
               className="absolute inset-0 flex items-center justify-center whitespace-pre-line text-[11px] font-light leading-relaxed tracking-wide text-white/35"
             >
-              {phraseIdx < PHRASES.length ? PHRASES[phraseIdx] : 'Acelerador de competência clínica'}
+              {phraseIdx < PHRASES.length ? PHRASES[phraseIdx] : 'Acelerador de competência corporativa'}
             </motion.p>
           </AnimatePresence>
         </div>

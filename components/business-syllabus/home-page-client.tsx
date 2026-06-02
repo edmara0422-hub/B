@@ -1,7 +1,7 @@
 'use client'
 
-import { TopBarSEA } from '@/components/sea/top-bar-sea'
-import { InteractiveCockpit } from '@/components/sea/interactive-cockpit'
+import { TopBarSEA } from '@/components/business-syllabus/top-bar-sea'
+import { InteractiveCockpit } from '@/components/business-syllabus/interactive-cockpit'
 
 export default function HomePageClient() {
   return (

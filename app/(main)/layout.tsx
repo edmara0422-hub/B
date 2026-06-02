@@ -1,8 +1,8 @@
-import { MainShell } from '@/components/sea/main-shell'
-import { AuthGuard } from '@/components/sea/auth-guard'
-import { SeaBackdrop } from '@/components/sea/sea-backdrop'
-import { LgpdWatcher } from '@/components/sea/lgpd-watcher'
-import { PrivacyShield } from '@/components/sea/privacy-shield'
+import { MainShell } from '@/components/business-syllabus/main-shell'
+import { AuthGuard } from '@/components/business-syllabus/auth-guard'
+import { SeaBackdrop } from '@/components/business-syllabus/sea-backdrop'
+import { LgpdWatcher } from '@/components/business-syllabus/lgpd-watcher'
+import { PrivacyShield } from '@/components/business-syllabus/privacy-shield'
 
 export default function MainLayout({
   children,

@@ -9,20 +9,20 @@ import { useSearchParams } from 'next/navigation'
 import { useAccessibility } from '@/hooks/use-accessibility'
 
 // Importações dos Painéis Clínicos Homologados (Intactos)
-import { ProntuarioSystemPanel } from '@/components/sea/prontuario-system-panel'
-import { VMSystemPanel } from '@/components/sea/vm-system-panel'
-import { ICUSystemPanel } from '@/components/sea/icu-system-panel'
+import { ProntuarioSystemPanel } from '@/components/business-syllabus/prontuario-system-panel'
+import { VMSystemPanel } from '@/components/business-syllabus/vm-system-panel'
+import { ICUSystemPanel } from '@/components/business-syllabus/icu-system-panel'
 
 // Importações dos Painéis Corporativos Integrados (SIG, SIE, SIO, COMP)
-import { SigCapitalHumanoPanel } from '@/components/sea/corporate/sig-capital-humano-panel'
-import { SigPessoasPanel } from '@/components/sea/corporate/sig-pessoas-panel'
-import { SigMercadoPanel } from '@/components/sea/corporate/sig-mercado-panel'
-import { SigEsgPanel } from '@/components/sea/corporate/sig-esg-panel'
-import { SigFeedbackPanel } from '@/components/sea/corporate/sig-feedback-panel'
-import { SigArquivosPanel } from '@/components/sea/corporate/sig-arquivos-panel'
-import { SiePanel } from '@/components/sea/corporate/sie-panel'
-import { SioPanel } from '@/components/sea/corporate/sio-panel'
-import { CompPanel } from '@/components/sea/corporate/comp-panel'
+import { SigCapitalHumanoPanel } from '@/components/business-syllabus/corporate/sig-capital-humano-panel'
+import { SigPessoasPanel } from '@/components/business-syllabus/corporate/sig-pessoas-panel'
+import { SigMercadoPanel } from '@/components/business-syllabus/corporate/sig-mercado-panel'
+import { SigEsgPanel } from '@/components/business-syllabus/corporate/sig-esg-panel'
+import { SigFeedbackPanel } from '@/components/business-syllabus/corporate/sig-feedback-panel'
+import { SigArquivosPanel } from '@/components/business-syllabus/corporate/sig-arquivos-panel'
+import { SiePanel } from '@/components/business-syllabus/corporate/sie-panel'
+import { SioPanel } from '@/components/business-syllabus/corporate/sio-panel'
+import { CompPanel } from '@/components/business-syllabus/corporate/comp-panel'
 
 // Definição dos Grupos da Sidebar — Padrão NASA x Cockpit
 const SIDEBAR_GROUPS = [

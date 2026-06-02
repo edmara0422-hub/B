@@ -1,4 +1,4 @@
-import { SeaBackdrop } from '@/components/sea/sea-backdrop'
+import { SeaBackdrop } from '@/components/business-syllabus/sea-backdrop'
 
 type RouteScreenFallbackProps = {
   eyebrow?: string

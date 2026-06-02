@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { GlassPanel } from '@/components/sea/glass-panel'
+import { GlassPanel } from '@/components/business-syllabus/glass-panel'
 import { Badge } from '@/components/ui/badge'
 import { Activity, AlertCircle } from 'lucide-react'
 import { motion } from 'framer-motion'

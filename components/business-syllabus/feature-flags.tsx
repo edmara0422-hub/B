@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { GlassPanel } from '@/components/sea/glass-panel'
+import { GlassPanel } from '@/components/business-syllabus/glass-panel'
 import { Badge } from '@/components/ui/badge'
 import { Switch } from '@/components/ui/switch'
 import { Zap } from 'lucide-react'

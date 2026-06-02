@@ -7,7 +7,7 @@ import { API_BASE } from '@/lib/api-url'
 import { motion } from 'framer-motion'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { GlassPanel } from '@/components/sea/glass-panel'
+import { GlassPanel } from '@/components/business-syllabus/glass-panel'
 import { Send, Bot, Loader2 } from 'lucide-react'
 
 interface Message {

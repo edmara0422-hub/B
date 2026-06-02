@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { GlassPanel } from '@/components/sea/glass-panel'
+import { GlassPanel } from '@/components/business-syllabus/glass-panel'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { Users, Save } from 'lucide-react'

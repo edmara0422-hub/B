@@ -150,8 +150,6 @@ export function TopBarSEA() {
                 'inset 0 1px 2px rgba(255,255,255,0.55), inset 0 -1px 2px rgba(0,0,0,0.35), 0 0 14px rgba(201, 148, 58,0.35), 0 4px 12px rgba(0,0,0,0.55)',
             }}
           >
-            {/* Reflexo brilhante superior — polido */}
-            <div className="absolute inset-x-0 top-0 h-[45%] bg-gradient-to-b from-white/40 to-transparent pointer-events-none rounded-t-[0.55rem]" />
             {/* Texto IPB — prata claro sobre fundo dourado */}
             <span
               className="text-[0.5rem] font-black tracking-[0.03em] md:text-[0.6rem] relative z-10"
@@ -164,7 +162,7 @@ export function TopBarSEA() {
                 filter: 'drop-shadow(0 1px 2px rgba(0,0,0,0.6))',
               }}
             >
-              IPB
+              BS
             </span>
           </div>
           {/* Tagline — prata puro */}
@@ -180,7 +178,7 @@ export function TopBarSEA() {
               filter: 'drop-shadow(0 0 4px rgba(255,255,255,0.15))',
             }}
           >
-            Intelligence Platform Business
+            Business Syllabus
           </p>
         </div>
 

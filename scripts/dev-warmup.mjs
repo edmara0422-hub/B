@@ -3,7 +3,7 @@
  * Roda automaticamente com `npm run dev`.
  */
 
-const ROUTES = ['/sea', '/explore', '/explore/conteudos', '/explore/sistemas']
+const ROUTES = ['/bs', '/explore', '/explore/conteudos', '/explore/sistemas']
 const BASE = 'http://127.0.0.1:3000'
 const MAX_WAIT = 30000
 const POLL = 800

@@ -3,7 +3,7 @@
 import { useParams, useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
 import { ArrowLeft } from 'lucide-react'
-import { AreaCarousel } from '@/components/sea/area-carousel'
+import { AreaCarousel } from '@/components/business-syllabus/area-carousel'
 
 const areaData = {
   fisioterapia: {

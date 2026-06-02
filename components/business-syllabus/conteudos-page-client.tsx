@@ -38,7 +38,7 @@ import { useAuthStore } from '@/lib/stores/authStore'
 import { useAccessibility } from '@/hooks/use-accessibility'
 import { CadernoModulePanel } from '@/components/caderno/caderno-module'
 import { loadModuleContent } from '@/data/caderno-content-loader'
-import { IpbBackground } from '@/components/sea/ipb-background'
+import { IpbBackground } from '@/components/business-syllabus/ipb-background'
 import { 
   SimAlignIT, SimRogersReactor, SimNeuralMatrix, SimServerlessFlow,
   SimInnovationIgnition, SimHorizonsBalancer, SimPsychologicalShield, SimDataLakehouse,
@@ -56,10 +56,10 @@ import {
   SimEffectuationLogic, SimLeanStartupMVP, SimUnitEconomics, SimVCFundingJourney,
   SimMacroIndicatorsPanel, SimEconomicCyclesWave, SimBrazilStructuralChallenges, SimWorkforceFinanceSystem,
   SimFinancialAnalysisVH, SimValuationTriangulation, SimWorkingCapitalCycle, SimIntegratedDiagnostics
-} from '@/components/sea/simulations-6d'
+} from '@/components/business-syllabus/simulations-6d'
 import { NEURO_SIMS } from '@/components/caderno/sim-registry-neuro'
 import { RESPIRATORY_SIMS } from '@/components/caderno/sim-registry-respiratory'
-import { TTSPlayer } from '@/components/sea/tts-player'
+import { TTSPlayer } from '@/components/business-syllabus/tts-player'
 import { SUBJECTS_DB } from '@/data/caderno-content-m1-m8'
 
 const SYLLABUS_TO_DB_MAP: Record<string, string> = {

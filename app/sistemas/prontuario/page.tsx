@@ -2,9 +2,9 @@
 
 import { motion } from 'framer-motion'
 import { useState, useMemo } from 'react'
-import { GreetingHeader } from '@/components/sea/greeting-header'
-import { BottomNav } from '@/components/sea/bottom-nav'
-import { GlassPanel } from '@/components/sea/glass-panel'
+import { GreetingHeader } from '@/components/business-syllabus/greeting-header'
+import { BottomNav } from '@/components/business-syllabus/bottom-nav'
+import { GlassPanel } from '@/components/business-syllabus/glass-panel'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'

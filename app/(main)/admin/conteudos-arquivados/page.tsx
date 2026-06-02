@@ -3,7 +3,7 @@
 import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuthStore } from '@/lib/stores/authStore'
-import ConteudosPageClient from '@/components/sea/conteudos-page-client'
+import ConteudosPageClient from '@/components/business-syllabus/conteudos-page-client'
 
 export default function ConteudosArquivadosPage() {
   const router = useRouter()
@@ -11,7 +11,7 @@ export default function ConteudosArquivadosPage() {
 
   useEffect(() => {
     if (initialized && !isAdmin) {
-      router.replace('/sea')
+      router.replace('/bs')
     }
   }, [initialized, isAdmin, router])
 

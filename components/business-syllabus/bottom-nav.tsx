@@ -13,7 +13,7 @@ export function BottomNav({
   const pathname = usePathname()
 
   const p = pathname?.replace(/\/$/, '') ?? ''
-  const isHome    = p === '/sea' || p === '/home' || p === ''
+  const isHome    = p === '/bs' || p === '/home' || p === ''
   const isExplore = p === '/explore' || p.startsWith('/explore/')
   const hasActive = isHome || isExplore
 
